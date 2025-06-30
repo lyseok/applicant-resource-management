@@ -1,0 +1,109 @@
+
+
+.inpChk>input[type="checkbox"]:focus+label, .inpRdo>input[type="radio"]:focus+label {
+    outline: 1px solid #94b6ed;
+    -webkit-box-shadow: 0 0 2px #94b6ed;
+    box-shadow: 0 0 2px #94b6ed
+}
+
+.inpChk {
+    display: inline-block;
+    position: relative;
+    font-size: 0;
+    vertical-align: top
+}
+
+.inpChk .lbl {
+    display: block;
+    padding-left: 29px;
+    height: 22px;
+    box-sizing: border-box;
+    color: #444;
+    font-size: 13px;
+    line-height: 22px;
+    background: url(//www.saraminimage.co.kr/sri/common/ico/sri_ico_checkbox03.png) 0 2px no-repeat;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.inpChk>input[type="checkbox"] {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute;
+    width: 1px;
+    height: 1px
+}
+
+.inpChk>input[type="checkbox"]:checked+ .lbl {
+    background-position: 0 -48px
+}
+
+.inpChk>input[type="checkbox"]:disabled+ .lbl {
+    background: url(//www.saraminimage.co.kr/sri/common/ico/sri_ico_checkbox.png) 0 -398px no-repeat
+}
+
+.inpChk.small>input[type="checkbox"] + .lbl {
+    padding-left: 20px;
+    height: 17px;
+    font-size: 12px;
+    line-height: 16px;
+    background-position: 0 -98px
+}
+
+.inpChk.small>input[type="checkbox"]:checked+ .lbl {
+    background-position: 0 -148px
+}
+
+.inpChk.small>input[type="checkbox"] + .invalid {
+    color: #ff6d6a
+}
+
+.inpChk.black>input[type="checkbox"] + .lbl {
+    padding-left: 20px;
+    height: 17px;
+    background: url(//www.saraminimage.co.kr/sri/common/ico/ico_sri_input2.png) 0 0 no-repeat;
+    font-size: 12px;
+    line-height: 16px
+}
+
+.inpChk.black>input[type="checkbox"]:checked + .lbl {
+    background-position: 0 -50px
+}
+
+.inpChk .lbl.hide {
+    padding-left: 20px;
+    font-size: 0
+}
+
+.inpChk.small .lbl.hide {
+    padding-left: 17px
+}
+
+
+
+/* 버튼 */
+.btn_basic_type02 {
+    display: inline-block;
+    padding: 5px 13px 9px;
+    height: 32px;
+    border: 1px solid #dbdbdb;
+    box-sizing: border-box;
+    color: #444;
+    font-size: 13px;
+    line-height: normal;
+    vertical-align: top;
+    background-color: #fff
+}
+.btnMapApiL {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-top: 1px solid #ebecef;
+    height: 49px;
+    line-height: 49px;
+    color: #333333;
+    font-size: 13px;
+    letter-spacing: 0px;
+}

@@ -1,0 +1,259 @@
+.Profile_profileWrap {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.Profile_profile {
+  flex-direction: column;
+  border-radius: 12px;
+  border: var(--font-letter-spacing-2xl, 1px) solid var(--bd-secondary, #eaedf4);
+  background: var(--base-white, #fff);
+  width: 320px;
+}
+
+.Profile_profile,
+.Profile_profile_top__ybx {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.Profile_profile_top__ybx {
+  padding: 16px 20px;
+  gap: 12px;
+  flex: 1 0;
+  width: 100%;
+}
+
+.Profile_profile_pic {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.Profile_profile_pic img {
+  width: 60px;
+  height: 60px;
+}
+
+.Profile_profile_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2px;
+  align-self: stretch;
+  width: 206px;
+}
+
+.Profile_profile_mainInfo {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 4px;
+  align-self: stretch;
+  flex-wrap: wrap;
+}
+
+.Profile_profile_nickName {
+  color: var(--text-primary, #292e41);
+  font-size: var(--Font-size-label20, 16px);
+  font-weight: 700;
+  line-height: var(--Line-height-label20, 26px);
+}
+
+.Profile_profile_companyName {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Profile_profile_companyName,
+.Profile_profile_subInfo {
+  color: var(--text-secondary, #475067);
+  font-size: var(--Font-size-label40, 14px);
+  font-weight: 400;
+  line-height: var(--Line-height-label40, 22px);
+}
+
+.Profile_profile_subInfo {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  align-content: center;
+  gap: var(--font-letter-spacing-2xl, 0) 4px;
+  align-self: stretch;
+}
+
+.Profile_profile_jobInfo__EOJr {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: var(--Line-height-label50, 21px);
+  color: var(--text-secondary, #475067);
+  font-size: var(--Font-size-label40, 14px);
+  font-weight: 400;
+  line-height: var(--Line-height-label40, 22px);
+}
+
+.Profile_profile_jobPeriod__LjHS {
+  flex-shrink: 0;
+}
+
+.Profile_profile_bottom {
+  display: flex;
+  padding: 12px 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  border-top: 1px solid var(--bd-secondary, #eaedf4);
+}
+
+.Profile_profile_communionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+
+.Profile_profile_communionTitle {
+  color: var(--text-teritary, #6b768b);
+  font-size: var(--Font-size-label50, 13px);
+  font-weight: 400;
+  line-height: var(--Line-height-label50, 21px);
+}
+
+.Profile_profile_communionCount {
+  color: var(--text-primary, #292e41);
+  font-size: var(--Font-size-label40, 14px);
+  font-weight: 700;
+  line-height: var(--Line-height-label40, 22px);
+}
+
+.Profile_activity {
+  display: flex;
+  width: 278px;
+  height: 48px;
+  padding: var(--font-letter-spacing-2xl, 0) 20px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  border: 1px solid var(--bd-secondary, #eaedf4);
+  background: var(--bg-level-g-01, #f4f6fa);
+}
+
+.Profile_divider_FoWFA {
+  width: 1px;
+  height: 10px;
+  background-color: #d7dce5;
+}
+
+.Profile_activity_item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex: 1 0;
+}
+
+.Profile_activity_title {
+  color: var(--text-teritary, #6b768b);
+  font-weight: 400;
+}
+
+.Profile_activity_count,
+.Profile_activity_title {
+  font-size: var(--Font-size-label40, 14px);
+  line-height: var(--Line-height-label40, 22px);
+}
+
+.Profile_activity_count {
+  color: var(--text-secondary, #475067);
+  font-weight: 700;
+}
+
+.Profile_profileNone {
+  display: flex;
+  width: 320px;
+  padding: 16px 20px;
+  align-items: center;
+  gap: 16px;
+  border-radius: 12px;
+  border: var(--font-letter-spacing-2xl, 1px) solid var(--bd-secondary, #eaedf4);
+  background: var(--bg-level-g-02, #f8fafc);
+  box-sizing: border-box;
+}
+
+.Profile_profileNone_text {
+  color: var(--text-teritary, #6b768b);
+  font-size: var(--Font-size-label20, 16px);
+  font-weight: 400;
+  line-height: var(--Line-height-label20, 26px);
+}
+
+.Profile_loginButton {
+  width: 100%;
+}
+
+@media screen and (min-width: 1240px) {
+  .Profile_profileWrap {
+    display: flex;
+  }
+}
+
+.ProfileBanner_banner {
+  width: 100%;
+}
+
+.ProfileBanner_nestBanner {
+  display: block;
+  width: 320px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.ProfileBanner_nestBanner:empty {
+  background-image: url(https://www.saraminimage.co.kr/sri/career-service/career-feed/images/feed/marketing2_default_main.png);
+  background-size: 320px 100px;
+  background-repeat: no-repeat;
+}
+
+.ProfileBanner_profileBanner {
+  display: none;
+  width: 100%;
+}
+
+.ProfileBanner_profileBanner img {
+  display: block;
+}
+
+@media screen and (min-width: 600px) {
+  .ProfileBanner_nestBanner {
+    margin-top: 48px;
+  }
+}
+
+@media screen and (min-width: 1240px) {
+  .ProfileBanner_banner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .ProfileBanner_profileBanner {
+    display: block;
+  }
+}

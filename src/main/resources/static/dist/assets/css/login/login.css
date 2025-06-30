@@ -1,0 +1,1046 @@
+
+.skip,
+.blind {
+  clip: unset;
+  margin: unset;
+}
+
+.clear {
+  zoom: 1;
+}
+
+.clear:after {
+  content: "";
+  display: block;
+  height: auto;
+  clear: visible;
+}
+
+.skip,
+.blind,
+legend {
+  position: absolute;
+  top: -5000em;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  line-height: 0;
+  font-size: 0;
+  letter-spacing: 0;
+}
+
+#login.bg-gray {
+  background-color: #f8f8f8;
+}
+
+#login #skipNavigation {
+  position: relative;
+  z-index: 10001;
+}
+
+#login #skipNavigation a {
+  position: absolute;
+  top: -1000em;
+  left: 0;
+  width: 200px;
+  height: 24px;
+  padding-top: 4px;
+  background-color: #000;
+  text-align: center;
+  color: #fff !important;
+  font-size: 14px;
+  letter-spacing: 0;
+  font-weight: bold;
+}
+
+#login #skipNavigation a:active,
+#login #skipNavigation a:focus {
+  top: 0;
+}
+
+#login #wrap {
+  width: 100%;
+}
+
+#login #wrap {
+  width: 868px;
+  text-align: center;
+  padding: 20px 0;
+  border: unset !important;
+  margin-top: unset !important;
+  background: #f8f8f8 !important;
+}
+
+#login #wrap {
+  font-size: 13px;
+  letter-spacing: 0;
+  line-height: 24px;
+  font-weight: 400;
+  color: #9e9e9e;
+}
+
+#login #wrap{
+  margin-top: 0;
+  padding-top: 40px;
+  background: rgba(0, 0, 0, 0);
+}
+
+
+#login .secLogin {
+  width: 1030px;
+  margin: 0 auto;
+  padding: 80px 120px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+#login .secLogin #lottie-model {
+  width: 420px;
+  height: 140px;
+  margin: 0 auto 20px auto;
+}
+
+#login .secLogin:after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+#login .secLogin .hd {
+  padding-bottom: 56px;
+  color: #000;
+  text-align: center;
+  font-size: 16px;
+  letter-spacing: 0;
+  font-weight: 400;
+  line-height: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#login .secLogin .hd .logo {
+  display: inline-block;
+  width: 362px;
+  height: 34px;
+  background: url(/content/images/Login/ver_1/bg_sp_new.png) no-repeat;
+  background-size: contain;
+}
+
+#login .secLogin .logWrap {
+  position: relative;
+  float: left;
+  width: 400px;
+  padding-right: 32px;
+  border-right: 1px solid #f4f4f4;
+}
+
+#login .secLogin .adBan {
+  float: right;
+  width: 325px;
+  position: relative;
+}
+
+.section-company {
+  margin-top: 80px;
+}
+
+.section-company .inner {
+  width: 983px;
+  margin: 0 auto;
+}
+
+.section-company .inner img {
+  display: block;
+}
+
+.section-company .article-jobkorea {
+  padding: 90px 0;
+  background: #34344e;
+}
+
+.section-company .article-jobkorea img {
+  margin: 0 auto;
+}
+
+.section-company .article-super {
+  padding: 205px 0;
+  background-image: url("https://i.jobkorea.kr/content/images/join/company/bg_compnay_02.png");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-color: #e3eeff;
+}
+
+.section-company .article-super img {
+  margin-left: 7px;
+}
+
+.section-company .article-smart {
+  padding: 50px 0 0;
+  background: #f6f9fe;
+}
+
+.section-company .article-smart img {
+  margin: 0 auto;
+}
+
+.section-company .article-search {
+  padding: 80px 0 105px;
+  background: #e3eeff;
+}
+
+.section-company .article-search img {
+  margin: 0 auto;
+}
+
+.section-company .article-hunting {
+  padding: 100px 0 260px;
+  background-image: url("https://i.jobkorea.kr/content/images/join/company/bg_compnay_05.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #e1ddde;
+}
+
+.section-company .article-hunting img {
+  margin-left: 7px;
+}
+
+.section-company .article-learning {
+  padding: 85px 0;
+  background: #f6f9fe;
+}
+
+.section-company .article-learning img {
+  margin: 0 auto;
+}
+
+.section-company .article-start {
+  padding: 85px 0;
+  background: #e3eeff;
+}
+
+.section-company .article-start img {
+  margin: 0 auto;
+}
+
+.section-company .article-start .btn-start {
+  display: block;
+  margin: 50px auto 0;
+  width: 320px;
+  height: 80px;
+}
+
+.section-company .btn-fixed-right {
+  display: none;
+  position: fixed;
+  top: 50%;
+  margin-top: -67px;
+  right: 100px;
+}
+
+.section-company .btn-fixed-right a {
+  display: block;
+  margin: 0 auto;
+}
+
+.section-company .btn-fixed-right .btn-join-right {
+  display: block;
+  width: 194px;
+  height: 84px;
+  background-image: url("https://i.jobkorea.kr/content/images/join/company/btn_join_right.png");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+
+.section-company .btn-fixed-right .btn-join-right:hover {
+  background-position-y: -84px;
+}
+
+.section-company .btn-fixed-right img {
+  display: block;
+}
+
+.section-company .btn-fixed-right .btn-top {
+  width: 55px;
+  margin-top: -5px;
+}
+
+.login-popup.window-popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-popup.window-popup #devMemTab,
+.login-popup.window-popup .login-tab {
+  display: none;
+}
+
+.login-popup.modal-popup {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-popup.modal-popup #devMemTab,
+.login-popup.modal-popup .login-tab {
+  display: none;
+}
+
+.login-popup.modal-popup .login-content {
+  border-radius: 8px;
+}
+
+.login-popup .login-content {
+  width: 420px;
+  padding: 40px;
+  background-color: #fff;
+  position: relative;
+  box-sizing: content-box;
+}
+
+.login-popup .login-content .login-title-section {
+  text-align: left;
+  padding-bottom: 22px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #222;
+}
+
+.login-popup .login-content .login-title {
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  font-weight: 600;
+  color: #222;
+}
+
+.login-popup .login-content .login-sub-title {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #9e9e9e;
+}
+
+.login-popup .login-content .login-popup-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+  overflow: hidden;
+  line-height: normal;
+}
+
+.login-popup .login-content .login-popup-close i.system_system_close {
+  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0i...");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+}
+
+.login-popup .login-content .iframe-wrap {
+  width: 420px;
+  display: flex;
+}
+
+.login-popup .login-content .iframe-wrap #login-form {
+  width: 100%;
+}
+
+.login-form {
+  min-height: 270px;
+}
+
+.login-form input {
+  -webkit-appearance: none;
+}
+
+.login-form input::-webkit-input-placeholder {
+  font-weight: 400;
+  color: #9e9e9e;
+}
+
+.login-form .login-tab {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.login-form .login-tab:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.login-form .login-tab li {
+  float: left;
+  width: 50%;
+}
+
+.login-form .login-tab li a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  background-color: #f7f7f7;
+  color: #9e9e9e;
+  text-align: center;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  border: 1px solid #e8e8e8;
+  border-bottom: 1px solid #222;
+}
+
+.login-form .login-tab .on a {
+  background-color: #fff;
+  border-top: 1px solid #222;
+  border-left: 1px solid #222;
+  border-right: 1px solid #222;
+  border-bottom: 1px solid #fff;
+  color: #222;
+  font-weight: 600;
+}
+
+.login-form .login-tab .sort {
+  margin: 30px 0 24px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.login-form .login-tab .sort label {
+  margin: 0 10px 0 0;
+  vertical-align: -1px;
+}
+
+.login-form .login-tab .sort .radioOn {
+  font-weight: bold;
+  color: #333;
+}
+
+.login-form .login-switch {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.login-form .login-switch .login-member-switch {
+  display: inline-block;
+  position: relative;
+}
+
+.login-form .login-switch .login-member-switch label {
+  font-weight: bold;
+  color: #333;
+  height: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.login-form .login-switch .login-member-switch label:before {
+  content: "";
+  background: url("https://i.jobkorea.kr/content/images/ver_1/mtu/toggle_switch.png") no-repeat;
+  top: -2px;
+  display: inline-block;
+  width: 26px;
+  height: 16px;
+  background-size: cover;
+}
+
+.login-form .login-switch .login-member-switch input[type="checkbox"]:checked + label:before {
+  background-image: url("https://i.jobkorea.kr/content/images/ver_1/mtu/toggle_active_switch.png");
+}
+
+.login-form .login-switch .text-switch {
+  color: #171717;
+  font-size: 14px;
+  line-height: 22px;
+  margin-left: 10px;
+}
+
+.login-form .login-input {
+  position: relative;
+  text-align: left;
+}
+
+.login-form .login-input .inpTxt {
+  width: calc(100% - 114px - 12px);
+  color: #333;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 16px 0 48px;
+  border-radius: 8px;
+  border: 1px solid #d2d2d2;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.login-form .login-input .inpTxt:focus {
+  border-color: #222;
+}
+
+.login-form .login-input .input-id,
+.login-form .login-input .input-id.corp,
+.login-form .login-input .input-password {
+  margin-bottom: 12px;
+}
+
+.login-form .login-input .label-form {
+  display: block;
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  overflow: hidden;
+}
+.login-form .login-input .label-form .material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24;
+   line-height: 48px;
+   width: 48px;
+   text-align: center;
+	font-size:24px;	
+   color: #ccc;
+}
+
+.login-form .login-input .label-form:has(+ .corp) {
+  background: url("/dist/assets/images/login/line_company.png") no-repeat center / 25px;
+}
+
+.login-form .login-input .label-id {
+  background: url("/dist/assets/images/login/system_my.png") no-repeat center / 25px;
+}
+
+.login-form .login-input .label-password {
+  background: url("https://i.jobkorea.kr/content/images/login/ver_1/system_lock_closed.svg") no-repeat 16px 12px;
+}
+
+.login-form .login-input .login-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 114px;
+  height: 108px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: var(--violet80);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  box-sizing: border-box;
+}
+
+.login-form .login-input .text-error {
+  display: none;
+}
+
+.login-form .login-input.error input {
+  border-color: red;
+}
+
+.login-form .login-input.error .input-password {
+  margin-bottom: unset;
+}
+
+.login-form .login-input.error .text-error {
+  display: block;
+  color: red;
+  font-size: 12px;
+  line-height: 18px;
+  margin: 8px 0;
+}
+
+.login-form .login-input .login-capslock {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 107px;
+  font-size: 12px;
+  color: #666;
+  padding: 5px;
+  border: 1px solid #9ea7bc;
+  background: #fff;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.login-form .login-input .login-capslock.on {
+  display: block;
+}
+
+.login-form .login-input .login-capslock em {
+  font-weight: normal;
+  color: #39f;
+}
+
+.login-form .login-input .login-capslock .mainIcn {
+  display: inline-block;
+  background: url("https://i.jobkorea.kr/content/images/main/main_sp_icn.png?2018041814") no-repeat;
+  vertical-align: middle;
+}
+
+.login-form .login-input .login-capslock .mainIcnArrUp {
+  position: absolute;
+  left: 22px;
+  top: -5px;
+  width: 7px;
+  height: 5px;
+  background-position: -30px 0;
+}
+
+.login-form .login-convenience {
+  position: relative;
+  text-align: left;
+  color: #222;
+  font-size: 14px;
+  line-height: 22px;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  box-shadow: 0 1px #f4f4f4;
+  margin-top: 12px;
+}
+
+.login-form .login-convenience .login-convenience-keep {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-form .login-convenience .login-convenience-keep .keep-id {
+  cursor: pointer;
+}
+
+.login-form .login-convenience .login-convenience-keep .keep-id label {
+  position: relative;
+  color: #222;
+  font-size: 14px;
+  line-height: 22px;
+  padding-left: 32px;
+}
+
+.login-form .login-convenience .login-convenience-keep .keep-id input[type="checkbox"] {
+  border: none;
+}
+
+.login-form .login-convenience .login-convenience-keep .keep-id input[type="checkbox"]:checked + label::before {
+  background-image: url("https://i.jobkorea.kr/content/images/login/ver_1/checkedbox_circle.svg");
+}
+
+.login-form .login-convenience .login-convenience-keep .keep-id label::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  background: url("https://i.jobkorea.kr/content/images/login/ver_1/checkBox_circle.svg") no-repeat;
+  background-size: cover;
+}
+
+.login-form .login-convenience .login-convenience-security {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-form .login-convenience .login-convenience-security a {
+  color: #222;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.login-form .login-convenience .login-convenience-security .security-button {
+  width: 39px;
+  height: 22px;
+  color: #6a6a6a;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  border: 0.5px solid #d2d2d2;
+  background: #fff;
+}
+
+.login-form .login-convenience .login-convenience-security .security-button.on {
+  border: 0.5px solid rgb(65 0 255 / 50%);
+  background: var(--violet30);
+  color: var(--violet90);
+}
+
+.login-form .login-convenience .login-convenience-security .security-button .setOff {
+  color: #8d8d8d;
+}
+
+.login-form .login-captcha {
+  margin: 8px 0 4px;
+  padding-bottom: 24px;
+  box-shadow: 0 1px #f4f4f4;
+}
+
+.login-form .login-captcha .captcha {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-form .login-captcha .captcha .captcha-image {
+  display: inline-block;
+  width: calc(100% - 58px);
+  height: 46px;
+  border: 1px solid #d2d2d2;
+  background-color: #eff7ff;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.login-form .login-captcha .captcha .captcha-image img {
+  width: 100%;
+  margin-top: 4px;
+  max-width: 198px;
+}
+
+.login-form .login-captcha .captcha .captcha-image-change {
+  width: 46px;
+  height: 46px;
+  border: 1px solid #d2d2d2;
+  background-image: url("data:image/svg+xml,...");
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 8px;
+  visibility: visible;
+  opacity: 1;
+}
+
+.login-form .login-captcha .inpTxt {
+  width: 100%;
+  padding-left: 16px;
+  margin-top: 12px;
+  border: 1px solid #d2d2d2;
+  font-size: 14px;
+  color: #222;
+  line-height: 46px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.login-form .login-captcha .inpTxt::-webkit-input-placeholder,
+.login-form .login-captcha .inpTxt::-moz-placeholder,
+.login-form .login-captcha .inpTxt:-ms-input-placeholder,
+.login-form .login-captcha .inpTxt::-ms-input-placeholder,
+.login-form .login-captcha .inpTxt::placeholder {
+  color: #9e9e9e;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 46px;
+}
+
+.login-form .login-captcha .inpTxt:focus {
+  border-color: #222;
+}
+
+.login-form .login-social {
+  display: table;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.login-form .login-social ul:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.login-form .login-social li {
+  float: left;
+}
+
+.login-form .login-social li:nth-child(n + 2) {
+  margin-left: 20px;
+}
+
+.login-form .login-social li a {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  text-indent: -9999px;
+}
+
+.login-form .login-social li a.naver {
+  background-image: url("https://i.jobkorea.kr/content/images/login/ver_1/sns_naver_large.svg");
+}
+
+.login-form .login-social li a.kakao {
+  background-image: url("https://i.jobkorea.kr/content/images/login/ver_1/sns_kakao_large.svg");
+}
+
+.login-form .login-social li a.facebook {
+  background-image: url("https://i.jobkorea.kr/content/images/login/ver_1/sns_facebook_large.svg");
+}
+
+.login-form .login-social li a.google {
+  background-image: url("/dist/assets/images/sns_google_large.jpg");
+  background-size:15px;
+  border:1px solid #ccc;
+}
+
+.login-form .login-social li a.apple {
+  background-image: url("https://i.jobkorea.kr/content/images/login/ver_1/sns_apple_large.svg");
+}
+
+.login-form .login-join {
+  position: relative;
+  padding-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.login-form .login-join a {
+  position: relative;
+  font-size: 14px;
+}
+
+.login-form .login-join a:first-child:after,
+.login-form .login-join a:last-child:after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  width: 1px;
+  height: 10px;
+  background: var(--violet80);
+}
+
+.login-form .login-join a:first-child:after {
+  right: -9px;
+}
+
+.login-form .login-join a:last-child:after {
+  left: -8px;
+}
+
+.login-form .login-join a:last-child {
+  color: var(--violet90);
+}
+
+.login-form .login-join a .div-tooltip-msg {
+  white-space: nowrap;
+  border-radius: 4px;
+  height: 62px;
+  line-height: 18px;
+  padding: 12px 16px;
+  border: 1px solid #222;
+  background: #fff;
+  color: #222;
+  font-size: 13px;
+  position: absolute;
+  bottom: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.login-form .login-join a .div-tooltip-msg::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  margin-left: -7px;
+  width: 14px;
+  height: 9px;
+  background: url("https://i.jobkorea.kr/content/images/cdn/pc/bg-point.png") no-repeat center;
+  background-size: 14px 9px;
+}
+
+.login-form .login-join a .div-tooltip-msg strong {
+  font-weight: 700;
+}
+
+.login-form .login-join .text-balloon {
+  position: absolute;
+  top: 52px;
+  right: 16px;
+  display: block;
+  width: 138px;
+  height: 27px;
+  line-height: 27px;
+  background: #ff6464;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 13.5px;
+}
+
+.login-form .login-join .text-balloon:before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: 17px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #ff6464;
+}
+
+.login-form .login-join .text-balloon span {
+  color: #ffee60;
+}
+
+.modal-login {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-login .modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 560px;
+  padding: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+    0 6px 20px rgba(0, 0, 0, 0.19);
+  border-radius: 8px;
+  border: 1px solid #222;
+  background: #fff;
+  text-align: start;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+}
+
+.modal-login .modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-login .modal-close:hover,
+.modal-login .modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-login .modal-header h2 {
+  color: #222;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.modal-login .modal-body {
+  color: #222;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.modal-login .modal-body ul {
+  padding-left: 8px;
+}
+
+.modal-login .modal-body ul li {
+  position: relative;
+  word-break: keep-all;
+  margin-top: 10px;
+}
+
+.modal-login .modal-body ul li:first-child {
+  margin-top: 0;
+}
+
+.modal-login .modal-body ul li:before {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: -7px;
+  width: 2px;
+  height: 2px;
+  background: #222;
+  border-radius: 50%;
+}
+
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.devHide {
+  display: none;
+  margin-bottom: unset;
+}

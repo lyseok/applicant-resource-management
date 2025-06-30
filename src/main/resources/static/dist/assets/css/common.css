@@ -1,0 +1,471 @@
+
+/* popover/tooltip */
+.toolTipWrap {
+    display: inline-block;
+    position: relative
+}
+
+.toolTip {
+    display: none;
+    position: absolute;
+    z-index: 200;
+    padding: 18px 22px 20px 22px;
+    min-width: 33px;
+    border: 1px solid #444;
+    border-radius: 2px;
+    color: #222;
+    font-size: 13px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px #d8d8d8
+}
+
+.toolTip.on {
+    display: block
+}
+
+.toolTip .tail {
+    position: absolute;
+    background: url(//www.saraminimage.co.kr/sri/common/tooltip_tail.png) no-repeat
+}
+
+.toolTip .tail.tail_bottom_left {
+    bottom: -7px;
+    left: 25px;
+    width: 11px;
+    height: 7px;
+    background-position: 0 0
+}
+
+.toolTip .tail.tail_bottom_center {
+    bottom: -7px;
+    left: 50%;
+    margin-left: -6px;
+    width: 11px;
+    height: 7px;
+    background-position: 0 0
+}
+
+.toolTip .tail.tail_bottom_right {
+    right: 25px;
+    bottom: -7px;
+    width: 11px;
+    height: 7px;
+    background-position: 0 0
+}
+
+.toolTip .tail.tail_top_left {
+    top: -7px;
+    left: 25px;
+    width: 11px;
+    height: 7px;
+    background-position: 0 -7px
+}
+
+.toolTip .tail.tail_top_center {
+    top: -7px;
+    left: 50%;
+    margin-left: -6px;
+    width: 11px;
+    height: 7px;
+    background-position: 0 -7px
+}
+
+.toolTip .tail.tail_top_right {
+    top: -7px;
+    right: 25px;
+    width: 11px;
+    height: 7px;
+    background-position: 0 -7px
+}
+
+.toolTip .tail.tail_right_top {
+    top: 25px;
+    right: -7px;
+    width: 7px;
+    height: 11px;
+    background-position: -18px 0
+}
+
+.toolTip .tail.tail_right_center {
+    top: 50%;
+    right: -7px;
+    margin-top: -6px;
+    width: 7px;
+    height: 11px;
+    background-position: -18px 0
+}
+
+.toolTip .tail.tail_right_bottom {
+    right: -7px;
+    bottom: 25px;
+    width: 7px;
+    height: 11px;
+    background-position: -18px 0
+}
+
+.toolTip .tail.tail_left_top {
+    top: 25px;
+    left: -7px;
+    width: 7px;
+    height: 11px;
+    background-position: -11px 0
+}
+
+.toolTip .tail.tail_left_center {
+    top: 50%;
+    left: -7px;
+    margin-top: -6px;
+    width: 7px;
+    height: 11px;
+    background-position: -11px 0
+}
+
+.toolTip .tail.tail_left_bottom {
+    bottom: 25px;
+    left: -7px;
+    width: 7px;
+    height: 11px;
+    background-position: -11px 0
+}
+
+.toolTip .toolTipCont {
+    line-height: 20px
+}
+
+.toolTip .toolTipCont.txtLeft {
+    text-align: left
+}
+
+.toolTip .toolTipCont.txtCenter {
+    text-align: center
+}
+
+.toolTip .toolTipCont .toolTipTxt {
+    margin-right: 12px
+}
+
+.toolTip .toolTipCont .toolTipTit {
+    display: block;
+    margin-bottom: 10px;
+    color: #222;
+    font-weight: bold
+}
+
+.toolTip .toolTipCont .toolTipTit+.toolTipTxt {
+    margin-right: 0
+}
+
+.toolTip .btnClose {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 15px 15px 10px 10px;
+    border: 0;
+    background: none
+}
+
+.toolTip .btnClose:after {
+    display: block;
+    width: 13px;
+    height: 13px;
+    background: url(//www.saraminimage.co.kr/ui/layer/button/spr_lefttop_arrow.png) 0 0 no-repeat;
+    content: ""
+}
+
+.toolTip:hover+.sri_tooltip {
+    display: block
+}
+
+.toolTip.type2 {
+    padding: 18px 22px 20px 22px;
+    border: 1px solid #5b8ae8;
+    box-sizing: border-box;
+    color: #fff;
+    background-color: #5b8ae8
+}
+
+.toolTip.type2 .btn_close:after {
+    background: url(//www.saraminimage.co.kr/sri/company/talent/btn_close_tooltip.png) 0 0 no-repeat
+}
+
+.toolTip.type2 .tail.tailBottomCenter {
+    background: url(//www.saraminimage.co.kr/sri/company/talent/ico_arrow3.png) 50% 100% no-repeat
+}
+
+.tool_tip_wrap {
+    position: relative
+}
+
+.tool_tip_wrap:hover .toolTip {
+    display: block
+}
+
+.tool_tip_wrap.on .toolTip {
+    display: block
+}
+
+.tool_tip_wrap.on:hover .toolTip {
+    display: block
+}
+
+.tool_tip_wrap.click:hover .toolTip {
+    display: none
+}
+
+.tool_tip_wrap.on.click:hover .toolTip {
+    display: inline-block
+}
+
+.tool_tip_wrap.click .btnClose {
+    position: absolute;
+    top: 12px;
+    right: 12px
+}
+
+.tool_tip_wrap.click .btnClose:after {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ADBACA' fill-rule='nonzero'%3E%3Cpath d='M9.546 -0.354L10.253 0.354 0.354 10.253 -0.354 9.546z' transform='translate(-1272 -428) translate(750 402) translate(523 27)'/%3E%3Cpath d='M0.354 -0.354L10.253 9.546 9.546 10.253 -0.354 0.354z' transform='translate(-1272 -428) translate(750 402) translate(523 27)'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A") no-repeat center center;
+    content: ""
+}
+
+.tool_tip_wrap.click .btnClose:hover:after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23373F57' fill-rule='nonzero'%3E%3Cpath d='M9.546 -0.354L10.253 0.354 0.354 10.253 -0.354 9.546z' transform='translate(-1272 -428) translate(750 402) translate(523 27)'/%3E%3Cpath d='M0.354 -0.354L10.253 9.546 9.546 10.253 -0.354 0.354z' transform='translate(-1272 -428) translate(750 402) translate(523 27)'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A")
+}
+
+.tool_tip_wrap .tool_tip {
+    z-index: 200;
+    display: none;
+    position: absolute;
+    padding: 24px;
+    border: 1px solid #eaedf4;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background: #fff;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.1)
+}
+
+.social_login .tool_tip_wrap .tool_tip {
+    display: block
+}
+
+.tool_tip_wrap.click .toolTip {
+    padding-top: 28px
+}
+
+.tool_tip_wrap .tool_tip .tail {
+    position: absolute;
+    z-index: 2;
+    width: 32px;
+    height: 32px
+}
+
+.tool_tip_wrap .tool_tip .tool_tip_cont {
+    color: #5c667b;
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap
+}
+
+.tool_tip_wrap .tool_tip .tool_tip_cont .toolTip_tit {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 15px;
+    line-height: 22px
+}
+
+.tool_tip_wrap .tool_tip.colorBlue {
+    background: #4876ef
+}
+
+.tool_tip_wrap .tool_tip.colorBlue .tool_tip_cont {
+    color: #fff
+}
+
+.tool_tip_wrap .tool_tip .tool_tip_badge {
+    display: inline-block;
+    margin-bottom: 4px;
+    padding: 3px 10px;
+    border-radius: 27px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 20px;
+    background: #00d3ab
+}
+
+.tool_tip_wrap .tool_tip.top_center .tail, .tool_tip_wrap .tool_tip.right_center .tail, .tool_tip_wrap .tool_tip.bottom_center .tail, .tool_tip_wrap .tool_tip.left_center .tail {
+    background: url(//www.saraminimage.co.kr/sri/person/spr/spr_tooltip_tail.png) 0 0 no-repeat
+}
+
+.tool_tip_wrap .tool_tip.top_right .tail, .tool_tip_wrap .tool_tip.right_bottom .tail, .tool_tip_wrap .tool_tip.bottom_left .tail, .tool_tip_wrap .tool_tip.left_top .tail {
+    background: url(//www.saraminimage.co.kr/sri/person/spr/spr_tooltip_tail.png) -50px 0 no-repeat
+}
+
+.tool_tip_wrap .tool_tip.top_left .tail, .tool_tip_wrap .tool_tip.right_top .tail, .tool_tip_wrap .tool_tip.bottom_right .tail, .tool_tip_wrap .tool_tip.left_bottom .tail {
+    background: url(//www.saraminimage.co.kr/sri/person/spr/spr_tooltip_tail.png) -100px 0 no-repeat
+}
+
+.tool_tip_wrap .tool_tip.top_center .tail {
+    top: -18px;
+    left: 50%;
+    margin-left: -16px
+}
+
+.tool_tip_wrap .tool_tip.right_center .tail {
+    top: 50%;
+    right: -18px;
+    margin-top: -16px;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg)
+}
+
+.tool_tip_wrap .tool_tip.bottom_center .tail {
+    bottom: -18px;
+    left: 50%;
+    margin-left: -16px;
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg)
+}
+
+.tool_tip_wrap .tool_tip.left_center .tail {
+    top: 50%;
+    left: -18px;
+    margin-top: -16px;
+    -webkit-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg)
+}
+
+.tool_tip_wrap .tool_tip.top_right .tail {
+    top: -18px;
+    right: -1px
+}
+
+.tool_tip_wrap .tool_tip.right_bottom .tail {
+    right: -18px;
+    bottom: -1px;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg)
+}
+
+.tool_tip_wrap .tool_tip.bottom_left .tail {
+    bottom: -18px;
+    left: -1px;
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg)
+}
+
+.tool_tip_wrap .tool_tip.left_top .tail {
+    top: -1px;
+    left: -18px;
+    -webkit-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg)
+}
+
+.tool_tip_wrap .tool_tip.top_left .tail {
+    top: -18px;
+    left: -1px;
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg)
+}
+
+.tool_tip_wrap .tool_tip.right_top .tail {
+    top: -1px;
+    right: -18px;
+    -webkit-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg)
+}
+
+.tool_tip_wrap .tool_tip.bottom_right .tail {
+    right: -1px;
+    bottom: -18px
+}
+
+.tool_tip_wrap .tool_tip.left_bottom .tail {
+    bottom: -1px;
+    left: -18px;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg)
+}
+
+.tool_tip_wrap .tool_tip.top_center {
+    top: calc(100% + 17px);
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%)
+}
+
+.tool_tip_wrap .tool_tip.right_center {
+    top: 50%;
+    right: calc(100% + 17px);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)
+}
+
+.tool_tip_wrap .tool_tip.bottom_center {
+    bottom: calc(100% + 17px);
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%)
+}
+
+.tool_tip_wrap .tool_tip.left_center {
+    top: 50%;
+    left: calc(100% + 17px);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)
+}
+
+.tool_tip_wrap .tool_tip.top_right {
+    top: calc(100% + 17px);
+    right: 50%
+}
+
+.tool_tip_wrap .tool_tip.right_bottom {
+    right: calc(100% + 17px);
+    bottom: 50%
+}
+
+.tool_tip_wrap .tool_tip.bottom_left {
+    bottom: calc(100% + 17px);
+    left: 50%
+}
+
+.tool_tip_wrap .tool_tip.left_top {
+    top: 50%;
+    left: calc(100% + 17px)
+}
+
+.tool_tip_wrap .tool_tip.top_left {
+    top: calc(100% + 17px);
+    left: 50%
+}
+
+.tool_tip_wrap .tool_tip.right_top {
+    top: 50%;
+    right: calc(100% + 17px)
+}
+
+.tool_tip_wrap .tool_tip.bottom_right {
+    right: 50%;
+    bottom: calc(100% + 17px)
+}
+
+.tool_tip_wrap .tool_tip.left_bottom {
+    bottom: 50%;
+    left: calc(100% + 17px)
+}
