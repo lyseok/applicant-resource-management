@@ -20,7 +20,7 @@
 	
 	<select id="selectCompanyReviewQuestionList">
 		SELECT
-		  cq.COMPANY_REVIEW_CONTENT
+		  cq.COMPANY_REVIEW_SCORE
 		FROM COMPANY_REVIEW cr
 		  JOIN COMPANY_REVIEW_QUESTION cq
 		    ON cr.COMPANY_REVIEW_NO = cq.COMPANY_REVIEW_NO

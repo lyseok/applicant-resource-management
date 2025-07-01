@@ -24,13 +24,12 @@
   </li>
 </ul>
 	
-   
    <ul>
         <c:forEach items="${list}" var="review">
             <li style="list-style:none; margin-bottom:10px;">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-text">${review.companyReviewContent}</p>
+                        <p class="card-text">${review.companyReviewScore}</p>
                     </div>
                 </div>
             </li>
