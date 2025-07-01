@@ -14,4 +14,9 @@ public class UsersVO implements Serializable{
 	private String userWithdrawDate;
 	private String userStatus;
 	private String userEnabled;
+	
+	private MemberVO member;
+	private CompanyVO company;
+	private SocialMemberVO social;
+	private AdminVO admin;
 }
