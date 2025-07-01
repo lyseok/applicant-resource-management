@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of="chatroomNo")
+@EqualsAndHashCode(of={"chatroomNo", "prjNo", "userId"})
 public class ChatroomMemVO implements Serializable {
 	private String chatroomNo;
 	private String prjNo;

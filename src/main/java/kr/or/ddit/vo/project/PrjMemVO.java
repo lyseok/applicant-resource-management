@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of="prjNo")
+@EqualsAndHashCode(of={"prjNo", "userId"})
 public class PrjMemVO implements Serializable {
 	private String prjNo;
 	private String userId;

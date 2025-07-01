@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of="taskNo")
+@EqualsAndHashCode(of={"taskNo", "prjNo", "userId"})
 public class TasksManagerVO implements Serializable {
 	private String taskNo;
 	private String prjNo;

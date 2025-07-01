@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of="rcrtPsncntNo")
+@EqualsAndHashCode(of={"rcrtPsncntNo", "prjAnncNo"})
 public class PrjRcrtPsncntVO implements Serializable {
 	private String rcrtPsncntNo;
 	private String prjAnncNo;
