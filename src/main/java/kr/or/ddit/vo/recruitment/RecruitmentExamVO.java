@@ -1,0 +1,20 @@
+package kr.or.ddit.vo.recruitment;
+
+import java.io.Serializable;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(of = "recruitExamNo")
+public class RecruitmentExamVO implements Serializable{
+
+	private String recruitExamNo;
+	private String processNo;
+	private String recruitExamName;
+	private String recruitExamCutline;
+	private String recruitExamStartDate;
+	private String recruitExamDuration;
+	private String recruitExamEndDate;
+
+}
