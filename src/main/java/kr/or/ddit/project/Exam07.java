@@ -1,4 +1,4 @@
-package kr.or.ddit.pms;
+package kr.or.ddit.project;
 
 public class Exam07 {
 
