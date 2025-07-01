@@ -18,7 +18,7 @@
 	</select>
 	
 	
-	<select id="selectCompanyReviewQuestionList">
+	<select id="selectCompanyReviewAnswerList">
 		SELECT
 		  cq.COMPANY_REVIEW_SCORE
 		FROM COMPANY_REVIEW cr
@@ -30,6 +30,19 @@
 		  cq.REVIEW_SUBJECT_CODE
 	</select>
 	
+
+	<select id="selectCompanyQuestionList">
+		SELECT
+		  CODE_DETAIL_NO,
+		  CODE_NAME,
+		  SORT_ORDER
+		FROM
+		  CMN_CODE
+		WHERE
+		  CODE_GROUP_NO = #{codeGroupNo}
+		ORDER BY
+		  SORT_ORDER;
+	</select>
 
 	
 	
