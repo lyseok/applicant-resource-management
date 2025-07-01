@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import kr.or.ddit.mapper.MemberMapper;
-import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.ExMemberVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +43,7 @@ public class CustomOidcUserService extends OidcUserService{
 		
 		String username =  oidcUser.getName();
 		
- 		MemberVO realUser = mapper.selectMemberByMail( oidcUser.getEmail());
+ 		ExMemberVO realUser = mapper.selectMemberByMail( oidcUser.getEmail());
  		
 		if(realUser==null) {
 			throw new UserNotRegisteredException(oidcUser, clientRegistration);

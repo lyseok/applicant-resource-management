@@ -13,20 +13,20 @@ import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import kr.or.ddit.security.auth.RealUserWrapper;
-import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.ExMemberVO;
 import lombok.ToString;
 
 /**
  * oauth 로그인 성공 후, OidcUser 와 MemberVO 를 모두 래핑할 객체
  */
 @ToString
-public class OAuth2MemberVOWrapper implements OidcUser, RealUserWrapper<MemberVO>{
+public class OAuth2MemberVOWrapper implements OidcUser, RealUserWrapper<ExMemberVO>{
 	
-	private final MemberVO realUser;
+	private final ExMemberVO realUser;
 	private final OidcUser oidcUser;
 	private final Collection<GrantedAuthority> authorities;
 	
-	public OAuth2MemberVOWrapper(OidcUser oidcUser, MemberVO realUser, String...roles) {
+	public OAuth2MemberVOWrapper(OidcUser oidcUser, ExMemberVO realUser, String...roles) {
 		this.realUser = realUser;
 		this.oidcUser = oidcUser;
 		this.authorities = Stream.concat(
@@ -35,7 +35,7 @@ public class OAuth2MemberVOWrapper implements OidcUser, RealUserWrapper<MemberVO
 	}
 
 	@Override
-	public MemberVO getRealUser() {
+	public ExMemberVO getRealUser() {
 		return realUser;
 	}
 

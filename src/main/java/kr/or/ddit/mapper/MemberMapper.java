@@ -2,7 +2,7 @@ package kr.or.ddit.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.ExMemberVO;
 
 /**
  * 회원 관리를 위한 Persistance Layer 
@@ -27,9 +27,9 @@ public interface MemberMapper {
 	 * @return 조회한 사람의 정보를 가진 VO
 	 * 			해당 회원이 존재하지 않는 경우, null 반환
 	 */
-	public MemberVO selectMember(String username);
+	public ExMemberVO selectMember(String username);
 	
-	public int insertMember(MemberVO member);
+	public int insertMember(ExMemberVO member);
 	
 	
 	/**
@@ -38,11 +38,11 @@ public interface MemberMapper {
 	 * @return
 	 */
 	
-	public MemberVO selectMemberByMail(String mail);
+	public ExMemberVO selectMemberByMail(String mail);
 	
 	
 	
 	public int updateMemDelete(String username);
 	
-	public int updateMember(MemberVO member);
+	public int updateMember(ExMemberVO member);
 }
