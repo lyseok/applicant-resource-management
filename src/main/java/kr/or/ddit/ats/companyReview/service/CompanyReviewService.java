@@ -1,5 +1,9 @@
 package kr.or.ddit.ats.companyReview.service;
 
-public interface CompanyReviewService {
+import java.util.List;
 
+import kr.or.ddit.vo.common.CompanyVO;
+
+public interface CompanyReviewService {
+	public List<CompanyVO> readCompanyList();
 }
