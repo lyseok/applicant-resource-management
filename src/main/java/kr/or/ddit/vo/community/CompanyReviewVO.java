@@ -12,4 +12,5 @@ public class CompanyReviewVO implements Serializable {
 	private String jobCode;
 	private String workingYn;
 	private String companyReviewStatus;
+	private String companyReviewOneLine;
 }
