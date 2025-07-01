@@ -2,21 +2,21 @@ package kr.or.ddit.vo.common;
 
 import java.io.Serializable;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of = "userId")
 public class UsersVO implements Serializable{
+	@NotBlank
 	private String userId;
+	@NotBlank
 	private String userPassword;
 	private String userAuthority;
 	private String userWithdrawDate;
-	private String userStatus;
+	private boolean userStatus;
 	private String userEnabled;
 	
 	private MemberVO member;
-	private CompanyVO company;
-	private SocialMemberVO social;
-	private AdminVO admin;
 }
