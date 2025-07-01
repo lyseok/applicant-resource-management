@@ -86,7 +86,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">
+                            <a href="/hotrecruitment.do">
                                 <span class="txt">인기공고</span>
                             </a>
                         </li>
@@ -97,7 +97,7 @@
                         <span class="txt">신입·인턴</span>
                     </a>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">실시간 공고</span></a></li>
+                        <li><a href="/liverecruitment.do"><span class="txt">실시간 공고</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">신입연봉</span></a></li>
                     </ul>
                 </div>
@@ -171,13 +171,13 @@
                     <ul class="depth2">
                         <li><a href="javascript:void(0)"><span class="txt">지역별</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">직업별</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">인기공고</span></a></li>
+                        <li><a href="/hotrecruitment.do"><span class="txt">인기공고</span></a></li>
                     </ul>
                 </div>
                 <div class="major">
                     <span class="depth1"><span class="txt">신입·인턴</span></span>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">실시간 공고</span></a></li>
+                        <li><a href="/liverecruitment.do"><span class="txt">실시간 공고</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">신입연봉</span></a></li>
                     </ul>
                 </div>

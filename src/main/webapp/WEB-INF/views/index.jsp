@@ -471,7 +471,7 @@
 					</div>
 				</div>
 				<div class="top_poduct">
-					<strong class="tit_cont" id="product_platinum">회원님이 꼭 봐야 할 공고 (플래티넘)</strong>
+					<strong class="tit_cont" id="product_platinum">회원님이 꼭 봐야 할 공고 (Global)</strong>
 					<button class="btn_product" data-banner="platinum" aria-label="플래티넘 상품 안내" aria-haspopup="true" aria-expanded="false">
 						<span class="track_event" data-track_event="main|Ads_click_guide|platinum|layer_click">
 							<span>아이콘 영역</span>
@@ -479,22 +479,22 @@
 						</span>
 					</button>
 				</div>
-				
+				<!-- 철민 -->
 				<div id="MainSuper">
 				<!-- 회원님이 꼭 봐야 할 공고 (플래티넘) -->
 					<ul class="goodsBox observe-job">
-					  <li class="first superTop uid_coupangcls" data-imid="136833997">
-					    <a href="/job/Detail?adid=136833997&amp;productcd=45&amp;listmenucd=MAIN" class="goodsBox-info info">
+					  <li class="first superTop uid_coupangcls" >
+					    <a href="/sample00.do" class="goodsBox-info info">
 					      <span class="logo">
 					        <img src="//image-logo.alba.kr/data_image2/logo/202011/13/2020111317515425270_0_B1.png"
 					             alt="쿠팡로지스틱스서비스(유)로고">
 					      </span>
 					      <span class="company">
 					        <span class="B_MyAd_coupangcls"></span>
-					        쿠팡로지스틱스서비스(유)
+					        테스트용(기업명)
 					      </span>
 					      <span class="title">
-					        <span>채용공고 타이틀이 들어갑니다. 글자수 제한은 40자로 합니다.</span>
+					        <span>테스트용 샘플입니다.</span>
 					      </span>
 					      <span class="wrap">
 					      	<span class="badge">
@@ -510,28 +510,33 @@
 					       onclick="viewSummary('8', '136833997', event);return false;">요약보기</a>
 					  </li>
 					
+					
+					
+					
+					
+					
 					  <li class="superpower" data-imid="132024817">
-					    <a href="/job/Detail?adid=132024817&amp;productcd=66&amp;listmenucd=MAIN" class="goodsBox-info info">
+					    <a href="/sample01.do" class="goodsBox-info info">
 					      <span class="logo">
-					        <img src="//image-logo.alba.kr/data_image2/logo/202011/13/2020111317515425270_0_B1.png"
+					        <img src="https://developer.apple.com/news/images/og/apple-pay-og.jpg"
 					             alt="쿠팡로지스틱스서비스(유)로고">
 					      </span>
 					      <span class="company">
 					        <span class="B_MyAd_coupangcls"></span>
-					        쿠팡로지스틱스서비스(유)
+					        애플(기업명 && 모집부문)
 					      </span>
 					      <span class="title">
-					        <span>채용공고 타이틀이 들어갑니다. 글자수 제한은 40자로 합니다.</span>
+					        <span>아이폰</span>
 					      </span>
 					      <span class="wrap">
 					      	<span class="badge">
 					        	<svg><use xlink:href="#job-tag-invest"></use></svg>
-					        	<span>쿠팡 계열사</span>
+					        	<span>계열사</span>
 					        </span>
 					        <span class="date">D-6</span>
 					      </span>
 					      <span class="ani">
-					        <img src="//image.alba.kr/e/goods/202403/superpower_1.png"
+					        <img src="https://cdn.eyesmag.com/content/uploads/posts/2025/05/08/3-b0e8ade5-6137-4ba6-b60f-530fc413b6d9.jpg"
 					             class="superpower_1" alt="배경이미지">
 					      </span>
 					    </a>
@@ -542,27 +547,27 @@
 					  </li>
 					
 					  <li class="superpower" data-imid="132803367">
-					    <a href="/job/Detail?adid=132803367&amp;productcd=66&amp;listmenucd=MAIN" class="goodsBox-info info">
+					    <a href="/sample02.do" class="goodsBox-info info">
 					      <span class="logo">
-					        <img src="//image-logo.alba.kr/data_image2/logo/202011/13/2020111317515425270_0_B1.png"
-					             alt="쿠팡로지스틱스서비스(유)로고">
+					        <img src="https://i.namu.wiki/i/hdgdTUe_ZUo8NY_4SaSD2UPYHKj-tnv0h9ppGhBVv_o7wBUGKVEM6I2M-D22lwGSeni9zFflHltXSF-ddhubQA.webp"
+					             alt="">
 					      </span>
 					      <span class="company">
 					        <span class="B_MyAd_coupangcls"></span>
-					        쿠팡로지스틱스서비스(유)
+					        파트너사
 					      </span>
 					      <span class="title">
-					        <span>채용공고 타이틀이 들어갑니다. 글자수 제한은 40자로 합니다.</span>
+					        <span>여기</span>
 					      </span>
 					      <span class="wrap">
 					      	<span class="badge">
 					        	<svg><use xlink:href="#job-tag-invest"></use></svg>
-					        	<span>쿠팡 계열사</span>
+					        	<span>마블 계열사</span>
 					        </span>
 					        <span class="date">D-6</span>
 					      </span>
 					      <span class="ani">
-					        <img src="//image.alba.kr/e/goods/202403/superpower_2.png"
+					        <img src="https://nimage.g-enews.com/phpwas/restmb_allidxmake.php?idx=5&simg=20200805001333037299ecba8d8b8617764132.jpg"
 					             class="superpower_2" alt="배경이미지">
 					      </span>
 					    </a>
