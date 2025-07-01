@@ -1,0 +1,22 @@
+package kr.or.ddit.vo.project;
+
+import java.io.Serializable;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(of="prjAnncNo")
+public class PrjAnncBbsVO implements Serializable {
+	private String prjAnncNo;
+	private String userId;
+	private String prjEmpTitle;
+	private String prjTopic;
+	private String anncCreateDate;
+	private String prjStartPlanDate;
+	private String prjEndPlanDate;
+	private Integer prjAnncHit;
+	private String prjAnncContent;
+	private String anncEndPlanDate;
+	private String anncEndYn;
+}
