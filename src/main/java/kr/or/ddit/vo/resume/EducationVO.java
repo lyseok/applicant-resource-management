@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "educationNo")
+@EqualsAndHashCode(of = {"educationNo", "resumeNo"})
 public class EducationVO implements Serializable{
 
 	private String educationNo;
