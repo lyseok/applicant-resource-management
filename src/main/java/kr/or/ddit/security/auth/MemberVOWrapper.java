@@ -7,12 +7,12 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.ExMemberVO;
 
-public class MemberVOWrapper extends User  implements RealUserWrapper<MemberVO> {
+public class MemberVOWrapper extends User  implements RealUserWrapper<ExMemberVO> {
 
-	private final MemberVO realUser;
-	public MemberVOWrapper(MemberVO realUser) {
+	private final ExMemberVO realUser;
+	public MemberVOWrapper(ExMemberVO realUser) {
 		super(
 			realUser.getMemId()
 			, realUser.getMemPassword()
@@ -26,7 +26,7 @@ public class MemberVOWrapper extends User  implements RealUserWrapper<MemberVO> 
 	}
 
 	@Override
-	public MemberVO getRealUser() {
+	public ExMemberVO getRealUser() {
 		return realUser;
 	}
 

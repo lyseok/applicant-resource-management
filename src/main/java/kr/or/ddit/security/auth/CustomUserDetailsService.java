@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import kr.or.ddit.mapper.MemberMapper;
-import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.ExMemberVO;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -15,7 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		MemberVO realUser = mapper.selectMember(username);
+		ExMemberVO realUser = mapper.selectMember(username);
 		
 		if(realUser==null) {
 			throw new UsernameNotFoundException(String.format("%s 회원 없음", username));

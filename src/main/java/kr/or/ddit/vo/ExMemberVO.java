@@ -13,7 +13,7 @@ import lombok.ToString;
 
 @Data 
 @EqualsAndHashCode(of = "memId") // 데이터베이스 설계 참고
-public class MemberVO implements Serializable{
+public class ExMemberVO implements Serializable{
 	@NotBlank
 	private String memId;
 	@NotBlank
