@@ -1,4 +1,4 @@
-package kr.or.ddit.ats.companyReview.service;
+ package kr.or.ddit.ats.companyReview.service;
 
 import java.util.List;
 
