@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmploymentTestServiceImpl implements EmploymentTestService {
-
-	
 	private final EmploymentTestMapper mapper;
 	
 	@Override
