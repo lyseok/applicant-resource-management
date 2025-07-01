@@ -16,3 +16,7 @@
     <link rel="stylesheet" href="/dist/dashboard/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <link rel="stylesheet" href="/dist/dashboard/assets/vendor/libs/apex-charts/apex-charts.css" />
+
+    
+    <!-- ICON -->
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
