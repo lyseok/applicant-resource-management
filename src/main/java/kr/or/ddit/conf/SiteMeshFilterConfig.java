@@ -23,7 +23,7 @@ public class SiteMeshFilterConfig {
                     .addExcludedPath("/rest/**")                 // REST API 요청 경로 필터 제외
                     .addExcludedPath("*.html")                   // 정적 HTML 파일 필터 제외
                     .addDecoratorPath("/company/**", "companyDashDecorators.jsp") // 관리 페이지에 적용할 데코레이터 지정
-                    .addDecoratorPath("/admin/**", "dashDecorators.jsp") // 관리 페이지에 적용할 데코레이터 지정
+                    .addDecoratorPath("/admin/**", "adminDashDecorators.jsp") // 관리 페이지에 적용할 데코레이터 지정
                     .addDecoratorPath("/**", "mainDecorators.jsp")      // 나머지 모든 요청에 적용할 메인 데코레이터 지정
             )
         );
