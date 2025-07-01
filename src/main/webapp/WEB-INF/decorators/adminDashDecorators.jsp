@@ -14,7 +14,7 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Layout container -->
-  		<%@ include file="/WEB-INF/fragments/sideMenu.jsp" %>
+  		<%@ include file="/WEB-INF/fragments/adminSideMenu.jsp" %>
         <div class="layout-page">
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
