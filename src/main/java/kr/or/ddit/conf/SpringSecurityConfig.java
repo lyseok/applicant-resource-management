@@ -160,7 +160,7 @@ public class SpringSecurityConfig {
 					.requestMatchers(new AntPathRequestMatcher("/prod/*Insert*")).hasRole("ADMIN")
 					.requestMatchers(new AntPathRequestMatcher("/prod/*Update*")).hasRole("ADMIN")
 					.requestMatchers(new AntPathRequestMatcher("/buyer/**")).hasRole("ADMIN")
-					.anyRequest().authenticated()
+					.anyRequest().permitAll()
 //					.requestMatchers("/**").permitAll()
 			)
 			.sessionManagement(session->
