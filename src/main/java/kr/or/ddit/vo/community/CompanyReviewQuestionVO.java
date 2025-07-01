@@ -11,5 +11,5 @@ public class CompanyReviewQuestionVO implements Serializable {
 	private String companyReviewQuestionNo;
 	private String companyReviewNo;
 	private String reviewSubjectCode;
-	private String companyReviewContent;
+	private Integer companyReviewScore;
 }

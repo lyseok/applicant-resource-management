@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.CompanyReviewMapper">
+	<select id="selectCompanyList">
+		SELECT 
+			USER_ID, 
+			COM_NAME, 
+			COM_INFO, 
+			COM_NUM, 
+			COM_EMAIL, 
+			COM_URL, 
+			COM_CREATE_YEAR, 
+			COM_MEM, 
+			COM_LOGO,
+			COM_PAYMENT, 
+			INDUSTRY_TYPE
+		FROM COMPANY
+	</select>
+	
+	
+	<select id="selectCompanyReviewQuestionList">
+		SELECT
+		  cq.COMPANY_REVIEW_CONTENT
+		FROM COMPANY_REVIEW cr
+		  JOIN COMPANY_REVIEW_QUESTION cq
+		    ON cr.COMPANY_REVIEW_NO = cq.COMPANY_REVIEW_NO
+		WHERE
+		  cr.USER_ID = #{userId}
+		ORDER BY
+		  cq.REVIEW_SUBJECT_CODE
+	</select>
+	
+
+	
+	
+	
+</mapper>
