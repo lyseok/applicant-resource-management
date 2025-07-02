@@ -25,11 +25,9 @@ class IntroductionMapperTest {
 
 	@Test
 	void testSelectIntroductionDetail() {
-		IntroductionVO vo = new IntroductionVO();
-		vo.setUserId("USR001");
-		vo.setIntroductionNo("INT0000004");
+		String no = "INT0000004";
 		
-        IntroductionVO resultVo = mapper.selectIntroductionDetail(vo);
+        IntroductionVO resultVo = mapper.selectIntroductionDetail(no);
 		
 		log.info("{}", resultVo);		
 	}
@@ -54,7 +52,7 @@ class IntroductionMapperTest {
 		vo.setIntroductionContent("이렇게 오래 걸리는게 정상임?");
         mapper.updateIntroduction(vo);
 
-        IntroductionVO result1 = mapper.selectIntroductionDetail(vo);
+        IntroductionVO result1 = mapper.selectIntroductionDetail(vo.getIntroductionNo());
 		log.info("{}", result1);		
 	}
 
@@ -66,7 +64,7 @@ class IntroductionMapperTest {
 		
 		mapper.deleteIntroduction(vo);
 		
-    	assertNull(mapper.selectIntroductionDetail(vo));
+    	assertNull(mapper.selectIntroductionDetail("INT0000005"));
 	}
 
 }

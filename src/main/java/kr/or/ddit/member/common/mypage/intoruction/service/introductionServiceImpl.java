@@ -12,10 +12,32 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class introductionServiceImpl implements introductionService {
 	private final IntroductionMapper mapper;
-	
+
+	// 자소서를 작성한 사람만 cud 할 수 있어야 함
 	@Override
 	public List<IntroductionVO> readIntroductionList(String userId) {
 		return mapper.selectIntroductionList(userId);
+	}
+
+	@Override
+	public IntroductionVO readIntroductionDetail(String no) {
+		return mapper.selectIntroductionDetail(no);
+	}
+
+	@Override
+	public void createIntroduction(IntroductionVO vo) {
+		mapper.insertIntroduction(vo);		
+	}
+
+	@Override
+	public void editIntroduction(IntroductionVO vo) {
+		mapper.updateIntroduction(vo);		
+	}
+
+	@Override
+	public void removeIntroduction(IntroductionVO vo) {
+		mapper.deleteIntroduction(vo);
+		
 	}
 
 }

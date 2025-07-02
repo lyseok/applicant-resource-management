@@ -11,7 +11,7 @@ public interface IntroductionMapper {
 	// 리스트 조회
 	public List<IntroductionVO> selectIntroductionList(String userId);
 	// 단건 조회
-	public IntroductionVO selectIntroductionDetail(IntroductionVO introductionVO);
+	public IntroductionVO selectIntroductionDetail(String no);
 	// 등록 조회
 	public int insertIntroduction(IntroductionVO introductionVO);
 	// 수정 조회

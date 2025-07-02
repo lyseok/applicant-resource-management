@@ -37,7 +37,6 @@ class SubIntroductionMapperTest {
 	@Test
 	void testInsertSubIntroduction() {
 		SubIntroductionVO vo = new SubIntroductionVO();
-		vo.setSubIntroductionNo("SUBINT0005");
 		vo.setResumeNo("RSM001");
 		vo.setIntroductionNo("INT0000005");
 		mapper.insertSubIntroduction(vo);
