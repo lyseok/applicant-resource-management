@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.ddit.mapper.common.MemberMapper">
+<mapper namespace="kr.or.ddit.mapper.common.MemberMapper2">
 	<insert id="insertMember">
 		INSERT INTO MEMBER(
 			USER_ID
@@ -12,14 +12,14 @@
 			, MEM_ADD2
 			, MEM_IMG
 		) VALUES(
-			#{USER_ID}
-			, #{MEM_NAME}
-			, #{MEM_EMAIL}
-		 	, #{MEM_BIR}
-		 	, #{MEM_TEL}
-		 	, #{MEM_ADD1}
-		 	, #{MEM_ADD2}
-		 	, #{MEM_IMG}
+			#{userId}
+			, #{memName}
+			, #{memEmail}
+		 	, #{memBir}
+		 	, #{memTel}
+		 	, #{memAdd1}
+		 	, #{memAdd2}
+		 	, #{memImg}
 		)
 	</insert>
 </mapper>
