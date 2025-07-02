@@ -1,8 +1,8 @@
 package kr.or.ddit.member.common;
 
-public class Ex11 {
+public class Ex007 {
 
-	public Ex11() {
+	public Ex007() {
 		// TODO Auto-generated constructor stub
 	}
 

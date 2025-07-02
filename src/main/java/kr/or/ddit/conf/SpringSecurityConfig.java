@@ -28,6 +28,7 @@ import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.or.ddit.mapper.MemberMapper;
+import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.security.auth.CustomUserDetailsService;
 import kr.or.ddit.security.oauth2.CustomOidcUserService;
 import kr.or.ddit.security.oauth2.OAuth2AuthenticationFailureHandler;
@@ -50,7 +51,7 @@ public class SpringSecurityConfig {
    }
    
    @Autowired
-   private MemberMapper mapper;
+   private UserMapper mapper;
    
    /**
     * 일반 form 로그인 사용자의 정보 조회
