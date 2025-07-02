@@ -14,19 +14,20 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import kr.or.ddit.security.auth.RealUserWrapper;
 import kr.or.ddit.vo.ExMemberVO;
+import kr.or.ddit.vo.common.UsersVO;
 import lombok.ToString;
 
 /**
  * oauth 로그인 성공 후, OidcUser 와 MemberVO 를 모두 래핑할 객체
  */
 @ToString
-public class OAuth2MemberVOWrapper implements OidcUser, RealUserWrapper<ExMemberVO>{
+public class OAuth2MemberVOWrapper implements OidcUser, RealUserWrapper<UsersVO>{
 	
-	private final ExMemberVO realUser;
+	private final UsersVO realUser;
 	private final OidcUser oidcUser;
 	private final Collection<GrantedAuthority> authorities;
 	
-	public OAuth2MemberVOWrapper(OidcUser oidcUser, ExMemberVO realUser, String...roles) {
+	public OAuth2MemberVOWrapper(OidcUser oidcUser, UsersVO realUser, String...roles) {
 		this.realUser = realUser;
 		this.oidcUser = oidcUser;
 		this.authorities = Stream.concat(
@@ -35,7 +36,7 @@ public class OAuth2MemberVOWrapper implements OidcUser, RealUserWrapper<ExMember
 	}
 
 	@Override
-	public ExMemberVO getRealUser() {
+	public UsersVO getRealUser() {
 		return realUser;
 	}
 
@@ -47,7 +48,7 @@ public class OAuth2MemberVOWrapper implements OidcUser, RealUserWrapper<ExMember
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<? extends GrantedAuthority> authorities1 = 
-					AuthorityUtils.createAuthorityList(realUser.getMemRole());
+					AuthorityUtils.createAuthorityList(realUser.getUserAuthority());
 		Collection<? extends GrantedAuthority> authorities2 = oidcUser.getAuthorities();
 		
 		return Stream.concat(authorities1.stream(), authorities2.stream()).collect(Collectors.toSet());

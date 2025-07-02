@@ -7,5 +7,7 @@ import kr.or.ddit.vo.common.UsersVO;
 @Mapper
 public interface UserMapper {
 	public int insertUser(UsersVO user);
-	public int existsById(String id);
+	public UsersVO selectUser(String userId);
+	public int existsById(String userId);
+	public UsersVO selectMemberByMail(String email);
 }

@@ -8,25 +8,26 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import kr.or.ddit.vo.ExMemberVO;
+import kr.or.ddit.vo.common.UsersVO;
 
-public class MemberVOWrapper extends User  implements RealUserWrapper<ExMemberVO> {
+public class UsersVOWrapper extends User  implements RealUserWrapper<UsersVO> {
 
-	private final ExMemberVO realUser;
-	public MemberVOWrapper(ExMemberVO realUser) {
+	private final UsersVO realUser;
+	public UsersVOWrapper(UsersVO realUser) {
 		super(
-			realUser.getMemId()
-			, realUser.getMemPassword()
-			, ! realUser.isMemDelete()
+			realUser.getUserId()
+			, realUser.getUserPassword()
+			, ! realUser.isUserStatus()
 			, true
 			, true
 			, true
-			, AuthorityUtils.createAuthorityList(realUser.getMemRole())
+			, AuthorityUtils.createAuthorityList(realUser.getUserAuthority())
 		);
 		this.realUser = realUser;
 	}
 
 	@Override
-	public ExMemberVO getRealUser() {
+	public UsersVO getRealUser() {
 		return realUser;
 	}
 
