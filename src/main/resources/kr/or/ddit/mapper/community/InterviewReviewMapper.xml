@@ -3,105 +3,102 @@
 <mapper namespace="kr.or.ddit.mapper.community.InterviewReviewMapper">
 
 
-	<select id="selectInterviewList">
+	<select id="selectInterviewList" resultType="kr.or.ddit.vo.recruitment.InterviewVO">
 		
 	  SELECT
 	      INTERVIEW_NO,
 	      PROCESS_NO,
 	      USER_ID,
-	      TO_CHAR(INTERVIEW_DATE, 'YYYY-MM-DD HH24:MI:SS') AS INTERVIEW_DATE,
+	      INTERVIEW_DATE,
 	      INTERVIEW_LOCATION,
 	      INTERVIEW_TYPE,
 	      INTERVIEW_PASS_SCORE
 	    FROM INTERVIEW
 	    WHERE USER_ID = #{userId}
 	</select>
-
-
-
-	<insert id="insertInterviewReview"
-	          parameterType="kr.or.ddit.vo.community.InterviewReviewVO">
-	   <!--  <selectKey keyProperty="interviewReviewNo"
-	               resultType="String"
-	               order="BEFORE">
-	      SELECT 'RV'
-	           || LPAD(SEQ_INTERVIEW_REVIEW.NEXTVAL, 8, '0')
-	        FROM DUAL
-	    </selectKey> -->
 	
-	    INSERT INTO INTERVIEW_REVIEW (
+	<select id="selectInterviewReview" resultType="kr.or.ddit.vo.community.InterviewReviewVO">
+		 SELECT
 	      INTERVIEW_REVIEW_NO,
 	      INTERVIEW_NO,
 	      COM_ID,
 	      JOB_CODE,
 	      INTERVIEW_DATE,
-	      INTERVIEW_REVIEW_DATE
-	    ) VALUES (
-	      #{interviewReviewNo},
+	      TO_CHAR(INTERVIEW_REVIEW_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+	      USER_ID
+	    FROM INTERVIEW_REVIEW
+	    WHERE INTERVIEW_REVIEW_NO = #{interviewReviewNo}
+	</select>
+
+
+	<select id="selectInterviewReviewListUser" resultType="kr.or.ddit.vo.community.InterviewReviewVO">
+		 SELECT
+	      INTERVIEW_REVIEW_NO,
+	      INTERVIEW_NO,
+	      COM_ID,
+	      JOB_CODE,
+	      INTERVIEW_DATE,
+	      TO_CHAR(INTERVIEW_REVIEW_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+	      USER_ID
+	    FROM  INTERVIEW_REVIEW
+	    WHERE USER_ID = #{userId}
+	    ORDER BY INTERVIEW_REVIEW_DATE DESC
+	</select>
+	 
+	 <select id="selectInterviewReviewListCom" resultType="kr.or.ddit.vo.community.InterviewReviewVO">
+	 	 SELECT
+		      INTERVIEW_REVIEW_NO,
+		      INTERVIEW_NO,
+		      COM_ID,
+		      JOB_CODE,
+		      INTERVIEW_DATE,
+		      TO_CHAR(INTERVIEW_REVIEW_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+		      USER_ID
+	    FROM INTERVIEW_REVIEW
+	    WHERE COM_ID = #{comId}
+	    ORDER BY INTERVIEW_REVIEW_DATE DESC
+	 </select>
+	 
+	 
+	 <insert id="insertInterviewReview">
+	 		 <!-- 	 <selectKey keyProperty="interviewReviewNo"
+               resultType="string"
+               order="BEFORE">
+      SELECT INTERVIEW_REVIEW_SEQ.NEXTVAL
+      FROM DUAL
+    </selectKey> -->
+	   INSERT INTO INTERVIEW_REVIEW(
+	   		INTERVIEW_REVIEW_NO,
+	        INTERVIEW_NO,
+	        COM_ID,
+	        JOB_CODE,
+	        INTERVIEW_DATE,
+	        INTERVIEW_REVIEW_DATE,
+	        USER_ID
+	   )VALUES(
+	   	  #{interviewReviewNo},
 	      #{interviewNo},
 	      #{comId},
 	      #{jobCode},
 	      #{interviewDate},
-	      SYSDATE
-	    )
-	  </insert>
-	  
-	  
-	  
-	  <insert id="insertInterviewInformation">
-	 <!--  	  <selectKey keyProperty="interviewInformationNo"
-               resultType="String"
-               order="BEFORE">
-	      SELECT 'IF'
-	           || LPAD(SEQ_INTERVIEW_INFO.NEXTVAL, 6, '0')
-	        FROM DUAL
-	    </selectKey> -->
-	
-	    INSERT INTO INTERVIEW_INFORMATION (
-	      INTERVIEW_INFORMATION_NO,
-	      INTERVIEWREVIEW_NO,
-	      EVALUATION,
-	      INTERVIEW_LEVEL,
-	      INTERVIEW_TYPE,
-	      INTERVIEW_CONTENT
-	    ) VALUES (
-	      #{interviewInformationNo},
-	      #{interviewReviewNo},      
-	      #{evaluation},
-	      #{interviewLevel},
-	      #{interviewType},
-	      #{interviewContent}
-	    )
-	  </insert>
-	  
-	  <insert id="insertPassInformation">
-		  	<!-- <selectKey keyProperty="passInformationNo"
-	               resultType="String"
-	               order="BEFORE">
-		      SELECT 'PF'
-		           || LPAD(SEQ_PASS_INFO.NEXTVAL, 6, '0')
-		        FROM DUAL
-		    </selectKey> -->
-		
-		    INSERT INTO PASS_INFORMATION (
-		      PASS_INFORMATION_NO,
-		      INTERVIEW_REVIEW_NO,
-		      INTERVIEW_QUESTION,
-		      TIP,
-		      INTERVIEW_PASS_YN
-		    ) VALUES (
-		      #{passInformationNo},
-		      #{interviewReviewNo},       
-		      #{interviewQuestion},
-		      #{tip},
-		      #{interviewPassYn}
-		    )
+	      SYSDATE,               
+	      #{userId})
 	 </insert>
 	 
 	 
+	 <update id="updateDeleteStatusMyInterviewReview">
+			UPDATE INTERVIEWREVIEW 
+				SET
+				INTERVIEW_NO = #{interviewNo},
+      			COM_ID = #{comId},
+     			JOB_CODE = #{jobCode}
+   				USER_ID = #{userId}
+   			 WHERE INTERVIEW_REVIEW_NO = #{interviewReviewNo}
+	 </update>
 	 
 	 
 	 <delete id="deleteInterviewReview">
-	 	
+	 	  DELETE FROM INTERVIEW_REVIEW
+    		WHERE INTERVIEW_REVIEW_NO = #{interviewReviewNo}
 	 </delete>
 </mapper>
