@@ -9,6 +9,7 @@
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="/dist/dashboard/assets/js/config.js"></script>
 <script src="/dist/assets/js/plugins/jquery-3.7.1.min.js"></script>
+<script src="/dist/assets/js/plugins/axios.min.js"></script>
 <script src="/dist/dashboard/assets/vendor/libs/popper/popper.js"></script>
 <script src="/dist/dashboard/assets/vendor/js/bootstrap.js"></script>
 <script src="https://unpkg.com/perfect-scrollbar@1.5.8/dist/perfect-scrollbar.min.js"></script>
