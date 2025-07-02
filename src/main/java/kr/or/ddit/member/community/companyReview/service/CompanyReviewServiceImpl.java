@@ -8,6 +8,7 @@ import kr.or.ddit.mapper.community.CompanyReviewMapper;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.community.CompanyReviewQuestionVO;
+import kr.or.ddit.vo.community.CompanyReviewVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,7 +22,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 	}
 
 	@Override
-	public List<CompanyReviewQuestionVO> readCompanyReviewAnswerList(String id) {
+	public List<CompanyReviewVO> readCompanyReviewAnswerList(String id) {
 		return mapper.selectCompanyReviewAnswerList(id);
 	}
 

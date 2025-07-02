@@ -9,7 +9,7 @@
 <body>
 
 <h1>전체 기업 리뷰</h1>
-
+<h1>My 리뷰 </h1>
 
 <hr>
 
@@ -23,7 +23,6 @@
 	            <h5 class="card-title">${company.comName}의 리뷰</h5>
 	            <p class="card-text">${company.comInfo}</p>
 	          </div>
-	          
 	          
 	        </div>
 	      </a>
