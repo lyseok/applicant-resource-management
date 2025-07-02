@@ -27,9 +27,9 @@ import org.springframework.util.AntPathMatcher;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.or.ddit.mapper.MemberMapper;
 import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.security.auth.CustomUserDetailsService;
+import kr.or.ddit.security.jwt.CookieBearerTokenResolver;
 import kr.or.ddit.security.oauth2.CustomOidcUserService;
 import kr.or.ddit.security.oauth2.OAuth2AuthenticationFailureHandler;
 import lombok.Data;
@@ -168,19 +168,21 @@ public class SpringSecurityConfig {
                  .failureHandler(failureHandler())
          )
          .formLogin(login->
-            login
-               .loginPage(loginUrl)
-               .loginProcessingUrl(loginUrl)
-               .failureUrl(loginUrl+"?error")
-               .defaultSuccessUrl("/", false)
-         )
+			login
+				.loginPage(loginUrl)
+//				.loginProcessingUrl(loginUrl)
+//				.failureUrl(loginUrl+"?error")
+//				.defaultSuccessUrl("/", false)
+		)
          .requestCache(requestCache->
             requestCache.requestCache(requestCache())
          )
          .logout(logout->
-            logout
-               .logoutUrl(logoutUrl)
-         );
+			logout
+				.logoutUrl(logoutUrl)
+				.deleteCookies(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
+		 )
+         ;
       
       return http.build();
    }

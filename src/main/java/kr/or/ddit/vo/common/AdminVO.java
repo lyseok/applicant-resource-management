@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "userId")
-public class AdminVO implements Serializable{
-	private String userId;
+@EqualsAndHashCode(callSuper = true) 
+public class AdminVO extends UsersVO implements Serializable{
 	private String isAdmin;
 }

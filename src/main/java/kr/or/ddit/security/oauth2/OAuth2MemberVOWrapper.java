@@ -48,7 +48,7 @@ public class OAuth2MemberVOWrapper implements OidcUser, RealUserWrapper<UsersVO>
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<? extends GrantedAuthority> authorities1 = 
-					AuthorityUtils.createAuthorityList(realUser.getUserAuthority());
+					AuthorityUtils.createAuthorityList(realUser.getUserRole());
 		Collection<? extends GrantedAuthority> authorities2 = oidcUser.getAuthorities();
 		
 		return Stream.concat(authorities1.stream(), authorities2.stream()).collect(Collectors.toSet());
