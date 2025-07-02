@@ -20,7 +20,7 @@ class UserMapperTest {
 	void testInsertUser() {
 		UsersVO user = new UsersVO();
 		String encoded = passwordEncoder.encode("java");
-		user.setUserId("testAdmin");
+		user.setUserId("testCompany");
 		user.setUserPassword(encoded);
 		assertEquals(1, userMapper.insertUser(user));
 	}

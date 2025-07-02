@@ -34,6 +34,8 @@
 <!-- Main JS -->
 <script src="/dist/dashboard/assets/js/main.js"></script>
 
+<script src="/js/fragments/dashCommon.js"></script>
+
 <!-- Page JS -->
 <!-- Place this tag in your head or just before your close body tag, -->
 <script async defer src="https://buttons.github.io/buttons.is"></script>

@@ -174,7 +174,7 @@
        </ul>
      </li>
 	<!-- 여기까지 사이드바 작업하는 곳 -->
-	
+     <span id="logoutBtn">로그아웃</span>
      
    </ul>
  </aside>
