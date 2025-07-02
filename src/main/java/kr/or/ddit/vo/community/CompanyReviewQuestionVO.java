@@ -2,6 +2,7 @@ package kr.or.ddit.vo.community;
 
 import java.io.Serializable;
 
+import kr.or.ddit.vo.common.CmnCodeVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,4 +13,5 @@ public class CompanyReviewQuestionVO implements Serializable {
 	private String companyReviewNo;
 	private String reviewSubjectCode;
 	private Integer companyReviewScore;
+	private CmnCodeVO cmnCode;
 }

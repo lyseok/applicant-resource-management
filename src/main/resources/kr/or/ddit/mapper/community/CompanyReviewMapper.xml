@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.CompanyReviewMapper">
+  
+  <resultMap id="questionMap"
+             type="kr.or.ddit.vo.community.CompanyReviewQuestionVO"
+             autoMapping="true">
+    
+     <association property="cmnCode"
+               javaType="kr.or.ddit.vo.common.CmnCodeVO">
+    <id     property="codeDetailNo" column="CODE_DETAIL_NO"/>
+    <result property="codeName"      column="CODE_NAME"/>
+  </association>
+  </resultMap>
+
+
+  <resultMap id="reviewMap"
+             type="kr.or.ddit.vo.community.CompanyReviewVO"
+             autoMapping="true">
+    <collection property="companyReviewQuestion"
+                ofType="kr.or.ddit.vo.community.CompanyReviewQuestionVO"
+                resultMap="questionMap"/>
+  </resultMap>
+
+
 	<select id="selectCompanyList">
 		SELECT 
 			USER_ID, 
@@ -18,17 +40,27 @@
 	</select>
 	
 	
-	<select id="selectCompanyReviewQuestionList">
-		SELECT
-		  cq.COMPANY_REVIEW_CONTENT
-		FROM COMPANY_REVIEW cr
-		  JOIN COMPANY_REVIEW_QUESTION cq
-		    ON cr.COMPANY_REVIEW_NO = cq.COMPANY_REVIEW_NO
-		WHERE
-		  cr.USER_ID = #{userId}
-		ORDER BY
-		  cq.REVIEW_SUBJECT_CODE
+	<select id="selectCompanyReviewAnswerList"  parameterType="string" resultMap="reviewMap">
+	 SELECT
+      
+      cr.COMPANY_REVIEW_ONE_LINE,
+      crq.REVIEW_SUBJECT_CODE,
+      crq.COMPANY_REVIEW_SCORE,
+      cc.CODE_NAME
+     
+
+    FROM COMPANY_REVIEW cr
+    LEFT JOIN COMPANY_REVIEW_QUESTION crq
+      ON cr.COMPANY_REVIEW_NO = crq.COMPANY_REVIEW_NO
+    LEFT JOIN CMN_CODE cc
+      ON cc.CODE_DETAIL_NO = crq.REVIEW_SUBJECT_CODE
+     AND cc.CODE_GROUP_NO  = 'REVU'
+    WHERE cr.USER_ID = #{userId}
+    ORDER BY cr.COMPANY_REVIEW_NO, cc.SORT_ORDER
+  
 	</select>
+	
+
 	
 
 	
