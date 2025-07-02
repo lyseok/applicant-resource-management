@@ -8,9 +8,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-import kr.or.ddit.mapper.MemberMapper;
 import kr.or.ddit.mapper.common.UserMapper;
-import kr.or.ddit.vo.ExMemberVO;
 import kr.or.ddit.vo.common.UsersVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,5 @@
 package kr.or.ddit.login;
 
-
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -14,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusds.jose.shaded.gson.Gson;
-
 import jakarta.servlet.http.HttpServletResponse;
 import kr.or.ddit.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class RestLoginController {
+	private final AuthenticationManager authenticationManager;
+	private final JwtProvider jwtProvider;
 
 	@PostMapping("/rest/auth")
 	public ResponseEntity<?> authenticate(@RequestBody RestAuthVO auth) {
@@ -31,8 +28,9 @@ public class RestLoginController {
 					.unauthenticated(auth.getUsername(), auth.getPassword());
 		
 		try {
+			Authentication authentication = authenticationManager.authenticate(inputData);
 			
-			String encodedToken = generateToken(inputData);
+			String encodedToken = jwtProvider.authenticationToToken(authentication);
 			
 			return ResponseEntity.ok()
 							.body(Map.of("token", encodedToken));
@@ -50,12 +48,12 @@ public class RestLoginController {
 	 * @param authentication
 	 * @return
 	 */
-	private String generateToken(Authentication authentication) {
-		Map<String,String> claimSet = new HashMap<>();
-		claimSet.put("subject", authentication.getName()); // c001
-		claimSet.put("scope", authentication.getAuthorities()
-									.stream().findFirst().get().getAuthority()); // ROLE_ADMIN
-		String tokenValue = new Gson().toJson(claimSet);
-		return Base64.getEncoder().encodeToString(tokenValue.getBytes());
-	}
+//	private String generateToken(Authentication authentication) {
+//		Map<String,String> claimSet = new HashMap<>();
+//		claimSet.put("subject", authentication.getName()); // c001
+//		claimSet.put("scope", authentication.getAuthorities()
+//									.stream().findFirst().get().getAuthority()); // ROLE_ADMIN
+//		String tokenValue = new Gson().toJson(claimSet);
+//		return Base64.getEncoder().encodeToString(tokenValue.getBytes());
+//	}
 }

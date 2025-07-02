@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of = "userId")
-public class UserRoleVO implements Serializable{
+public class UserAuthorityVO implements Serializable{
 	private String userId;
-	private String userRole;
+	private String userAuthority;
 }

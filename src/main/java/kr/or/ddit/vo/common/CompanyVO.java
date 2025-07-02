@@ -11,9 +11,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of = "userId")
-public class CompanyVO implements Serializable{
-	@NotBlank
-	private String userId;
+public class CompanyVO extends UsersVO implements Serializable{
 	@NotBlank
 	private String comName;
 	private String comInfo;

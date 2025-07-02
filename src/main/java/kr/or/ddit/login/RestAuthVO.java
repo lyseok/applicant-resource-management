@@ -1,6 +1,5 @@
 package kr.or.ddit.login;
 
-
 import java.io.Serializable;
 
 import lombok.Data;

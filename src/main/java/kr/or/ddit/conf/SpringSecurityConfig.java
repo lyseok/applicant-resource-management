@@ -1,6 +1,5 @@
 package kr.or.ddit.conf;
 
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +18,24 @@ import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientServ
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.or.ddit.mapper.MemberMapper;
-import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.security.auth.CustomUserDetailsService;
+import kr.or.ddit.security.jwt.CookieBearerTokenResolver;
 import kr.or.ddit.security.oauth2.CustomOidcUserService;
 import kr.or.ddit.security.oauth2.OAuth2AuthenticationFailureHandler;
 import lombok.Data;
@@ -41,166 +47,203 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
-   private String loginUrl;
-   private String logoutUrl;
-   private String registerUrl;
-   
-   @Bean
-   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-      return configuration.getAuthenticationManager();
-   }
-   
-   @Autowired
-   private UserMapper mapper;
-   
-   /**
-    * 일반 form 로그인 사용자의 정보 조회
-    * @return
-    */
-   @Bean
-   public CustomUserDetailsService userDetailsService() {
-      CustomUserDetailsService service = new CustomUserDetailsService(mapper);
-      return service;
-   }
-   
-   /**
-    * 소셜 로그인 사용자의 정보 조회
-    * @return
-    */
-   @Bean
-   public CustomOidcUserService oidcUserService() {
-      return new CustomOidcUserService(mapper);
-   }
-   
-   /**
-    * 소셜 로그인 실패시, 
-    * 미가입자로 인해 실패라면, 가입 페이지로 리다이렉트
-    * 그냥 인증 실패라면, 로그인 페이지로 리다이렉트
-    * @return
-    */
-   @Bean
-   public OAuth2AuthenticationFailureHandler failureHandler() {
-      OAuth2AuthenticationFailureHandler handler =
-            new OAuth2AuthenticationFailureHandler(registerUrl);
-      handler.setDefaultFailureUrl(loginUrl+"?error");
-      return handler;
-   }
-   
-   @Autowired
-   private DataSource dataSource;
+	private String loginUrl;
+	private String logoutUrl;
+	private String registerUrl;
+	
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+		return configuration.getAuthenticationManager();
+	}
+	
+	@Autowired
+	private MemberMapper mapper;
+	
+	/**
+	 * 일반 form 로그인 사용자의 정보 조회
+	 * @return
+	 */
+	@Bean
+	public CustomUserDetailsService userDetailsService() {
+		CustomUserDetailsService service = new CustomUserDetailsService(mapper);
+		return service;
+	}
+	
+	/**
+	 * 소셜 로그인 사용자의 정보 조회
+	 * @return
+	 */
+	@Bean
+	public CustomOidcUserService oidcUserService() {
+		return new CustomOidcUserService(mapper);
+	}
+	
+	/**
+	 * 소셜 로그인 실패시, 
+	 * 미가입자로 인해 실패라면, 가입 페이지로 리다이렉트
+	 * 그냥 인증 실패라면, 로그인 페이지로 리다이렉트
+	 * @return
+	 */
+	@Bean
+	public OAuth2AuthenticationFailureHandler failureHandler() {
+		OAuth2AuthenticationFailureHandler handler =
+				new OAuth2AuthenticationFailureHandler(registerUrl);
+		handler.setDefaultFailureUrl(loginUrl+"?error");
+		return handler;
+	}
+	
+	@Autowired
+	private DataSource dataSource;
 
-   // spring boot 로 자동 등록되어있는 객체 주입.
-   @Autowired
-   private ClientRegistrationRepository clientRegistrationRepository;
+	// spring boot 로 자동 등록되어있는 객체 주입.
+	@Autowired
+	private ClientRegistrationRepository clientRegistrationRepository;
 
 
-   /**
-    * access token 과 refresh token 을 발급받은 OAuth2AuthorizedClient 객체를 관리하는 객체
-    * memory 나 database 기반으로 토큰 정보를 관리할 수 있음.
-    * spring boot starter 를 사용하는 경우 memory 기반의 관리 객체가 자동 등록됨.
-    * DB 기반으로 관리할 경우, 스키마 필요( classpath:org/springframework/security/oauth2/client/oauth2-client-schema.sql )
-    * @param registrationRepository
-    * @return
-    */
-   @Bean
-   public OAuth2AuthorizedClientService authorizedClientService() {
-      // return new InMemoryOAuth2AuthorizedClientService(registrationRepository);
-      return new JdbcOAuth2AuthorizedClientService(new JdbcTemplate(dataSource), clientRegistrationRepository);
-   }
-   
-   
-   @Bean
-   public PasswordEncoder passwordEncoder() {
-      return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-   }
-   
-   private final String[] WHITE_LIST = new String[] {
-      "/",
-      "/meeting/**",
-      "/ws/**",
-      "/js/**",
-      "/html/**",
-      "/css/**",
-      "/dist/**",
-      "/error/**",
-      "/swagger-ui/**",
-      "/swagger-ui.html",
-      "/v3/api-docs/**",
-      "/v3/api-docs.yaml",
-      "/oauth2/**",
-      "/signUp/**",
-   };    
-   
-   // 세션 동시성 제어를 위한 리스너
-//   @Bean
-//   public HttpSessionEventPublisher sessionEventPublisher() {
-//      return new HttpSessionEventPublisher();
-//   }
-   
-   @Bean
-   @Order(2)
-   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-   
-      http.securityMatcher("/**")
-         .csrf(csrf->csrf.disable())
-         .authorizeHttpRequests(authroize->
-            authroize
-               .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-               .requestMatchers(WHITE_LIST).permitAll()
-               .requestMatchers(loginUrl).permitAll()
-               .requestMatchers(registerUrl).permitAll()
-               .requestMatchers(new AntPathRequestMatcher("/mypage")).authenticated()
-               .requestMatchers(new AntPathRequestMatcher("/prod/*Insert*")).hasRole("ADMIN")
-               .requestMatchers(new AntPathRequestMatcher("/prod/*Update*")).hasRole("ADMIN")
-               .requestMatchers(new AntPathRequestMatcher("/buyer/**")).hasRole("ADMIN")
-               .anyRequest().permitAll()
-//               .requestMatchers("/**").permitAll()
-         )
-         .sessionManagement(session->
-            session
-//                  .sessionFixation(fixation->fixation.newSession()) // 주의! 세션 속성이 유지되지 않음.
-                  .maximumSessions(1)
-                  .maxSessionsPreventsLogin(false)
-                  .expiredUrl(loginUrl+"?expired")
-         )
-         .oauth2Login(oauth2->
-            oauth2.loginPage(loginUrl)
-                 .failureHandler(failureHandler())
-         )
-         .formLogin(login->
-            login
-               .loginPage(loginUrl)
-               .loginProcessingUrl(loginUrl)
-               .failureUrl(loginUrl+"?error")
-               .defaultSuccessUrl("/", false)
-         )
-         .requestCache(requestCache->
-            requestCache.requestCache(requestCache())
-         )
-         .logout(logout->
-            logout
-               .logoutUrl(logoutUrl)
-         );
-      
-      return http.build();
-   }
-   
-   @Bean
-   public AntPathMatcher antPathMatcher() {
-      return new AntPathMatcher();
-   }
-   
-   @Bean
-   public RequestCache requestCache() {
-      HttpSessionRequestCache cache = 
-            new HttpSessionRequestCache() {
-         @Override
-         public void saveRequest(HttpServletRequest request, HttpServletResponse response) {
-            if(!antPathMatcher().match("/.well-known/**", request.getRequestURI())) {
-               super.saveRequest(request, response);
-            }
-         }
-      };
-      return cache;
-   }
+	/**
+	 * access token 과 refresh token 을 발급받은 OAuth2AuthorizedClient 객체를 관리하는 객체
+	 * memory 나 database 기반으로 토큰 정보를 관리할 수 있음.
+	 * spring boot starter 를 사용하는 경우 memory 기반의 관리 객체가 자동 등록됨.
+	 * DB 기반으로 관리할 경우, 스키마 필요( classpath:org/springframework/security/oauth2/client/oauth2-client-schema.sql )
+	 * @param registrationRepository
+	 * @return
+	 */
+	@Bean
+	public OAuth2AuthorizedClientService authorizedClientService() {
+		// return new InMemoryOAuth2AuthorizedClientService(registrationRepository);
+		return new JdbcOAuth2AuthorizedClientService(new JdbcTemplate(dataSource), clientRegistrationRepository);
+	}
+	
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
+	
+	private final String[] WHITE_LIST = new String[] {
+		"/",
+		"/meeting/**",
+		"/ws/**",
+		"/js/**",
+		"/html/**",
+		"/css/**",
+		"/dist/**",
+		"/error/**",
+		"/swagger-ui/**",
+		"/swagger-ui.html",
+		"/v3/api-docs/**",
+		"/v3/api-docs.yaml",
+		"/oauth2/**"
+	}; 	
+	
+	// 세션 동시성 제어를 위한 리스너
+//	@Bean
+//	public HttpSessionEventPublisher sessionEventPublisher() {
+//		return new HttpSessionEventPublisher();
+//	}
+	
+	@Autowired
+	private CorsConfigurationSource authCorsConfigurationSource;
+	
+	@Bean
+	public SecurityContextRepository securityContextRepository() {
+		return new DelegatingSecurityContextRepository(
+			new HttpSessionSecurityContextRepository()
+			, new RequestAttributeSecurityContextRepository()
+		);
+	}
+	
+	@Bean
+	public LogoutHandler logoutHandler() {
+		SecurityContextLogoutHandler handler =  new SecurityContextLogoutHandler();
+		handler.setClearAuthentication(true);
+		handler.setInvalidateHttpSession(true);
+		return handler;		
+	}
+	
+	@Bean
+	@Order(2)
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	
+		http.securityMatcher("/**")
+			.csrf(csrf->csrf.disable())
+			.cors(cors->cors.configurationSource(authCorsConfigurationSource))
+			.authorizeHttpRequests(authroize->
+				authroize
+					.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+					.requestMatchers(WHITE_LIST).permitAll()
+					.requestMatchers(loginUrl).permitAll()
+					.requestMatchers(registerUrl).permitAll()
+					.requestMatchers("/common/auth/**").permitAll()
+					.requestMatchers(new AntPathRequestMatcher("/mypage")).authenticated()
+					.requestMatchers(new AntPathRequestMatcher("/prod/*Insert*")).hasRole("ADMIN")
+					.requestMatchers(new AntPathRequestMatcher("/prod/*Update*")).hasRole("ADMIN")
+					.requestMatchers(new AntPathRequestMatcher("/buyer/**")).hasRole("ADMIN")
+					.anyRequest().authenticated()
+//					.requestMatchers("/**").permitAll()
+			)
+			.sessionManagement(session->
+				session
+//						.sessionFixation(fixation->fixation.newSession()) // 주의! 세션 속성이 유지되지 않음.
+						.maximumSessions(1)
+						.maxSessionsPreventsLogin(false)
+						.expiredUrl(loginUrl+"?expired")
+			)
+			.oauth2Login(oauth2->
+				oauth2.loginPage(loginUrl)
+					  .failureHandler(failureHandler())
+			)
+			.formLogin(login->
+				login
+					.loginPage(loginUrl)
+//					.loginProcessingUrl(loginUrl)
+//					.failureUrl(loginUrl+"?error")
+//					.defaultSuccessUrl("/", false)
+			)
+			.requestCache(requestCache->
+				requestCache.requestCache(requestCache())
+			)
+			.logout(logout->
+				logout
+					.logoutUrl(logoutUrl)
+					.deleteCookies(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
+			)
+			;
+		
+		return http.build();
+	}
+	
+	@Bean
+	public AntPathMatcher antPathMatcher() {
+		return new AntPathMatcher();
+	}
+	
+	@Bean
+	public RequestCache requestCache() {
+		HttpSessionRequestCache cache = 
+				new HttpSessionRequestCache() {
+			@Override
+			public void saveRequest(HttpServletRequest request, HttpServletResponse response) {
+				if(!antPathMatcher().match("/.well-known/**", request.getRequestURI())) {
+					super.saveRequest(request, response);
+				}
+			}
+		};
+		return cache;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

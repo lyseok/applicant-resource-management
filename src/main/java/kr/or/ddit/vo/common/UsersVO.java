@@ -17,6 +17,4 @@ public class UsersVO implements Serializable{
 	private String userWithdrawDate;
 	private boolean userStatus;
 	private String userEnabled;
-	
-	private MemberVO member;
 }
