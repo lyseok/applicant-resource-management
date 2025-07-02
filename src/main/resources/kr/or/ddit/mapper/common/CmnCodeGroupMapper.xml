@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.CmnCodeGroupMapper">
+
+<resultMap type="CmnCodeGroupVO" id="cmnCodeGroupMap" autoMapping="true">
+	<id property="codeGroupNo" column="CODE_GROUP_NO"/>
+	
+	<collection property="cmnCodeList" javaType="list" ofType="CmnCodeVO">
+		<result property="codeDetailNo" column="CODE_DETAIL_NO" />
+		<result property="codeGroupNo" column="CODE_GROUP_NO" />
+		<result property="upperCodeNo" column="UPPER_CODE_NO" />
+		<result property="codeName" column="CODE_NAME" />
+		<result property="sortOrder" column="SORT_ORDER" />
+		<result property="useYn" column="USE_YN" />
+		<result property="crateDate" column="CRATE_DATE" />
+		<result property="updateDate" column="UPDATE_DATE" />
+	</collection>
+</resultMap>
+
+<select id="selectCmnCodeGroupList" resultMap="cmnCodeGroupMap">
+	SELECT A.CODE_GROUP_NO
+	    , A.CODE_GROUP_NAME
+	    , A.DESCRIPTION
+	    , A.USE_YN
+	    , A.CRATE_DATE
+	    , A.UPDATE_DATE
+	    , B.CODE_DETAIL_NO
+	    , B.CODE_GROUP_NO
+	    , B.UPPER_CODE_NO
+	    , B.CODE_NAME
+	    , B.SORT_ORDER
+	    , B.USE_YN
+	    , B.CRATE_DATE
+	    , B.UPDATE_DATE
+	FROM CMN_CODE_GROUP A
+	LEFT OUTER JOIN CMN_CODE B
+	ON A.CODE_GROUP_NO = B.CODE_GROUP_NO
+</select>
+
+</mapper>
