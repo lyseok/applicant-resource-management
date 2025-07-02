@@ -1,4 +1,4 @@
-package kr.or.ddit.mapper.common;
+package kr.or.ddit.mapper.resume;
 
 import java.util.List;
 

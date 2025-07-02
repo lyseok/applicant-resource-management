@@ -1,8 +1,7 @@
-package kr.or.ddit.mapper.common;
+package kr.or.ddit.mapper.resume;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,8 @@ class IntroductionMapperTest {
 	void testInsertIntroduction() {
 		IntroductionVO vo = new IntroductionVO();
 		vo.setUserId("USR001");
-		vo.setIntroductionName("insert 테스트");
-		vo.setIntroductionContent("insert 매퍼 테스트중입니다.");
+		vo.setIntroductionName("제출용 자기소개서 인서트지롱");
+		vo.setIntroductionContent("제출 자소서 test 할거다!");
         int result = mapper.insertIntroduction(vo);
 
 		log.info("{}", result);		
