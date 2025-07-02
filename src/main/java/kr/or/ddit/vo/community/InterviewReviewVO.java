@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of="interviewReviewNo")
 public class InterviewReviewVO implements Serializable {
 	private String interviewReviewNo;
-	private String interviewCode;
+	private String interviewNo; //NO 수정
 	private String comId;
 	private String jobCode;
 	private String interviewDate;

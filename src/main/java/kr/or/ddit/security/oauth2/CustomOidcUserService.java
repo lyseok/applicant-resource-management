@@ -9,7 +9,9 @@ import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import kr.or.ddit.mapper.MemberMapper;
+import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.vo.ExMemberVO;
+import kr.or.ddit.vo.common.UsersVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomOidcUserService extends OidcUserService{
 	
-	private final MemberMapper mapper;
+	private final UserMapper mapper;
 	
 	@Override
 	public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
@@ -43,11 +45,11 @@ public class CustomOidcUserService extends OidcUserService{
 		
 		String username =  oidcUser.getName();
 		
- 		ExMemberVO realUser = mapper.selectMemberByMail( oidcUser.getEmail());
+ 		UsersVO realUser = mapper.selectMemberByMail( oidcUser.getEmail());
  		
 		if(realUser==null) {
 			throw new UserNotRegisteredException(oidcUser, clientRegistration);
-		}else if(realUser.isMemDelete()) {
+		}else if(realUser.isUserStatus()) {
 			throw new OAuth2AuthenticationException(new OAuth2Error("deleted-user"), "이미 탈퇴한 회원입니다.");
 		}
 		
