@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.CompanyMapper">
+	<insert id="insertCompany">
+		INSERT INTO COMPANY (
+		    USER_ID, 
+		    COM_NAME, 
+		    COM_INFO, 
+		    COM_NUM, 
+		    COM_EMAIL, 
+		    COM_URL, 
+		    COM_CREATE_YEAR, 
+		    COM_MEM, 
+		    COM_LOGO, 
+		    COM_PAYMENT, 
+		    INDUSTRY_TYPE)
+		VALUES(
+		    #{userId}, 
+		    #{comName}, 
+		    #{comInfo},
+		    #{comNum}, 
+		    #{comEmail}, 
+		    #{comUrl}, 
+		    #{comCreateYear}, 
+		    #{comMem}, 
+		    #{comLogo}, 
+		    #{comPayment}, 
+		    #{industryType}
+		)
+			
+	</insert>
+	
+	
+	
+</mapper>
