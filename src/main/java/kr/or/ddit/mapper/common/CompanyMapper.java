@@ -2,8 +2,10 @@ package kr.or.ddit.mapper.common;
 
 import java.util.List;
 
-import kr.or.ddit.vo.common.CompanyVO;
+import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.ddit.vo.common.CompanyVO;
+@Mapper
 public interface CompanyMapper {
 	public List<CompanyVO> selectCompanyList();
 	
