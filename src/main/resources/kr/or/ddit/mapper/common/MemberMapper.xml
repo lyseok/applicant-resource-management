@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.ddit.mapper.common.MemberMapper2">
+<mapper namespace="kr.or.ddit.mapper.common.MemberMapper">
+	
+	<select id="selectMemberById" resultType="MemberVO">
+		SELECT
+	      B.USER_ID AS USER_ID
+	      , B.USER_PASSWORD    
+	      , B.USER_ROLE        
+	      , B.USER_WITHDRAW_DATE 
+	      , B.USER_STATUS      
+	      , B.USER_ENABLED     
+	      , A.MEM_NAME         
+	      , A.MEM_EMAIL        
+	      , A.MEM_BIR          
+	      , A.MEM_TEL          
+	      , A.MEM_ADD1         
+	      , A.MEM_ADD2         
+	      , A.MEM_IMG          
+	    FROM MEMBER A
+	    JOIN USERS  B ON A.USER_ID = B.USER_ID
+	    WHERE B.USER_ID = #{userId}
+	</select>
+	
 	<insert id="insertMember">
 		INSERT INTO MEMBER(
 			USER_ID

@@ -19,17 +19,24 @@ import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientServ
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.or.ddit.mapper.MemberMapper;
 import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.security.auth.CustomUserDetailsService;
+import kr.or.ddit.security.jwt.CookieBearerTokenResolver;
 import kr.or.ddit.security.oauth2.CustomOidcUserService;
 import kr.or.ddit.security.oauth2.OAuth2AuthenticationFailureHandler;
 import lombok.Data;
@@ -136,7 +143,25 @@ public class SpringSecurityConfig {
 //   public HttpSessionEventPublisher sessionEventPublisher() {
 //      return new HttpSessionEventPublisher();
 //   }
-   
+	@Autowired
+	private CorsConfigurationSource authCorsConfigurationSource;
+	
+	@Bean
+	public SecurityContextRepository securityContextRepository() {
+		return new DelegatingSecurityContextRepository(
+			new HttpSessionSecurityContextRepository()
+			, new RequestAttributeSecurityContextRepository()
+		);
+	}
+	
+	@Bean
+	public LogoutHandler logoutHandler() {
+		SecurityContextLogoutHandler handler =  new SecurityContextLogoutHandler();
+		handler.setClearAuthentication(true);
+		handler.setInvalidateHttpSession(true);
+		return handler;		
+	}
+	
    @Bean
    @Order(2)
    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -168,19 +193,21 @@ public class SpringSecurityConfig {
                  .failureHandler(failureHandler())
          )
          .formLogin(login->
-            login
-               .loginPage(loginUrl)
-               .loginProcessingUrl(loginUrl)
-               .failureUrl(loginUrl+"?error")
-               .defaultSuccessUrl("/", false)
-         )
+			login
+				.loginPage(loginUrl)
+//				.loginProcessingUrl(loginUrl)
+//				.failureUrl(loginUrl+"?error")
+//				.defaultSuccessUrl("/", false)
+		)
          .requestCache(requestCache->
             requestCache.requestCache(requestCache())
          )
          .logout(logout->
-            logout
-               .logoutUrl(logoutUrl)
-         );
+			logout
+				.logoutUrl(logoutUrl)
+				.deleteCookies(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
+		 )
+         ;
       
       return http.build();
    }

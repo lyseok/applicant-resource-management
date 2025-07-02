@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import kr.or.ddit.vo.common.UsersVO;
 
@@ -13,12 +14,14 @@ class UserMapperTest {
 
 	@Autowired
 	UserMapper userMapper;
-	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	@Test
 	void testInsertUser() {
 		UsersVO user = new UsersVO();
-		user.setUserId("zoo6213");
-		user.setUserPassword("john5214");
+		String encoded = passwordEncoder.encode("java");
+		user.setUserId("testCompany");
+		user.setUserPassword(encoded);
 		assertEquals(1, userMapper.insertUser(user));
 	}
 
