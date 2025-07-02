@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.ProposalMapper">
+
+	<select id="selectProposalList" resultType="kr.or.ddit.vo.recruitment.ProposalVO">
+	SELECT
+      PROPOSAL_CODE,
+      USER_ID,
+      PROPOSAL_NAME,
+      PROPOSAL_CONTENT,
+      RECRUITMENT_NOTICE_NO
+    FROM PROPOSAL
+    WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="selectProposalUser" resultType = "kr.or.ddit.vo.recruitment.ProposalVO">
+		SELECT
+	      PROPOSAL_CODE,
+	      USER_ID,
+	      PROPOSAL_NAME,
+	      PROPOSAL_CONTENT,
+	      RECRUITMENT_NOTICE_NO
+	    FROM PROPOSAL
+	    WHERE RECRUITMENT_NOTICE_NO = #{recruitmentNoticeNo}
+	</select>
+	
+	
+	<select id="selectProposal">
+		SELECT
+		      PROPOSAL_CODE,
+		      USER_ID,
+		      PROPOSAL_NAME,
+		      PROPOSAL_CONTENT,
+		      RECRUITMENT_NOTICE_NO
+		    FROM PROPOSAL
+		    WHERE RECRUITMENT_NOTICE_NO = #{recruitmentNoticeNo}
+	</select>
+	
+	<insert id = "InsertProposal">
+		 INSERT INTO PROPOSAL(
+		 	PROPOSAL_CODE, 
+		 	USER_ID, 
+		 	PROPOSAL_NAME, 
+		 	PROPOSAL_CONTENT, 
+		 	RECRUITMENT_NOTICE_NO
+		 	)
+		 	
+		  VALUES(
+		    #{proposalCode},
+		    #{userId},
+		    #{proposalName},
+		    #{proposalContent},
+		    #{recruitmentNoticeNo}
+		   )
+	</insert>
+	
+	<update id="updateProposal">
+		UPDATE PROPOSAL SET 
+			USER_ID = #{userId}, 
+			PROPOSAL_NAME = #{proposalName}, 
+			PROPOSAL_CONTENT = #{proposalContent}, 
+			RECRUITMENT_NOTICE_NO = #{recruitmentNoticeNo} 
+		WHERE PROPOSAL_CODE = #{proposalCode}
+	
+	</update>
+	
+	
+	
+	<delete id="deleteProposal">
+		DELETE FROM PROPOSAL WHERE PROPOSAL_CODE = #{proposalCode}
+	</delete>
+	
+	
+	
+	
+</mapper>
