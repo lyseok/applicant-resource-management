@@ -7,6 +7,6 @@ import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 @Mapper
 public class HotRecruitment {
 
-//	public RecruitmentNoticeVO selectRecruitment();
+	
 	
 }

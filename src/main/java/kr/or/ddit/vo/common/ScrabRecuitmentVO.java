@@ -9,6 +9,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "userId")
 public class ScrabRecuitmentVO implements Serializable{
 	private String userId;
-	private String employmentId;
+	private String recuitmentId;
 	private String scrabRecuitmentDate;
 }

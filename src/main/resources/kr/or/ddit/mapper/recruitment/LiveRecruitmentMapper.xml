@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.LiveRecruitmentMapper">
+<resultMap type="RecruitmentNoticeVO" id="liveDetailMap" autoMapping="true">
+<id property="recruitmentNo" column="RECRUITMENT_NO"/>
+</resultMap>
+<select id="selectLiveRecruitment" parameterType="RecruitmentNoticeVO">
+	SELECT * 
+	FROM RECRUITMENT_NOTICE
+	ORDER BY RECRUITMENT_STARTDATE DESC
+</select>
+
+<select id="selectliveRecruitmentDetail" resultMap="liveDetailMap">
+	SELECT 
+	RECRUITMENT_NO
+	,USER_ID
+	,JOB_CODE
+	,YEAR_CODE
+	,REC_CONTENT
+	,PREFERENTIAL
+	,CITY_CODE
+	,DISTRICT_CODE
+	,REC_POSITION_NUMBER
+	,RECRUITMENT_CHARGER_TEL
+	,RECRUITMENT_SALARY
+	,WELFARE
+	,RECRUITMENT_DESK
+	,RECRUITMENT_IMG
+	,RECRUITMENT_STARTDATE
+	,RECRUITMENT_RECEIPT_START
+	,RECRUITMENT_FINISH_DATE
+	,RECRUITMENT_TITLE
+	FROM RECRUITMENT_NOTICE
+	WHERE RECRUITMENT_NO = #{recruitmentNo}
+	
+</select>
+
+</mapper>
