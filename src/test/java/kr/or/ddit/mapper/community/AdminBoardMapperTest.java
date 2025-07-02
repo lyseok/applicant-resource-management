@@ -20,9 +20,9 @@ class AdminBoardMapperTest {
 
 	@Test
 	@DisplayName("게시글 단건조회 테스트1")
-//	@Disabled
+	@Disabled
 	void testSelectAdminBoard() {
-		AdminBoardVO board = mapper.selectAdminBoard("aboard01");
+		AdminBoardVO board = mapper.selectAdminBoard("b001");
 
 		log.info("{}", board);
 	}
@@ -39,11 +39,11 @@ class AdminBoardMapperTest {
 
 	@Test
 	@DisplayName("게시글 등록 테스트1")
-	@Disabled
+//	@Disabled
 	void testInsertAdminBoard() {
 		AdminBoardVO board = new AdminBoardVO();
 		
-		board.setBoardNo("aboard01");
+		board.setBoardNo("b001");
 		board.setUserId("admin");
 		board.setBoardTypeCode("BRDD-003");
 		board.setBoardTitle("테스트입니다");
@@ -51,7 +51,7 @@ class AdminBoardMapperTest {
 		board.setBoardContent("테스트 내용입니다");
 		board.setBoardDeleteDate(null);
 		board.setBoardPostHit(3);
-		board.setBoardStatus("등록완료");
+		board.setBoardStatus("R");
 		
 		assertEquals(1, mapper.insertAdminBoard(board));
 	}
@@ -62,7 +62,7 @@ class AdminBoardMapperTest {
 	void testUpdateAdminBoard() {
 		AdminBoardVO board = new AdminBoardVO();
 		
-		board.setBoardNo("aboard01");
+		board.setBoardNo("b001");
 		board.setUserId("admin");
 		board.setBoardTypeCode("BRDD-003");
 		board.setBoardTitle("테스트 수정합니다");
@@ -70,7 +70,7 @@ class AdminBoardMapperTest {
 		board.setBoardContent("수정 내용입니다");
 		board.setBoardDeleteDate(null);
 		board.setBoardPostHit(4);
-		board.setBoardStatus("수정완료");
+		board.setBoardStatus("U");
 		
 		assertEquals(1, mapper.updateAdminBoard(board));
 	}
@@ -79,8 +79,8 @@ class AdminBoardMapperTest {
 	@DisplayName("게시글 삭제 테스트1")
 	@Disabled
 	void testDeleteAdminBoard() {
-		mapper.deleteAdminBoard("aboard01");
-		assertNull(mapper.selectAdminBoard("aboard01"));
+		mapper.deleteAdminBoard("b001");
+		assertNull(mapper.selectAdminBoard("b001"));
 	}
 
 }

@@ -1,90 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.AdminBoardMapper">
+	
+	<!-- <select id="selectAdminById" parameterType="String"
+		resultType="AdminVO">
+		SELECT USER_ID, IS_ADMIN
+		FROM ADMIN
+		WHERE USER_ID = #{userId}
+	</select> -->
 
-		<select id="selectAdminBoard" resultType="AdminBoardVO">
-			SELECT
-				BOARD_NO
-				, USER_ID
-				, BOARD_TYPE_CODE
-				, BOARD_TITLE
-				, BOARD_WRITE_DATE
-				, BOARD_CONTENT
-				, BOARD_DELETE_DATE
-				, BOARD_POST_HIT
-				, BOARD_STATUS
-			FROM
-				ADMIN_BOARD
-			WHERE
-				BOARD_NO = #{boardNo}
-		</select>
 
-		<select id="selectAdminBoardList" resultType="AdminBoardVO">
-			SELECT
-				, BOARD_NO
-				, USER_ID
-				, BOARD_TYPE_CODE
-				, BOARD_TITLE
-				, BOARD_WRITE_DATE
-				, BOARD_CONTENT
-				, BOARD_DELETE_DATE
-				, BOARD_POST_HIT
-				, BOARD_STATUS
-			FROM
-				ADMIN_BOARD
-			WHERE
-				BOARD_TYPE_CODE = #{boardTypeCode}
+	<select id="selectAdminBoard" resultType="AdminBoardVO">
+		SELECT
+			BOARD_NO
+			, USER_ID
+			, BOARD_TYPE_CODE
+			, BOARD_TITLE
+			, BOARD_WRITE_DATE
+			, BOARD_CONTENT
+			, BOARD_DELETE_DATE
+			, BOARD_POST_HIT
+			, BOARD_STATUS
+		FROM
+			ADMIN_BOARD
+		WHERE
+			BOARD_NO = #{boardNo}
+	</select>
+
+	<select id="selectAdminBoardList" resultType="AdminBoardVO">
+		SELECT 
+			BOARD_NO
+			, USER_ID
+			, BOARD_TYPE_CODE
+			, BOARD_TITLE
+			, BOARD_WRITE_DATE
+			, BOARD_CONTENT
+			, BOARD_DELETE_DATE
+			, BOARD_POST_HIT
+			, BOARD_STATUS
+		FROM ADMIN_BOARD
+		
+		WHERE
+			BOARD_TYPE_CODE = #{boardTypeCode}
 			AND
-				BOARD_NO = #{boardNo}
-		</select>
+			BOARD_STATUS != 'D'
+	</select>
 
-		<insert id="insertAdminBoard" parameterType="AdminBoardVO">
-			INSERT INTO ADMIN_BOARD (
-				, BOARD_NO
-				, USER_ID
-				, BOARD_TYPE_CODE
-				, BOARD_TITLE
-				, BOARD_WRITE_DATE
-				, BOARD_CONTENT
-				, BOARD_DELETE_DATE
-				, BOARD_POST_HIT
-				, BOARD_STATUS
-			) VALUES (
-				, #{boardNo}
-				, #{userId}
-				, #{boardTypeCode}
-				, #{boardTitle}
-				, #{boardWriteDate}
-				, #{boardContent}
-				, #{boardDeleteDate}
-				, #{boardPostHit}
-				, #{boardStatus}
-			)
-		</insert>
+	<!-- <insert id="insertAdminBoard"  parameterType="map">
+		INSERT INTO ADMIN_BOARD (
+		BOARD_NO,
+		USER_ID,
+		BOARD_TYPE_CODE,
+		BOARD_TITLE,
+		BOARD_CONTENT
+		<if test="isAdmin">
+			, BOARD_WRITE_DATE
+			, BOARD_DELETE_DATE
+			, BOARD_POST_HIT
+			, BOARD_STATUS
+		</if>
+		) VALUES (
+		#{boardNo},
+		#{userId},
+		#{boardTypeCode},
+		#{boardTitle},
+		#{boardContent}
+		<if test="isAdmin">
+			, #{boardWriteDate}
+			, #{boardDeleteDate}
+			, #{boardPostHit}
+			, #{boardStatus}
+		</if>
+		)
+	</insert> -->
 
-		<update id="updateAdminBoard">
-			UPDATE ADMIN_BOARD
-			SET
-				, BOARD_NO = #{boardNo}
-				, USER_ID = #{userId}
-				, BOARD_TYPE_CODE = #{boardTypeCode}
-				, BOARD_TITLE = #{boardTitle}
-				, BOARD_WRITE_DATE = #{boardWriteDate}
-				, BOARD_CONTENT = #{boardContent}
-				, BOARD_DELETE_DATE = #{boardDeleteDate}
-				, BOARD_POST_HIT = #{boardPostHit}
-				, BOARD_STATUS = #{boardStatus}
-			WHERE
-				BOARD_TYPE_CODE = #{boardTypeCode}
-			AND
-				BOARD_NO = #{boardNo}
-		</update>
 
-		<delete id="deleteAdminBoard">
-			DELETE FROM ADMIN_BOARD
-			WHERE
-				BOARD_TYPE_CODE = #{boardTypeCode}
-			AND
-				BOARD_NO = #{boardNo}
-		</delete>
+	<insert id="insertAdminBoard" parameterType="AdminBoardVO">
+		INSERT INTO	ADMIN_BOARD (
+			BOARD_NO
+			, USER_ID
+			, BOARD_TYPE_CODE
+			, BOARD_TITLE
+			, BOARD_WRITE_DATE
+			, BOARD_CONTENT
+			, BOARD_DELETE_DATE
+			, BOARD_POST_HIT
+			, BOARD_STATUS
+		) VALUES (
+			#{boardNo}
+			, #{userId}
+			, #{boardTypeCode}
+			, #{boardTitle}
+			, #{boardWriteDate}
+			, #{boardContent}
+			, #{boardDeleteDate}
+			, #{boardPostHit}
+			, #{boardStatus}
+		)
+	</insert>
+
+	<!-- <update id="updateAdminBoard">
+		UPDATE ADMIN_BOARD
+		SET
+		BOARD_TITLE = #{boardTitle},
+		BOARD_CONTENT = #{boardContent}
+		<if test="isAdmin">
+			, BOARD_TYPE_CODE = #{boardTypeCode}
+			, BOARD_WRITE_DATE = #{boardWriteDate}
+			, BOARD_DELETE_DATE = #{boardDeleteDate}
+			, BOARD_POST_HIT = #{boardPostHit}
+			, BOARD_STATUS = #{boardStatus}
+		</if>
+		WHERE BOARD_NO = #{boardNo}
+	</update> -->
+
+	<update id="updateAdminBoard">
+		UPDATE ADMIN_BOARD
+		SET
+			, USER_ID = #{userId}
+			, BOARD_TYPE_CODE = #{boardTypeCode}
+			BOARD_TITLE = #{boardTitle}
+			, BOARD_WRITE_DATE = #{boardWriteDate}
+			, BOARD_CONTENT = #{boardContent}
+			, BOARD_DELETE_DATE = #{boardDeleteDate}
+			, BOARD_POST_HIT = #{boardPostHit}
+			, BOARD_STATUS = #{boardStatus}
+		WHERE 
+			BOARD_NO = #{boardNo}
+	</update>
+
+	<delete id="deleteAdminBoard">
+		DELETE FROM ADMIN_BOARD
+		WHERE
+		BOARD_NO = #{boardNo}
+	</delete>
 </mapper>
