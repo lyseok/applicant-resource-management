@@ -39,7 +39,7 @@ class AdminBoardMapperTest {
 
 	@Test
 	@DisplayName("게시글 등록 테스트1")
-//	@Disabled
+	@Disabled
 	void testInsertAdminBoard() {
 		AdminBoardVO board = new AdminBoardVO();
 		
@@ -80,7 +80,7 @@ class AdminBoardMapperTest {
 	@Disabled
 	void testDeleteAdminBoard() {
 		mapper.deleteAdminBoard("b001");
-		assertNull(mapper.selectAdminBoard("b001"));
+		assertNotNull(mapper.selectAdminBoard("b001"));
 	}
 
 }

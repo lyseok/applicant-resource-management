@@ -11,7 +11,7 @@
 
 
 	<select id="selectAdminBoard" resultType="AdminBoardVO">
-		SELECT
+		SELECT 
 			BOARD_NO
 			, USER_ID
 			, BOARD_TYPE_CODE
@@ -20,10 +20,10 @@
 			, BOARD_CONTENT
 			, BOARD_DELETE_DATE
 			, BOARD_POST_HIT
-			, BOARD_STATUS
-		FROM
-			ADMIN_BOARD
-		WHERE
+			, BOARD_STATUS 
+		FROM 
+			ADMIN_BOARD 
+		WHERE 
 			BOARD_NO = #{boardNo}
 	</select>
 
@@ -37,9 +37,9 @@
 			, BOARD_CONTENT
 			, BOARD_DELETE_DATE
 			, BOARD_POST_HIT
-			, BOARD_STATUS
-		FROM ADMIN_BOARD
-		
+			, BOARD_STATUS 
+		FROM 
+			ADMIN_BOARD
 		WHERE
 			BOARD_TYPE_CODE = #{boardTypeCode}
 			AND
@@ -76,7 +76,7 @@
 
 
 	<insert id="insertAdminBoard" parameterType="AdminBoardVO">
-		INSERT INTO	ADMIN_BOARD (
+		INSERT INTO ADMIN_BOARD (
 			BOARD_NO
 			, USER_ID
 			, BOARD_TYPE_CODE
@@ -95,8 +95,7 @@
 			, #{boardContent}
 			, #{boardDeleteDate}
 			, #{boardPostHit}
-			, #{boardStatus}
-		)
+			, #{boardStatus})
 	</insert>
 
 	<!-- <update id="updateAdminBoard">
@@ -115,23 +114,23 @@
 	</update> -->
 
 	<update id="updateAdminBoard">
-		UPDATE ADMIN_BOARD
-		SET
-			, USER_ID = #{userId}
+		UPDATE ADMIN_BOARD 
+		SET 
+			USER_ID = #{userId}
 			, BOARD_TYPE_CODE = #{boardTypeCode}
-			BOARD_TITLE = #{boardTitle}
+			, BOARD_TITLE = #{boardTitle}
 			, BOARD_WRITE_DATE = #{boardWriteDate}
 			, BOARD_CONTENT = #{boardContent}
 			, BOARD_DELETE_DATE = #{boardDeleteDate}
 			, BOARD_POST_HIT = #{boardPostHit}
-			, BOARD_STATUS = #{boardStatus}
+			, BOARD_STATUS = #{boardStatus} 
 		WHERE 
 			BOARD_NO = #{boardNo}
 	</update>
 
 	<delete id="deleteAdminBoard">
-		DELETE FROM ADMIN_BOARD
-		WHERE
-		BOARD_NO = #{boardNo}
+		DELETE FROM ADMIN_BOARD 
+		WHERE 
+			BOARD_NO = #{boardNo}
 	</delete>
 </mapper>
