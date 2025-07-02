@@ -13,9 +13,11 @@ import kr.or.ddit.vo.community.CompanyReviewVO;
 public interface CompanyReviewMapper {
 	public List<CompanyVO> selectCompanyList();
 	
-	public List<CompanyReviewVO> selectCompanyReviewAnswerList(String id);
+	public List<CompanyReviewVO> selectCompanyReviewAnswerList(String userId);
 	
 	public List<CmnCodeGroupVO> selectCompanyQuestionList(String code);
 	
-	
+	public int insertCompanyReview();
+	public int deleteCompanyReview(String userId);
+	public int updateDeleteStatusMyCompanyReview(String userId);
 }
