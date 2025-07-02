@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.PortfolioMapper">
+	<select id="seletPortfolioList">
+		SELECT POR_CODE
+			   , RESUME_NO
+			   , POR_FILE_ORIGINAL_NAME
+			   , POR_FILE_SAVE_NAME
+			   , POR_FILE_SIZE
+			   , POR_FILE_PATH 
+		  FROM PORTFOLIO
+	</select>
+	
+	<select id="seletPortfolioDetail">
+		SELECT POR_CODE
+			   , RESUME_NO
+			   , POR_FILE_ORIGINAL_NAME
+			   , POR_FILE_SAVE_NAME
+			   , POR_FILE_SIZE
+			   , POR_FILE_PATH 
+		  FROM PORTFOLIO 
+		 WHERE POR_CODE = #{porCode}
+	</select>
+	
+	<insert id="insertPortfolio">
+		INSERT INTO PORTFOLIO (		
+			<selectKey resultType="string" keyProperty="languageSkillNo" order="BEFORE">
+				SELECT
+			    'POR'||
+			    LPAD(NVL(TO_NUMBER(SUBSTR(MAX(POR_CODE), LENGTH('POR')+1)),0) + 1, 7, '0')
+			  FROM PORTFOLIO
+			</selectKey>
+			POR_CODE
+			, RESUME_NO
+			, POR_FILE_ORIGINAL_NAME
+			, POR_FILE_SAVE_NAME
+			, POR_FILE_SIZE
+			, POR_FILE_PATH
+		) VALUES (
+			#{porCode}
+			, #{resumeNo}
+			, #{porFileOriginalName}
+			, #{porFileSaveName}
+			, #{porFileSize}
+			, #{porFilePath}
+		)
+	</insert>
+	
+	<update id="updatePortfolio">
+		UPDATE PORTFOLIO 
+		   SET RESUME_NO = #{resumeNo}
+		       , POR_FILE_ORIGINAL_NAME = #{porFileOriginalName}
+		       , POR_FILE_SAVE_NAME = #{porFileSaveName}
+		       , POR_FILE_SIZE = #{porFileSize}
+		       , POR_FILE_PATH = #{porFilePath}
+		 WHERE POR_CODE = #{porCode}
+	</update>
+	
+	<delete id="deletePortfolio">
+		DELETE FROM PORTFOLIO 
+		 WHERE POR_CODE = #{porCode}
+	</delete>
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.LanguageSkillMapper">
+	<select id="seletLanguageSkillList">
+		SELECT LANGUAGE_SKILL_NO
+			   , RESUME_NO
+			   , LANGUAGE_EXAM_CODE
+			   , LANGUAGE_CODE
+			   , LANGUAGE_EXAM_NAME
+			   , PASS_DATE
+			   , LANGUAGE_EXAM_TYPE
+			   , LANGUAGE_EXAM_SCORE
+			   , LANGUAGE_EXAM_LEVEL_CODE 
+		  FROM LANGUAGE_SKILL
+	</select>
+	
+	<select id="seletLanguageSkillDetail">
+		SELECT LANGUAGE_SKILL_NO
+			   , RESUME_NO
+			   , LANGUAGE_EXAM_CODE
+			   , LANGUAGE_CODE
+			   , LANGUAGE_EXAM_NAME
+			   , PASS_DATE, LANGUAGE_EXAM_TYPE
+			   , LANGUAGE_EXAM_SCORE
+			   , LANGUAGE_EXAM_LEVEL_CODE 
+		  FROM LANGUAGE_SKILL 
+		 WHERE LANGUAGE_SKILL_NO = #{languageSkillNo}
+	</select>
+	
+	<insert id="insertLanguageSkill">
+		INSERT INTO LANGUAGE_SKILL (
+			<selectKey resultType="string" keyProperty="languageSkillNo" order="BEFORE">
+				SELECT
+				    'LT'||
+				    LPAD(NVL(TO_NUMBER(SUBSTR(MAX(LANGUAGE_SKILL_NO), LENGTH('LT')+1)),0) + 1, 7, '0')
+				FROM LANGUAGE_SKILL
+			</selectKey>
+			LANGUAGE_SKILL_NO
+			, RESUME_NO
+			, LANGUAGE_EXAM_CODE
+			, LANGUAGE_CODE
+			, LANGUAGE_EXAM_NAME
+			, PASS_DATE
+			, LANGUAGE_EXAM_TYPE
+			, LANGUAGE_EXAM_SCORE
+			, LANGUAGE_EXAM_LEVEL_CODE
+		) VALUES (
+			#{languageSkillNo}
+			, #{resumeNo}
+			, #{languageExamCode}
+			, #{languageCode}
+			, #{languageExamName}
+			, #{passDate}
+			, #{languageExamType}
+			, #{languageExamScore}
+			, #{languageExamLevelCode}
+		)	
+	</insert>
+	
+	<update id="updateLanguageSkill">
+		UPDATE LANGUAGE_SKILL 
+		   SET RESUME_NO = #{resumeNo}
+		       , LANGUAGE_EXAM_CODE = #{languageExamCode}
+		       , LANGUAGE_CODE = #{languageCode}
+		       , LANGUAGE_EXAM_NAME = #{languageExamName}
+		       , PASS_DATE = #{passDate}
+		       , LANGUAGE_EXAM_TYPE = #{languageExamType}
+		       , LANGUAGE_EXAM_SCORE = #{languageExamScore}
+		       , LANGUAGE_EXAM_LEVEL_CODE = #{languageExamLevelCode} 
+		 WHERE LANGUAGE_SKILL_NO = #{languageSkillNo}
+	</update>
+	
+	<delete id="deleteLanguageSkill">
+		DELETE FROM LANGUAGE_SKILL 
+		 WHERE LANGUAGE_SKILL_NO = #{languageSkillNo}
+	</delete>
+	
+</mapper>
