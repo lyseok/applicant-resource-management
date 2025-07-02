@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.InterviewReviewMapper">
+
+
+	<select id="selectInterviewList">
+		
+	  SELECT
+	      INTERVIEW_NO,
+	      PROCESS_NO,
+	      USER_ID,
+	      TO_CHAR(INTERVIEW_DATE, 'YYYY-MM-DD HH24:MI:SS') AS INTERVIEW_DATE,
+	      INTERVIEW_LOCATION,
+	      INTERVIEW_TYPE,
+	      INTERVIEW_PASS_SCORE
+	    FROM INTERVIEW
+	    WHERE USER_ID = #{userId}
+	</select>
+
+
+
+	<insert id="insertInterviewReview"
+	          parameterType="kr.or.ddit.vo.community.InterviewReviewVO">
+	   <!--  <selectKey keyProperty="interviewReviewNo"
+	               resultType="String"
+	               order="BEFORE">
+	      SELECT 'RV'
+	           || LPAD(SEQ_INTERVIEW_REVIEW.NEXTVAL, 8, '0')
+	        FROM DUAL
+	    </selectKey> -->
+	
+	    INSERT INTO INTERVIEW_REVIEW (
+	      INTERVIEW_REVIEW_NO,
+	      INTERVIEW_NO,
+	      COM_ID,
+	      JOB_CODE,
+	      INTERVIEW_DATE,
+	      INTERVIEW_REVIEW_DATE
+	    ) VALUES (
+	      #{interviewReviewNo},
+	      #{interviewNo},
+	      #{comId},
+	      #{jobCode},
+	      #{interviewDate},
+	      SYSDATE
+	    )
+	  </insert>
+	  
+	  
+	  
+	  <insert id="insertInterviewInformation">
+	 <!--  	  <selectKey keyProperty="interviewInformationNo"
+               resultType="String"
+               order="BEFORE">
+	      SELECT 'IF'
+	           || LPAD(SEQ_INTERVIEW_INFO.NEXTVAL, 6, '0')
+	        FROM DUAL
+	    </selectKey> -->
+	
+	    INSERT INTO INTERVIEW_INFORMATION (
+	      INTERVIEW_INFORMATION_NO,
+	      INTERVIEWREVIEW_NO,
+	      EVALUATION,
+	      INTERVIEW_LEVEL,
+	      INTERVIEW_TYPE,
+	      INTERVIEW_CONTENT
+	    ) VALUES (
+	      #{interviewInformationNo},
+	      #{interviewReviewNo},      
+	      #{evaluation},
+	      #{interviewLevel},
+	      #{interviewType},
+	      #{interviewContent}
+	    )
+	  </insert>
+	  
+	  <insert id="insertPassInformation">
+		  	<!-- <selectKey keyProperty="passInformationNo"
+	               resultType="String"
+	               order="BEFORE">
+		      SELECT 'PF'
+		           || LPAD(SEQ_PASS_INFO.NEXTVAL, 6, '0')
+		        FROM DUAL
+		    </selectKey> -->
+		
+		    INSERT INTO PASS_INFORMATION (
+		      PASS_INFORMATION_NO,
+		      INTERVIEW_REVIEW_NO,
+		      INTERVIEW_QUESTION,
+		      TIP,
+		      INTERVIEW_PASS_YN
+		    ) VALUES (
+		      #{passInformationNo},
+		      #{interviewReviewNo},       
+		      #{interviewQuestion},
+		      #{tip},
+		      #{interviewPassYn}
+		    )
+	 </insert>
+	 
+	 
+	 
+	 
+	 <delete id="deleteInterviewReview">
+	 	
+	 </delete>
+</mapper>
