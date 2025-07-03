@@ -64,11 +64,12 @@ public class SpringSecurityConfig {
     * 일반 form 로그인 사용자의 정보 조회
     * @return
     */
-   @Bean
-   public CustomUserDetailsService userDetailsService() {
-      CustomUserDetailsService service = new CustomUserDetailsService(mapper);
-      return service;
-   }
+   // 직접 service 어노테이션으로 등록할거임
+//   @Bean
+//   public CustomUserDetailsService userDetailsService() {
+//      CustomUserDetailsService service = new CustomUserDetailsService(mapper);
+//      return service;
+//   }
    
    /**
     * 소셜 로그인 사용자의 정보 조회
