@@ -9,3 +9,5 @@ public interface MemberMapper {
 	public MemberVO selectMemberById(String userId);
 	public int insertMember(MemberVO member);
 }
+
+
