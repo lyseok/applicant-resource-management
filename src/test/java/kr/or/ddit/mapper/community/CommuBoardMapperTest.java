@@ -20,16 +20,16 @@ class CommuBoardMapperTest {
 	
 	@Test
 	void testSelectCommuBoard() {
-		CommuBoardVO board = mapper.selectCommuBoard("CB0000002");
+		CommuBoardVO board = mapper.selectCommuBoard("CMBD000005");
 
 		log.info("{}", board);
 	}
 
 	@Test
 	void testSelectCommuBoardList() {
-		assertDoesNotThrow(()->mapper.selectCommuBoardList("CATE-001"));
+		assertDoesNotThrow(()->mapper.selectCommuBoardList("CATE-003"));
 		
-		(mapper.selectCommuBoardList("CATE-001")).forEach(board->{
+		(mapper.selectCommuBoardList("CATE-003")).forEach(board->{
 			log.info("{}", board);
 		});
 	}
@@ -39,21 +39,21 @@ class CommuBoardMapperTest {
 		CommuBoardVO board = new CommuBoardVO();
 		
 		board.setAvatarId("AVT003");
-		board.setCommuTitle("인턴 후기");
-		board.setCommuContents("최근 참여한 마케팅 인턴십 후기를 공유합니다.");
+		board.setCommuTitle("두번째 인턴 후기");
+		board.setCommuContents("두번째로 최근 참여한 마케팅 인턴십 후기를 공유합니다.");
 		board.setCategoryCode("CATE-003");
 		board.setCommuPostStatus("R");
 		
 		assertEquals(1, mapper.insertCommuBoard(board));
 		
-		log.info("{}", mapper.selectCommuBoard("CB0000004"));
+		log.info("{}", mapper.selectCommuBoard("CMBD000005"));
 	}
 
 	@Test
 	void testUpdateCommuBoard() {
 		CommuBoardVO board = new CommuBoardVO();
 		
-		board.setCommuPostNo("CB0000001");
+		board.setCommuPostNo("CMBD000001");
 		board.setAvatarId("AVT001");
 		board.setCommuTitle("취업준비 게시판의 제목입니다");
 		board.setCommuContents("취준게시판 테스트 내용입니다");
@@ -65,13 +65,13 @@ class CommuBoardMapperTest {
 		
 		assertEquals(1, mapper.updateCommuBoard(board));
 		
-		log.info("{}", mapper.selectCommuBoard("CB0000001"));
+		log.info("{}", mapper.selectCommuBoard("CMBD000001"));
 	}
 
 	@Test
 	void testDeleteCommuBoard() {
-		mapper.deleteCommuBoard("CB0000002");
-		assertNull(mapper.selectCommuBoard("CB0000002"));
+		mapper.deleteCommuBoard("CMBD000005");
+		assertNull(mapper.selectCommuBoard("CMBD000005"));
 	}
 
 }

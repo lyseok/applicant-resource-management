@@ -40,10 +40,10 @@
 	<insert id="insertCommuBoard" parameterType="CommuBoardVO">
 		INSERT INTO COMMU_BOARD (
 		<selectKey resultType="string" keyProperty="commuPostNo" order="BEFORE">
-			SELECT
-				'CB'||
-				LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMU_POST_NO), LENGTH('CB')+1)),0) + 1, 7, '0')
-			FROM COMMU_BOARD
+		    SELECT
+		        'CMBD'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMU_POST_NO), LENGTH('CMBD' ) + 1)), 0) + 1, 6, '0')
+		    FROM COMMU_BOARD
 		</selectKey>
 			COMMU_POST_NO
 			, AVATAR_ID

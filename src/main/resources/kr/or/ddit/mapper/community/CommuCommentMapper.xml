@@ -36,10 +36,10 @@
 	<insert id="insertCommuComment" parameterType="CommuCommentVO">
 		INSERT INTO COMMU_COMMENT (
 		<selectKey resultType="string" keyProperty="commuCommentNo" order="BEFORE">
-			SELECT
-				'CMT'||
-				LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMU_COMMENT_NO), LENGTH('CMT')+1)),0) + 1, 7, '0')
-			FROM COMMU_COMMENT
+		    SELECT
+		        'CMCM'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMU_COMMENT_NO), LENGTH('CMCM' ) + 1)), 0) + 1, 6, '0')
+		    FROM COMMU_COMMENT
 		</selectKey>
 			COMMU_COMMENT_NO
 			, COMMU_POST_NO
