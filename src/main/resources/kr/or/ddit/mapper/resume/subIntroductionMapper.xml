@@ -17,13 +17,13 @@
 	</select>
 	
 	<insert id="insertSubIntroduction">
+		<selectKey resultType="string" keyProperty="subIntroductionNo" order="BEFORE">
+    SELECT
+        'SIND'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(SUB_INTRODUCTION_NO), LENGTH('SIND' ) + 1)), 0) + 1, 6, '0')
+    FROM SUB_INTRODUCTION
+</selectKey>
 		INSERT INTO SUB_INTRODUCTION (
-			<selectKey resultType="string" keyProperty="subIntroductionNo" order="BEFORE">
-				SELECT
-				    'SUBINT'||
-				    LPAD(NVL(TO_NUMBER(SUBSTR(MAX(SUB_INTRODUCTION_NO), LENGTH('SUBINT')+1)),0) + 1, 4, '0')
-				FROM SUB_INTRODUCTION
-			</selectKey>
 			SUB_INTRODUCTION_NO
 			, RESUME_NO
 			, INTRODUCTION_NO

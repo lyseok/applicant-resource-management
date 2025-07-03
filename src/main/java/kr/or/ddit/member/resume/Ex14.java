@@ -1,8 +1,8 @@
 package kr.or.ddit.member.resume;
 
-public class Ex15 {
+public class Ex14 {
 
-	public Ex15() {
+	public Ex14() {
 		// TODO Auto-generated constructor stub
 	}
 

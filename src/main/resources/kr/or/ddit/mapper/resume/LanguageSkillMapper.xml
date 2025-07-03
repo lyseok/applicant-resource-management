@@ -20,7 +20,8 @@
 			   , LANGUAGE_EXAM_CODE
 			   , LANGUAGE_CODE
 			   , LANGUAGE_EXAM_NAME
-			   , PASS_DATE, LANGUAGE_EXAM_TYPE
+			   , PASS_DATE
+			   , LANGUAGE_EXAM_TYPE
 			   , LANGUAGE_EXAM_SCORE
 			   , LANGUAGE_EXAM_LEVEL_CODE 
 		  FROM LANGUAGE_SKILL 
@@ -28,13 +29,13 @@
 	</select>
 	
 	<insert id="insertLanguageSkill">
+		<selectKey resultType="string" keyProperty="languageSkillNo" order="BEFORE">
+		    SELECT
+		        'LGSK'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(LANGUAGE_SKILL_NO), LENGTH('LGSK' ) + 1)), 0) + 1, 6, '0')
+		    FROM LANGUAGE_SKILL
+		</selectKey>
 		INSERT INTO LANGUAGE_SKILL (
-			<selectKey resultType="string" keyProperty="languageSkillNo" order="BEFORE">
-				SELECT
-				    'LT'||
-				    LPAD(NVL(TO_NUMBER(SUBSTR(MAX(LANGUAGE_SKILL_NO), LENGTH('LT')+1)),0) + 1, 7, '0')
-				FROM LANGUAGE_SKILL
-			</selectKey>
 			LANGUAGE_SKILL_NO
 			, RESUME_NO
 			, LANGUAGE_EXAM_CODE
@@ -50,7 +51,7 @@
 			, #{languageExamCode}
 			, #{languageCode}
 			, #{languageExamName}
-			, #{passDate}
+			, REPLACE(#{passDate}, '-', '')
 			, #{languageExamType}
 			, #{languageExamScore}
 			, #{languageExamLevelCode}
@@ -63,7 +64,7 @@
 		       , LANGUAGE_EXAM_CODE = #{languageExamCode}
 		       , LANGUAGE_CODE = #{languageCode}
 		       , LANGUAGE_EXAM_NAME = #{languageExamName}
-		       , PASS_DATE = #{passDate}
+		       , PASS_DATE = REPLACE(#{passDate}, '-', '')
 		       , LANGUAGE_EXAM_TYPE = #{languageExamType}
 		       , LANGUAGE_EXAM_SCORE = #{languageExamScore}
 		       , LANGUAGE_EXAM_LEVEL_CODE = #{languageExamLevelCode} 

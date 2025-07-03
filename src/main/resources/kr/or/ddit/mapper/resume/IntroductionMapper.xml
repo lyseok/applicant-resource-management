@@ -14,13 +14,13 @@
 	</select>
 	
 	<insert id="insertIntroduction">
+		<selectKey resultType="string" keyProperty="introductionNo" order="BEFORE">
+		    SELECT
+		        'INTD'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INTRODUCTION_NO), LENGTH('INTD' ) + 1)), 0) + 1, 6, '0')
+		    FROM INTRODUCTION
+		</selectKey>
 		INSERT INTO INTRODUCTION (
-			<selectKey resultType="string" keyProperty="introductionNo" order="BEFORE">
-				SELECT
-				    'INT'||
-				    LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INTRODUCTION_NO), LENGTH('ABC')+1)),0) + 1, 7, '0')
-				FROM INTRODUCTION
-			</selectKey>
 			INTRODUCTION_NO
 			, USER_ID
 			, INTRODUCTION_NAME

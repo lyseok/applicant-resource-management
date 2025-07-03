@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.MyLicenseMapper">
+	<select id="seletMyLicenseList">
+		SELECT MY_LICENSE
+			   , RESUME_NO
+			   , LICENSE_CODE
+			   , LICENSE_PASS_DATE
+		  FROM MY_LICENSE
+	</select>
+	
+	<select id="seletMyLicenseDetail">
+		SELECT MY_LICENSE
+			   , RESUME_NO
+			   , LICENSE_CODE
+			   , LICENSE_PASS_DATE
+		  FROM MY_LICENSE 
+		 WHERE MY_LICENSE = #{myLicense}
+	</select>
+	
+	<insert id="insertMyLicense">
+        <selectKey resultType="string" keyProperty="myLicense" order="BEFORE">
+		    SELECT
+		        'MYLC'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(MY_LICENSE), LENGTH('MYLC' ) + 1)), 0) + 1, 6, '0')
+		    FROM MY_LICENSE
+		</selectKey>
+		INSERT INTO MY_LICENSE (
+			MY_LICENSE
+			, RESUME_NO
+			, LICENSE_CODE
+			, LICENSE_PASS_DATE
+		) VALUES (
+			#{myLicense}
+			, #{resumeNo}
+			, #{licenseCode}
+			, REPLACE(#{licensePassDate}, '-', '')
+		)
+	</insert>
+	
+	<update id="updateMyLicense">
+		UPDATE MY_LICENSE 
+		   SET RESUME_NO = #{resumeNo}
+		       , LICENSE_CODE = #{licenseCode}
+		       , LICENSE_PASS_DATE = REPLACE(#{licensePassDate}, '-', '') 
+		 WHERE MY_LICENSE = #{myLicense}
+	</update>
+	
+	<delete id="deleteMyLicense">
+		DELETE FROM MY_LICENSE
+		 WHERE MY_LICENSE = #{myLicense}
+	</delete>
+</mapper>

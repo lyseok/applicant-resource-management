@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.MilitaryMapper">
+	<select id="seletMilitaryList">
+		SELECT MILITARY_NO
+			   , RESUME_NO
+			   , SERVICE_CATEGORY_CODE
+			   , MILITARY_TYPE_CODE
+			   , MILITARY_RANK_CODE
+			   , DISCHARGE_CODE
+			   , MILITARY_START_DATE
+			   , MILITARY_END_DATE
+			   , MILITARY_REASON 
+		  FROM MILITARY
+	</select>
+	
+	<select id="seletMilitaryDetail">
+		SELECT MILITARY_NO
+			   , RESUME_NO
+			   , SERVICE_CATEGORY_CODE
+			   , MILITARY_TYPE_CODE
+			   , MILITARY_RANK_CODE
+			   , DISCHARGE_CODE
+			   , MILITARY_START_DATE
+			   , MILITARY_END_DATE
+			   , MILITARY_REASON 
+		  FROM MILITARY 
+		 WHERE MILITARY_NO = #{militaryNo}
+	</select>
+	
+	<insert id="insertMilitary">
+		<selectKey resultType="string" keyProperty="militaryNo" order="BEFORE">
+		    SELECT
+		        'MLTR'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(MILITARY_NO), LENGTH('MLTR' ) + 1)), 0) + 1, 6, '0')
+		    FROM MILITARY
+		</selectKey>
+		INSERT INTO MILITARY (
+			MILITARY_NO
+			, RESUME_NO
+			, SERVICE_CATEGORY_CODE
+			, MILITARY_TYPE_CODE
+			, MILITARY_RANK_CODE
+			, DISCHARGE_CODE
+			, MILITARY_START_DATE
+			, MILITARY_END_DATE
+			, MILITARY_REASON
+		) VALUES (
+			#{militaryNo}
+			, #{resumeNo}
+			, #{serviceCategoryCode}
+			, #{militaryTypeCode}
+			, #{militaryRankCode}
+			, #{dischargeCode}
+			, REPLACE(#{militaryStartDate}, '-', '')
+			, REPLACE(#{militaryEndDate}, '-', '')
+			, #{militaryReason}
+		)
+	</insert>
+	
+	<update id="updateMilitary">
+		UPDATE MILITARY 
+		   SET RESUME_NO = #{resumeNo}
+		   	   , SERVICE_CATEGORY_CODE = #{serviceCategoryCode}
+		   	   , MILITARY_TYPE_CODE = #{militaryTypeCode}
+		   	   , MILITARY_RANK_CODE = #{militaryRankCode}
+		   	   , DISCHARGE_CODE = #{dischargeCode}
+		   	   , MILITARY_START_DATE = REPLACE(#{militaryStartDate}, '-', '')
+		   	   , MILITARY_END_DATE = REPLACE(#{militaryEndDate}, '-', '')
+		   	   , MILITARY_REASON = #{militaryReason} 
+		 WHERE MILITARY_NO = #{militaryNo}
+	</update>
+	
+	<delete id="deleteMilitary">
+		DELETE FROM MILITARY 
+		 WHERE MILITARY_NO = #{militaryNo}
+	</delete>
+</mapper>
