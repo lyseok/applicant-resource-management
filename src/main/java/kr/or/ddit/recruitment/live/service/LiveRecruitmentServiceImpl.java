@@ -23,12 +23,12 @@ public class LiveRecruitmentServiceImpl implements LiveRecruitmentService {
 	
 	@Override
 	public Optional<RecruitmentNoticeVO> readRecruitmentNotice(String recruitmentNo){
-	    
-	    return mapper.readRecruitmentNotice(recruitmentNo);
+	    // 최신순
+	    return mapper.selectLiveRecruitment(recruitmentNo);
 	}
 
 	@Override
-	public Optional<RecruitmentNoticeVO> salaryRecruitment(String recruitmentNo) {
+	public List<RecruitmentNoticeVO> salaryRecruitment(String recruitmentNo) {
 		// 연봉별 정렬
 		return mapper.salaryRecruitment(recruitmentNo);
 	}
