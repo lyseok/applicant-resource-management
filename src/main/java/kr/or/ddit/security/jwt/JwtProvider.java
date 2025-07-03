@@ -32,7 +32,7 @@ import com.nimbusds.jwt.SignedJWT;
 public class JwtProvider {
 	@Value("${jwt.secrete-key}")
 	private byte[] secreteKey;
-	private final long VALID_TERM = 1000 * 60 * 30;
+	public static final long VALID_TERM = 1000 * 60 * 30;
 
 	/**
 	 * RestLoginController 에서 토큰을 생성할때 사용됨.

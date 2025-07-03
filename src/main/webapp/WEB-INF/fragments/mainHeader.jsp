@@ -33,6 +33,8 @@
         </div>
         <div class="utility">
             <div class="sign">
+                <span class="btn_sign signin logoutBtn">로그아웃</span>
+                <hr>
                 <a href="/login" class="btn_sign signin">로그인</a>
                 <hr>
                 <a href="/signUp" class="btn_sign signup">회원가입</a>
