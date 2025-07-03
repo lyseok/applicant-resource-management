@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.InterviewItemMapper">
+	<select id="selectInterviewItemList" resultType="InterviewItemVO">
+	SELECT 
+		INTERVIEW_ITEM_NO
+		, INTERVIEW_QUESTION_NO
+		, INTERVIEW_ITEM_CONTENT
+		, INTERVIEW_ITEM_SCORE 
+	FROM INTERVIEW_ITEM
+	</select>
+	
+	<select id="selectInterviewItem" resultType="InterviewItemVO">
+	SELECT 
+		INTERVIEW_ITEM_NO
+		, INTERVIEW_QUESTION_NO
+		, INTERVIEW_ITEM_CONTENT
+		, INTERVIEW_ITEM_SCORE 
+	FROM INTERVIEW_ITEM 
+	WHERE INTERVIEW_ITEM_NO = #{interviewItemNo}
+	</select>
+	
+	<insert id="insertInterviewItem">
+	<selectKey resultType="string" keyProperty="interviewItemNo" order="BEFORE">
+    SELECT
+        'INTE'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INTERVIEW_ITEM_NO), LENGTH('INTE' ) + 1)), 0) + 1, 6, '0')
+    FROM INTERVIEW_ITEM
+	</selectKey>
+	INSERT INTO INTERVIEW_ITEM (
+		INTERVIEW_ITEM_NO
+		, INTERVIEW_QUESTION_NO
+		, INTERVIEW_ITEM_CONTENT
+		, INTERVIEW_ITEM_SCORE
+	) VALUES (
+		#{interviewItemNo}
+		, #{interviewQuestionNo}
+		, #{interviewItemContent}
+		, #{interviewItemScore}
+	)
+	</insert>
+	
+	<update id="updateInterviewItem">
+	UPDATE INTERVIEW_ITEM SET 
+		INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
+		, INTERVIEW_ITEM_CONTENT = #{interviewItemContent}
+		, INTERVIEW_ITEM_SCORE = #{interviewItemScore}
+	 WHERE INTERVIEW_ITEM_NO = #{interviewItemNo}
+	</update>
+	
+	<delete id="deleteInterviewItem">
+	DELETE FROM INTERVIEW_ITEM
+	WHERE INTERVIEW_ITEM_NO = #{interviewItemNo}
+	</delete>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.PasserMapper">
+	<select id="selectPasserList" resultType="PasserVO">
+	SELECT
+		PASSER_NO
+		, APPLICANT_ID
+		, PASS_ALARM_YN
+		, RECRUIT_ACCEPT_YN
+		, HIRE_DATE 
+	FROM PASSER
+	</select>
+	
+	<select id="selectPasser" resultType="PasserVO">
+	SELECT 
+		PASSER_NO
+		, APPLICANT_ID
+		, PASS_ALARM_YN
+		, RECRUIT_ACCEPT_YN
+		, HIRE_DATE 
+	FROM PASSER 
+	WHERE PASSER_NO = #{passerNo}
+	</select>
+	
+	<insert id="insertPasser">
+	<selectKey resultType="string" keyProperty="passerNo" order="BEFORE">
+    SELECT
+        'PASS'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PASSER_NO), LENGTH('PASS' ) + 1)), 0) + 1, 6, '0')
+    FROM PASSER
+	</selectKey>
+	INSERT INTO PASSER (
+		PASSER_NO
+		, APPLICANT_ID
+		, PASS_ALARM_YN
+		, RECRUIT_ACCEPT_YN
+		, HIRE_DATE
+	) VALUES (
+	#{passerNo}
+	, #{applicantId}
+	, #{passAlarmYn}
+	, #{recruitAcceptYn}
+	, #{hireDate}
+	)
+	</insert>
+	
+	<update id="updatePasser">
+	UPDATE PASSER SET 
+		APPLICANT_ID = #{applicantId}
+		, PASS_ALARM_YN = #{passAlarmYn}
+		, RECRUIT_ACCEPT_YN = #{recruitAcceptYn}
+		, HIRE_DATE = #{hireDate} 
+	WHERE PASSER_NO = #{passerNo}
+	</update>
+	
+	<delete id="deletePasser">
+	DELETE FROM PASSER 
+	WHERE PASSER_NO = #{passerNo}
+	</delete>
+</mapper>

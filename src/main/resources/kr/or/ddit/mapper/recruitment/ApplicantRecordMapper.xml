@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.ApplicantRecordMapper">
+	<select id="selectApplicantRecordList">
+	SELECT 
+		APPLICANT_RECORD_NO
+		, RECRUITMENT_NO
+		, APPLICANT_ID
+		, RECRUIT_PROCESS_STEP
+		, STEP_PASS_YN
+		, STEP_APPLICATION_YN 
+	FROM APPLICANT_RECORD
+	</select>
+	
+	<select id="selectApplicantRecord">
+	SELECT 
+		APPLICANT_RECORD_NO
+		, RECRUITMENT_NO
+		, APPLICANT_ID
+		, RECRUIT_PROCESS_STEP
+		, STEP_PASS_YN
+		, STEP_APPLICATION_YN 
+	FROM APPLICANT_RECORD 
+	WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
+	</select>
+	
+	<insert id="insertApplicantRecord">
+	<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
+    SELECT
+        'APRC'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(APPLICANT_RECORD_NO), LENGTH('APRC' ) + 1)), 0) + 1, 6, '0')
+    FROM APPLICANT_RECORD
+ 	</selectKey>
+	INSERT INTO APPLICANT_RECORD (
+		APPLICANT_RECORD_NO
+		, RECRUITMENT_NO
+		, APPLICANT_ID
+		, RECRUIT_PROCESS_STEP
+		, STEP_PASS_YN
+		, STEP_APPLICATION_YN
+	) VALUES (
+		#{applicantRecordNo}
+		, #{recruitmentNo}
+		, #{applicantId}
+		, #{recruitProcessStep}
+		, N
+		, N
+	)
+	</insert>
+	
+	<update id="updateApplicantRecord">
+	UPDATE APPLICANT_RECORD SET 
+		RECRUITMENT_NO = #{recruitmentNo}
+		, APPLICANT_ID = #{applicantId}
+		, RECRUIT_PROCESS_STEP = #{recruitProcessStep}
+		, STEP_PASS_YN = #{stepPassYn}
+		, STEP_APPLICATION_YN = #{stepApplicationYn} 
+	WHERE APPLICANT_RECORD_NO =	#{applicantRecordNo}
+	</update>
+	
+	<delete id="deleteApplicantRecord">
+	DELETE FROM APPLICANT_RECORD 
+	WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
+	</delete>
+</mapper>
