@@ -8,8 +8,9 @@ import kr.or.ddit.vo.common.BusinessregistrationVO;
 
 @Mapper
 public interface BusinessRegistrationMapper {
-	public BusinessregistrationVO selectBusinessRegistrationById();
+	public BusinessregistrationVO selectBusinessRegistrationByPk(String brNumber);
 	public List<BusinessregistrationVO> selectBusinessRegistrationList();
-	
-	
+	public int insertBusinessregistration(BusinessregistrationVO businessregistration);
+	public int updateBusinessregistration(BusinessregistrationVO businessregistration);
+	public int deleteBusinessregistration(String brNumber);
 }

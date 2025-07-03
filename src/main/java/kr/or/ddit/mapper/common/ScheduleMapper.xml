@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.ScheduleMapper">
+	<select id="selectScheduleByNo">
+		SELECT 
+			SCHEDULE_NO, 
+			USER_ID, 
+			SCHEDULE_NAME, 
+			SCHEDULE_CONTENT 
+		FROM SCHEDULE 
+		WHERE SCHEDULE_NO = #{scheduleNo}
+	</select>
+	<select id="selectScheduleList">
+		SELECT 
+			SCHEDULE_NO, 
+			USER_ID, 
+			SCHEDULE_NAME, 
+			SCHEDULE_CONTENT FROM SCHEDULE
+	</select>
+	<insert id="insertSchedule">
+		<selectKey resultType="string" keyProperty="scheduleNo" order="BEFORE">
+		    SELECT
+		        'SCDE'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(SCHEDULE_NO), LENGTH('SCDE' ) + 1)), 0) + 1, 6, '0')
+		    FROM SCHEDULE
+		</selectKey>
+		INSERT INTO SCHEDULE (
+			SCHEDULE_NO, 
+			USER_ID, 
+			SCHEDULE_NAME, 
+			SCHEDULE_CONTENT) 
+		VALUES (
+			#{scheduleNo}, 
+			#{userId}, 
+			#{scheduleName}, 
+			#{scheduleContent}
+		)
+	</insert>
+	<update id="updateSchedule">
+		UPDATE SCHEDULE 
+		SET 
+			USER_ID = #{userId}, 
+			SCHEDULE_NAME = #{scheduleName}, 
+			SCHEDULE_CONTENT = #{scheduleContent} 
+		WHERE SCHEDULE_NO = #{scheduleNo}
+	</update>
+	<delete id="deleteSchedule">
+		DELETE FROM SCHEDULE WHERE SCHEDULE_NO = #{scheduleNo}
+	</delete>
+</mapper>

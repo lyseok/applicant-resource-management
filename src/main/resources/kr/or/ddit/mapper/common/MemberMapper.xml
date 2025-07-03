@@ -22,7 +22,36 @@
 	    WHERE B.USER_ID = #{userId}
 	</select>
 	
+	
+	
+	<select id="selectMemberList" resultType="MemberVO">
+	
+		SELECT
+	      B.USER_ID AS USER_ID
+	      , B.USER_PASSWORD    
+	      , B.USER_ROLE        
+	      , B.USER_WITHDRAW_DATE 
+	      , B.USER_STATUS      
+	      , B.USER_ENABLED     
+	      , A.MEM_NAME         
+	      , A.MEM_EMAIL        
+	      , A.MEM_BIR          
+	      , A.MEM_TEL          
+	      , A.MEM_ADD1         
+	      , A.MEM_ADD2         
+	      , A.MEM_IMG          
+	    FROM MEMBER A
+	    JOIN USERS  B ON A.USER_ID = B.USER_ID
+	</select>
+	
 	<insert id="insertMember">
+		<selectKey resultType="string" keyProperty="userId" order="BEFORE">
+		    SELECT
+		        'MEMB'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(USER_ID), LENGTH('MEMB' ) + 1)), 0) + 1, 6, '0')
+		    FROM MEMBER
+		</selectKey>
+	
 		INSERT INTO MEMBER(
 			USER_ID
 			, MEM_NAME
@@ -43,4 +72,23 @@
 		 	, #{memImg}
 		)
 	</insert>
+	
+	
+	<update id="updateMember">
+		UPDATE MEMBER SET
+		MEM_NAME = #{memName}, 
+		MEM_EMAIL = #{memEmail}, 
+		MEM_BIR = #{memBir},
+		MEM_TEL = #{memTel},
+		MEM_ADD1 = #{memAdd1}, 
+		MEM_ADD2 = #{memAdd2}, 
+		MEM_IMG = #{memImg} 
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<delete id="deleteMember">
+		DELETE FROM MEMBER WHERE USER_ID = #{userId}
+	</delete>
+	
+	
 </mapper>
