@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.CommuBoardMapper">
+	<select id="selectCommuBoard" resultType="CommuBoardVO">
+		SELECT 
+			COMMU_POST_NO
+			, AVATAR_ID
+			, COMMU_TITLE
+			, COMMU_CONTENTS
+			, CATEGORY_CODE
+			, COMMU_WRITE_DATE
+			, COMMU_POST_HIT
+			, COMMU_POST_STATUS
+			, COMMU_DELETE_DATE 
+		FROM 
+			COMMU_BOARD 
+		WHERE 
+			COMMU_POST_NO = #{commuPostNo}
+	</select>
+
+	<select id="selectCommuBoardList" resultType="CommuBoardVO">
+		SELECT 
+			COMMU_POST_NO
+			, AVATAR_ID
+			, COMMU_TITLE
+			, COMMU_CONTENTS
+			, CATEGORY_CODE
+			, COMMU_WRITE_DATE
+			, COMMU_POST_HIT
+			, COMMU_POST_STATUS
+			, COMMU_DELETE_DATE 
+		FROM COMMU_BOARD
+		WHERE
+			CATEGORY_CODE = #{categoryCode}
+			AND
+			COMMU_POST_STATUS != 'D'
+	</select>
+	
+	<insert id="insertCommuBoard" parameterType="CommuBoardVO">
+		INSERT INTO COMMU_BOARD (
+		<selectKey resultType="string" keyProperty="commuPostNo" order="BEFORE">
+			SELECT
+				'CB'||
+				LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMU_POST_NO), LENGTH('CB')+1)),0) + 1, 7, '0')
+			FROM COMMU_BOARD
+		</selectKey>
+			COMMU_POST_NO
+			, AVATAR_ID
+			, COMMU_TITLE
+			, COMMU_CONTENTS
+			, CATEGORY_CODE
+			, COMMU_WRITE_DATE
+			, COMMU_POST_HIT
+			, COMMU_POST_STATUS
+		) VALUES (
+			#{commuPostNo}
+			, #{avatarId}
+			, #{commuTitle}
+			, #{commuContents}
+			, #{categoryCode}
+			, sysdate
+			, 0
+			, #{commuPostStatus}
+		)
+	</insert>
+	
+	<update id="updateCommuBoard" parameterType="CommuBoardVO">
+		UPDATE COMMU_BOARD 
+		SET 
+			AVATAR_ID = #{avatarId}
+			, COMMU_TITLE = #{commuTitle}
+			, COMMU_CONTENTS = #{commuContents}
+			, CATEGORY_CODE = #{categoryCode}
+			, COMMU_WRITE_DATE = #{commuWriteDate}
+			, COMMU_POST_HIT = #{commuPostHit}
+			, COMMU_POST_STATUS = #{commuPostStatus}
+			, COMMU_DELETE_DATE = #{commuDeleteDate} 
+		WHERE COMMU_POST_NO = #{commuPostNo}
+	</update>
+	
+	<delete id="deleteCommuBoard">
+		DELETE FROM COMMU_BOARD 
+		WHERE COMMU_POST_NO = #{commuPostNo}
+	</delete>
+</mapper>
+
+
+

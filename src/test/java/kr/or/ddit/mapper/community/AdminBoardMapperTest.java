@@ -51,7 +51,7 @@ class AdminBoardMapperTest {
 		
 		assertEquals(1, mapper.insertAdminBoard(board));
 		
-		log.info("{}", mapper.selectAdminBoard(board.getBoardNo()));
+		log.info("{}", mapper.selectAdminBoard("BRD0000001"));
 	}
 
 	@Test
@@ -70,7 +70,7 @@ class AdminBoardMapperTest {
 		
 		assertEquals(1, mapper.updateAdminBoard(board));
 		
-		log.info("{}", mapper.selectAdminBoard(board.getBoardNo()));
+		log.info("{}", mapper.selectAdminBoard("BRD0000001"));
 	}
 
 	@Test

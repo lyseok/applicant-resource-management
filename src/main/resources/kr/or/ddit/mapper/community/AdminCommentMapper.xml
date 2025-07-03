@@ -53,7 +53,8 @@
 			, #{boardNo}
 			, #{boardCommentContent}
 			, sysdate
-			, #{boardCommentStatus})
+			, #{boardCommentStatus}
+		)
 	</insert>
 	
 	<update id="updateAdminComment" parameterType="AdminCommentVO">

@@ -99,7 +99,8 @@
 			, sysdate
 			, #{boardContent}
 			, #{boardPostHit}
-			, #{boardStatus})
+			, #{boardStatus}
+		)
 	</insert>
 
 	<!-- <update id="updateAdminBoard">
