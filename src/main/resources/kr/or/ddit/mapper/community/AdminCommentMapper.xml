@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.AdminCommentMapper">
+	<select id="selectAdminCommentList" resultType="AdminCommentVO">
+		SELECT 
+			BOARD_COMMENT_NO
+			, USER_ID
+			, BOARD_NO
+			, BOARD_COMMENT_CONTENT
+			, BOARD_WRITE_DATE
+			, BOARD_DELETE_DATE
+			, BOARD_COMMENT_STATUS 
+		FROM 
+			ADMIN_COMMENT
+		WHERE 
+			BOARD_NO = #{boardNo}
+			AND
+			BOARD_COMMENT_STATUS != 'D'
+	</select>
+	
+	<select id="selectAdminComment" resultType="AdminCommentVO">
+		SELECT 
+			BOARD_COMMENT_NO
+			, USER_ID
+			, BOARD_NO
+			, BOARD_COMMENT_CONTENT
+			, BOARD_WRITE_DATE
+			, BOARD_DELETE_DATE
+			, BOARD_COMMENT_STATUS 
+		FROM 
+			ADMIN_COMMENT 
+		WHERE 
+			BOARD_COMMENT_NO = #{boardCommentNo}
+	</select>
+	
+	<insert id="insertAdminComment" parameterType="AdminCommentVO">
+		INSERT INTO ADMIN_COMMENT (
+		<selectKey resultType="string" keyProperty="boardCommentNo" order="BEFORE">
+			SELECT
+				'CMT'||
+				LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BOARD_COMMENT_NO), LENGTH('CMT')+1)),0) + 1, 7, '0')
+			FROM ADMIN_COMMENT
+		</selectKey>
+			BOARD_COMMENT_NO
+			, USER_ID
+			, BOARD_NO
+			, BOARD_COMMENT_CONTENT
+			, BOARD_WRITE_DATE
+			, BOARD_COMMENT_STATUS
+		) VALUES (
+			#{boardCommentNo}
+			, #{userId}
+			, #{boardNo}
+			, #{boardCommentContent}
+			, sysdate
+			, #{boardCommentStatus})
+	</insert>
+	
+	<update id="updateAdminComment" parameterType="AdminCommentVO">
+		UPDATE 
+			ADMIN_COMMENT 
+		SET 
+			USER_ID = #{userId}
+			, BOARD_NO = #{boardNo}
+			, BOARD_COMMENT_CONTENT = #{boardCommentContent}
+			, BOARD_WRITE_DATE = #{boardWriteDate}
+			, BOARD_DELETE_DATE = #{boardDeleteDate}
+			, BOARD_COMMENT_STATUS = #{boardCommentStatus} 
+		WHERE 
+			BOARD_COMMENT_NO = #{boardCommentNo}
+	</update>
+	
+	<delete id="deleteAdminComment">
+		DELETE FROM ADMIN_COMMENT 
+		WHERE BOARD_COMMENT_NO = #{boardCommentNo}
+	</delete>
+</mapper>
+
+
+

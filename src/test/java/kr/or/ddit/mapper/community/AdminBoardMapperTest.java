@@ -1,9 +1,11 @@
 package kr.or.ddit.mapper.community;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,68 +21,62 @@ class AdminBoardMapperTest {
 	AdminBoardMapper mapper;
 
 	@Test
-	@DisplayName("게시글 단건조회 테스트1")
-	@Disabled
 	void testSelectAdminBoard() {
-		AdminBoardVO board = mapper.selectAdminBoard("b001");
+		AdminBoardVO board = mapper.selectAdminBoard("BRD0000001");
 
 		log.info("{}", board);
 	}
 
 	@Test
-	@DisplayName("게시글 목록조회 테스트1")
-	@Disabled
 	void testSelectAdminBoardList() {
-		mapper.selectAdminBoardList("BRDD-003").forEach(board->{
+		assertDoesNotThrow(()->mapper.selectAdminBoardList("BRDD-001"));
+		
+		List<AdminBoardVO> list = mapper.selectAdminBoardList("BRDD-001");
+		list.forEach(board->{
 			log.info("{}", board);
 		});
-		assertDoesNotThrow(()->mapper.selectAdminBoardList("BRDD-003"));
 	}
 
 	@Test
-	@DisplayName("게시글 등록 테스트1")
-	@Disabled
+//	@DisplayName("문의있을때 테스트")
 	void testInsertAdminBoard() {
 		AdminBoardVO board = new AdminBoardVO();
 		
-		board.setBoardNo("b001");
 		board.setUserId("admin");
-		board.setBoardTypeCode("BRDD-003");
-		board.setBoardTitle("테스트입니다");
-		board.setBoardWriteDate("2025-01-01");
+		board.setBoardTypeCode("BRDD-002");
+		board.setBoardTitle("자주 묻는 사항 테스트입니다");
 		board.setBoardContent("테스트 내용입니다");
-		board.setBoardDeleteDate(null);
-		board.setBoardPostHit(3);
+		board.setBoardPostHit(0);
 		board.setBoardStatus("R");
 		
 		assertEquals(1, mapper.insertAdminBoard(board));
+		
+		log.info("{}", mapper.selectAdminBoard(board.getBoardNo()));
 	}
 
 	@Test
-	@DisplayName("게시글 수정 테스트1")
-	@Disabled
 	void testUpdateAdminBoard() {
 		AdminBoardVO board = new AdminBoardVO();
 		
-		board.setBoardNo("b001");
-		board.setUserId("admin");
-		board.setBoardTypeCode("BRDD-003");
-		board.setBoardTitle("테스트 수정합니다");
+		board.setBoardNo("BRD0000001");
+		board.setUserId("user01");
+		board.setBoardTypeCode("BRDD-001");
+		board.setBoardTitle("문의 수정합니다");
 		board.setBoardWriteDate("2025-01-02");
-		board.setBoardContent("수정 내용입니다");
-		board.setBoardDeleteDate(null);
+		board.setBoardContent("문의 수정합니다~~!");
+//		board.setBoardDeleteDate(null);
 		board.setBoardPostHit(4);
 		board.setBoardStatus("U");
 		
 		assertEquals(1, mapper.updateAdminBoard(board));
+		
+		log.info("{}", mapper.selectAdminBoard(board.getBoardNo()));
 	}
 
 	@Test
-	@DisplayName("게시글 삭제 테스트1")
-	@Disabled
 	void testDeleteAdminBoard() {
-		mapper.deleteAdminBoard("b001");
-		assertNotNull(mapper.selectAdminBoard("b001"));
+		mapper.deleteAdminBoard("BRD0000001");
+		assertNotNull(mapper.selectAdminBoard("BRD0000001"));
 	}
 
 }
