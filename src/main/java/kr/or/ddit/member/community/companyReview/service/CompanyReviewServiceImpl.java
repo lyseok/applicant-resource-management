@@ -21,16 +21,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 		return mapper.selectCompanyList();
 	}
 
-	@Override
-	public List<CompanyReviewVO> readCompanyReviewAnswerList(String id) {
-		return mapper.selectCompanyReviewAnswerList(id);
-	}
-
-	@Override
-	public List<CmnCodeGroupVO> readCompanyReviewQuestionList(String code) {
-		return mapper.selectCompanyQuestionList(code);
-	}
-
+	
 	
 	
 	

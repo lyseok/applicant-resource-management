@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.PassInformationMapper">
+
+
+  <select id="selectPassInfromationList">
+    SELECT
+      PASS_INFORMATION_NO,
+      INTERVIEW_REVIEW_NO,
+      INTERVIEW_QUESTION,
+      TIP,
+      INTERVIEW_PASS_YN
+    FROM PASS_INFORMATION
+    ORDER BY PASS_INFORMATION_NO
+  </select>
+
+ 
+  <select id="selectPassInformation">
+    SELECT
+      PASS_INFORMATION_NO,
+      INTERVIEW_REVIEW_NO,
+      INTERVIEW_QUESTION,
+      TIP,
+      INTERVIEW_PASS_YN
+    FROM PASS_INFORMATION
+    WHERE PASS_INFORMATION_NO = #{passInformationNo}
+  </select>
+
+
+  <insert id="insertPassInformation">
+    INSERT INTO PASS_INFORMATION (
+      PASS_INFORMATION_NO,
+      INTERVIEW_REVIEW_NO,
+      INTERVIEW_QUESTION,
+      TIP,
+      INTERVIEW_PASS_YN
+    ) VALUES (
+      #{passInformationNo},
+      #{interviewReviewNo},
+      #{interviewQuestion},
+      #{tip},
+      #{interviewPassYn}
+    )
+  </insert>
+	
+</mapper>

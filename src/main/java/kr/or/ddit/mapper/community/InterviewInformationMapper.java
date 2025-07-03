@@ -9,9 +9,6 @@ import kr.or.ddit.vo.community.InterviewInformationVO;
 @Mapper
 public interface InterviewInformationMapper {
 	public List<InterviewInformationVO> selectInterviewInfromationList();
-	
-	public InterviewInformationVO selectInterviewInformationVO();
-	
+	public InterviewInformationVO selectInterviewInformationVO(String reviewNo);
 	public int insertInterviewInformation(InterviewInformationVO interviewInformation);
-	
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.InterviewInformationMapper">
+	
+  <select id="selectInterviewInfromationList" resultType="InterviewInformationVO">
+    SELECT
+      INTERVIEW_INFORMATION_NO,
+      INTERVIEW_REVIEW_NO,
+      EVALUATION,
+      INTERVIEW_LEVEL,
+      INTERVIEW_TYPE,
+      INTERVIEW_CONTENT
+    FROM INTERVIEW_INFORMATION
+    ORDER BY INTERVIEW_INFORMATION_NO
+  </select>
+
+  
+  <select id="selectInterviewInformationVO" resultType="InterviewInformationVO">
+    SELECT
+      INTERVIEW_INFORMATION_NO,
+      INTERVIEW_REVIEW_NO,
+      EVALUATION,
+      INTERVIEW_LEVEL,
+      INTERVIEW_TYPE,
+      INTERVIEW_CONTENT
+    FROM INTERVIEW_INFORMATION
+    WHERE INTERVIEW_REVIEW_NO = #{intervewReviewNo}
+  </select>
+
+  <insert id="insertInterviewInformation" >
+    INSERT INTO INTERVIEW_INFORMATION (
+      INTERVIEW_INFORMATION_NO,
+      INTERVIEW_REVIEW_NO,
+      EVALUATION,
+      INTERVIEW_LEVEL,
+      INTERVIEW_TYPE,
+      INTERVIEW_CONTENT
+    ) VALUES (
+      #{interviewInformationNo},
+      #{interviewReviewNo},
+      #{evaluation},
+      #{interviewLevel},
+      #{interviewType},
+      #{interviewContent}
+    )
+  </insert>
+	
+</mapper>

@@ -3,6 +3,35 @@
 <mapper namespace="kr.or.ddit.mapper.community.InterviewReviewMapper">
 
 
+	<resultMap type="InterviewReviewVO" id="reviewDetailMap">
+		 <id     property="interviewReviewNo" column="INTERVIEW_REVIEW_NO"/>
+	    <result property="interviewNo"       column="INTERVIEW_NO"/>
+	    <result property="comId"             column="COM_ID"/>
+	    <result property="jobCode"           column="JOB_CODE"/>
+	    <result property="interviewDate"     column="INTERVIEW_DATE"/>
+	    <result property="interviewReviewDate" column="INTERVIEW_REVIEW_DATE"/>
+	    <result property="interviewReviewDate" column="INTERVIEW_REVIEW_DATE"/>
+	    <result property="userId" column="USER_ID"/>
+		
+		<association property="interviewInformation" javaType="InterviewInformationVO">
+			  <id     property="interviewInformationNo" column="INTERVIEW_INFORMATION_NO"/>
+			  <result property="interviewReviewNo" column="INTERVIEW_REVIEW_NO"/>
+		      <result property="evaluation"           column="EVALUATION"/>
+		      <result property="interviewLevel"       column="INTERVIEW_LEVEL"/>
+		      <result property="interviewType"        column="INTERVIEW_TYPE"/>
+		      <result property="interviewContent"     column="INTERVIEW_CONTENT"/>
+		</association>
+		
+		<association property="passInformation" javaType="PassInformationVO">
+	      <id     property="passInformationNo"   column="PASS_INFORMATION_NO"/>
+	       <result property="interviewReviewNo" column="INTERVIEW_REVIEW_NO"/>
+	      <result property="interviewQuestion"   column="INTERVIEW_QUESTION"/>
+	      <result property="tip"                 column="TIP"/>
+	      <result property="interviewPassYn"    column="INTERVIEW_PASS_YN"/>
+		</association>
+	</resultMap>
+
+
 	<select id="selectInterviewList" resultType="kr.or.ddit.vo.recruitment.InterviewVO">
 		
 	  SELECT
@@ -17,17 +46,30 @@
 	    WHERE USER_ID = #{userId}
 	</select>
 	
-	<select id="selectInterviewReview" resultType="kr.or.ddit.vo.community.InterviewReviewVO">
-		 SELECT
-	      INTERVIEW_REVIEW_NO,
-	      INTERVIEW_NO,
-	      COM_ID,
-	      JOB_CODE,
-	      INTERVIEW_DATE,
-	      TO_CHAR(INTERVIEW_REVIEW_DATE, 'YYYY-MM-DD HH24:MI:SS'),
-	      USER_ID
-	    FROM INTERVIEW_REVIEW
-	    WHERE INTERVIEW_REVIEW_NO = #{interviewReviewNo}
+	<select id="selectInterviewReview" resultMap="reviewDetailMap">
+		
+		SELECT
+		    r.INTERVIEW_REVIEW_NO,
+		    r.INTERVIEW_NO,
+		    r.COM_ID,
+		    r.JOB_CODE,
+		    r.INTERVIEW_DATE,
+		    r.INTERVIEW_REVIEW_DATE,
+		    i.INTERVIEW_INFORMATION_NO,
+		    i.EVALUATION,
+		    i.INTERVIEW_LEVEL,
+		    i.INTERVIEW_TYPE,
+		    i.INTERVIEW_CONTENT,
+		    p.PASS_INFORMATION_NO,
+		    p.INTERVIEW_QUESTION,
+		    p.TIP,
+		    p.INTERVIEW_PASS_YN
+		FROM INTERVIEW_REVIEW r
+		LEFT JOIN INTERVIEW_INFORMATION i
+		  ON r.INTERVIEW_REVIEW_NO = i.INTERVIEW_REVIEW_NO
+		LEFT JOIN PASS_INFORMATION p
+		  ON r.INTERVIEW_REVIEW_NO = p.INTERVIEW_REVIEW_NO
+		WHERE r.INTERVIEW_REVIEW_NO = #{interviewReviewNo}
 	</select>
 
 
@@ -60,6 +102,8 @@
 	 </select>
 	 
 	 
+	 
+	 
 	 <insert id="insertInterviewReview">
 	 		 <!-- 	 <selectKey keyProperty="interviewReviewNo"
                resultType="string"
@@ -82,7 +126,8 @@
 	      #{jobCode},
 	      #{interviewDate},
 	      SYSDATE,               
-	      #{userId})
+	      #{userId}
+	   )
 	 </insert>
 	 
 	 

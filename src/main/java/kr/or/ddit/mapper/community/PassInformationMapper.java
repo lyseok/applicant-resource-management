@@ -6,10 +6,7 @@ import java.util.List;
 import kr.or.ddit.vo.community.PassInformationVO;
 
 public interface PassInformationMapper {
-	
-public List<PassInformationMapper> selectInterviewInfromationList();
-	
-	public PassInformationMapper selectInterviewInformationVO();
-	
+	public List<PassInformationMapper> selectPassInfromationList();
+	public PassInformationMapper selectPassInformation(String pInfoNo);
 	public int insertPassInformation(PassInformationVO passInfromation);
 }
