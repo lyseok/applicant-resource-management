@@ -51,14 +51,6 @@ public class CompanyServiceImpl implements CompanyService {
 		
 	}
 
-	@Override
-	public int idDuplicateCheck(String userId) {
-		int cnt = userMapper.existsById(userId);
-		if(cnt>0) {
-			throw new PKDuplicatedException(userId);
-		}
-		return cnt;
-	}
 
 
 }
