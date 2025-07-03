@@ -1,0 +1,43 @@
+package kr.or.ddit.ajax.community.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import kr.or.ddit.mapper.community.AdminCommentMapper;
+import kr.or.ddit.vo.community.AdminCommentVO;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class AdminCommentServiceImpl implements AdminCommentService {
+	
+	private final AdminCommentMapper mapper;
+
+	@Override
+	public Optional<AdminCommentVO> readAdminComment(String commentNo) {
+		return Optional.ofNullable(mapper.selectAdminComment(commentNo));
+	}
+
+	@Override
+	public List<AdminCommentVO> readAdminCommentList(String boardNo) {
+		return mapper.selectAdminCommentList(boardNo);
+	}
+
+	@Override
+	public void createAdminComment(AdminCommentVO comment) {
+		mapper.insertAdminComment(comment);	
+	}
+
+	@Override
+	public void modifyAdminComment(AdminCommentVO comment) {
+		mapper.updateAdminComment(comment);
+	}
+
+	@Override
+	public void removeAdminComment(String commentNo) {
+		mapper.deleteAdminComment(commentNo);
+	}
+
+}
