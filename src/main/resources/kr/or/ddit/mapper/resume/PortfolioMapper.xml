@@ -24,7 +24,7 @@
 	
 	<insert id="insertPortfolio">
 		INSERT INTO PORTFOLIO (		
-			<selectKey resultType="string" keyProperty="languageSkillNo" order="BEFORE">
+			<selectKey resultType="string" keyProperty="porCode" order="BEFORE">
 				SELECT
 			    'POR'||
 			    LPAD(NVL(TO_NUMBER(SUBSTR(MAX(POR_CODE), LENGTH('POR')+1)),0) + 1, 7, '0')
