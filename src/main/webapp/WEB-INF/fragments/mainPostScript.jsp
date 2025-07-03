@@ -20,3 +20,5 @@
 <script src="/dist/assets/js/login/login.js"></script>
 <script src="/dist/assets/js/join/member_join.js"></script>
 <script src="/dist/assets/js/common.js"></script>
+<script src="/js/fragments/mainHeader.js"></script>
+
