@@ -43,7 +43,7 @@ class AdminCommentMapperTest {
 		
 		assertEquals(1, mapper.insertAdminComment(comment));
 		
-		log.info("{}", mapper.selectAdminComment(comment.getBoardCommentNo()));
+		log.info("{}", mapper.selectAdminComment("CMT0000001"));
 	}
 
 	@Test
@@ -60,7 +60,7 @@ class AdminCommentMapperTest {
 		
 		assertEquals(1, mapper.updateAdminComment(comment));
 		
-		log.info("{}", mapper.selectAdminComment(comment.getBoardCommentNo()));
+		log.info("{}", mapper.selectAdminComment("CMT0000001"));
 	}
 
 	@Test
