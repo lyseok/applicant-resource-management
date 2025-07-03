@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.InBoardMapper">
+
+	<select id="selectInBoard" resultType="InBoardVO">
+		SELECT 
+			COMMU_POST_NO
+			, AVATAR_ID 
+		FROM 
+			IN_BOARD 
+		WHERE 
+			COMMU_POST_NO = #{commuPostNo} 
+			AND 
+			AVATAR_ID = #{avatarId}
+	</select>
+	
+	<select id="selectInBoardPostList" resultType="InBoardVO">
+		SELECT 
+			COMMU_POST_NO
+			, AVATAR_ID 
+		FROM 
+			IN_BOARD
+		WHERE
+			AVATAR_ID = #{avatarId}
+	</select>
+	
+	<select id="selectInBoardAvatarList" resultType="InBoardVO">
+		SELECT 
+			COMMU_POST_NO
+			, AVATAR_ID 
+		FROM 
+			IN_BOARD
+		WHERE
+			COMMU_POST_NO = #{commuPostNo} 
+	</select>
+	
+	<insert id="insertInBoard" parameterType="InBoardVO">
+		INSERT INTO IN_BOARD (
+			COMMU_POST_NO
+			, AVATAR_ID
+		) VALUES (
+			#{commuPostNo}
+			, #{avatarId}
+		)
+	</insert>
+	
+	<delete id="deleteInBoard" parameterType="InBoardVO">
+		DELETE FROM IN_BOARD 
+		WHERE 
+			COMMU_POST_NO = #{commuPostNo} 
+			AND 
+			AVATAR_ID = #{avatarId}
+	</delete>
+	
+</mapper>
+
+
+

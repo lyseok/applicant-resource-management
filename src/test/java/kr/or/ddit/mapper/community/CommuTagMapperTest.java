@@ -2,7 +2,7 @@ package kr.or.ddit.mapper.community;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
@@ -62,7 +62,7 @@ class CommuTagMapperTest {
 	@Test
 	void testDeleteCommuTag() {
 		mapper.deleteCommuTag("CTAG000001", "CMBD000004");
-		assertNotNull(mapper.selectCommuTag("CTAG000001", "CMBD000004"));
+		assertNull(mapper.selectCommuTag("CTAG000001", "CMBD000004"));
 	}
 
 }
