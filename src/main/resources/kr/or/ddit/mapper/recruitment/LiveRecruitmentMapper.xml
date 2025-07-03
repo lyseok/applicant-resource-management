@@ -4,7 +4,7 @@
 <!-- <resultMap type="RecruitmentNoticeVO" id="liveDetailMap" autoMapping="true">
 <id property="recruitmentNo" column="RECRUITMENT_NO"/>
 </resultMap> -->
-<select id="selectLiveRecruitment">
+<select id="selectLiveRecruitment" >
 	SELECT * 
 	FROM RECRUITMENT_NOTICE
 	ORDER BY RECRUITMENT_STARTDATE DESC
@@ -18,9 +18,9 @@
 
 <select id="salaryRecruitment" >
 	SELECT *
-	FROM RECUITMENT_NOTICE
-	WHERE RECRUITMENT_SALARY
-	ORDER BY DESC
+	FROM RECRUITMENT_NOTICE
+	WHERE RECRUITMENT_SALARY = '3500만원'
+	ORDER BY RECRUITMENT_NO DESC
 
 </select>
 

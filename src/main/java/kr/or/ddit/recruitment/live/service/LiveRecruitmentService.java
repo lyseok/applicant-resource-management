@@ -7,12 +7,15 @@ import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 
 public interface LiveRecruitmentService {
 	public List<RecruitmentNoticeVO> readRecruitmentList();
-
-	public Optional<RecruitmentNoticeVO> readRecruitmentNotice(String recruitmentNo);
+		// 전체
 	
-	 public Optional<RecruitmentNoticeVO> salaryRecruitment(String recruitmentNo);
-	 
+	public Optional<RecruitmentNoticeVO> readRecruitmentNotice(String recruitmentNo);
+		// 최신순
+	
+	 public List<RecruitmentNoticeVO> salaryRecruitment(String recruitmentNo);
+	 	// 연봉순
+	
 	 public RecruitmentNoticeVO selectliveRecruitmentDetail(String recruitmentNo);
-
+	 	// 상세정보
 
 }

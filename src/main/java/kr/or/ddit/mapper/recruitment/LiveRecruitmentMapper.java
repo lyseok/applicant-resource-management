@@ -11,11 +11,13 @@ import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 public interface LiveRecruitmentMapper {
  public List<RecruitmentNoticeVO> readRecruitmentNoticeList();
   
- public Optional<RecruitmentNoticeVO> readRecruitmentNotice(String recruitmentNo);
+ public Optional<RecruitmentNoticeVO> selectLiveRecruitment(String recruitmentNo);
  // 최신순으로 보기
  
- public Optional<RecruitmentNoticeVO> salaryRecruitment(String recruitmentNo);
+ public List<RecruitmentNoticeVO> salaryRecruitment(String recruitmentNo);
  // 연봉순으로 보기
+ 
+ public Optional<RecruitmentNoticeVO> hotRecruitment(String recruitmentNo);
  
  public RecruitmentNoticeVO selectliveRecruitmentDetail(String recruitmentNo);
  // 공고 자세히보기
