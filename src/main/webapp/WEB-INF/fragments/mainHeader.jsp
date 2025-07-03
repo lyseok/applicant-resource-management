@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <header id="sri_header" class="main bubble">
     <div class="wrap_header">
         <h1>
@@ -33,11 +33,25 @@
         </div>
         <div class="utility">
             <div class="sign">
-                <span class="btn_sign signin logoutBtn">로그아웃</span>
-                <hr>
-                <a href="/login" class="btn_sign signin">로그인</a>
-                <hr>
-                <a href="/signUp" class="btn_sign signup">회원가입</a>
+            
+            
+	            <sec:authorize access="isAuthenticated()">
+	            	<%-- 로그인이 되어 있을때 --%>
+	                <span class="btn_sign signin">
+						<sec:authentication property="principal.realUser.memName" />
+	                </span>
+	                <hr>
+	                <span class="btn_sign signin logoutBtn">로그아웃</span>
+				</sec:authorize>
+				
+				<sec:authorize access="!isAuthenticated()">
+	            	<%-- 로그인이 되어 있지 않을때 --%>
+	                <a href="/login" class="btn_sign signin">로그인</a>
+	                <hr>
+	                <a href="/signUp" class="btn_sign signup">회원가입</a>
+				</sec:authorize>
+
+<%--                 <span class="btn_sign signin">${principal.realUser.memName }</span> --%>
             </div>
             <div class="wrap_service">
                 <button class="btn_service" type="button" aria-expanded="false">
