@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.AdminMapper">
+
+<select id="selectAdminById" resultType="AdminVO">
+	SELECT
+      U.USER_ID            
+      , U.USER_PASSWORD      
+      , U.USER_ROLE          
+      , U.USER_WITHDRAW_DATE 
+      , U.USER_STATUS        
+      , U.USER_ENABLED       
+      , A.IS_ADMIN           
+    FROM ADMIN A
+    JOIN USERS U ON A.USER_ID = U.USER_ID
+    WHERE A.USER_ID = #{userId}
+</select>
+</mapper>
