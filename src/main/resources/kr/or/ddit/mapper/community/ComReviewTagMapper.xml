@@ -12,18 +12,18 @@
 	
 	<select id="selectComReviewTagList">
 		SELECT 
-			TAG_NO, 
-			COM_REVIEW_NO, 
-			COM_REVIEW_TAG_DATE 
+			TAG_NO
+			,COM_REVIEW_NO
+			,COM_REVIEW_TAG_DATE 
 		FROM COM_REVIEW_TAG
 	</select>
 	
 	<insert id="insertComReviewTag">
 		INSERT INTO COM_REVIEW_TAG (
-			TAG_NO, 
-			COM_REVIEW_NO, 
-			COM_REVIEW_TAG_DATE
-		) VALUES (
+			TAG_NO
+			,COM_REVIEW_NO
+			,COM_REVIEW_TAG_DATE) 
+		VALUES (
 			#{tagNo}, 
 			#{comReviewNo}, 
 			#{comReviewTagDate}
@@ -31,12 +31,13 @@
 	</insert>
 	
 	<update id="updateComReviewTag">
-		UPDATE COM_REVIEW_TAG 
-			SET COM_REVIEW_TAG_DATE = #{comReviewTagDate}
-		 WHERE TAG_NO = #{tagNo} AND COM_REVIEW_NO = #{comReviewNo}
+		UPDATE COM_REVIEW_TAG SET 
+			COM_REVIEW_TAG_DATE = #{comReviewTagDate} 
+		WHERE TAG_NO = #{tagNo} AND COM_REVIEW_NO = #{comReviewNo}
 	</update>
 	
 	<delete id="deleteComReviewTag">
-		DELETE FROM COM_REVIEW_TAG WHERE TAG_NO = #{tagNo} AND COM_REVIEW_NO = #{comReviewNo}
+		DELETE FROM COM_REVIEW_TAG 
+		WHERE TAG_NO = #{tagNo} AND COM_REVIEW_NO = #{comReviewNo}
 	</delete>
 </mapper>

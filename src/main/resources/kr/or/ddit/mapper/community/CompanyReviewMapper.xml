@@ -43,6 +43,35 @@
 	</select>
 	
 	
+	<select id="selectCompanyReviewByPk">
+		SELECT 
+			COMPANY_REVIEW_NO
+			, COM_ID
+			, JOB_CODE
+			, WORKING_YN
+			, COMPANY_REVIEW_STATUS
+			, COMPANY_REVIEW_ONE_LINE
+			, USER_ID
+			, STATUS
+		FROM COMPANY_REVIEW
+		WHERE COMPANY_REVIEW_NO = #{companyReviewNo}
+	</select>
+	
+	<select id="selectCompanyReviewList">
+		SELECT 
+			COMPANY_REVIEW_NO
+			, COM_ID
+			, JOB_CODE
+			, WORKING_YN
+			, COMPANY_REVIEW_STATUS
+			, COMPANY_REVIEW_ONE_LINE
+			, USER_ID
+			, STATUS
+		FROM COMPANY_REVIEW
+	</select>
+	
+	
+	
 	<select id="selectCompanyReviewWithQAList" resultMap="reviewWithQuestionsMap">
 		SELECT
 	      c.USER_ID,
@@ -59,7 +88,7 @@
 	    FROM TEAM1_202501F.COMPANY c
 	    INNER JOIN TEAM1_202501F.COMPANY_REVIEW r
 	      ON c.USER_ID = r.COM_ID
-	    INNER JOIN TEAM1_202501F.COMPANY_REVIEW_QUESTION q
+	    INNER JOIN COMPANY_REVIEW_QUESTION q
 	      ON r.COMPANY_REVIEW_NO = q.COMPANY_REVIEW_NO
 	    WHERE c.USER_ID = #{comId}
 	    ORDER BY r.COMPANY_REVIEW_NO,
@@ -69,6 +98,13 @@
 	
 	
 	<insert id="insertCompanyReview">
+		<selectKey resultType="string" keyProperty="companyReviewNo" order="BEFORE">
+		    SELECT
+		        'CPRV'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMPANY_REVIEW_NO), LENGTH('CPRV' ) + 1)), 0) + 1, 6, '0')
+		    FROM COMPANY_REVIEW
+		</selectKey>
+	
 		INSERT INTO COMPANY_REVIEW (
 			COMPANY_REVIEW_NO, 
 			COM_ID, JOB_CODE, 

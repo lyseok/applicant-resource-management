@@ -3,12 +3,12 @@
 <mapper namespace="kr.or.ddit.mapper.common.AvatarMapper">
 	<select id="selectAvatarById">
 		SELECT 
-			AVATAR_ID, 
-			USER_ID, 
-			TOP_JOB_CODE, 
-			AVATAR_NN, 
-			YEAR_CODE 
-		FROM AVATAR 
+		AVATAR_ID
+			, USER_ID
+			, TOP_JOB_CODE
+			, AVATAR_NN
+			, YEAR_CODE
+		FROM AVATAR
 		WHERE AVATAR_ID = #{avatarId}
 	</select>
 		
@@ -16,11 +16,11 @@
 	
 	<select id="selectAvatarList">
 		SELECT 
-			AVATAR_ID, 
-			USER_ID, 
-			TOP_JOB_CODE, 
-			AVATAR_NN, 
-			YEAR_CODE 
+		AVATAR_ID
+			, USER_ID
+			, TOP_JOB_CODE
+			, AVATAR_NN
+			, YEAR_CODE
 		FROM AVATAR
 	</select>
 	
@@ -33,28 +33,28 @@
 		    FROM AVATAR
 		</selectKey>
 		INSERT INTO AVATAR (
-			AVATAR_ID, 
-			USER_ID, 
-			TOP_JOB_CODE, 
-			AVATAR_NN, 
-			YEAR_CODE) 
-		VALUES (
-			#{avatarId}, 
-			#{userId}, 
-			#{topJobCode}, 
-			#{avatarNn}, 
-			#{yearCode}
+			AVATAR_ID
+			, USER_ID
+			, TOP_JOB_CODE
+			, AVATAR_NN
+			, YEAR_CODE
+		) VALUES (
+			#{avatarId}
+			, #{userId}
+			, #{topJobCode}
+			, #{avatarNn}
+			, #{yearCode}
 		)
 	</insert>
 	
 	
 	<update id="updateAvatar">
-		UPDATE AVATAR 
-			SET 
-			USER_ID = #{userId}, 
-			TOP_JOB_CODE = #{topJobCode},
-			AVATAR_NN = #{avatarNn}, 
-			YEAR_CODE = #{yearCode} 
+		UPDATE AVATAR
+		SET 
+			USER_ID = #{userId}
+			, TOP_JOB_CODE = #{topJobCode}
+			, AVATAR_NN = #{avatarNn}
+			, YEAR_CODE = #{yearCode}
 		WHERE AVATAR_ID = #{avatarId}
 	</update>
 	

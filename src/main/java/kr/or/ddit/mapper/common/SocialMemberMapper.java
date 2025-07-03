@@ -8,9 +8,9 @@ import kr.or.ddit.vo.common.SocialMemberVO;
 
 @Mapper
 public interface SocialMemberMapper {
-	public SocialMemberVO selectSocialMemberById(String id);
+	public SocialMemberVO selectSocialMemberById(SocialMemberVO vo);
 	public List<SocialMemberVO> selectSocialMemberList();
-	public int insertSocialMember();
-	public int updateSocialMember();
-	public int deleteSocialMember();
+	public int insertSocialMember(SocialMemberVO socialMember);
+	public int updateSocialMember(SocialMemberVO socialMember);
+	public int deleteSocialMember(SocialMemberVO vo);
 }

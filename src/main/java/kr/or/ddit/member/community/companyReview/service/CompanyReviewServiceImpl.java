@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.community.CompanyReviewMapper;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CompanyVO;
@@ -14,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CompanyReviewServiceImpl implements CompanyReviewService {
-	private final CompanyReviewMapper mapper;
+	private final CompanyMapper mapper;
 
 	@Override
 	public List<CompanyVO> readCompanyList() {

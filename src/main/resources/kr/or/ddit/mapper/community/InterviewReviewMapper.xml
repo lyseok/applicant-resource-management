@@ -46,6 +46,19 @@
 	    WHERE USER_ID = #{userId}
 	</select>
 	
+	
+	<select id="selInterviewReviewList">
+		SELECT 
+			INTERVIEW_REVIEW_NO
+				, INTERVIEW_NO
+				, COM_ID
+				, JOB_CODE
+				, INTERVIEW_DATE
+				, TO_CHAR(INTERVIEW_REVIEW_DATE, 'YYYY-MM-DD HH24:MI:SS')
+				, USER_ID
+			FROM INTERVIEW_REVIEW
+	</select>
+	
 	<select id="selectInterviewReview" resultMap="reviewDetailMap">
 		
 		SELECT
@@ -105,40 +118,35 @@
 	 
 	 
 	 <insert id="insertInterviewReview">
-	 		 <!-- 	 <selectKey keyProperty="interviewReviewNo"
-               resultType="string"
-               order="BEFORE">
-      SELECT INTERVIEW_REVIEW_SEQ.NEXTVAL
-      FROM DUAL
-    </selectKey> -->
-	   INSERT INTO INTERVIEW_REVIEW(
-	   		INTERVIEW_REVIEW_NO,
-	        INTERVIEW_NO,
-	        COM_ID,
-	        JOB_CODE,
-	        INTERVIEW_DATE,
-	        INTERVIEW_REVIEW_DATE,
-	        USER_ID
-	   )VALUES(
-	   	  #{interviewReviewNo},
-	      #{interviewNo},
-	      #{comId},
-	      #{jobCode},
-	      #{interviewDate},
-	      SYSDATE,               
-	      #{userId}
-	   )
+		 <selectKey resultType="string" keyProperty="interviewReviewNo" order="BEFORE">
+		    SELECT
+		        'IVRV'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INTERVIEW_REVIEW_NO), LENGTH('IVRV' ) + 1)), 0) + 1, 6, '0')
+		    FROM INTERVIEW_REVIEW
+		</selectKey>
+		
+	  INSERT INTO INTERVIEW_REVIEW (
+			INTERVIEW_REVIEW_NO
+				, INTERVIEW_NO
+				, COM_ID
+				, JOB_CODE
+				, INTERVIEW_DATE
+				, INTERVIEW_REVIEW_DATE
+				, USER_ID
+			) VALUES (
+			#{interviewReviewNo}
+				, #{interviewNo}
+				, #{comId}
+				, #{jobCode}
+				, #{interviewDate}
+				, #{interviewReviewDate}
+				, #{userId}
+		)
 	 </insert>
 	 
 	 
 	 <update id="updateDeleteStatusMyInterviewReview">
-			UPDATE INTERVIEWREVIEW 
-				SET
-				INTERVIEW_NO = #{interviewNo},
-      			COM_ID = #{comId},
-     			JOB_CODE = #{jobCode}
-   				USER_ID = #{userId}
-   			 WHERE INTERVIEW_REVIEW_NO = #{interviewReviewNo}
+			<!-- 디비에 삭제여부 등록  -->
 	 </update>
 	 
 	 

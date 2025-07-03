@@ -4,43 +4,67 @@
 
 
   <select id="selectPassInfromationList">
-    SELECT
-      PASS_INFORMATION_NO,
-      INTERVIEW_REVIEW_NO,
-      INTERVIEW_QUESTION,
-      TIP,
-      INTERVIEW_PASS_YN
-    FROM PASS_INFORMATION
-    ORDER BY PASS_INFORMATION_NO
+    SELECT 
+	PASS_INFORMATION_NO
+		, INTERVIEW_REVIEW_NO
+		, INTERVIEW_QUESTION
+		, TIP
+		, INTERVIEW_PASS_YN
+	FROM PASS_INFORMATION
   </select>
 
  
-  <select id="selectPassInformation">
-    SELECT
-      PASS_INFORMATION_NO,
-      INTERVIEW_REVIEW_NO,
-      INTERVIEW_QUESTION,
-      TIP,
-      INTERVIEW_PASS_YN
-    FROM PASS_INFORMATION
-    WHERE PASS_INFORMATION_NO = #{passInformationNo}
+  <select id="selectPassInformationByPk">
+    SELECT 
+	PASS_INFORMATION_NO
+		, INTERVIEW_REVIEW_NO
+		, INTERVIEW_QUESTION
+		, TIP
+		, INTERVIEW_PASS_YN
+	FROM PASS_INFORMATION
+	WHERE PASS_INFORMATION_NO = #{passInformationNo}
   </select>
 
 
   <insert id="insertPassInformation">
+  
+	<selectKey resultType="string" keyProperty="passInformationNo" order="BEFORE">
+	    SELECT
+	        'PSIF'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PASS_INFORMATION_NO), LENGTH('PSIF' ) + 1)), 0) + 1, 6, '0')
+	    FROM PASS_INFORMATION
+	</selectKey>
+	
     INSERT INTO PASS_INFORMATION (
-      PASS_INFORMATION_NO,
-      INTERVIEW_REVIEW_NO,
-      INTERVIEW_QUESTION,
-      TIP,
-      INTERVIEW_PASS_YN
-    ) VALUES (
-      #{passInformationNo},
-      #{interviewReviewNo},
-      #{interviewQuestion},
-      #{tip},
-      #{interviewPassYn}
-    )
+		PASS_INFORMATION_NO
+			, INTERVIEW_REVIEW_NO
+			, INTERVIEW_QUESTION
+			, TIP
+			, INTERVIEW_PASS_YN
+		) VALUES (
+		#{passInformationNo}
+			, #{interviewReviewNo}
+			, #{interviewQuestion}
+			, #{tip}
+			, #{interviewPassYn}
+		)
   </insert>
+  
+  
+  <update id="updatePassInformation">
+  	UPDATE PASS_INFORMATION
+	SET 
+	INTERVIEW_REVIEW_NO = #{interviewReviewNo}
+		, INTERVIEW_QUESTION = #{interviewQuestion}
+		, TIP = #{tip}
+		, INTERVIEW_PASS_YN = #{interviewPassYn}
+	WHERE PASS_INFORMATION_NO = #{passInformationNo}
+  </update>
+  
+  
+  <delete id="deletePassInformation">
+  	DELETE FROM PASS_INFORMATION
+		WHERE PASS_INFORMATION_NO = #{passInformationNo}
+  </delete>
 	
 </mapper>

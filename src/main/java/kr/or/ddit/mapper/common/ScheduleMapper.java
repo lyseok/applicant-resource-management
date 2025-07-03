@@ -12,5 +12,5 @@ public interface ScheduleMapper {
 	public List<ScheduleVO> selectScheduleList();
 	public int insertSchedule(ScheduleVO schedule);
 	public int updateSchedule(ScheduleVO schedule);
-	public int deleteSchedule();
+	public int deleteSchedule(String scheduleNo);
 }

@@ -59,7 +59,7 @@ class CompanyMapperTest {
 	@Test
 	void testUpdateCompany() {
 		 CompanyVO newCompany = new CompanyVO();
-		 	
+		 	newCompany.setUserId("USR006");
 	        newCompany.setComName("JUnit Company");
 	        newCompany.setComInfo("Unit test company");
 	        newCompany.setComNum("01012345678");
@@ -71,14 +71,14 @@ class CompanyMapperTest {
 	        newCompany.setComPayment("N");
 	        newCompany.setIndustryType("IT");
 	        
-	      CompanyVO vo = mapper.selectCompanyById("comp000001");
+	      CompanyVO vo = mapper.selectCompanyById("USR006");
 	      log.info("{}", vo);
 	}
 	
 	@Test
 	void testDeleteCompany() {
-		mapper.deleteCompany("comp000001");
-		assertNull(mapper.selectCompanyById("comp000001"));
+		mapper.deleteCompany("USR006");
+		assertNull(mapper.selectCompanyById("USR006"));
 		
 	}
 

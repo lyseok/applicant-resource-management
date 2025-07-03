@@ -22,52 +22,48 @@ class ProposalMapperTest {
 			log.info("{}", propo);
 		});
 	}
-	@Test
-	void testSelectProposalUser() {
-		mapper.selectProposalUser("USER001").forEach(propo ->{
-			log.info("{}", propo);
-		});
-	}
+	
 
 	@Test
-	void testSelectProposal() {
-		ProposalVO vo =	mapper.selectProposal("USER002");
+	void testSelectProposalByPk() {
+		ProposalVO vo =	mapper.selectProposalByPk("");
 		log.info("{}", vo);
 	}
 
 	@Test
 	void testInsertProposal() {
 	    ProposalVO proposal = new ProposalVO();
-        proposal.setUserId("testUser1");
+        proposal.setUserId("USR001");
         proposal.setProposalName("테스트 제안1");
         proposal.setProposalContent("이것은 테스트를 위한 제안 내용입니다.");
-        proposal.setRecruitmentNoticeNo("9999");
+        proposal.setRecruitmentNoticeNo("RECR000001");
+   
         
         mapper.InsertProposal(proposal);
         
-        ProposalVO vo =	mapper.selectProposal("9999");
-		log.info("{}", vo);
+        
         
 	}
 
 	@Test
 	void testUpdateProposal() {
 		 ProposalVO proposal = new ProposalVO();
-	        proposal.setUserId("testUser2");
-	        proposal.setProposalName("테스트 수정1");
-	        proposal.setProposalContent("이것은 테스트를 위한 제안 내용입니다.1");
-	        proposal.setRecruitmentNoticeNo("9990");
+	        proposal.setUserId("USR001");
+	        proposal.setProposalCode("PROP000001");
+	        proposal.setProposalName("테스트 수정2");
+	        proposal.setProposalContent("이것은 테스트를 위한 제안 내용입니다.");
+	        proposal.setRecruitmentNoticeNo("RECR000001");
 	        
 	        mapper.updateProposal(proposal);
 	        
-	        ProposalVO vo =	mapper.selectProposal("9990");
+	        ProposalVO vo =	mapper.selectProposalByPk("PROP000001");
 			log.info("{}", vo);
 	}
 
 	@Test
 	void testDeleteProposal() {
-		mapper.deleteProposal("PR002");
-		assertNull(mapper.selectProposal("USR001"));
+		mapper.deleteProposal("PROP000001");
+		assertNull(mapper.selectProposalByPk("PROP000001"));
 	}
 
 }

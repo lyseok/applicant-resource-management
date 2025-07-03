@@ -3,29 +3,30 @@
 <mapper namespace="kr.or.ddit.mapper.common.Oauth2TokenMapper">
 	<select id="selectOauth2TokenById">
 		SELECT 
-			SOCIAL_MEM_ID, 
-			SOCIAL_MEM_USER, 
-			SOCIAL_MEM_TOKEN_TYPE, 
-			SOCIAL_MEM_TOKEN, 
-			TOKEN_CREATE, 
-			TOKEN_FINISH, 
-			TOKEN_REFRESH, 
-			TOKEN_REFRESH_TIME 
-		FROM OAUTH2_TOKEN WHERE SOCIAL_MEM_ID = #{socialMemId}
+			SOCIAL_MEM_ID
+			, SOCIAL_MEM_USER
+			, SOCIAL_MEM_TOKEN_TYPE
+			, SOCIAL_MEM_TOKEN
+			, TO_CHAR(TOKEN_CREATE, 'YYYY-MM-DD HH24:MI:SS')
+			, TO_CHAR(TOKEN_FINISH, 'YYYY-MM-DD HH24:MI:SS')
+			, TOKEN_REFRESH
+			, TO_CHAR(TOKEN_REFRESH_TIME,'YYYY-MM-DD HH24:MI:SS')
+		FROM OAUTH2_TOKEN
+		WHERE SOCIAL_MEM_ID = #{socialMemId}
 	</select>
 
 
 
 	<select id="selectOauth2TokenList">
 		SELECT 
-			SOCIAL_MEM_ID,
-			SOCIAL_MEM_USER, 
-			SOCIAL_MEM_TOKEN_TYPE, 
-			SOCIAL_MEM_TOKEN, 
-			TOKEN_CREATE, 
-			TOKEN_FINISH, 
-			TOKEN_REFRESH, 
-			TOKEN_REFRESH_TIME 
+			SOCIAL_MEM_ID
+			, SOCIAL_MEM_USER
+			, SOCIAL_MEM_TOKEN_TYPE
+			, SOCIAL_MEM_TOKEN
+			, TO_CHAR(TOKEN_CREATE, 'YYYY-MM-DD HH24:MI:SS')
+			, TO_CHAR(TOKEN_FINISH, 'YYYY-MM-DD HH24:MI:SS')
+			, TOKEN_REFRESH
+			, TO_CHAR(TOKEN_REFRESH_TIME,'YYYY-MM-DD HH24:MI:SS')
 		FROM OAUTH2_TOKEN
 	</select>
 	
@@ -38,36 +39,37 @@
 			    FROM OAUTH2_TOKEN
 			</selectKey>
 		INSERT INTO OAUTH2_TOKEN (
-			SOCIAL_MEM_ID, 
-			SOCIAL_MEM_USER, 
-			SOCIAL_MEM_TOKEN_TYPE, 
-			SOCIAL_MEM_TOKEN, 
-			TOKEN_CREATE, 
-			TOKEN_FINISH, 
-			TOKEN_REFRESH, 
-			TOKEN_REFRESH_TIME
-		) VALUES (
-			#{socialMemId}, 
-			#{socialMemUser}, 
-			#{socialMemTokenType}, 
-			#{socialMemToken}, #{tokenCreate}, 
-			#{tokenFinish}, 
-			#{tokenRefresh}, 
-			#{tokenRefreshTime}
-		)
+				SOCIAL_MEM_ID
+				, SOCIAL_MEM_USER
+				, SOCIAL_MEM_TOKEN_TYPE
+				, SOCIAL_MEM_TOKEN
+				, TOKEN_CREATE
+				, TOKEN_FINISH
+				, TOKEN_REFRESH
+				, TOKEN_REFRESH_TIME
+			) VALUES (
+			#{socialMemId}
+				, #{socialMemUser}
+				, #{socialMemTokenType}
+				, #{socialMemToken}
+				, SYSDATE, 
+				, #{tokenFinish}
+				, #{tokenRefresh}
+				, #{tokenRefreshTime}
+			)
 	</insert>
 	
 	
 	<update id="updateOauth2Token">
-		UPDATE OAUTH2_TOKEN 
-			SET 
-			SOCIAL_MEM_USER = #{socialMemUser}, 
-			SOCIAL_MEM_TOKEN_TYPE = #{socialMemTokenType}, 
-			SOCIAL_MEM_TOKEN = #{socialMemToken}, 
-			TOKEN_CREATE = #{tokenCreate}, 
-			TOKEN_FINISH = #{tokenFinish}, 
-			TOKEN_REFRESH = #{tokenRefresh}, 
-			TOKEN_REFRESH_TIME = #{tokenRefreshTime} 
+		UPDATE OAUTH2_TOKEN
+		SET 
+			SOCIAL_MEM_USER = #{socialMemUser}
+			, SOCIAL_MEM_TOKEN_TYPE = #{socialMemTokenType}
+			, SOCIAL_MEM_TOKEN = #{socialMemToken}
+			, TOKEN_CREATE = #{tokenCreate}
+			, TOKEN_FINISH = #{tokenFinish}
+			, TOKEN_REFRESH = #{tokenRefresh}
+			, TOKEN_REFRESH_TIME = #{tokenRefreshTime}
 		WHERE SOCIAL_MEM_ID = #{socialMemId}
 	</update>
 	

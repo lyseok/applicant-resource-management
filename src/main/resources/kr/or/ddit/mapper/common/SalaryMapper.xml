@@ -2,7 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.SalaryMapper">
 	
-	<select id="selectSalary" resultType="kr.or.ddit.vo.common.SalaryVO">
+	
+	<select id="selectSalaryByPk">
+		SELECT 
+			SALARY_ID
+			, USER_ID
+			, CODE_DETAIL_NO
+			, SALARY_MIN
+			, SALARY_MAX
+			, CREATE_DATE
+		FROM SALARY
+		WHERE SALARY_ID = #{salaryId}
+	
+	</select>
+	
+
+	<select id="selectSalaryList" resultType="kr.or.ddit.vo.common.SalaryVO">
+		SELECT 
+			SALARY_ID
+			, USER_ID
+			, CODE_DETAIL_NO
+			, SALARY_MIN
+			, SALARY_MAX
+			, CREATE_DATE
+		FROM SALARY
+	</select>
+	
+	
+	
+	<select id="selectSalaryByCompany" resultType="kr.or.ddit.vo.common.SalaryVO">
 		 SELECT
 	        SALARY_ID,
 	        USER_ID,
@@ -12,17 +40,6 @@
 	        CREATE_DATE
 	    FROM SALARY
 	    WHERE USER_ID = #{userId}
-	</select>
-
-	<select id="selectSalaryList" resultType="kr.or.ddit.vo.common.SalaryVO">
-		SELECT
-			SALARY_ID,
-			USER_ID,
-			JOB_CODE,
-			SALARY_MIN,
-			SALARY_MAX,
-			CREATE_DATE
-		 FROM SALARY
 	</select>
 	
 	<select id="selectSalaryRangeList" resultType="kr.or.ddit.vo.common.SalaryVO">
@@ -57,22 +74,27 @@
 	
 	
 	<insert id="insertSalary">
-		 INSERT INTO SALARY (
-		      SALARY_ID,
-		      USER_ID,
-		      JOB_CODE,
-		      SALARY_MIN,
-		      SALARY_MAX,
-		      CREATE_DATE
-		      
-	    ) VALUES (
-		      #{salaryId},
-		      #{userId},
-		      #{jobCode},
-		      #{salaryMin},
-		      #{salaryMax},
-  			  TO_CHAR(SYSDATE, 'YYYYMMDD')
-	    )
+	<selectKey resultType="string" keyProperty="salaryId" order="BEFORE">
+		    SELECT
+		        'SLRY'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(SALARY_ID), LENGTH('SLRY' ) + 1)), 0) + 1, 6, '0')
+		    FROM SALARY
+		</selectKey>
+		INSERT INTO SALARY (
+				SALARY_ID
+				, USER_ID
+				, CODE_DETAIL_NO
+				, SALARY_MIN
+				, SALARY_MAX
+				, CREATE_DATE
+			) VALUES (
+			#{salaryId}
+				, #{userId}
+				, #{codeDetailNo}
+				, #{salaryMin}
+				, #{salaryMax}
+				, TO_CHAR(SYSDATE, 'YYYYMMDD')
+		)
 	</insert>
 
 	<update id="updateSalary">

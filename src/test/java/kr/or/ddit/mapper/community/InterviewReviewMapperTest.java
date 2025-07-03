@@ -32,7 +32,7 @@ class InterviewReviewMapperTest {
 	
 	@Test
 	void testSelectInterviewReview() {
-		InterviewReviewVO vo = mapper.selectInterviewReview("RV001");
+		InterviewReviewVO vo = mapper.selectInterviewReviewByPk("RV001");
 		
 		log.info("{}", vo);
 	}
@@ -99,7 +99,7 @@ class InterviewReviewMapperTest {
 	void testDeleteInfromation() {
 		mapper.deleteInterviewReview("INTV000001");
 		
-		assertNull(mapper.selectInterviewReview("INTV000001"));
+		assertNull(mapper.selectInterviewReviewByPk("INTV000001"));
 		
 	}
 	

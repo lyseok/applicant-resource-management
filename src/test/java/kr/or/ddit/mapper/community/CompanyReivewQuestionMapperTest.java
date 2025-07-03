@@ -19,7 +19,7 @@ class CompanyReivewQuestionMapperTest {
 	
 	@Test
 	void testSelectCompanyReview() {
-		CompanyReviewQuestionVO vo = mapper.selectCompanyReviewQuestionByNo("CQ0001");
+		CompanyReviewQuestionVO vo = mapper.selectCompanyReviewQuestionByPk("CQ0001");
 		log.info("{}", vo );
 	}
 	
@@ -30,12 +30,7 @@ class CompanyReivewQuestionMapperTest {
 		});
 	}
 	
-	@Test
-	void testSelectCompanyReviewQuestionListByNo() {
-		mapper.selectCompanyReviewQuestionListByNo("CR0001").forEach(list ->{
-			log.info("{}", list);
-		});
-	}
+	
 
 	@Test
 	void testInsertCompanyReviewQuestionWithAnswer() {
@@ -48,7 +43,7 @@ class CompanyReivewQuestionMapperTest {
 		
 		mapper.insertCompanyReviewQuestionWithAnswer(vo);
 		
-		CompanyReviewQuestionVO vo2 = mapper.selectCompanyReviewQuestionByNo("CQ9999");
+		CompanyReviewQuestionVO vo2 = mapper.selectCompanyReviewQuestionByPk("CQ9999");
 		log.info("{}",vo2);
 		
 	}
@@ -69,7 +64,7 @@ class CompanyReivewQuestionMapperTest {
 	@Test
 	void testDeleteCompanyReview() {
 		mapper.deleteCompanyReviewQuestion("CQ0001");
-		assertNull(mapper.selectCompanyReviewQuestionByNo("CQ0001"));
+		assertNull(mapper.selectCompanyReviewQuestionByPk("CQ0001"));
 	}
 
 }

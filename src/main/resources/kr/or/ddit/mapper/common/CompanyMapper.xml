@@ -51,60 +51,55 @@
 	</select>
 	
 	<insert id="insertCompany">
-		<selectKey resultType="string" keyProperty="userId" order="BEFORE">
-		    SELECT
-		        'COMP'||
-		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(USER_ID), LENGTH('COMP' ) + 1)), 0) + 1, 6, '0')
-		    FROM COMPANY
-		</selectKey>
 		INSERT INTO COMPANY (
-		    USER_ID, 
-		    COM_NAME, 
-		    COM_INFO, 
-		    COM_NUM, 
-		    COM_EMAIL, 
-		    COM_URL, 
-		    COM_CREATE_YEAR, 
-		    COM_MEM, 
-		    COM_LOGO, 
-		    COM_PAYMENT, 
-		    INDUSTRY_TYPE)
-		VALUES(
-		    #{userId}, 
-		    #{comName}, 
-		    #{comInfo},
-		    #{comNum}, 
-		    #{comEmail}, 
-		    #{comUrl}, 
-		    #{comCreateYear}, 
-		    #{comMem}, 
-		    #{comLogo}, 
-		    #{comPayment}, 
-		    #{industryType}
+			USER_ID
+			, COM_NAME
+			, COM_INFO
+			, COM_NUM
+			, COM_EMAIL
+			, COM_URL
+			, COM_CREATE_YEAR
+			, COM_MEM
+			, COM_LOGO
+			, COM_PAYMENT
+			, INDUSTRY_TYPE
+		) VALUES (
+		#{userId}
+			, #{comName}
+			, #{comInfo}
+			, #{comNum}
+			, #{comEmail}
+			, #{comUrl}
+			, #{comCreateYear}
+			, #{comMem}
+			, #{comLogo}
+			, #{comPayment}
+			, #{industryType}
 		)
 	</insert>
 	
 	
 	<update id="updateCompany">
-		UPDATE COMPANY 
+		UPDATE COMPANY
 		SET 
-			COM_NAME = #{comName}, 
-			COM_INFO = #{comInfo}, 
-			COM_NUM = #{comNum}, 
-			COM_EMAIL = #{comEmail}, 
-			COM_URL = #{comUrl}, 
-			COM_CREATE_YEAR = #{comCreateYear}, 
-			COM_MEM = #{comMem}, 
-			COM_LOGO = #{comLogo}, 
-			COM_PAYMENT = #{comPayment}, 
-			INDUSTRY_TYPE = #{industryType} 
+			COM_NAME = #{comName}
+			, COM_INFO = #{comInfo}
+			, COM_NUM = #{comNum}
+			, COM_EMAIL = #{comEmail}
+			, COM_URL = #{comUrl}
+			, COM_CREATE_YEAR = #{comCreateYear}
+			, COM_MEM = #{comMem}
+			, COM_LOGO = #{comLogo}
+			, COM_PAYMENT = #{comPayment}
+			, INDUSTRY_TYPE = #{industryType}
 		WHERE USER_ID = #{userId}
 	</update>
 	
 	
 	
 	<delete id="deleteCompany">
-		DELETE FROM COMPANY WHERE USER_ID = #{userId}
+		DELETE FROM COMPANY
+		WHERE USER_ID = #{userId}
 	</delete>
 	
 	

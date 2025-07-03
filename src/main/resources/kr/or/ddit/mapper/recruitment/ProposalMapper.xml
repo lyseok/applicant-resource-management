@@ -3,65 +3,58 @@
 <mapper namespace="kr.or.ddit.mapper.recruitment.ProposalMapper">
 
 	<select id="selectProposalList" resultType="kr.or.ddit.vo.recruitment.ProposalVO">
-	SELECT
-      PROPOSAL_CODE,
-      USER_ID,
-      PROPOSAL_NAME,
-      PROPOSAL_CONTENT,
-      RECRUITMENT_NOTICE_NO
-    FROM PROPOSAL
-    WHERE USER_ID = #{userId}
-	</select>
-	
-	<select id="selectProposalUser" resultType = "kr.or.ddit.vo.recruitment.ProposalVO">
-		SELECT
-	      PROPOSAL_CODE,
-	      USER_ID,
-	      PROPOSAL_NAME,
-	      PROPOSAL_CONTENT,
-	      RECRUITMENT_NOTICE_NO
-	    FROM PROPOSAL
-	    WHERE RECRUITMENT_NOTICE_NO = #{recruitmentNoticeNo}
+		SELECT 
+			PROPOSAL_CODE
+			, USER_ID
+			, PROPOSAL_NAME
+			, PROPOSAL_CONTENT
+			, RECRUITMENT_NOTICE_NO
+		FROM PROPOSAL
 	</select>
 	
 	
-	<select id="selectProposal">
-		SELECT
-		      PROPOSAL_CODE,
-		      USER_ID,
-		      PROPOSAL_NAME,
-		      PROPOSAL_CONTENT,
-		      RECRUITMENT_NOTICE_NO
-		    FROM PROPOSAL
-		    WHERE RECRUITMENT_NOTICE_NO = #{recruitmentNoticeNo}
+	<select id="selectProposalByPk">
+		SELECT 
+			PROPOSAL_CODE
+			, USER_ID
+			, PROPOSAL_NAME
+			, PROPOSAL_CONTENT
+			, RECRUITMENT_NOTICE_NO
+		FROM PROPOSAL
+		WHERE PROPOSAL_CODE = #{proposalCode}
 	</select>
 	
 	<insert id = "InsertProposal">
-		 INSERT INTO PROPOSAL(
-		 	PROPOSAL_CODE, 
-		 	USER_ID, 
-		 	PROPOSAL_NAME, 
-		 	PROPOSAL_CONTENT, 
-		 	RECRUITMENT_NOTICE_NO
-		 	)
-		 	
-		  VALUES(
-		    #{proposalCode},
-		    #{userId},
-		    #{proposalName},
-		    #{proposalContent},
-		    #{recruitmentNoticeNo}
-		   )
+		<selectKey resultType="string" keyProperty="proposalCode" order="BEFORE">
+		    SELECT
+		        'PROP'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PROPOSAL_CODE), LENGTH('PROP' ) + 1)), 0) + 1, 6, '0')
+		    FROM PROPOSAL
+		</selectKey>
+	
+		INSERT INTO PROPOSAL (
+		PROPOSAL_CODE
+			, USER_ID
+			, PROPOSAL_NAME
+			, PROPOSAL_CONTENT
+			, RECRUITMENT_NOTICE_NO
+		) VALUES (
+			#{proposalCode}
+			, #{userId}
+			, #{proposalName}
+			, #{proposalContent}
+			, #{recruitmentNoticeNo}
+		)
 	</insert>
 	
 	<update id="updateProposal">
-		UPDATE PROPOSAL SET 
-			USER_ID = #{userId}, 
-			PROPOSAL_NAME = #{proposalName}, 
-			PROPOSAL_CONTENT = #{proposalContent}, 
-			RECRUITMENT_NOTICE_NO = #{recruitmentNoticeNo} 
+		UPDATE PROPOSAL
+		SET 
+			USER_ID = #{userId}
+			, PROPOSAL_NAME = #{proposalName}
+			, PROPOSAL_CONTENT = #{proposalContent}
+			, RECRUITMENT_NOTICE_NO = #{recruitmentNoticeNo}
 		WHERE PROPOSAL_CODE = #{proposalCode}
-	
 	</update>
 	
 	

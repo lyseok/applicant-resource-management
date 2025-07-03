@@ -9,15 +9,12 @@ import kr.or.ddit.vo.community.CompanyReviewQuestionVO;
 @Mapper
 public interface CompanyReivewQuestionMapper {
 	
-	public CompanyReviewQuestionVO selectCompanyReviewQuestionByNo(String questionNo);
+	public CompanyReviewQuestionVO selectCompanyReviewQuestionByPk(String questionNo);
 	public List<CompanyReviewQuestionVO> selectCompanyReviewQuestionList();
-	public List<CompanyReviewQuestionVO> selectCompanyReviewQuestionListByNo(String reviewNo);
-	
-	
 	public int insertCompanyReviewQuestionWithAnswer(CompanyReviewQuestionVO companyReviewQuestion);
-	public int deleteCompanyReviewQuestion(String questionNo);
 	public int updateCompanyReviewQuetiion(CompanyReviewQuestionVO companyReviewQuestion);
-	
+	public int deleteCompanyReviewQuestion(String questionNo);
+	//public List<CompanyReviewQuestionVO> selectCompanyReviewQuestionListByNo(String reviewNo);
 
 	
 }

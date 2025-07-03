@@ -27,8 +27,8 @@ class SalaryMapperTest {
 	}
 
 	@Test
-	void testSelectSalary() {
-		SalaryVO salaryVO = mapper.selectSalary("corp01");
+	void testSelectSalaryByCompany() {
+		SalaryVO salaryVO = mapper.selectSalaryByCompany("corp01");
 		log.info("{}", salaryVO);
 	}
 
