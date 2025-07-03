@@ -22,7 +22,7 @@
 	    , A.CODE_GROUP_NAME
 	    , A.DESCRIPTION
 	    , A.USE_YN
-	    , A.CRATE_DATE
+	    , A.CREATE_DATE
 	    , A.UPDATE_DATE
 	    , B.CODE_DETAIL_NO
 	    , B.CODE_GROUP_NO
@@ -30,11 +30,63 @@
 	    , B.CODE_NAME
 	    , B.SORT_ORDER
 	    , B.USE_YN
-	    , B.CRATE_DATE
+	    , B.CREATE_DATE
 	    , B.UPDATE_DATE
 	FROM CMN_CODE_GROUP A
 	LEFT OUTER JOIN CMN_CODE B
 	ON A.CODE_GROUP_NO = B.CODE_GROUP_NO
 </select>
+
+<select id="selectCmnCodeGroupByPk" resultMap="cmnCodeGroupMap">
+	SELECT A.CODE_GROUP_NO
+	    , A.CODE_GROUP_NAME
+	    , A.DESCRIPTION
+	    , A.USE_YN
+	    , A.CREATE_DATE
+	    , A.UPDATE_DATE
+	    , B.CODE_DETAIL_NO
+	    , B.CODE_GROUP_NO
+	    , B.UPPER_CODE_NO
+	    , B.CODE_NAME
+	    , B.SORT_ORDER
+	    , B.USE_YN
+	    , B.CREATE_DATE
+	    , B.UPDATE_DATE
+	FROM CMN_CODE_GROUP A
+	LEFT OUTER JOIN CMN_CODE B
+	ON A.CODE_GROUP_NO = B.CODE_GROUP_NO
+	WHERE A.CODE_GROUP_NO = #{codeGroupNo}
+</select>
+
+<insert id="insertCmnCodeGroup">
+INSERT INTO CMN_CODE_GROUP (
+	CODE_GROUP_NO
+	, CODE_GROUP_NAME
+	, DESCRIPTION
+	, USE_YN
+	, CREATE_DATE
+) VALUES (
+	#{codeGroupNo}
+	, #{codeGroupName}
+	, #{description}
+	, #{useYn}
+	, SYSDATE
+)
+</insert>
+
+<update id="updateCmnCodeGroup">
+	UPDATE CMN_CODE_GROUP
+	SET 
+		CODE_GROUP_NAME = #{codeGroupName}
+		, DESCRIPTION = #{description}
+		, USE_YN = #{useYn}
+		, UPDATE_DATE = SYSDATE
+	WHERE CODE_GROUP_NO = #{codeGroupNo}
+</update>
+
+<delete id="deleteCmnCodeGroup">
+	DELETE FROM CMN_CODE_GROUP
+	WHERE CODE_GROUP_NO = #{codeGroupNo}
+</delete>
 
 </mapper>
