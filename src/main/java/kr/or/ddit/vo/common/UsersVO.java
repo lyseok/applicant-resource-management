@@ -18,5 +18,4 @@ public class UsersVO implements Serializable{
 	private boolean userStatus;
 	private String userEnabled;
 	
-	private MemberVO member;
 }
