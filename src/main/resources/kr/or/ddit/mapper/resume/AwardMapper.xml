@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.AwardMapper">
+	<select id="seletAwardList">
+		SELECT AWARD_CODE
+			   , RESUME_NO
+			   , AWARD_NAME
+			   , AWARD_DATE
+			   , HOSTING 
+		  FROM AWARD
+	</select>
+	
+	<select id="seletAwardDetail">
+		SELECT AWARD_CODE
+			   , RESUME_NO
+			   , AWARD_NAME
+			   , AWARD_DATE
+			   , HOSTING 
+		  FROM AWARD
+		 WHERE AWARD_CODE = #{awardCode}
+	</select>
+	
+	<insert id="insertAward">
+		<selectKey resultType="string" keyProperty="awardCode" order="BEFORE">
+		    SELECT
+		        'AWAD'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(AWARD_CODE), LENGTH('AWAD' ) + 1)), 0) + 1, 6, '0')
+		    FROM AWARD
+		</selectKey>
+		INSERT INTO AWARD (
+			AWARD_CODE
+			, RESUME_NO
+			, AWARD_NAME
+			, AWARD_DATE
+			, HOSTING
+		) VALUES (
+			#{awardCode}
+			, #{resumeNo}
+			, #{awardName}
+			, REPLACE(#{awardDate}, '-', '')
+			, #{hosting}
+		)
+	</insert>
+	
+	<update id="updateAward">
+		UPDATE AWARD 
+		   SET RESUME_NO = #{resumeNo}
+		   	   , AWARD_NAME = #{awardName}
+		   	   , AWARD_DATE = REPLACE(#{awardDate}, '-', '')
+		   	   , HOSTING = #{hosting}
+		 WHERE AWARD_CODE = #{awardCode}
+	</update>
+	
+	<delete id="deleteAward">
+		DELETE FROM AWARD
+		 WHERE AWARD_CODE = #{awardCode}
+	</delete>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.CareerMapper">
+	<select id="seletCareerList">
+		SELECT CAREER_NO
+			   , RESUME_NO
+			   , JOB_CODE
+			   , START_WORK_DATE
+			   , RETIRE_DATE
+			   , TENURE
+			   , DEPARTMENT
+			   , RESPONSIBILITY
+			   , FREELANCER
+			   , JOB_GRADE_CODE
+			   , POSITION_CODE
+			   , CAREER_YEAR
+			   , SALARY
+			   , LOCATION
+		  FROM CAREER
+	</select>
+	
+	<select id="seletCareerDetail">
+		SELECT CAREER_NO
+			   , RESUME_NO
+			   , JOB_CODE
+			   , START_WORK_DATE
+			   , RETIRE_DATE
+			   , TENURE
+			   , DEPARTMENT
+			   , RESPONSIBILITY
+			   , FREELANCER
+			   , JOB_GRADE_CODE
+			   , POSITION_CODE
+			   , CAREER_YEAR
+			   , SALARY
+			   , LOCATION 
+		  FROM CAREER 
+		 WHERE CAREER_NO = #{careerNo}
+	</select>
+	
+	<insert id="insertCareer">
+	<selectKey resultType="string" keyProperty="careerNo" order="BEFORE">
+	    SELECT
+	        'CARE'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(CAREER_NO), LENGTH('CRER' ) + 1)), 0) + 1, 6, '0')
+	    FROM CAREER
+	</selectKey>
+		INSERT INTO CAREER (
+			CAREER_NO
+			, RESUME_NO
+			, JOB_CODE
+			, START_WORK_DATE
+			, RETIRE_DATE
+			, TENURE
+			, DEPARTMENT
+			, RESPONSIBILITY
+			, FREELANCER
+			, JOB_GRADE_CODE
+			, POSITION_CODE
+			, CAREER_YEAR
+			, SALARY
+			, LOCATION
+		) VALUES (
+			#{careerNo}
+			, #{resumeNo}
+			, #{jobCode}
+			, REPLACE(#{startWorkDate}, '-', '')
+			, REPLACE(#{retireDate}, '-', '')
+			, #{tenure}
+			, #{department}
+			, #{responsibility}
+			, #{freelancer}
+			, #{jobGradeCode}
+			, #{positionCode}
+			, #{careerYear}
+			, #{salary}
+			, #{location}
+		)
+	</insert>
+	
+	<update id="updateCareer">
+		UPDATE CAREER 
+		   SET RESUME_NO = #{resumeNo}
+		   	   , JOB_CODE = #{jobCode}
+		   	   , START_WORK_DATE = REPLACE(#{startWorkDate}, '-', '')
+		   	   , RETIRE_DATE = REPLACE(#{retireDate}, '-', '')
+		   	   , TENURE = #{tenure}
+		   	   , DEPARTMENT = #{department}
+		   	   , RESPONSIBILITY = #{responsibility}
+		   	   , FREELANCER = #{freelancer}
+		   	   , JOB_GRADE_CODE = #{jobGradeCode}
+		   	   , POSITION_CODE = #{positionCode}
+		   	   , CAREER_YEAR = #{careerYear}
+		   	   , SALARY = #{salary}
+		   	   , LOCATION = #{location} 
+		 WHERE CAREER_NO = #{careerNo}
+	</update>
+	
+	<delete id="deleteCareer">
+		DELETE FROM CAREER 
+		 WHERE CAREER_NO = #{careerNo}
+	</delete>
+</mapper>
