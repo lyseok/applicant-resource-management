@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.CompanyReivewQuestionMapper">
+	
+	<select id="selectCompanyReviewQuestionByNo">
+			SELECT 
+			COMPANY_REVIEW_QUESTION_NO,
+		    COMPANY_REVIEW_NO,
+		    REVIEW_SUBJECT_CODE,
+		    COMPANY_REVIEW_SCORE
+		 FROM COMPANY_REVIEW_QUESTION
+		 WHERE COMPANY_REVIEW_QUESTION_NO = #{companyReviewQuestionNo}
+	</select>
+	
+	
+	<select id="selectCompanyReviewQuestionList" resultType="CompanyReviewQuestionVO">
+		SELECT 
+			COMPANY_REVIEW_QUESTION_NO,
+		    COMPANY_REVIEW_NO,
+		    REVIEW_SUBJECT_CODE,
+		    COMPANY_REVIEW_SCORE
+		 FROM COMPANY_REVIEW_QUESTION
+		 WHERE COMPANY_REVIEW_NO = #{companyReviewNo}
+	</select>
+	
+	
+	<insert id="insertCompanyReviewQuestionWithAnswer">
+		 INSERT INTO COMPANY_REVIEW_QUESTION (
+		    COMPANY_REVIEW_QUESTION_NO,
+		    COMPANY_REVIEW_NO,
+		    REVIEW_SUBJECT_CODE,
+		    COMPANY_REVIEW_SCORE
+	  ) VALUES (
+		    #{companyReviewQuestionNo},
+		    #{companyReviewNo},
+		    #{reviewSubjectCode},
+		    #{companyReviewScore}
+  	  )
+	</insert>
+	
+	
+	<update id="updateCompanyReviewQuetiion">
+		UPDATE COMPANY_REVIEW_QUESTION 
+			SET 
+			COMPANY_REVIEW_NO = #{companyReviewNo}, 
+			REVIEW_SUBJECT_CODE = #{reviewSubjectCode}, 
+			COMPANY_REVIEW_SCORE = #{companyReviewScore}
+	 WHERE COMPANY_REVIEW_QUESTION_NO = #{companyReviewQuestionNo}
+	
+	</update>
+	
+	
+	<delete id="deleteCompanyReviewQuestion">
+		DELETE FROM COMPANY_REVIEW_QUESTION 
+		WHERE COMPANY_REVIEW_QUESTION_NO = #{companyReviewQuestionNo}
+	</delete>
+	
+	
+	
+	
+
+</mapper>

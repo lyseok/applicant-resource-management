@@ -12,12 +12,12 @@ import kr.or.ddit.vo.community.CompanyReviewVO;
 @Mapper
 public interface CompanyReviewMapper {
 	public List<CompanyVO> selectCompanyList();
-	
-	public CompanyReviewVO selectCompanyReviewList(String reviewNo);
+	public List<CompanyReviewVO> selectCompanyReviewWithQAList(String comId);
+	public List<CompanyReviewVO> selectCompanyReviewList(String userId);
 	
 	public int insertCompanyReview(CompanyReviewVO companyReview);
-	public int deleteCompanyReview(String userId);
-	public int updateDeleteStatusMyCompanyReview(String userId);
+	public int deleteCompanyReview(String reviewNo);
+	public int updateDeleteStatusMyCompanyReview(String reviewNo);
 	
 	
 }

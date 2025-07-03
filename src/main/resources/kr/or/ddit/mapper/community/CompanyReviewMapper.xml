@@ -10,12 +10,12 @@
 
  <resultMap id="reviewWithQuestionsMap" type="kr.or.ddit.vo.community.CompanyReviewVO">
     <id     property="companyReviewNo"       column="COMPANY_REVIEW_NO"/>
- 
+    <result property="userId"                 column="USER_ID"/>
     <result property="jobCode"                column="JOB_CODE"/>
     <result property="workingYn"              column="WORKING_YN"/>
     <result property="companyReviewStatus"    column="COMPANY_REVIEW_STATUS"/>
     <result property="companyReviewOneLine"   column="COMPANY_REVIEW_ONE_LINE"/>
-    <result property="userId"                 column="USER_ID"/>
+   
 
 
     <collection property="companyReviewQuestion" ofType="kr.or.ddit.vo.community.CompanyReviewQuestionVO">
@@ -43,10 +43,65 @@
 	</select>
 	
 	
-	<select id="">
-	
-	
+	<select id="selectCompanyReviewWithQAList" resultMap="reviewWithQuestionsMap">
+		SELECT
+	      c.USER_ID,
+	      c.COM_NAME,
+	      r.COMPANY_REVIEW_NO,
+	      r.JOB_CODE,
+	      r.WORKING_YN,
+	      r.COMPANY_REVIEW_STATUS,
+	      r.COMPANY_REVIEW_ONE_LINE,
+	      r.USER_ID,
+	      q.COMPANY_REVIEW_QUESTION_NO,
+	      q.REVIEW_SUBJECT_CODE,
+	      q.COMPANY_REVIEW_SCORE
+	    FROM TEAM1_202501F.COMPANY c
+	    INNER JOIN TEAM1_202501F.COMPANY_REVIEW r
+	      ON c.USER_ID = r.COM_ID
+	    INNER JOIN TEAM1_202501F.COMPANY_REVIEW_QUESTION q
+	      ON r.COMPANY_REVIEW_NO = q.COMPANY_REVIEW_NO
+	    WHERE c.USER_ID = #{comId}
+	    ORDER BY r.COMPANY_REVIEW_NO,
+	             q.COMPANY_REVIEW_QUESTION_NO
+		
 	</select>
+	
+	
+	<insert id="insertCompanyReview">
+		INSERT INTO COMPANY_REVIEW (
+			COMPANY_REVIEW_NO, 
+			COM_ID, JOB_CODE, 
+			WORKING_YN, 
+			COMPANY_REVIEW_STATUS, 
+			COMPANY_REVIEW_ONE_LINE, 
+			USER_ID, 
+			STATUS
+			) VALUES (
+			#{companyReviewNo}, 
+			#{comId}, 
+			#{jobCode}, 
+			#{workingYn}, 
+			#{companyReviewStatus}, 
+			#{companyReviewOneLine}, 
+			#{userId}, 
+			'N'
+		)
+	</insert>
+	
+	<update id="updateDeleteStatusMyCompanyReview">
+		UPDATE COMPANY_REVIEW 
+			SET 
+		STATUS = 'Y' 
+		WHERE COMPANY_REVIEW_NO = #{companyReviewNo}
+	</update>
+	
+	
+	<delete id="deleteCompanyReview">
+		DELETE FROM COMPANY WHERE COMPANY_REVIEW_NO = #{companyReviewNo}
+	</delete>
+	
+	
 	
 
 	

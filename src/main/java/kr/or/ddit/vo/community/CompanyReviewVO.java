@@ -14,5 +14,6 @@ public class CompanyReviewVO implements Serializable {
 	private String workingYn;
 	private String companyReviewStatus;
 	private String companyReviewOneLine;
+	private String status; //삭제여부
 	private List<CompanyReviewQuestionVO> companyReviewQuestion;
 }
