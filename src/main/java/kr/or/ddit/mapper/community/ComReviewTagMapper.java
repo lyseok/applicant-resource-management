@@ -10,7 +10,7 @@ import kr.or.ddit.vo.community.ComReviewTagVO;
 public interface ComReviewTagMapper {
 	public ComReviewTagVO selectComReviewTagByNo(ComReviewTagVO comReviewTagVO);
 	public List<ComReviewTagVO> selectComReviewTagList();
+	public List<ComReviewTagVO> searchComReviewTagList(String comReviewNO);
 	public int insertComReviewTag(ComReviewTagVO comReviewTag);
-	public int updateComReviewTag(ComReviewTagVO comReviewTag);
-	public int deleteComReviewTag(ComReviewTagVO comReviewTag);
+	public int updateComReviewTag(ComReviewTagVO comReviewTag);	
 }

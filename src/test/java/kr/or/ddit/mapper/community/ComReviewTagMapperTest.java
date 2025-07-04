@@ -3,22 +3,43 @@ package kr.or.ddit.mapper.community;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import kr.or.ddit.vo.community.ComReviewTagVO;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@SpringBootTest
 class ComReviewTagMapperTest {
+	
+	@Autowired
+	ComReviewTagMapper mapper;
 
 	@Test
-	void testSelectComReviewTagByNo() {
-		fail("Not yet implemented");
+	void testSelectComReviewTagByNo(){
+		ComReviewTagVO vo = new ComReviewTagVO();
+		vo.setComReviewNo("");
+		vo.setTagNo("");
+		ComReviewTagVO vo2 =	mapper.selectComReviewTagByNo(vo);
+		log.info("{}", vo);
 	}
 
 	@Test
 	void testSelectComReviewTagList() {
-		fail("Not yet implemented");
+		mapper.selectComReviewTagList().forEach(list ->{
+			log.info("{}", list);
+		});
 	}
 
 	@Test
 	void testInsertComReviewTag() {
-		fail("Not yet implemented");
+		ComReviewTagVO vo = new ComReviewTagVO();
+		vo.setComReviewNo("CPRV000001");
+		mapper.insertComReviewTag(vo);
+		
+		ComReviewTagVO vo2 = mapper.selectComReviewTagByNo(vo);
+		log.info("{}", vo2);
 	}
 
 	@Test

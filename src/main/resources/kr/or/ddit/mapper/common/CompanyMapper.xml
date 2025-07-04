@@ -64,7 +64,7 @@
 			, COM_PAYMENT
 			, INDUSTRY_TYPE
 		) VALUES (
-		#{userId}
+			#{userId}
 			, #{comName}
 			, #{comInfo}
 			, #{comNum}

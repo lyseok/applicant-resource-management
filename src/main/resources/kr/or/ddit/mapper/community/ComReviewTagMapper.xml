@@ -14,30 +14,40 @@
 		SELECT 
 			TAG_NO
 			,COM_REVIEW_NO
-			,COM_REVIEW_TAG_DATE 
+			,TO_CHAR(COM_REVIEW_TAG_DATE, 'YYYY-MM-DD HH24:MI:SS') 
 		FROM COM_REVIEW_TAG
+	</select>
+	
+	
+	<select id="searchComReviewTagList">
+		SELECT 
+			TAG_NO
+			,COM_REVIEW_NO
+			,TO_CHAR(COM_REVIEW_TAG_DATE, 'YYYY-MM-DD HH24:MI:SS')
+		FROM COM_REVIEW_TAG
+		WHERE COM_REVIEW_NO = #{comReviewNo}
 	</select>
 	
 	<insert id="insertComReviewTag">
 		INSERT INTO COM_REVIEW_TAG (
 			TAG_NO
 			,COM_REVIEW_NO
-			,COM_REVIEW_TAG_DATE) 
-		VALUES (
+			,COM_REVIEW_TAG_DATE
+		) VALUES (
 			#{tagNo}, 
 			#{comReviewNo}, 
-			#{comReviewTagDate}
+			TO_CHAR(SYSDATE, 'YYYYMMDD') 
 		)
 	</insert>
 	
 	<update id="updateComReviewTag">
-		UPDATE COM_REVIEW_TAG SET 
-			COM_REVIEW_TAG_DATE = #{comReviewTagDate} 
+		UPDATE COM_REVIEW_TAG 
+		SET 
+		COM_REVIEW_TAG_DATE = #{comReviewTagDate} 
 		WHERE TAG_NO = #{tagNo} AND COM_REVIEW_NO = #{comReviewNo}
 	</update>
 	
-	<delete id="deleteComReviewTag">
-		DELETE FROM COM_REVIEW_TAG 
-		WHERE TAG_NO = #{tagNo} AND COM_REVIEW_NO = #{comReviewNo}
-	</delete>
+	
+	
+
 </mapper>

@@ -36,6 +36,7 @@ class CompanyMapperTest {
 	void testInsertCompany() {
 		
         CompanyVO newCompany = new CompanyVO();
+        newCompany.setUserId("USR007");
         newCompany.setComName("JUnit Company");
         newCompany.setComInfo("Unit test company");
         newCompany.setComNum("01012345678");

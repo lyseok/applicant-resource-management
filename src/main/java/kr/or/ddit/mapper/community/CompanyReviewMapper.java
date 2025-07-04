@@ -17,7 +17,5 @@ public interface CompanyReviewMapper {
 	public List<CompanyReviewVO> selectCompanyReviewListById(String userId);
 	public int insertCompanyReview(CompanyReviewVO companyReview);
 	public int deleteCompanyReview(String reviewNo);
-	public int updateDeleteStatusMyCompanyReview(String reviewNo);
-	
-
+	public int updateDeleteStatusMyCompanyReview(CompanyReviewVO companyReview);
 }
