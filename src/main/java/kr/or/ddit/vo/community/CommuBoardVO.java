@@ -14,7 +14,7 @@ public class CommuBoardVO implements Serializable {
 	private String commuContents;
 	private String categoryCode;
 	private String commuWriteDate;
-	private Integer coummuPostHit;
+	private Integer commuPostHit;
 	private String commuPostStatus;
 	private String commuDeleteDate;
 }
