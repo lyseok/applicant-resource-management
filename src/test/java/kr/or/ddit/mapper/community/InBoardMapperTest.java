@@ -21,30 +21,40 @@ class InBoardMapperTest {
 	InBoardMapper mapper;
 	
 	@Test
-	void testSelectInBoard() {
-		log.info("{}", mapper.selectInBoard("CMBD000005", "AVT001"));
+	void testselectInBoardByCommuPostNoAvatarId() {
+		log.info("{}", mapper.selectInBoardByCommuPostNoAvatarId("CMBD000005", "AVT001"));
 	}
 
 	@Test
-	void testSelectInBoardPostList() {
-		assertDoesNotThrow(()->mapper.selectInBoardPostList("AVT001"));
+	void testSearchInBoardCommuPostList() {
+		assertDoesNotThrow(()->mapper.searchInBoardCommuPostList("AVT001"));
 		
-		List<InBoardVO> list = mapper.selectInBoardPostList("AVT001");
+		List<InBoardVO> list = mapper.searchInBoardCommuPostList("AVT001");
 		list.forEach(p->{
 			log.info("{}", p);
 		});
 	}
 
 	@Test
-	void testSelectInBoardAvatarList() {
-		assertDoesNotThrow(()->mapper.selectInBoardAvatarList("CMBD000005"));
+	void testSearchInBoardAvatarList() {
+		assertDoesNotThrow(()->mapper.searchInBoardAvatarList("CMBD000005"));
 		
-		List<InBoardVO> list = mapper.selectInBoardAvatarList("CMBD000005");
+		List<InBoardVO> list = mapper.searchInBoardAvatarList("CMBD000005");
 		list.forEach(a->{
 			log.info("{}", a);
 		});
 	}
 
+	@Test
+	void testSelectInBoardList() {
+		assertDoesNotThrow(()->mapper.selectInBoardList());
+		
+		List<InBoardVO> list = mapper.selectInBoardList();
+		list.forEach(b->{
+			log.info("{}", b);
+		});
+	}
+	
 	@Test
 	void testInsertInBoard() {
 		InBoardVO board = new InBoardVO();
@@ -55,13 +65,13 @@ class InBoardMapperTest {
 
 		assertEquals(1, mapper.insertInBoard(board));
 		
-		log.info("{}", mapper.selectInBoard("CMBD000003", "AVT002"));
+		log.info("{}", mapper.selectInBoardByCommuPostNoAvatarId("CMBD000003", "AVT002"));
 	}
 
 	@Test
 	void testDeleteInBoard() {
 		mapper.deleteInBoard("CMBD000003", "AVT002");
-		assertNull(mapper.selectInBoard("CMBD000003", "AVT002"));
+		assertNull(mapper.selectInBoardByCommuPostNoAvatarId("CMBD000003", "AVT002"));
 	}
 
 }

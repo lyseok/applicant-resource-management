@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.InBoardMapper">
 
-	<select id="selectInBoard" resultType="InBoardVO">
+	<select id="selectInBoardByCommuPostNoAvatarId" resultType="InBoardVO">
 		SELECT 
 			COMMU_POST_NO
 			, AVATAR_ID 
@@ -14,7 +14,7 @@
 			AVATAR_ID = #{avatarId}
 	</select>
 	
-	<select id="selectInBoardPostList" resultType="InBoardVO">
+	<select id="searchInBoardCommuPostList" resultType="InBoardVO">
 		SELECT 
 			COMMU_POST_NO
 			, AVATAR_ID 
@@ -24,7 +24,7 @@
 			AVATAR_ID = #{avatarId}
 	</select>
 	
-	<select id="selectInBoardAvatarList" resultType="InBoardVO">
+	<select id="searchInBoardAvatarList" resultType="InBoardVO">
 		SELECT 
 			COMMU_POST_NO
 			, AVATAR_ID 
@@ -32,6 +32,14 @@
 			IN_BOARD
 		WHERE
 			COMMU_POST_NO = #{commuPostNo} 
+	</select>
+	
+	<select id="selectInBoardList">
+		SELECT 
+			COMMU_POST_NO
+			, AVATAR_ID 
+		FROM 
+			IN_BOARD
 	</select>
 	
 	<insert id="insertInBoard" parameterType="InBoardVO">
