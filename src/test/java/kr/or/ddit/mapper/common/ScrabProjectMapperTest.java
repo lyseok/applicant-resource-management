@@ -24,8 +24,8 @@ class ScrabProjectMapperTest {
 	void testSelectScrabProjectByPk() {
 		ScrabProjectVO SPV = new ScrabProjectVO();
 		
-		SPV.setCompanyId("QWER");
-		SPV.setProjectNo("QQ11");
+		SPV.setCompanyId("QWE");
+		SPV.setProjectNo("REWQ");
 		
 		mapper.selectScrabProjectByPk(SPV);
 		
@@ -45,8 +45,8 @@ class ScrabProjectMapperTest {
 	void testUpdateScrabProject() {
 		ScrabProjectVO SPV = new ScrabProjectVO();
 		
-		SPV.setCompanyId("QWER");
-		SPV.setProjectNo("QQ11");
+		SPV.setCompanyId("QWE");
+		SPV.setProjectNo("REWQ");
 		
 		mapper.updateScrabProject(SPV);
 

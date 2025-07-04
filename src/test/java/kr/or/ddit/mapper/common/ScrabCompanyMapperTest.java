@@ -27,8 +27,8 @@ class ScrabCompanyMapperTest {
 	void testSelectScrabCompanyByPk() {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 		
-		SCV.setUserId("QWER");
-		SCV.setCompanyId("QWE1");
+		SCV.setUserId("QWE1");
+		
 		
 		mapper.selectScrabCompanyByPk(SCV);
 		
@@ -40,11 +40,9 @@ class ScrabCompanyMapperTest {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 		
 		SCV.setCompanyId("QWER5");
-		SCV.setUserId("QWER5");
-		
+		SCV.setUserId("QWE1");
+				
 		mapper.insertScrabCompany(SCV);
-		
-		
 		
 	}
 
@@ -53,7 +51,7 @@ class ScrabCompanyMapperTest {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 		
 		SCV.setCompanyId("ㅂㅈㄷㄱ쇼");
-		SCV.setUserId("QWER");
+		SCV.setUserId("QWE1");
 		
 		mapper.updateScrabCompany(SCV);
 		mapper.selectScrabCompanyList();
@@ -63,8 +61,8 @@ class ScrabCompanyMapperTest {
 	void testDeleteCompany() {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 			
-		SCV.setCompanyId("ㅂㅈㄷㄱ쇼");
-		SCV.setUserId("QWER");
+		SCV.setCompanyId("QWER5");
+		SCV.setUserId("QWE1");
 		
 		mapper.deleteCompany(SCV);
 		

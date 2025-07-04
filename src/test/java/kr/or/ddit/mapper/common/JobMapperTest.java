@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import kr.or.ddit.vo.common.JobVO;
 import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Slf4j
@@ -23,22 +24,46 @@ class JobMapperTest {
 
 	@Test
 	void testSelectJobByPk() {
-		fail("Not yet implemented");
+	JobVO JV = new JobVO();
+		
+		JV.setJobCode("99999");
+		JV.setTopJobCode("2");
+		JV.setJobName("TEST999");
+		
+		mapper.selectJobByPk(JV);
 	}
 
 	@Test
 	void testInsertJob() {
-		fail("Not yet implemented");
+		JobVO JV = new JobVO();
+		
+		JV.setJobCode("99999");
+		JV.setTopJobCode("2");
+		JV.setJobName("TEST999");
+		
+		mapper.insertJob(JV);
 	}
 
 	@Test
 	void testUpdateJob() {
-		fail("Not yet implemented");
+	JobVO JV = new JobVO();
+		
+		JV.setJobCode("99999");
+		JV.setTopJobCode("2");
+		JV.setJobName("TTEESSTT");
+		
+		mapper.updateJob(JV);
 	}
 
 	@Test
 	void testDeleteJob() {
-		fail("Not yet implemented");
+JobVO JV = new JobVO();
+		
+		JV.setJobCode("99999");
+		JV.setTopJobCode("2");
+		JV.setJobName("TTEESSTT");
+		
+		mapper.deleteJob(JV);
 	}
 
 }

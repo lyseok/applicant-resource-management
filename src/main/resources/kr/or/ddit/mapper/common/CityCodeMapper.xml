@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.CityCodeMapper">
+	<insert id="insertCityCode">
+		INSERT INTO CITY_CODE (
+		CITY_CODE_NO
+		,CITY_NAME
+		) VALUES (
+		#{cityCodeNo}
+		,#{cityName}
+		)
+	</insert>
+
+	<select id="selectCityCodeList">
+		SELECT
+		CITY_CODE_NO
+		,CITY_NAME
+		FROM CITY_CODE
+	</select>
+
+	<select id="selectCityCodeByPk">
+		SELECT
+		CITY_CODE_NO
+		,CITY_NAME
+		FROM CITY_CODE
+		WHERE CITY_CODE_NO =#{cityCodeNo}
+	</select>
+
+	<update id="updateCityCode">
+		UPDATE CITY_CODE
+		SET
+		CITY_NAME = #{cityName}
+		WHERE
+		CITY_CODE_NO = #{cityCodeNo}
+	</update>
+
+	<delete id="deleteCityCode">
+		DELETE FROM CITY_CODE
+		WHERE CITY_NAME = #{cityName}
+		AND CITY_CODE_NO = #{cityCodeNo}
+	</delete>
+</mapper>

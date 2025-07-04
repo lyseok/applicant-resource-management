@@ -2,26 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.ScrabProjectMapper">
 
-<insert id="insertScrabProject">
+	<insert id="insertScrabProject">
 		INSERT INTO SCRAB_PROJECT (
 		COMPANY_ID
 		, PROJECT_NO
-		, SCRAB_PROJECT_DATE)
-		 VALUES (
+		, SCRAB_PROJECT_DATE
+		) VALUES (
 		#{companyId}
 		, #{projectNo}
-		, SYSDATE)
+		SYSDATE
+		)
 	</insert>
 
 	<select id="selectScrabProjectList">
-		SELECT COMPANY_ID
+		SELECT
+		COMPANY_ID
 		, PROJECT_NO
 		, SCRAB_PROJECT_DATE
 		FROM SCRAB_PROJECT
 	</select>
 
+
 	<select id="selectScrabProjectByPk">
-		SELECT COMPANY_ID
+		SELECT
+		COMPANY_ID
 		, PROJECT_NO
 		, SCRAB_PROJECT_DATE
 		FROM SCRAB_PROJECT
@@ -31,17 +35,16 @@
 
 	<update id="updateScrabProject">
 		UPDATE SCRAB_PROJECT
-		SET SCRAB_PROJECT_DATE =
-		SYSDATE
-		 WHERE
-		COMPANY_ID = #{companyId} 
-		AND 
-		PROJECT_NO = #{projectNo}
+		SET
+		SCRAB_PROJECT_DATE = SYSDATE
+		WHERE COMPANY_ID = #{companyId}
+		AND PROJECT_NO = #{projectNo}
 	</update>
 
 	<delete id="deleteScrabProject">
 		DELETE FROM SCRAB_PROJECT
-	   WHERE COMPANY_ID = #{companyId}
-	  AND PROJECT_NO = #{projectNo}
+		WHERE COMPANY_ID = #{companyId}
+		AND PROJECT_NO = #{projectNo}
 	</delete>
+
 </mapper>

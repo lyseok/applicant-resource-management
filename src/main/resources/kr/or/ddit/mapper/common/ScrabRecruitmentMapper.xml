@@ -5,13 +5,13 @@
 
 	<insert id="insertScrabRecruitment">
 		INSERT INTO SCRAB_RECRUITMENT (
-		USER_ID,
-		RECRUITMENT_NO,
-		SCRAB_RECUITMENT_DATE
-		)VALUES (
+		USER_ID
+		, RECRUITMENT_NO
+		, SCRAB_RECUITMENT_DATE
+		) VALUES (
 		#{userId}
-		,#{recruitmentNo}
-		,SYSDATE
+		, #{recruitmentNo}
+		, SYSDATE
 		)
 	</insert>
 
@@ -20,8 +20,7 @@
 		USER_ID
 		, RECRUITMENT_NO
 		, SCRAB_RECUITMENT_DATE
-		FROM
-		SCRAB_RECRUITMENT
+		FROM SCRAB_RECRUITMENT
 
 	</select>
 
@@ -31,24 +30,22 @@
 		, RECRUITMENT_NO
 		, SCRAB_RECUITMENT_DATE
 		FROM SCRAB_RECRUITMENT
-		WHERE
-		USER_ID = #{userId}
-		AND
-		RECRUITMENT_NO = #{recruitmentNo}
+		WHERE USER_ID = #{userId}
+		AND RECRUITMENT_NO = #{recruitmentNo}
 	</select>
 
 	<update id="updateScrabRecruitment">
-		UPDATE
-		 SCRAB_RECRUITMENT 
-		 SET SCRAB_RECUITMENT_DATE = SYSDATE
-		WHERE USER_ID = #{userId} 
+		UPDATE SCRAB_RECRUITMENT
+		SET
+		SCRAB_RECUITMENT_DATE = SYSDATE
+		WHERE USER_ID = #{userId}
 		AND RECRUITMENT_NO = #{recruitmentNo}
 	</update>
-	
+
 	<delete id="deleteScrabRecruitment">
-	DELETE FROM SCRAB_RECRUITMENT
-	 WHERE USER_ID = #{userId} 
-	 AND RECRUITMENT_NO = #{recruitmentNo}
+		DELETE FROM SCRAB_RECRUITMENT
+		WHERE USER_ID = #{userId}
+		AND RECRUITMENT_NO = #{recruitmentNo}
 	</delete>
 
 </mapper>

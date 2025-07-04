@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.ddit.mapper.common.ForbiddenWord">
-<insert id="insertForbiddenWord">
+<mapper namespace="kr.or.ddit.mapper.common.ForbiddenWordMapper">
+	<insert id="insertForbiddenWord">
 		INSERT INTO FORBIDDEN_WORD (
 		FORBIDDEN_WORD_NO
-		,WORD
+		, WORD
 		) VALUES (
-		 #{forbiddenWordNo}
-		,#{word}
+		#{forbiddenWordNo}
+		, #{word}
 		)
 	</insert>
 
 	<select id="selectForbiddenWordList">
-		SELECT 
-		 FORBIDDEN_WORD_NO
+		SELECT
+		FORBIDDEN_WORD_NO
 		, WORD
 		FROM FORBIDDEN_WORD
 	</select>
 
 	<select id="selectForbiddenWordByPk">
-		SELECT 
-		 FORBIDDEN_WORD_NO
+		SELECT
+		FORBIDDEN_WORD_NO
 		, WORD
 		FROM FORBIDDEN_WORD
 		WHERE FORBIDDEN_WORD_NO = #{forbiddenWordNo}
@@ -28,15 +28,14 @@
 
 	<update id="updateForbiddenWord">
 		UPDATE FORBIDDEN_WORD
-		SET WORD = #{word}
-		 WHERE
-		FORBIDDEN_WORD_NO = #{forbiddenWordNo} 
+		SET
+		WORD = #{word}
+		WHERE FORBIDDEN_WORD_NO = #{forbiddenWordNo}
 	</update>
 
 	<delete id="deleteForbiddenWord">
 		DELETE FROM FORBIDDEN_WORD
-	   WHERE FORBIDDEN_WORD_NO = #{forbiddenWordNo}
-	  AND WORD = #{word}
+		WHERE FORBIDDEN_WORD_NO = #{forbiddenWordNo}
 	</delete>
 
 </mapper>

@@ -30,10 +30,11 @@ class ScrabRecruitmentMapperTest {
 	@Test
 	void testSelectScrabRecruitmentByPk() {
 		ScrabRecruitmentVO SRV = new ScrabRecruitmentVO();
-		SRV.setUserId("USR001");
-		SRV.setRecruitmentNo("recr000005");
+		SRV.setUserId("qwsad");
+		SRV.setRecruitmentNo("qwsad");
 		
 		mapper.selectScrabRecruitmentByPk(SRV);
+		log.info("결과 : {}", SRV);
 	
 	}
 
@@ -41,8 +42,8 @@ class ScrabRecruitmentMapperTest {
 	void testInsertScrabRecruitment() {
 		ScrabRecruitmentVO SRV = new ScrabRecruitmentVO();
 
-		SRV.setUserId("qwer1234");
-		SRV.setRecruitmentNo("asdf1234");
+		SRV.setUserId("qwsad");
+		SRV.setRecruitmentNo("qwsad");
 
 		mapper.insertScrabRecruitment(SRV);
 
@@ -52,18 +53,18 @@ class ScrabRecruitmentMapperTest {
 	@Test
 	void testUpdateScrabRecruitment() {
 		ScrabRecruitmentVO SRV = new ScrabRecruitmentVO();
-		SRV.setRecruitmentNo("asdf1234");
-		SRV.setUserId("qwer1234");
+		SRV.setUserId("qwsad");
+		SRV.setRecruitmentNo("qwsad");
+	
 		mapper.updateScrabRecruitment(SRV);
-		mapper.selectScrabRecruitmentList();
-		log.info("결과 : {}");
+		log.info("결과 : {}",SRV);
 	}
 	
 	@Test
 	void testDeleteScrabRecruitment() {
 		ScrabRecruitmentVO SRV = new ScrabRecruitmentVO();
-		SRV.setRecruitmentNo("asdf1234");
-		SRV.setUserId("qwer1234");
+		SRV.setUserId("qwsad");
+		SRV.setRecruitmentNo("qwsad");
 		mapper.deleteScrabRecruitment(SRV);
 	}
 

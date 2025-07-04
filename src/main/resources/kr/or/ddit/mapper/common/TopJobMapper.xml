@@ -4,10 +4,10 @@
 	<insert id="insertTopJob">
 		INSERT INTO TOP_JOB (
 		TOP_JOB_CODE
-		,TOP_JOB_NAME
+		, TOP_JOB_NAME
 		) VALUES (
 		#{topJobCode}
-		,#{topJobName}
+		, #{topJobName}
 		)
 	</insert>
 
@@ -21,23 +21,21 @@
 	<select id="selectTopJobByPk">
 		SELECT
 		TOP_JOB_CODE
-		,TOP_JOB_NAME
-
+		, TOP_JOB_NAME
 		FROM TOP_JOB
-		WHERE TOP_JOB_CODE = #{topJobCode}
-		AND TOP_JOB_NAME = #{topJobName}
+		WHERE
+		TOP_JOB_CODE = #{topJobCode}
 	</select>
 
 	<update id="updateTopJob">
 		UPDATE TOP_JOB
-		SET TOP_JOB_NAME = #{topJobName}
-		WHERE
-		TOP_JOB_CODE = #{topJobCode}
+		SET
+		TOP_JOB_NAME = #{topJobName}
+		WHERE TOP_JOB_CODE = #{topJobCode}
 	</update>
 
 	<delete id="deleteTopJob">
 		DELETE FROM TOP_JOB
-		WHERE TOP_JOB_NAME = #{topJobName}
-		AND TOP_JOB_CODE = #{topJobCode}
+		WHERE TOP_JOB_CODE = #{topJobCode}
 	</delete>
 </mapper>
