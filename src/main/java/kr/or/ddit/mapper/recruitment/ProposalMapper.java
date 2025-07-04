@@ -11,4 +11,5 @@ public interface ProposalMapper {
 	public int InsertProposal(ProposalVO proposal);
 	public int updateProposal(ProposalVO proposal);
 	public int deleteProposal(String proposalCode);
+	
 }

@@ -40,6 +40,7 @@ class ProposalMapperTest {
    
         
         mapper.InsertProposal(proposal);
+        log.info("{}", proposal);
         
         
         
