@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.PaymentMapper">
+
+	<insert id="insertPayment">
+	<selectKey resultType="string" keyProperty="paymentNo" order="BEFORE">
+    SELECT
+        'PAMT'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO), LENGTH('PAMT' ) + 1)), 0) + 1, 6, '0')
+    FROM PAYMENT
+</selectKey>
+		INSERT INTO PAYMENT (
+		PAYMENT_NO
+		, USER_ID
+		, PRODUCT_NO
+		, PAYMENT_METHOD
+		, PAYMENT_DATE
+		, PAYMENT_PAY
+		, PAYMENT_CONTRACT
+		) VALUES (
+		#{paymentNo}
+		, #{userId}
+		, #{productNo}
+		, #{paymentMethod}
+		, SYSDATE
+		, #{paymentPay}
+		, #{paymentContract}
+		)
+	</insert>
+
+	<select id="selectPaymentList">
+		SELECT
+		PAYMENT_NO
+		, USER_ID
+		, PRODUCT_NO
+		, PAYMENT_METHOD
+		, PAYMENT_DATE
+		, PAYMENT_PAY
+		, PAYMENT_CONTRACT
+		FROM PAYMENT
+	</select>
+
+
+	<select id="selectPaymentByPk">
+		SELECT
+		PAYMENT_NO
+		, USER_ID
+		, PRODUCT_NO
+		, PAYMENT_METHOD
+		, PAYMENT_DATE
+		, PAYMENT_PAY
+		, PAYMENT_CONTRACT
+		FROM PAYMENT
+		WHERE PAYMENT_NO = #{paymentNo}
+	</select>
+
+	<update id="updatePayment">
+		UPDATE PAYMENT
+		SET
+		USER_ID = #{userId}
+		, PRODUCT_NO = #{productNo}
+		, PAYMENT_METHOD = #{paymentMethod}
+		, PAYMENT_DATE = #{paymentDate}
+		, PAYMENT_PAY = #{paymentPay}
+		, PAYMENT_CONTRACT = #{paymentContract}
+		WHERE PAYMENT_NO = #{paymentNo}
+	</update>
+
+	<delete id="deletePayment">
+		DELETE FROM PAYMENT
+		WHERE PAYMENT_NO = #{paymentNo}
+	</delete>
+
+</mapper>

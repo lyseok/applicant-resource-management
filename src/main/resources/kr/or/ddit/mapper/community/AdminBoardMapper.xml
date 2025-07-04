@@ -78,10 +78,10 @@
 	<insert id="insertAdminBoard" parameterType="AdminBoardVO">
 		INSERT INTO ADMIN_BOARD (
 		<selectKey resultType="string" keyProperty="boardNo" order="BEFORE">
-			SELECT
-				'BRD'||
-				LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BOARD_NO), LENGTH('BRD')+1)),0) + 1, 7, '0')
-			FROM ADMIN_BOARD
+		    SELECT
+		        'ABNO'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BOARD_NO), LENGTH('ABNO' ) + 1)), 0) + 1, 6, '0')
+		    FROM ADMIN_BOARD
 		</selectKey>
 			BOARD_NO
 			, USER_ID
@@ -99,7 +99,8 @@
 			, sysdate
 			, #{boardContent}
 			, #{boardPostHit}
-			, #{boardStatus})
+			, #{boardStatus}
+		)
 	</insert>
 
 	<!-- <update id="updateAdminBoard">

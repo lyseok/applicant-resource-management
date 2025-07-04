@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.TopJobMapper">
+	<insert id="insertTopJob">
+		INSERT INTO TOP_JOB (
+		TOP_JOB_CODE
+		, TOP_JOB_NAME
+		) VALUES (
+		#{topJobCode}
+		, #{topJobName}
+		)
+	</insert>
+
+	<select id="selectTopJobList">
+		SELECT
+		TOP_JOB_CODE
+		, TOP_JOB_NAME
+		FROM TOP_JOB
+	</select>
+
+	<select id="selectTopJobByPk">
+		SELECT
+		TOP_JOB_CODE
+		, TOP_JOB_NAME
+		FROM TOP_JOB
+		WHERE
+		TOP_JOB_CODE = #{topJobCode}
+	</select>
+
+	<update id="updateTopJob">
+		UPDATE TOP_JOB
+		SET
+		TOP_JOB_NAME = #{topJobName}
+		WHERE TOP_JOB_CODE = #{topJobCode}
+	</update>
+
+	<delete id="deleteTopJob">
+		DELETE FROM TOP_JOB
+		WHERE TOP_JOB_CODE = #{topJobCode}
+	</delete>
+</mapper>

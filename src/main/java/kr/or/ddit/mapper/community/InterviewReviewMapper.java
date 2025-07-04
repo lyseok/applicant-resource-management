@@ -11,14 +11,14 @@ import kr.or.ddit.vo.recruitment.InterviewVO;
 
 @Mapper
 public interface InterviewReviewMapper {
-	public List<InterviewVO> selectInterviewList(String id);
-	public InterviewReviewVO selectInterviewReview();
-	public List<InterviewReviewVO> selectInterviewReviewList(String id);
 	
+	public InterviewReviewVO selectInterviewReviewByPk(String reivewNo);
+	public List<InterviewReviewVO> selInterviewReviewList();
+	public List<InterviewVO> selectInterviewList(String userId);
+	public List<InterviewReviewVO> selectInterviewReviewListUser(String userId);
+	public List<InterviewReviewVO> selectInterviewReviewListCom(String comName);
 	
 	public int insertInterviewReview(InterviewReviewVO interviewReview);
-	public int insertInterviewInformation(InterviewInformationVO interviewInformation);
-	public int insertPassInformation(PassInformationVO passInformation);
-	
-	public int deleteInterviewReview(String id);
+	public int deleteInterviewReview(String reviewNo);
+	public int updateDeleteStatusMyInterviewReview(String reviewNo);
 }

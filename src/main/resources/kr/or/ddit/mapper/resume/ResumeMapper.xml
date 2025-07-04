@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.ResumeMapper">
+	<select id="selectResumeList">
+		SELECT RESUME_NO
+			   , USER_ID
+			   , USER_NAME
+			   , PHOTO
+			   , BIRTH
+			   , EMAIL
+			   , TEL
+			   , ADDRESS
+			   , VETERAN_REASON
+			   , UPDATE_DATE
+			   , RESUME_SUBMIT_YN
+			   , RESUME_DELETE_YN
+		  FROM RESUME
+	</select>
+	
+	<select id="selectResumeDetail">
+		SELECT RESUME_NO
+			   , USER_ID
+			   , USER_NAME
+			   , PHOTO, BIRTH
+			   , EMAIL
+			   , TEL
+			   , ADDRESS
+			   , VETERAN_REASON
+			   , UPDATE_DATE
+			   , RESUME_SUBMIT_YN
+			   , RESUME_DELETE_YN
+		  FROM RESUME
+		 WHERE RESUME_NO = #{resumeNo}
+	</select>
+	
+	<insert id="insertResume">
+		<selectKey resultType="string" keyProperty="resumeNo" order="BEFORE">
+		    SELECT
+		        'RESM'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RESUME_NO), LENGTH('RESM' ) + 1)), 0) + 1, 6, '0')
+		    FROM RESUME
+		</selectKey>
+		INSERT INTO RESUME (
+			RESUME_NO
+			, USER_ID
+			, USER_NAME
+			, PHOTO
+			, BIRTH
+			, EMAIL
+			, TEL
+			, ADDRESS
+			, VETERAN_REASON
+			, UPDATE_DATE
+			, RESUME_SUBMIT_YN
+			, RESUME_DELETE_YN
+		) VALUES (
+			#{resumeNo}
+			, #{userId}
+			, #{userName}
+			, #{photo}
+			, REPLACE(#{birth}, '-', '')
+			, #{email}
+			, #{tel}
+			, #{address}
+			, #{veteranReason}
+			, TO_CHAR(SYSDATE, 'YYYYMMDD')
+			, #{resumeSubmitYn}
+			, #{resumeDeleteYn}
+		)
+	</insert>
+	<update id="updateResume">
+		UPDATE RESUME 
+		   SET USER_ID = #{userId}
+		       , USER_NAME = #{userName}
+		       , PHOTO = #{photo}
+		       , BIRTH = REPLACE(#{birth}, '-', '')
+		       , EMAIL = #{email}
+		       , TEL = #{tel}
+		       , ADDRESS = #{address}
+		       , VETERAN_REASON = #{veteranReason}
+		       , UPDATE_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		       , RESUME_SUBMIT_YN = #{resumeSubmitYn}
+		       , RESUME_DELETE_YN = #{resumeDeleteYn}
+		 WHERE RESUME_NO = #{resumeNo}
+	</update>
+	
+	<delete id="deleteResume">
+		DELETE FROM RESUME
+		 WHERE RESUME_NO = #{resumeNo}
+	</delete>
+</mapper>
