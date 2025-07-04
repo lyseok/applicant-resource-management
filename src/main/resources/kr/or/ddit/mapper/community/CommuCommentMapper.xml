@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.CommuCommentMapper">
-	<select id="selectCommuComment" resultType="CommuCommentVO">
+	<select id="selectCommuCommentbyPk" resultType="CommuCommentVO">
 		SELECT 
 			COMMU_COMMENT_NO
 			, COMMU_POST_NO
@@ -16,7 +16,7 @@
 			COMMU_COMMENT_NO = #{commuCommentNo}
 	</select>
 	
-	<select id="selectCommuCommentList" resultType="CommuCommentVO">
+	<select id="searchCommuCommentPostList" resultType="CommuCommentVO">
 		SELECT 
 			COMMU_COMMENT_NO
 			, COMMU_POST_NO
@@ -31,6 +31,20 @@
 			COMMU_POST_NO = #{commuPostNo}
 			AND
 			COMMU_COMMENT_STATUS != 'D'
+	</select>
+
+	<select id="searchCommuCommentList" resultType="CommuCommentVO">
+		SELECT 
+			COMMU_COMMENT_NO
+			, COMMU_POST_NO
+			, AVATAR_ID
+			, COMMU_COMMENT_CONTENT
+			, COMMU_COMMENT_WRITE_DATE
+			, COMMU_COMMENT_STATUS
+			, COMMU_COMMENT_DELETE_DATE 
+		FROM 
+			COMMU_COMMENT
+		WHERE 
 	</select>
 	
 	<insert id="insertCommuComment" parameterType="CommuCommentVO">

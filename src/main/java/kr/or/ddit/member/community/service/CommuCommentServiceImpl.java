@@ -14,15 +14,20 @@ import lombok.RequiredArgsConstructor;
 public class CommuCommentServiceImpl implements CommuCommentService {
 	
 	private final CommuCommentMapper mapper;
-
+	
 	@Override
-	public Optional<CommuCommentVO> readCommuComment(String commuCommentNo) {
-		return Optional.ofNullable(mapper.selectCommuComment(commuCommentNo));
+	public Optional<CommuCommentVO> readCommuCommentbyPk(String commuCommentNo) {
+		return Optional.ofNullable(mapper.selectCommuCommentbyPk(commuCommentNo));
 	}
 
 	@Override
-	public List<CommuCommentVO> readCommuCommentList(String commuPostNo) {
-		return mapper.selectCommuCommentList(commuPostNo);
+	public List<CommuCommentVO> searchCommuCommentPostList(String commuPostNo) {
+		return mapper.searchCommuCommentPostList(commuPostNo);
+	}
+
+	@Override
+	public List<CommuCommentVO> searchCommuCommentList() {
+		return mapper.searchCommuCommentList();
 	}
 
 	@Override
@@ -39,5 +44,7 @@ public class CommuCommentServiceImpl implements CommuCommentService {
 	public void removeCommuComment(String commuCommentNo) {
 		mapper.deleteCommuComment(commuCommentNo);
 	}
+
+
 
 }

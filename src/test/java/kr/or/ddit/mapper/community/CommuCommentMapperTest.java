@@ -21,14 +21,22 @@ class CommuCommentMapperTest {
 
 	@Test
 	void testSelectCommuComment() {
-		log.info("{}", mapper.selectCommuComment("CMCM000001"));
+		log.info("{}", mapper.selectCommuCommentbyPk("CMCM000001"));
 	}
 
 	@Test
-	void testSelectCommuCommentList() {
-		assertDoesNotThrow(()->mapper.selectCommuCommentList("CMBD000004"));
+	void testSelectCommuCommentPostList() {
+		assertDoesNotThrow(()->mapper.searchCommuCommentPostList("CMBD000004"));
 		
-		List<CommuCommentVO> list = mapper.selectCommuCommentList("CMBD000004");
+		List<CommuCommentVO> list = mapper.searchCommuCommentPostList("CMBD000004");
+		list.forEach(c->log.info("{}", c));
+	}
+	
+	@Test
+	void testSelectCommuCommentList() {
+		assertDoesNotThrow(()->mapper.searchCommuCommentList());
+		
+		List<CommuCommentVO> list = mapper.searchCommuCommentList();
 		list.forEach(c->log.info("{}", c));
 	}
 
@@ -42,7 +50,7 @@ class CommuCommentMapperTest {
 		
 		assertEquals(1, mapper.insertCommuComment(comment));
 		
-		log.info("{}", mapper.selectCommuComment("CMCM000003"));
+		log.info("{}", mapper.selectCommuCommentbyPk("CMCM000003"));
 	}
 
 	@Test
@@ -60,7 +68,7 @@ class CommuCommentMapperTest {
 		
 		assertEquals(1, mapper.updateCommuComment(comment));
 		
-		log.info("{}", mapper.selectCommuComment("CMCM000003"));
+		log.info("{}", mapper.selectCommuCommentbyPk("CMCM000003"));
 	}
 
 	@Test
