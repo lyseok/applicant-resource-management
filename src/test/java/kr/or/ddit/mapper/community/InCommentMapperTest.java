@@ -49,7 +49,6 @@ class InCommentMapperTest {
 		
 		Comment.setCommentNo("CMCM000001");
 		Comment.setAvatarId("AVT002");
-		
 
 		assertEquals(1, mapper.insertInComment(Comment));
 		

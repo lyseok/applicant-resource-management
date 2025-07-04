@@ -2,7 +2,6 @@ package kr.or.ddit.mapper.community;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
@@ -19,12 +18,15 @@ class CommuTagMapperTest {
 
 	@Autowired
 	CommuTagMapper mapper;
-	
-	@Test
-	void testSelectCommuTag() {
-		log.info("{}", mapper.selectCommuTag("CTAG000001", "CMBD000004"));
-	}
 
+	@Test
+	void testSearchPrjAnncBoardTagList() {
+		assertDoesNotThrow(()->mapper.searchCommuTagList("CMBD000004"));
+		
+		List<CommuTagVO> list = mapper.searchCommuTagList("CMBD000004");
+		list.forEach(t -> log.info("{}", t));
+	}
+	
 	@Test
 	void testSelectCommuTagList() {
 		assertDoesNotThrow(()->mapper.selectCommuTagList("CMBD000004"));
@@ -40,16 +42,16 @@ class CommuTagMapperTest {
 		CommuTagVO tag = new CommuTagVO();
 		
 		tag.setBoardNo("CMBD000004");
-
-		assertEquals(1, mapper.insertCommuTag(tag));
 		
-		log.info("{}", mapper.selectCommuTag("CTAG000001", "CMBD000004"));
+		log.info("{}", mapper.insertCommuTag(tag));  //1이면 등록성공?
+
+		assertEquals(1, mapper.insertCommuTag(tag));		
 	}
 
 	@Test
 	void testDeleteCommuTag() {
+		log.info("{}", mapper.deleteCommuTag("CTAG000001", "CMBD000004"));  //1이면 삭제
 		mapper.deleteCommuTag("CTAG000001", "CMBD000004");
-		assertNull(mapper.selectCommuTag("CTAG000001", "CMBD000004"));
 	}
 
 }
