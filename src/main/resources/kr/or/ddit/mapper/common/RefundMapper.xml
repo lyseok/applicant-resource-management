@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.RefundMapper">
+
+<insert id="insertRefund">
+<selectKey resultType="string" keyProperty="refundNo" order="BEFORE">
+    SELECT
+        'REFU'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(REFUND_NO), LENGTH('REFU' ) + 1)), 0) + 1, 6, '0')
+    FROM REFUND
+</selectKey>
+INSERT INTO REFUND (
+REFUND_NO
+	, PAYMENT_NO
+	, REFUND_ACCOUNT
+	, REFUND_REASON
+	, REFUND_RATIO
+	, PRODUCT_NAME
+	, PAYMENT_PAY
+) VALUES (
+#{refundNo}
+	, #{paymentNo}
+	, #{refundAccount}
+	, #{refundReason}
+	, #{refundRatio}
+	, #{productName}
+	, #{paymentPay}
+)
+</insert>
+
+<select id="selectRefundList">
+SELECT 
+REFUND_NO
+	, PAYMENT_NO
+	, REFUND_ACCOUNT
+	, REFUND_REASON
+	, REFUND_RATIO
+	, PRODUCT_NAME
+	, PAYMENT_PAY
+FROM REFUND
+</select>
+
+
+<select id="selectRefundByPk">
+SELECT 
+REFUND_NO
+	, PAYMENT_NO
+	, REFUND_ACCOUNT
+	, REFUND_REASON
+	, REFUND_RATIO
+	, PRODUCT_NAME
+	, PAYMENT_PAY
+FROM REFUND
+WHERE REFUND_NO = #{refundNo}
+</select>
+
+<update id="updateRefund">
+UPDATE REFUND
+SET 
+PAYMENT_NO = #{paymentNo}
+	, REFUND_ACCOUNT = #{refundAccount}
+	, REFUND_REASON = #{refundReason}
+	, REFUND_RATIO = #{refundRatio}
+	, PRODUCT_NAME = #{productName}
+	, PAYMENT_PAY = #{paymentPay}
+WHERE REFUND_NO = #{refundNo}
+</update>
+
+<delete id="deleteRefund">
+DELETE FROM REFUND
+WHERE REFUND_NO = #{refundNo}
+</delete>
+
+</mapper>

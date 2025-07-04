@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.PaymentProductMapper">
+
+<insert id="insertPaymentProduct">
+<selectKey resultType="string" keyProperty="productNo" order="BEFORE">
+    SELECT
+        'PAPD'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRODUCT_NO), LENGTH('PAPD' ) + 1)), 0) + 1, 6, '0')
+    FROM PAYMENT_PRODUCT
+</selectKey>
+INSERT INTO PAYMENT_PRODUCT (
+PRODUCT_NO
+	, PRODUCT_NAME
+	, PRODUCT_DETAIL
+	, PRODUCT_PRICE
+	, PRODUCT_IMG
+	, PRODUCT_PERIOD
+) VALUES (
+#{productNo}
+	, #{productName}
+	, #{productDetail}
+	, #{productPrice}
+	, #{productImg}
+	, #{productPeriod}
+)
+</insert>
+
+<select id="selectPaymentProductList">
+SELECT 
+PRODUCT_NO
+	, PRODUCT_NAME
+	, PRODUCT_DETAIL
+	, PRODUCT_PRICE
+	, PRODUCT_IMG
+	, PRODUCT_PERIOD
+FROM PAYMENT_PRODUCT
+</select>
+
+
+<select id="selectPaymentProductByPk">
+SELECT 
+PRODUCT_NO
+	, PRODUCT_NAME
+	, PRODUCT_DETAIL
+	, PRODUCT_PRICE
+	, PRODUCT_IMG
+	, PRODUCT_PERIOD
+FROM PAYMENT_PRODUCT
+WHERE PRODUCT_NO = #{productNo}
+</select>
+
+<update id="updatePaymentProduct">
+
+UPDATE PAYMENT_PRODUCT
+SET 
+PRODUCT_NAME = #{productName}
+	, PRODUCT_DETAIL = #{productDetail}
+	, PRODUCT_PRICE = #{productPrice}
+	, PRODUCT_IMG = #{productImg}
+	, PRODUCT_PERIOD = #{productPeriod}
+WHERE PRODUCT_NO = #{productNo}
+</update>
+
+<delete id="deletePaymentProduct">
+DELETE FROM PAYMENT_PRODUCT
+WHERE PRODUCT_NO = #{productNo}
+</delete>
+
+</mapper>
