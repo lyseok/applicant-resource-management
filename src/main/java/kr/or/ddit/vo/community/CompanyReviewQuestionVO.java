@@ -13,5 +13,5 @@ public class CompanyReviewQuestionVO implements Serializable {
 	private String companyReviewNo;
 	private String reviewSubjectCode;
 	private Integer companyReviewScore;
-	private CmnCodeVO cmnCode;
+	
 }

@@ -9,10 +9,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of="companyReviewNo")
 public class CompanyReviewVO implements Serializable {
 	private String companyReviewNo;
-	private String userId;
+	private String comId; //기업
 	private String jobCode;
 	private String workingYn;
 	private String companyReviewStatus;
 	private String companyReviewOneLine;
+	private String status; //삭제여부
+	private String userId; //일반
 	private List<CompanyReviewQuestionVO> companyReviewQuestion;
 }

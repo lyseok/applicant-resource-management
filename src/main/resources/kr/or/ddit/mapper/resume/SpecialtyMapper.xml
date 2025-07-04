@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.SpecialtyMapper">
+	<select id="selectSpecialtyList">
+		SELECT EDUCATION_NO
+			   , RESUME_NO
+			   , MAIN_MAJOR
+			   , SUB_MAJOR
+			   , SUB_MAJOR_CODE
+		  FROM SPECIALTY
+	</select>
+	
+	<select id="selectSpecialtyDetail">
+		SELECT EDUCATION_NO
+			   , RESUME_NO
+			   , MAIN_MAJOR
+			   , SUB_MAJOR
+			   , SUB_MAJOR_CODE 
+		  FROM SPECIALTY
+		 WHERE EDUCATION_NO = #{educationNo} 
+		   AND RESUME_NO = #{resumeNo}
+	</select>
+	
+	<insert id="insertSpecialty">
+		INSERT INTO SPECIALTY (
+			EDUCATION_NO
+			, RESUME_NO
+			, MAIN_MAJOR
+			, SUB_MAJOR
+			, SUB_MAJOR_CODE
+		) VALUES (
+			#{educationNo}
+			, #{resumeNo}
+			, #{mainMajor}
+			, #{subMajor}
+			, #{subMajorCode}
+		)
+	</insert>
+	
+	<update id="updateSpecialty">
+		UPDATE SPECIALTY 
+		   SET MAIN_MAJOR = #{mainMajor}
+		   	   , SUB_MAJOR = #{subMajor}
+		   	   , SUB_MAJOR_CODE = #{subMajorCode}
+		 WHERE EDUCATION_NO = #{educationNo} 
+		   AND RESUME_NO = #{resumeNo}
+	</update>
+	
+	<delete id="deleteSpecialty">
+		DELETE FROM SPECIALTY 
+		 WHERE EDUCATION_NO = #{educationNo}
+		   AND RESUME_NO = #{resumeNo}
+	</delete>
+	
+</mapper>

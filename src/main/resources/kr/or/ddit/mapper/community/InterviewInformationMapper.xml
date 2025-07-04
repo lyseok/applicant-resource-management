@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.InterviewInformationMapper">
+	
+  <select id="selectInterviewInfromationList" resultType="InterviewInformationVO">
+    SELECT 
+	INTERVIEW_INFORMATION_NO
+		, INTERVIEW_REVIEW_NO
+		, EVALUATION
+		, INTERVIEW_LEVEL
+		, INTERVIEW_TYPE
+		, INTERVIEW_CONTENT
+	FROM INTERVIEW_INFORMATION
+  </select>
+
+  
+  <select id="selectInterviewInformationByPk" resultType="InterviewInformationVO">
+    SELECT 
+	INTERVIEW_INFORMATION_NO
+		, INTERVIEW_REVIEW_NO
+		, EVALUATION
+		, INTERVIEW_LEVEL
+		, INTERVIEW_TYPE
+		, INTERVIEW_CONTENT
+	FROM INTERVIEW_INFORMATION
+	WHERE INTERVIEW_INFORMATION_NO = #{interviewInformationNo}
+  </select>
+
+  <insert id="insertInterviewInformation">
+  	<selectKey resultType="string" keyProperty="interviewInformationNo" order="BEFORE">
+	    SELECT
+	        'INFO'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INTERVIEW_INFORMATION_NO), LENGTH('INFO' ) + 1)), 0) + 1, 6, '0')
+	    FROM INTERVIEW_INFORMATION
+	</selectKey>
+ 
+    INSERT INTO INTERVIEW_INFORMATION (
+		INTERVIEW_INFORMATION_NO
+		, INTERVIEW_REVIEW_NO
+		, EVALUATION
+		, INTERVIEW_LEVEL
+		, INTERVIEW_TYPE
+		, INTERVIEW_CONTENT
+	) VALUES (
+	#{interviewInformationNo}
+		, #{interviewReviewNo}
+		, #{evaluation}
+		, #{interviewLevel}
+		, #{interviewType}
+		, #{interviewContent}
+	)
+  </insert>
+  
+  <update id="updateInterviewInformation">
+  	UPDATE INTERVIEW_INFORMATION
+	SET 
+	INTERVIEW_REVIEW_NO = #{interviewReviewNo}
+		, EVALUATION = #{evaluation}
+		, INTERVIEW_LEVEL = #{interviewLevel}
+		, INTERVIEW_TYPE = #{interviewType}
+		, INTERVIEW_CONTENT = #{interviewContent}
+	WHERE INTERVIEW_INFORMATION_NO = #{interviewInformationNo}
+  </update>
+  
+  <delete id="deleteInterviewInformation">
+  	DELETE FROM INTERVIEW_INFORMATION
+	WHERE INTERVIEW_INFORMATION_NO = #{interviewInformationNo}
+  </delete>
+	
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.AvatarMapper">
+	<select id="selectAvatarById">
+		SELECT 
+		AVATAR_ID
+			, USER_ID
+			, TOP_JOB_CODE
+			, AVATAR_NN
+			, YEAR_CODE
+		FROM AVATAR
+		WHERE AVATAR_ID = #{avatarId}
+	</select>
+		
+	
+	
+	<select id="selectAvatarList">
+		SELECT 
+		AVATAR_ID
+			, USER_ID
+			, TOP_JOB_CODE
+			, AVATAR_NN
+			, YEAR_CODE
+		FROM AVATAR
+	</select>
+	
+	
+	<insert id="insertAvatar">
+		<selectKey resultType="string" keyProperty="avatarId" order="BEFORE">
+		    SELECT
+		        'AVTR'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(AVATAR_ID), LENGTH('AVTR' ) + 1)), 0) + 1, 6, '0')
+		    FROM AVATAR
+		</selectKey>
+		INSERT INTO AVATAR (
+			AVATAR_ID
+			, USER_ID
+			, TOP_JOB_CODE
+			, AVATAR_NN
+			, YEAR_CODE
+		) VALUES (
+			#{avatarId}
+			, #{userId}
+			, #{topJobCode}
+			, #{avatarNn}
+			, #{yearCode}
+		)
+	</insert>
+	
+	
+	<update id="updateAvatar">
+		UPDATE AVATAR
+		SET 
+			USER_ID = #{userId}
+			, TOP_JOB_CODE = #{topJobCode}
+			, AVATAR_NN = #{avatarNn}
+			, YEAR_CODE = #{yearCode}
+		WHERE AVATAR_ID = #{avatarId}
+	</update>
+	
+	
+	<delete id="deleteAvatar">
+		DELETE FROM AVATAR WHERE AVATAR_ID = #{avatarId}
+	</delete>
+	
+	
+</mapper>
