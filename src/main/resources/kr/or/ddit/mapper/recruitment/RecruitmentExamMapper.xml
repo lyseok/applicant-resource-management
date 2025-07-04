@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.RecruitmentExamMapper">
+	<select id="selectRecruitExamList" resultType="RecruitmentExamVO">
+	SELECT 
+		RECRUIT_EXAM_NO
+		, PROCESS_NO
+		, RECRUIT_EXAM_NAME
+		, RECRUIT_EXAM_CUTLINE
+		, RECRUIT_EXAM_START_DATE
+		, RECRUIT_EXAM_END_DATE 
+	FROM RECRUITMENT_EXAM
+	</select>
+	
+	<select id="selectRecruitExam" resultType="RecruitmentExamVO">
+		SELECT 
+			RECRUIT_EXAM_NO
+			, PROCESS_NO
+			, RECRUIT_EXAM_NAME
+			, RECRUIT_EXAM_CUTLINE
+			, RECRUIT_EXAM_START_DATE
+			, RECRUIT_EXAM_END_DATE 
+		FROM RECRUITMENT_EXAM 
+		WHERE RECRUIT_EXAM_NO = #{recruitExamNo}
+	</select>
+	
+	<insert id="insertRecruitExam">
+	<selectKey resultType="string" keyProperty="recruitExamNo" order="BEFORE">
+    SELECT
+        'REEX'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUIT_EXAM_NO), LENGTH('REEX' ) + 1)), 0) + 1, 6, '0')
+    FROM RECRUITMENT_EXAM
+	</selectKey>
+	INSERT INTO RECRUITMENT_EXAM (
+		RECRUIT_EXAM_NO
+		, PROCESS_NO
+		, RECRUIT_EXAM_NAME
+		, RECRUIT_EXAM_CUTLINE
+		, RECRUIT_EXAM_START_DATE
+		, RECRUIT_EXAM_END_DATE
+	) VALUES (
+		#{recruitExamNo}
+		, #{processNo}
+		, #{recruitExamName}
+		, #{recruitExamCutline}
+		, TO_DATE(#{recruitExamStartDate}, 'YYYY-MM-DD HH24:MI')
+		, TO_DATE(#{recruitExamEndDate}, 'YYYY-MM-DD HH24:MI')
+	)
+	</insert>
+	
+	<update id="updateRecruitExam">
+	UPDATE RECRUITMENT_EXAM SET 
+		RECRUIT_EXAM_NAME = #{recruitExamName}
+		, RECRUIT_EXAM_CUTLINE = #{recruitExamCutline}
+		, RECRUIT_EXAM_START_DATE = TO_DATE(#{recruitExamStartDate}, 'YYYY-MM-DD HH24:MI')
+		, RECRUIT_EXAM_END_DATE = TO_DATE(#{recruitExamEndDate}, 'YYYY-MM-DD HH24:MI')
+	WHERE RECRUIT_EXAM_NO = #{recruitExamNo}
+	</update>
+	
+	<delete id="deleteRecruitExam">
+	DELETE FROM RECRUITMENT_EXAM 
+	WHERE RECRUIT_EXAM_NO = #{recruitExamNo}
+	</delete>
+</mapper>
