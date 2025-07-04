@@ -15,6 +15,7 @@ public class InterviewReviewVO implements Serializable {
 	private String interviewDate;
 	private String interviewReviewDate;
 	private String userId; // 추가
+	private String status; //추가
 	
 	private InterviewInformationVO interviewInformation;
 	private PassInformationVO passInformation;

@@ -14,7 +14,7 @@
   </select>
 
   
-  <select id="selectInterviewInformation" resultType="InterviewInformationVO">
+  <select id="selectInterviewInformationByPk" resultType="InterviewInformationVO">
     SELECT 
 	INTERVIEW_INFORMATION_NO
 		, INTERVIEW_REVIEW_NO
