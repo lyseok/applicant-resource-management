@@ -45,7 +45,7 @@ class RecruitProcessMapperTest {
 		RecruitProcessVO vo = new RecruitProcessVO();
 		vo.setRecruitProcessNo("PROC000001");
 		vo.setRecruitmentNo("RECR000001");
-		vo.setCompanyName("corp01");
+		vo.setCompanyName("corp03");
 		vo.setRecruitProcessStep("1");
 		vo.setRecruitProcessFinal("3");
 		vo.setRecruitProcessType("면접");

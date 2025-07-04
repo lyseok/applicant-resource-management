@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.PassIntroductionMapper">
+	<select id="selectPassIntroductionList" resultType="PassIntroductionVO">
+	SELECT 
+		PASS_INTRODUCTION_NO
+		, PASSER_CODE 
+	FROM PASS_INTRODUCTION
+	</select>
+	
+	<select id="selectPassIntroduction" resultType="PassIntroductionVO">
+	SELECT 
+		PASS_INTRODUCTION_NO
+		, PASSER_CODE 
+	FROM PASS_INTRODUCTION 
+	WHERE PASS_INTRODUCTION_NO = #{passIntroductionNo}
+	</select>
+	
+	<insert id="insertPassIntroduction">
+	<selectKey resultType="string" keyProperty="passIntroductionNo" order="BEFORE">
+    SELECT
+        'PSIT'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PASS_INTRODUCTION_NO), LENGTH('PSIT' ) + 1)), 0) + 1, 6, '0')
+    FROM PASS_INTRODUCTION
+	</selectKey>
+	INSERT INTO PASS_INTRODUCTION (
+		PASS_INTRODUCTION_NO
+		, PASSER_CODE
+	) VALUES (
+		#{passIntroductionNo}, #{passerCode}
+	)
+	</insert>
+	
+	<delete id="deletePassIntroduction">
+	DELETE FROM PASS_INTRODUCTION 
+	WHERE PASS_INTRODUCTION_NO = #{passIntroductionNo}
+	</delete>
+</mapper>

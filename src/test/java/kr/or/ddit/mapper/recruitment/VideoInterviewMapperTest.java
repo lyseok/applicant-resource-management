@@ -33,9 +33,8 @@ class VideoInterviewMapperTest {
 	void testInsertVideoInterview() {
 		VideoInterviewVO vo = new VideoInterviewVO();
 		vo.setInterviewNo("INTV000001");
-		vo.setVideoInterviewStartTime("2025/07/15");
-		vo.setVideoInterviewDuration("2025/07/15");
-		vo.setVideoInterviewEndTime("2025/07/15");
+		vo.setVideoInterviewStartTime("2025-07-15 10:00");
+		vo.setVideoInterviewEndTime("2025-07-15 11:00");
 		vo.setVideoInterviewStatus("1");
 		vo.setVideoInterviewUrl("url");
 		assertEquals(1, mapper.insertVideoInterview(vo));
@@ -45,11 +44,11 @@ class VideoInterviewMapperTest {
 	void testUpdateVideoInterview() {
 		VideoInterviewVO vo = new VideoInterviewVO();
 		vo.setInterviewNo("INTV000001");
-		vo.setVideoInterviewStartTime("2025/07/15");
-		vo.setVideoInterviewDuration("2025/07/15");
-		vo.setVideoInterviewEndTime("2025/07/15");
+		vo.setVideoInterviewStartTime("2025-07-15 11:00");
+		vo.setVideoInterviewEndTime("2025-07-15 12:00");
 		vo.setVideoInterviewStatus("2");
 		vo.setVideoInterviewUrl("url");
+		vo.setVideoInterviewNo("VITV000001");
 		assertEquals(1, mapper.updateVideoInterview(vo));
 	}
 

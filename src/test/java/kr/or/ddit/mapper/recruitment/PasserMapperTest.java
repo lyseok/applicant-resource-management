@@ -3,32 +3,52 @@ package kr.or.ddit.mapper.recruitment;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import kr.or.ddit.vo.recruitment.PasserVO;
+import lombok.extern.slf4j.Slf4j;
+
+@SpringBootTest
+@Slf4j
 class PasserMapperTest {
 
+	@Autowired
+	PasserMapper mapper;
+	
 	@Test
 	void testSelectPasserList() {
-		fail("Not yet implemented");
+		mapper.selectPasserList().forEach(code -> {
+			log.info("{}", code);		
+		});
 	}
 
 	@Test
 	void testSelectPasser() {
-		fail("Not yet implemented");
+		log.info("{}", mapper.selectPasser("PASS000001"));
 	}
 
 	@Test
 	void testInsertPasser() {
-		fail("Not yet implemented");
+		PasserVO vo = new PasserVO();
+		vo.setApplicantId("APPL000001");
+		vo.setHireDate("20250720");
+		assertEquals(1, mapper.insertPasser(vo));
 	}
 
 	@Test
 	void testUpdatePasser() {
-		fail("Not yet implemented");
+		PasserVO vo = new PasserVO();
+		vo.setHireDate("20250722");
+		vo.setPassAlarmYn("Y");
+		vo.setRecruitAcceptYn("Y");
+		vo.setPasserNo("PASS000001");
+		assertEquals(1, mapper.updatePasser(vo));
 	}
 
 	@Test
 	void testDeletePasser() {
-		fail("Not yet implemented");
+		assertEquals(1, mapper.deletePasser("PASS000001"));
 	}
 
 }

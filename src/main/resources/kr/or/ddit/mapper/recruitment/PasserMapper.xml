@@ -38,16 +38,15 @@
 	) VALUES (
 	#{passerNo}
 	, #{applicantId}
-	, #{passAlarmYn}
-	, #{recruitAcceptYn}
+	, 'N'
+	, 'N'
 	, #{hireDate}
 	)
 	</insert>
 	
 	<update id="updatePasser">
 	UPDATE PASSER SET 
-		APPLICANT_ID = #{applicantId}
-		, PASS_ALARM_YN = #{passAlarmYn}
+		PASS_ALARM_YN = #{passAlarmYn}
 		, RECRUIT_ACCEPT_YN = #{recruitAcceptYn}
 		, HIRE_DATE = #{hireDate} 
 	WHERE PASSER_NO = #{passerNo}

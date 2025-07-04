@@ -14,7 +14,6 @@ public class RecruitmentExamVO implements Serializable{
 	private String recruitExamName;
 	private String recruitExamCutline;
 	private String recruitExamStartDate;
-	private String recruitExamDuration;
 	private String recruitExamEndDate;
 
 }

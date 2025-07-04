@@ -33,7 +33,7 @@ class LiveRecruitmentMapperTest {
 	@Test
 	void testInsertRecruitmentNotice() {
 		RecruitmentNoticeVO input = new RecruitmentNoticeVO();
-		input.setUserId("corp01");
+		input.setUserId("corp03");
 		input.setRecruitmentTitle("test 제목입니다");
 		input.setJobCode("CD001");
 		input.setYearCode("Y1");

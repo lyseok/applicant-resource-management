@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.InterviewQuestionMapper">
-	<select id="selectInterviewQuestionList">
+	<select id="selectInterviewQuestionList" resultType="InterviewQuestionVO">
 	SELECT 
 		INTERVIEW_QUESTION_NO
 		, INTERVIEW_NO
@@ -9,7 +9,7 @@
 	FROM INTERVIEW_QUESTION
 	</select>
 	
-	<select id="selectInterviewQuestion">
+	<select id="selectInterviewQuestion" resultType="InterviewQuestionVO">
 	SELECT 
 		INTERVIEW_QUESTION_NO
 		, INTERVIEW_NO
@@ -38,7 +38,6 @@
 	
 	<update id="updateInterviewQuestion">
 	UPDATE INTERVIEW_QUESTION SET 
-		INTERVIEW_NO = #{interviewNo}
 		, INTERVIEW_QUESTION_CONTENT = #{interviewQuestionContent} 
 	WHERE INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
 	</update>

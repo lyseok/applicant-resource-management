@@ -54,8 +54,7 @@
 	
 	<update id="updateInterview">
 	UPDATE INTERVIEW SET
-		PROCESS_NO = #{processNo}
-		, USER_ID = #{userId}
+		USER_ID = #{userId}
 		, INTERVIEW_DATE = #{interviewDate}
 		, INTERVIEW_LOCATION = #{interviewLocation}
 		, INTERVIEW_TYPE = #{interviewType}

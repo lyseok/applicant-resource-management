@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.RecruitmentEducationMapper">
+	<select id="selectRecruitmentEduList" resultType="RecruitmentEducationVO">
+	SELECT 
+		RECRUITMENT_EDCUCATION_CODE
+		, CODE_DETAIL_NO
+		, RECRUITMENT_NO 
+	FROM RECRUITMENT_EDUCATION
+	</select>
+	
+	<select id="selectRecruitmentEdu" resultType="RecruitmentEducationVO">
+	SELECT 
+		RECRUITMENT_EDCUCATION_CODE
+		, CODE_DETAIL_NO
+		, RECRUITMENT_NO 
+	FROM RECRUITMENT_EDUCATION 
+	WHERE RECRUITMENT_EDCUCATION_CODE = #{recruitmentEdcucationCode}
+	</select>
+	
+	<insert id="insertRecruitmentEducation">
+	<selectKey resultType="string" keyProperty="recruitmentEdcucationCode" order="BEFORE">
+    SELECT
+        'REED'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUITMENT_EDCUCATION_CODE), LENGTH('REED' ) + 1)), 0) + 1, 6, '0')
+    FROM RECRUITMENT_EDUCATION
+	</selectKey>
+	INSERT INTO RECRUITMENT_EDUCATION (
+		RECRUITMENT_EDCUCATION_CODE
+		, CODE_DETAIL_NO
+		, RECRUITMENT_NO
+	) VALUES (
+		#{recruitmentEdcucationCode}
+		, #{codeDetailNo}
+		, #{recruitmentNo}
+	)
+	</insert>
+	
+	<update id="updateRecruitmentEducation">
+	UPDATE RECRUITMENT_EDUCATION SET 
+		CODE_DETAIL_NO = #{codeDetailNo}
+	WHERE RECRUITMENT_EDCUCATION_CODE = #{recruitmentEdcucationCode}
+	</update>
+	
+	<delete id="deleteRecruitmentEducation">
+	DELETE FROM RECRUITMENT_EDUCATION 
+	WHERE RECRUITMENT_EDCUCATION_CODE = #{recruitmentEdcucationCode}
+	</delete>
+</mapper>

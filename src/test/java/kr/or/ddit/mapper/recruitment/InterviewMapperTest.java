@@ -33,7 +33,7 @@ class InterviewMapperTest {
 	void testInsertInterview() {
 		InterviewVO vo = new InterviewVO();
 		vo.setProcessNo("PROC000001");
-		vo.setUserId("corp01");
+		vo.setUserId("corp03");
 		vo.setInterviewLocation("115010");
 		vo.setInterviewType("V");
 		vo.setInterviewPassScore("60");
@@ -43,8 +43,7 @@ class InterviewMapperTest {
 	@Test
 	void testUpdateInterview() {
 		InterviewVO vo = new InterviewVO();
-		vo.setProcessNo("PROC000001");
-		vo.setUserId("corp01");
+		vo.setUserId("corp03");
 		vo.setInterviewLocation("115010");
 		vo.setInterviewType("V");
 		vo.setInterviewPassScore("80");

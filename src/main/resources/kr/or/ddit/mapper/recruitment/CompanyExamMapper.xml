@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.CompanyExamMapper">
+	<select id="selectCompanyExamList" resultType="CompanyExamVO">
+	SELECT 
+		COM_EXAM_NO
+		, USER_ID
+		, COM_EXAM_NAME 
+	FROM COMPANY_EXAM
+	</select>
+	
+	<select id="selectCompanyExam" resultType="CompanyExamVO">
+	SELECT 
+		COM_EXAM_NO
+		, USER_ID
+		, COM_EXAM_NAME 
+	FROM COMPANY_EXAM WHERE COM_EXAM_NO = #{comExamNo}
+	</select>
+	
+	<insert id="insertCompanyExam">
+	<selectKey resultType="string" keyProperty="comExamNo" order="BEFORE">
+    SELECT
+        'COEX'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COM_EXAM_NO), LENGTH('COEX' ) + 1)), 0) + 1, 6, '0')
+    FROM COMPANY_EXAM
+	</selectKey>
+	INSERT INTO COMPANY_EXAM (
+		COM_EXAM_NO
+		, USER_ID
+		, COM_EXAM_NAME
+	) VALUES (
+		#{comExamNo}
+		, #{userId}
+		, #{comExamName}
+	)
+	</insert>
+	
+	<update id="updateCompanyExam">
+	UPDATE COMPANY_EXAM SET 
+		COM_EXAM_NAME = #{comExamName} 
+	WHERE COM_EXAM_NO = #{comExamNo}
+	</update>
+	
+	<delete id="deleteCompanyExam">
+	DELETE FROM COMPANY_EXAM 
+	WHERE COM_EXAM_NO = #{comExamNo}
+	</delete>
+</mapper>

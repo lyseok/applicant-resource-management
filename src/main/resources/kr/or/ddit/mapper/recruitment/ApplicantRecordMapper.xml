@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.ApplicantRecordMapper">
-	<select id="selectApplicantRecordList">
+	<select id="selectApplicantRecordList" resultType="ApplicantRecordVO">
 	SELECT 
 		APPLICANT_RECORD_NO
 		, RECRUITMENT_NO
@@ -12,7 +12,7 @@
 	FROM APPLICANT_RECORD
 	</select>
 	
-	<select id="selectApplicantRecord">
+	<select id="selectApplicantRecord" resultType="ApplicantRecordVO">
 	SELECT 
 		APPLICANT_RECORD_NO
 		, RECRUITMENT_NO
@@ -43,16 +43,14 @@
 		, #{recruitmentNo}
 		, #{applicantId}
 		, #{recruitProcessStep}
-		, N
-		, N
+		, 'N'
+		, 'N'
 	)
 	</insert>
 	
 	<update id="updateApplicantRecord">
 	UPDATE APPLICANT_RECORD SET 
-		RECRUITMENT_NO = #{recruitmentNo}
-		, APPLICANT_ID = #{applicantId}
-		, RECRUIT_PROCESS_STEP = #{recruitProcessStep}
+		RECRUIT_PROCESS_STEP = #{recruitProcessStep}
 		, STEP_PASS_YN = #{stepPassYn}
 		, STEP_APPLICATION_YN = #{stepApplicationYn} 
 	WHERE APPLICANT_RECORD_NO =	#{applicantRecordNo}

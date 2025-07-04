@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.or.ddit.mapper.recruitment.RecruitmentExamOptionMapper">
+	<select id="selectRecrExamOptionList" resultType="RecruitmentExamOptionVO">
+	SELECT 
+		RECRUIT_OPTION_NO
+		, RECRUIT_EXAM_QUEST_NO
+		, RECRUIT_EXAM_OPTION_CONTENT
+		, RECRUIT_EXAM_OPTION_CORRECT_YN 
+	FROM RECRUITMENT_EXAM_OPTION
+	</select>
+	
+	<select id="selectRecrExamOption" resultType="RecruitmentExamOptionVO">
+	SELECT 
+		RECRUIT_OPTION_NO
+		, RECRUIT_EXAM_QUEST_NO
+		, RECRUIT_EXAM_OPTION_CONTENT
+		, RECRUIT_EXAM_OPTION_CORRECT_YN 
+	FROM RECRUITMENT_EXAM_OPTION 
+	WHERE RECRUIT_OPTION_NO = #{recruitOptionNo}
+	</select>
+	
+	<insert id="insertRecrExamOption">
+	<selectKey resultType="string" keyProperty="recruitOptionNo" order="BEFORE">
+    SELECT
+        'REOP'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUIT_OPTION_NO), LENGTH('REOP' ) + 1)), 0) + 1, 6, '0')
+    FROM RECRUITMENT_EXAM_OPTION
+	</selectKey>
+	INSERT INTO RECRUITMENT_EXAM_OPTION (
+		RECRUIT_OPTION_NO
+		, RECRUIT_EXAM_QUEST_NO
+		, RECRUIT_EXAM_OPTION_CONTENT
+		, RECRUIT_EXAM_OPTION_CORRECT_YN
+	) VALUES (
+		#{recruitOptionNo}
+		, #{recruitExamQuestNo}
+		, #{recruitExamOptionContent}
+		, #{recruitExamOptionCorrectYn}
+	)
+	</insert>
+	
+	<update id="updateRecrExamOption">
+	UPDATE RECRUITMENT_EXAM_OPTION SET 
+		RECRUIT_EXAM_OPTION_CONTENT = #{recruitExamOptionContent}
+		, RECRUIT_EXAM_OPTION_CORRECT_YN = #{recruitExamOptionCorrectYn} 
+	WHERE RECRUIT_OPTION_NO = #{recruitOptionNo}
+	</update>
+	
+	<delete id="deleteRecrExamOption">
+	DELETE FROM RECRUITMENT_EXAM_OPTION 
+	WHERE RECRUIT_OPTION_NO = #{recruitOptionNo}
+	</delete>
+</mapper>

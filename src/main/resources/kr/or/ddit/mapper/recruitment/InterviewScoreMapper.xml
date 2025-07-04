@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.InterviewScoreMapper">
-	<select id="selectInterviewScoreList">
+	<select id="selectInterviewScoreList" resultType="InterviewScoreVO">
 	SELECT 
 		INTERVIEW_SCORE_NO
 		, INTERVIEW_QUESTION_NO
@@ -11,7 +11,7 @@
 	FROM INTERVIEW_SCORE
 	</select>
 	
-	<select id="selectInterviewScore">
+	<select id="selectInterviewScore" resultType="InterviewScoreVO">
 	SELECT 
 		INTERVIEW_SCORE_NO
 		, INTERVIEW_QUESTION_NO
@@ -46,10 +46,7 @@
 	
 	<update id="updateInterviewScore">
 	UPDATE INTERVIEW_SCORE SET 
-		INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
-		, INTERVIEW_NO = #{interviewNo}
-		, APPLICANT_ID = #{applicantId}
-		, APPLICANT_RATING = #{applicantRating}
+		APPLICANT_RATING = #{applicantRating}
 	WHERE INTERVIEW_SCORE_NO = #{interviewScoreNo}
 	</update>
 	

@@ -6,7 +6,6 @@
 		VIDEO_INTERVIEW_NO
 		, INTERVIEW_NO
 		, VIDEO_INTERVIEW_START_TIME
-		, VIDEO_INTERVIEW_DURATION
 		, VIDEO_INTERVIEW_END_TIME
 		, VIDEO_INTERVIEW_STATUS
 		, VIDEO_INTERVIEW_URL
@@ -18,7 +17,6 @@
 		VIDEO_INTERVIEW_NO
 		, INTERVIEW_NO
 		, VIDEO_INTERVIEW_START_TIME
-		, VIDEO_INTERVIEW_DURATION
 		, VIDEO_INTERVIEW_END_TIME
 		, VIDEO_INTERVIEW_STATUS
 		, VIDEO_INTERVIEW_URL 
@@ -37,16 +35,14 @@
 		VIDEO_INTERVIEW_NO
 		, INTERVIEW_NO
 		, VIDEO_INTERVIEW_START_TIME
-		, VIDEO_INTERVIEW_DURATION
 		, VIDEO_INTERVIEW_END_TIME
 		, VIDEO_INTERVIEW_STATUS
 		, VIDEO_INTERVIEW_URL
 	) VALUES (
 		#{videoInterviewNo}
 		, #{interviewNo}
-		, #{videoInterviewStartTime}
-		, #{videoInterviewDuration}
-		, #{videoInterviewEndTime}
+		, TO_DATE(#{videoInterviewStartTime}, 'YYYY-MM-DD HH24:MI')
+		, TO_DATE(#{videoInterviewEndTime}, 'YYYY-MM-DD HH24:MI')
 		, #{videoInterviewStatus}
 		, #{videoInterviewUrl}
 	)
@@ -54,9 +50,8 @@
 	
 	<update id="updateVideoInterview">
 	UPDATE VIDEO_INTERVIEW SET 
-		VIDEO_INTERVIEW_START_TIME = #{videoInterviewStartTime}
-		, VIDEO_INTERVIEW_DURATION = #{videoInterviewDuration}
-		, VIDEO_INTERVIEW_END_TIME = #{videoInterviewEndTime}
+		VIDEO_INTERVIEW_START_TIME = TO_DATE(#{videoInterviewStartTime}, 'YYYY-MM-DD HH24:MI')
+		, VIDEO_INTERVIEW_END_TIME = TO_DATE(#{videoInterviewEndTime}, 'YYYY-MM-DD HH24:MI')
 		, VIDEO_INTERVIEW_STATUS = #{videoInterviewStatus}
 		, VIDEO_INTERVIEW_URL = #{videoInterviewUrl}
 	WHERE VIDEO_INTERVIEW_NO = #{videoInterviewNo} 
