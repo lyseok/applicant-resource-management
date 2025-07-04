@@ -33,7 +33,7 @@ class AwardMapperTest {
 	@Test
 	void testInsertAward() {
 		AwardVO vo = new AwardVO();
-		vo.setResumeNo("RSM001");
+		vo.setResumeNo("RESM000001");
 		vo.setAwardName("최우수 개발자상");
 		vo.setAwardDate("2022-01-12");
 		vo.setHosting("고용노동부");

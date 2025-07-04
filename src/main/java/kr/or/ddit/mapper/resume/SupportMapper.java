@@ -9,9 +9,9 @@ import kr.or.ddit.vo.resume.SupportVO;
 @Mapper
 public interface SupportMapper {
 	// 목록 조회
-	public List<SupportVO> seletSupportList();
+	public List<SupportVO> selectSupportList();
 	// 단건 조회
-	public SupportVO seletSupportDetail(String no);
+	public SupportVO selectSupportDetail(String no);
 	// 등록
 	public int insertSupport(SupportVO vo);
 	// 수정

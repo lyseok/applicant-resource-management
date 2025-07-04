@@ -32,11 +32,12 @@ class MyLicenseMapperTest {
 	@Test
 	void testInsertMyLicense() {
 		MyLicenseVO vo = new MyLicenseVO();
-		vo.setResumeNo("RSM001");
+		vo.setResumeNo("RESM000001");
 		vo.setLicenseCode("??");
 		vo.setLicensePassDate("20220406");
 		mapper.insertMyLicense(vo);
-		mapper.seletMyLicenseDetail("ML001");
+		
+		mapper.seletMyLicenseDetail(vo.getLicenseCode());
 		log.info("{}", vo);
 	}
 
