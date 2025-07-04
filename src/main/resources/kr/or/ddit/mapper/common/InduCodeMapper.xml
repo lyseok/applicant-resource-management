@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.InduCodeMapper">
+
+<select id="selectInduCodeList">
+	SELECT 
+		INDU_NO
+			, INDU_CLASS_NO
+			, INDU_NAME
+	FROM INDU_CODE
+</select>
+
+<select id="selectInduCodeByPk">
+	SELECT 
+		INDU_NO
+			, INDU_CLASS_NO
+			, INDU_NAME
+	FROM INDU_CODE
+	WHERE INDU_NO = #{induNo}
+</select>
+
+<insert id="insertInduCode">
+	<selectKey resultType="string" keyProperty="induNo" order="BEFORE">
+	    SELECT
+		    'INCC'||
+		    LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INDU_NO), LENGTH('INCC' ) + 1)), 0) + 1, 6, '0')
+		FROM INDU_CODE
+		WHERE INDU_CLASS_NO = #{induClassNo}
+	</selectKey>
+
+	INSERT INTO INDU_CODE (
+		INDU_NO
+			, INDU_CLASS_NO
+			, INDU_NAME
+	) VALUES (
+		#{induNo}
+			, #{induClassNo}
+			, #{induName}
+	)
+</insert>
+
+<update id="updateInduCode">
+	UPDATE INDU_CODE
+	SET 
+		INDU_CLASS_NO = #{induClassNo}
+			, INDU_NAME = #{induName}
+	WHERE INDU_NO = #{induNo}
+</update>
+
+<delete id="deleteInduCode">
+	DELETE FROM INDU_CODE
+	WHERE INDU_NO = #{induNo}
+</delete>
+
+</mapper>

@@ -50,9 +50,8 @@ public class CompanyReviewController {
 	
 	 @GetMapping("/detail/{id}") 
 	 public String review(Model model, @PathVariable("id") String id) {
-	  log.info("list : {}", service.readCompanyReviewAnswerList(id));
-	  List<CompanyReviewVO> list = service.readCompanyReviewAnswerList(id);
-	  model.addAttribute("list",list);
+	  
+	
 	  return "member/community/companyReview/companyReviewDetail";
 	  
 	 }
@@ -62,8 +61,7 @@ public class CompanyReviewController {
 	 @GetMapping("/insert")
 	 public String reviewFormUI(Model model) {
 		 String code = "REVU";
-		 List<CmnCodeGroupVO> questionList = service.readCompanyReviewQuestionList(code);
-		 model.addAttribute("questionList", questionList);
+		 
 		 
 		return  "member/community/companyReview/companyReviewForm";
 	 }

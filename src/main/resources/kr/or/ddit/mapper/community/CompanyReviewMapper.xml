@@ -5,21 +5,24 @@
   <resultMap id="questionMap"
              type="kr.or.ddit.vo.community.CompanyReviewQuestionVO"
              autoMapping="true">
-    
-     <association property="cmnCode"
-               javaType="kr.or.ddit.vo.common.CmnCodeVO">
-    <id     property="codeDetailNo" column="CODE_DETAIL_NO"/>
-    <result property="codeName"      column="CODE_NAME"/>
-  </association>
   </resultMap>
 
 
-  <resultMap id="reviewMap"
-             type="kr.or.ddit.vo.community.CompanyReviewVO"
-             autoMapping="true">
-    <collection property="companyReviewQuestion"
-                ofType="kr.or.ddit.vo.community.CompanyReviewQuestionVO"
-                resultMap="questionMap"/>
+ <resultMap id="reviewWithQuestionsMap" type="kr.or.ddit.vo.community.CompanyReviewVO">
+    <id     property="companyReviewNo"       column="COMPANY_REVIEW_NO"/>
+    <result property="userId"                 column="USER_ID"/>
+    <result property="jobCode"                column="JOB_CODE"/>
+    <result property="workingYn"              column="WORKING_YN"/>
+    <result property="companyReviewStatus"    column="COMPANY_REVIEW_STATUS"/>
+    <result property="companyReviewOneLine"   column="COMPANY_REVIEW_ONE_LINE"/>
+   
+
+
+    <collection property="companyReviewQuestion" ofType="kr.or.ddit.vo.community.CompanyReviewQuestionVO">
+      <id     property="companyReviewQuestionNo" column="COMPANY_REVIEW_QUESTION_NO"/>
+      <result property="reviewSubjectCode"         column="REVIEW_SUBJECT_CODE"/>
+      <result property="companyReviewScore"        column="COMPANY_REVIEW_SCORE"/>
+    </collection>
   </resultMap>
 
 
@@ -40,25 +43,103 @@
 	</select>
 	
 	
-	<select id="selectCompanyReviewAnswerList"  parameterType="string" resultMap="reviewMap">
-	 SELECT
-      
-      cr.COMPANY_REVIEW_ONE_LINE,
-      crq.REVIEW_SUBJECT_CODE,
-      crq.COMPANY_REVIEW_SCORE,
-      cc.CODE_NAME
-     
-
-    FROM COMPANY_REVIEW cr
-    LEFT JOIN COMPANY_REVIEW_QUESTION crq
-      ON cr.COMPANY_REVIEW_NO = crq.COMPANY_REVIEW_NO
-    LEFT JOIN CMN_CODE cc
-      ON cc.CODE_DETAIL_NO = crq.REVIEW_SUBJECT_CODE
-     AND cc.CODE_GROUP_NO  = 'REVU'
-    WHERE cr.USER_ID = #{userId}
-    ORDER BY cr.COMPANY_REVIEW_NO, cc.SORT_ORDER
-  
+	<select id="selectCompanyReviewByPk">
+		SELECT 
+			COMPANY_REVIEW_NO
+			, COM_ID
+			, JOB_CODE
+			, WORKING_YN
+			, COMPANY_REVIEW_STATUS
+			, COMPANY_REVIEW_ONE_LINE
+			, USER_ID
+			, STATUS
+		FROM COMPANY_REVIEW
+		WHERE COMPANY_REVIEW_NO = #{companyReviewNo}
 	</select>
+	
+	<select id="selectCompanyReviewList">
+		SELECT 
+			COMPANY_REVIEW_NO
+			, COM_ID
+			, JOB_CODE
+			, WORKING_YN
+			, COMPANY_REVIEW_STATUS
+			, COMPANY_REVIEW_ONE_LINE
+			, USER_ID
+			, STATUS
+		FROM COMPANY_REVIEW
+	</select>
+	
+	
+	
+	<select id="selectCompanyReviewWithQAList" resultMap="reviewWithQuestionsMap">
+		SELECT
+	      c.USER_ID,
+	      c.COM_NAME,
+	      r.COMPANY_REVIEW_NO,
+	      r.JOB_CODE,
+	      r.WORKING_YN,
+	      r.COMPANY_REVIEW_STATUS,
+	      r.COMPANY_REVIEW_ONE_LINE,
+	      r.USER_ID,
+	      q.COMPANY_REVIEW_QUESTION_NO,
+	      q.REVIEW_SUBJECT_CODE,
+	      q.COMPANY_REVIEW_SCORE
+	    FROM TEAM1_202501F.COMPANY c
+	    INNER JOIN TEAM1_202501F.COMPANY_REVIEW r
+	      ON c.USER_ID = r.COM_ID
+	    INNER JOIN COMPANY_REVIEW_QUESTION q
+	      ON r.COMPANY_REVIEW_NO = q.COMPANY_REVIEW_NO
+	    WHERE c.USER_ID = #{comId}
+	    ORDER BY r.COMPANY_REVIEW_NO,
+	             q.COMPANY_REVIEW_QUESTION_NO
+		
+	</select>
+	
+	
+	<insert id="insertCompanyReview">
+		<selectKey resultType="string" keyProperty="companyReviewNo" order="BEFORE">
+		    SELECT
+		        'CPRV'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMPANY_REVIEW_NO), LENGTH('CPRV' ) + 1)), 0) + 1, 6, '0')
+		    FROM COMPANY_REVIEW
+		</selectKey>
+	
+		INSERT INTO COMPANY_REVIEW (
+			COMPANY_REVIEW_NO, 
+			COM_ID, JOB_CODE, 
+			WORKING_YN, 
+			COMPANY_REVIEW_STATUS, 
+			COMPANY_REVIEW_ONE_LINE, 
+			USER_ID, 
+			STATUS
+			) VALUES (
+			#{companyReviewNo}, 
+			#{comId}, 
+			#{jobCode}, 
+			#{workingYn}, 
+			#{companyReviewStatus}, 
+			#{companyReviewOneLine}, 
+			#{userId}, 
+			'N'
+		)
+	</insert>
+	
+	<update id="updateDeleteStatusMyCompanyReview">
+		UPDATE COMPANY_REVIEW 
+			SET 
+		STATUS = 'Y' 
+		WHERE COMPANY_REVIEW_NO = #{companyReviewNo}
+	</update>
+	
+	
+	<delete id="deleteCompanyReview">
+		DELETE FROM COMPANY WHERE COMPANY_REVIEW_NO = #{companyReviewNo}
+	</delete>
+	
+	
+	
+
 	
 
 	

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.CmnCodeMapper">
+
+<select id="selectCmnCodeByPk">
+	SELECT 
+		CODE_DETAIL_NO
+		, CODE_GROUP_NO
+		, UPPER_CODE_NO
+		, CODE_NAME
+		, SORT_ORDER
+		, USE_YN
+		, CREATE_DATE
+		, UPDATE_DATE
+	FROM CMN_CODE
+	WHERE CODE_DETAIL_NO = #{codeDetailNo}
+</select>
+
+<insert id="insertCmnCode">
+	<selectKey resultType="int" keyProperty="sortOrder" order="BEFORE">
+	    SELECT MAX(SORT_ORDER) + 1
+		FROM CMN_CODE
+		WHERE CODE_GROUP_NO = #{codeGroupNo}
+	</selectKey>
+	
+	INSERT INTO CMN_CODE (
+		CODE_DETAIL_NO
+		, CODE_GROUP_NO
+		, UPPER_CODE_NO
+		, CODE_NAME
+		, SORT_ORDER
+		, USE_YN
+		, CREATE_DATE
+	) VALUES (
+		#{codeDetailNo}
+		, #{codeGroupNo}
+		, #{upperCodeNo}
+		, #{codeName}
+		, #{sortOrder}
+		, #{useYn}
+		, SYSDATE
+	)
+</insert>
+
+<update id="updateCmnCode">
+	UPDATE CMN_CODE
+	SET 
+		CODE_GROUP_NO = #{codeGroupNo}
+		, CODE_NAME = #{codeName}
+<!-- 		, SORT_ORDER = #{sortOrder} -->
+		, USE_YN = #{useYn}
+		, UPDATE_DATE = SYSDATE
+	WHERE CODE_DETAIL_NO = #{codeDetailNo}
+</update>
+
+<delete id="deleteCmnCode">
+	DELETE FROM CMN_CODE
+	WHERE CODE_DETAIL_NO = #{codeDetailNo}
+</delete>
+
+</mapper>
