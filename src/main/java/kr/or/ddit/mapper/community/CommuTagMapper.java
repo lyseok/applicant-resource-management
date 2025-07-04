@@ -12,6 +12,5 @@ public interface CommuTagMapper {
 	public CommuTagVO selectCommuTag(String tagNo, String boardNo);  //해당 게시글의 태그 하나
 	public List<CommuTagVO> selectCommuTagList(String boardNo);  //해당 게시글의 태그들
 	public int insertCommuTag(CommuTagVO tag);
-	public int updateCommuTag(CommuTagVO tag);
 	public int deleteCommuTag(String tagNo, String boardNo);
 }

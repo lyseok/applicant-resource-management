@@ -10,6 +10,5 @@ public interface CommuTagService {
 	public Optional<CommuTagVO> readCommuTag(String tagNo, String boardNo);
 	public List<CommuTagVO> readCommuTagList(String boardNo);
 	public void createCommuTag(CommuTagVO tag);
-	public void modifyCommuTag(CommuTagVO tag);
 	public void removeCommuTag(String tagNo, String boardNo);
 }

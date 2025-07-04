@@ -43,16 +43,6 @@
 		)
 	</insert>
 	
-	<update id="updateCommuTag" parameterType="CommuTagVO">
-		UPDATE COMMU_TAG 
-		SET 
-			COMMU_TAG_DATE = #{commuTagDate} 
-		WHERE 
-			TAG_NO = #{tagNo} 
-			AND 
-			BOARD_NO = #{boardNo}
-	</update>
-	
 	<delete id="deleteCommuTag">
 		DELETE FROM COMMU_TAG 
 		WHERE 

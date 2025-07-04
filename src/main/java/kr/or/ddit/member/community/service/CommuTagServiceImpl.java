@@ -31,11 +31,6 @@ public class CommuTagServiceImpl implements CommuTagService {
 	}
 
 	@Override
-	public void modifyCommuTag(CommuTagVO tag) {
-		mapper.updateCommuTag(tag);
-	}
-
-	@Override
 	public void removeCommuTag(String tagNo, String boardNo) {
 		mapper.deleteCommuTag(tagNo, boardNo);
 	}

@@ -47,19 +47,6 @@ class CommuTagMapperTest {
 	}
 
 	@Test
-	void testUpdateCommuTag() {
-		CommuTagVO tag = new CommuTagVO();
-		
-		tag.setTagNo("CTAG000001");
-		tag.setBoardNo("CMBD000004");
-		tag.setCommuTagDate("20250702");
-		
-		assertEquals(1, mapper.updateCommuTag(tag));
-		
-		log.info("{}", mapper.selectCommuTag("CTAG000001", "CMBD000004"));
-	}
-
-	@Test
 	void testDeleteCommuTag() {
 		mapper.deleteCommuTag("CTAG000001", "CMBD000004");
 		assertNull(mapper.selectCommuTag("CTAG000001", "CMBD000004"));
