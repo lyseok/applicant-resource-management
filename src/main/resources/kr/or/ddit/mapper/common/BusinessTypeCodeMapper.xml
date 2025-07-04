@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.BusinessTypeCodeMapper">
+
+<select id="selectBusinessTypeCodeList">
+	SELECT
+		BUSINESS_TYPE_NO
+		, INDU_NO
+		, BUSINESS_TYPE_NAME
+	FROM BUSINESS_TYPE_CODE
+</select>
+
+<select id="selectBusinessTypeCode">
+	SELECT 
+		BUSINESS_TYPE_NO
+		, INDU_NO
+		, BUSINESS_TYPE_NAME
+	FROM BUSINESS_TYPE_CODE
+	WHERE BUSINESS_TYPE_NO = #{businessTypeNo}
+</select>
+
+<insert id="insertBusinessTypeCode">
+	<selectKey resultType="string" keyProperty="businessTypeNo" order="BEFORE">
+	    SELECT
+	        'BNTC'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BUSINESS_TYPE_NO), LENGTH('BNTC' ) + 1)), 0) + 1, 6, '0')
+	    FROM BUSINESS_TYPE_CODE
+	    WHERE INDU_NO = #{induNo}
+	</selectKey>
+	
+	INSERT INTO BUSINESS_TYPE_CODE (
+		BUSINESS_TYPE_NO
+		, INDU_NO
+		, BUSINESS_TYPE_NAME
+	) VALUES (
+		#{businessTypeNo}
+		, #{induNo}
+		, #{businessTypeName}
+	)
+</insert>
+
+<update id="updateBusinessTypeCode">
+	UPDATE BUSINESS_TYPE_CODE
+	SET 
+		INDU_NO = #{induNo}
+		, BUSINESS_TYPE_NAME = #{businessTypeName}
+	WHERE BUSINESS_TYPE_NO = #{businessTypeNo}
+</update>
+
+<delete id="deleteBusinessTypeCode">
+	DELETE FROM BUSINESS_TYPE_CODE
+	WHERE BUSINESS_TYPE_NO = #{businessTypeNo}
+</delete>
+
+</mapper>

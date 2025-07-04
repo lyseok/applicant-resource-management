@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.EducationMapper">
+	<select id="selectEducationList">
+		SELECT EDUCATION_NO
+			   , RESUME_NO
+			   , HIGHEST_EDUCATION_CODE
+			   , SCHOOL_NAME, GRADUATE_YN
+			   , TRANSFER_YN
+			   , ENTRANCE_DATE
+			   , GRADUATE_DATE
+			   , LOCATION
+			   , DEPARTMENT_CODE 
+		  FROM EDUCATION
+	</select>
+	
+	<select id="selectEducationDetail">
+		SELECT EDUCATION_NO
+			   , RESUME_NO
+			   , HIGHEST_EDUCATION_CODE
+			   , SCHOOL_NAME
+			   , GRADUATE_YN
+			   , TRANSFER_YN
+			   , ENTRANCE_DATE
+			   , GRADUATE_DATE
+			   , LOCATION
+			   , DEPARTMENT_CODE 
+		  FROM EDUCATION 
+		 WHERE EDUCATION_NO = #{educationNo}
+		   AND RESUME_NO = #{resumeNo}
+	</select>
+	
+	<insert id="insertEducation">
+		<selectKey resultType="string" keyProperty="educationNo" order="BEFORE">
+		    SELECT
+		        'EDCT'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(EDUCATION_NO), LENGTH('EDCT' ) + 1)), 0) + 1, 6, '0')
+		    FROM EDUCATION
+		   WHERE RESUME_NO = #{resumeNo}
+		</selectKey>
+		INSERT INTO EDUCATION (
+			EDUCATION_NO
+			, RESUME_NO
+			, HIGHEST_EDUCATION_CODE
+			, SCHOOL_NAME
+			, GRADUATE_YN
+			, TRANSFER_YN
+			, ENTRANCE_DATE
+			, GRADUATE_DATE
+			, LOCATION
+			, DEPARTMENT_CODE
+		) VALUES (
+			#{educationNo}
+			, #{resumeNo}
+			, #{highestEducationCode}
+			, #{schoolName}
+			, #{graduateYn}
+			, #{transferYn}
+			, REPLACE(#{entranceDate}, '-', '')
+			, REPLACE(#{graduateDate}, '-', '')
+			, #{location}
+			, #{departmentCode}
+		)
+	</insert>
+	
+	<update id="updateEducation">
+		UPDATE EDUCATION 
+		   SET HIGHEST_EDUCATION_CODE = #{highestEducationCode}
+		   	   , SCHOOL_NAME = #{schoolName}
+		   	   , GRADUATE_YN = #{graduateYn}
+		   	   , TRANSFER_YN = #{transferYn}
+		   	   , ENTRANCE_DATE = REPLACE(#{entranceDate}, '-', '')
+		   	   , GRADUATE_DATE = REPLACE(#{graduateDate}, '-', '')
+		   	   , LOCATION = #{location}
+		   	   , DEPARTMENT_CODE = #{departmentCode} 
+		 WHERE EDUCATION_NO = #{educationNo} 
+		   AND RESUME_NO = #{resumeNo}
+	</update>
+	
+	<delete id="deleteEducation">
+		DELETE FROM EDUCATION 
+		 WHERE EDUCATION_NO = #{educationNo} 
+		   AND RESUME_NO = #{resumeNo}
+	</delete>
+</mapper>
