@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div class="">
 	<p class="h1 mb-3 fw-bold">자소서 관리</p>
 	<div class="p-3 pt-4 pb-4 bg-violet03 rounded d-flex justify-content-between align-items-center mb-5">
 		<p class="fw-bold">✍ 초안 자동생성, 맞춤법 및 표절검사, 마무리 코칭까지 해주는</p>
@@ -59,5 +60,5 @@
 			</a>
 		</div>
 	</c:if>
-	
+	</div>
 </body>

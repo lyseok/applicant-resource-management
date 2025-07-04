@@ -96,7 +96,7 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  margin-top: 1rem;
+  margin-top: 84px;
 }
 .layout-demo-placeholder img {
   width: 900px;
