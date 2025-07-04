@@ -42,7 +42,7 @@
 	    WHERE USER_ID = #{userId}
 	</select>
 	
-	<select id="selectSalaryRangeList" resultType="kr.or.ddit.vo.common.SalaryVO">
+	<select id="searchSalaryRangeList" resultType="kr.or.ddit.vo.common.SalaryVO">
 		 <![CDATA[
 		 SELECT 
 		 	SALARY_ID,
@@ -58,7 +58,7 @@
 	</select>
 	
 	
-	<select id="selectSalaryComNameList" resultType="kr.or.ddit.vo.common.SalaryVO">
+	<select id="searchSalaryComNameList" resultType="kr.or.ddit.vo.common.SalaryVO">
 		SELECT
 		    s.SALARY_ID,
 		    s.USER_ID,

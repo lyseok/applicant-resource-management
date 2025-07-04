@@ -38,7 +38,7 @@ class SalaryMapperTest {
 		params.put("salaryMin", 3000);
 		params.put("salaryMax", 6000);
 		
-		mapper.selectSalaryRangeList(params).forEach(salary ->{
+		mapper.searchSalaryRangeList(params).forEach(salary ->{
 			log.info("{}", salary);
 		});
 		
@@ -47,7 +47,7 @@ class SalaryMapperTest {
 
 	@Test
 	void testSelectSalaryComNameList() {
-		mapper.selectSalaryComNameList("네이버").forEach(salary ->{
+		mapper.searchSalaryComNameList("네이버").forEach(salary ->{
 			log.info("{}", salary);
 		});
 	}
