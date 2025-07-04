@@ -2,6 +2,7 @@ package kr.or.ddit.mapper.community;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
@@ -21,17 +22,21 @@ class CommuTagMapperTest {
 	
 	@Test
 	void testSelectCommuTagByPk() {
-		log.info("{}", mapper.selectCommuTagByPk("CTAG000001", "CMBD000004"));
+		assertDoesNotThrow(()->mapper.selectCommuTagByPk("CTAG000001", "CMBD000001"));
+		
+		log.info("{}", mapper.selectCommuTagByPk("CTAG000001", "CMBD000001"));
 	}
 	
 	@Test
 	void testSearchCommuTagTagList() {
-		assertDoesNotThrow(()->mapper.searchCommuTagTagList("CMBD000004"));
+		assertDoesNotThrow(()->mapper.searchCommuTagTagList("CMBD000001"));
 		
-		List<CommuTagVO> list = mapper.searchCommuTagTagList("CMBD000004");
+		List<CommuTagVO> list = mapper.searchCommuTagTagList("CMBD000001");
 		list.forEach(t->{
 			log.info("{}", t);
 		});
+		
+		assertEquals(1, list.size());
 	}
 
 	@Test
@@ -42,6 +47,8 @@ class CommuTagMapperTest {
 		list.forEach(t->{
 			log.info("{}", t);
 		});
+		
+		assertEquals(1, list.size());
 	}
 	
 	
@@ -53,23 +60,26 @@ class CommuTagMapperTest {
 		list.forEach(t->{
 			log.info("{}", t);
 		});
+		
+		assertEquals(1, list.size());
 	}
 
 	@Test
 	void testInsertCommuTag() {
 		CommuTagVO tag = new CommuTagVO();
 		
-		tag.setBoardNo("CMBD000004");
-		
-		log.info("{}", mapper.selectCommuTagByPk("CTAG000001", "CMBD000004"));
+		tag.setBoardNo("CMBD000001");
 
 		assertEquals(1, mapper.insertCommuTag(tag));		
+		
+		log.info("{}", mapper.selectCommuTagByPk("CTAG000002", "CMBD000001"));
+
 	}
 
 	@Test
 	void testDeleteCommuTag() {
-		log.info("{}", mapper.deleteCommuTag("CTAG000001", "CMBD000004"));  //1이면 삭제 성공
-		mapper.deleteCommuTag("CTAG000001", "CMBD000004");
+		log.info("{}", mapper.deleteCommuTag("CTAG000002", "CMBD000001"));  //1이면 삭제 성공
+		assertNull(mapper.selectCommuTagByPk("CTAG000002", "CMBD000001"));
 	}
 
 }

@@ -2,6 +2,7 @@ package kr.or.ddit.mapper.community;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
@@ -25,42 +26,46 @@ class CommuCommentMapperTest {
 	}
 
 	@Test
-	void testSelectCommuCommentPostList() {
-		assertDoesNotThrow(()->mapper.searchCommuCommentPostList("CMBD000004"));
+	void testSearchCommuCommentPostList() {
+		assertDoesNotThrow(()->mapper.searchCommuCommentPostList("CMBD000001"));
 		
-		List<CommuCommentVO> list = mapper.searchCommuCommentPostList("CMBD000004");
+		List<CommuCommentVO> list = mapper.searchCommuCommentPostList("CMBD000001");
 		list.forEach(c->log.info("{}", c));
+		
+		assertEquals(1, list.size());
 	}
 	
 	@Test
-	void testSelectCommuCommentList() {
+	void testSearchCommuCommentList() {
 		assertDoesNotThrow(()->mapper.searchCommuCommentList());
 		
 		List<CommuCommentVO> list = mapper.searchCommuCommentList();
 		list.forEach(c->log.info("{}", c));
+		
+		assertEquals(1, list.size());
 	}
 
 	@Test
 	void testInsertCommuComment() {
 		CommuCommentVO comment = new CommuCommentVO();
-		comment.setCommuPostNo("CMBD000002");
-		comment.setAvatarId("AVT002");
+		comment.setCommuPostNo("CMBD000001");
+		comment.setAvatarId("AVTR000001");
 		comment.setCommuCommentContent("힘내세요 ㅠㅠ");
 		comment.setCommuCommentStatus("R");
 		
 		assertEquals(1, mapper.insertCommuComment(comment));
 		
-		log.info("{}", mapper.selectCommuCommentbyPk("CMCM000003"));
+		log.info("{}", mapper.selectCommuCommentbyPk("CMCM000001"));
 	}
 
 	@Test
 	void testUpdateCommuComment() {
 		CommuCommentVO comment = new CommuCommentVO();
-		comment.setCommuCommentNo("CMCM000003");
-		comment.setCommuPostNo("CMBD000002");
-		comment.setAvatarId("AVT002");
+		comment.setCommuCommentNo("CMCM000001");
+		comment.setCommuPostNo("CMBD000001");
+		comment.setAvatarId("AVTR000001");
 		comment.setCommuCommentContent("아직은 이르다 생각합니다.");
-		comment.setCommuCommentWriteDate("2025-07-03");
+		comment.setCommuCommentWriteDate("20250703");
 		comment.setCommuCommentStatus("U");
 		comment.setCommuCommentDeleteDate(null);	
 		
@@ -68,12 +73,13 @@ class CommuCommentMapperTest {
 		
 		assertEquals(1, mapper.updateCommuComment(comment));
 		
-		log.info("{}", mapper.selectCommuCommentbyPk("CMCM000003"));
+		log.info("{}", mapper.selectCommuCommentbyPk("CMCM000001"));
 	}
 
 	@Test
 	void testDeleteCommuComment() {
-		mapper.deleteCommuComment("CMCM000001");
+		log.info("{}", mapper.deleteCommuComment("CMCM000001"));
+		assertNull(mapper.selectCommuCommentbyPk("CMCM000001"));
 	}
 
 }

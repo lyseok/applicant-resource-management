@@ -20,17 +20,21 @@ class InCommentMapperTest {
 	
 	@Test
 	void testSelectInCommentbyPk() {
-		log.info("{}", mapper.selectInCommentbyPk("CMCM000001", "AVT001"));
+		assertDoesNotThrow(()->mapper.selectInCommentbyPk("CMCM000001", "AVTR000001"));
+		
+		log.info("{}", mapper.selectInCommentbyPk("CMCM000001", "AVTR000001"));
 	}
 
 	@Test
 	void testSearchInCommentCommentList() {
-		assertDoesNotThrow(()->mapper.searchInCommentCommentList("AVT001"));
+		assertDoesNotThrow(()->mapper.searchInCommentCommentList("AVTR000001"));
 		
-		List<InCommentVO> list = mapper.searchInCommentCommentList("AVT001");
+		List<InCommentVO> list = mapper.searchInCommentCommentList("AVTR000001");
 		list.forEach(c->{
 			log.info("{}", c);
 		});
+		
+		assertEquals(1, list.size());
 	}
 
 	@Test
@@ -41,6 +45,8 @@ class InCommentMapperTest {
 		list.forEach(a->{
 			log.info("{}", a);
 		});
+
+		assertEquals(1, list.size());
 	}
 	
 	@Test
@@ -51,6 +57,8 @@ class InCommentMapperTest {
 		list.forEach(c->{
 			log.info("{}", c);
 		});
+
+		assertEquals(1, list.size());
 	}
 
 	@Test
@@ -58,17 +66,17 @@ class InCommentMapperTest {
 		InCommentVO Comment = new InCommentVO();
 		
 		Comment.setCommentNo("CMCM000001");
-		Comment.setAvatarId("AVT002");
+		Comment.setAvatarId("AVTR000001");
 
 		assertEquals(1, mapper.insertInComment(Comment));
 		
-		log.info("{}", mapper.selectInCommentbyPk("CMCM000001", "AVT002"));
+		log.info("{}", mapper.selectInCommentbyPk("CMCM000001", "AVTR000001"));
 	}
 
 	@Test
 	void testDeleteInComment() {
-		log.info("{}", mapper.deleteInComment("CMCM000001", "AVT002"));  //1이면 삭제 성공
-		assertNull(mapper.selectInCommentbyPk("CMCM000001", "AVT002"));
+		log.info("{}", mapper.deleteInComment("CMCM000001", "AVTR000001"));  //1이면 삭제 성공
+		assertNull(mapper.selectInCommentbyPk("CMCM000001", "AVTR000001"));
 	}
 
 }
