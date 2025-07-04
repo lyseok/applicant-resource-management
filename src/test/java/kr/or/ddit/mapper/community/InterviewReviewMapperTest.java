@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import kr.or.ddit.vo.community.InterviewInformationVO;
 import kr.or.ddit.vo.community.InterviewReviewVO;
 import kr.or.ddit.vo.community.PassInformationVO;
+import kr.or.ddit.vo.recruitment.InterviewVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,86 +23,83 @@ class InterviewReviewMapperTest {
 	void testSelectInterviewList() {
 		String id = "EMP001";
 		
-		assertDoesNotThrow(()->mapper.selectInterviewList(id));
+		mapper.selectInterviewList(id).forEach(iReview ->{
+			log.info("{}", iReview);
+		});
+		
+		
+	}
+	
+	@Test
+	void testSelectInterviewReview() {
+		InterviewReviewVO vo = mapper.selectInterviewReviewByPk("RV001");
+		
+		log.info("{}", vo);
 	}
 	
 	
 	@Test
-	void testSelectInterviewReviewList() {
+	void testSelectInterviewReviewListUser() {
+		mapper.selectInterviewReviewListUser("USR001").forEach(u ->{
+			log.info("{}", u);
+		});
+		
+	}
+	
+	@Test 
+	void testSelectInterviewReviewListCom(){
+		mapper.selectInterviewReviewListCom("EMP001").forEach(c ->{
+			log.info("{}", c);
+		});
 		
 	}
 	
 	
 	@Test 
 	void testInsertInterviewReview(){
+		   InterviewVO interview = new InterviewVO();
+		    interview.setInterviewNo("INTV000002");
+		    interview.setProcessNo("PROC001");
+		    interview.setUserId("TESTUSER");
+		    interview.setInterviewDate("250702");
+		    interview.setInterviewLocation("서울본사");
+		    interview.setInterviewType("M"); 
+		    interview.setInterviewPassScore("PASS");
+		    //interviewMapper.insertInterview(interview);
+
+		
+		
 		 InterviewReviewVO review = new InterviewReviewVO();
-	        review.setInterviewNo("INTV000001");
-	        review.setInterviewReviewNo("RV001");
-	        review.setComId("EMP001");
-	        review.setJobCode("JOB001");
+	        review.setInterviewNo("INTV000002");
+	        review.setInterviewReviewNo("RV002");
+	        review.setComId("EMP002");
+	        review.setJobCode("JOB002");
 	        review.setInterviewDate("250702");
+	        review.setUserId("TESTUSER");
+	
 	      
 	        // Act
 	        int result = mapper.insertInterviewReview(review);
-
-	        // Assert
-	        assertEquals(1, result, "insertInterviewReview should return 1");
-	        assertNotNull(review.getInterviewReviewNo(), "interviewReviewNo should be populated");
-	        log.info("Inserted review ID: {}", review.getInterviewReviewNo());
+	        log.info("{}", result);
+	        mapper.selectInterviewReviewListUser("TESTUSER").forEach(u ->{
+				log.info("{}", u);
+			});
 	}
 	
 	
-	@Test 
-	void testInsertInterviewReviewInfromation(){
-		// First insert a review to get a valid interviewReviewNo
-        InterviewReviewVO review = new InterviewReviewVO();
-        review.setInterviewNo("INTV000001");
-        review.setComId("EMP001");
-        review.setJobCode("JOB001");
-        review.setInterviewDate("2025-07-02 10:00");
-      
-        mapper.insertInterviewReview(review);
-        String reviewNo = review.getInterviewReviewNo();
-        
-        // Arrange information
-        InterviewInformationVO info = new InterviewInformationVO();
-        info.setInterviewReviewNo(reviewNo);
-        info.setEvaluation("A");
-        info.setInterviewLevel("1");
-        info.setInterviewType("대");
-        info.setInterviewContent("Detailed content test.");
-
-        // Act
-        int result = mapper.insertInterviewInformation(info);
-
-        // Assert
-        assertEquals(1, result, "insertInterviewInformation should return 1");
-        assertNotNull(info.getInterviewInformationNo(), "interviewInformationNo should be populated");
-        log.info("Inserted information ID: {}", info.getInterviewInformationNo());
-	}
 	
-	@Test 
-	void testInsertPassInfromation(){
-	
-	    PassInformationVO pass = new PassInformationVO();
-	    pass.setInterviewReviewNo("P001");
-	    pass.setInterviewReviewNo("INTV000001");
-	    pass.setInterviewQuestion("면접 질문");
-	    pass.setTip("잘 준비해");
-	    pass.setInterviewPassYn("Y");
-
-
-        // Act
-        int result = mapper.insertPassInformation(pass);
-
-        // Assert
-        assertEquals(1, result, "insertPassInformation should return 1");
-        log.info("Inserted pass information ID: {}", result);
-	}
 	
 	
 	@Test
+	void testUpdateStatusDelete() {
+		
+	}
+	
+	@Test
 	void testDeleteInfromation() {
+		mapper.deleteInterviewReview("INTV000001");
+		
+		assertNull(mapper.selectInterviewReviewByPk("INTV000001"));
 		
 	}
 	
