@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.or.ddit.mapper.common.ScrabRecruitmentMapper">
+
+	<insert id="insertScrabRecruitment">
+		INSERT INTO SCRAB_RECRUITMENT (
+		USER_ID
+		, RECRUITMENT_NO
+		, SCRAB_RECUITMENT_DATE
+		) VALUES (
+		#{userId}
+		, #{recruitmentNo}
+		, SYSDATE
+		)
+	</insert>
+
+	<select id="selectScrabRecruitmentList">
+		SELECT
+		USER_ID
+		, RECRUITMENT_NO
+		, SCRAB_RECUITMENT_DATE
+		FROM SCRAB_RECRUITMENT
+
+	</select>
+
+	<select id="selectScrabRecruitmentByPk">
+		SELECT
+		USER_ID
+		, RECRUITMENT_NO
+		, SCRAB_RECUITMENT_DATE
+		FROM SCRAB_RECRUITMENT
+		WHERE USER_ID = #{userId}
+		AND RECRUITMENT_NO = #{recruitmentNo}
+	</select>
+
+	<update id="updateScrabRecruitment">
+		UPDATE SCRAB_RECRUITMENT
+		SET
+		SCRAB_RECUITMENT_DATE = SYSDATE
+		WHERE USER_ID = #{userId}
+		AND RECRUITMENT_NO = #{recruitmentNo}
+	</update>
+
+	<delete id="deleteScrabRecruitment">
+		DELETE FROM SCRAB_RECRUITMENT
+		WHERE USER_ID = #{userId}
+		AND RECRUITMENT_NO = #{recruitmentNo}
+	</delete>
+
+</mapper>
