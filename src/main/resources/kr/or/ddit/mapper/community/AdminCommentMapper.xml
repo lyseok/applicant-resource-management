@@ -36,10 +36,10 @@
 	<insert id="insertAdminComment" parameterType="AdminCommentVO">
 		INSERT INTO ADMIN_COMMENT (
 		<selectKey resultType="string" keyProperty="boardCommentNo" order="BEFORE">
-			SELECT
-				'CMT'||
-				LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BOARD_COMMENT_NO), LENGTH('CMT')+1)),0) + 1, 7, '0')
-			FROM ADMIN_COMMENT
+		    SELECT
+		        'ADCM'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BOARD_COMMENT_NO), LENGTH('ADCM' ) + 1)), 0) + 1, 6, '0')
+		    FROM ADMIN_COMMENT
 		</selectKey>
 			BOARD_COMMENT_NO
 			, USER_ID
@@ -53,7 +53,8 @@
 			, #{boardNo}
 			, #{boardCommentContent}
 			, sysdate
-			, #{boardCommentStatus})
+			, #{boardCommentStatus}
+		)
 	</insert>
 	
 	<update id="updateAdminComment" parameterType="AdminCommentVO">

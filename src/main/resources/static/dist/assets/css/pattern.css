@@ -114,6 +114,14 @@
 }
 *:focus-visible {border-radius:4px;outline:2px solid var(--violet80);outline-offset:2px;}
 
+
+/* 폰트사이즈 */
+.fs-14{font-size:14px !important;}
+
+/* padding */
+.p-6{padding:6rem !important;}
+
+/* 백그라운드 - background */
 .bg-violet01{
 	background-color:#fcfaff !important;
 }
@@ -144,7 +152,6 @@
 .bg-violet10{
 	background-color:#5a00fa !important;
 }
-
 
 
 button,
@@ -430,6 +437,13 @@ violet {border-color:var(--blue90);background:var(--blue90)}
 .TypoBox.TypeBtn:has(.IconLeft) .Typo {padding-left:8px}
 .TypoBox.TypeBtn .IconLeft {margin-left:12px}
 .TypoBox.TypeBtn .Typo {width:auto}
+/* input - searchBar */
+.TypoBox.searchBar{display: grid; position: relative;width: 372px; border:0;}
+.TypoBox .searchBarWrap{z-index: 1;width: 100%;height: 48px; padding: 3px 39px 3px 0; border: 1px solid var(--gray70); border-radius: 4px; box-sizing: border-box;}
+.TypoBox .searchBarLabel{overflow: hidden;clip: rect(1px, 1px, 1px, 1px);position: absolute !important;-webkit-clip-path: inset(50%);clip-path: inset(50%);border: 0;width: 1px;height: 1px;}
+.TypoBox .searchBarInput{width: 100%;padding: 8px 11px;border: 0;-webkit-appearance: none;-moz-appearance: none;appearance: none;outline: none;font-size: 14px;line-height: 24px;color: var(--gray80);}
+.TypoBox .searchBarBtn{position: absolute;padding: 4px;z-index: 2;top: 47%;right: 8px;transform: translateY(-50%);}
+.TypoBox .searchBarBtn span{font-size: 33px;width: 25px;height: 25px;color: #a7a7a7;border-radius: 20%; overflow: hidden; font-weight:200;}
 
 /* textarea */
 .InpBox textarea {display:block;overflow-x:hidden;overflow-y:scroll;padding:24px;width:100%;height:calc(100% - 25px);border:1px solid var(--gray70);border-radius:4px;box-sizing:border-box;color:var(--gray120);font-size:14px;line-height:21px;vertical-align:top;background-color:var(--white);resize:none}

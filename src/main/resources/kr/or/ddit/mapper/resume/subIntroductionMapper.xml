@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.SubIntroductionMapper">
+	<select id="selectSubIntroductionList">
+		SELECT SUB_INTRODUCTION_NO
+			   , RESUME_NO
+			   , INTRODUCTION_NO 
+		  FROM SUB_INTRODUCTION
+	</select>
+	
+	<select id="selectSubIntroductionDetail">
+		SELECT SUB_INTRODUCTION_NO
+			   , RESUME_NO
+			   , INTRODUCTION_NO 
+		  FROM SUB_INTRODUCTION 
+		 WHERE SUB_INTRODUCTION_NO = #{subIntroductionNo}
+	</select>
+	
+	<insert id="insertSubIntroduction">
+		<selectKey resultType="string" keyProperty="subIntroductionNo" order="BEFORE">
+    SELECT
+        'SIND'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(SUB_INTRODUCTION_NO), LENGTH('SIND' ) + 1)), 0) + 1, 6, '0')
+    FROM SUB_INTRODUCTION
+</selectKey>
+		INSERT INTO SUB_INTRODUCTION (
+			SUB_INTRODUCTION_NO
+			, RESUME_NO
+			, INTRODUCTION_NO
+		) VALUES (
+			#{subIntroductionNo}
+			, #{resumeNo}
+			, #{introductionNo}
+		)
+	</insert>
+	
+	<update id="updateSubIntroduction">
+		UPDATE SUB_INTRODUCTION 
+		   SET RESUME_NO = #{resumeNo}
+		   	   , INTRODUCTION_NO = #{introductionNo} 
+		 WHERE SUB_INTRODUCTION_NO = #{subIntroductionNo}
+	</update>
+	
+	<delete id="deleteSubIntroduction">
+		DELETE FROM SUB_INTRODUCTION 
+		 WHERE SUB_INTRODUCTION_NO = #{subIntroductionNo}
+	</delete>
+</mapper>

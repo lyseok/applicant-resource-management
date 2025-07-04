@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.resume.IntroductionMapper">
+	<select id="selectIntroductionList" resultType="kr.or.ddit.vo.resume.IntroductionVO">
+		SELECT *
+		  FROM INTRODUCTION
+		 WHERE USER_ID = #{user_id}
+	</select>
+	
+	<select id="selectIntroductionDetail">
+		SELECT INTRODUCTION_NO, USER_ID, INTRODUCTION_NAME, INTRODUCTION_CONTENT 
+		  FROM INTRODUCTION
+		 WHERE INTRODUCTION_NO = #{introductionNo}
+	</select>
+	
+	<insert id="insertIntroduction">
+		<selectKey resultType="string" keyProperty="introductionNo" order="BEFORE">
+		    SELECT
+		        'INTD'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INTRODUCTION_NO), LENGTH('INTD' ) + 1)), 0) + 1, 6, '0')
+		    FROM INTRODUCTION
+		</selectKey>
+		INSERT INTO INTRODUCTION (
+			INTRODUCTION_NO
+			, USER_ID
+			, INTRODUCTION_NAME
+			, INTRODUCTION_CONTENT
+		) VALUES (
+			#{introductionNo}
+			, #{userId}
+			, #{introductionName}
+			, #{introductionContent}
+		)
+	</insert>
+	
+	<update id="updateIntroduction">
+		UPDATE INTRODUCTION 
+		   SET INTRODUCTION_NAME = #{introductionName}
+		       , INTRODUCTION_CONTENT = #{introductionContent}
+		 WHERE INTRODUCTION_NO = #{introductionNo}
+		   AND USER_ID = #{userId}
+	</update>
+	
+	<delete id="deleteIntroduction">
+		DELETE FROM INTRODUCTION 
+		 WHERE INTRODUCTION_NO = #{introductionNo}
+		   AND USER_ID = #{userId}
+	</delete>
+	
+</mapper>
