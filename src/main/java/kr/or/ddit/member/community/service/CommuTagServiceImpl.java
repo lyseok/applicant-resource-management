@@ -1,6 +1,7 @@
 package kr.or.ddit.member.community.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -13,15 +14,20 @@ import lombok.RequiredArgsConstructor;
 public class CommuTagServiceImpl implements CommuTagService {
 
 	private final CommuTagMapper mapper;
-
+	
 	@Override
-	public List<CommuTagVO> readCommuTagSearchList(String boardNo) {
+	public Optional<CommuTagVO> readCommuTagByTagBoardNo(String tagNo, String boardNo) {
+		return Optional.ofNullable(mapper.selectCommuTagByTagBoardNo(tagNo, boardNo));
+	}
+	
+	@Override
+	public List<CommuTagVO> searchCommuTagList(String boardNo) {
 		return mapper.searchCommuTagList(boardNo);
 	}
-
+	
 	@Override
-	public List<CommuTagVO> readCommuTagList(String boardNo) {
-		return mapper.selectCommuTagList(boardNo);
+	public List<CommuTagVO> readCommuTagList() {
+		return mapper.selectCommuTagList();
 	}
 
 	@Override
@@ -33,5 +39,6 @@ public class CommuTagServiceImpl implements CommuTagService {
 	public void removeCommuTag(String tagNo, String boardNo) {
 		mapper.deleteCommuTag(tagNo, boardNo);
 	}
+
 
 }

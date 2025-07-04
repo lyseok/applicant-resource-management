@@ -18,20 +18,28 @@ class CommuTagMapperTest {
 
 	@Autowired
 	CommuTagMapper mapper;
-
+	
 	@Test
-	void testSearchPrjAnncBoardTagList() {
-		assertDoesNotThrow(()->mapper.searchCommuTagList("CMBD000004"));
-		
-		List<CommuTagVO> list = mapper.searchCommuTagList("CMBD000004");
-		list.forEach(t -> log.info("{}", t));
+	void testSelectCommuTagByTagBoardNo() {
+		log.info("{}", mapper.selectCommuTagByTagBoardNo("CTAG000001", "CMBD000004"));
 	}
 	
 	@Test
-	void testSelectCommuTagList() {
-		assertDoesNotThrow(()->mapper.selectCommuTagList("CMBD000004"));
+	void testSearchCommuTagList() {
+		assertDoesNotThrow(()->mapper.searchCommuTagList("CMBD000004"));
 		
-		List<CommuTagVO> list = mapper.selectCommuTagList("CMBD000004");
+		List<CommuTagVO> list = mapper.searchCommuTagList("CMBD000004");
+		list.forEach(t->{
+			log.info("{}", t);
+		});
+	}
+	
+	
+	@Test
+	void testSelectCommuTagList() {
+		assertDoesNotThrow(()->mapper.selectCommuTagList());
+		
+		List<CommuTagVO> list = mapper.selectCommuTagList();
 		list.forEach(t->{
 			log.info("{}", t);
 		});
@@ -43,14 +51,14 @@ class CommuTagMapperTest {
 		
 		tag.setBoardNo("CMBD000004");
 		
-		log.info("{}", mapper.insertCommuTag(tag));  //1이면 등록성공?
+		log.info("{}", mapper.selectCommuTagByTagBoardNo("CTAG000001", "CMBD000004"));
 
 		assertEquals(1, mapper.insertCommuTag(tag));		
 	}
 
 	@Test
 	void testDeleteCommuTag() {
-		log.info("{}", mapper.deleteCommuTag("CTAG000001", "CMBD000004"));  //1이면 삭제
+		log.info("{}", mapper.deleteCommuTag("CTAG000001", "CMBD000004"));  //1이면 삭제 성공
 		mapper.deleteCommuTag("CTAG000001", "CMBD000004");
 	}
 
