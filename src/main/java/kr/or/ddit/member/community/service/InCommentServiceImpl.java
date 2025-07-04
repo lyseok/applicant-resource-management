@@ -16,8 +16,8 @@ public class InCommentServiceImpl implements InCommentService {
 	private final InCommentMapper mapper;
 	
 	@Override
-	public Optional<InCommentVO> readInCommentByCommentNoAvatarId(String commentNo, String avatarId) {
-		return Optional.ofNullable(mapper.selectInCommentbyCommentNoAvatarId(commentNo, avatarId));
+	public Optional<InCommentVO> readInCommentByPk(String commentNo, String avatarId) {
+		return Optional.ofNullable(mapper.selectInCommentbyPk(commentNo, avatarId));
 	}
 
 	@Override

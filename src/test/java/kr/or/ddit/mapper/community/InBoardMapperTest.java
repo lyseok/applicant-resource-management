@@ -21,8 +21,8 @@ class InBoardMapperTest {
 	InBoardMapper mapper;
 	
 	@Test
-	void testselectInBoardByCommuPostNoAvatarId() {
-		log.info("{}", mapper.selectInBoardByCommuPostNoAvatarId("CMBD000005", "AVT001"));
+	void testselectInBoardByPk() {
+		log.info("{}", mapper.selectInBoardByPk("CMBD000005", "AVT001"));
 	}
 
 	@Test
@@ -65,13 +65,13 @@ class InBoardMapperTest {
 
 		assertEquals(1, mapper.insertInBoard(board));
 		
-		log.info("{}", mapper.selectInBoardByCommuPostNoAvatarId("CMBD000003", "AVT002"));
+		log.info("{}", mapper.selectInBoardByPk("CMBD000003", "AVT002"));
 	}
 
 	@Test
 	void testDeleteInBoard() {
 		mapper.deleteInBoard("CMBD000003", "AVT002");
-		assertNull(mapper.selectInBoardByCommuPostNoAvatarId("CMBD000003", "AVT002"));
+		assertNull(mapper.selectInBoardByPk("CMBD000003", "AVT002"));
 	}
 
 }

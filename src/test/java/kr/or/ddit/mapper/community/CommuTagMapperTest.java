@@ -20,8 +20,8 @@ class CommuTagMapperTest {
 	CommuTagMapper mapper;
 	
 	@Test
-	void testSelectCommuTagByTagBoardNo() {
-		log.info("{}", mapper.selectCommuTagByTagBoardNo("CTAG000001", "CMBD000004"));
+	void testSelectCommuTagByPk() {
+		log.info("{}", mapper.selectCommuTagByPk("CTAG000001", "CMBD000004"));
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ class CommuTagMapperTest {
 		
 		tag.setBoardNo("CMBD000004");
 		
-		log.info("{}", mapper.selectCommuTagByTagBoardNo("CTAG000001", "CMBD000004"));
+		log.info("{}", mapper.selectCommuTagByPk("CTAG000001", "CMBD000004"));
 
 		assertEquals(1, mapper.insertCommuTag(tag));		
 	}

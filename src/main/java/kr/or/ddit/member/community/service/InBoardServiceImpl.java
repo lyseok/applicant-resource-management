@@ -16,8 +16,8 @@ public class InBoardServiceImpl implements InBoardService {
 	private final InBoardMapper mapper;
 	
 	@Override
-	public Optional<InBoardVO> readInBoardByCommuPostNoAvatarId(String commuPostNo, String avatarId) {
-		return Optional.ofNullable(mapper.selectInBoardByCommuPostNoAvatarId(commuPostNo, avatarId));
+	public Optional<InBoardVO> readInBoardByPk(String commuPostNo, String avatarId) {
+		return Optional.ofNullable(mapper.selectInBoardByPk(commuPostNo, avatarId));
 	}
 
 	@Override

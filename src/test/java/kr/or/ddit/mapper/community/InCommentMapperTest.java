@@ -19,8 +19,8 @@ class InCommentMapperTest {
 	InCommentMapper mapper;
 	
 	@Test
-	void testSelectInCommentbyCommentNoAvatarId() {
-		log.info("{}", mapper.selectInCommentbyCommentNoAvatarId("CMCM000001", "AVT001"));
+	void testSelectInCommentbyPk() {
+		log.info("{}", mapper.selectInCommentbyPk("CMCM000001", "AVT001"));
 	}
 
 	@Test
@@ -62,13 +62,13 @@ class InCommentMapperTest {
 
 		assertEquals(1, mapper.insertInComment(Comment));
 		
-		log.info("{}", mapper.selectInCommentbyCommentNoAvatarId("CMCM000001", "AVT002"));
+		log.info("{}", mapper.selectInCommentbyPk("CMCM000001", "AVT002"));
 	}
 
 	@Test
 	void testDeleteInComment() {
 		log.info("{}", mapper.deleteInComment("CMCM000001", "AVT002"));  //1이면 삭제 성공
-		assertNull(mapper.selectInCommentbyCommentNoAvatarId("CMCM000001", "AVT002"));
+		assertNull(mapper.selectInCommentbyPk("CMCM000001", "AVT002"));
 	}
 
 }

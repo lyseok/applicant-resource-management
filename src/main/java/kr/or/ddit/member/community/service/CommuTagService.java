@@ -7,7 +7,7 @@ import kr.or.ddit.vo.community.CommuTagVO;
 
 public interface CommuTagService {
 	
-	public Optional<CommuTagVO> readCommuTagByTagBoardNo(String tagNo, String boardNo);
+	public Optional<CommuTagVO> readCommuTagByPk(String tagNo, String boardNo);
 	public List<CommuTagVO> searchCommuTagTagList(String boardNo);
 	public List<CommuTagVO> searchCommuTagBoardList(String tagNo);
 	public List<CommuTagVO> readCommuTagList();

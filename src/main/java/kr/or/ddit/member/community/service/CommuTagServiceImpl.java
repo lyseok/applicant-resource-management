@@ -16,8 +16,8 @@ public class CommuTagServiceImpl implements CommuTagService {
 	private final CommuTagMapper mapper;
 	
 	@Override
-	public Optional<CommuTagVO> readCommuTagByTagBoardNo(String tagNo, String boardNo) {
-		return Optional.ofNullable(mapper.selectCommuTagByTagBoardNo(tagNo, boardNo));
+	public Optional<CommuTagVO> readCommuTagByPk(String tagNo, String boardNo) {
+		return Optional.ofNullable(mapper.selectCommuTagByPk(tagNo, boardNo));
 	}
 	
 

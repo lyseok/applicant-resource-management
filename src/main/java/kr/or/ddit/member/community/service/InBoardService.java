@@ -7,7 +7,7 @@ import kr.or.ddit.vo.community.InBoardVO;
 
 public interface InBoardService {
 
-	public Optional<InBoardVO> readInBoardByCommuPostNoAvatarId(String commuPostNo, String avatarId);
+	public Optional<InBoardVO> readInBoardByPk(String commuPostNo, String avatarId);
 	public List<InBoardVO> searchInBoardCommuPostList(String avatarId);  //해당 아바타가 좋아한 댓글들
 	public List<InBoardVO> searchInBoardAvatarList(String commuPostNo);  //해당 댓글을 좋아한 아바타들
 	public List<InBoardVO> readInBoardList();  //댓글과 아바타 전체
