@@ -6,8 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "userId")
-public class UserRoleVO implements Serializable{
+@EqualsAndHashCode(of = "authNo")
+public class UserAuthorityVO implements Serializable{
+	private String authNo;
 	private String userId;
 	private String userRole;
 }

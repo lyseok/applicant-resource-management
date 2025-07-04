@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.PrjTaskMapper">
+
+<select id="selectPrjTaskList">
+	SELECT 
+		TASK_NO
+		, PRJ_NO
+		, USER_ID
+		, SECT_NO
+		, CREATOR_ID
+		, TASK_NAME
+		, TASK_STATUS
+		, DETAIL_CONTENT
+		, START_DATE
+		, DUE_DATE
+		, PRIORITY_CODE
+		, UPPER_TASK_NO
+		, PROGRESS_RATE
+		, DELETE_DATE
+		, DELETE_USER_ID
+	FROM PRJ_TASK
+</select>
+
+<select id="selectPrjTaskByPk">
+	SELECT 
+		TASK_NO
+		, PRJ_NO
+		, USER_ID
+		, SECT_NO
+		, CREATOR_ID
+		, TASK_NAME
+		, TASK_STATUS
+		, DETAIL_CONTENT
+		, START_DATE
+		, DUE_DATE
+		, PRIORITY_CODE
+		, UPPER_TASK_NO
+		, PROGRESS_RATE
+		, DELETE_DATE
+		, DELETE_USER_ID
+	FROM PRJ_TASK
+	WHERE TASK_NO = #{taskNo}
+</select>
+
+<insert id="insertPrjTask">
+	<selectKey resultType="string" keyProperty="taskNo" order="BEFORE">
+	    SELECT
+	        'TASK'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(TASK_NO), LENGTH('TASK' ) + 1)), 0) + 1, 6, '0')
+	    FROM PRJ_TASK
+	</selectKey>
+		INSERT INTO PRJ_TASK (
+		TASK_NO
+			, PRJ_NO
+			, USER_ID
+			, SECT_NO
+			, CREATOR_ID
+			, TASK_NAME
+			, TASK_STATUS
+			, DETAIL_CONTENT
+			, START_DATE
+			, DUE_DATE
+			, PRIORITY_CODE
+			, UPPER_TASK_NO
+			, PROGRESS_RATE
+		) VALUES (
+		#{taskNo}
+			, #{prjNo}
+			, #{userId}
+			, #{sectNo}
+			, #{creatorId}
+			, #{taskName}
+			, #{taskStatus}
+			, #{detailContent}
+			, #{startDate}
+			, #{dueDate}
+			, #{priorityCode}
+			, #{upperTaskNo}
+			, #{progressRate}
+		)
+</insert>
+
+<update id="updatePrjTask">
+	UPDATE PRJ_TASK
+	SET 
+		USER_ID = #{userId}
+		, SECT_NO = #{sectNo}
+		, TASK_NAME = #{taskName}
+		, TASK_STATUS = #{taskStatus}
+		, DETAIL_CONTENT = #{detailContent}
+		, START_DATE = #{startDate}
+		, DUE_DATE = #{dueDate}
+		, PRIORITY_CODE = #{priorityCode}
+		, UPPER_TASK_NO = #{upperTaskNo}
+		, PROGRESS_RATE = #{progressRate}
+		, DELETE_DATE = #{deleteDate}
+		, DELETE_USER_ID = #{deleteUserId}
+	WHERE TASK_NO = #{taskNo}
+</update>
+
+<delete id="deletePrjTask">
+	DELETE FROM PRJ_TASK
+	WHERE TASK_NO = #{taskNo}
+</delete>
+
+</mapper>
