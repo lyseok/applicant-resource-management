@@ -19,68 +19,64 @@ class CompanyMapperTest {
 	
 	@Test
 	void testSelectCompanyById() {
-		UsersVO user = mapper.selectCompanyById("testCompany");
-		
-		log.info("{}", user.getUserPassword());
-		log.info("{}", user.getUserRole());
+		UsersVO user = mapper.selectCompanyById("USR002");
 		log.info("{}", user);
 	}
-	
+
 	void testSelectCompanyList() {
 		mapper.selectCompanyList().forEach(list ->{
 			log.info("{}", list);
 		});
 	}
-	
+
 	@Test
 	void testInsertCompany() {
-		
-        CompanyVO newCompany = new CompanyVO();
-        newCompany.setUserId("USR007");
-        newCompany.setComName("JUnit Company");
-        newCompany.setComInfo("Unit test company");
-        newCompany.setComNum("01012345678");
-        newCompany.setComEmail("junit@company.com");
-        newCompany.setComUrl("http://junit.company.com");
-        newCompany.setComCreateYear("2023");
-        newCompany.setComMem(50);
-        newCompany.setComLogo("logo.png");
-        newCompany.setComPayment("Y");
-        newCompany.setIndustryType("IT");
-       
-        mapper.insertCompany(newCompany);
-        
-       CompanyVO vo = mapper.selectCompanyById(newCompany.getUserId());
-       log.info("{}", vo);
-        
-        
-     
+
+	    CompanyVO newCompany = new CompanyVO();
+	    newCompany.setUserId("USR002");
+	    newCompany.setComName("JUnit Company");
+	    newCompany.setComInfo("Unit test company");
+	    newCompany.setComNum("01012345678");
+	    newCompany.setComEmail("junit@company.com");
+	    newCompany.setComUrl("<http://junit.company.com>");
+	    newCompany.setComCreateYear("2023");
+	    newCompany.setComMem(50);
+	    newCompany.setComLogo("logo.png");
+	    newCompany.setComPayment("Y");
+	    newCompany.setIndustryType("IT");
+
+	    mapper.insertCompany(newCompany);
+
+	   CompanyVO vo = mapper.selectCompanyById("USR002");
+	   log.info("{}", vo);
+
+
+
 	}
-	
+
 	@Test
 	void testUpdateCompany() {
 		 CompanyVO newCompany = new CompanyVO();
-		 	newCompany.setUserId("USR006");
+		 	newCompany.setUserId("USR002");
 	        newCompany.setComName("JUnit Company");
 	        newCompany.setComInfo("Unit test company");
 	        newCompany.setComNum("01012345678");
 	        newCompany.setComEmail("junit@company.com");
-	        newCompany.setComUrl("http://junit.company.com");
+	        newCompany.setComUrl("<http://junit.company.com>");
 	        newCompany.setComCreateYear("2023");
 	        newCompany.setComMem(50);
 	        newCompany.setComLogo("logo.png");
 	        newCompany.setComPayment("N");
 	        newCompany.setIndustryType("IT");
-	        
-	      CompanyVO vo = mapper.selectCompanyById("USR006");
+
+	      CompanyVO vo = mapper.selectCompanyById("USR002");
 	      log.info("{}", vo);
 	}
-	
+
 	@Test
 	void testDeleteCompany() {
 		mapper.deleteCompany("USR006");
 		assertNull(mapper.selectCompanyById("USR006"));
-		
-	}
 
+	}
 }

@@ -18,4 +18,5 @@ public interface CompanyReviewMapper {
 	public int insertCompanyReview(CompanyReviewVO companyReview);
 	public int deleteCompanyReview(String reviewNo);
 	public int updateDeleteStatusMyCompanyReview(CompanyReviewVO companyReview);
+	public List<CompanyVO> selectCompanyList();
 }
