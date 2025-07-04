@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.TagMapper">
 	<insert id="insertTag">
+		<selectKey resultType="string" keyProperty="tagNo"
+			order="BEFORE">
+			SELECT
+			'TAGS'||
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(TAG_NO), LENGTH('TAGS' ) + 1)), 0) + 1, 6, '0')
+			FROM TAG
+		</selectKey>
 		INSERT INTO TAG (
 		TAG_NO
 		, TAG_NAME
@@ -9,7 +16,7 @@
 		#{tagNo}
 		, #{tagName}
 		)
-		
+
 	</insert>
 
 	<select id="selectTagList">
