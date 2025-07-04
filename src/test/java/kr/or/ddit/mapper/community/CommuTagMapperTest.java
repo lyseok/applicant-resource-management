@@ -25,10 +25,20 @@ class CommuTagMapperTest {
 	}
 	
 	@Test
-	void testSearchCommuTagList() {
-		assertDoesNotThrow(()->mapper.searchCommuTagList("CMBD000004"));
+	void testSearchCommuTagTagList() {
+		assertDoesNotThrow(()->mapper.searchCommuTagTagList("CMBD000004"));
 		
-		List<CommuTagVO> list = mapper.searchCommuTagList("CMBD000004");
+		List<CommuTagVO> list = mapper.searchCommuTagTagList("CMBD000004");
+		list.forEach(t->{
+			log.info("{}", t);
+		});
+	}
+
+	@Test
+	void testSearchCommuTagBoardList() {
+		assertDoesNotThrow(()->mapper.searchCommuTagBoardList("CTAG000001"));
+		
+		List<CommuTagVO> list = mapper.searchCommuTagBoardList("CTAG000001");
 		list.forEach(t->{
 			log.info("{}", t);
 		});

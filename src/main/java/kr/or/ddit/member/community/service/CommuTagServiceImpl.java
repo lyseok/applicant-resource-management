@@ -20,9 +20,15 @@ public class CommuTagServiceImpl implements CommuTagService {
 		return Optional.ofNullable(mapper.selectCommuTagByTagBoardNo(tagNo, boardNo));
 	}
 	
+
 	@Override
-	public List<CommuTagVO> searchCommuTagList(String boardNo) {
-		return mapper.searchCommuTagList(boardNo);
+	public List<CommuTagVO> searchCommuTagTagList(String boardNo) {
+		return mapper.searchCommuTagTagList(boardNo);
+	}
+
+	@Override
+	public List<CommuTagVO> searchCommuTagBoardList(String tagNo) {
+		return mapper.searchCommuTagBoardList(tagNo);
 	}
 	
 	@Override
@@ -39,6 +45,7 @@ public class CommuTagServiceImpl implements CommuTagService {
 	public void removeCommuTag(String tagNo, String boardNo) {
 		mapper.deleteCommuTag(tagNo, boardNo);
 	}
+
 
 
 }

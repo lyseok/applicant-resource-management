@@ -15,7 +15,7 @@
 			BOARD_NO = #{boardNo}
 	</select>
 	
-	<select id="searchCommuTagList">
+	<select id="searchCommuTagTagList">
 		SELECT 
 			TAG_NO
 			, BOARD_NO
@@ -24,6 +24,17 @@
 			COMMU_TAG
 		WHERE 
 			BOARD_NO = #{boardNo}
+	</select>
+
+	<select id="searchCommuTagBoardList">
+		SELECT 
+			TAG_NO
+			, BOARD_NO
+			, COMMU_TAG_DATE
+		FROM 
+			COMMU_TAG
+		WHERE 
+			TAG_NO = #{tagNo}
 	</select>
 
 	<select id="selectCommuTagList">
