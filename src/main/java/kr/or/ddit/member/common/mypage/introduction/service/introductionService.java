@@ -1,4 +1,4 @@
-package kr.or.ddit.member.common.mypage.intoruction.service;
+package kr.or.ddit.member.common.mypage.introduction.service;
 
 import java.util.List;
 
