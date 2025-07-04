@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.TopJobMapper">
 	<insert id="insertTopJob">
+	<selectKey resultType="string" keyProperty="topJobCode" order="BEFORE">
+    SELECT
+        'TJOB'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(TOP_JOB_CODE), LENGTH('TJOB' ) + 1)), 0) + 1, 6, '0')
+    FROM TOP_JOB
+</selectKey>
 		INSERT INTO TOP_JOB (
 		TOP_JOB_CODE
 		, TOP_JOB_NAME

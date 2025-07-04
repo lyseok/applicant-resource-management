@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.ForbiddenWordMapper">
 	<insert id="insertForbiddenWord">
+		<selectKey resultType="string" keyProperty="forbiddenWordNo"
+			order="BEFORE">
+			SELECT
+			'FOWO'||
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(FORBIDDEN_WORD_NO), LENGTH('FOWO' ) + 1)), 0) + 1, 6, '0')
+			FROM FORBIDDEN_WORD
+		</selectKey>
 		INSERT INTO FORBIDDEN_WORD (
 		FORBIDDEN_WORD_NO
 		, WORD
@@ -30,12 +37,14 @@
 		UPDATE FORBIDDEN_WORD
 		SET
 		WORD = #{word}
-		WHERE FORBIDDEN_WORD_NO = #{forbiddenWordNo}
+		WHERE
+		FORBIDDEN_WORD_NO = #{forbiddenWordNo}
 	</update>
 
 	<delete id="deleteForbiddenWord">
 		DELETE FROM FORBIDDEN_WORD
-		WHERE FORBIDDEN_WORD_NO = #{forbiddenWordNo}
+		WHERE FORBIDDEN_WORD_NO =
+		#{forbiddenWordNo}
 	</delete>
 
 </mapper>

@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.CityCodeMapper">
 	<insert id="insertCityCode">
+	<selectKey resultType="string" keyProperty="cityCodeNo" order="BEFORE">
+    SELECT
+        'CICO'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(CITY_CODE_NO), LENGTH('CICO' ) + 1)), 0) + 1, 6, '0')
+    FROM CITY_CODE
+</selectKey>
 		INSERT INTO CITY_CODE (
 		CITY_CODE_NO
 		,CITY_NAME

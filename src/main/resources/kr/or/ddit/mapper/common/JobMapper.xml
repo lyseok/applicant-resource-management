@@ -3,6 +3,13 @@
 <mapper namespace="kr.or.ddit.mapper.common.JobMapper">
 
 	<insert id="insertJob">
+		<selectKey resultType="string" keyProperty="jobCode"
+			order="BEFORE">
+			SELECT
+			'JOBS'||
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(JOB_CODE), LENGTH('JOBS' ) + 1)), 0) + 1, 6, '0')
+			FROM JOB
+		</selectKey>
 		INSERT INTO JOB (
 		JOB_CODE
 		, TOP_JOB_CODE
@@ -28,14 +35,16 @@
 		, TOP_JOB_CODE
 		, JOB_NAME
 		FROM JOB
-		WHERE JOB_CODE = #{jobCode}
+		WHERE
+		JOB_CODE = #{jobCode}
 	</select>
 
 	<update id="updateJob">
 		UPDATE JOB
 		SET
 		TOP_JOB_CODE = #{topJobCode}
-		, JOB_NAME = #{jobName}
+		, JOB_NAME =
+		#{jobName}
 		WHERE JOB_CODE = #{jobCode}
 	</update>
 
