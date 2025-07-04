@@ -41,7 +41,6 @@ class FileMapperTest {
 		FileVO FV = new FileVO();
 
 		FV.setFileName("TEST");
-		FV.setFileNo("1234");
 		FV.setFileSize(1234);
 		FV.setFileType("1234");
 		FV.setRealFile("TEST");

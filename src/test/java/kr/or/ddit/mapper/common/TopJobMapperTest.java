@@ -37,7 +37,6 @@ class TopJobMapperTest {
 	void testInsertTopJob() {
 		TopJobVO TJV = new TopJobVO();
 
-		TJV.setTopJobCode("TEST");
 		TJV.setTopJobName("TEST");
 
 		mapper.insertTopJob(TJV);

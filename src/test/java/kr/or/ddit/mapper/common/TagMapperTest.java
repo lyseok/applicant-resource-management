@@ -38,7 +38,7 @@ class TagMapperTest {
 		TagVO TV = new TagVO();
 
 		TV.setTagName("TTEESSTT");
-		TV.setTagNo("19899");
+		
 
 		mapper.insertTag(TV);
 	}
