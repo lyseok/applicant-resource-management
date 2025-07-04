@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.MySkillMapper">
-	<select id="seletMySkillList">
+	<select id="selectMySkillList">
 		SELECT MY_SKILL_CODE
 			   , RESUME_NO
 			   , MY_SKILL_NAME 
 		  FROM MY_SKILL
 	</select>
 	
-	<select id="seletMySkillDetail">
+	<select id="selectMySkillDetail">
 		SELECT MY_SKILL_CODE
 			   , RESUME_NO
 			   , MY_SKILL_NAME

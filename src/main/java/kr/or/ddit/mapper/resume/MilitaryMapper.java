@@ -9,9 +9,9 @@ import kr.or.ddit.vo.resume.MilitaryVO;
 @Mapper
 public interface MilitaryMapper {
 	// 목록 조회
-	public List<MilitaryVO> seletMilitaryList();
+	public List<MilitaryVO> selectMilitaryList();
 	// 단건 조회
-	public MilitaryVO seletMilitaryDetail(String militaryNo);
+	public MilitaryVO selectMilitaryDetail(String militaryNo);
 	// 등록
 	public int insertMilitary(MilitaryVO militaryVO);
 	// 수정

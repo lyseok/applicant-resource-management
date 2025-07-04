@@ -18,15 +18,15 @@ class CareerMapperTest {
 	
 	
 	@Test
-	void testSeletCareerList() {
-		mapper.seletCareerList().forEach(cr -> {
+	void testselectCareerList() {
+		mapper.selectCareerList().forEach(cr -> {
 			log.info("{}", cr);
 		});
 	}
 
 	@Test
-	void testSeletCareerDetail() {
-		log.info("{}",mapper.seletCareerDetail("CAR001"));
+	void testselectCareerDetail() {
+		log.info("{}",mapper.selectCareerDetail("CAR001"));
 	}
 
 	@Test
@@ -39,7 +39,7 @@ class CareerMapperTest {
 		vo.setFreelancer("N");
 		
 		mapper.insertCareer(vo);
-		log.info("{}",mapper.seletCareerDetail("CAR001"));
+		log.info("{}",mapper.selectCareerDetail("CAR001"));
 	}
 
 	@Test
@@ -53,7 +53,7 @@ class CareerMapperTest {
 		vo.setFreelancer("N");
 		
 		mapper.updateCareer(vo);
-		log.info("{}",mapper.seletCareerDetail(vo.getCareerNo()));
+		log.info("{}",mapper.selectCareerDetail(vo.getCareerNo()));
 	}
 
 	@Test

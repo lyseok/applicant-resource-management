@@ -9,9 +9,9 @@ import kr.or.ddit.vo.resume.LanguageSkillVO;
 @Mapper
 public interface LanguageSkillMapper {
 	// 목록 조회
-	public List<LanguageSkillVO> seletLanguageSkillList();
+	public List<LanguageSkillVO> selectLanguageSkillList();
 	// 단건 조회
-	public LanguageSkillVO seletLanguageSkillDetail(String skillNo);
+	public LanguageSkillVO selectLanguageSkillDetail(String skillNo);
 	// 등록
 	public int insertLanguageSkill(LanguageSkillVO skillVO);
 	// 수정

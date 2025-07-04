@@ -9,9 +9,9 @@ import kr.or.ddit.vo.resume.AwardVO;
 @Mapper
 public interface AwardMapper {
 	// 목록 조회
-	public List<AwardVO> seletAwardList();
+	public List<AwardVO> selectAwardList();
 	// 단건 조회
-	public AwardVO seletAwardDetail(String no);
+	public AwardVO selectAwardDetail(String no);
 	// 등록
 	public int insertAward(AwardVO vo);
 	// 수정

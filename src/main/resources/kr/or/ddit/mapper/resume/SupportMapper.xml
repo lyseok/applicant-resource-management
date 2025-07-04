@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.SupportMapper">
-	<select id="seletSupportList">
+	<select id="selectSupportList">
 		SELECT SUPPORT_NO
 			   , RESUME_NO
 			   , DISABILITY_CODE
@@ -9,7 +9,7 @@
 		  FROM SUPPORT
 	</select>
 	
-	<select id="seletSupportDetail">
+	<select id="selectSupportDetail">
 		SELECT SUPPORT_NO
 			   , RESUME_NO
 			   , DISABILITY_CODE

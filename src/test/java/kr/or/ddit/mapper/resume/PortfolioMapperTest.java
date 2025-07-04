@@ -18,15 +18,15 @@ class PortfolioMapperTest {
 	PortfolioMapper mapper;
 
 	@Test
-	void testSeletPortfolioList() {
-		mapper.seletPortfolioList().forEach(port->{
+	void testselectPortfolioList() {
+		mapper.selectPortfolioList().forEach(port->{
 			log.info("{}", port);
 		});
 	}
 
 	@Test
-	void testSeletPortfolioDetail() {
-		PortfolioVO vo = mapper.seletPortfolioDetail("POR001");
+	void testselectPortfolioDetail() {
+		PortfolioVO vo = mapper.selectPortfolioDetail("POR001");
 		log.info("{}", vo);
 	}
 
@@ -39,7 +39,7 @@ class PortfolioMapperTest {
 		vo.setPorFileSize("567392");
 		vo.setPorFilePath("/uploads/merong/hihi");
 		mapper.insertPortfolio(vo);
-		mapper.seletPortfolioDetail(vo.getPorCode());
+		mapper.selectPortfolioDetail(vo.getPorCode());
 		log.info("{}", vo);
 	}
 
@@ -53,14 +53,14 @@ class PortfolioMapperTest {
 		vo.setPorFileSize("567392");
 		vo.setPorFilePath("/uploads/merong/hihi");
 		mapper.updatePortfolio(vo);
-		mapper.seletPortfolioDetail(vo.getPorCode());
+		mapper.selectPortfolioDetail(vo.getPorCode());
 		log.info("{}", vo);
 	}
 
 	@Test
 	void testDeletePortfolio() {
 		mapper.deletePortfolio("POR0000004");
-		PortfolioVO vo = mapper.seletPortfolioDetail("POR0000004");
+		PortfolioVO vo = mapper.selectPortfolioDetail("POR0000004");
 		log.info("{}", vo);
 	}
 

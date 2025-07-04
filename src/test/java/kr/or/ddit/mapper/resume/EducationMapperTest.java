@@ -20,7 +20,7 @@ class EducationMapperTest {
 	EducationMapper mapper;
 	
 	@Test
-	void testSeletEducationList() {
+	void testselectEducationList() {
 		List<EducationVO> list = mapper.selectEducationList();
 		list.forEach(ed->{
 			log.info("{}", ed);
@@ -29,7 +29,7 @@ class EducationMapperTest {
 	}
 
 	@Test
-	void testSeletEducationDetail() {
+	void testselectEducationDetail() {
 		EducationVO vo = new EducationVO();
 		vo.setEducationNo("EDCT000001");
 		vo.setResumeNo("RESM000001");

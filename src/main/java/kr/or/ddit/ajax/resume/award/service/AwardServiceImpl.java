@@ -15,12 +15,12 @@ public class AwardServiceImpl implements AwardService {
 	
 	@Override
 	public List<AwardVO> readAwardList() {
-		return mapper.seletAwardList();
+		return mapper.selectAwardList();
 	}
 
 	@Override
 	public AwardVO readAwardDetail(String no) {
-		return mapper.seletAwardDetail(no);
+		return mapper.selectAwardDetail(no);
 	}
 
 	@Override

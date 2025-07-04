@@ -9,9 +9,9 @@ import kr.or.ddit.vo.resume.MyExperienceVO;
 @Mapper
 public interface MyExperienceMapper {
 	// 목록 조회
-	public List<MyExperienceVO> seletMyExperienceList();
+	public List<MyExperienceVO> selectMyExperienceList();
 	// 단건 조회
-	public MyExperienceVO seletMyExperienceDetail(String expNo);
+	public MyExperienceVO selectMyExperienceDetail(String expNo);
 	// 등록
 	public int insertMyExperience(MyExperienceVO expVo);
 	// 수정

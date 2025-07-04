@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.CareerMapper">
-	<select id="seletCareerList">
+	<select id="selectCareerList">
 		SELECT CAREER_NO
 			   , RESUME_NO
 			   , JOB_CODE
@@ -19,7 +19,7 @@
 		  FROM CAREER
 	</select>
 	
-	<select id="seletCareerDetail">
+	<select id="selectCareerDetail">
 		SELECT CAREER_NO
 			   , RESUME_NO
 			   , JOB_CODE

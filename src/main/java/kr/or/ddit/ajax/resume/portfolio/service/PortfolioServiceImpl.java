@@ -15,12 +15,12 @@ public class PortfolioServiceImpl implements PortfolioService {
 	
 	@Override
 	public List<PortfolioVO> readPortfolioList() {
-		return mapper.seletPortfolioList();
+		return mapper.selectPortfolioList();
 	}
 
 	@Override
 	public PortfolioVO readPortfolioDetail(String no) {
-		return mapper.seletPortfolioDetail(no);
+		return mapper.selectPortfolioDetail(no);
 	}
 
 	@Override

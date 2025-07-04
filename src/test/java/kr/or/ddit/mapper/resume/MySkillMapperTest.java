@@ -17,15 +17,15 @@ class MySkillMapperTest {
 	MySkillMapper mapper;
 
 	@Test
-	void testSeletMySkillList() {
-		mapper.seletMySkillList().forEach(sk ->{
+	void testselectMySkillList() {
+		mapper.selectMySkillList().forEach(sk ->{
 			log.info("{}", sk);
 		});
 	}
 
 	@Test
-	void testSeletMySkillDetail() {
-		MySkillVO vo = mapper.seletMySkillDetail("MTEC001");
+	void testselectMySkillDetail() {
+		MySkillVO vo = mapper.selectMySkillDetail("MTEC001");
 		log.info("{}", vo);
 	}
 
@@ -36,7 +36,7 @@ class MySkillMapperTest {
 		vo.setMySkillName("8");
 		mapper.insertMySkill(vo);
 		
-		mapper.seletMySkillDetail("MTEC001");
+		mapper.selectMySkillDetail("MTEC001");
 		log.info("{}", vo);
 	}
 
@@ -48,14 +48,14 @@ class MySkillMapperTest {
 		vo.setMySkillName("메롱");
 		mapper.updateMySkill(vo);
 		
-		mapper.seletMySkillDetail("MYS0000005");
+		mapper.selectMySkillDetail("MYS0000005");
 		log.info("{}", vo);
 	}
 
 	@Test
 	void testDeleteMySkill() {
 		mapper.deleteMySkill("MYS0000006");
-		assertNull(mapper.seletMySkillDetail("MYS0000006"));
+		assertNull(mapper.selectMySkillDetail("MYS0000006"));
 	}
 
 }

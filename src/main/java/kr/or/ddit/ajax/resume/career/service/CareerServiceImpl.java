@@ -15,12 +15,12 @@ public class CareerServiceImpl implements CareerService {
 	
 	@Override
 	public List<CareerVO> readCareerList() {
-		return mapper.seletCareerList();
+		return mapper.selectCareerList();
 	}
 
 	@Override
 	public CareerVO readCareerDetail(String no) {
-		return mapper.seletCareerDetail(no);
+		return mapper.selectCareerDetail(no);
 	}
 
 	@Override

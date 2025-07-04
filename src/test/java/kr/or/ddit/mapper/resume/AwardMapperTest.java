@@ -18,15 +18,15 @@ class AwardMapperTest {
 	AwardMapper mapper;
 	
 	@Test
-	void testSeletAwardList() {
-		mapper.seletAwardList().forEach(award->{
+	void testselectAwardList() {
+		mapper.selectAwardList().forEach(award->{
 			log.info("{}", award);
 		});
 	}
 
 	@Test
-	void testSeletAwardDetail() {
-		AwardVO vo = mapper.seletAwardDetail("AWD001");
+	void testselectAwardDetail() {
+		AwardVO vo = mapper.selectAwardDetail("AWD001");
 		log.info("{}", vo);
 	}
 
@@ -39,7 +39,7 @@ class AwardMapperTest {
 		vo.setHosting("고용노동부");
 		
 		mapper.insertAward(vo);
-		AwardVO result = mapper.seletAwardDetail("AWD001");
+		AwardVO result = mapper.selectAwardDetail("AWD001");
 		log.info("{}", result);
 		
 	}
@@ -54,14 +54,14 @@ class AwardMapperTest {
 		vo.setHosting("고용노동부");
 		
 		mapper.updateAward(vo);
-		AwardVO result = mapper.seletAwardDetail("AWAD000006");
+		AwardVO result = mapper.selectAwardDetail("AWAD000006");
 		log.info("{}", result);
 	}
 
 	@Test
 	void testDeleteAward() {
 		mapper.deleteAward("AWAD000006");
-		AwardVO vo = mapper.seletAwardDetail("AWAD000006");
+		AwardVO vo = mapper.selectAwardDetail("AWAD000006");
 		log.info("{}", vo);
 	}
 

@@ -16,14 +16,14 @@ class SupportMapperTest {
 	SupportMapper mapper;
 	
 	@Test
-	void testSeletSupportList() {
+	void testselectSupportList() {
 		mapper.selectSupportList().forEach(supt -> {
 			log.info("{}", supt);
 		});
 	}
 
 	@Test
-	void testSeletSupportDetail() {
+	void testselectSupportDetail() {
 		SupportVO vo = mapper.selectSupportDetail("SUP002");
 		log.info("{}", vo);
 	}

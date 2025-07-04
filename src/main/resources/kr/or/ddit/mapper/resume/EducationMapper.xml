@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.EducationMapper">
-	<select id="seletEducationList">
+	<select id="selectEducationList">
 		SELECT EDUCATION_NO
 			   , RESUME_NO
 			   , HIGHEST_EDUCATION_CODE
@@ -14,7 +14,7 @@
 		  FROM EDUCATION
 	</select>
 	
-	<select id="seletEducationDetail">
+	<select id="selectEducationDetail">
 		SELECT EDUCATION_NO
 			   , RESUME_NO
 			   , HIGHEST_EDUCATION_CODE

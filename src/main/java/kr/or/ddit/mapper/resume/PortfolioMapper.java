@@ -9,9 +9,9 @@ import kr.or.ddit.vo.resume.PortfolioVO;
 @Mapper
 public interface PortfolioMapper {
 	// 목록 조회
-	public List<PortfolioVO> seletPortfolioList();
+	public List<PortfolioVO> selectPortfolioList();
 	// 단건 조회
-	public PortfolioVO seletPortfolioDetail(String no);
+	public PortfolioVO selectPortfolioDetail(String no);
 	// 등록
 	public int insertPortfolio(PortfolioVO vo);
 	// 수정

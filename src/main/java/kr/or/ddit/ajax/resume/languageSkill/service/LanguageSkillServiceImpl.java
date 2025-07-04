@@ -15,12 +15,12 @@ public class LanguageSkillServiceImpl implements LanguageSkillService {
 	
 	@Override
 	public List<LanguageSkillVO> readLanguageSkillList() {
-		return mapper.seletLanguageSkillList();
+		return mapper.selectLanguageSkillList();
 	}
 
 	@Override
 	public LanguageSkillVO readLanguageSkillDetail(String no) {
-		return mapper.seletLanguageSkillDetail(no);
+		return mapper.selectLanguageSkillDetail(no);
 	}
 
 	@Override

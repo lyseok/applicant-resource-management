@@ -15,12 +15,12 @@ public class MyExperienceServiceImpl implements MyExperienceService {
 	
 	@Override
 	public List<MyExperienceVO> readMyExperienceList() {
-		return mapper.seletMyExperienceList();
+		return mapper.selectMyExperienceList();
 	}
 
 	@Override
 	public MyExperienceVO readMyExperienceDetail(String no) {
-		return mapper.seletMyExperienceDetail(no);
+		return mapper.selectMyExperienceDetail(no);
 	}
 
 	@Override

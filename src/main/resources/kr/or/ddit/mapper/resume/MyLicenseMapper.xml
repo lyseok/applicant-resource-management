@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.MyLicenseMapper">
-	<select id="seletMyLicenseList">
+	<select id="selectMyLicenseList">
 		SELECT MY_LICENSE
 			   , RESUME_NO
 			   , LICENSE_CODE
@@ -9,7 +9,7 @@
 		  FROM MY_LICENSE
 	</select>
 	
-	<select id="seletMyLicenseDetail">
+	<select id="selectMyLicenseDetail">
 		SELECT MY_LICENSE
 			   , RESUME_NO
 			   , LICENSE_CODE

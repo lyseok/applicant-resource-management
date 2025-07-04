@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.MilitaryMapper">
-	<select id="seletMilitaryList">
+	<select id="selectMilitaryList">
 		SELECT MILITARY_NO
 			   , RESUME_NO
 			   , SERVICE_CATEGORY_CODE
@@ -14,7 +14,7 @@
 		  FROM MILITARY
 	</select>
 	
-	<select id="seletMilitaryDetail">
+	<select id="selectMilitaryDetail">
 		SELECT MILITARY_NO
 			   , RESUME_NO
 			   , SERVICE_CATEGORY_CODE

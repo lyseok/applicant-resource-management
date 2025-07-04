@@ -15,12 +15,12 @@ public class MyLicenseServiceImpl implements MyLicenseService {
 	
 	@Override
 	public List<MyLicenseVO> readMyLicenseList() {
-		return mapper.seletMyLicenseList();
+		return mapper.selectMyLicenseList();
 	}
 
 	@Override
 	public MyLicenseVO readMyLicenseDetail(String no) {
-		return mapper.seletMyLicenseDetail(no);
+		return mapper.selectMyLicenseDetail(no);
 	}
 
 	@Override

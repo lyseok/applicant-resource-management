@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.LanguageSkillMapper">
-	<select id="seletLanguageSkillList">
+	<select id="selectLanguageSkillList">
 		SELECT LANGUAGE_SKILL_NO
 			   , RESUME_NO
 			   , LANGUAGE_EXAM_CODE
@@ -14,7 +14,7 @@
 		  FROM LANGUAGE_SKILL
 	</select>
 	
-	<select id="seletLanguageSkillDetail">
+	<select id="selectLanguageSkillDetail">
 		SELECT LANGUAGE_SKILL_NO
 			   , RESUME_NO
 			   , LANGUAGE_EXAM_CODE

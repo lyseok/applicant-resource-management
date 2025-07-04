@@ -15,12 +15,12 @@ public class MilitaryServiceImpl implements MilitaryService {
 	
 	@Override
 	public List<MilitaryVO> readMilitaryList() {
-		return mapper.seletMilitaryList();
+		return mapper.selectMilitaryList();
 	}
 
 	@Override
 	public MilitaryVO readMilitaryDetail(String no) {
-		return mapper.seletMilitaryDetail(no);
+		return mapper.selectMilitaryDetail(no);
 	}
 
 	@Override
