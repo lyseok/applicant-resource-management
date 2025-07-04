@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.DistrictCodeMapper">
+<insert id="insertDistrictCode">
+<selectKey resultType="string" keyProperty="districtCodeNo" order="BEFORE">
+    SELECT
+        'DICO'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(DISTRICT_CODE_NO), LENGTH('DICO' ) + 1)), 0) + 1, 6, '0')
+    FROM DISTRICT_CODE
+</selectKey>
+
+		INSERT INTO DISTRICT_CODE (
+		DISTRICT_CODE_NO
+		,CITY_CODE_NO
+		,DISTRICT_NAME
+		) VALUES (
+		#{districtCodeNo}
+		,#{cityCodeNo}
+		,#{districtName}
+		)
+	</insert>
+
+	<select id="selectDistrictCodeList">
+		SELECT
+		DISTRICT_CODE_NO
+		,CITY_CODE_NO
+		,DISTRICT_NAME
+		FROM DISTRICT_CODE
+	</select>
+
+	<select id="selectDistrictCodeByPk">
+		SELECT
+		DISTRICT_CODE_NO
+		,CITY_CODE_NO
+		,DISTRICT_NAME
+		FROM DISTRICT_CODE
+		WHERE DISTRICT_CODE_NO = #{districtCodeNo}
+		AND CITY_CODE_NO = #{cityCodeNo}
+	</select>
+
+	<update id="updateDistrictCode">
+		UPDATE DISTRICT_CODE
+		SET
+		DISTRICT_NAME = #{districtName}
+		WHERE
+		DISTRICT_CODE_NO = #{districtCodeNo}
+		AND CITY_CODE_NO = #{cityCodeNo}
+	</update>
+
+	<delete id="deleteDistrictCode">
+		DELETE FROM DISTRICT_CODE
+		WHERE DISTRICT_CODE_NO = #{districtCodeNo}
+		AND CITY_CODE_NO = #{cityCodeNo}
+	</delete>
+</mapper>

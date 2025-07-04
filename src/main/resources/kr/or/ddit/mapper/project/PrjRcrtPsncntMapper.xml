@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.PrjRcrtPsncntMapper">
+
+<select id="selectPrjRcrtPsncntList">
+	SELECT 
+		RCRT_PSNCNT_NO
+		, PRJ_ANNC_NO
+		, JOB_CODE
+		, RCRT_PSNCNT
+	FROM PRJ_RCRT_PSNCNT
+</select>
+
+<select id="selectPrjRcrtPsncntByPk">
+	SELECT 
+		RCRT_PSNCNT_NO
+		, PRJ_ANNC_NO
+		, JOB_CODE
+		, RCRT_PSNCNT
+	FROM PRJ_RCRT_PSNCNT
+	WHERE RCRT_PSNCNT_NO = #{rcrtPsncntNo}
+	AND PRJ_ANNC_NO = #{prjAnncNo}
+</select>
+
+<insert id="insertPrjRcrtPsncnt">
+<selectKey resultType="string" keyProperty="rcrtPsncntNo" order="BEFORE">
+    SELECT
+        'PCNT'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RCRT_PSNCNT_NO), LENGTH('PCNT' ) + 1)), 0) + 1, 6, '0')
+    FROM PRJ_RCRT_PSNCNT
+    WHERE PRJ_ANNC_NO = #{prjAnncNo}
+</selectKey>
+
+	INSERT INTO PRJ_RCRT_PSNCNT (
+		RCRT_PSNCNT_NO
+		, PRJ_ANNC_NO
+		, JOB_CODE
+		, RCRT_PSNCNT
+	) VALUES (
+		#{rcrtPsncntNo}
+		, #{prjAnncNo}
+		, #{jobCode}
+		, #{rcrtPsncnt}
+	)
+</insert>
+
+<update id="updatePrjRcrtPsncnt">
+	UPDATE PRJ_RCRT_PSNCNT
+	SET 
+		JOB_CODE = #{jobCode}
+		, RCRT_PSNCNT = #{rcrtPsncnt}
+	WHERE RCRT_PSNCNT_NO = #{rcrtPsncntNo}
+	AND PRJ_ANNC_NO = #{prjAnncNo}
+</update>
+
+<delete id="deletePrjRcrtPsncnt">
+	DELETE FROM PRJ_RCRT_PSNCNT
+	WHERE RCRT_PSNCNT_NO = #{rcrtPsncntNo}
+	AND PRJ_ANNC_NO = #{prjAnncNo}
+</delete>
+
+</mapper>

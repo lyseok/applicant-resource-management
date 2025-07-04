@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.PrjAnncBbsMapper">
+
+<select id="selectPrjAnncBbsList">
+	SELECT 
+		PRJ_ANNC_NO
+		, USER_ID
+		, PRJ_EMP_TITLE
+		, PRJ_TOPIC
+		, ANNC_CREATE_DATE
+		, PRJ_START_PLAN_DATE
+		, PRJ_END_PLAN_DATE
+		, PRJ_ANNC_HIT
+		, PRJ_ANNC_CONTENT
+		, ANNC_END_PLAN_DATE
+		, ANNC_END_YN
+	FROM PRJ_ANNC_BBS
+</select>
+
+<select id="selectPrjAnncBbsByPk">
+	SELECT 
+		PRJ_ANNC_NO
+		, USER_ID
+		, PRJ_EMP_TITLE
+		, PRJ_TOPIC
+		, ANNC_CREATE_DATE
+		, PRJ_START_PLAN_DATE
+		, PRJ_END_PLAN_DATE
+		, PRJ_ANNC_HIT
+		, PRJ_ANNC_CONTENT
+		, ANNC_END_PLAN_DATE
+		, ANNC_END_YN
+	FROM PRJ_ANNC_BBS
+	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+</select>
+
+<insert id="insertPrjAnncBbs">
+	<selectKey resultType="string" keyProperty="prjAnncNo" order="BEFORE">
+	    SELECT
+	        'PJAB'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRJ_ANNC_NO), LENGTH('PJAB' ) + 1)), 0) + 1, 6, '0')
+	    FROM PRJ_ANNC_BBS
+	</selectKey>
+	INSERT INTO PRJ_ANNC_BBS (
+		PRJ_ANNC_NO
+		, USER_ID
+		, PRJ_EMP_TITLE
+		, PRJ_TOPIC
+		, ANNC_CREATE_DATE
+		, PRJ_START_PLAN_DATE
+		, PRJ_END_PLAN_DATE
+		, PRJ_ANNC_HIT
+		, PRJ_ANNC_CONTENT
+		, ANNC_END_PLAN_DATE
+		, ANNC_END_YN
+	) VALUES (
+		#{prjAnncNo}
+		, #{userId}
+		, #{prjEmpTitle}
+		, #{prjTopic}
+		, SYSDATE
+		, #{prjStartPlanDate}
+		, #{prjEndPlanDate}
+		, 0
+		, #{prjAnncContent}
+		, #{anncEndPlanDate}
+		, 'N'
+	)
+</insert>
+
+<update id="updatePrjAnncBbs">
+	UPDATE PRJ_ANNC_BBS
+	SET 
+		PRJ_EMP_TITLE = #{prjEmpTitle}
+		, PRJ_TOPIC = #{prjTopic}
+		, PRJ_START_PLAN_DATE = #{prjStartPlanDate}
+		, PRJ_END_PLAN_DATE = #{prjEndPlanDate}
+		, PRJ_ANNC_CONTENT = #{prjAnncContent}
+		, ANNC_END_PLAN_DATE = #{anncEndPlanDate}
+		, ANNC_END_YN = #{anncEndYn}
+	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+</update>
+
+<delete id="deletePrjAnncBbs">
+	DELETE FROM PRJ_ANNC_BBS
+	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+</delete>
+
+</mapper>

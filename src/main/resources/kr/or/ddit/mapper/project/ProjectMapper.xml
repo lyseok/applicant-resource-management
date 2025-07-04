@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.ProjectMapper">
+
+<select id="selectPrjRcrtPsncntList">
+	SELECT 
+		PRJ_NO
+		, USER_ID
+		, PROJECT_BOARD_NO
+		, PROJECT_NAME
+		, PROJECT_CONTENTS
+		, PROJECT_STATUS
+		, CREATE_DATE
+		, FINISH_DATE
+		, DELETE_DATE
+	FROM PROJECT
+</select>
+
+<select id="selectPrjRcrtPsncntByPk">
+	SELECT 
+		PRJ_NO
+		, USER_ID
+		, PROJECT_BOARD_NO
+		, PROJECT_NAME
+		, PROJECT_CONTENTS
+		, PROJECT_STATUS
+		, CREATE_DATE
+		, FINISH_DATE
+		, DELETE_DATE
+	FROM PROJECT
+	WHERE PRJ_NO = #{prjNo}
+</select>
+
+<insert id="insertPrjRcrtPsncnt">
+	<selectKey resultType="string" keyProperty="prjNo" order="BEFORE">
+	    SELECT
+	        'PRJT'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRJ_NO), LENGTH('PRJT' ) + 1)), 0) + 1, 6, '0')
+	    FROM PROJECT
+	</selectKey>
+	INSERT INTO PROJECT (
+		PRJ_NO
+		, USER_ID
+		, PROJECT_BOARD_NO
+		, PROJECT_NAME
+		, PROJECT_CONTENTS
+		, PROJECT_STATUS
+		, CREATE_DATE
+	) VALUES (
+		#{prjNo}
+		, #{userId}
+		, #{projectBoardNo}
+		, #{projectName}
+		, #{projectContents}
+		, #{projectStatus}
+		, SYSDATE
+	)
+</insert>
+
+<update id="updatePrjRcrtPsncnt">
+	UPDATE PROJECT
+	SET 
+		PROJECT_NAME = #{projectName}
+		, PROJECT_CONTENTS = #{projectContents}
+		, PROJECT_STATUS = #{projectStatus}
+	WHERE PRJ_NO = #{prjNo}
+</update>
+
+<delete id="deletePrjRcrtPsncnt">
+	DELETE FROM PROJECT
+	WHERE PRJ_NO = #{prjNo}
+</delete>
+
+</mapper>

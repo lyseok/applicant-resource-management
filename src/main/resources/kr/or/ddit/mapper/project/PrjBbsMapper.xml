@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.PrjBbsMapper">
+
+<select id="selectPrjBbsList">
+	SELECT 
+		PRJ_POST_NO
+		, PRJ_NO
+		, USER_ID
+		, TITLE
+		, CREATE_DATE
+		, CONTENT
+		, DELETE_DATE
+	FROM PRJ_BBS
+</select>
+
+<select id="selectPrjBbsByPk">
+	SELECT 
+		PRJ_POST_NO
+		, PRJ_NO
+		, USER_ID
+		, TITLE
+		, CREATE_DATE
+		, CONTENT
+		, DELETE_DATE
+	FROM PRJ_BBS
+	WHERE PRJ_POST_NO = #{prjPostNo}
+</select>
+
+<insert id="insertPrjBbs">
+	<selectKey resultType="string" keyProperty="prjPostNo" order="BEFORE">
+	    SELECT
+	        'POST'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRJ_POST_NO), LENGTH('POST' ) + 1)), 0) + 1, 6, '0')
+	    FROM PRJ_BBS
+	</selectKey>
+	INSERT INTO PRJ_BBS (
+		PRJ_POST_NO
+		, PRJ_NO
+		, USER_ID
+		, TITLE
+		, CREATE_DATE
+		, CONTENT
+	) VALUES (
+		#{prjPostNo}
+		, #{prjNo}
+		, #{userId}
+		, #{title}
+		, SYSDATE
+		, #{content}
+	)
+</insert>
+
+<update id="updatePrjBbs">
+	UPDATE PRJ_BBS
+	SET 
+		PRJ_NO = #{prjNo}
+		, USER_ID = #{userId}
+		, TITLE = #{title}
+		, CREATE_DATE = #{createDate}
+		, CONTENT = #{content}
+		, DELETE_DATE = #{deleteDate}
+	WHERE PRJ_POST_NO = #{prjPostNo}
+</update>
+
+<delete id="deletePrjBbs">
+	DELETE FROM PRJ_BBS
+	WHERE PRJ_POST_NO = #{prjPostNo}
+</delete>
+
+</mapper>

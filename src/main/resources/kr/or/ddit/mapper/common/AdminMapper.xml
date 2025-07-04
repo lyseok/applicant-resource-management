@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.AdminMapper">
 
+<select id="selectAdminList">
+	SELECT
+		U.USER_ID            
+		, U.USER_PASSWORD      
+		, U.USER_ROLE          
+		, U.USER_WITHDRAW_DATE 
+		, U.USER_STATUS        
+		, U.USER_ENABLED       
+		, A.IS_ADMIN           
+	FROM ADMIN A
+	JOIN USERS U ON A.USER_ID = U.USER_ID
+</select>
+
 <select id="selectAdminById" resultType="AdminVO">
 	SELECT
       U.USER_ID            
@@ -15,4 +28,27 @@
     JOIN USERS U ON A.USER_ID = U.USER_ID
     WHERE A.USER_ID = #{userId}
 </select>
+
+<insert id="insertAdmin">
+	INSERT INTO ADMIN (
+		USER_ID
+		, IS_ADMIN
+	) VALUES (
+		#{userId}
+		, #{isAdmin}
+	)
+</insert>
+
+<update id="updateAdmin">
+	UPDATE ADMIN
+	SET 
+		IS_ADMIN = #{isAdmin}
+	WHERE USER_ID = #{userId}
+</update>
+
+<delete id="deleteAdmin">
+	DELETE FROM ADMIN
+	WHERE USER_ID = #{userId}
+</delete>
+
 </mapper>
