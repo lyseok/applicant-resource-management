@@ -55,7 +55,7 @@
 				, SYSDATE, 
 				, #{tokenFinish}
 				, #{tokenRefresh}
-				, #{tokenRefreshTime}
+				, SYSDATE
 			)
 	</insert>
 	
