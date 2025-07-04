@@ -20,16 +20,25 @@ class AdminCommentMapperTest {
 	AdminCommentMapper mapper;
 	
 	@Test
-	void testSelectAdminComment() {
-		log.info("{}", mapper.selectAdminComment("ADCM000001"));  //댓글 하나
+	void testSelectAdminCommentbyPk() {
+		log.info("{}", mapper.selectAdminCommentbyPk("ADCM000001"));  //댓글 하나
 	}
 
 	@Test
-	void testSelectAdminCommentList() {
+	void testSelectAdminCommentCommentList() {
 
-		assertDoesNotThrow(()->mapper.selectAdminCommentList("ABNO000003"));  //여러 댓글
+		assertDoesNotThrow(()->mapper.searchAdminCommentCommentList("ABNO000003"));  //여러 댓글
 		
-		List<AdminCommentVO> list = mapper.selectAdminCommentList("ABNO000003");
+		List<AdminCommentVO> list = mapper.searchAdminCommentCommentList("ABNO000003");
+		list.forEach(c->log.info("{}", c));
+	}
+	
+	@Test
+	void testSelectAdminCommentList() {
+		
+		assertDoesNotThrow(()->mapper.searchAdminCommentList());  //댓글 전체
+		
+		List<AdminCommentVO> list = mapper.searchAdminCommentList();
 		list.forEach(c->log.info("{}", c));
 	}
 
@@ -43,7 +52,7 @@ class AdminCommentMapperTest {
 		
 		assertEquals(1, mapper.insertAdminComment(comment));
 		
-		log.info("{}", mapper.selectAdminComment("ADCM000001"));
+		log.info("{}", mapper.selectAdminCommentbyPk("ADCM000001"));
 	}
 
 	@Test
@@ -60,7 +69,7 @@ class AdminCommentMapperTest {
 		
 		assertEquals(1, mapper.updateAdminComment(comment));
 		
-		log.info("{}", mapper.selectAdminComment("ADCM000001"));
+		log.info("{}", mapper.selectAdminCommentbyPk("ADCM000001"));
 	}
 
 	@Test
