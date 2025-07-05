@@ -29,7 +29,7 @@ class CmnCodeGroupMapperTest {
 	@Test
 	void testSelectCmnCodeGroupByPk() {
 		CmnCodeGroupVO vo = mapper.selectCmnCodeGroupByPk("EDUC");
-		log.info("{}", vo);
+		log.info("{}", vo.getCmnCodeList());
 		
 		assertNotNull(vo);
 	}
