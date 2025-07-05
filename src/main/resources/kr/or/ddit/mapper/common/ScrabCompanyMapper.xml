@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.ScrabCompanyMapper">
+
+	<insert id="insertScrabCompany">
+		INSERT INTO SCRAB_COMPANY (
+		USER_ID
+		, COMPANY_ID
+		, SCRAB_COMPANY_DATE
+		) VALUES (
+		#{userId}
+		, #{companyId}
+		, SYSDATE
+		)
+	</insert>
+
+	<select id="selectScrabCompanyList">
+		SELECT
+		USER_ID
+		, COMPANY_ID
+		, SCRAB_COMPANY_DATE
+		FROM SCRAB_COMPANY
+	</select>
+
+	<select id="selectScrabCompanyByPk">
+		SELECT
+		USER_ID
+		, COMPANY_ID
+		, SCRAB_COMPANY_DATE
+		FROM SCRAB_COMPANY
+		WHERE USER_ID = #{userId}
+		AND COMPANY_ID = #{companyId}
+	</select>
+
+	<update id="updateScrabCompany">
+		UPDATE SCRAB_COMPANY
+		SET
+		SCRAB_COMPANY_DATE = SYSDATE
+		WHERE USER_ID = #{userId}
+		AND COMPANY_ID = #{companyId}
+	</update>
+
+	<delete id="deleteCompany">
+		DELETE FROM SCRAB_COMPANY
+		WHERE USER_ID = #{userId}
+		AND COMPANY_ID = #{companyId}
+	</delete>
+
+</mapper>

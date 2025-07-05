@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.PrjSectionMapper">
+
+<select id="selectPrjSectionList">
+	SELECT 
+		SECT_NO
+		, PRJ_NO
+		, USER_ID
+		, SECT_NAME
+		, SECT_ORDER
+		, DELETE_DATE
+		, DEL_USER_ID
+	FROM PRJ_SECTION
+</select>
+
+<select id="selectPrjSectionByPk">
+	SELECT 
+		SECT_NO
+		, PRJ_NO
+		, USER_ID
+		, SECT_NAME
+		, SECT_ORDER
+		, DELETE_DATE
+		, DEL_USER_ID
+	FROM PRJ_SECTION
+	WHERE SECT_NO = #{sectNo}
+</select>
+
+<insert id="insertPrjSection">
+	<selectKey resultType="string" keyProperty="sectNo" order="BEFORE">
+	    SELECT
+	        'SECT'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(SECT_NO), LENGTH('SECT' ) + 1)), 0) + 1, 6, '0')
+	    FROM PRJ_SECTION
+	</selectKey>
+	INSERT INTO PRJ_SECTION (
+		SECT_NO
+		, PRJ_NO
+		, USER_ID
+		, SECT_NAME
+		, SECT_ORDER
+	) VALUES (
+		#{sectNo}
+		, #{prjNo}
+		, #{userId}
+		, #{sectName}
+		, #{sectOrder}
+	)
+</insert>
+
+<update id="updatePrjSection">
+	UPDATE PRJ_SECTION
+	SET 
+		PRJ_NO = #{prjNo}
+		, USER_ID = #{userId}
+		, SECT_NAME = #{sectName}
+		, SECT_ORDER = #{sectOrder}
+		, DELETE_DATE = #{deleteDate}
+		, DEL_USER_ID = #{delUserId}
+	WHERE SECT_NO = #{sectNo}
+</update>
+
+<delete id="deletePrjSection">
+	DELETE FROM PRJ_SECTION
+	WHERE SECT_NO = #{sectNo}
+</delete>
+
+</mapper>

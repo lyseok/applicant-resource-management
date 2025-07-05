@@ -27,7 +27,6 @@ class UserMapperTest {
 
 	@Test
 	void testExistsById() {
-		userMapper.existsById("USR001");
 		assertNotNull(userMapper.existsById("USR001"));
 	}
 

@@ -4,19 +4,19 @@
 <!-- <resultMap type="RecruitmentNoticeVO" id="liveDetailMap" autoMapping="true">
 <id property="recruitmentNo" column="RECRUITMENT_NO"/>
 </resultMap> -->
-<select id="selectLiveRecruitment" >
+<select id="selectLiveRecruitment" resultType="RecruitmentNoticeVO">
 	SELECT * 
 	FROM RECRUITMENT_NOTICE
 	ORDER BY RECRUITMENT_STARTDATE DESC
 </select>
 
-<select id="hotRecruitment">
+<select id="hotRecruitment" resultType="RecruitmentNoticeVO">
 	SELECT *
 	FROM RECUITMENT_NOTICE
 	ORDER BY (조회수 관련)
 </select>
 
-<select id="salaryRecruitment" >
+<select id="salaryRecruitment" resultType ="RecruitmentNoticeVO">
 	SELECT *
 	FROM RECRUITMENT_NOTICE
 	WHERE RECRUITMENT_SALARY = '3500만원'
@@ -24,7 +24,7 @@
 
 </select>
 
-<select id="selectliveRecruitmentDetail">
+<select id="selectliveRecruitmentDetail" resultType="RecruitmentNoticeVO">
 	SELECT 
 	RECRUITMENT_NO
 	,USER_ID
@@ -48,9 +48,97 @@
 	WHERE RECRUITMENT_NO = #{recruitmentNo}
 </select>
 
-<delete id="">
 
-</delete>
+
+<insert id="insertRecruitmentNotice">
+	<selectKey resultType="string" keyProperty="recruitmentNo" order="BEFORE">
+	    SELECT
+	        'RECR'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUITMENT_NO), LENGTH('RECR' ) + 1)), 0) + 1, 6, '0')
+	    FROM RECRUITMENT_NOTICE
+	</selectKey>
+		INSERT INTO RECRUITMENT_NOTICE (
+			RECRUITMENT_NO
+			, USER_ID
+			, RECRUITMENT_TITLE
+			, JOB_CODE
+			,YEAR_CODE
+			, REC_CONTENT
+			, PREFERENTIAL
+			, CITY_CODE
+			, DISTRICT_CODE
+			,REC_POSITION_NUMBER
+			, RECRUITMENT_CHARGER_TEL
+			, RECRUITMENT_SALARY
+			,WELFARE, RECRUITMENT_DESK
+			, RECRUITMENT_IMG
+			, RECRUITMENT_STARTDATE
+			,RECRUITMENT_RECEIPT_START
+			, RECRUITMENT_FINISH_DATE
+			)VALUES (
+			#{recruitmentNo}
+			, #{userId}
+			, #{recruitmentTitle}
+			, #{jobCode}
+			, #{yearCode}
+			,#{recContent}
+			, #{preferential}
+			, #{cityCode}
+			, #{districtCode}
+			, #{recPositionNumber}
+			, #{recruitmentChargerTel}
+			, #{recruitmentSalary}
+			, #{welfare}
+			, #{recruitmentDesk}
+			, #{recruitmentImg}
+			, SYSDATE
+			, #{recruitmentReceiptStart}
+			, #{recruitmentFinishDate}
+			)
+</insert>
+
+<update id="updateRecruitmentNotice">
+	UPDATE RECRUITMENT_NOTICE SET 
+		USER_ID = #{userId}
+		, JOB_CODE =#{jobCode}
+		, YEAR_CODE = #{yearCode}
+		, REC_CONTENT = #{recContent}
+		,PREFERENTIAL = #{preferential}
+		, CITY_CODE = #{cityCode}
+		, DISTRICT_CODE = #{districtCode}
+		, REC_POSITION_NUMBER = #{recPositionNumber}
+		,RECRUITMENT_CHARGER_TEL = #{recruitmentChargerTel}
+		, RECRUITMENT_SALARY= #{recruitmentSalary}
+		, WELFARE = #{welfare}
+		, RECRUITMENT_DESK =#{recruitmentDesk}
+		, RECRUITMENT_IMG = #{recruitmentImg}
+		,RECRUITMENT_STARTDATE = #{recruitmentStartdate}
+		,RECRUITMENT_RECEIPT_START = #{recruitmentReceiptStart}
+		,RECRUITMENT_FINISH_DATE = #{recruitmentFinishDate}
+		, RECRUITMENT_TITLE =#{recruitmentTitle} 
+	WHERE RECRUITMENT_NO = #{recruitmentNo}
+</update>
+
+<select id="readRecruitmentNoticeList" resultType="RecruitmentNoticeVO">
+	SELECT 
+		RECRUITMENT_NO
+		, USER_ID, JOB_CODE
+		, YEAR_CODE, REC_CONTENT
+		,PREFERENTIAL
+		, CITY_CODE
+		, DISTRICT_CODE
+		, REC_POSITION_NUMBER
+		,RECRUITMENT_CHARGER_TEL
+		, RECRUITMENT_SALARY
+		, WELFARE
+		, RECRUITMENT_DESK
+		,RECRUITMENT_IMG
+		, RECRUITMENT_STARTDATE
+		, RECRUITMENT_RECEIPT_START
+		,RECRUITMENT_FINISH_DATE
+		, RECRUITMENT_TITLE 
+	FROM RECRUITMENT_NOTICE
+</select>
 
 
 </mapper>

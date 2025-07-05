@@ -14,5 +14,5 @@ public class PaymentVO implements Serializable{
 	private String paymentMethod;
 	private String paymentDate;
 	private String paymentPay;
-	private String paymentList;
+	private String paymentContract;
 }

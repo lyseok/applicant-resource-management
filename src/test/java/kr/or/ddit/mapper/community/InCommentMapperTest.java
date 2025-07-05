@@ -19,28 +19,46 @@ class InCommentMapperTest {
 	InCommentMapper mapper;
 	
 	@Test
-	void testSelectInComment() {
-		log.info("{}", mapper.selectInComment("CMCM000001", "AVT001"));
+	void testSelectInCommentbyPk() {
+		assertDoesNotThrow(()->mapper.selectInCommentbyPk("CMCM000001", "AVTR000001"));
+		
+		log.info("{}", mapper.selectInCommentbyPk("CMCM000001", "AVTR000001"));
 	}
 
 	@Test
-	void testSelectInCommentList() {
-		assertDoesNotThrow(()->mapper.selectInCommentList("AVT001"));
+	void testSearchInCommentCommentList() {
+		assertDoesNotThrow(()->mapper.searchInCommentCommentList("AVTR000001"));
 		
-		List<InCommentVO> list = mapper.selectInCommentList("AVT001");
-		list.forEach(p->{
-			log.info("{}", p);
+		List<InCommentVO> list = mapper.searchInCommentCommentList("AVTR000001");
+		list.forEach(c->{
+			log.info("{}", c);
 		});
+		
+		assertEquals(1, list.size());
 	}
 
 	@Test
-	void testSelectInCommentAvatarList() {
-		assertDoesNotThrow(()->mapper.selectInCommentAvatarList("CMCM000001"));
+	void testSearchInCommentAvatarList() {
+		assertDoesNotThrow(()->mapper.searchInCommentAvatarList("CMCM000001"));
 		
-		List<InCommentVO> list = mapper.selectInCommentAvatarList("CMCM000001");
+		List<InCommentVO> list = mapper.searchInCommentAvatarList("CMCM000001");
 		list.forEach(a->{
 			log.info("{}", a);
 		});
+
+		assertEquals(1, list.size());
+	}
+	
+	@Test
+	void testSelectInCommentList() {
+		assertDoesNotThrow(()->mapper.selectInCommentList());
+		
+		List<InCommentVO> list = mapper.selectInCommentList();
+		list.forEach(c->{
+			log.info("{}", c);
+		});
+
+		assertEquals(1, list.size());
 	}
 
 	@Test
@@ -48,18 +66,17 @@ class InCommentMapperTest {
 		InCommentVO Comment = new InCommentVO();
 		
 		Comment.setCommentNo("CMCM000001");
-		Comment.setAvatarId("AVT002");
-		
+		Comment.setAvatarId("AVTR000001");
 
 		assertEquals(1, mapper.insertInComment(Comment));
 		
-		log.info("{}", mapper.selectInComment("CMCM000001", "AVT002"));
+		log.info("{}", mapper.selectInCommentbyPk("CMCM000001", "AVTR000001"));
 	}
 
 	@Test
 	void testDeleteInComment() {
-		log.info("{}", mapper.deleteInComment("CMCM000001", "AVT002"));  //1이면 삭제
-		assertNull(mapper.selectInComment("CMCM000001", "AVT002"));
+		log.info("{}", mapper.deleteInComment("CMCM000001", "AVTR000001"));  //1이면 삭제 성공
+		assertNull(mapper.selectInCommentbyPk("CMCM000001", "AVTR000001"));
 	}
 
 }

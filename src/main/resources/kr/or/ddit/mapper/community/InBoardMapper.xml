@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.InBoardMapper">
 
-	<select id="selectInBoard" resultType="InBoardVO">
+	<select id="selectInBoardByPk" resultType="InBoardVO">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID 
 		FROM 
 			IN_BOARD 
@@ -14,9 +14,9 @@
 			AVATAR_ID = #{avatarId}
 	</select>
 	
-	<select id="selectInBoardPostList" resultType="InBoardVO">
+	<select id="searchInBoardCommuPostList" resultType="InBoardVO">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID 
 		FROM 
 			IN_BOARD
@@ -24,9 +24,9 @@
 			AVATAR_ID = #{avatarId}
 	</select>
 	
-	<select id="selectInBoardAvatarList" resultType="InBoardVO">
+	<select id="searchInBoardAvatarList" resultType="InBoardVO">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID 
 		FROM 
 			IN_BOARD
@@ -34,18 +34,28 @@
 			COMMU_POST_NO = #{commuPostNo} 
 	</select>
 	
+	<select id="selectInBoardList">
+		SELECT 
+			  COMMU_POST_NO
+			, AVATAR_ID 
+		FROM 
+			IN_BOARD
+	</select>
+	
 	<insert id="insertInBoard" parameterType="InBoardVO">
-		INSERT INTO IN_BOARD (
-			COMMU_POST_NO
+		INSERT INTO 
+			IN_BOARD (
+			  COMMU_POST_NO
 			, AVATAR_ID
 		) VALUES (
-			#{commuPostNo}
+			  #{commuPostNo}
 			, #{avatarId}
 		)
 	</insert>
 	
 	<delete id="deleteInBoard" parameterType="InBoardVO">
-		DELETE FROM IN_BOARD 
+		DELETE FROM 
+			IN_BOARD 
 		WHERE 
 			COMMU_POST_NO = #{commuPostNo} 
 			AND 

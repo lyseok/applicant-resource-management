@@ -7,13 +7,11 @@ import java.util.stream.Stream;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import kr.or.ddit.security.auth.RealUserWrapper;
-import kr.or.ddit.vo.ExMemberVO;
 import kr.or.ddit.vo.common.UsersVO;
 import lombok.ToString;
 

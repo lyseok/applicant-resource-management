@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.FileMapper">
+	<insert id="insertFile">
+		<selectKey resultType="string" keyProperty="fileNo"
+			order="BEFORE">
+			SELECT
+			'FILE'||
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(FILE_NO), LENGTH('FILE' ) + 1)), 0) + 1, 6, '0')
+			FROM FILES
+		</selectKey>
+		INSERT INTO FILES (
+		FILE_NO
+		, REAL_FILE
+		, FILE_NAME
+		, FILE_SIZE
+		, FILE_TYPE
+		) VALUES (
+		#{fileNo}
+		, #{realFile}
+		, #{fileName}
+		, #{fileSize}
+		,
+		#{fileType}
+		)
+	</insert>
+
+	<select id="selectFileList">
+		SELECT
+		FILE_NO
+		, REAL_FILE
+		, FILE_NAME
+		, FILE_SIZE
+		,
+		FILE_TYPE
+		FROM FILES
+	</select>
+
+	<select id="selectFileByPk">
+		SELECT
+		FILE_NO
+		, REAL_FILE
+		, FILE_NAME
+		, FILE_SIZE
+		,
+		FILE_TYPE
+		FROM FILES
+		WHERE FILE_NO = #{fileNo}
+	</select>
+
+	<update id="updateFile">
+		UPDATE FILES
+		SET
+		REAL_FILE = #{realFile}
+		, FILE_NAME =
+		#{fileName}
+		, FILE_SIZE = #{fileSize}
+		, FILE_TYPE = #{fileType}
+		WHERE
+		FILE_NO = #{fileNo}
+	</update>
+
+	<delete id="deleteFile">
+		DELETE FROM FILES
+		WHERE FILE_NO = #{fileNo}
+	</delete>
+
+</mapper>

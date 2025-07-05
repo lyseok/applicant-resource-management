@@ -21,48 +21,65 @@ class CommuTagMapperTest {
 	CommuTagMapper mapper;
 	
 	@Test
-	void testSelectCommuTag() {
-		log.info("{}", mapper.selectCommuTag("CTAG000001", "CMBD000004"));
-	}
-
-	@Test
-	void testSelectCommuTagList() {
-		assertDoesNotThrow(()->mapper.selectCommuTagList("CMBD000004"));
+	void testSelectCommuTagByPk() {
+		assertDoesNotThrow(()->mapper.selectCommuTagByPk("CTAG000001", "CMBD000001"));
 		
-		List<CommuTagVO> list = mapper.selectCommuTagList("CMBD000004");
+		log.info("{}", mapper.selectCommuTagByPk("CTAG000001", "CMBD000001"));
+	}
+	
+	@Test
+	void testSearchCommuTagTagList() {
+		assertDoesNotThrow(()->mapper.searchCommuTagTagList("CMBD000001"));
+		
+		List<CommuTagVO> list = mapper.searchCommuTagTagList("CMBD000001");
 		list.forEach(t->{
 			log.info("{}", t);
 		});
+		
+		assertEquals(1, list.size());
+	}
+
+	@Test
+	void testSearchCommuTagBoardList() {
+		assertDoesNotThrow(()->mapper.searchCommuTagBoardList("CTAG000001"));
+		
+		List<CommuTagVO> list = mapper.searchCommuTagBoardList("CTAG000001");
+		list.forEach(t->{
+			log.info("{}", t);
+		});
+		
+		assertEquals(1, list.size());
+	}
+	
+	
+	@Test
+	void testSelectCommuTagList() {
+		assertDoesNotThrow(()->mapper.selectCommuTagList());
+		
+		List<CommuTagVO> list = mapper.selectCommuTagList();
+		list.forEach(t->{
+			log.info("{}", t);
+		});
+		
+		assertEquals(1, list.size());
 	}
 
 	@Test
 	void testInsertCommuTag() {
 		CommuTagVO tag = new CommuTagVO();
 		
-		tag.setBoardNo("CMBD000004");
+		tag.setBoardNo("CMBD000001");
 
-		assertEquals(1, mapper.insertCommuTag(tag));
+		assertEquals(1, mapper.insertCommuTag(tag));		
 		
-		log.info("{}", mapper.selectCommuTag("CTAG000001", "CMBD000004"));
-	}
+		log.info("{}", mapper.selectCommuTagByPk("CTAG000002", "CMBD000001"));
 
-	@Test
-	void testUpdateCommuTag() {
-		CommuTagVO tag = new CommuTagVO();
-		
-		tag.setTagNo("CTAG000001");
-		tag.setBoardNo("CMBD000004");
-		tag.setCommuTagDate("20250702");
-		
-		assertEquals(1, mapper.updateCommuTag(tag));
-		
-		log.info("{}", mapper.selectCommuTag("CTAG000001", "CMBD000004"));
 	}
 
 	@Test
 	void testDeleteCommuTag() {
-		mapper.deleteCommuTag("CTAG000001", "CMBD000004");
-		assertNull(mapper.selectCommuTag("CTAG000001", "CMBD000004"));
+		log.info("{}", mapper.deleteCommuTag("CTAG000002", "CMBD000001"));  //1이면 삭제 성공
+		assertNull(mapper.selectCommuTagByPk("CTAG000002", "CMBD000001"));
 	}
 
 }

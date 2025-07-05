@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "recuruitProcessNo")
+@EqualsAndHashCode(of = "recruitProcessNo")
 public class RecruitProcessVO implements Serializable{
 
-	private String recuruitProcessNo;
+	private String recruitProcessNo;
 	private String recruitmentNo;
 	private String companyName;
 	private String recruitProcessStep;

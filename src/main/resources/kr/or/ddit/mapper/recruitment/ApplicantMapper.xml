@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.ApplicantMapper">
+	<select id="selectApplicantList" resultType="ApplicantVO">
+	SELECT 
+		APPLICANT_ID
+		, RECRUITMENT_NO
+		, RESUME_NO
+		, RESUME_VIEW_YN
+		, USER_ID
+		, STATUS 
+	FROM APPLICANT
+	</select>
+	
+	<select id="selectApplicant" resultType="ApplicantVO">
+	SELECT 
+		APPLICANT_ID
+		, RECRUITMENT_NO
+		, RESUME_NO
+		, RESUME_VIEW_YN
+		, USER_ID
+		, STATUS FROM APPLICANT 
+	WHERE APPLICANT_ID = #{applicantId}
+	</select>
+	
+	<insert id="insertApplicant">
+	<selectKey resultType="string" keyProperty="applicantId" order="BEFORE">
+    SELECT
+        'APPL'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(APPLICANT_ID), LENGTH('APPL' ) + 1)), 0) + 1, 6, '0')
+    FROM APPLICANT
+	</selectKey>
+	INSERT INTO APPLICANT (
+		APPLICANT_ID
+		, RECRUITMENT_NO
+		, RESUME_NO
+		, RESUME_VIEW_YN
+		, USER_ID
+		, STATUS
+	) VALUES (
+		#{applicantId}
+		, #{recruitmentNo}
+		, #{resumeNo}
+		, 'N'
+		, #{userId}
+		, 'N'
+	)
+	</insert>
+	
+	<update id="updateApplicant">
+	UPDATE APPLICANT SET 
+		RESUME_VIEW_YN = #{resumeViewYn}
+		, STATUS = #{status} 
+	WHERE APPLICANT_ID = #{applicantId}
+	</update>
+	
+	<delete id="deleteApplicant">
+	DELETE FROM APPLICANT 
+	WHERE APPLICANT_ID = #{applicantId}
+	</delete>
+</mapper>

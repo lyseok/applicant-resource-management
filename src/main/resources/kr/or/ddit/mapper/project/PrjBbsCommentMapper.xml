@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.PrjBbsCommentMapper">
+
+<select id="selectPrjRcrtPsncntList">
+	SELECT 
+		COMMENT_NO
+		, PRJ_POST_NO
+		, PRJ_NO
+		, USER_ID
+		, COMMENT_CONTENT
+		, CREATE_DATE
+		, DELETE_DATE
+	FROM PRJ_BBS_COMMENT
+</select>
+
+<select id="selectPrjRcrtPsncntByPk">
+	SELECT 
+		COMMENT_NO
+		, PRJ_POST_NO
+		, PRJ_NO
+		, USER_ID
+		, COMMENT_CONTENT
+		, CREATE_DATE
+		, DELETE_DATE
+	FROM PRJ_BBS_COMMENT
+	WHERE COMMENT_NO = #{commentNo}
+</select>
+
+<insert id="insertPrjRcrtPsncnt">
+	<selectKey resultType="string" keyProperty="commentNo" order="BEFORE">
+	    SELECT
+	        'PCOM'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMENT_NO), LENGTH('PCOM' ) + 1)), 0) + 1, 6, '0')
+	    FROM PRJ_BBS_COMMENT
+	</selectKey>
+	INSERT INTO PRJ_BBS_COMMENT (
+		COMMENT_NO
+		, PRJ_POST_NO
+		, PRJ_NO
+		, USER_ID
+		, COMMENT_CONTENT
+		, CREATE_DATE
+	) VALUES (
+		#{commentNo}
+		, #{prjPostNo}
+		, #{prjNo}
+		, #{userId}
+		, #{commentContent}
+		, SYSDATE
+	)
+</insert>
+
+<update id="updatePrjRcrtPsncnt">
+	UPDATE PRJ_BBS_COMMENT
+	SET 
+		PRJ_POST_NO = #{prjPostNo}
+		, PRJ_NO = #{prjNo}
+		, USER_ID = #{userId}
+		, COMMENT_CONTENT = #{commentContent}
+		, CREATE_DATE = #{createDate}
+		, DELETE_DATE = #{deleteDate}
+	WHERE COMMENT_NO = #{commentNo}
+</update>
+
+<delete id="deletePrjRcrtPsncnt">
+	DELETE FROM PRJ_BBS_COMMENT
+	WHERE COMMENT_NO = #{commentNo}
+</delete>
+
+</mapper>

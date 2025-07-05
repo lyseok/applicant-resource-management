@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.WorkHistoryMapper">
+
+<select id="selectWorkHistoryList">
+	SELECT 
+		WORK_HIST_NO
+		, PRJ_NO
+		, USER_ID
+		, WORK_DATE
+		, WORK_TABLE
+		, WORK_TYPE
+		, WORK_TARGET
+	FROM WORK_HISTORY
+</select>
+
+<select id="searchWorkHistoryList">
+	SELECT 
+		WORK_HIST_NO
+		, PRJ_NO
+		, USER_ID
+		, WORK_DATE
+		, WORK_TABLE
+		, WORK_TYPE
+		, WORK_TARGET
+	FROM WORK_HISTORY
+	WHERE PRJ_NO = #{prjNo}
+</select>
+
+<select id="selectWorkHistoryByPk">
+	SELECT 
+		WORK_HIST_NO
+		, PRJ_NO
+		, USER_ID
+		, WORK_DATE
+		, WORK_TABLE
+		, WORK_TYPE
+		, WORK_TARGET
+	FROM WORK_HISTORY
+	WHERE WORK_HIST_NO = #{workHistNo}
+</select>
+
+<insert id="insertWorkHistory">
+	<selectKey resultType="string" keyProperty="workHistNo" order="BEFORE">
+	    SELECT
+	        'WKHR'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(WORK_HIST_NO), LENGTH('WKHR' ) + 1)), 0) + 1, 6, '0')
+	    FROM WORK_HISTORY
+	</selectKey>
+
+	INSERT INTO WORK_HISTORY (
+		WORK_HIST_NO
+		, PRJ_NO
+		, USER_ID
+		, WORK_DATE
+		, WORK_TABLE
+		, WORK_TYPE
+		, WORK_TARGET
+	) VALUES (
+		#{workHistNo}
+		, #{prjNo}
+		, #{userId}
+		, SYSDATE
+		, #{workTable}
+		, #{workType}
+		, #{workTarget}
+	)
+</insert>
+
+</mapper>

@@ -22,4 +22,8 @@ public interface LiveRecruitmentMapper {
  public RecruitmentNoticeVO selectliveRecruitmentDetail(String recruitmentNo);
  // 공고 자세히보기
  
+ public int insertRecruitmentNotice(RecruitmentNoticeVO recruitmentNoticeVO);
+ 
+ public int updateRecruitmentNotice(RecruitmentNoticeVO recruitmentNoticeVO);
+ 
 }
