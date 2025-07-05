@@ -4,9 +4,10 @@
 
 	<select id="selectInCommentbyPk" resultType="InCommentVO">
 		SELECT 
-			COMMENT_NO
+			  COMMENT_NO
 			, AVATAR_ID 
-		FROM IN_COMMENT 
+		FROM 
+			IN_COMMENT 
 		WHERE 
 			COMMENT_NO = #{commentNo} 
 			AND 
@@ -15,7 +16,7 @@
 	
 	<select id="searchInCommentCommentList" resultType="InCommentVO">
 		SELECT 
-			COMMENT_NO
+			  COMMENT_NO
 			, AVATAR_ID 
 		FROM 
 			IN_COMMENT
@@ -25,7 +26,7 @@
 
 	<select id="searchInCommentAvatarList" resultType="InCommentVO">
 		SELECT 
-			COMMENT_NO
+			  COMMENT_NO
 			, AVATAR_ID 
 		FROM 
 			IN_COMMENT
@@ -35,24 +36,26 @@
 	
 	<select id="selectInCommentList">
 		SELECT 
-			COMMENT_NO
+			  COMMENT_NO
 			, AVATAR_ID 
 		FROM 
 			IN_COMMENT
 	</select>
 	
 	<insert id="insertInComment" parameterType="InCommentVO">
-		INSERT INTO IN_COMMENT (
-			COMMENT_NO
+		INSERT INTO 
+			IN_COMMENT (
+			  COMMENT_NO
 			, AVATAR_ID
 		) VALUES (
-			#{commentNo}
+			  #{commentNo}
 			, #{avatarId}
 		)
 	</insert>
 	
 	<delete id="deleteInComment" parameterType="InCommentVO">
-		DELETE FROM IN_COMMENT 
+		DELETE FROM 
+			IN_COMMENT 
 		WHERE 
 			COMMENT_NO = #{commentNo} 
 			AND 

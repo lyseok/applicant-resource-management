@@ -4,7 +4,7 @@
 
 	<select id="selectInBoardByPk" resultType="InBoardVO">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID 
 		FROM 
 			IN_BOARD 
@@ -16,7 +16,7 @@
 	
 	<select id="searchInBoardCommuPostList" resultType="InBoardVO">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID 
 		FROM 
 			IN_BOARD
@@ -26,7 +26,7 @@
 	
 	<select id="searchInBoardAvatarList" resultType="InBoardVO">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID 
 		FROM 
 			IN_BOARD
@@ -36,24 +36,26 @@
 	
 	<select id="selectInBoardList">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID 
 		FROM 
 			IN_BOARD
 	</select>
 	
 	<insert id="insertInBoard" parameterType="InBoardVO">
-		INSERT INTO IN_BOARD (
-			COMMU_POST_NO
+		INSERT INTO 
+			IN_BOARD (
+			  COMMU_POST_NO
 			, AVATAR_ID
 		) VALUES (
-			#{commuPostNo}
+			  #{commuPostNo}
 			, #{avatarId}
 		)
 	</insert>
 	
 	<delete id="deleteInBoard" parameterType="InBoardVO">
-		DELETE FROM IN_BOARD 
+		DELETE FROM 
+			IN_BOARD 
 		WHERE 
 			COMMU_POST_NO = #{commuPostNo} 
 			AND 

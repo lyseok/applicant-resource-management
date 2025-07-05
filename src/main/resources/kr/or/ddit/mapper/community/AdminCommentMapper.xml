@@ -4,7 +4,7 @@
 	
 	<select id="selectAdminCommentbyPk" resultType="AdminCommentVO">
 		SELECT 
-			BOARD_COMMENT_NO
+			  BOARD_COMMENT_NO
 			, USER_ID
 			, BOARD_NO
 			, BOARD_COMMENT_CONTENT
@@ -19,7 +19,7 @@
 	
 	<select id="searchAdminCommentCommentList" resultType="AdminCommentVO">
 		SELECT 
-			BOARD_COMMENT_NO
+			  BOARD_COMMENT_NO
 			, USER_ID
 			, BOARD_NO
 			, BOARD_COMMENT_CONTENT
@@ -36,7 +36,7 @@
 	
 	<select id="searchAdminCommentList" resultType="AdminCommentVO">
 		SELECT 
-			BOARD_COMMENT_NO
+			  BOARD_COMMENT_NO
 			, USER_ID
 			, BOARD_NO
 			, BOARD_COMMENT_CONTENT
@@ -48,21 +48,23 @@
 	</select>
 	
 	<insert id="insertAdminComment" parameterType="AdminCommentVO">
-		INSERT INTO ADMIN_COMMENT (
+		INSERT INTO 
+			ADMIN_COMMENT (
 		<selectKey resultType="string" keyProperty="boardCommentNo" order="BEFORE">
 		    SELECT
 		        'ADCM'||
 		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BOARD_COMMENT_NO), LENGTH('ADCM' ) + 1)), 0) + 1, 6, '0')
-		    FROM ADMIN_COMMENT
+		    FROM 
+		    	ADMIN_COMMENT
 		</selectKey>
-			BOARD_COMMENT_NO
+			  BOARD_COMMENT_NO
 			, USER_ID
 			, BOARD_NO
 			, BOARD_COMMENT_CONTENT
 			, BOARD_WRITE_DATE
 			, BOARD_COMMENT_STATUS
 		) VALUES (
-			#{boardCommentNo}
+			  #{boardCommentNo}
 			, #{userId}
 			, #{boardNo}
 			, #{boardCommentContent}
@@ -75,7 +77,7 @@
 		UPDATE 
 			ADMIN_COMMENT 
 		SET 
-			USER_ID = #{userId}
+			  USER_ID = #{userId}
 			, BOARD_NO = #{boardNo}
 			, BOARD_COMMENT_CONTENT = #{boardCommentContent}
 			, BOARD_WRITE_DATE = #{boardWriteDate}
@@ -86,8 +88,10 @@
 	</update>
 	
 	<delete id="deleteAdminComment">
-		DELETE FROM ADMIN_COMMENT 
-		WHERE BOARD_COMMENT_NO = #{boardCommentNo}
+		DELETE FROM 
+			ADMIN_COMMENT 
+		WHERE 
+			BOARD_COMMENT_NO = #{boardCommentNo}
 	</delete>
 	
 </mapper>

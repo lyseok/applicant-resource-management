@@ -4,7 +4,7 @@
 
 	<select id="selectCommuTagByPk">
 		SELECT 
-			TAG_NO
+			  TAG_NO
 			, BOARD_NO
 			, COMMU_TAG_DATE 
 		FROM 
@@ -17,7 +17,7 @@
 	
 	<select id="searchCommuTagTagList">
 		SELECT 
-			TAG_NO
+			  TAG_NO
 			, BOARD_NO
 			, COMMU_TAG_DATE
 		FROM 
@@ -28,7 +28,7 @@
 
 	<select id="searchCommuTagBoardList">
 		SELECT 
-			TAG_NO
+			  TAG_NO
 			, BOARD_NO
 			, COMMU_TAG_DATE
 		FROM 
@@ -39,7 +39,7 @@
 
 	<select id="selectCommuTagList">
 		SELECT 
-			TAG_NO
+			  TAG_NO
 			, BOARD_NO
 			, COMMU_TAG_DATE
 		FROM 
@@ -47,25 +47,28 @@
 	</select>
 	
 	<insert id="insertCommuTag" parameterType="CommuTagVO">
-		INSERT INTO COMMU_TAG (
+		INSERT INTO 
+			COMMU_TAG (
 		<selectKey resultType="string" keyProperty="tagNo" order="BEFORE">
 		    SELECT
 		        'CTAG'||
 		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(TAG_NO), LENGTH('CTAG' ) + 1)), 0) + 1, 6, '0')
-		    FROM COMMU_TAG
+		    FROM 
+		    	COMMU_TAG
 		</selectKey>
-			TAG_NO
+			  TAG_NO
 			, BOARD_NO
 			, COMMU_TAG_DATE
 		) VALUES (
-			#{tagNo}
+			  #{tagNo}
 			, #{boardNo}
 			, to_char(sysdate, 'yyyymmdd')
 		)
 	</insert>
 	
 	<delete id="deleteCommuTag">
-		DELETE FROM COMMU_TAG 
+		DELETE FROM 
+			COMMU_TAG 
 		WHERE 
 			TAG_NO = #{tagNo} 
 			AND 
