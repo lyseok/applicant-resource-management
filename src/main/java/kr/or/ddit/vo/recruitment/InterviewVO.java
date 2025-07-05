@@ -16,5 +16,5 @@ public class InterviewVO implements Serializable{
 	private String interviewLocation;
 	private String interviewType;
 	private String interviewPassScore;
-
+	private String interviewDelDate;
 }

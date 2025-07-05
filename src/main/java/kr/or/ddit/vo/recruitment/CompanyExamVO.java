@@ -12,5 +12,5 @@ public class CompanyExamVO implements Serializable{
 	private String comExamNo;
 	private String userId;
 	private String comExamName;
-
+	private String comExamDelDate;
 }

@@ -13,5 +13,5 @@ public class ComExamOptionVO implements Serializable{
 	private String comQuestionsNo;
 	private String comOptionContent;
 	private String comOptionCorrectYn;
-
+	private String comOptionDelDate;
 }

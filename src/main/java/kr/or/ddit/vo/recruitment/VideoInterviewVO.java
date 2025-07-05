@@ -15,5 +15,5 @@ public class VideoInterviewVO implements Serializable{
 	private String videoInterviewEndTime;
 	private String videoInterviewStatus;
 	private String videoInterviewUrl;
-
-}
+	private String videoInterviewDelDate;
+}	

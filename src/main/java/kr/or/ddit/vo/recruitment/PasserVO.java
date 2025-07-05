@@ -14,5 +14,5 @@ public class PasserVO implements Serializable{
 	private String passAlarmYn;
 	private String recruitAcceptYn;
 	private String hireDate;
-
+	private String passerDelDate;
 }
