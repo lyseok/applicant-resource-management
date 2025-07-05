@@ -37,7 +37,6 @@ class ResumeMapperTest {
 		vo.setEmail("seok@gmail.com");
 		vo.setTel("010-1234-1234");
 		vo.setAddress("대전광역시 중구 오류동 1-1");
-		vo.setResumeDeleteYn("N");
 		vo.setResumeSubmitYn("Y");
 		mapper.insertResume(vo);
 		
@@ -54,7 +53,6 @@ class ResumeMapperTest {
 		vo.setEmail("hj@gmail.com");
 		vo.setTel("010-1234-1234");
 		vo.setAddress("대전광역시 중구 오류동 1-1");
-		vo.setResumeDeleteYn("N");
 		vo.setResumeSubmitYn("Y");
 		mapper.updateResume(vo);
 		
