@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="/dist/dashboard/assets/vendor/css/dashHeader.css"/>
 	<link rel="stylesheet" href="/dist/dashboard/assets/vendor/css/reset.css"/>
 	<link rel="stylesheet" href="/dist/assets/css/pattern.css" />
+	<link rel="stylesheet" href="/dist/assets/css/common.css" />
     
     <!-- ICON -->
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>

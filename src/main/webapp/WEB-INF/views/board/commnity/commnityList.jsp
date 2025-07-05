@@ -402,7 +402,7 @@
 			            </div><button class="Button_root Button_primary Button_filled Button_size48 Profile_loginButton">로그인</button>
 			        </div>
 			        <div class="ProfileBanner_banner">
-			            <div id="nestMainSide" class="ProfileBanner_nestBanner"></div><a class="ProfileBanner_profileBanner" href="https://mentor-match.saramin.co.kr/mentor/?jobCode=15&amp;t_ref=home_box_job_1"><img src="https://pds.saramin.co.kr/career-feed/banner/20252/18/93300c46-aef7-45a7-b0de-1eaa46ea6c06.png" alt="PC 메인 우측 디폴트(디자인)"></a>
+			            <div id="nestMainSide" class="ProfileBanner_nestBanner"></div><a class="ProfileBanner_profileBanner" href="https://mentor-match.saramin.co.kr/mentor/?jobCode=15&amp;t_ref=home_box_job_1"><img src="https://pds.saramin.co.kr/career-feed/banner/20252/18/93300c46-aef7-45a7-b0de-1eaa46ea6c06.png" alt="PC 메인 우측 디폴트(디자인)" style="width:100%;"></a>
 			        </div>
 			    </div>
 			</div>		

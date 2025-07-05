@@ -115,43 +115,7 @@
 *:focus-visible {border-radius:4px;outline:2px solid var(--violet80);outline-offset:2px;}
 
 
-/* 폰트사이즈 */
-.fs-14{font-size:14px !important;}
 
-/* padding */
-.p-6{padding:6rem !important;}
-
-/* 백그라운드 - background */
-.bg-violet01{
-	background-color:#fcfaff !important;
-}
-.bg-violet02{
-	background-color:#f8f5ff !important;
-}
-.bg-violet03{
-	background-color:#efe5ff !important;
-}
-.bg-violet04{
-	background-color:#deccff !important;
-}
-.bg-violet05{
-	background-color:#cbadff !important;
-}
-.bg-violet06{
-	background-color:#b185ff !important;
-}
-.bg-violet07{
-	background-color:#9d66ff !important;
-}
-.bg-violet08{
-	background-color:#8d4dff !important;
-}
-.bg-violet09{
-	background-color:#7224ff !important;
-}
-.bg-violet10{
-	background-color:#5a00fa !important;
-}
 
 
 button,
@@ -748,3 +712,7 @@ button.interested_large_on {background-position:-60px 1px}
     95% {opacity:0}
     100% {width:0}
 }
+
+
+
+

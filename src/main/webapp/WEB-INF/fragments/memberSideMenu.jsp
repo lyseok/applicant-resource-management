@@ -30,7 +30,7 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">이력서</span></li>
      <li class="menu-item">
        <a href="/mypage/resume/list" class="menu-link menu-toggle">
-       	 <i class="menu-icon tf-icons bx bx-building"></i>
+       	 <i class="menu-icon tf-icons bx bx-file"></i>
          <div data-i18n="Account">이력서 관리</div>
        </a>
        <ul class="menu-sub">
@@ -48,7 +48,7 @@
      </li>
      <li class="menu-item">
        <a href="/mypage/resume/list" class="menu-link menu-toggle">
-       	 <i class="menu-icon tf-icons bx bx-building"></i>
+       	 <i class="menu-icon tf-icons bx bx-face"></i>
          <div data-i18n="Account">자소서 관리</div>
        </a>   
        <ul class="menu-sub">
@@ -68,7 +68,7 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">프로젝트</span></li>
       <li class="menu-item">
        <a href="/mypage/resume/list" class="menu-link menu-toggle">
-       	 <i class="menu-icon tf-icons bx bx-building"></i>
+       	 <i class="menu-icon tf-icons bx bx-chart-bar-big-columns"></i>
          <div data-i18n="Account">프로젝트 관리</div>
        </a>
        <ul class="menu-sub">
@@ -88,19 +88,19 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">맞춤 공고함</span></li>
 	 <li class="menu-item">
        <a href="/mypage" class="menu-link">
-         <i class="menu-icon tf-icons bx bx-user-search"></i>
+         <i class="menu-icon tf-icons bx bx-bookmark"></i>
          <div data-i18n="Basic">스크랩</div>
        </a>
      </li>
 	 <li class="menu-item">
        <a href="/mypage" class="menu-link">
-         <i class="menu-icon tf-icons bx bx-user"></i>
+         <i class="menu-icon tf-icons bx bx-heart"></i>
          <div data-i18n="Basic">관심공고</div>
        </a>
      </li>
 	 <li class="menu-item">
        <a href="/mypage" class="menu-link">
-         <i class="menu-icon tf-icons bx bx-user"></i>
+         <i class="menu-icon tf-icons bx bx-list-ul"></i>
          <div data-i18n="Basic">최근 본 공고</div>
        </a>
      </li>
@@ -116,13 +116,12 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">지원내역</span></li>
 	 <li class="menu-item">
        <a href="/mypage" class="menu-link">
-         <i class="menu-icon tf-icons bx bx-shopping-bag-alt"></i>
+         <i class="menu-icon tf-icons bx bx-list-ul-square"></i>
          <div data-i18n="Basic">지원 목록</div>
        </a>
-     </li>
-     
+     </li>     
 	<!-- 여기까지 사이드바 작업하는 곳 -->
-	<span id="logoutBtn">로그아웃</span>
+	
    </ul>
  </aside>
  <!-- / Menu -->

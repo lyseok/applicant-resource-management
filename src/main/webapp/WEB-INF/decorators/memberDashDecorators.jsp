@@ -7,18 +7,20 @@
 <head>
 	<meta charset="UTF-8">
 	<title><sitemesh:write property="title" /></title>
-	
 	<%@ include file="/WEB-INF/fragments/dashPreStyle.jsp" %>
+	
+	
+	<sitemesh:write property="head" />
 </head>
 <body>
-    <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-wrapper layout-content-navbar layout-menu-fixed">
       <div class="layout-container">
         <!-- Layout container -->
   		<%@ include file="/WEB-INF/fragments/memberSideMenu.jsp" %>
         <div class="layout-page">
 			
           <div class="content-wrapper">
-        	<%@ include file="/WEB-INF/fragments/memberheader.jsp" %>
+        	<%@ include file="/WEB-INF/fragments/dashheader.jsp" %>
             <div class="container-xxl flex-grow-1 container-p-y">
               <!-- Layout Demo -->
               <div class="layout-demo-wrapper">

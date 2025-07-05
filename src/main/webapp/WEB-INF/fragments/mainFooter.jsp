@@ -8,7 +8,7 @@
         <div class="inner" itemscope="" itemtype="http://schema.org/Organization">
             <div class="customer">
                 <p>띹잡 고객센터 <span>02-6226-5000</span> (평일 <span>09:00~19:00</span>, 주말·공휴일 휴무)</p>
-                <div class="btns"> 이메일 : <span>help@ddit.co.kr</span>, Fax : <span>02-6937-0039</span>(대표), <span>02-6937-0035</span>(세금계산서) <a href="/zf_user/help/inquery" class="link_email">이메일문의</a> <a href="//blog.naver.com/saraminapp" class="type_sns type_naver" target="_blank"><span class="blind">띹잡 네이버 블로그</span></a> <a href="//www.facebook.com/saramin.dream" class="type_sns type_facebook" target="_blank"><span class="blind">띹잡 페이스북 페이지</span></a> </div>
+                <div class="btns"> 이메일 : <span>help@ddit.co.kr</span>, Fax : <span>02-6937-0039</span>(대표), <span>02-6937-0035</span>(세금계산서) </div>
             </div>
             <div class="copyright">
                 <p>

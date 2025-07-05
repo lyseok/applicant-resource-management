@@ -5,8 +5,7 @@
     <div class="wrap_header">
         <h1>
             <a href="/" class="bi" aria-label="띹잡" data-nav-track="ga_lead|main-gnb|global_menu|ci">
-                <span class="frame">
-                </span>
+                <span class="frame"></span>
             </a>
         </h1>
         <div class="search">
@@ -26,7 +25,7 @@
 	            		</ul>
 					</div>
             		<input type="text" placeholder="나에게 딱 맞는 커리어만 매치, 띹잡!" class="keyword static" />
-            		<input type="text" placeholder="커리어 매치, 띹잡!" class="keyword fixed" />
+            		<input type="text" placeholder="띹잡, 커리어!" class="keyword fixed" />
 	                <span class="material-symbols-outlined search_icon">search</span>
                 </div>
             </form>
