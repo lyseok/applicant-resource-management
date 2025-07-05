@@ -1,7 +1,5 @@
 package kr.or.ddit.recruitment.live.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -9,15 +7,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import kr.or.ddit.mapper.recruitment.LiveRecruitmentMapper;
+import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Slf4j
-class LiveRecruitmentServiceImplTest {
+class RecruitmentNoticeServiceImplTest {
 
 	@Autowired
-	LiveRecruitmentMapper mapper;
+	RecruitmentNoticeMapper mapper;
 	 
 	@Test
 	void testReadRecruitmentList() {

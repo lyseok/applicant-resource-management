@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import kr.or.ddit.vo.common.FileVO;
+import kr.or.ddit.vo.common.FilesVO;
 @Mapper
 public interface FileMapper {
-	public List<FileVO> selectFileList();
+	public List<FilesVO> selectFileList();
 
-	public FileVO selectFileByPk(FileVO vo);
+	public FilesVO selectFileByPk(FilesVO vo);
 	
-	public int insertFile(FileVO vo);
+	public int insertFile(FilesVO vo);
 	
-	public int updateFile(FileVO vo);
+	public int updateFile(FilesVO vo);
 	
-	public int deleteFile(FileVO vo);
+	public int deleteFile(FilesVO vo);
 }

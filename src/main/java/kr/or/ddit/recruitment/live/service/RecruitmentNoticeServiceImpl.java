@@ -5,15 +5,15 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import kr.or.ddit.mapper.recruitment.LiveRecruitmentMapper;
+import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class LiveRecruitmentServiceImpl implements LiveRecruitmentService {
+public class RecruitmentNoticeServiceImpl implements RecruitmentNoticeService {
 
-	private final LiveRecruitmentMapper mapper;
+	private final RecruitmentNoticeMapper mapper;
 	
 	@Override
 	public List<RecruitmentNoticeVO> readRecruitmentList() {
