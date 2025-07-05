@@ -58,4 +58,17 @@
 	DELETE FROM APPLICANT 
 	WHERE APPLICANT_ID = #{applicantId}
 	</delete>
+	
+	<select id="selectSkill">
+	SELECT
+		A.USER_ID
+		, B.MY_SKILL_NAME
+	FROM
+		APPLICANT A
+	INNER JOIN
+		MY_SKILL B
+	ON A.RESUME_NO = B.RESUME_NO
+	WHERE MY_SKILL_NAME = #{mySkillName}
+	</select>
+	
 </mapper>

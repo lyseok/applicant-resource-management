@@ -13,4 +13,5 @@ public interface ApplicantMapper {
 	public int insertApplicant(ApplicantVO vo);
 	public int updateApplicant(ApplicantVO vo);
 	public int deleteApplicant(String applicantId);
+	public ApplicantVO selectSkill(String resumeNo);
 }
