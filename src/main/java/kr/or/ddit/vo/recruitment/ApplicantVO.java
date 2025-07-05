@@ -15,4 +15,5 @@ public class ApplicantVO implements Serializable{
 	private String resumeViewYn;
 	private String userId;
 	private String status;
+	private String applicantDelDate;
 }

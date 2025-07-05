@@ -16,7 +16,7 @@
     <div class="layout-wrapper layout-content-navbar layout-menu-fixed">
       <div class="layout-container">
         <!-- Layout container -->
-  		<%@ include file="/WEB-INF/fragments/adminSideMenu.jsp" %>
+  		<%@ include file="/WEB-INF/fragments/memberSideMenu.jsp" %>
         <div class="layout-page">
 			
           <div class="content-wrapper">

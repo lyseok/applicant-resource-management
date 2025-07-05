@@ -1,4 +1,82 @@
 
+/* 폰트사이즈 */
+.fs-14{font-size:14px !important;}
+
+/* padding */
+.p-6{padding:6rem !important;}
+
+/* 백그라운드 - background */
+.bg-violet01{
+	background-color:#fcfaff !important;
+}
+.bg-violet02{
+	background-color:#f8f5ff !important;
+}
+.bg-violet03{
+	background-color:#efe5ff !important;
+}
+.bg-violet04{
+	background-color:#deccff !important;
+}
+.bg-violet05{
+	background-color:#cbadff !important;
+}
+.bg-violet06{
+	background-color:#b185ff !important;
+}
+.bg-violet07{
+	background-color:#9d66ff !important;
+}
+.bg-violet08{
+	background-color:#8d4dff !important;
+}
+.bg-violet09{
+	background-color:#7224ff !important;
+}
+.bg-violet10{
+	background-color:#5a00fa !important;
+}
+/* % 넓이 - width */
+.w100p{width:100% !important;}
+.w95p{width:95% !important;}
+/* px 넓이 - width */
+.w500{width:500px !important;}
+.w600{width:600px !important;}
+.w700{width:700px !important;}
+.w800{width:800px !important;}
+.w900{width:900px !important;}
+
+/* 높이 - height */
+.h40{height:40px !important;}
+.h50{height:50px !important;}
+
+/* line-height */
+.lh40{line-height:40px !important;}
+.lh50{line-height:50px !important;}
+
+
+/* 버튼 */
+.btn{display:inline-flex; align-items:center;}
+.btn.btn_violet{background-color:var(--violet90); border-color:var(--violet80); color:#fff; font-weight:bold;}
+.btn.btn_violet_line{background-color:#fff; border-color:var(--violet60); color:var(--violet100); font-weight:bold;}
+.btn.btn_gray_line{background-color:#fff; border-color:var(--gray60); color:var(--gray80); font-weight:bold;}
+
+
+/* 말줄임 2줄 */
+.text-truncate.text-truncate2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  white-space: normal;
+}
+.text-truncate.text-truncate3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+
 /* popover/tooltip */
 .toolTipWrap {
     display: inline-block;

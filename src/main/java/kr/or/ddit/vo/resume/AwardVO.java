@@ -14,5 +14,5 @@ public class AwardVO implements Serializable{
 	private String awardName;
 	private String awardDate;
 	private String hosting;
-
+	private String deleteDate;
 }

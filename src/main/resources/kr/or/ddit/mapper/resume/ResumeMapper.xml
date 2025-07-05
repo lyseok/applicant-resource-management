@@ -13,7 +13,7 @@
 			   , VETERAN_REASON
 			   , UPDATE_DATE
 			   , RESUME_SUBMIT_YN
-			   , RESUME_DELETE_YN
+			   , RESUME_DELETE_DATE
 		  FROM RESUME
 	</select>
 	
@@ -28,7 +28,7 @@
 			   , VETERAN_REASON
 			   , UPDATE_DATE
 			   , RESUME_SUBMIT_YN
-			   , RESUME_DELETE_YN
+			   , RESUME_DELETE_DATE
 		  FROM RESUME
 		 WHERE RESUME_NO = #{resumeNo}
 	</select>
@@ -52,7 +52,7 @@
 			, VETERAN_REASON
 			, UPDATE_DATE
 			, RESUME_SUBMIT_YN
-			, RESUME_DELETE_YN
+			, RESUME_DELETE_DATE
 		) VALUES (
 			#{resumeNo}
 			, #{userId}
@@ -65,7 +65,7 @@
 			, #{veteranReason}
 			, TO_CHAR(SYSDATE, 'YYYYMMDD')
 			, #{resumeSubmitYn}
-			, #{resumeDeleteYn}
+			, #{resumeDeleteDate}
 		)
 	</insert>
 	<update id="updateResume">
@@ -80,7 +80,7 @@
 		       , VETERAN_REASON = #{veteranReason}
 		       , UPDATE_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
 		       , RESUME_SUBMIT_YN = #{resumeSubmitYn}
-		       , RESUME_DELETE_YN = #{resumeDeleteYn}
+		       , RESUME_DELETE_DATE = #{resumeDeleteDate}
 		 WHERE RESUME_NO = #{resumeNo}
 	</update>
 	
