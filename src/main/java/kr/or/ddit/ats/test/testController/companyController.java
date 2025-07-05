@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class companyController {
 	
-	@GetMapping("/company/view")
+	@GetMapping("/test/company/view")
 	public String getviewUI() {
-		return "company/companyView";
+		return "member/companyView";
 	}
 }

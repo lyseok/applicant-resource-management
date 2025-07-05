@@ -84,7 +84,7 @@
 		           </div>
 		           <div class="FormTextarea_root">
 		               <div class="FormTextarea_textareaWrap">
-		                <textarea class="FormTextarea_textarea" name="contCnnt" placeholder="댓글을 입력해주세요 :)"></textarea>
+		                <textarea class="FormTextarea_textarea w100p" name="contCnnt" placeholder="댓글을 입력해주세요 :)"></textarea>
 		               </div>
 		               <div class="FormTextarea_messageWrap">
 		                <span class="Typo_root Typo_error Typo_label50"></span>

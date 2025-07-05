@@ -45,6 +45,7 @@
 
 .Post_categoryItem input {
   position: absolute;
+  left:-9999px;
 }
 
 .Post_categoryItem label {
@@ -102,6 +103,7 @@
 
 .Post_adoptedOrNot_input {
   position: absolute;
+  left:-9999px;
 }
 
 .Post_adoptedOrNot_label {

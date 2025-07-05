@@ -27,5 +27,5 @@ public class RecruitmentNoticeVO implements Serializable{
 	private String recruitmentStartdate;
 	private String recruitmentReceiptStart;
 	private String recruitmentFinishDate;
-
+	private String recruitmentDelDate;
 }

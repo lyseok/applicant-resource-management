@@ -409,8 +409,8 @@
 }
 
 .Button_filled.Button_primary:hover {
-  background-color: var(--violet90-hover);
-  border-color: var(--violet90-hover);
+  background-color: #5518c3;
+  border-color: #5518c3;
 }
 
 .Button_filled.Button_secondary {
@@ -1878,6 +1878,7 @@
   font-size: var(--Font-size-label60, 12px);
   font-weight: 400;
   line-height: var(--Line-height-label60, 19px);
+  flex-basis:125px;
 }
 
 .ListItem_comment_content {
