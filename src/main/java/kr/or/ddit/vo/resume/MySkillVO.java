@@ -12,5 +12,5 @@ public class MySkillVO implements Serializable{
 	private String mySkillCode;
 	private String resumeNo;
 	private String mySkillName;
-
+	private String deleteDate;
 }

@@ -9,9 +9,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "introductionNo")
 public class IntroductionVO implements Serializable{
 
+	private String introductionDeleteDate;
 	private String introductionNo;
 	private String userId;
 	private String introductionName;
 	private String introductionContent;
+	private String introductionQuestion;
+	private String introductionCreateDate;
 
 }

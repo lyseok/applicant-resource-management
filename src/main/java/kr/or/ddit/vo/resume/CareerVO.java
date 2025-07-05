@@ -23,5 +23,5 @@ public class CareerVO implements Serializable{
 	private String careerYear;
 	private String salary;
 	private String location;
-
+	private String deleteDate;
 }

@@ -20,6 +20,6 @@ public class ResumeVO implements Serializable{
 	private String veteranReason;
 	private String updateDate;
 	private String resumeSubmitYn;
-	private String resumeDeleteYn;
+	private String resumeDeleteDate;
 
 }

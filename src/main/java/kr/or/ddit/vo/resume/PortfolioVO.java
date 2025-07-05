@@ -15,5 +15,5 @@ public class PortfolioVO implements Serializable{
 	private String porFileSaveName;
 	private String porFileSize;
 	private String porFilePath;
-
+	private String deleteDate;
 }
