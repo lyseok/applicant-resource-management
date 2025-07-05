@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.CommuCommentMapper">
-	<select id="selectCommuComment" resultType="CommuCommentVO">
+
+	<select id="selectCommuCommentbyPk" resultType="CommuCommentVO">
 		SELECT 
-			COMMU_COMMENT_NO
+			  COMMU_COMMENT_NO
 			, COMMU_POST_NO
 			, AVATAR_ID
 			, COMMU_COMMENT_CONTENT
@@ -16,9 +17,9 @@
 			COMMU_COMMENT_NO = #{commuCommentNo}
 	</select>
 	
-	<select id="selectCommuCommentList" resultType="CommuCommentVO">
+	<select id="searchCommuCommentPostList" resultType="CommuCommentVO">
 		SELECT 
-			COMMU_COMMENT_NO
+			  COMMU_COMMENT_NO
 			, COMMU_POST_NO
 			, AVATAR_ID
 			, COMMU_COMMENT_CONTENT
@@ -32,23 +33,38 @@
 			AND
 			COMMU_COMMENT_STATUS != 'D'
 	</select>
+
+	<select id="searchCommuCommentList" resultType="CommuCommentVO">
+		SELECT 
+			  COMMU_COMMENT_NO
+			, COMMU_POST_NO
+			, AVATAR_ID
+			, COMMU_COMMENT_CONTENT
+			, COMMU_COMMENT_WRITE_DATE
+			, COMMU_COMMENT_STATUS
+			, COMMU_COMMENT_DELETE_DATE 
+		FROM 
+			COMMU_COMMENT
+	</select>
 	
 	<insert id="insertCommuComment" parameterType="CommuCommentVO">
-		INSERT INTO COMMU_COMMENT (
+		INSERT INTO 
+			COMMU_COMMENT (
 		<selectKey resultType="string" keyProperty="commuCommentNo" order="BEFORE">
 		    SELECT
 		        'CMCM'||
 		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMU_COMMENT_NO), LENGTH('CMCM' ) + 1)), 0) + 1, 6, '0')
-		    FROM COMMU_COMMENT
+		    FROM 
+		    	COMMU_COMMENT
 		</selectKey>
-			COMMU_COMMENT_NO
+			  COMMU_COMMENT_NO
 			, COMMU_POST_NO
 			, AVATAR_ID
 			, COMMU_COMMENT_CONTENT
 			, COMMU_COMMENT_WRITE_DATE
 			, COMMU_COMMENT_STATUS
 		) VALUES (
-			#{commuCommentNo}
+			  #{commuCommentNo}
 			, #{commuPostNo}
 			, #{avatarId}
 			, #{commuCommentContent}
@@ -58,20 +74,24 @@
 	</insert>
 	
 	<update id="updateCommuComment" parameterType="CommuCommentVO">
-		UPDATE COMMU_COMMENT 
+		UPDATE 
+			COMMU_COMMENT 
 		SET 
-			COMMU_POST_NO = #{commuPostNo}
+			  COMMU_POST_NO = #{commuPostNo}
 			, AVATAR_ID = #{avatarId}
 			, COMMU_COMMENT_CONTENT = #{commuCommentContent}
 			, COMMU_COMMENT_WRITE_DATE = #{commuCommentWriteDate}
 			, COMMU_COMMENT_STATUS = #{commuCommentStatus}
 			, COMMU_COMMENT_DELETE_DATE = #{commuCommentDeleteDate} 
-		WHERE COMMU_COMMENT_NO = #{commuCommentNo}
+		WHERE 
+			COMMU_COMMENT_NO = #{commuCommentNo}
 	</update>
 	
 	<delete id="deleteCommuComment">
-		DELETE FROM COMMU_COMMENT 
-		WHERE COMMU_COMMENT_NO = #{commuCommentNo}
+		DELETE FROM 
+			COMMU_COMMENT 
+		WHERE 
+			COMMU_COMMENT_NO = #{commuCommentNo}
 	</delete>
 </mapper>
 

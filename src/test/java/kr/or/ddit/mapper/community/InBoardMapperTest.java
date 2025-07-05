@@ -21,47 +21,65 @@ class InBoardMapperTest {
 	InBoardMapper mapper;
 	
 	@Test
-	void testSelectInBoard() {
-		log.info("{}", mapper.selectInBoard("CMBD000005", "AVT001"));
+	void testselectInBoardByPk() {
+		assertDoesNotThrow(()->mapper.selectInBoardByPk("CMBD000001", "AVTR000001"));
+		
+		log.info("{}", mapper.selectInBoardByPk("CMBD000001", "AVTR000001"));
 	}
 
 	@Test
-	void testSelectInBoardPostList() {
-		assertDoesNotThrow(()->mapper.selectInBoardPostList("AVT001"));
+	void testSearchInBoardCommuPostList() {
+		assertDoesNotThrow(()->mapper.searchInBoardCommuPostList("AVTR000001"));
 		
-		List<InBoardVO> list = mapper.selectInBoardPostList("AVT001");
+		List<InBoardVO> list = mapper.searchInBoardCommuPostList("AVTR000001");
 		list.forEach(p->{
 			log.info("{}", p);
 		});
+
+		assertEquals(1, list.size());
 	}
 
 	@Test
-	void testSelectInBoardAvatarList() {
-		assertDoesNotThrow(()->mapper.selectInBoardAvatarList("CMBD000005"));
+	void testSearchInBoardAvatarList() {
+		assertDoesNotThrow(()->mapper.searchInBoardAvatarList("CMBD000001"));
 		
-		List<InBoardVO> list = mapper.selectInBoardAvatarList("CMBD000005");
+		List<InBoardVO> list = mapper.searchInBoardAvatarList("CMBD000001");
 		list.forEach(a->{
 			log.info("{}", a);
 		});
+
+		assertEquals(1, list.size());
 	}
 
+	@Test
+	void testSelectInBoardList() {
+		assertDoesNotThrow(()->mapper.selectInBoardList());
+		
+		List<InBoardVO> list = mapper.selectInBoardList();
+		list.forEach(b->{
+			log.info("{}", b);
+		});
+
+		assertEquals(1, list.size());
+	}
+	
 	@Test
 	void testInsertInBoard() {
 		InBoardVO board = new InBoardVO();
 		
-		board.setCommuPostNo("CMBD000003");
-		board.setAvatarId("AVT002");
+		board.setCommuPostNo("CMBD000001");
+		board.setAvatarId("AVTR000001");
 		
 
 		assertEquals(1, mapper.insertInBoard(board));
 		
-		log.info("{}", mapper.selectInBoard("CMBD000003", "AVT002"));
+		log.info("{}", mapper.selectInBoardByPk("CMBD000001", "AVTR000001"));
 	}
 
 	@Test
 	void testDeleteInBoard() {
-		mapper.deleteInBoard("CMBD000003", "AVT002");
-		assertNull(mapper.selectInBoard("CMBD000003", "AVT002"));
+		log.info("{}", mapper.deleteInBoard("CMBD000001", "AVTR000001"));
+		assertNull(mapper.selectInBoardByPk("CMBD000001", "AVTR000001"));
 	}
 
 }
