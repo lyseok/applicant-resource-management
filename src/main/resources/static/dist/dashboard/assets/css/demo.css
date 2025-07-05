@@ -5,7 +5,7 @@
 
 .menu .app-brand.demo {
   height: 64px;
-  margin: 20px 0;
+  margin: 5px 0;
 }
 
 .app-brand-logo.demo svg {
@@ -97,6 +97,10 @@
   -ms-flex-direction: column;
   flex-direction: column;
   margin: 84px 0;
+  background: #fff;
+  padding: 50px;
+  border-radius: 23px;
+  box-shadow: 1px 1px 20px 0px rgba(0, 0, 0, 0.03);
 }
 .layout-demo-placeholder img {
   width: 900px;
