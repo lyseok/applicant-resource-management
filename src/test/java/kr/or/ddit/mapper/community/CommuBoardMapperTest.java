@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,25 +23,28 @@ class CommuBoardMapperTest {
 	
 	@Test
 	void testSelectCommuBoard() {
-		CommuBoardVO board = mapper.selectCommuBoard("CMBD000005");
+		CommuBoardVO board = mapper.selectCommuBoard("CMBD000001");
 
 		log.info("{}", board);
 	}
 
 	@Test
+	@DisplayName("셀렉트")
 	void testSelectCommuBoardList() {
-		assertDoesNotThrow(()->mapper.selectCommuBoardList("CATE-003"));
+		assertDoesNotThrow(()->mapper.selectCommuBoardList("CATE-001"));
 		
-		(mapper.selectCommuBoardList("CATE-003")).forEach(board->{
-			log.info("{}", board);
-		});
+		List<CommuBoardVO> list = mapper.selectCommuBoardList("CATE-001");
+		log.info("리스트 확인 : {}", list);
+		list.forEach(c->log.info("아무거나{}", c));
+		
+		assertEquals(0, list.size());
 	}
 
 	@Test
 	void testInsertCommuBoard() {
 		CommuBoardVO board = new CommuBoardVO();
 		
-		board.setAvatarId("AVT003");
+		board.setAvatarId("AVTR000001");
 		board.setCommuTitle("두번째 인턴 후기");
 		board.setCommuContents("두번째로 최근 참여한 마케팅 인턴십 후기를 공유합니다.");
 		board.setCategoryCode("CATE-003");
@@ -46,7 +52,7 @@ class CommuBoardMapperTest {
 		
 		assertEquals(1, mapper.insertCommuBoard(board));
 		
-		log.info("{}", mapper.selectCommuBoard("CMBD000005"));
+		log.info("{}", mapper.selectCommuBoard("CMBD000001"));
 	}
 
 	@Test
@@ -54,11 +60,11 @@ class CommuBoardMapperTest {
 		CommuBoardVO board = new CommuBoardVO();
 		
 		board.setCommuPostNo("CMBD000001");
-		board.setAvatarId("AVT001");
+		board.setAvatarId("AVTR000001");
 		board.setCommuTitle("취업준비 게시판의 제목입니다");
 		board.setCommuContents("취준게시판 테스트 내용입니다");
 		board.setCategoryCode("CATE-001");
-		board.setCommuWriteDate("2025-07-03");
+		board.setCommuWriteDate("20250703");
 		board.setCommuPostHit(2);
 		board.setCommuPostStatus("U");
 		board.setCommuDeleteDate(null);
@@ -70,8 +76,8 @@ class CommuBoardMapperTest {
 
 	@Test
 	void testDeleteCommuBoard() {
-		mapper.deleteCommuBoard("CMBD000005");
-		assertNull(mapper.selectCommuBoard("CMBD000005"));
+		log.info("{}", mapper.deleteCommuBoard("CMBD000001"));
+		assertNull(mapper.selectCommuBoard("CMBD000001"));
 	}
 
 }

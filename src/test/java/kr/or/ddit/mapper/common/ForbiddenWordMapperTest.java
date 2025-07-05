@@ -37,7 +37,6 @@ ForbiddenWordVO FW = new ForbiddenWordVO();
 	void testInsertForbiddenWord() {
 		ForbiddenWordVO FW = new ForbiddenWordVO();
 		
-		FW.setForbiddenWordNo("123");
 		FW.setWord("TEST");
 		
 		mapper.insertForbiddenWord(FW);

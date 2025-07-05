@@ -37,8 +37,7 @@ class JobMapperTest {
 	void testInsertJob() {
 		JobVO JV = new JobVO();
 		
-		JV.setJobCode("99999");
-		JV.setTopJobCode("2");
+		JV.setTopJobCode("TJOB000001");
 		JV.setJobName("TEST999");
 		
 		mapper.insertJob(JV);

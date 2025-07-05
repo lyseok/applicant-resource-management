@@ -29,7 +29,6 @@ class DistrictCodeMapperTest {
 		DistrictCodeVO DCV = new DistrictCodeVO();
 
 		DCV.setCityCodeNo("9090");
-		DCV.setDistrictCodeNo("101000");
 		
 		mapper.selectDistrictCodeByPk(DCV);
 	}
@@ -38,8 +37,7 @@ class DistrictCodeMapperTest {
 	void testInsertDistrictCode() {
 		DistrictCodeVO DCV = new DistrictCodeVO();
 
-		DCV.setCityCodeNo("101000");
-		DCV.setDistrictCodeNo("999999");
+		DCV.setCityCodeNo("CICO101000");
 		DCV.setDistrictName("낙성동");
 		
 		mapper.insertDistrictCode(DCV);

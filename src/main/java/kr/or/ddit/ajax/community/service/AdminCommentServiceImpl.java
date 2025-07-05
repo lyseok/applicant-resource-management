@@ -16,13 +16,18 @@ public class AdminCommentServiceImpl implements AdminCommentService {
 	private final AdminCommentMapper mapper;
 
 	@Override
-	public Optional<AdminCommentVO> readAdminComment(String commentNo) {
-		return Optional.ofNullable(mapper.selectAdminComment(commentNo));
+	public Optional<AdminCommentVO> readAdminCommentbyPk(String commentNo) {
+		return Optional.ofNullable(mapper.selectAdminCommentbyPk(commentNo));
 	}
 
 	@Override
-	public List<AdminCommentVO> readAdminCommentList(String boardNo) {
-		return mapper.selectAdminCommentList(boardNo);
+	public List<AdminCommentVO> searchAdminCommentCommentList(String boardNo) {
+		return mapper.searchAdminCommentCommentList(boardNo);
+	}
+
+	@Override
+	public List<AdminCommentVO> searchAdminCommentList() {
+		return mapper.searchAdminCommentList();
 	}
 
 	@Override
@@ -39,5 +44,6 @@ public class AdminCommentServiceImpl implements AdminCommentService {
 	public void removeAdminComment(String commentNo) {
 		mapper.deleteAdminComment(commentNo);
 	}
+
 
 }
