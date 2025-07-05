@@ -14,5 +14,5 @@ public class SpecialtyVO implements Serializable{
 	private String mainMajor;
 	private String subMajor;
 	private String subMajorCode;
-
+	private String deleteDate;
 }

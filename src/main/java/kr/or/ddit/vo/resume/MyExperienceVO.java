@@ -16,4 +16,5 @@ public class MyExperienceVO implements Serializable{
 	private String organizationName;
 	private String expStartDate;
 	private String expEndDate;
+	private String deleteDate;
 }

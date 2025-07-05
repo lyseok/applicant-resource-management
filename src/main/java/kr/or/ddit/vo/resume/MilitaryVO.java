@@ -18,5 +18,5 @@ public class MilitaryVO implements Serializable{
 	private String militaryStartDate;
 	private String militaryEndDate;
 	private String militaryReason;
-
+	private String deleteDate;
 }

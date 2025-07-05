@@ -13,5 +13,5 @@ public class SupportVO implements Serializable{
 	private String resumeNo;
 	private String disabilityCode;
 	private String disabilityLevelCode;
-
+	private String deleteDate;
 }
