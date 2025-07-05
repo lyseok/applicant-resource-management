@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 
-public interface LiveRecruitmentService {
+public interface RecruitmentNoticeService {
 	public List<RecruitmentNoticeVO> readRecruitmentList();
 		// 전체
 	

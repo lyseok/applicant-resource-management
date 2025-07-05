@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import kr.or.ddit.vo.common.FileVO;
+import kr.or.ddit.vo.common.FilesVO;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -25,7 +25,7 @@ class FileMapperTest {
 
 	@Test
 	void testSelectFileByPk() {
-		FileVO FV = new FileVO();
+		FilesVO FV = new FilesVO();
 
 		FV.setFileName("TEST");
 		FV.setFileNo("1234");
@@ -38,7 +38,7 @@ class FileMapperTest {
 
 	@Test
 	void testInsertFile() {
-		FileVO FV = new FileVO();
+		FilesVO FV = new FilesVO();
 
 		FV.setFileName("TEST");
 		FV.setFileSize(1234);
@@ -50,7 +50,7 @@ class FileMapperTest {
 
 	@Test
 	void testUpdateFile() {
-		FileVO FV = new FileVO();
+		FilesVO FV = new FilesVO();
 
 		FV.setFileName("TEST1");
 		FV.setFileNo("1234");
@@ -63,7 +63,7 @@ class FileMapperTest {
 
 	@Test
 	void testDeleteFile() {
-		FileVO FV = new FileVO();
+		FilesVO FV = new FilesVO();
 
 		FV.setFileName("TEST1");
 		FV.setFileNo("1234");
