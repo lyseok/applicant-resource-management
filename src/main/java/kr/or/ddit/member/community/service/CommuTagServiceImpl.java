@@ -16,13 +16,24 @@ public class CommuTagServiceImpl implements CommuTagService {
 	private final CommuTagMapper mapper;
 	
 	@Override
-	public Optional<CommuTagVO> readCommuTag(String tagNo, String boardNo) {
-		return Optional.ofNullable(mapper.selectCommuTag(tagNo, boardNo));
+	public Optional<CommuTagVO> readCommuTagByPk(String tagNo, String boardNo) {
+		return Optional.ofNullable(mapper.selectCommuTagByPk(tagNo, boardNo));
+	}
+	
+
+	@Override
+	public List<CommuTagVO> searchCommuTagTagList(String boardNo) {
+		return mapper.searchCommuTagTagList(boardNo);
 	}
 
 	@Override
-	public List<CommuTagVO> readCommuTagList(String boardNo) {
-		return mapper.selectCommuTagList(boardNo);
+	public List<CommuTagVO> searchCommuTagBoardList(String tagNo) {
+		return mapper.searchCommuTagBoardList(tagNo);
+	}
+	
+	@Override
+	public List<CommuTagVO> readCommuTagList() {
+		return mapper.selectCommuTagList();
 	}
 
 	@Override
@@ -31,13 +42,10 @@ public class CommuTagServiceImpl implements CommuTagService {
 	}
 
 	@Override
-	public void modifyCommuTag(CommuTagVO tag) {
-		mapper.updateCommuTag(tag);
-	}
-
-	@Override
 	public void removeCommuTag(String tagNo, String boardNo) {
 		mapper.deleteCommuTag(tagNo, boardNo);
 	}
+
+
 
 }

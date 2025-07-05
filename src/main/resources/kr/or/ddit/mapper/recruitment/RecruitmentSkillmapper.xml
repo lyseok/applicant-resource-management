@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.RecruitmentSkillmapper">
+	<select id="selectRecruitmentSkillList" resultType="RecruitmentSkillVO">
+	SELECT 
+		RECRUIT_SKILL_CODE
+		, RECRUITMENT_NO
+		, RECRUIT_SKILL_NAME 
+	FROM RECRUITMENT_SKILL
+	</select>
+	
+	<select id="selectRecruitmentSkill" resultType="RecruitmentSkillVO">
+	SELECT 
+		RECRUIT_SKILL_CODE
+		, RECRUITMENT_NO
+		, RECRUIT_SKILL_NAME 
+	FROM RECRUITMENT_SKILL 
+	WHERE RECRUIT_SKILL_CODE = #{recruitSkillCode}
+	</select>
+	
+	<insert id="insertRecruitmetnSkill">
+	<selectKey resultType="string" keyProperty="recruitSkillCode" order="BEFORE">
+    SELECT
+        'RESK'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUIT_SKILL_CODE), LENGTH('RESK' ) + 1)), 0) + 1, 6, '0')
+    FROM RECRUITMENT_SKILL
+	</selectKey>
+	INSERT INTO RECRUITMENT_SKILL (
+		RECRUIT_SKILL_CODE
+		, RECRUITMENT_NO
+		, RECRUIT_SKILL_NAME
+	) VALUES (
+		#{recruitSkillCode}
+		, #{recruitmentNo}
+		, #{recruitSkillName}
+	)
+	</insert>
+	
+	<update id="updateRecruitmetnSkill">
+	UPDATE RECRUITMENT_SKILL SET 
+		RECRUIT_SKILL_NAME = #{recruitSkillName} 
+	WHERE RECRUIT_SKILL_CODE = #{recruitSkillCode}
+	</update>
+	
+	<delete id="deleteRecruitmetnSkill">
+	DELETE FROM RECRUITMENT_SKILL 
+	WHERE RECRUIT_SKILL_CODE = #{recruitSkillCode}
+	</delete>
+</mapper>

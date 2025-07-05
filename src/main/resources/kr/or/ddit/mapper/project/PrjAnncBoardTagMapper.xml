@@ -41,14 +41,6 @@
 	)
 </insert>
 
-<update id="updatePrjAnncBoardTag">
-	UPDATE PRJ_ANNC_BOARD_TAG
-	SET 
-		TAG_DATE = #{tagDate}
-	WHERE TAG_NO = #{tagNo}
-	AND PRJ_ANNC_NO = #{prjAnncNo}
-</update>
-
 <delete id="deletePrjAnncBoardTag">
 	DELETE FROM PRJ_ANNC_BOARD_TAG
 	WHERE TAG_NO = #{tagNo}

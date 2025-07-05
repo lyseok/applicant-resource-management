@@ -3,7 +3,7 @@
 <mapper namespace="kr.or.ddit.mapper.community.CommuBoardMapper">
 	<select id="selectCommuBoard" resultType="CommuBoardVO">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID
 			, COMMU_TITLE
 			, COMMU_CONTENTS
@@ -20,7 +20,7 @@
 
 	<select id="selectCommuBoardList" resultType="CommuBoardVO">
 		SELECT 
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID
 			, COMMU_TITLE
 			, COMMU_CONTENTS
@@ -38,14 +38,16 @@
 	</select>
 	
 	<insert id="insertCommuBoard" parameterType="CommuBoardVO">
-		INSERT INTO COMMU_BOARD (
+		INSERT INTO 
+			COMMU_BOARD (
 		<selectKey resultType="string" keyProperty="commuPostNo" order="BEFORE">
 		    SELECT
 		        'CMBD'||
 		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMU_POST_NO), LENGTH('CMBD' ) + 1)), 0) + 1, 6, '0')
-		    FROM COMMU_BOARD
+		    FROM 
+		    	COMMU_BOARD
 		</selectKey>
-			COMMU_POST_NO
+			  COMMU_POST_NO
 			, AVATAR_ID
 			, COMMU_TITLE
 			, COMMU_CONTENTS
@@ -54,7 +56,7 @@
 			, COMMU_POST_HIT
 			, COMMU_POST_STATUS
 		) VALUES (
-			#{commuPostNo}
+			  #{commuPostNo}
 			, #{avatarId}
 			, #{commuTitle}
 			, #{commuContents}
@@ -66,9 +68,10 @@
 	</insert>
 	
 	<update id="updateCommuBoard" parameterType="CommuBoardVO">
-		UPDATE COMMU_BOARD 
+		UPDATE 
+			COMMU_BOARD 
 		SET 
-			AVATAR_ID = #{avatarId}
+			  AVATAR_ID = #{avatarId}
 			, COMMU_TITLE = #{commuTitle}
 			, COMMU_CONTENTS = #{commuContents}
 			, CATEGORY_CODE = #{categoryCode}
@@ -76,12 +79,15 @@
 			, COMMU_POST_HIT = #{commuPostHit}
 			, COMMU_POST_STATUS = #{commuPostStatus}
 			, COMMU_DELETE_DATE = #{commuDeleteDate} 
-		WHERE COMMU_POST_NO = #{commuPostNo}
+		WHERE 
+			COMMU_POST_NO = #{commuPostNo}
 	</update>
 	
 	<delete id="deleteCommuBoard">
-		DELETE FROM COMMU_BOARD 
-		WHERE COMMU_POST_NO = #{commuPostNo}
+		DELETE FROM 
+			COMMU_BOARD 
+		WHERE 
+			COMMU_POST_NO = #{commuPostNo}
 	</delete>
 </mapper>
 

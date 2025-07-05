@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.ComExamOptionMapper">
+	<select id="selectComExamOptionList" resultType="ComExamOptionVO">
+	SELECT 
+		COM_OPTION_NO
+		, COM_QUESTIONS_NO
+		, COM_OPTION_CONTENT
+		, COM_OPTION_CORRECT_YN
+	FROM COM_EXAM_OPTION
+	</select>
+	
+	<select id="selectComExamOption" resultType="ComExamOptionVO">
+	SELECT 
+		COM_OPTION_NO
+		, COM_QUESTIONS_NO
+		, COM_OPTION_CONTENT
+		, COM_OPTION_CORRECT_YN 
+	FROM COM_EXAM_OPTION 
+	WHERE COM_OPTION_NO = #{comOptionNo}
+	</select>
+	
+	<insert id="insertComExamOption">
+	<selectKey resultType="string" keyProperty="comOptionNo" order="BEFORE">
+    SELECT
+        'COOP'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COM_OPTION_NO), LENGTH('COOP' ) + 1)), 0) + 1, 6, '0')
+    FROM COM_EXAM_OPTION
+	</selectKey>
+	INSERT INTO COM_EXAM_OPTION (
+		COM_OPTION_NO
+		, COM_QUESTIONS_NO
+		, COM_OPTION_CONTENT
+		, COM_OPTION_CORRECT_YN
+	) VALUES (
+		#{comOptionNo}
+		, #{comQuestionsNo}
+		, #{comOptionContent}
+		, #{comOptionCorrectYn}
+	)
+	</insert>
+	
+	<update id="updateComExamOption">
+	UPDATE COM_EXAM_OPTION SET 
+		COM_OPTION_CONTENT = #{comOptionContent}
+		, COM_OPTION_CORRECT_YN = #{comOptionCorrectYn} 
+	WHERE COM_OPTION_NO = #{comOptionNo}
+	</update>
+	
+	<delete id="deleteComExamOption">
+	DELETE FROM COM_EXAM_OPTION 
+	WHERE COM_OPTION_NO = #{comOptionNo}
+	</delete>
+</mapper>

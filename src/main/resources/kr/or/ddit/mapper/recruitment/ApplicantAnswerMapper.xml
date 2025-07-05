@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.or.ddit.mapper.recruitment.ApplicantAnswerMapper">
+	<select id="selectApplicantAnswerList" resultType="ApplicantAnswerVO">
+	SELECT 
+		APPLICANT_ANSWER_NO
+		, RECRUIT_EXAM_NO
+		, RECRUIT_QUESTIONS_NO
+		, APPLICANT_ID
+		, APPLICANT_SCORE 
+	FROM APPLICANT_ANSWER
+	</select>
+	
+	<select id="selectApplicantAnswer" resultType="ApplicantAnswerVO">
+	SELECT 
+		APPLICANT_ANSWER_NO
+		, RECRUIT_EXAM_NO
+		, RECRUIT_QUESTIONS_NO
+		, APPLICANT_ID
+		, APPLICANT_SCORE 
+	FROM APPLICANT_ANSWER 
+	WHERE APPLICANT_ANSWER_NO = #{applicantAnswerNo}
+	</select>
+	
+	<insert id="insertApplicantAnswer">
+	<selectKey resultType="string" keyProperty="applicantAnswerNo" order="BEFORE">
+    SELECT
+        'APAS'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(APPLICANT_ANSWER_NO), LENGTH('APAS' ) + 1)), 0) + 1, 6, '0')
+    FROM APPLICANT_ANSWER
+	</selectKey>
+	INSERT INTO APPLICANT_ANSWER (
+		APPLICANT_ANSWER_NO
+		, RECRUIT_EXAM_NO
+		, RECRUIT_QUESTIONS_NO
+		, APPLICANT_ID
+		, APPLICANT_SCORE
+	) VALUES (
+		#{applicantAnswerNo}
+		, #{recruitExamNo}
+		, #{recruitQuestionsNo}
+		, #{applicantId}
+		, #{applicantScore}
+	)
+	</insert>
+	
+	<update id="updateApplicantAnswer">
+	UPDATE APPLICANT_ANSWER SET 
+		APPLICANT_SCORE = #{applicantScore} 
+	WHERE APPLICANT_ANSWER_NO = #{applicantAnswerNo}
+	</update>
+	
+	<delete id="deleteApplicantAnswer">
+	DELETE FROM APPLICANT_ANSWER 
+	WHERE APPLICANT_ANSWER_NO = #{applicantAnswerNo}
+	</delete>
+</mapper>

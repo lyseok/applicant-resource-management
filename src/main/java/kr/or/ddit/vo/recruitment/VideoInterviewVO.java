@@ -12,7 +12,6 @@ public class VideoInterviewVO implements Serializable{
 	private String videoInterviewNo;
 	private String interviewNo;
 	private String videoInterviewStartTime;
-	private String videoInterviewDuration;
 	private String videoInterviewEndTime;
 	private String videoInterviewStatus;
 	private String videoInterviewUrl;

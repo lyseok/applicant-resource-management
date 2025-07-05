@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.or.ddit.mapper.recruitment.RecruimentExamQuestionsMapper">
+	<select id="selectRecrExamQuestList" resultType="RecruitmentExamQuestionsVO">
+	SELECT 
+		RECRUIT_EXAM_QUEST_NO
+		, RECRUIT_EXAM_NO
+		, RECRUIT_EXAM_QUEST_CONTENT 
+	FROM RECRUITMENT_EXAM_QUESTIONS
+	</select>
+	
+	<select id="selectRecrExamQuest" resultType="RecruitmentExamQuestionsVO">
+	SELECT 
+		RECRUIT_EXAM_QUEST_NO
+		, RECRUIT_EXAM_NO
+		, RECRUIT_EXAM_QUEST_CONTENT 
+	FROM RECRUITMENT_EXAM_QUESTIONS 
+	WHERE RECRUIT_EXAM_QUEST_NO = #{recruitExamQuestNo}
+	</select>
+	
+	<insert id="insertRecrExamQuest">
+	<selectKey resultType="string" keyProperty="recruitExamQuestNo" order="BEFORE">
+    SELECT
+        'REQE'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUIT_EXAM_QUEST_NO), LENGTH('REQE' ) + 1)), 0) + 1, 6, '0')
+    FROM RECRUITMENT_EXAM_QUESTIONS
+	</selectKey>
+	INSERT INTO RECRUITMENT_EXAM_QUESTIONS (
+		RECRUIT_EXAM_QUEST_NO
+		, RECRUIT_EXAM_NO
+		, RECRUIT_EXAM_QUEST_CONTENT
+	) VALUES (
+		#{recruitExamQuestNo}
+		, #{recruitExamNo}
+		, #{recruitExamQuestContent}
+	)
+	</insert>
+	
+	<update id="updateRecrExamQuest">
+	UPDATE RECRUITMENT_EXAM_QUESTIONS SET
+		RECRUIT_EXAM_QUEST_CONTENT = #{recruitExamQuestContent} 
+	WHERE RECRUIT_EXAM_QUEST_NO = #{recruitExamQuestNo}
+	</update>
+	
+	<delete id="deleteRecrExamQuest">
+	DELETE FROM RECRUITMENT_EXAM_QUESTIONS 
+	WHERE RECRUIT_EXAM_QUEST_NO = #{recruitExamQuestNo}
+	</delete>
+</mapper>

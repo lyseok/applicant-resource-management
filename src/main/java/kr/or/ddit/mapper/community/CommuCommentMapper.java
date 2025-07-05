@@ -9,8 +9,9 @@ import kr.or.ddit.vo.community.CommuCommentVO;
 @Mapper
 public interface CommuCommentMapper {
 
-	public CommuCommentVO selectCommuComment(String commuCommentNo);
-	public List<CommuCommentVO> selectCommuCommentList(String commuPostNo);
+	public CommuCommentVO selectCommuCommentbyPk(String commuCommentNo);
+	public List<CommuCommentVO> searchCommuCommentPostList(String commuPostNo);
+	public List<CommuCommentVO> searchCommuCommentList();
 	public int insertCommuComment(CommuCommentVO comment);
 	public int updateCommuComment(CommuCommentVO comment);
 	public int deleteCommuComment(String commuCommentNo);
