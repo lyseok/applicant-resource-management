@@ -13,10 +13,9 @@ public class UsersVO implements Serializable{
 	private String userId;
 	@NotBlank
 	private String userPassword;
-	private String userAuthority;
+	private String userRole;
 	private String userWithdrawDate;
 	private boolean userStatus;
 	private String userEnabled;
 	
-	private MemberVO member;
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.ComExamQuestionsMapper">
+	<select id="selectComExamQuestList" resultType="ComExamQuestionsVO">
+	SELECT 
+		COM_QUESTIONS_NO
+		, COM_EXAM_NO
+		, COM_EXAM_CONTENTS 
+	FROM COM_EXAM_QUESTIONS
+	</select>
+	
+	<select id="selectComExamQuest" resultType="ComExamQuestionsVO">
+	SELECT
+		COM_QUESTIONS_NO
+		, COM_EXAM_NO
+		, COM_EXAM_CONTENTS 
+	FROM COM_EXAM_QUESTIONS 
+	WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
+	</select>
+	
+	<insert id="insertComExamQuest">
+	<selectKey resultType="string" keyProperty="comQuestionsNo" order="BEFORE">
+    SELECT
+        'COQE'||
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COM_QUESTIONS_NO), LENGTH('COQE' ) + 1)), 0) + 1, 6, '0')
+    FROM COM_EXAM_QUESTIONS
+	</selectKey>
+	INSERT INTO COM_EXAM_QUESTIONS (
+		COM_QUESTIONS_NO
+		, COM_EXAM_NO
+		, COM_EXAM_CONTENTS
+	) VALUES (
+		#{comQuestionsNo}
+		, #{comExamNo}
+		, #{comExamContents}
+	)
+	</insert>
+	
+	<update id="updateComExamQuest">
+	UPDATE COM_EXAM_QUESTIONS SET 
+		COM_EXAM_CONTENTS = #{comExamContents}
+	 WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
+	</update>
+	
+	<delete id="deleteComExamQuest">
+	DELETE FROM COM_EXAM_QUESTIONS 
+	WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
+	</delete>
+</mapper>

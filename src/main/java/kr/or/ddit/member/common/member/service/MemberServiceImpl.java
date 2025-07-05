@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.or.ddit.mapper.common.MemberMapper2;
+import kr.or.ddit.mapper.common.MemberMapper;
 import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.member.common.exception.PKDuplicatedException;
 import kr.or.ddit.vo.common.MemberVO;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 	
 	private final UserMapper userMapper;
-	private final MemberMapper2 memberMapper;
+	private final MemberMapper memberMapper;
 	private final PasswordEncoder passwordEncoder;
 	private File imagesFolder;
 	
@@ -54,13 +54,5 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.insertMember(member);
 	}
 
-	@Override
-	public int idDuplicateCheck(String userId) {
-		int cnt = userMapper.existsById(userId);
-		if(cnt>0) {
-			throw new PKDuplicatedException(userId);
-		}
-		return cnt;
-	}
 
 }

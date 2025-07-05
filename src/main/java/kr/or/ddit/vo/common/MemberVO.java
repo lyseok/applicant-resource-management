@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "userId")
-public class MemberVO implements Serializable {
+@EqualsAndHashCode(callSuper = true) 
+public class MemberVO extends UsersVO implements Serializable {
 	@NotBlank
 	private String userId;
 	@NotBlank

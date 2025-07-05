@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.ChatMessageMapper">
+
+<select id="selectChatMessageList">
+	SELECT 
+		MESSAGE_NO
+		, MESSAGE
+		, CREATE_DATE
+		, CHATROOM_NO
+		, PRJ_NO
+		, USER_ID
+	FROM CHAT_MESSAGE
+</select>
+
+<select id="selectChatMessageByPk">
+	SELECT 
+	MESSAGE_NO
+	, MESSAGE
+	, CREATE_DATE
+	, CHATROOM_NO
+	, PRJ_NO
+	, USER_ID
+	FROM CHAT_MESSAGE
+	WHERE MESSAGE_NO = #{messageNo}
+</select>
+
+<insert id="insertChatMessage">
+	<selectKey resultType="string" keyProperty="messageNo" order="BEFORE">
+	    SELECT
+	        'MASG'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(MESSAGE_NO), LENGTH('MASG' ) + 1)), 0) + 1, 6, '0')
+	    FROM CHAT_MESSAGE
+	</selectKey>
+	INSERT INTO CHAT_MESSAGE (
+		MESSAGE_NO
+		, MESSAGE
+		, CREATE_DATE
+		, CHATROOM_NO
+		, PRJ_NO
+		, USER_ID
+	) VALUES (
+		#{messageNo}
+		, #{message}
+		, SYSDATE
+		, #{chatroomNo}
+		, #{prjNo}
+		, #{userId}
+	)
+</insert>
+
+<delete id="deleteChatMessage">
+	DELETE FROM CHAT_MESSAGE
+	WHERE MESSAGE_NO = #{messageNo}
+</delete>
+
+</mapper>

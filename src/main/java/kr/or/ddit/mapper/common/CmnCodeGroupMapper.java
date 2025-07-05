@@ -9,4 +9,8 @@ import kr.or.ddit.vo.common.CmnCodeGroupVO;
 @Mapper
 public interface CmnCodeGroupMapper {
 	public List<CmnCodeGroupVO> selectCmnCodeGroupList();
+	public CmnCodeGroupVO selectCmnCodeGroupByPk(String codeGroupNo);
+	public int insertCmnCodeGroup(CmnCodeGroupVO cmnCodeGroup);
+	public int updateCmnCodeGroup(CmnCodeGroupVO cmnCodeGroup);
+	public int deleteCmnCodeGroup(String codeGroupNo);
 }

@@ -9,8 +9,8 @@ import kr.or.ddit.vo.community.CompanyReviewVO;
 
 public interface CompanyReviewService {
 	public List<CompanyVO> readCompanyList();
+
 	
-	public List<CompanyReviewVO> readCompanyReviewAnswerList(String id);
 	
-	public List<CmnCodeGroupVO> readCompanyReviewQuestionList(String code);
+
 }

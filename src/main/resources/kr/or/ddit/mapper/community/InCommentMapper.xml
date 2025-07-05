@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.community.InCommentMapper">
+
+	<select id="selectInCommentbyPk" resultType="InCommentVO">
+		SELECT 
+			  COMMENT_NO
+			, AVATAR_ID 
+		FROM 
+			IN_COMMENT 
+		WHERE 
+			COMMENT_NO = #{commentNo} 
+			AND 
+			AVATAR_ID = #{avatarId}
+	</select>
+	
+	<select id="searchInCommentCommentList" resultType="InCommentVO">
+		SELECT 
+			  COMMENT_NO
+			, AVATAR_ID 
+		FROM 
+			IN_COMMENT
+		WHERE 
+			AVATAR_ID = #{avatarId}
+	</select>
+
+	<select id="searchInCommentAvatarList" resultType="InCommentVO">
+		SELECT 
+			  COMMENT_NO
+			, AVATAR_ID 
+		FROM 
+			IN_COMMENT
+		WHERE 
+			COMMENT_NO = #{commentNo} 
+	</select>
+	
+	<select id="selectInCommentList">
+		SELECT 
+			  COMMENT_NO
+			, AVATAR_ID 
+		FROM 
+			IN_COMMENT
+	</select>
+	
+	<insert id="insertInComment" parameterType="InCommentVO">
+		INSERT INTO 
+			IN_COMMENT (
+			  COMMENT_NO
+			, AVATAR_ID
+		) VALUES (
+			  #{commentNo}
+			, #{avatarId}
+		)
+	</insert>
+	
+	<delete id="deleteInComment" parameterType="InCommentVO">
+		DELETE FROM 
+			IN_COMMENT 
+		WHERE 
+			COMMENT_NO = #{commentNo} 
+			AND 
+			AVATAR_ID = #{avatarId}
+	</delete>
+	
+</mapper>

@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.ddit.mapper.common.MemberMapper2">
+<mapper namespace="kr.or.ddit.mapper.common.MemberMapper">
+	
+	<select id="selectMemberById" resultType="MemberVO">
+		SELECT
+	      B.USER_ID AS USER_ID
+	      , B.USER_PASSWORD    
+	      , B.USER_ROLE        
+	      , B.USER_WITHDRAW_DATE 
+	      , B.USER_STATUS      
+	      , B.USER_ENABLED     
+	      , A.MEM_NAME         
+	      , A.MEM_EMAIL        
+	      , A.MEM_BIR          
+	      , A.MEM_TEL          
+	      , A.MEM_ADD1         
+	      , A.MEM_ADD2         
+	      , A.MEM_IMG          
+	    FROM MEMBER A
+	    JOIN USERS  B ON A.USER_ID = B.USER_ID
+	    WHERE B.USER_ID = #{userId}
+	</select>
+	
+	
+	
+	<select id="selectMemberList" resultType="MemberVO">
+	
+		SELECT
+	      B.USER_ID AS USER_ID
+	      , B.USER_PASSWORD    
+	      , B.USER_ROLE        
+	      , B.USER_WITHDRAW_DATE 
+	      , B.USER_STATUS      
+	      , B.USER_ENABLED     
+	      , A.MEM_NAME         
+	      , A.MEM_EMAIL        
+	      , A.MEM_BIR          
+	      , A.MEM_TEL          
+	      , A.MEM_ADD1         
+	      , A.MEM_ADD2         
+	      , A.MEM_IMG          
+	    FROM MEMBER A
+	    JOIN USERS  B ON A.USER_ID = B.USER_ID
+	</select>
+	
 	<insert id="insertMember">
 		INSERT INTO MEMBER(
 			USER_ID
@@ -8,7 +51,7 @@
 			, MEM_EMAIL
 			, MEM_BIR
 			, MEM_TEL
-			, MEM_ADDL1
+			, MEM_ADD1
 			, MEM_ADD2
 			, MEM_IMG
 		) VALUES(
@@ -22,4 +65,24 @@
 		 	, #{memImg}
 		)
 	</insert>
+	
+	
+	<update id="updateMember">
+		UPDATE MEMBER
+		SET 
+			MEM_NAME = #{memName}
+			, MEM_EMAIL = #{memEmail}
+			, MEM_BIR = #{memBir}
+			, MEM_TEL = #{memTel}
+			, MEM_ADD1 = #{memAdd1}
+			, MEM_ADD2 = #{memAdd2}
+			, MEM_IMG = #{memImg}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<delete id="deleteMember">
+		DELETE FROM MEMBER WHERE USER_ID = #{userId}
+	</delete>
+	
+	
 </mapper>

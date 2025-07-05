@@ -9,11 +9,11 @@ import kr.or.ddit.vo.common.CompanyVO;
 public interface CompanyMapper {
 	public List<CompanyVO> selectCompanyList();
 	
-	public CompanyVO selectCompany();
+	public CompanyVO selectCompanyById(String userId);
 	
-	public int updateCompany();
+	public int updateCompany(CompanyVO company);
 	
-	public int deleteCompany();
+	public int deleteCompany(String userId);
 	
-	public int insertCompany();
+	public int insertCompany(CompanyVO company);
 }

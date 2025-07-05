@@ -12,5 +12,4 @@ public class InterviewQuestionVO implements Serializable{
 	private String interviewQuestionNo;
 	private String interviewNo;
 	private String interviewQuestionContent;
-
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.project.PrjAplcntMapper">
+
+<select id="selectPrjRcrtPsncntList">
+	SELECT 
+		PRJ_APLCNT_NO
+		, RESUME_NO
+		, USER_ID
+		, APLCNT_STATUS_CODE
+		, APLCNT_DATE
+		, RCRT_PSNCNT_NO
+		, PRJ_ANNC_NO
+	FROM PRJ_APLCNT
+</select>
+
+<select id="selectPrjRcrtPsncntByPk">
+	SELECT 
+		PRJ_APLCNT_NO
+		, RESUME_NO
+		, USER_ID
+		, APLCNT_STATUS_CODE
+		, APLCNT_DATE
+		, RCRT_PSNCNT_NO
+		, PRJ_ANNC_NO
+		FROM PRJ_APLCNT
+	WHERE PRJ_APLCNT_NO = #{prjAplcntNo}
+</select>
+
+<insert id="insertPrjRcrtPsncnt">
+	<selectKey resultType="string" keyProperty="prjAplcntNo" order="BEFORE">
+	    SELECT
+	        'PJAC'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRJ_APLCNT_NO), LENGTH('PJAC' ) + 1)), 0) + 1, 6, '0')
+	    FROM PRJ_APLCNT
+	</selectKey>
+	INSERT INTO PRJ_APLCNT (
+		PRJ_APLCNT_NO
+		, RESUME_NO
+		, USER_ID
+		, APLCNT_STATUS_CODE
+		, APLCNT_DATE
+		, RCRT_PSNCNT_NO
+		, PRJ_ANNC_NO
+	) VALUES (
+		#{prjAplcntNo}
+		, #{resumeNo}
+		, #{userId}
+		, #{aplcntStatusCode}
+		, SYSDATE
+		, #{rcrtPsncntNo}
+		, #{prjAnncNo}
+	)
+</insert>
+
+</mapper>

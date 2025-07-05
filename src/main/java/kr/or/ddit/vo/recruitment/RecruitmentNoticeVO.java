@@ -11,6 +11,7 @@ public class RecruitmentNoticeVO implements Serializable{
 
 	private String recruitmentNo;
 	private String userId;
+	private String recruitmentTitle;
 	private String jobCode;
 	private String yearCode;
 	private String recContent;

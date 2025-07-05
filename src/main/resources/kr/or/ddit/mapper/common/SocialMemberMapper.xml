@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.SocialMemberMapper">
+
+	<select id="selectSocialMemberById">
+		SELECT 
+			USER_ID
+			,SOCIAL_MEM_ID
+			,SOCIAL_ID 
+		FROM SOCIAL_MEMBER 
+		WHERE USER_ID = #{userId} AND 
+			SOCIAL_MEM_ID = #{socialMemId}
+	</select>
+	
+	<select id="selectSocialMemberList">
+		SELECT 
+			USER_ID
+			,SOCIAL_MEM_ID
+			,SOCIAL_ID 
+		FROM SOCIAL_MEMBER
+	</select>
+	
+	
+	<insert id="insertSocialMember">
+		
+		INSERT INTO SOCIAL_MEMBER (
+			USER_ID
+			,SOCIAL_MEM_ID
+			,SOCIAL_ID
+		) VALUES (
+			#{userId}, 
+			#{socialMemId}, 
+			#{socialId}
+		)
+	</insert>
+	
+	<update id="updateSocialMember">
+		UPDATE SOCIAL_MEMBER 
+		SET 
+		SOCIAL_ID = #{socialId} 
+		WHERE USER_ID = #{userId} AND 
+			  SOCIAL_MEM_ID = #{socialMemId}
+	</update>
+	
+	
+	<delete id="deleteSocialMember">
+		DELETE FROM SOCIAL_MEMBER 
+			WHERE USER_ID = #{userId} AND SOCIAL_MEM_ID = #{socialMemId}
+	</delete>
+</mapper>
