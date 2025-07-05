@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 
 @Mapper
-public interface LiveRecruitmentMapper {
+public interface RecruitmentNoticeMapper {
  public List<RecruitmentNoticeVO> readRecruitmentNoticeList();
   
  public Optional<RecruitmentNoticeVO> selectLiveRecruitment(String recruitmentNo);
