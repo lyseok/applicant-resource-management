@@ -12,5 +12,5 @@ public class RecruitmentExamQuestionsVO implements Serializable{
 	private String recruitExamQuestNo;
 	private String recruitExamNo;
 	private String recruitExamQuestContent;
-
+	private String recruitExamQuestDelDate;
 }

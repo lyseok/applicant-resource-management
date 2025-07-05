@@ -12,5 +12,5 @@ public class RecruitmentSkillVO implements Serializable{
 	private String recruitSkillCode;
 	private String recruitmentNo;
 	private String recruitSkillName;
-
+	private String recruitSkillDelDate;
 }

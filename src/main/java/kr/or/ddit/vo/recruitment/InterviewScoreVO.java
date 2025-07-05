@@ -14,5 +14,5 @@ public class InterviewScoreVO implements Serializable{
 	private String interviewNo;
 	private String applicantId;
 	private String applicantRating;
-
+	private String interviewScoreDelDate;
 }
