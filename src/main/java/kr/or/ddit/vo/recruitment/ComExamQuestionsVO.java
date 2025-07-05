@@ -12,5 +12,5 @@ public class ComExamQuestionsVO implements Serializable{
 	private String comQuestionsNo;
 	private String comExamNo;
 	private String comExamContents;
-
+	private String comExamQuestDelDate;
 }
