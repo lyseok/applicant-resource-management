@@ -1,0 +1,136 @@
+
+*:focus-visible {
+    outline: 2px solid var(--violet80);
+    outline-offset: 2px;
+    border-radius: 4px
+}
+
+/* reset & common class*/
+html {
+    color: #000;
+    background: #fff
+}
+
+html, body {
+    width: 100%;
+    -webkit-text-size-adjust: none;
+    min-height: 100%;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video, b, strong, input, textarea, button, select {
+    margin: 0;
+    padding: 0;
+    font-family: "Pretendard","Malgun Gothic",dotum,gulim,sans-serif
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    font-size: inherit;
+    line-height: 100%
+}
+
+fieldset, img {
+    border: 0
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-weight: normal;
+    font-style: normal
+}
+
+strong, b {
+    font-weight: bold
+}
+
+ol, ul, li {
+    list-style: none
+}
+
+caption, th {
+    text-align: left
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal
+}
+
+q:before, q:after {
+    content: ""
+}
+
+del, ins {
+    text-decoration: none
+}
+
+abbr, acronym {
+    border: 0;
+    font-variant: normal
+}
+
+sup {
+    vertical-align: text-top
+}
+
+sub {
+    vertical-align: text-bottom
+}
+
+legend {
+    color: #000
+}
+
+a {
+    color: #444;
+    text-decoration: none
+}
+
+input, button, textarea, select, optgroup, option {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    font-style: inherit
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:after,
+blockquote:before,
+q:after,
+q:before {
+  content: '';
+}
+input, button, textarea, select {
+    line-height: normal
+}
+
+button {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 0;
+}
+button:disabled {
+  cursor: default;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: inset 0 0 0 500px #fff !important;
+}
+
+input[type='month']:before {
+  content: attr(data-placeholder);
+  width: 100%;
+}
+
+input::placeholder {
+  color: var(--gray-80);
+}
+
+textarea::placeholder {
+  color: var(--gray-80);
+}

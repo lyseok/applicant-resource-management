@@ -117,7 +117,7 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header .search .btn_search .custom-select {
   position: relative;
   font-weight: bold;
-  width: 80px;
+  width: 70px;
 }
 #sri_header .search .btn_search .custom-select select{
 	display: none;
@@ -129,10 +129,11 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header .search .btn_search .select-styled {
   display: inline-block;
   width: 100%;
-  padding: 0 20px 0 5px;
+  padding: 0 20px 0 0;
   border-radius: 10px;
   cursor: pointer;
   background: url("/dist/assets/images/arrow/arrow_down.png") no-repeat right 0 center;
+  
 }
 #sri_header .search .btn_search .select-styled span {
 	display: inline-block;
@@ -169,7 +170,7 @@ body::-webkit-scrollbar-thumb:hover {
     font-size: 15px;
     font-weight: bold;
     line-height: 20px;
-    flex-basis:calc(100% - 137px);
+    flex-basis:calc(100% - 107px);
     width:100%;
     border:none;
 }
@@ -1195,7 +1196,7 @@ body::-webkit-scrollbar-thumb:hover {
     padding-top: 1px;
     gap: 0;
     grid-template-areas: "bi navigation search utility";
-    grid-template-columns: 35px 1fr 242px auto;
+    grid-template-columns: 40px 1fr 242px auto;
     grid-template-rows: 64px
 }
 
@@ -1223,7 +1224,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 #sri_header.fixed .bi .frame, #sri_header.simple.bubble .bi .frame {
     width: 36px;
-    background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.91266 0.368612L0.805315 6.22921C0.299547 6.59482 0 7.18097 0 7.80504V17.2372C0 18.6179 1.11929 19.7372 2.5 19.7372H17.5C18.8807 19.7372 20 18.6179 20 17.2372V7.80099C20 7.18089 19.7042 6.59797 19.2038 6.23178L11.2 0.375232C10.5196 -0.122626 9.59592 -0.1253 8.91266 0.368612ZM10.2072 2.31513L17.8908 7.93742C17.9594 7.98764 18 8.06758 18 8.15263V17.2114C18 17.6532 17.6418 18.0114 17.2 18.0114H11.1667V11.9607L11.1575 11.8476C11.0913 11.4409 10.9167 10.8485 10.1667 10.8485C9.41667 10.8485 9.16667 11.5005 9.16667 11.9607V18.0114H2.8C2.35817 18.0114 2 17.6532 2 17.2114V8.15651C2 8.07093 2.04108 7.99054 2.11044 7.9404L9.8935 2.31422C9.9872 2.24649 10.1139 2.24685 10.2072 2.31513Z' fill='%232d67ff'/%3E%3C/svg%3E%0A") 0 50% no-repeat
+    background:url("/dist/assets/images/home_violet30.png") 0 50% no-repeat
 }
 
 #sri_header.fixed .search {
