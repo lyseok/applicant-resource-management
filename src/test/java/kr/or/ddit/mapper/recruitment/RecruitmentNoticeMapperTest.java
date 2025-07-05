@@ -11,10 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Slf4j
-class LiveRecruitmentMapperTest {
+class RecruitmentNoticeMapperTest {
 	
 	@Autowired
-	LiveRecruitmentMapper mapper;
+	RecruitmentNoticeMapper mapper;
 
 	@Test
 	void testReadRecruitmentNoticeList() {
