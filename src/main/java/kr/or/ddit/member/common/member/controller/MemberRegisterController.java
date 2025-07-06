@@ -45,7 +45,7 @@ public class MemberRegisterController {
 	
 	@GetMapping
 	public String formUI() {
-		return "/member/common/memberForm";
+		return "join/joinForm";
 	}
 	
 	
