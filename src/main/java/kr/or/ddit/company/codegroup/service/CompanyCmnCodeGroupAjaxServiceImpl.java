@@ -20,20 +20,4 @@ public class CompanyCmnCodeGroupAjaxServiceImpl implements CompanyCmnCodeGroupAj
 	public CmnCodeGroupVO readCmnCodeGroupByPk(String codeGroupNo) {
 		return mapper.selectCmnCodeGroupByPk(codeGroupNo);
 	}
-	
-	public int createCmnCodeGroup(CmnCodeGroupVO cmnCodeGroup) {
-		return mapper.insertCmnCodeGroup(cmnCodeGroup);
-	}
-	
-	public int modifyCmnCodeGroup(CmnCodeGroupVO cmnCodeGroup) {
-		return mapper.updateCmnCodeGroup(cmnCodeGroup);
-	}
-	
-	public int modifyUseYn(CmnCodeGroupVO cmnCodeGroup) {
-		return mapper.updateUseYn(cmnCodeGroup);
-	}
-	
-	public int removeCmnCodeGroup(String codeGroupNo) {
-		return mapper.deleteCmnCodeGroup(codeGroupNo);
-	}
 }
