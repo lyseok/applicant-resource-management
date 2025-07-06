@@ -8,7 +8,7 @@ import kr.or.ddit.vo.recruitment.ApplicantVO;
 
 @Mapper
 public interface ApplicantMapper {
-	public List<ApplicantMapper> selectApplicantList();
+	public List<ApplicantVO> selectApplicantList();
 	public ApplicantVO selectApplicant(String applicantId);
 	public int insertApplicant(ApplicantVO vo);
 	public int updateApplicant(ApplicantVO vo);
