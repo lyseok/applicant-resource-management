@@ -1,10 +1,11 @@
-package kr.or.ddit.recruitment.live.service;
+package kr.or.ddit.recruitment.realtime.service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.RequiredArgsConstructor;
@@ -13,30 +14,31 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RecruitmentNoticeServiceImpl implements RecruitmentNoticeService {
 
-	private final RecruitmentNoticeMapper mapper;
+	private final CompanyMapper comMapper;
+	private final RecruitmentNoticeMapper rnMapper;
 	
 	@Override
-	public List<RecruitmentNoticeVO> readRecruitmentList() {
+	public List<RecruitmentNoticeVO> readRecruitmentNoticeList() {
 		// 게시글 전체를 읽는것
-		return mapper.readRecruitmentNoticeList();
+		return rnMapper.readRecruitmentNoticeList();
 	}
 	
 	@Override
-	public Optional<RecruitmentNoticeVO> readRecruitmentNotice(String recruitmentNo){
-	    // 최신순
-	    return mapper.selectLiveRecruitment(recruitmentNo);
+	public Optional<RecruitmentNoticeVO> realTimeRecruitment(String JobCode){
+	  
+	    return rnMapper.realTimeRecruitment();
 	}
 
 	@Override
-	public List<RecruitmentNoticeVO> salaryRecruitment(String recruitmentNo) {
+	public List<RecruitmentNoticeVO> salaryRecruitment() {
 		// 연봉별 정렬
-		return mapper.salaryRecruitment(recruitmentNo);
+		return rnMapper.salaryRecruitment();
 	}
 
 	@Override
 	public RecruitmentNoticeVO selectliveRecruitmentDetail(String recruitmentNo) {
 		// 공채정보 전부
-		return mapper.selectliveRecruitmentDetail(recruitmentNo);
+		return rnMapper.selectliveRecruitmentDetail(recruitmentNo);
 	}
 	
 
