@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.project.ProjectMapper">
 
-<select id="selectPrjRcrtPsncntList">
+<select id="selectProjectList">
 	SELECT 
 		PRJ_NO
 		, USER_ID
@@ -16,7 +16,29 @@
 	FROM PROJECT
 </select>
 
-<select id="selectPrjRcrtPsncntByPk">
+<select id="selectProjectUserIdList">
+	SELECT 
+	    A.PRJ_NO AS A_PRJ_NO,
+	    A.USER_ID AS A_USER_ID,
+	    A.AUTHORITY_CODE,
+	    A.DELETE_DATE AS A_DELETE_DATE,
+	
+	    B.PRJ_NO AS B_PRJ_NO,
+	    B.USER_ID AS B_USER_ID,
+	    B.PROJECT_BOARD_NO,
+	    B.PROJECT_NAME,
+	    B.PROJECT_CONTENTS,
+	    B.PROJECT_STATUS,
+	    B.CREATE_DATE,
+	    B.FINISH_DATE,
+	    B.DELETE_DATE AS B_DELETE_DATE
+	
+	FROM PRJ_MEM A
+	LEFT OUTER JOIN PROJECT B ON A.PRJ_NO = B.PRJ_NO
+	WHERE A.USER_ID = #{userID}
+</select>
+
+<select id="selectProjectByPk">
 	SELECT 
 		PRJ_NO
 		, USER_ID
@@ -31,7 +53,7 @@
 	WHERE PRJ_NO = #{prjNo}
 </select>
 
-<insert id="insertPrjRcrtPsncnt">
+<insert id="insertProject">
 	<selectKey resultType="string" keyProperty="prjNo" order="BEFORE">
 	    SELECT
 	        'PRJT'||
@@ -57,7 +79,7 @@
 	)
 </insert>
 
-<update id="updatePrjRcrtPsncnt">
+<update id="updateProject">
 	UPDATE PROJECT
 	SET 
 		PROJECT_NAME = #{projectName}
@@ -66,7 +88,7 @@
 	WHERE PRJ_NO = #{prjNo}
 </update>
 
-<delete id="deletePrjRcrtPsncnt">
+<delete id="deleteProject">
 	DELETE FROM PROJECT
 	WHERE PRJ_NO = #{prjNo}
 </delete>

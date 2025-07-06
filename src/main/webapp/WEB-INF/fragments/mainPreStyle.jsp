@@ -35,3 +35,6 @@
 <link rel="stylesheet" href="/dist/assets/css/component.css" />
 
 <link rel="stylesheet" href="/dist/assets/css/common.css" >
+
+
+<link rel="stylesheet" href="/dist/dashboard/assets/vendor/css/dashHeader.css"/>

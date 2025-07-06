@@ -12,5 +12,6 @@ public interface CmnCodeGroupMapper {
 	public CmnCodeGroupVO selectCmnCodeGroupByPk(String codeGroupNo);
 	public int insertCmnCodeGroup(CmnCodeGroupVO cmnCodeGroup);
 	public int updateCmnCodeGroup(CmnCodeGroupVO cmnCodeGroup);
+	public int updateUseYn(CmnCodeGroupVO cmnCodeGroup);
 	public int deleteCmnCodeGroup(String codeGroupNo);
 }

@@ -23,14 +23,14 @@ class ProjectMapperTest {
 
 	@Test
 	void testSelectPrjRcrtPsncntList() {
-		List<ProjectVO> list = mapper.selectPrjRcrtPsncntList();
+		List<ProjectVO> list = mapper.selectProjectList();
 		list.forEach(vo -> log.info("{}", vo));
 		assertNotNull(list);
 	}
 
 	@Test
 	void testSelectPrjRcrtPsncntByPk() {
-		ProjectVO vo = mapper.selectPrjRcrtPsncntByPk("PRJT000001");
+		ProjectVO vo = mapper.selectProjectByPk("PRJT000001");
 		log.info("{}", vo);
 		assertNotNull(vo);
 	}
@@ -44,7 +44,7 @@ class ProjectMapperTest {
 		vo.setProjectContents("TEST PROJECT"); // 프로젝트 내용
 		vo.setProjectStatus("PROG001"); // 상태
 
-		assertEquals(1, mapper.insertPrjRcrtPsncnt(vo));
+		assertEquals(1, mapper.insertProject(vo));
 	}
 
 	@Test
@@ -55,12 +55,12 @@ class ProjectMapperTest {
 		vo.setProjectContents("내용 수정됨");
 		vo.setProjectStatus("PROG002");
 
-		assertEquals(1, mapper.updatePrjRcrtPsncnt(vo));
+		assertEquals(1, mapper.updateProject(vo));
 	}
 
 	@Test
 	void testDeletePrjRcrtPsncnt() {
-		assertEquals(1, mapper.deletePrjRcrtPsncnt("PRJT000004"));
-		assertNull(mapper.selectPrjRcrtPsncntByPk("PRJT000004"));
+		assertEquals(1, mapper.deleteProject("PRJT000004"));
+		assertNull(mapper.selectProjectByPk("PRJT000004"));
 	}
 }

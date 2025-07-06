@@ -48,32 +48,31 @@
 	                <a href="/login" class="btn_sign signin">로그인</a>
 	                <hr>
 	                <a href="/signUp" class="btn_sign signup">회원가입</a>
+		            <div class="wrap_service">
+		                <button class="btn_service" type="button" aria-expanded="false">
+		                    기업서비스
+		                    <span class="material-symbols-outlined">keyboard_arrow_down</span>
+		                </button>
+		                <div class="layer_member">
+		                    <ul class="services">
+		                        <li class="half_col">
+		                            <a href="/login">로그인</a>
+		                            <a href="/signUp/corp" data-nav-track="ga_lead|main-gnb|layer_comp_service|company_join">회원가입</a>
+		                        </li>
+		                        <li><a href="javascript:void(0)">기업홈</a></li>
+		                        <li><a href="javascript:void(0)">공고 등록</a></li>
+		                        <li><a href="javascript:void(0)">지원자 관리</a></li>
+		                        <li><a href="javascript:void(0)">인재풀</a></li>
+		                        <li><a href="javascript:void(0)">스마트 리크루터</a></li>
+		                        <li><a href="javascript:void(0)">인적성 · 평가도구</a></li>
+		                        <li><a href="javascript:void(0)">HR매거진</a></li>
+		                        <li><a href="javascript:void(0)">채용상품</a></li>
+		                        <li><a href="javascript:void(0)">띹잡 비즈니스</a></li>
+		                    </ul>
+		                </div>
+		            </div>
 				</sec:authorize>
 
-<%--                 <span class="btn_sign signin">${principal.realUser.memName }</span> --%>
-            </div>
-            <div class="wrap_service">
-                <button class="btn_service" type="button" aria-expanded="false">
-                    기업서비스
-                    <span class="material-symbols-outlined">keyboard_arrow_down</span>
-                </button>
-                <div class="layer_member">
-                    <ul class="services">
-                        <li class="half_col">
-                            <a href="/login">로그인</a>
-                            <a href="/signUp/corp" data-nav-track="ga_lead|main-gnb|layer_comp_service|company_join">회원가입</a>
-                        </li>
-                        <li><a href="javascript:void(0)">기업홈</a></li>
-                        <li><a href="javascript:void(0)">공고 등록</a></li>
-                        <li><a href="javascript:void(0)">지원자 관리</a></li>
-                        <li><a href="javascript:void(0)">인재풀</a></li>
-                        <li><a href="javascript:void(0)">스마트 리크루터</a></li>
-                        <li><a href="javascript:void(0)">인적성 · 평가도구</a></li>
-                        <li><a href="javascript:void(0)">HR매거진</a></li>
-                        <li><a href="javascript:void(0)">채용상품</a></li>
-                        <li><a href="javascript:void(0)">띹잡 비즈니스</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
         <div class="navigation">
