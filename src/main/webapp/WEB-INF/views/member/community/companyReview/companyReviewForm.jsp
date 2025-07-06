@@ -8,55 +8,50 @@
 <title>Insert title here</title>
 </head>
 <body>
- 	리뷰를 남겨주세요
- 	
+<div class="card">
+  <div class="card-body">
+     <p class="h2">리뷰를 등록해주세요!</p>
+  </div>
+</div>
+
  
- <c:forEach items = "${questionList}" var = "question">
-	 <div class="d-flex">
-	  <h1>${question. }</h1>
-	  <!-- form-check-inline 대신 flex-column을 사용해 세로 정렬, align-items-center로 가운데 정렬 -->
-	  <div class="form-check flex-column align-items-center me-3">
-	    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio1">
-	    <label class="form-check-label mt-1" for="radio1">
-	      매우 아니다
-	    </label>
-	  </div>
-	
-	  <div class="form-check flex-column align-items-center me-3">
-	    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio2" checked>
-	    <label class="form-check-label mt-1" for="radio2">
-	      아니다
-	    </label>
-	  </div>
-	
-	  <div class="form-check flex-column align-items-center me-3">
-	    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio3">
-	    <label class="form-check-label mt-1" for="radio3">
-	      보통
-	    </label>
-	  </div>
-	
-	  <div class="form-check flex-column align-items-center me-3">
-	    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio4">
-	    <label class="form-check-label mt-1" for="radio4">
-	      그렇다
-	    </label>
-	  </div>
-	
-	  <div class="form-check flex-column align-items-center">
-	    <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio5">
-	    <label class="form-check-label mt-1" for="radio5">
-	      매우 그렇다
-	    </label>
+<c:set var="options" value="${['매우 아니다','아니다','보통','그렇다','매우 그렇다']}" />
+
+<c:forEach items="${questionList}" var="q" varStatus="loop">
+  <div class="card mb-3">
+    <div class="card-body">
+
+      <p class="h5">${loop.index + 1}. ${q.codeName}</p>
+      <div class="d-flex">
+        <c:forEach var="opt" items="${options}" varStatus="os">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="answer${loop.index}" id="q${loop.index}_opt${os.index}" value="${os.index + 1}"/>
+            <label class="form-check-label" for="q${loop.index}_opt${os.index}" >
+              ${opt}
+            </label>
+          </div>
+        </c:forEach>
+      </div>
+    </div>
+  </div>
+</c:forEach>
+
+
+
+<c:url var="homeUrl" value="/member/companyReview" />
+<c:url var="submitUrl" value="/member/companyReview/insert" />
+
+	<div class="card">
+	  <div class="card-body">
+	  
+	      <button type="button">
+	       <a class="btn btn_violet">리뷰 등록</a>
+	       </button>
+	         <button type="button">
+			<a href = "${homeUrl}" class="btn btn_gray_line">돌아가기</a>
+	     	</button>
+	    
 	  </div>
 	</div>
- 
- </c:forEach>
-
- 	
-
-
-
-
 </body>
 </html>
