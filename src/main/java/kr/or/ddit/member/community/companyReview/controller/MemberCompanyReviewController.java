@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.or.ddit.member.community.companyReview.service.CompanyReviewService;
+import kr.or.ddit.member.community.companyReview.service.MemberCompanyReviewService;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CompanyVO;
@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequestMapping("/member/companyReview")
 @Slf4j
 @RequiredArgsConstructor
-public class CompanyReviewController {
-	private final CompanyReviewService service;
+public class MemberCompanyReviewController {
+	private final MemberCompanyReviewService service;
 	
 	@GetMapping
 	public String review(Model model) {

@@ -5,7 +5,7 @@ import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
 
-public interface CompanyReviewService {
+public interface MemberCompanyReviewService {
 	public List<CompanyVO> readCompanyList();
 	
 	public List<CompanyReviewVO> readCompanyReviewList();

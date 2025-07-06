@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 //(value="companyReviewService")
 @RequiredArgsConstructor
-public class CompanyReviewServiceImpl implements CompanyReviewService {
+public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewService {
 	private final CompanyMapper companyMapper;
 	private final CompanyReviewMapper companyReviewMapper;
 	private final CmnCodeGroupMapper cmnCodeGroupMapper;
