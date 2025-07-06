@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
-@RequestMapping("/companyReview")
+@RequestMapping("/member/companyReview")
 @Slf4j
 @RequiredArgsConstructor
 public class CompanyReviewController {
