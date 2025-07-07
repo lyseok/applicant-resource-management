@@ -55,4 +55,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 
+	@Override
+	public int idDuplicateCheck(String userId) {
+		return userMapper.existsById(userId);
+	}
+
+
 }

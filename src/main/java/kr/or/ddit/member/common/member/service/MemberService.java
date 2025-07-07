@@ -5,4 +5,5 @@ import kr.or.ddit.vo.common.UsersVO;
 
 public interface MemberService {
 	public void registerMember(UsersVO user, MemberVO member);
+	public int idDuplicateCheck(String userId);
 }
