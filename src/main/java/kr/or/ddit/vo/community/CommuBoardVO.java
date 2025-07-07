@@ -1,7 +1,10 @@
 package kr.or.ddit.vo.community;
 
 import java.io.Serializable;
+import java.util.List;
 
+import kr.or.ddit.vo.common.AvatarVO;
+import kr.or.ddit.vo.common.UsersVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,4 +20,7 @@ public class CommuBoardVO implements Serializable {
 	private Integer commuPostHit;
 	private String commuPostStatus;
 	private String commuDeleteDate;
+	
+	private transient AvatarVO avatars;
+	private List<CommuCommentVO> commuCommentList;
 }

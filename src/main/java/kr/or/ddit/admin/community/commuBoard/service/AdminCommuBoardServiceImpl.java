@@ -17,12 +17,12 @@ public class AdminCommuBoardServiceImpl implements AdminCommuBoardService {
 
 	@Override
 	public Optional<CommuBoardVO> readCommuBoard(String commuPostNo) {
-		return Optional.ofNullable(mapper.selectCommuBoard(commuPostNo));
+		return Optional.ofNullable(mapper.selectCommuBoardByPk(commuPostNo));
 	}
 
 	@Override
 	public List<CommuBoardVO> readCommuBoardList(String categoryCode) {
-		return mapper.selectCommuBoardList(categoryCode);
+		return mapper.selectCommuBoardListByCate(categoryCode);
 	}
 
 	@Override
