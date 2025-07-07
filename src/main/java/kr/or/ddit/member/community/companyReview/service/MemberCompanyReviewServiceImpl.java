@@ -1,5 +1,6 @@
 package kr.or.ddit.member.community.companyReview.service;
 
+import java.lang.reflect.Member;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.common.CmnCodeGroupMapper;
 import kr.or.ddit.mapper.common.CompanyMapper;
+import kr.or.ddit.mapper.common.MemberMapper;
 import kr.or.ddit.mapper.community.CompanyReviewMapper;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewQuestionVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	private final CompanyMapper companyMapper;
 	private final CompanyReviewMapper companyReviewMapper;
 	private final CmnCodeGroupMapper cmnCodeGroupMapper;
+	private final MemberMapper memberMapper;
 	
 
 	@Override
@@ -62,6 +66,16 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	@Override
 	public List<CompanyReviewVO> readReivewQAList(String comId) {
 		return companyReviewMapper.selectCompanyReviewWithQAList(comId);
+	}
+
+	@Override
+	public CompanyVO readCompany(String id) {
+		return companyMapper.selectCompanyById(id);
+	}
+
+	@Override
+	public MemberVO readMemberById(String id) {
+		return memberMapper.selectMemberById(id);
 	}
 
 	
