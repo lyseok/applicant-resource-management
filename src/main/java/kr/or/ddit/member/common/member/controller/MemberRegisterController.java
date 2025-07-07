@@ -19,9 +19,11 @@ import kr.or.ddit.security.oauth2.UserNotRegisteredException;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.common.UsersVO;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/signup")
+@RequestMapping("/member/signup")
+@Slf4j
 public class MemberRegisterController {
 	
 	@Autowired
@@ -45,7 +47,7 @@ public class MemberRegisterController {
 	
 	@GetMapping
 	public String formUI() {
-		return "/member/common/memberForm";
+		return "join/joinForm";
 	}
 	
 	
@@ -57,21 +59,16 @@ public class MemberRegisterController {
 		, RedirectAttributes redirectAttributes
 	) {
 		String lvn;
+		log.info("{}멤버", member);
 		if(!errors.hasErrors()) {
-			try {
-				service.registerMember(member, member);
-				lvn = "redirect:/";
-			} catch (PKDuplicatedException e) {
-				redirectAttributes.addFlashAttribute("member", member);
-				redirectAttributes.addFlashAttribute("message", "아이디 중복");
-				// 아이디 중복
-				lvn = "redirect:/member/common/memberForm";
-			}	
+			
+				service.registerMember(member);
+				lvn = "redirect:/login";
 		}else {
 			redirectAttributes.addFlashAttribute("member", member);
 			String errorName = BindingResult.MODEL_KEY_PREFIX+MODELNAME;
 			redirectAttributes.addFlashAttribute(errorName, errors);
-			lvn = "redirect:/member/common/memberForm";
+			lvn = "redirect:/member/signup";
 		}
 		return lvn;
 	}
