@@ -60,11 +60,10 @@ class InterviewReviewMapperTest {
 		   InterviewVO interview = new InterviewVO();
 		    interview.setInterviewNo("INTV000002");
 		    interview.setProcessNo("PROC001");
-		    interview.setUserId("TESTUSER");
 		    interview.setInterviewDate("250702");
 		    interview.setInterviewLocation("서울본사");
 		    interview.setInterviewType("M"); 
-		    interview.setInterviewPassScore("PASS");
+		    interview.setInterviewPassScore(90);
 		    //interviewMapper.insertInterview(interview);
 
 		
