@@ -1,51 +1,70 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>신입 초봉관련 페이지</title>
- <script>
-    	document.addEventListener("DOMContentLoaded", ()=>{
-    		$("body")
-    	});
-    </script>
+	<style>
+        .recruitment-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .recruitment-card:hover {
+            background-color: #f9f9f9;
+        }
+        .recruitment-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .recruitment-meta {
+            font-size: 14px;
+            color: #666;
+        }
+         .salary-badge {
+        background-color: #ffe6e6;
+        color: #d60000;
+        font-weight: bold;
+        padding: 8px 12px;
+        border-radius: 15px;
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    </style>
+<script>
+	function goToDetail(recruitmentNo) {
+    	location.href = '/member/recruitment/detail?no=' + recruitmentNo;
+	}
+</script>
 </head>
 <body>
 <h2>채용공고 리스트</h2>
+<c:if test="${not empty salaryList}">
+	<c:forEach items="${salaryList }" var="salaryList">
+		<div class="recruitment-card" onclick="goToDetail('${salaryList.recruitmentNo}')">
+		<div class="recruitment-title">
+			${salaryList.recruitmentTitle}
+		</div>
+			<div class="recruitment-meta">
+			기업: ${salaryList.userId} |
+                직무: ${salaryList.jobCode} |
+                지역: ${salaryList.cityCode} |
+                복지: ${salaryList.welfare}
+			</div>
+	<div class="salary-badge">
+        연봉: ${salaryList.recruitmentSalary}
+    </div>
+		</div>
+	</c:forEach>
+</c:if>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>기업명</th>
-			<th>직무코드</th>
-			<th>채용내용</th>
-			<th>근무지역</th>
-			<th>복지</th>
-		</tr>
-	</thead>
-	<tbody>
-		<c:choose>
-		 <c:if test="${not empty recruitmentList }">
-			<c:forEach items="${recruitmentNotice.recruitmentList }" var="recruitment"> 
-				<tr>		
-					<td>
-					</td> 
-					<td>${recruitmentNotice.userId }</td>
-					<td>${recruitmentNotice.jobCode }</td>
-					<td>${recruitmentNotice.recContent }</td>
-					<td>${recruitmentNotice.cityCode }</td>
-					<td>${recruitmentNotice.welfare }</td>
-				</tr>
-			 </c:forEach>
-		</c:if> 
-		 <c:if test="${empty buyerList }">
-			<tr>
-				<td colspan="7">채용공고 없음.</td>
-			</tr>
-		</c:if> 
-		</c:choose>
-	</tbody>
-</table>
+<c:if test="${empty salaryList }">
+	<p>채용공고가 없습니다.</p>
+</c:if>
+
 </body>
 </html>
