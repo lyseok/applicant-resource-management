@@ -16,10 +16,10 @@ public class UsersVO implements Serializable{
 	@Pattern(regexp = "^[a-zA-Z0-9._-]{4,20}$", message = "아이디는 영문, 숫자, '.', '_', '-'만 사용할 수 있습니다.")
 	private String userId;
 	@NotBlank
-	@Size(min = 8, max = 16, message = "비밀번호는 8~16자여야 합니다.")
+	@Size(min = 8, max = 16, message="")
 	@Pattern(
 			 regexp = "^[a-zA-Z0-9~!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]{8,16}$",
-			 message = "비밀번호는 영문 대소문자, 숫자, 특수문자만 사용할 수 있습니다."
+			 message=""
 	)
 	private String userPassword;
 	private String userRole;

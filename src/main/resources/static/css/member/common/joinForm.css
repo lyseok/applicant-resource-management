@@ -429,6 +429,11 @@ em, i {
   word-break: keep-all;
 }
 
+.error-message{
+	clear:both;
+	display: block;
+}
+
 .write_base .item input {
     width: 100%
 }

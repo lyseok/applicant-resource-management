@@ -53,6 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (!isValidFormat) {
 			// 형식이 틀렸을 때만 안내 문구 보여줌
 			focusMsg.style.display = "block";
+			duplicationBtn.disabled = true;
+		}else{
+			duplicationBtn.disabled = false;
 		}
 	});
 
@@ -74,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		} else if (msg.includes("사용 가능")) {
 			msgInvalid.style.display = 'none';
 			msgValid.style.display = 'block';
-			signupBtn.disabled = false;
 		}
 
 		console.log(msg);
@@ -111,20 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		}).open();
 	});
 
-	agreeAll.addEventListener("change", function() {
-		const checked = agreeAll.checked;
-		individualChecks.forEach(chk => {
-			chk.checked = checked;
-		});
-	});
-
-	individualChecks.forEach(chk => {
-		chk.addEventListener("change", () => {
-			const allChecked = Array.from(individualChecks).every(c => c.checked);
-			agreeAll.checked = allChecked;
-		});
-	});
-
 	function startTimer() {
 		countdown = 180;
 		const remainArea = document.querySelector("#confirm_remain_mail_time_area");
@@ -156,6 +144,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 		emailMsg.style.display = "none";
 
+		confirmWrap.style.display = "block";
+		verifyBtn.disabled = false;
+
+		sendBtn.style.display = "none";
+		resendBtn.style.display = "inline-block";
+
+		successMsg.style.display = "none";
+		errorMsg.style.display = "none";
+		startTimer();
+
 		fetch("/email/send", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -164,17 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			.then(res => res.json())
 			.then(data => {
 				if (data.success) {
-					alert("인증번호가 이메일로 전송되었습니다.");
-					confirmWrap.style.display = "block";
-					verifyBtn.disabled = false;
-
-					sendBtn.style.display = "none";
-					resendBtn.style.display = "inline-block";
-
-					successMsg.style.display = "none";
-					errorMsg.style.display = "none";
-
-					startTimer();
 				} else {
 					alert(data.message || "인증 요청 실패");
 				}
@@ -204,11 +191,9 @@ document.addEventListener("DOMContentLoaded", () => {
 					clearInterval(timer);
 					document.querySelector("#mail_confirm_complete").value = "y";
 
-					// ✅ 인증번호 입력창 닫기
 					confirmWrap.style.display = "none";
 
-					// ✅ 입력창 다시 평상시처럼
-					emailInput.disabled = true;
+					signupBtn.disabled = false;
 				} else {
 					errorMsg.style.display = "block";
 					successMsg.style.display = "none";

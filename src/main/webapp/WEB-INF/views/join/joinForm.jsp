@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <head>
 	<title>개인 회원가입</title>
@@ -10,6 +11,7 @@
 <body>
 <div id="join_wrapper" class="member_cate">
 	<fieldset>
+		<form:form modelAttribute="member" method="post">
     	<h3 class="tit_join_member">띹잡 통합 개인회원 가입</h3>
 	    <div class="cont_division">
 	        <div class="write_base">
@@ -17,13 +19,14 @@
 	            <div class="item">
 	                <label for="id" class=""><strong>아이디</strong></label>
 	                <div class="input_collect TypoBox defalt" style="display: flex; align-items: center; gap: 10px;">
-	                    <input name="userId" id="id" type="text" class="Typo SizeL defalt" maxlength="20" style="ime-mode:disabled" autocapitalize="off" autocomplete="off" placeholder="4~20자리 / 영문, 숫자, 특수문자 '_'사용가능">
+	                    <input name="userId" id="id" type="text" class="Typo SizeL defalt" value="${member.userId }" maxlength="20" style="ime-mode:disabled" autocapitalize="off" autocomplete="off" placeholder="4~20자리 / 영문, 숫자, 특수문자 '_'사용가능">
 	                </div>
 	                <button type="button" id="id_duplicate" class="BtnType SizeL defalt btn_cert_pop"><span>중복 확인</span></button>
 	                <div class="alert_box">
         				<p class="alert_column good_txt" id="idCheckMsg2" style="display:none">사용 가능한 아이디입니다.</p>
         				<p class="msgInvalid" id="idCheckMsg1" style="display: none;">이미 사용 중인 아이디입니다.</p>
 	                	<p class="alert_column focus_txt" id="idFocusMsg" style="display: none; color:red;">4 ~ 20자의 영문, 숫자와 특수문자'_'만 사용해주세요.</p>
+	                	<form:errors cssClass="text-danger" path="userId" />
     				</div>
 	            </div>
 	
@@ -31,10 +34,10 @@
 	            <div class="item">
 	                <label for="password1"><strong>비밀번호</strong></label>
 	                <div class="TypoBox pass_box">
-	                    <input autocapitalize="off" name="userPassword" class="Typo SizeL defalt" id="password1" type="password" maxlength="16" autocomplete="off" placeholder="8~16자리/영문 대소문자, 숫자, 특수문자 조합">
+	                    <input autocapitalize="off" name="userPassword" class="Typo SizeL defalt" id="password1" type="password" value="${member.userPassword }" maxlength="16" autocomplete="off" placeholder="8~16자리/영문 대소문자, 숫자, 특수문자 조합">
 	                    <button type="button" toggle="#password1" id="masking_password" class="toggle_password field_eye on" style="display: none;"></button>
 	                </div>
-	
+					<form:errors cssClass="text-danger" path="userPassword" />
 	                <p class="alert_column focus_txt" id="password1FocusMsg" style="display:none">8~16자리 영문 대소문자, 숫자, 특수문자 중 3가지 이상 조합으로 만들어주세요.</p>
 	                <!-- focus 시 텍스트 -->
 	                <em class="msgInvalid" id="password1_warning_txt" style="display:none"><span>8~16자리 영문 대소문자, 숫자, 특수문자 중 3가지 이상 조합으로 만들어주세요.</span></em>
@@ -52,19 +55,13 @@
 	                
 	                <div class="input_collect TypoBox defalt">
 	                    <input type="hidden" name="mail_confirm_complete" value="n" id="mail_confirm_complete">
-	                    <input type="text" id="mail_email_id" name="memEmail" style="ime-mode:inactive" class="Typo SizeL join_input defalt" placeholder="email@dditjob.or.kr" autocomplete="one-time-code">
+	                    <input type="text" id="mail_email_id" name="memEmail" value="${member.memEmail }" style="ime-mode:inactive" class="Typo SizeL join_input defalt" placeholder="email@dditjob.or.kr" autocomplete="one-time-code">
 	                </div>
 	                <button type="button" id="mail_send_code" class="BtnType SizeL defalt btn_cert_pop"><span>인증요청</span></button>
 	                <button type="button" id="mail_re_send_code" class="BtnType SizeL colorBlueReverse" style="display:none" onclick="sendCodeAction()"><span>재발송</span></button>
-	                <!-- 자동리스트 영역 -->
-	                <ul class="auto_list_area email_list ScrollBar">
-	                    <li class="auto_list"><a href="javascript:;" onclick="return false;" class="email_domain"><strong class="txt_input"></strong>@naver.com</a></li>
-	                    <li class="auto_list"><a href="javascript:;" onclick="return false;" class="email_domain"><strong class="txt_input"></strong>@gmail.com</a></li>
-	                    <li class="auto_list"><a href="javascript:;" onclick="return false;" class="email_domain"><strong class="txt_input"></strong>@daum.net</a></li>
-	                    <li class="auto_list"><a href="javascript:;" onclick="return false;" class="email_domain"><strong class="txt_input"></strong>@nate.com</a></li>
-	                    <li class="auto_list"><a href="javascript:;" onclick="return false;" class="email_domain"><strong class="txt_input"></strong>@outlook.com</a></li>
-	                </ul>
+
 	                <em class="msgInvalid" id="mail_msg_email1" name="msg_email1" style="display:none">이메일 주소를 입력해주세요.</em>
+	               <form:errors cssClass="text-danger error-message" path="memEmail"/>
 	
 	                <div class="input_collect " id="mail_confirm_wrap" style="display: none;">
 	                    <label for="sms_code" class="blind">인증번호 입력</label>
@@ -84,15 +81,16 @@
 	            <div class="item identify_mail">
 	                <label for="user_nm"><strong>이름</strong></label>
 	                <div class="TypoBox">
-	                    <input type="text" name="memName" id="user_nm" class="Typo SizeL defalt inp_user_nm" style="ime-mode:active" autocapitalize="off" placeholder="이름 입력" autocomplete="one-time-code">
+	                    <input type="text" name="memName" id="user_nm" class="Typo SizeL defalt inp_user_nm" value="${member.memName }" style="ime-mode:active" autocapitalize="off" placeholder="이름 입력" autocomplete="one-time-code">
 	                </div>
 	                <em class="msgInvalid" id="user_nm_msg" name="user_nm_msg" style="display:none">이름은 필수 입력 정보 입니다.</em>
+	                <form:errors cssClass="text-danger" path="memName" />
 	            </div>
 	            
 	            <div class="item identify_mail">
 	                <label for="addr1"><strong>주소</strong></label>
 	                <div class="input_collect TypoBox defalt">
-	                    <input type="text" name="memAdd1" id="memAdd1" class="Typo SizeL defalt inp_user_nm" placeholder="기본 주소" style="ime-mode:active" autocapitalize="off" placeholder="" autocomplete="one-time-code">	                    
+	                    <input type="text" name="memAdd1" id="memAdd1" class="Typo SizeL defalt inp_user_nm" value="${member.memAdd1 }" placeholder="기본 주소" style="ime-mode:active" autocapitalize="off" placeholder="" autocomplete="one-time-code">	                    
 	                </div>
 	                <button type="button" id="btn_add1_search" class="BtnType SizeL defalt btn_cert_pop"><span>주소 찾기</span></button>
 	                <em class="msgInvalid" id="user_nm_msg" name="user_nm_msg" style="display:none">이름은 필수 입력 정보 입니다.</em>
@@ -101,7 +99,7 @@
 	             <div class="item identify_mail">
 	                <label for="user_nm"><strong>상세주소</strong></label>
 	                <div class="TypoBox">
-	                    <input type="text" name="memAdd2" id="memAdd2" class="Typo SizeL defalt inp_user_nm" style="ime-mode:active" autocapitalize="off" placeholder="상세 주소를 입력하세요" autocomplete="one-time-code">
+	                    <input type="text" name="memAdd2" id="memAdd2" class="Typo SizeL defalt inp_user_nm" value="${member.memAdd2 }" style="ime-mode:active" autocapitalize="off" placeholder="상세 주소를 입력하세요" autocomplete="one-time-code">
 	                </div>
 	                <em class="msgInvalid" id="user_nm_msg" name="user_nm_msg" style="display:none">이름은 필수 입력 정보 입니다.</em>
 	            </div>
@@ -110,7 +108,7 @@
 	            <div class="item identify_mail">
 	                <label for="birth_date"><strong>생년월일</strong></label>
 	                <div class="TypoBox">
-	                    <input type="date" name="memBir" id="birth_date" maxlength="8" autocapitalize="off" placeholder="YYYYMMDD" class="Typo SizeL defalt inp_birth_date" autocomplete="one-time-code">
+	                    <input type="date" name="memBir" id="birth_date" value="${member.memBir }" maxlength="8" autocapitalize="off" placeholder="YYYYMMDD" class="Typo SizeL defalt inp_birth_date" autocomplete="one-time-code">
 	                </div>
 	                <em class="msgInvalid" id="cyr_msg" style="display:none">
 	                    <span>YYYYMMDD 입력 형식을 확인해주세요.</span>
@@ -136,7 +134,7 @@
 	            </div>	            	       
 	        </div>
 	    </div>
-	    <!-- 약관 -->
+	    <!-- 약관 
 	    <div class="cont_division">
 	        <span class="terms_agree"><strong>약관</strong></span>
 	        <div class="agree_box">
@@ -237,6 +235,7 @@
 	            </ul>
 	        </div>
 	    </div>
+	    -->
 	
 	    <!-- 안내 -->
 	    <div class="cont_noti">
@@ -247,8 +246,9 @@
 	    </div>
 	
 	    <div class="btn_join">
-	        <button type="button" id="btn_submit" class="inp_join BtnType SizeL defalt ga_data_layer btn_input_complete" data-ga_data_layer="ga_lead|member_join|join_pc|step_2" disabled="disabled">회원가입 완료</button>
+	        <button type="submit" id="btn_submit" class="inp_join BtnType SizeL defalt ga_data_layer btn_input_complete" data-ga_data_layer="ga_lead|member_join|join_pc|step_2" disabled="disabled">회원가입 완료</button>
 	    </div>
+	</form:form>
 	</fieldset>
 </div>
 </body>
