@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.CommuBoardMapper">
-	<select id="selectCommuBoard" resultType="CommuBoardVO">
-		SELECT 
-			  COMMU_POST_NO
-			, AVATAR_ID
-			, COMMU_TITLE
-			, COMMU_CONTENTS
-			, CATEGORY_CODE
-			, COMMU_WRITE_DATE
-			, COMMU_POST_HIT
-			, COMMU_POST_STATUS
-			, COMMU_DELETE_DATE 
-		FROM 
-			COMMU_BOARD 
-		WHERE 
-			COMMU_POST_NO = #{commuPostNo}
+
+	<resultMap type="CommuBoardVO" id="adminBoardMap" autoMapping="true">
+		<id property="commuPostNo" column="COMMU_POST_NO"/>		
+		<association property="avatars" javaType="AvatarVO" autoMapping="true"/>
+		<collection property="commuCommentList" javaType="list" ofType="CommuCommentVO">
+			<id property="commuCommentNo" column="COMMU_COMMENT_NO"/>  <!-- 같은 이름 컬럼이 있어 둘다 id 넣어줌 -->
+			<result property="avatarId" column="AVATAR_ID"/>  <!-- result엔 다른 VO와 중복되지 않고, 가져올 컬럼만 적음 -->
+			<result property="commuCommentContent" column="COMMU_COMMENT_CONTENT"/>
+			<result property="commuCommentWriteDate" column="COMMU_COMMENT_WRITE_DATE"/>
+			<result property="commuCommentStatus" column="COMMU_COMMENT_STATUS"/>
+			<result property="commuCommentDeleteDate" column="COMMU_COMMENT_DELETE_DATE"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectCommuBoardByPk" resultMap="adminBoardMap">
+		WITH COMMU_BOARD_VIEW AS (
+            SELECT 
+				  COMMU_POST_NO
+				, AVATAR_ID
+				, COMMU_TITLE
+				, COMMU_CONTENTS
+				, CATEGORY_CODE
+				, COMMU_WRITE_DATE
+				, COMMU_POST_HIT
+				, COMMU_POST_STATUS
+				, COMMU_DELETE_DATE 
+			FROM COMMU_BOARD NATURAL JOIN AVATAR
+	        WHERE COMMU_POST_NO = 'CMBD000001'
+		)
+		SELECT
+              COMMU_BOARD_VIEW.*
+            , COMMU_COMMENT_CONTENT
+            , COMMU_COMMENT_WRITE_DATE
+            , COMMU_COMMENT_STATUS
+            , COMMU_COMMENT_DELETE_DATE
+		FROM COMMU_BOARD_VIEW LEFT OUTER JOIN COMMU_COMMENT 
+        ON (COMMU_BOARD_VIEW.COMMU_POST_NO = COMMU_COMMENT.COMMU_POST_NO)
 	</select>
 
-	<select id="selectCommuBoardList" resultType="CommuBoardVO">
+	<select id="selectCommuBoardListByCate">
 		SELECT 
 			  COMMU_POST_NO
 			, AVATAR_ID
@@ -33,8 +55,6 @@
 			COMMU_BOARD
 		WHERE
 			CATEGORY_CODE = #{categoryCode}
-			AND
-			COMMU_POST_STATUS != 'D'
 	</select>
 	
 	<insert id="insertCommuBoard" parameterType="CommuBoardVO">
