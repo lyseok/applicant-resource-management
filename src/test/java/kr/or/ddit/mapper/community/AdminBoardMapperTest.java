@@ -21,17 +21,27 @@ class AdminBoardMapperTest {
 	AdminBoardMapper mapper;
 
 	@Test
-	void testSelectAdminBoard() {
-		AdminBoardVO board = mapper.selectAdminBoard("ABNO000001");
+	void testSelectAdminBoardByPk() {
+		AdminBoardVO board = mapper.selectAdminBoardByPk("ABNO000001");
 
 		log.info("{}", board);
 	}
 
 	@Test
-	void testSelectAdminBoardList() {
-		assertDoesNotThrow(()->mapper.selectAdminBoardList("BRDD-001"));
+	void testSelectAdminBoardListByType() {
+		assertDoesNotThrow(()->mapper.selectAdminBoardListByType("BRDD-001"));
 		
-		List<AdminBoardVO> list = mapper.selectAdminBoardList("BRDD-001");
+		List<AdminBoardVO> list = mapper.selectAdminBoardListByType("BRDD-001");
+		list.forEach(board->{
+			log.info("{}", board);
+		});
+	}
+
+	@Test
+	void testSelectAdminBoardList() {
+		assertDoesNotThrow(()->mapper.selectAdminBoardList());
+		
+		List<AdminBoardVO> list = mapper.selectAdminBoardList();
 		list.forEach(board->{
 			log.info("{}", board);
 		});
@@ -50,7 +60,7 @@ class AdminBoardMapperTest {
 		
 		assertEquals(1, mapper.insertAdminBoard(board));
 		
-		log.info("{}", mapper.selectAdminBoard("ABNO000002"));
+		log.info("{}", mapper.selectAdminBoardByPk("ABNO000002"));
 	}
 
 	@Test
@@ -68,14 +78,14 @@ class AdminBoardMapperTest {
 		
 		assertEquals(1, mapper.updateAdminBoard(board));
 		
-		log.info("{}", mapper.selectAdminBoard("ABNO000001"));
+		log.info("{}", mapper.selectAdminBoardByPk("ABNO000001"));
 	}
 
 	@Test
 	void testDeleteAdminBoard() {
 		mapper.deleteAdminBoard("ABNO000002");
 		log.info("{}", mapper.deleteAdminBoard("ABNO000002"));  //0이면 삭제실패(이미 삭제된 것도 0)
-		assertNull(mapper.selectAdminBoard("ABNO000002"));
+		assertNull(mapper.selectAdminBoardByPk("ABNO000002"));
 	}
 
 }
