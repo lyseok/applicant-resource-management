@@ -24,7 +24,7 @@ public class CompanyApplicantController {
 		List<ApplicantVO> applicantList = Alservice.selectApplicantList();
 		model.addAttribute("boardCss",true);
 		model.addAttribute("applicantList", applicantList);
-		return "/company/person/find";
+		return "/company/recruitment/applicant";
 	}
 }	
 	
