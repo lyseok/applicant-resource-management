@@ -16,13 +16,18 @@ public class MemberAdminBoardAjaxServiceImpl implements MemberAdminBoardAjaxServ
 	private final AdminBoardMapper mapper;
 
 	@Override
-	public Optional<AdminBoardVO> readAdminBoard(String boardNo) {
+	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo) {
 		return Optional.ofNullable(mapper.selectAdminBoardByPk(boardNo));
 	}
 
 	@Override
-	public List<AdminBoardVO> readAdminBoardList(String boardTypeCode) {
+	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode) {
 		return mapper.selectAdminBoardListByType(boardTypeCode);
+	}
+	
+	@Override
+	public List<AdminBoardVO> readAdminBoardList() {
+		return mapper.selectAdminBoardList();
 	}
 
 	@Override

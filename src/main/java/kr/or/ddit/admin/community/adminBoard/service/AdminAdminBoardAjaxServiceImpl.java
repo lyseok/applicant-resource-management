@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import kr.or.ddit.mapper.common.AdminMapper;
 import kr.or.ddit.mapper.community.AdminBoardMapper;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxService{
 
-	private final AdminBoardMapper mapper;
-	private final AdminMapper aMapper;
+	private final AdminBoardMapper mapper;  //UserMapper를 넣어야 하나?
 
 	@Override
 	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
@@ -23,7 +24,7 @@ import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/admin/adminBoard")
+@RequestMapping("/admin/community/adminBoard")
 @RequiredArgsConstructor
 public class AdminAdminBoardController {
 
@@ -44,21 +45,27 @@ public class AdminAdminBoardController {
 	}
 	
 	// 게시글 단건조회
-	@GetMapping("/detail")
-	public String aboardDetail(String boardNo, Model model) {
-		AdminBoardVO aboard = service.readAdminBoardByPk(boardNo).get();  
+	@GetMapping("/aboardDetail")
+	public String aboardDetail(
+		@RequestParam(value = "boardNo", required = false) String boardNo
+		, Model model
+	) {
+		AdminBoardVO aboard = null;
+	    if (boardNo != null) {  //boardNo가 있을때만 메서드 실행
+	        aboard = service.readAdminBoardByPk(boardNo).orElse(null);
+	    }
 		//service가 널일 일은 없음, boardNo는 없으면 false 처리됨
 		//동기 컨트롤러니까 jsp에서 if jstl로 처리, 비동기는 (!result)로 처리
 		model.addAttribute("aboard", aboard);
 
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
-//		return "admin/community/adminBoard/aboardDetail";
-		return "redirect:/admin/adminBoard/detail?boardNo=" + boardNo;
+		return "admin/community/adminBoard/aboardDetail";
+//		return "redirect:/admin/adminBoard/detail?boardNo=" + boardNo;  //redirect는 다른 컨트롤러로 가서, 무한 리디렉션 에러!
 	}
 	
 	// 유형별 게시글 목록조회
-	@GetMapping("/list/type")
+	@GetMapping("/aboardList/type")
 	public String aboardType(String boardTypeCode, Model model) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(boardTypeCode);
 		model.addAttribute("aboardList", aboardList);
@@ -66,22 +73,22 @@ public class AdminAdminBoardController {
 
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
-		return "redirect:/admin/adminBoard/list?boardTypeCode=" + boardTypeCode;
+		return "admin/community/adminBoard/aboardList";
 	}
 	
 	// 게시글 목록조회
-	@GetMapping("/list")
+	@GetMapping("/aboardList")
 	public String aboardList(Model model) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardList();
 		model.addAttribute("aboardList", aboardList);
 		
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);		
-		return "admin/community/adminBoard/aboardList";
+		return "admin/community/adminBoard/aboardList";  //위랑 똑같네...? 이렇게 써도 되나
 	}
 		
 	// 등록 폼으로 이동
-	@GetMapping("/form")
+	@GetMapping("/aboardForm")
 	public String formUI(Model model) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
@@ -89,7 +96,7 @@ public class AdminAdminBoardController {
 	}
 	
 	// 수정 폼으로 이동
-	@GetMapping("/form/edit")
+	@GetMapping("/aboardForm/edit")
 	public String editForm(String boardNo, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {  //모델에 aboard가 없으면, db에서 가져옴
 			AdminBoardVO aboard = service.readAdminBoardByPk(boardNo).get();
@@ -97,11 +104,11 @@ public class AdminAdminBoardController {
 		}
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
-		return "admin/community/adminBoard/aboardForm?boardNo=" + boardNo;
+		return "admin/community/adminBoard/aboardForm";
 	}
 	
 	// 폼 입력 데이터 처리
-	@PostMapping("/form/insert")
+	@PostMapping("/aboardForm/insert")
 	public String aboardForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) AdminBoardVO aboard
 		, BindingResult errors
@@ -113,18 +120,18 @@ public class AdminAdminBoardController {
 		String lvn;
 		if(!errors.hasErrors()) {
 			service.createAdminBoard(aboard);
-			lvn = "redirect:/admin/adminBoard/detail?boardNo=" + aboard.getBoardNo();
+			lvn = "admin/community/adminBoard/aboardDetail";
 		}else {
 			String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
 			redirectAttributes.addFlashAttribute(MODELNAME, aboard);
 			redirectAttributes.addFlashAttribute(errorsName, errors);
-			lvn = "redirect:/admin/adminBoard/form/insert";
+			lvn = "admin/community/adminBoard/aboardForm";
 		}
 		return lvn;
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/form/update")
+	@PutMapping("/aboardForm/update")
 	public String aboardEdit(
 		String boardNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) AdminBoardVO aboard
@@ -137,22 +144,22 @@ public class AdminAdminBoardController {
 		String lvn;
 		if(!errors.hasErrors()) {
 			service.modifyAdminBoard(aboard);
-			lvn = "redirect:/admin/adminBoard/detail?boardNo=" + aboard.getBoardNo();
+			lvn = "admin/community/adminBoard/aboardDetail";
 		}else {
 			redirectAttributes.addFlashAttribute(MODELNAME, aboard);
 			redirectAttributes.addFlashAttribute("errors", errorsUtils.errorsToMap(errors));
-			lvn = "redirect:/admin/adminBoard/form/update?boardNo=" + boardNo;
+			lvn = "admin/community/adminBoard/aboardForm";
 		}
 		return lvn;
 	}
 	
 	// 게시글 단건 삭제
-	@DeleteMapping("/remove")
+	@DeleteMapping("aboardDetail/remove")  //aboardDetail 붙는거 맞나
 	public String aboardDelete(String boardNo, Model model) {
 		service.removeAdminBoard(boardNo);
 		
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
-		return "redirect:/admin/adminBoard/list";
+		return "admin/community/adminBoard/aboardList";
 	}
 }

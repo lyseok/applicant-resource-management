@@ -21,6 +21,6 @@ public class CommuBoardVO implements Serializable {
 	private String commuPostStatus;
 	private String commuDeleteDate;
 	
-	private transient AvatarVO avatars;
+	private transient AvatarVO avatar;
 	private List<CommuCommentVO> commuCommentList;
 }

@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.AdminCommentMapper">
+
+	<resultMap type="AdminCommentVO" id="adminCommentMap" autoMapping="true">
+		<id property="boardCommentNo" column="BOARD_COMMENT_NO"/>		
+		<association property="users" javaType="UsersVO" autoMapping="true"/>
+	</resultMap>
 	
-	<select id="selectAdminCommentbyPk" resultType="AdminCommentVO">
+	<select id="selectAdminCommentbyPk" resultMap="adminCommentMap">
 		SELECT 
 			  BOARD_COMMENT_NO
-			, USER_ID
-			, BOARD_NO
-			, BOARD_COMMENT_CONTENT
-			, BOARD_WRITE_DATE
-			, BOARD_DELETE_DATE
-			, BOARD_COMMENT_STATUS 
-		FROM 
-			ADMIN_COMMENT 
-		WHERE 
-			BOARD_COMMENT_NO = #{boardCommentNo}
+               , USER_ID
+               , BOARD_NO
+               , BOARD_COMMENT_CONTENT
+               , BOARD_WRITE_DATE
+               , BOARD_DELETE_DATE
+               , BOARD_COMMENT_STATUS 
+		FROM ADMIN_COMMENT NATURAL JOIN USERS
+        WHERE 
+        	BOARD_COMMENT_NO = #{boardCommentNo}
 	</select>
 	
-	<select id="searchAdminCommentCommentList" resultType="AdminCommentVO">
+	<select id="searchAdminCommentCommentList" resultMap="adminCommentMap">
 		SELECT 
 			  BOARD_COMMENT_NO
-			, USER_ID
-			, BOARD_NO
-			, BOARD_COMMENT_CONTENT
-			, BOARD_WRITE_DATE
-			, BOARD_DELETE_DATE
-			, BOARD_COMMENT_STATUS 
-		FROM 
-			ADMIN_COMMENT
+               , USER_ID
+               , BOARD_NO
+               , BOARD_COMMENT_CONTENT
+               , BOARD_WRITE_DATE
+               , BOARD_DELETE_DATE
+               , BOARD_COMMENT_STATUS 
+		FROM ADMIN_COMMENT NATURAL JOIN USERS
 		WHERE 
 			BOARD_NO = #{boardNo}
-			AND
-			BOARD_COMMENT_STATUS != 'D'
 	</select>
 	
-	<select id="searchAdminCommentList" resultType="AdminCommentVO">
+	<select id="searchAdminCommentList" resultMap="adminCommentMap">
 		SELECT 
 			  BOARD_COMMENT_NO
-			, USER_ID
-			, BOARD_NO
-			, BOARD_COMMENT_CONTENT
-			, BOARD_WRITE_DATE
-			, BOARD_DELETE_DATE
-			, BOARD_COMMENT_STATUS 
-		FROM 
-			ADMIN_COMMENT
+               , USER_ID
+               , BOARD_NO
+               , BOARD_COMMENT_CONTENT
+               , BOARD_WRITE_DATE
+               , BOARD_DELETE_DATE
+               , BOARD_COMMENT_STATUS 
+		FROM ADMIN_COMMENT NATURAL JOIN USERS
 	</select>
 	
 	<insert id="insertAdminComment" parameterType="AdminCommentVO">

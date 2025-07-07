@@ -1,11 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
+
 <title>띹잡 고객센터 | 게시글 목록</title>
-</head>
+
 <body>
 
 	<h4>관리자 게시판 목록</h4>
@@ -14,7 +11,7 @@
 	<thead>
 		<tr>
 			<th>게시글 번호</th>
-			<th>사용자_ID</th>
+			<th>사용자 ID</th>
 			<th>게시판 유형 코드</th>
 			<th>제목</th>
 			<th>등록일시</th>
@@ -59,5 +56,5 @@
 		</c:if>		
 	</tbody>
 </table>
+
 </body>
-</html>

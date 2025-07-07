@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.CommuBoardMapper">
 
-	<resultMap type="CommuBoardVO" id="adminBoardMap" autoMapping="true">
+	<resultMap type="CommuBoardVO" id="commuBoardMap" autoMapping="true">
 		<id property="commuPostNo" column="COMMU_POST_NO"/>		
-		<association property="avatars" javaType="AvatarVO" autoMapping="true"/>
+		<association property="avatar" javaType="AvatarVO" autoMapping="true"/>
 		<collection property="commuCommentList" javaType="list" ofType="CommuCommentVO">
 			<id property="commuCommentNo" column="COMMU_COMMENT_NO"/>  <!-- 같은 이름 컬럼이 있어 둘다 id 넣어줌 -->
 			<result property="avatarId" column="AVATAR_ID"/>  <!-- result엔 다른 VO와 중복되지 않고, 가져올 컬럼만 적음 -->
@@ -15,7 +15,7 @@
 		</collection>
 	</resultMap>
 	
-	<select id="selectCommuBoardByPk" resultMap="adminBoardMap">
+	<select id="selectCommuBoardByPk" resultMap="commuBoardMap">
 		WITH COMMU_BOARD_VIEW AS (
             SELECT 
 				  COMMU_POST_NO
@@ -28,7 +28,7 @@
 				, COMMU_POST_STATUS
 				, COMMU_DELETE_DATE 
 			FROM COMMU_BOARD NATURAL JOIN AVATAR
-	        WHERE COMMU_POST_NO = 'CMBD000001'
+	        WHERE COMMU_POST_NO = #{commuPostNo}
 		)
 		SELECT
               COMMU_BOARD_VIEW.*

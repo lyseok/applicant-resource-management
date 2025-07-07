@@ -2,6 +2,8 @@ package kr.or.ddit.vo.community;
 
 import java.io.Serializable;
 
+import kr.or.ddit.vo.common.AvatarVO;
+import kr.or.ddit.vo.common.UsersVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,4 +17,6 @@ public class CommuCommentVO implements Serializable {
 	private String commuCommentWriteDate;
 	private String commuCommentStatus;
 	private String commuCommentDeleteDate;
+	
+	private transient AvatarVO avatar;
 }

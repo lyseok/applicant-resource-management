@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminAdminBoardAjaxController {
 	
 	private AdminAdminBoardAjaxService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private ErrorsUtils errorsUtils;  //검증 추가해야 함, model에 안 담고 어떻게?
 	
 	@GetMapping("/{boardTypeCode}/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
