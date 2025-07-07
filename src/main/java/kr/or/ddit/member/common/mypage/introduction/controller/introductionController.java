@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/mypage/intoruction")
+@RequestMapping("/mypage/intoruction/test")
 @RequiredArgsConstructor
 public class introductionController {
 	private final introductionService service; 
