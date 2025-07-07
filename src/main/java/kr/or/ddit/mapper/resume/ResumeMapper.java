@@ -18,4 +18,7 @@ public interface ResumeMapper {
 	public int updateResume(ResumeVO ResumeVO);
 	// 삭제
 	public int deleteResume(String ResumeNo);
+	
+	//사용자 이력서/커리어 조회
+	public List<ResumeVO> selectResumeWithCareers(String userId);
 }
