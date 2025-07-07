@@ -38,8 +38,8 @@ body { font-family: 'Noto Sans KR', sans-serif; margin: 20px; background-color: 
 .reject-button:hover { background-color: #f0f0f0; }
 </style>
 <script>
-	function goToDetail(memName) {
-    	location.href = '/member/recruitment/detail?no=' + memName;
+	function goToDetail(userId) {
+    	location.href = '/member/recruitment/detail?no=' + userId;
 	}
 </script>
 </head>
@@ -53,7 +53,7 @@ body { font-family: 'Noto Sans KR', sans-serif; margin: 20px; background-color: 
             <div class="user-avatar">
                 </div>
                <c:url value="/TalentPool/detail" var="detailURL">
-               	<c:param name="what" value="${talent.userName}" />
+               	<c:param name="userId" value="${talent.userId}" />
                </c:url>
             <div class="user-info" onclick="location.href='${detailURL }'">
                 <div class="user-meta">

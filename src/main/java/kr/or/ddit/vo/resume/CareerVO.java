@@ -32,6 +32,7 @@ public class CareerVO implements Serializable{
 	private CompanyVO company;
 	private  ResumeVO resume;
 	private String userName;
+	private String userId;
 	private MySkillVO myskill;
 	private String mySkillName;
 	

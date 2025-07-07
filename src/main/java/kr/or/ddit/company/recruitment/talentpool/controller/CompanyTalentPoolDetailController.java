@@ -23,10 +23,10 @@ public class CompanyTalentPoolDetailController {
 	@GetMapping("/TalentPool/detail/{no}")
 	public String detail(@PathVariable String no, Model model) {
 		ResumeVO detail = CTservice.selectResumeDetail(no);
-		log.info("{}", detail);
+		
 		
 	    model.addAttribute("detail", detail); // 이 이름에 주의
-	    log.info("디테일: {}",detail);
+	    System.out.println("디테일 값 : " +detail);
 	    return "company/recruitment/TalentPoolDetail";
 	}
 }

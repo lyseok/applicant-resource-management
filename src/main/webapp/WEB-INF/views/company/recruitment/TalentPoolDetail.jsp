@@ -19,6 +19,7 @@
     <h2>${detail.userName}님의 이력서</h2>
     <div class="info">
      <p><strong>${detail.userName }</p>
+     <%-- <p><strong>${detail. }</p>
      <p><strong>${detail. }</p>
      <p><strong>${detail. }</p>
      <p><strong>${detail. }</p>
@@ -26,8 +27,7 @@
      <p><strong>${detail. }</p>
      <p><strong>${detail. }</p>
      <p><strong>${detail. }</p>
-     <p><strong>${detail. }</p>
-     <p><strong>${detail. }</p>
+     <p><strong>${detail. }</p> --%>
     </div>
 </div>
 
