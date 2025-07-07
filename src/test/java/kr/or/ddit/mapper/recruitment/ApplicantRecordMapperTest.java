@@ -34,7 +34,6 @@ class ApplicantRecordMapperTest {
 		ApplicantRecordVO vo = new ApplicantRecordVO();
 		vo.setRecruitmentNo("PROC000001");
 		vo.setApplicantId("APPL000001");
-		vo.setRecruitProcessStep("1");
 		vo.setStepPassYn("N");
 		vo.setStepApplicationYn("Y");
 		assertEquals(1, mapper.insertApplicantRecord(vo));
@@ -43,7 +42,6 @@ class ApplicantRecordMapperTest {
 	@Test
 	void testUpdateApplicantRecord() {
 		ApplicantRecordVO vo = new ApplicantRecordVO();
-		vo.setRecruitProcessStep("1");
 		vo.setStepPassYn("N");
 		vo.setStepApplicationYn("Y");
 		vo.setApplicantRecordNo("APRC000001");

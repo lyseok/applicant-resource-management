@@ -16,6 +16,7 @@
 			   , CAREER_YEAR
 			   , SALARY
 			   , LOCATION
+			   , COM_ID
 		  FROM CAREER
 	</select>
 	
@@ -33,7 +34,8 @@
 			   , POSITION_CODE
 			   , CAREER_YEAR
 			   , SALARY
-			   , LOCATION 
+			   , LOCATION
+			   , COM_ID 
 		  FROM CAREER 
 		 WHERE CAREER_NO = #{careerNo}
 	</select>
@@ -60,6 +62,7 @@
 			, CAREER_YEAR
 			, SALARY
 			, LOCATION
+			, COM_ID
 		) VALUES (
 			#{careerNo}
 			, #{resumeNo}
@@ -75,6 +78,7 @@
 			, #{careerYear}
 			, #{salary}
 			, #{location}
+			, #{comId}
 		)
 	</insert>
 	
@@ -93,6 +97,7 @@
 		   	   , CAREER_YEAR = #{careerYear}
 		   	   , SALARY = #{salary}
 		   	   , LOCATION = #{location} 
+		   	   , COM_ID = # {comId}
 		 WHERE CAREER_NO = #{careerNo}
 	</update>
 	

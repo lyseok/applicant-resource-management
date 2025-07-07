@@ -3,6 +3,7 @@ package kr.or.ddit.vo.community;
 import java.io.Serializable;
 import java.util.List;
 
+import kr.or.ddit.vo.common.CompanyVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 @Data
@@ -17,4 +18,5 @@ public class CompanyReviewVO implements Serializable {
 	private String status; //삭제여부
 	private String userId; //일반
 	private List<CompanyReviewQuestionVO> companyReviewQuestion;
+	private CompanyVO company;
 }
