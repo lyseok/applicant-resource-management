@@ -5,6 +5,7 @@ import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 
 public interface MemberCompanyReviewService {
 	public List<CompanyVO> readCompanyList();
@@ -23,5 +24,9 @@ public interface MemberCompanyReviewService {
 	public List<CompanyReviewVO> readReivewQAList(String comId);
 	
 	public MemberVO readMemberById(String id);
+	
+	
+	
+	public List<ResumeVO> readResumeWithCareers(String userId);
 	
 }

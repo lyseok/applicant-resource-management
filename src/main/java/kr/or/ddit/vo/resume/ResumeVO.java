@@ -26,6 +26,4 @@ public class ResumeVO implements Serializable{
 	//추가
 	private List<CareerVO> careerList;
 
-	
-
 }

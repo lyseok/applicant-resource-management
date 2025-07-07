@@ -24,6 +24,7 @@ import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewQuestionVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,12 @@ public class MemberCompanyReviewController {
 		List<CompanyVO> companyList = companyReviewService.readCompanyList();
 		log.info("회사 리스트 : {}",companyReviewService.readCompanyList());
 		model.addAttribute("companyList", companyList);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String userId = authentication.getName(); // 아이디
+    	
+    	List<ResumeVO> resumes = companyReviewService.readResumeWithCareers(userId);
+    	log.info("{}", resumes);
+    	model.addAttribute("resumes", resumes);
 		return "member/community/companyReview/companyReviewList";
 	}
 	
@@ -82,7 +89,7 @@ public class MemberCompanyReviewController {
 	 
 	 @GetMapping("/form")
 	 public String reviewFormUI(Model model) {
-		 String no = "REVU";
+		 	String no = "REVU";
 	    	List<CmnCodeVO> questionList = companyReviewService.readCmnCodeGroupQuestionList(no);
 	    	log.info("{}",questionList);
 	    	model.addAttribute("questionList",questionList);
