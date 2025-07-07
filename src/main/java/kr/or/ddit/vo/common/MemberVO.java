@@ -13,13 +13,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true) 
 public class MemberVO extends UsersVO implements Serializable {
 	@NotBlank
-	private String userId;
-	@NotBlank
 	private String memName;
 	@NotBlank
 	private String memEmail;
 	private String memBir;
-	@NotBlank
 	private String memTel;
 	private String memAdd1;
 	private String memAdd2;
