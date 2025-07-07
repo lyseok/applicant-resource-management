@@ -1,7 +1,9 @@
 package kr.or.ddit.vo.community;
 
 import java.io.Serializable;
+import java.util.List;
 
+import kr.or.ddit.vo.common.UsersVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,4 +19,7 @@ public class AdminBoardVO implements Serializable {
 	private String boardDeleteDate;
 	private Integer boardPostHit;
 	private String boardStatus;
+
+	private transient UsersVO users;
+	private transient List<AdminCommentVO> adminCommentList;
 }

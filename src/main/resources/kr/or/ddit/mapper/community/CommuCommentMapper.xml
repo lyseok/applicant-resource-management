@@ -30,8 +30,6 @@
 			COMMU_COMMENT
 		WHERE 
 			COMMU_POST_NO = #{commuPostNo}
-			AND
-			COMMU_COMMENT_STATUS != 'D'
 	</select>
 
 	<select id="searchCommuCommentList" resultType="CommuCommentVO">
