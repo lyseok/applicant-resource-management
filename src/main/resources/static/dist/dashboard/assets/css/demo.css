@@ -5,7 +5,7 @@
 
 .menu .app-brand.demo {
   height: 64px;
-  margin: 20px 0;
+  margin: 5px 0;
 }
 
 .app-brand-logo.demo svg {
@@ -89,14 +89,18 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
+ /*  -webkit-box-align: center;
   -ms-flex-align: center;
-  align-items: center;
+  align-items: center; */
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  margin-top: 1rem;
+  margin: 84px 0;
+  background: #fff;
+  padding: 50px;
+  border-radius: 23px;
+  box-shadow: 1px 1px 20px 0px rgba(0, 0, 0, 0.03);
 }
 .layout-demo-placeholder img {
   width: 900px;

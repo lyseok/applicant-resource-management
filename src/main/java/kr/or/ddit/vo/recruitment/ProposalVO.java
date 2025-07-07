@@ -14,5 +14,5 @@ public class ProposalVO implements Serializable{
 	private String proposalName;
 	private String proposalContent;
 	private String recruitmentNoticeNo;
-
+	private String proposalDelDate;
 }

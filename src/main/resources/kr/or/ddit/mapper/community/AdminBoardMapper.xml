@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.AdminBoardMapper">
 
-	<select id="selectAdminBoard" resultType="AdminBoardVO">
+	<select id="selectAdminBoardByPk" resultType="AdminBoardVO">
 		SELECT 
 			  BOARD_NO
 			, USER_ID
@@ -19,7 +19,7 @@
 			BOARD_NO = #{boardNo}
 	</select>
 
-	<select id="selectAdminBoardList" resultType="AdminBoardVO">
+	<select id="selectAdminBoardListByType" resultType="AdminBoardVO">
 		SELECT 
 			  BOARD_NO
 			, USER_ID
@@ -37,7 +37,27 @@
 			AND
 			BOARD_STATUS != 'D'
 	</select>
-
+	<!-- WHERE
+			BOARD_TYPE_CODE IN  /* ('UFAQ-U1','UFAQ-U2','UFAQ-U3'...) */ 
+			<foreach collection="faqList" open="(" close=")" index="i" separator="," item="">
+				#{faqList[i]}
+			</foreach> -->
+	
+	<select id="selectAdminBoardList">
+		SELECT 
+			  BOARD_NO
+			, USER_ID
+			, BOARD_TYPE_CODE
+			, BOARD_TITLE
+			, BOARD_WRITE_DATE
+			, BOARD_CONTENT
+			, BOARD_DELETE_DATE
+			, BOARD_POST_HIT
+			, BOARD_STATUS 
+		FROM 
+			ADMIN_BOARD
+	</select>
+	
 	<insert id="insertAdminBoard" parameterType="AdminBoardVO">
 		INSERT INTO ADMIN_BOARD (
 		<selectKey resultType="string" keyProperty="boardNo" order="BEFORE">
@@ -55,7 +75,7 @@
 			, BOARD_POST_HIT
 			, BOARD_STATUS
 		) VALUES (
-			#{boardNo}
+			  #{boardNo}
 			, #{userId}
 			, #{boardTypeCode}
 			, #{boardTitle}

@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="/dist/assets/css/board/common.css">
 	<link rel="stylesheet" href="/dist/assets/css/board/postList.css" >
 	<link rel="stylesheet" href="/dist/assets/css/board/profile.css" >
+	<link rel="stylesheet" href="/dist/assets/css/board/jop_view.css" >
 </c:if>
 
 <!-- layout -->
@@ -34,3 +35,6 @@
 <link rel="stylesheet" href="/dist/assets/css/component.css" />
 
 <link rel="stylesheet" href="/dist/assets/css/common.css" >
+
+
+<link rel="stylesheet" href="/dist/dashboard/assets/vendor/css/dashHeader.css"/>

@@ -13,6 +13,6 @@ public class ApplicantAnswerVO implements Serializable{
 	private String recruitExamNo;
 	private String recruitQuestionsNo;
 	private String applicantId;
-	private String applicantScore;
-
+	private Integer applicantScore;
+	private String applicantAnswerDelDate;
 }

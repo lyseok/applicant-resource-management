@@ -9,12 +9,14 @@ public class commnityController {
 	
 	@GetMapping("/board/commnity")
 	public String getCommnity(Model model) {
+		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);		
 		return "board/commnity/commnityList";
 	}
 	
 	@GetMapping("/board/commnity/view")
-	public String getCommnityView() {
+	public String getCommnityView(Model model) {
+		model.addAttribute("boardCss", true);
 		return "board/commnity/commnityView";
 	}
 }

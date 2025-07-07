@@ -13,4 +13,5 @@ public class InterviewItemVO implements Serializable{
 	private String interviewQuestionNo;
 	private String interviewItemContent;
 	private String interviewItemScore;
+	private String interviewItemDelDate;
 }

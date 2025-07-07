@@ -84,6 +84,14 @@ INSERT INTO CMN_CODE_GROUP (
 	WHERE CODE_GROUP_NO = #{codeGroupNo}
 </update>
 
+<update id="updateUseYn">
+	UPDATE CMN_CODE_GROUP
+	SET 
+		USE_YN = #{useYn}
+		, UPDATE_DATE = SYSDATE
+	WHERE CODE_GROUP_NO = #{codeGroupNo}
+</update>
+
 <delete id="deleteCmnCodeGroup">
 	DELETE FROM CMN_CODE_GROUP
 	WHERE CODE_GROUP_NO = #{codeGroupNo}

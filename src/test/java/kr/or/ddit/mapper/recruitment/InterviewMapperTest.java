@@ -33,20 +33,18 @@ class InterviewMapperTest {
 	void testInsertInterview() {
 		InterviewVO vo = new InterviewVO();
 		vo.setProcessNo("PROC000001");
-		vo.setUserId("corp03");
 		vo.setInterviewLocation("115010");
 		vo.setInterviewType("V");
-		vo.setInterviewPassScore("60");
+		vo.setInterviewPassScore(60);
 		assertEquals(1, mapper.insertInterview(vo));
 	}
 
 	@Test
 	void testUpdateInterview() {
 		InterviewVO vo = new InterviewVO();
-		vo.setUserId("corp03");
 		vo.setInterviewLocation("115010");
 		vo.setInterviewType("V");
-		vo.setInterviewPassScore("80");
+		vo.setInterviewPassScore(80);
 		vo.setInterviewDate("2025/07/03");
 		vo.setInterviewNo("INTV000001");
 		assertEquals(1, mapper.updateInterview(vo));

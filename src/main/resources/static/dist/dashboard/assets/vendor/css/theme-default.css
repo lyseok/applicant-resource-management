@@ -560,7 +560,7 @@ a {
   color: #696cff;
 }
 a:hover {
-  color: #787bff;
+  color: var(--violet60);
 }
 
 .fill-primary {

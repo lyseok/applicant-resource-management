@@ -19,5 +19,5 @@ public class EducationVO implements Serializable{
 	private String graduateDate;
 	private String location;
 	private String departmentCode;
-
+	private String deleteDate;
 }
