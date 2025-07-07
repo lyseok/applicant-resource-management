@@ -42,13 +42,33 @@
 	<div class="card">
 	  <div class="card-body">
 	  
-	      <button type="button">
-	        <a class="btn btn_violet" href="${insertUrl }">리뷰 등록하러 가기</a>
+	      <button type="button" class="btn btn_violet" data-bs-toggle="modal" data-bs-target="#resumeModal">
+	        리뷰 등록하기
 	      </button>
 	       <button type="button">
 	        <a class="btn btn_gray_line" href="${myReviewUrl }">My 리뷰 </a>
 	      </button>
 	  </div>
 	</div>
+	
+	
+
+<div class="modal fade" id="resumeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resumeModalLabel">리뷰를 등록할 기업을 선택해주세요.</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a class="btn btn_violet" href="${insertUrl }">리뷰 등록하러 가기</a>
+      </div>
+    </div>
+  </div>
+</div>
 	
 </body>
