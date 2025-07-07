@@ -111,8 +111,8 @@
                         <span class="txt">신입·인턴</span>
                     </a>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">실시간 공고</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">신입연봉</span></a></li>
+                        <li><a href="/member/realTimeRecruitment"><span class="txt">실시간 공고</span></a></li>
+                        <li><a href="/member/newEmployee"><span class="txt">신입연봉</span></a></li>
                     </ul>
                 </div>
                 <div class="major">
@@ -191,8 +191,8 @@
                 <div class="major">
                     <span class="depth1"><span class="txt">신입·인턴</span></span>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">실시간 공고</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">신입연봉</span></a></li>
+                        <li><a href="/member/realTimeRecruitment"><span class="txt">실시간 공고</span></a></li>
+                        <li><a href="/member/newEmployee"><span class="txt">신입연봉</span></a></li>
                     </ul>
                 </div>
                 <div class="major">

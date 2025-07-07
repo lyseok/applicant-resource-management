@@ -33,9 +33,9 @@ class RecruitmentExamMapperTest {
 		RecruitmentExamVO vo = new RecruitmentExamVO();
 		vo.setProcessNo("PROC000001");
 		vo.setRecruitExamName("네오플 시험");
-		vo.setRecruitExamCutline("70");
+		vo.setRecruitExamCutline(70);
 		vo.setRecruitExamStartDate("2025-07-13 11:00");
-		vo.setRecruitExamEndDate("2025-07-13 13:00");
+		vo.setRecruitExamTime(60);
 		assertEquals(1, mapper.insertRecruitExam(vo));
 	}
 
@@ -43,9 +43,9 @@ class RecruitmentExamMapperTest {
 	void testUpdateRecruitExam() {
 		RecruitmentExamVO vo = new RecruitmentExamVO();
 		vo.setRecruitExamName("네오플 시험");
-		vo.setRecruitExamCutline("80");
+		vo.setRecruitExamCutline(80);
 		vo.setRecruitExamStartDate("2025-07-13 12:00");
-		vo.setRecruitExamEndDate("2025-07-13 14:00");
+		vo.setRecruitExamTime(60);
 		vo.setRecruitExamNo("REEX000001");
 		assertEquals(1, mapper.updateRecruitExam(vo));
 	}
