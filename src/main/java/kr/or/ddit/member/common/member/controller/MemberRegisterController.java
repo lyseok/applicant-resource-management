@@ -22,7 +22,7 @@ import kr.or.ddit.vo.common.UsersVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/member/signup")
+@RequestMapping("/membersignup")
 @Slf4j
 public class MemberRegisterController {
 	
@@ -31,7 +31,7 @@ public class MemberRegisterController {
 	private static final String MODELNAME = "member";
 	
 	@ModelAttribute(MODELNAME)
-	public UsersVO user(
+	public MemberVO member(
 		@SessionAttribute(name=WebAttributes.AUTHENTICATION_EXCEPTION, required = false) UserNotRegisteredException lastException
 	) {
 		MemberVO member = new MemberVO();
