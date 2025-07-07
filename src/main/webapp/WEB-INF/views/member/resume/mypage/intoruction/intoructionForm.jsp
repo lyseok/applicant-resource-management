@@ -22,8 +22,8 @@
 </head>
 <body>
    
-   <c:if test="${not empty introdDetail}">?</c:if>
-   <c:if test="${not empty introdCreate}">?</c:if>
+   <%-- <c:if test="${not empty introdDetail}">?</c:if>
+   <c:if test="${not empty introdCreate}">?</c:if> --%>
    
       <div class="introduct_form_wrap">
 		 <c:if test="${not empty introdDetail }">
@@ -59,6 +59,7 @@
 		    </div>
 	         <div class="text-end mt-3">
 	            <button class="btn btn_violet" type="submit">작성완료</button>
+	            <a class="btn btn_violet_line" href="/mypage/intoruction/list">목록</a>
 	         </div>
 		  </form:form>
          <div class="fixed_btn_wrap">

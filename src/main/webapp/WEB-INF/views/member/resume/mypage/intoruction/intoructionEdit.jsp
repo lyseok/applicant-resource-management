@@ -44,6 +44,7 @@
 		        </div>
 		    </div>
 	         <div class="text-end mt-3">
+	            <a class="btn btn_violet_line" href="/mypage/intoruction/${introduction.introductionNo }">취소</a>
 	            <button class="btn btn_violet" type="submit">작성완료</button>
 	         </div>
 		  </form:form>

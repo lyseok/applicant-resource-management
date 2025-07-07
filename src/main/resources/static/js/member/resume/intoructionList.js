@@ -11,10 +11,8 @@ function confirmDelete() {
 }
 
 
-/*document.addEventListener("DOMContentLoaded", ()=>{
-	const editBtn = document.querySelector(".edit_btn");
-	editBtn.addEventListener("click", (e)=>{
-		e.preventDefault();
-	})
-	console.log(editBtn);
-})*/
+document.querySelector('.searchBarBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    const keyword = document.getElementById('listKeyword').value;
+    window.location.href = '/mypage/intoruction/search?keyword=' + encodeURIComponent(keyword);
+});

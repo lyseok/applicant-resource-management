@@ -37,6 +37,7 @@
 	        </div>
 	    </div>	    
         <div class="text-end mt-3">
+            <a class="btn btn_violet_line" href="/mypage/intoruction/edit/${introdDetail.introductionNo }">수정</a>
             <a class="btn btn_violet" href="/mypage/intoruction/list">목록</a>
         </div>
       </div>

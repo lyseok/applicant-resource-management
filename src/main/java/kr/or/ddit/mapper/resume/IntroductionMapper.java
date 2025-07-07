@@ -18,7 +18,7 @@ public interface IntroductionMapper {
 	public int updateIntroduction(IntroductionVO introductionVO);
 	// 삭제
 	public void deleteIntroduction(IntroductionVO introductionVO);
-	// 리스트 조회
+	// 검색 조회
 	public List<IntroductionVO> selectIntroductionSearch(String name);
 		
 	// 삭제 조회

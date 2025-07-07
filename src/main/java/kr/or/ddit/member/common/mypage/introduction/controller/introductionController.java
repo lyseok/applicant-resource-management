@@ -183,13 +183,13 @@ public class introductionController {
 	
 	
 	// 검색 로직 수행
-	@GetMapping("search?")
+	@GetMapping("search")
 	public String getIntoructionSearch(
 		Model model
-		, @RequestParam String name
+		, @RequestParam String keyword
 	) {
-		
-		return "redirect:/mypage/intoruction/list";
+		model.addAttribute("introductionList", service.readIntroductionSearch(keyword));
+		return "member/resume/mypage/intoruction/intoructionList";
 	}
 }
 

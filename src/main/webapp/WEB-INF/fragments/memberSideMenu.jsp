@@ -29,20 +29,18 @@
      
      <li class="menu-header small text-uppercase"><span class="menu-header-text">이력서</span></li>
      <li class="menu-item">
-       <a href="/mypage/resume/list" class="menu-link menu-toggle">
+       <a href="/mypage/intoruction/list" class="menu-link menu-toggle">
        	 <i class="menu-icon tf-icons bx bx-file"></i>
-         <div data-i18n="Account">이력서 관리</div>
+         <div>이력서 관리</div>
        </a>
        <ul class="menu-sub">
          <li class="menu-item">
-           <a href="/company" class="menu-link">
-             <div data-i18n="Account">이력서 목록</div>
+           <a href="/mypage/intoruction/list" class="menu-link">
+             <div>이력서 목록</div>
            </a>
          </li>
          <li class="menu-item">
-           <a href="/company" class="menu-link">
-             <div data-i18n="Notifications">이력서 등록</div>
-           </a>
+           <a href="/mypage/intoruction/create" class="menu-link">이력서 등록</a>
          </li>
       </ul>
      </li>

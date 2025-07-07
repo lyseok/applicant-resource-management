@@ -22,7 +22,7 @@
 <body>
 	<p class="h1 mb-3 fw-bold">자소서 관리</p>
 	<div class="p-3 pt-4 pb-4 bg-violet03 rounded d-flex justify-content-between align-items-center mb-5">
-		<p class="fw-bold">✍ 초안 자동생성, 맞춤법 및 표절검사, 마무리 코칭까지 해주는</p>
+		<p class="fw-bold">✍ 맞춤법 검사를 통한 편리한 작성</p>
 		<div class="">
 			<!-- <button type="button" class="btn btn_gray_line h50">파일로 등록</button> -->
 			<a class="btn btn_violet h50 lh50" href="/mypage/intoruction/create">자소서 등록하기</a>
@@ -34,11 +34,11 @@
 		<div class="TypoBox searchBar">
 			<div class="searchBarWrap">
 				<label class="searchBarLabel" for="listKeyword">검색어</label>
-				<input type="text" id="listKeyword" class="searchBarInput" placeholder="자기소개서 제목, 문항, 내용으로 검색해보세요." maxlength="24" autocomplete="off" class="SearchInput_SearchInput__input__Cg7QD" value="">
+				<input type="text" id="listKeyword" class="searchBarInput" placeholder="자기소개서 제목, 문항, 내용으로 검색해보세요." maxlength="24" autocomplete="off" value="">
 			</div>
-			<button type="button" class="searchBarBtn">
+			<a href="/mypage/intoruction/search?${introductionNo}" class="searchBarBtn">
 				<span class="material-symbols-outlined">search</span>
-			</button>
+			</a>
 		</div>
 	</div>
 	
@@ -59,6 +59,19 @@
 					</li>
 				</ul>
 			</c:forEach>
+			<div class="PageBox">
+	            <span class="BtnType SizeS active">1</span>
+	            <button class="BtnType SizeS page" data-page="2">2</button>
+	            <button class="BtnType SizeS page" data-page="3">3</button>
+	            <button class="BtnType SizeS page" data-page="4">4</button>
+	            <button class="BtnType SizeS page" data-page="5">5</button>
+	            <button class="BtnType SizeS page" data-page="6">6</button>
+	            <button class="BtnType SizeS page" data-page="7">7</button>
+	            <button class="BtnType SizeS page" data-page="8">8</button>
+	            <button class="BtnType SizeS page" data-page="9">9</button>
+	            <button class="BtnType SizeS page" data-page="10">10</button>
+	            <button data-page="11" class="BtnType SizeS BtnNext btnNext">다음</button>
+	        </div>
 		</div>
 	</c:if>
 	
