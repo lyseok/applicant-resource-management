@@ -13,6 +13,6 @@ public class InterviewScoreVO implements Serializable{
 	private String interviewQuestionNo;
 	private String interviewNo;
 	private String applicantId;
-	private String applicantRating;
+	private Integer applicantRating;
 	private String interviewScoreDelDate;
 }

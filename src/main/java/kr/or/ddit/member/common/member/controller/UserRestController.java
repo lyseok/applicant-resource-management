@@ -17,6 +17,14 @@ public class UserRestController {
 	
 	@GetMapping("{userId}")
 	public String idCheck(@PathVariable String userId) {
-		return "";
+		int cnt = service.idDuplicateCheck(userId);
+		String msg = null;
+		
+		if(cnt>0) {
+			msg = "아이디가 중복 되었습니다.";
+		}else {
+			msg = "사용 가능한 아이디입니다!";
+		}
+		return msg;
 	}
 }

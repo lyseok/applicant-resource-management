@@ -34,14 +34,14 @@ class ApplicantAnswerMapperTest {
 		vo.setRecruitExamNo("REEX000001");
 		vo.setRecruitQuestionsNo("REQE000001");
 		vo.setApplicantId("APPL000001");
-		vo.setApplicantScore("90");
+		vo.setApplicantScore(90);
 		assertEquals(1, mapper.insertApplicantAnswer(vo));
 	}
 
 	@Test
 	void testUpdateApplicantAnswer() {
 		ApplicantAnswerVO vo = new ApplicantAnswerVO();
-		vo.setApplicantScore("85");
+		vo.setApplicantScore(85);
 		vo.setApplicantAnswerNo("APAS000001");
 		assertEquals(1, mapper.updateApplicantAnswer(vo));
 	}

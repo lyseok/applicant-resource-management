@@ -35,14 +35,14 @@ class InterviewScoreMapperTest {
 		vo.setInterviewNo("INTV000001");
 		vo.setInterviewQuestionNo("INQE000001");
 		vo.setApplicantId("APPL000001");
-		vo.setApplicantRating("30");
+		vo.setApplicantRating(30);
 		assertEquals(1, mapper.insertInterviewScore(vo));
 	}
 
 	@Test
 	void testUpdateInterviewScore() {
 		InterviewScoreVO vo = new InterviewScoreVO();
-		vo.setApplicantRating("50");
+		vo.setApplicantRating(50);
 		vo.setInterviewScoreNo("INSC000001");
 		assertEquals(1, mapper.updateInterviewScore(vo));
 	}

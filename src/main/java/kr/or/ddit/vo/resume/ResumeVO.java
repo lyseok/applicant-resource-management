@@ -1,7 +1,9 @@
 package kr.or.ddit.vo.resume;
 
 import java.io.Serializable;
+import java.util.List;
 
+import kr.or.ddit.vo.common.CompanyVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -21,5 +23,9 @@ public class ResumeVO implements Serializable{
 	private String updateDate;
 	private String resumeSubmitYn;
 	private String resumeDeleteDate;
+	//추가
+	private List<CareerVO> careerList;
+
+	
 
 }
