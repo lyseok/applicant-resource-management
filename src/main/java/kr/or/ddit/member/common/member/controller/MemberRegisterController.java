@@ -22,7 +22,7 @@ import kr.or.ddit.vo.common.UsersVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/signup")
+@RequestMapping("/member/signup")
 @Slf4j
 public class MemberRegisterController {
 	
@@ -63,12 +63,12 @@ public class MemberRegisterController {
 		if(!errors.hasErrors()) {
 			
 				service.registerMember(member);
-				lvn = "redirect:/";
+				lvn = "redirect:/login";
 		}else {
 			redirectAttributes.addFlashAttribute("member", member);
 			String errorName = BindingResult.MODEL_KEY_PREFIX+MODELNAME;
 			redirectAttributes.addFlashAttribute(errorName, errors);
-			lvn = "redirect:/signup";
+			lvn = "redirect:/member/signup";
 		}
 		return lvn;
 	}
