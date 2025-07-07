@@ -15,9 +15,11 @@ import kr.or.ddit.member.common.exception.PKDuplicatedException;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.common.UsersVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 	
 	private final UserMapper userMapper;
@@ -44,13 +46,13 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public void registerMember(UsersVO user, MemberVO member) {
-		String encoded = passwordEncoder.encode(user.getUserPassword());
-		user.setUserPassword(encoded);
-		userMapper.insertUser(user);
+	public void registerMember(MemberVO member) {
+		log.info("{}", member);
+		String encoded = passwordEncoder.encode(member.getUserPassword());
+		member.setUserPassword(encoded);
 		
-		member.setUserId(user.getUserId());
-		processImage(member);
+		userMapper.insertUser(member);
+		log.info("바뀐 후 {}", member);
 		memberMapper.insertMember(member);
 	}
 
