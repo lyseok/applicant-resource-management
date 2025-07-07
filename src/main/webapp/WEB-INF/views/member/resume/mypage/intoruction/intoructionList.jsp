@@ -5,14 +5,27 @@
 <head>
 	<meta charset="UTF-8">
 	<title>자소서 관리</title>
+   
+	<c:if test="${not empty message }">
+		<script>
+			alert('${message}');
+		</script>
+	</c:if>
+	<%-- 에러 메시지를 표시하려면 다음과 같이 추가해야 합니다. --%>
+	<c:if test="${not empty error }">
+	    <script>
+	        alert('${error}'); // 'error' FlashAttribute를 확인
+	    </script>
+	</c:if>
+   <script type="text/javascript" src="/js/member/resume/intoructionList.js" defer></script>
 </head>
 <body>
 	<p class="h1 mb-3 fw-bold">자소서 관리</p>
 	<div class="p-3 pt-4 pb-4 bg-violet03 rounded d-flex justify-content-between align-items-center mb-5">
 		<p class="fw-bold">✍ 초안 자동생성, 맞춤법 및 표절검사, 마무리 코칭까지 해주는</p>
 		<div class="">
-			<button type="button" class="btn btn_gray_line h50">파일로 등록</button>
-			<a class="btn btn_violet h50 lh50" href="/write/new">자소서 등록하기</a>
+			<!-- <button type="button" class="btn btn_gray_line h50">파일로 등록</button> -->
+			<a class="btn btn_violet h50 lh50" href="/mypage/intoruction/create">자소서 등록하기</a>
 		</div>
 	</div>
 	
@@ -40,8 +53,8 @@
 							<p class="text-truncate w800">${introduction.introductionContent}</p>
 						</div>
 						<div class="d-flex gap-1">
-							<a class="btn btn_violet_line fw-normal">수정하기</a>
-							<a class="btn btn_violet_line fw-normal">삭제하기</a>
+							<a class="btn btn_violet_line fw-normal" href="<c:url value="/mypage/intoruction/edit/${introduction.introductionNo}"/>">수정하기</a>
+							<a class="btn btn_red_line fw-normal" href="<c:url value="/mypage/intoruction/delete/${introduction.introductionNo}"/>" onclick="return confirmDelete();">삭제하기</a>
 						</div>
 					</li>
 				</ul>
