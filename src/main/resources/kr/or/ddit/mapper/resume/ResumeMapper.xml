@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.ResumeMapper">
+
+  <resultMap id="resumeWithCareerMap" type="kr.or.ddit.vo.resume.ResumeVO">
+    <id     property="resumeNo"         column="RESUME_NO"/>
+    <result property="userId"           column="USER_ID"/>
+    <result property="userName"         column="USER_NAME"/>
+    <collection property="careerList" ofType="kr.or.ddit.vo.resume.CareerVO">
+      <id     property="careerNo"        column="CAREER_NO"/>
+      <result property="resumeNo"        column="RESUME_NO"/>
+      <result property="jobCode"         column="JOB_CODE"/>
+      <result property="startWorkDate"   column="START_WORK_DATE"/>
+      <result property="retireDate"      column="RETIRE_DATE"/>
+      <result property="tenure"          column="TENURE"/>
+      <result property="department"      column="DEPARTMENT"/>
+      <result property="responsibility"  column="RESPONSIBILITY"/>
+      <result property="freelancer"      column="FREELANCER"/>
+      <result property="jobGradeCode"    column="JOB_GRADE_CODE"/>
+      <result property="positionCode"    column="POSITION_CODE"/>
+      <result property="careerYear"      column="CAREER_YEAR"/>
+      <result property="salary"          column="SALARY"/>
+      <result property="location"        column="LOCATION"/>
+      <result property="comId"           column="COM_ID"/>
+       
+      <association property="company" javaType="kr.or.ddit.vo.common.CompanyVO">
+      	 <id     property="userId"         column="userId"/>
+        <result property="comName"       column="COM_NAME"/>
+      </association>
+    </collection>
+    
+    
+  </resultMap>
 	<select id="selectResumeList">
 		SELECT RESUME_NO
 			   , USER_ID
@@ -32,6 +62,7 @@
 		  FROM RESUME
 		 WHERE RESUME_NO = #{resumeNo}
 	</select>
+	
 	
 	<insert id="insertResume">
 		<selectKey resultType="string" keyProperty="resumeNo" order="BEFORE">
@@ -88,4 +119,38 @@
 		DELETE FROM RESUME
 		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
+	
+	
+	
+	 <select id="selectResumeWithCareers" resultMap="resumeWithCareerMap">
+		    SELECT
+		      r.RESUME_NO,
+		      r.USER_ID,
+		      r.USER_NAME,
+		      c.CAREER_NO,
+		      c.JOB_CODE,
+		      c.START_WORK_DATE,
+		      c.RETIRE_DATE,
+		      c.TENURE,
+		      c.DEPARTMENT,
+		      c.RESPONSIBILITY,
+		      c.FREELANCER,
+		      c.JOB_GRADE_CODE,
+		      c.POSITION_CODE,
+		      c.CAREER_YEAR,
+		      c.SALARY,
+		      c.LOCATION,
+		      c.COM_ID,
+		      comp.COM_NAME
+		    FROM
+		      RESUME r
+		      LEFT JOIN CAREER c
+		        ON r.RESUME_NO = c.RESUME_NO
+		      LEFT JOIN COMPANY comp
+		        ON c.COM_ID = comp.USER_ID
+		    WHERE
+		      r.USER_ID = #{userId}
+		    ORDER BY
+		      r.UPDATE_DATE DESC
+  </select>
 </mapper>

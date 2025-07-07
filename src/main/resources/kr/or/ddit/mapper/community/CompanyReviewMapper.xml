@@ -10,6 +10,7 @@
 
  <resultMap id="reviewWithQuestionsMap" type="kr.or.ddit.vo.community.CompanyReviewVO">
     <id     property="companyReviewNo"       column="COMPANY_REVIEW_NO"/>
+     <result property="comId"                 column="COM_ID"/>
     <result property="userId"                 column="USER_ID"/>
     <result property="jobCode"                column="JOB_CODE"/>
     <result property="workingYn"              column="WORKING_YN"/>
@@ -17,14 +18,30 @@
     <result property="companyReviewOneLine"   column="COMPANY_REVIEW_ONE_LINE"/>
    
 
-
     <collection property="companyReviewQuestion" ofType="kr.or.ddit.vo.community.CompanyReviewQuestionVO">
       <id     property="companyReviewQuestionNo" column="COMPANY_REVIEW_QUESTION_NO"/>
       <result property="reviewSubjectCode"         column="REVIEW_SUBJECT_CODE"/>
       <result property="companyReviewScore"        column="COMPANY_REVIEW_SCORE"/>
+       <result property="companyReviewNo"          column="COMPANY_REVIEW_NO"/>
     </collection>
   </resultMap>
 
+
+	<resultMap id="reviewListByIdMap" type="kr.or.ddit.vo.community.CompanyReviewVO"
+	           autoMapping="true">
+	  <!-- PK 컬럼만 id 로 지정 -->
+	  <id property="companyReviewNo" column="COMPANY_REVIEW_NO"/>
+	
+	  <!-- association 은 여전히 명시 -->
+	  <association property="company" javaType="kr.or.ddit.vo.common.CompanyVO"
+	               autoMapping="true">
+	    <!-- 단, association 내부의 PK는 지정해 두는 편이 안정적 -->
+	    <id     property="userId"            column="COM_ID"/>
+	    <result property="comName"           column="COM_NAME"/>
+    	<result property="comInfo"           column="COM_INFO"/>
+
+	  </association>
+	</resultMap>
 
 	<select id="selectCompanyList">
 		SELECT 
@@ -71,11 +88,31 @@
 	</select>
 	
 	
+	<select id="selectCompanyReviewListById" resultMap="reviewListByIdMap">
+	  SELECT
+	    cr.COMPANY_REVIEW_NO,
+	    cr.COM_ID,
+	    c.COM_NAME,
+	    c.COM_INFO,
+	    cr.JOB_CODE,
+	    cr.WORKING_YN,
+	    cr.COMPANY_REVIEW_STATUS,
+	    cr.COMPANY_REVIEW_ONE_LINE,
+	    cr.USER_ID,
+	    cr.STATUS
+	  FROM TEAM1_202501F.COMPANY_REVIEW cr
+	  JOIN TEAM1_202501F.COMPANY c
+	    ON cr.COM_ID = c.USER_ID
+	  WHERE cr.USER_ID = #{userId}
+	  ORDER BY cr.COMPANY_REVIEW_NO
+</select>
+	
 	
 	<select id="selectCompanyReviewWithQAList" resultMap="reviewWithQuestionsMap">
 		SELECT
 	      c.USER_ID,
 	      c.COM_NAME,
+	      r.COM_ID,
 	      r.COMPANY_REVIEW_NO,
 	      r.JOB_CODE,
 	      r.WORKING_YN,
@@ -83,6 +120,7 @@
 	      r.COMPANY_REVIEW_ONE_LINE,
 	      r.USER_ID,
 	      q.COMPANY_REVIEW_QUESTION_NO,
+		  q.COMPANY_REVIEW_NO,
 	      q.REVIEW_SUBJECT_CODE,
 	      q.COMPANY_REVIEW_SCORE
 	    FROM TEAM1_202501F.COMPANY c

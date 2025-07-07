@@ -3,10 +3,12 @@
 import java.util.List;
 import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
 
 public interface MemberCompanyReviewService {
 	public List<CompanyVO> readCompanyList();
+	public CompanyVO readCompany(String id);
 	
 	public List<CompanyReviewVO> readCompanyReviewList();
 	
@@ -19,5 +21,7 @@ public interface MemberCompanyReviewService {
 	public List<CmnCodeVO> readCmnCodeGroupQuestionList(String cmnGroupNo);
 	
 	public List<CompanyReviewVO> readReivewQAList(String comId);
+	
+	public MemberVO readMemberById(String id);
 	
 }
