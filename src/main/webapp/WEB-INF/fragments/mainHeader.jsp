@@ -47,7 +47,7 @@
 	            	<%-- 로그인이 되어 있지 않을때 --%>
 	                <a href="/login" class="btn_sign signin">로그인</a>
 	                <hr>
-	                <a href="/member/signup" class="btn_sign signup">회원가입</a>
+	                <a href="/membersignup" class="btn_sign signup">회원가입</a>
 		            <div class="wrap_service">
 		                <button class="btn_service" type="button" aria-expanded="false">
 		                    기업서비스
@@ -57,7 +57,7 @@
 		                    <ul class="services">
 		                        <li class="half_col">
 		                            <a href="/login">로그인</a>
-		                            <a href="/company/signup" data-nav-track="ga_lead|main-gnb|layer_comp_service|company_join">회원가입</a>
+		                            <a href="/companysignup" data-nav-track="ga_lead|main-gnb|layer_comp_service|company_join">회원가입</a>
 		                        </li>
 		                        <li><a href="javascript:void(0)">기업홈</a></li>
 		                        <li><a href="javascript:void(0)">공고 등록</a></li>
