@@ -100,16 +100,46 @@ ${resumes }
          </div>
   
   
-  <c:url var="insertUrl" value="/member/companyReview/form" />
+  <c:url var="formUrl" value="/member/companyReview/form" />
+ 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        <a class="btn btn_violet" href="${insertUrl }">리뷰 등록하러 가기</a>
+        
+        <a class="btn btn_violet" href="${formUrl }">리뷰 등록하러 가기</a>
         <button id = "submitBtn" type = "button" class = "btn btn_violet">등록하러가기</button>
       </div>
     </div>
   </div>
 </div>
 	
-	
+
+ <script>
+    (function() {
+      const cards    = document.querySelectorAll('.career-card');
+      const submit   = document.getElementById('submitBtn');
+      const baseUrl  = '${formUrl}';
+      let selectedNo = null;
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+
+          cards.forEach(c => c.classList.remove('active'));
+   
+          card.classList.add('active');
+          
+          selectedNo = card.dataset.careerno;
+          submit.disabled = false;
+        });
+      });
+
+      submit.addEventListener('click', () => {
+        if (selectedNo) {
+      
+          window.location.href = baseUrl + "/" +  encodeURIComponent(selectedNo);
+        }
+      });
+    })();
+  </script>
+
 
 </body>

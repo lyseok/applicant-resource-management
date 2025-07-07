@@ -10,6 +10,7 @@ import kr.or.ddit.mapper.common.CmnCodeGroupMapper;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.MemberMapper;
 import kr.or.ddit.mapper.community.CompanyReviewMapper;
+import kr.or.ddit.mapper.resume.CareerMapper;
 import kr.or.ddit.mapper.resume.ResumeMapper;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CmnCodeVO;
@@ -17,6 +18,7 @@ import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewQuestionVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
+import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +31,7 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	private final CmnCodeGroupMapper cmnCodeGroupMapper;
 	private final MemberMapper memberMapper;
 	private final ResumeMapper resumeMapper;
+	private final CareerMapper careerMapper;
 	
 
 	@Override
@@ -84,6 +87,11 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	@Override
 	public List<ResumeVO> readResumeWithCareers(String userId) {
 		return resumeMapper.selectResumeWithCareers(userId);
+	}
+
+	@Override
+	public CareerVO readCareerDetail(String careerNo) {
+		return careerMapper.selectCareerDetail(careerNo);
 	}
 
 	

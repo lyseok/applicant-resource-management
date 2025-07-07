@@ -24,6 +24,7 @@ import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewQuestionVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
+import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -87,8 +88,11 @@ public class MemberCompanyReviewController {
 	 
 	 
 	 
-	 @GetMapping("/form")
-	 public String reviewFormUI(Model model) {
+	 @GetMapping("/form/{careerNo}")
+	 public String reviewFormUI(@PathVariable String careerNo, Model model) {
+		 
+		 	CareerVO career = companyReviewService.readCareerDetail(careerNo);
+		 	model.addAttribute("career", career);
 		 	String no = "REVU";
 	    	List<CmnCodeVO> questionList = companyReviewService.readCmnCodeGroupQuestionList(no);
 	    	log.info("{}",questionList);
