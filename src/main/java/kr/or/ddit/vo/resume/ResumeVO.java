@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "resumeNo")
 public class ResumeVO implements Serializable{
 
+	private String resumeName;
 	private String resumeMainYn;
 	private String introductionNo;
 	private String resumeNo;

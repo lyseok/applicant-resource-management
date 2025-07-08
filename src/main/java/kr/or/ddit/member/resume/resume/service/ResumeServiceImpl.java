@@ -15,9 +15,22 @@ import kr.or.ddit.mapper.resume.MyLicenseMapper;
 import kr.or.ddit.mapper.resume.MySkillMapper;
 import kr.or.ddit.mapper.resume.PortfolioMapper;
 import kr.or.ddit.mapper.resume.ResumeMapper;
-import kr.or.ddit.mapper.resume.SubIntroductionMapper;
+import kr.or.ddit.mapper.resume.SpecialtyMapper;
+import kr.or.ddit.mapper.resume.IntroductionMapper;
 import kr.or.ddit.mapper.resume.SupportMapper;
+import kr.or.ddit.vo.resume.AwardVO;
+import kr.or.ddit.vo.resume.CareerVO;
+import kr.or.ddit.vo.resume.EducationVO;
+import kr.or.ddit.vo.resume.IntroductionVO;
+import kr.or.ddit.vo.resume.LanguageSkillVO;
+import kr.or.ddit.vo.resume.MilitaryVO;
+import kr.or.ddit.vo.resume.MyExperienceVO;
+import kr.or.ddit.vo.resume.MyLicenseVO;
+import kr.or.ddit.vo.resume.MySkillVO;
+import kr.or.ddit.vo.resume.PortfolioVO;
 import kr.or.ddit.vo.resume.ResumeVO;
+import kr.or.ddit.vo.resume.SpecialtyVO;
+import kr.or.ddit.vo.resume.SupportVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,16 +43,19 @@ public class ResumeServiceImpl implements ResumeService {
 	private final MyExperienceMapper myExperienceMapper;	// 보유경험
 	private final MySkillMapper mySkillMapper;				// 보유 기술
 	private final MyLicenseMapper myLicenseMapper;			// 보유 자격
-	private final SubIntroductionMapper subIntroductionMapper;	// 자기소개서 > 이력서에서 insert하면 제출자소서에도 추가로 insert 해주는건지?
+	private final IntroductionMapper IntroductionMapper;	// 자기소개서 > 이력서에서 insert하면 제출자소서에도 추가로 insert 해주는건지?
 	private final LanguageSkillMapper languageSkillMapper;	// 어학
 	private final PortfolioMapper portfolioMapper;			// 포트폴리오
 	private final MilitaryMapper militaryMapper;			// 병역
 	private final EducationMapper educationMapper;			// 학력
+	private final SpecialtyMapper specialtyMapper;			// 학력 - 하위 전공
 	
 	
 	@Override
-	public List<ResumeVO> readResumeList() {
-		return resumeMapper.selectResumeList();
+	public List<ResumeVO> readResumeList(ResumeVO vo) {
+		List<ResumeVO> resume = resumeMapper.selectResumeList(vo);
+
+		return resumeMapper.selectResumeList(vo);
 	}
 
 	@Override
@@ -49,15 +65,107 @@ public class ResumeServiceImpl implements ResumeService {
 
 	@Override
 	@Transactional
-	public void createResume(ResumeVO vo) {
-		resumeMapper.insertResume(vo);
+	public void createResume(ResumeVO resumeVO) {
+		resumeMapper.insertResume(resumeVO);
 		
-		// 사용자가 경력을 입력한 경우
-		if(ResumeVO.getCareerList() != null) {
-			
+		// 경력
+		if(resumeVO.getCareerList() != null) {
+			for(CareerVO career:resumeVO.getCareerList()) {
+				career.setCareerNo(resumeVO.getResumeNo());		// 이력서번호(부모 pk) 세팅; 
+				careerMapper.insertCareer(career);
+			}
 		}
 		
+		// 고용지원
+		if(resumeVO.getSupportList() != null) {
+			for(SupportVO support:resumeVO.getSupportList()) {
+				support.setSupportNo(resumeVO.getResumeNo());	// 이력서번호(부모 pk) 세팅; 
+				supportMapper.insertSupport(support);
+			}
+		}
+		
+		// 수상
+        if (resumeVO.getAwardList() != null) {
+            for (AwardVO award : resumeVO.getAwardList()) {
+                award.setResumeNo(resumeVO.getResumeNo());
+                awardMapper.insertAward(award);
+            }
+        }
+        
+        // 보유경험
+        if (resumeVO.getMyExperienceList() != null) {
+        	for (MyExperienceVO myExperience : resumeVO.getMyExperienceList()) {
+        		myExperience.setResumeNo(resumeVO.getResumeNo());
+        		myExperienceMapper.insertMyExperience(myExperience);
+        	}
+        }
+        
+        // 보유기술
+        if (resumeVO.getMySkillList() != null) {
+        	for (MySkillVO mySkill : resumeVO.getMySkillList()) {
+        		mySkill.setResumeNo(resumeVO.getResumeNo());
+        		mySkillMapper.insertMySkill(mySkill);
+        	}
+        }
+        
+        // 보유자격
+        if (resumeVO.getMyLicenseList() != null) {
+        	for (MyLicenseVO myLicense : resumeVO.getMyLicenseList()) {
+        		myLicense.setResumeNo(resumeVO.getResumeNo());
+        		myLicenseMapper.insertMyLicense(myLicense);
+        	}
+        }
+
+        // 자소서 - 여기 어떻게 할건지 아직 미정
+        /*
+        if (resumeVO.getIntroductionList() != null) {
+        	for (IntroductionVO introduction : resumeVO.getIntroductionList()) {
+        		introduction.setResumeNo(resumeVO.getResumeNo());
+        		myLicenseMapper.insertMyLicense(introduction);
+        	}
+        }
+        */
+        
+        // 어학
+        if (resumeVO.getLanguageSkillList() != null) {
+        	for (LanguageSkillVO languageSkill : resumeVO.getLanguageSkillList()) {
+        		languageSkill.setResumeNo(resumeVO.getResumeNo());
+        		languageSkillMapper.insertLanguageSkill(languageSkill);
+        	}
+        }
+        
+        // 포트폴리오
+        if (resumeVO.getPortfolioList() != null) {
+        	for (PortfolioVO portfolio : resumeVO.getPortfolioList()) {
+        		portfolio.setResumeNo(resumeVO.getResumeNo());
+        		portfolioMapper.insertPortfolio(portfolio);
+        	}
+        }
+        
+        // 병역
+        if (resumeVO.getMilitaryList() != null) {
+        	for (MilitaryVO military : resumeVO.getMilitaryList()) {
+        		military.setResumeNo(resumeVO.getResumeNo());
+        		militaryMapper.insertMilitary(military);
+        	}
+        }
+		
 		// 사용자가 학력을 입력한경우
+		if (resumeVO.getEducationList() != null) {
+            for (EducationVO education : resumeVO.getEducationList()) {
+                education.setResumeNo(resumeVO.getResumeNo());
+                educationMapper.insertEducation(education); // educationNo 세팅
+
+                // 3. 전공 insert (specialtyList)
+                if (education.getSpecialtyList() != null) {
+                    for (SpecialtyVO specialty : education.getSpecialtyList()) {
+                        specialty.setEducationNo(education.getEducationNo());
+                        specialty.setResumeNo(resumeVO.getResumeNo());
+                        specialtyMapper.insertSpecialty(specialty);
+                    }
+                }
+            }
+        }
 	}
 
 	@Override
@@ -68,6 +176,12 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	public void removeResume(String no) {
 		resumeMapper.deleteResume(no);
+	}
+
+	@Override
+	public List<ResumeVO> readMemberList(String userId) {
+		return resumeMapper.memberResumeList(userId);
+		
 	}
 
 }

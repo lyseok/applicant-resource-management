@@ -1,0 +1,93 @@
+package kr.or.ddit.member.resume.resume.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.or.ddit.member.resume.resume.service.ResumeService;
+import kr.or.ddit.vo.resume.IntroductionListVO;
+import kr.or.ddit.vo.resume.IntroductionVO;
+import kr.or.ddit.vo.resume.ResumeVO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Controller
+@RequestMapping("/mypage/resume")
+@RequiredArgsConstructor
+public class ResumeController {
+	private final ResumeService service;
+	static final String MODELNAME = "resumeList";
+
+	@ModelAttribute(MODELNAME)
+	public ResumeVO setupResumeVO() {
+		ResumeVO vo = new ResumeVO();
+		return vo;
+	}
+
+	// 개인 리스트 조회
+	@GetMapping("list")
+	public String getResumeList(
+		Model model
+	){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// 로그인 되어 있지 않을경우 로그인 폼으로 리턴
+		if(authentication == null) {
+			return "redirect:/login";
+		}
+		String userId = authentication.getName();	// 현재 로그인된 사용자의 id값 가져오기
+		List<ResumeVO> resumeList = service.readMemberList(userId);
+		log.info("{}", resumeList);
+		model.addAttribute(MODELNAME, resumeList);
+		return "member/resume/mypage/resume/resumeList";
+	}
+	
+	
+	// 상세조회
+	@GetMapping("detail")
+	public String getResumeDetail(
+		Model model
+	){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// 로그인 되어 있지 않을경우 로그인 폼으로 리턴
+		if(authentication == null) {
+			return "redirect:/login";
+		}
+		String userId = authentication.getName();	// 현재 로그인된 사용자의 id값 가져오기
+		List<ResumeVO> resumeList = service.readMemberList(userId);
+		log.info("{}", resumeList);
+		model.addAttribute(MODELNAME, resumeList);
+		return "member/resume/mypage/resume/resumeDetail";
+	}
+	
+	// 등록 폼 이동
+	@GetMapping("create")
+	public String getCreateResumeForm() {
+		return "member/resume/mypage/resume/resumeForm";
+	}
+	
+	// 등록 로직 구현
+	@PostMapping("create")
+	public String createResume() {
+		return "";
+	}
+	
+	/*
+	// 수정 로직 구현
+	@PostMapping("create")
+	public String createResume() {
+		return "";
+	}
+	*/
+	
+	
+}

@@ -6,7 +6,7 @@ import kr.or.ddit.vo.resume.ResumeVO;
 
 public interface ResumeService {
 	// 목록 조회
-	public List<ResumeVO> readResumeList();
+	public List<ResumeVO> readResumeList(ResumeVO vo);
 	// 단건 조회
 	public ResumeVO readResumeDetail(String no);
 	// 등록
@@ -15,4 +15,7 @@ public interface ResumeService {
 	public void editResume(ResumeVO vo);
 	// 삭제
 	public void removeResume(String no);
+	
+	// 테스트 조회
+	public List<ResumeVO> readMemberList(String userId);
 }
