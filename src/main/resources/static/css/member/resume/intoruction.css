@@ -1,6 +1,11 @@
-.introduct_form {
+.introduct_form_wrap{
+   position:relative;
+   width:847px;
+    margin: 0 auto;
+}
+.introduct_area {
     position: relative;
-    width: 847px;
+    width: 100%;
     display: grid;
     grid-template-columns: auto;
     grid-auto-flow: row;
@@ -11,9 +16,11 @@
     border-radius: 8px;
     z-index: 1;
     filter: drop-shadow(0 4px 16px rgba(17, 42, 128, .08));
+    margin: 0 auto;
+    scroll-behavior: smooth;
 }
 
-.introduct_form:before {
+.introduct_area:before {
     width: 7px;
     position: absolute;
     display: block;
@@ -25,3 +32,30 @@
     z-index: 2;
     border-radius: 8px 0 0 8px;
 }
+.form-label.h5{
+   font-size:1.125rem;
+}
+
+.fixed_btn_wrap{
+   position:fixed;
+   right:355px;
+   top:24%;
+   display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:5px;
+}
+.fixed_btn_wrap a {
+    padding: 8px;
+    border: 1px solid var(--violet80);
+    border-radius: 5px;
+    line-height: 1;
+    cursor: pointer;
+}
+.fixed_btn_wrap a i {
+    color: var(--violet80);
+    background: #fff;
+    font-size: 16px;
+}
+.fixed_btn_wrap a.remove{display:none;}
+.fixed_btn_wrap a.active{background:var(--violet80); color:#fff;}

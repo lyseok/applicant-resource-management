@@ -12,11 +12,16 @@ public interface IntroductionMapper {
 	public List<IntroductionVO> selectIntroductionList(String userId);
 	// 단건 조회
 	public IntroductionVO selectIntroductionDetail(String no);
-	// 등록 조회
+	// 등록
 	public int insertIntroduction(IntroductionVO introductionVO);
-	// 수정 조회
+	// 수정
 	public int updateIntroduction(IntroductionVO introductionVO);
+	// 삭제
+	public void deleteIntroduction(IntroductionVO introductionVO);
+	// 검색 조회
+	public List<IntroductionVO> selectIntroductionSearch(String name);
+		
 	// 삭제 조회
-	public int deleteIntroduction(IntroductionVO introductionVO);
+	// public int deleteIntroduction(IntroductionVO introductionVO);
 	
 }
