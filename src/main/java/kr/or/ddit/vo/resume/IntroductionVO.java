@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "introductionNo")
 public class IntroductionVO implements Serializable{
 	private String introductionDeleteDate;
+	private String introductionSubmitYn;
 	private String introductionNo;
 	private String userId;
 	@NotBlank(message = "자소서 명은 필수 입력 항목입니다.")
