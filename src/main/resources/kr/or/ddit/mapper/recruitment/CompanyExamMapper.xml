@@ -17,6 +17,14 @@
 	FROM COMPANY_EXAM WHERE COM_EXAM_NO = #{comExamNo}
 	</select>
 	
+	<select id="selectCompanyExamListById" resultType="CompanyExamVO">
+	SELECT 
+		COM_EXAM_NO
+		, USER_ID
+		, COM_EXAM_NAME 
+	FROM COMPANY_EXAM WHERE USER_ID = #{userId}
+	</select>
+	
 	<insert id="insertCompanyExam">
 	<selectKey resultType="string" keyProperty="comExamNo" order="BEFORE">
     SELECT
@@ -41,8 +49,24 @@
 	WHERE COM_EXAM_NO = #{comExamNo}
 	</update>
 	
+	<delete id="deleteOptionsByExamNo">
+    DELETE FROM COM_EXAM_OPTION
+     WHERE COM_QUESTIONS_NO IN (
+       SELECT COM_QUESTIONS_NO
+         FROM COM_EXAM_QUESTIONS
+        WHERE COM_EXAM_NO = #{comExamNo}
+     )
+  </delete>
+
+  <delete id="deleteQuestionsByExamNo">
+    DELETE FROM COM_EXAM_QUESTIONS
+     WHERE COM_EXAM_NO = #{comExamNo}
+  </delete>
+	
 	<delete id="deleteCompanyExam">
 	DELETE FROM COMPANY_EXAM 
 	WHERE COM_EXAM_NO = #{comExamNo}
 	</delete>
+	
+	
 </mapper>

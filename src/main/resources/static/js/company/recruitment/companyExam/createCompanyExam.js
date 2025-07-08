@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () =>{
 			card.id = `qCard${idx}`;
 			
 			card.innerHTML = `
-								<h3>문항 ${idx + 1}</h3>
-								<textarea id= "qText${idx }" rows="2" cols="60" placeholder = "문항 내용을 입력"></textarea>
+								<h3>문제 ${idx + 1}</h3>
+								<textarea id= "qText${idx }" rows="2" cols="60" placeholder = "문제 내용을 입력"></textarea>
 								<div id = "optList${idx }"></div>	
 								<button type = "button" class = "btn" id = "addOptBtn${idx }"> + 보기 추가</button>`;
 			questionContainer.append(card);
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 		  
 		      for (let i = 0; i < questionCount; i++) {
 		        const qText = document.getElementById(`qText${i}`).value.trim();
-		        if (!qText) throw new Error(`문항 ${i + 1} 내용을 입력하세요!`);
+		        if (!qText) throw new Error(`문제 ${i + 1} 내용을 입력하세요!`);
 		        const respQ = await axios.post(
 		          '/ajax/company/companyExam/question',
 		          { comExamNo, comExamContents: qText }
@@ -73,12 +73,12 @@ document.addEventListener('DOMContentLoaded', () =>{
 		        const optsContainer = document.getElementById(`optList${i}`);
 		        const radios = document.getElementsByName(`correct${i}`);
 		        const optionElems = optsContainer.querySelectorAll('input[type=text]');
-		        if (optionElems.length === 0) throw new Error(`문항 ${i + 1} 보기를 하나 이상 추가하세요!`);
+		        if (optionElems.length === 0) throw new Error(`문제 ${i + 1} 보기를 하나 이상 추가하세요!`);
 		
 		     
 		        for (let j = 0; j < optionElems.length; j++) {
 		          const content = optionElems[j].value.trim();
-		          if (!content) throw new Error(`문항 ${i + 1}, 보기 ${j + 1} 내용을 입력하세요!`);
+		          if (!content) throw new Error(`문제 ${i + 1}, 보기 ${j + 1} 내용을 입력하세요!`);
 		          const isCorrect = Array.from(radios).find(r => r.checked && +r.value === j) ? 'Y' : 'N';
 		          await axios.post(
 		            '/ajax/company/companyExam/option',
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 		        }
 		      }
 		
-		      alert('시험·문항·보기 모두 생성 완료!');
+		      alert('시험·문제·보기 모두 생성 완료!');
 		      window.location.reload();
 		    } catch (e) {
 		      alert(e.message);

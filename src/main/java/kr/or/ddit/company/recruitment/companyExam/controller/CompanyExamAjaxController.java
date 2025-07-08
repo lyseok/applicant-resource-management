@@ -1,7 +1,13 @@
 package kr.or.ddit.company.recruitment.companyExam.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +55,29 @@ public class CompanyExamAjaxController {
 	}
 	
 	
-	   private String getLoginId() {
-	        return SecurityContextHolder.getContext().getAuthentication().getName();
-	    }
+	@GetMapping("/list")
+	public List<CompanyExamVO> examMyList(){
+		List<CompanyExamVO>	list =  companyExamService.readCompanyExamListById("testCompany");
+		log.info("list : {}", list);
+		return list;
+	}
+	
+	@DeleteMapping("/delete{examNo}")
+	public ResponseEntity<Void> examDelete(@PathVariable("examNo") String examNo) {
+		boolean success = companyExamService.removeCompanyExam(examNo);
+		if (success) {
+			 return ResponseEntity.noContent().build();
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	
+	
+	
+	
+	public String getUserId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	return authentication.getName();
+	}
 }
