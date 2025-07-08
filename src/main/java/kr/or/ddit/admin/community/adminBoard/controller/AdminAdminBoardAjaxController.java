@@ -49,8 +49,8 @@ public class AdminAdminBoardAjaxController {
 	
 	@PostMapping("/{boardTypeCode}")
 	public Map<String, Object> inBoard(
-			@PathVariable String boardTypeCode
-			, @RequestBody AdminBoardVO board
+		@PathVariable String boardTypeCode
+		, @RequestBody AdminBoardVO board
 	) {
 		service.createAdminBoard(board);
 	    return Map.of("ok", true);

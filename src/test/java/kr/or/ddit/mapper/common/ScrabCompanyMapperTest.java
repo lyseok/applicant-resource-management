@@ -28,11 +28,12 @@ class ScrabCompanyMapperTest {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 		
 		SCV.setUserId("QWE1");
+		SCV.setCompanyId("QWER5");
 		
+		log.info("companyId 안 넣고도 값 나오나 확인 : {}", mapper.selectScrabCompanyByPk(SCV));
 		
-		mapper.selectScrabCompanyByPk(SCV);
-		
-		
+		assertDoesNotThrow(()->mapper.selectScrabCompanyByPk(SCV));
+		assertNotNull(mapper.selectScrabCompanyByPk(SCV));
 	}
 
 	@Test
