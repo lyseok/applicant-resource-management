@@ -4,9 +4,25 @@
 <head>
 <meta charset="UTF-8">
 	<title>기업리뷰</title>
-	<link rel="stylesheet" href="/dist/assets/css/main.css" >
+	 <style>
+    .career-card {
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color .2s, background-color .2s;
+    }
+    .career-card.active {
+      border-color: #6f42c1;           
+      background-color: #f3e8ff;      
+    }
+    #submitBtn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 <body>
+
+
 
 <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
@@ -36,12 +52,10 @@
 	
 	
 	
-<c:url var="insertUrl" value="/member/companyReview/form" />
-<c:url var="myReviewUrl" value="/member/companyReview/myReview" />
 
+<c:url var="myReviewUrl" value="/member/companyReview/myReview" />
 	<div class="card">
 	  <div class="card-body">
-	  
 	      <button type="button" class="btn btn_violet" data-bs-toggle="modal" data-bs-target="#resumeModal">
 	        리뷰 등록하기
 	      </button>
@@ -51,24 +65,72 @@
 	  </div>
 	</div>
 	
-	
 
+    
 <div class="modal fade" id="resumeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="resumeModalLabel">리뷰를 등록할 기업을 선택해주세요.</h5>
+        <h5 class="modal-title" id="resumeModalLabel">근무했던 기업 중 하나를 선택해주세요</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-       
-      </div>
+     	 <div class="modal-body">
+			<div>
+				  <c:forEach items="${resumes}" var="resume">
+				    <c:forEach items="${resume.careerList}" var="career">
+				      <c:if test="${not empty career.careerNo and not empty career.company}">
+				        <div class="card mb-2 career-card" data-careerno="${career.careerNo }">
+				          <div class="card-body">
+				            	<strong>${career.company.comName}</strong><br>
+				            	${career.department }<br>
+				            	${career.responsibility }<br>
+				            	${career.startWorkDate } - ${career.retireDate }
+				          </div>
+				        </div>
+				      </c:if>
+				    </c:forEach>
+				  </c:forEach>
+				</div>
+         </div>
+  
+  
+  <c:url var="formUrl" value="/member/companyReview/form" />
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a class="btn btn_violet" href="${insertUrl }">리뷰 등록하러 가기</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button id = "submitBtn" type = "button" class = "btn btn_violet">리뷰 등록하러가기 </button>
       </div>
     </div>
   </div>
 </div>
 	
+
+ <script>
+    (function() {
+      const cards    = document.querySelectorAll('.career-card');
+      const submit   = document.getElementById('submitBtn');
+      const baseUrl  = '${formUrl}';
+      let selectedNo = null;
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+
+          cards.forEach(c => c.classList.remove('active'));
+   
+          card.classList.add('active');
+          
+          selectedNo = card.dataset.careerno;
+          submit.disabled = false;
+        });
+      });
+
+      submit.addEventListener('click', () => {
+        if (selectedNo) {
+      
+          window.location.href = baseUrl + "/" +  encodeURIComponent(selectedNo);
+        }
+      });
+    })();
+  </script>
+
+
 </body>

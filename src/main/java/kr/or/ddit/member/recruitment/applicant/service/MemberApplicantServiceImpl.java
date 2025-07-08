@@ -23,7 +23,7 @@ public class MemberApplicantServiceImpl implements MemberApplicantService {
 	
 	
 	@Override
-	public List<ApplicantMapper> selectApplicantList() {
+	public List<ApplicantVO> selectApplicantList() {
 		
 		return AlMapper.selectApplicantList();
 	}
