@@ -19,3 +19,22 @@ formEl.addEventListener('submit', async (e) => {
     }
   }
 });
+
+const memAuth = document.querySelector('#mem-auth');
+const compAuth = document.querySelector('#comp-auth');
+const adminAuth = document.querySelector('#admin-auth');
+const username = document.querySelector('#username');
+const password = document.querySelector('#password');
+
+memAuth.addEventListener("click", () => {
+	username.value='testUser';
+	password.value='java';
+});
+compAuth.addEventListener("click", () => {
+	username.value='testCompany';
+	password.value='java';
+});
+adminAuth.addEventListener("click", () => {
+	username.value='testAdmin';
+	password.value='java';
+});

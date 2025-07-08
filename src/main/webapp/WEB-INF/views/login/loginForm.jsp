@@ -41,6 +41,10 @@
 								<div class="login-capslock" id="ipNotice">
 									<em>Caps Lock</em>이 켜져 있습니다.<span class="mainIcn mainIcnArrUp"></span>
 								</div>
+								
+								<div class="btn btn-secondary" id='mem-auth'>일반회원</div>
+								<div class="btn btn-secondary" id="comp-auth">기업회원</div>
+								<div class="btn btn-secondary" id="admin-auth">관리자</div>
 							</section>
 
 							<section class="login-social">
