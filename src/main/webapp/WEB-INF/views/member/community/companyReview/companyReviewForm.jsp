@@ -18,29 +18,38 @@
 <c:set var="options" value="${['매우 아니다','아니다','보통','그렇다','매우 그렇다']}" />
 
 
-<form action="" method = "post">
+<form action="${pageContext.request.contextPath}/member/companyReview" method = "post">
 	<input type = "hidden" name = "comId" value = "${career.comId }"/>
-	<input type = "hidden" name = "comId" value = "${career.jobCode }"/>
-	<input type = "hidden" name = "comId" value = "${career.tenure }"/>
+	<input type = "hidden" name = "jobCode" value = "${career.jobCode }"/>
+	<input type = "hidden" name = "workingYn" value = "${career.tenure }"/>
+	<input type="hidden" name="companyReviewStatus" value="N" />
 
-	<c:forEach items="${questionList }" var = "q" varStatus = "loop">
-		<div class = "card mb-3">
-			<div class ="card-body">
-				   <p class="h5">${loop.index + 1}. ${q.codeName}</p>
-				   
-				   
-				   <div class = "d-flex">
-				   		<c:forEach var = "opt" items="${['매우 아니다','아니다','보통','그렇다','매우 그렇다']}" varStatus="os">
-				   			<div class="form-check form-check-inline">
-				   				<input class = "form-check-input" type = "radio"  name="score_${q.codeDetailNo}"  id="q${loop.index}_opt${os.index}"  value="${os.index + 1}"   required />
-				   				<label class = "form-check-label" for = "q${loop.index }_opt${os.index}">${opt }</label>
-				   			</div>
-				   		</c:forEach>
-				   </div> 
-				   <input type = "hidden" name = "subject_${q.codeDetailNo }" value = "${q.codeDetailNo}">
-			</div>
-		</div>
-	</c:forEach>
+	<c:set var="options" value="${['매우 아니다','아니다','보통','그렇다','매우 그렇다']}" />
+  <c:forEach items="${questionList}" var="q" varStatus="ls">
+    <div class="card mb-3">
+      <div class="card-body">
+        <p class="h5">${ls.index + 1}. ${q.codeName}</p>
+        <div class="d-flex">
+          <c:forEach var="opt" items="${options}" varStatus="os">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input"
+                     type="radio"
+                     name="companyReviewQuestion[${ls.index}].companyReviewScore"
+                     id="q${ls.index}_opt${os.index}"
+                     value="${os.index + 1}"
+                     required/>
+              <label class="form-check-label" for="q${ls.index}_opt${os.index}">
+                ${opt}
+              </label>
+            </div>
+          </c:forEach>
+        </div>
+        <input type="hidden"
+               name="companyReviewQuestion[${ls.index}].reviewSubjectCode"
+               value="${q.codeDetailNo}" />
+      </div>
+    </div>
+  </c:forEach>
 	
 	
 	<div>

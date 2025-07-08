@@ -16,7 +16,7 @@ public interface MemberCompanyReviewService {
 	
 	public void createCompanyReview(CompanyReviewVO companyReview);
 	
-	public void updateRemoveStatusMyCompanyReview(CompanyReviewVO companyReview);
+	public boolean updateRemoveStatusMyCompanyReview(CompanyReviewVO companyReview);
 	
 	public List<CompanyReviewVO> readMyCompanyReviewList(String userId);
 	

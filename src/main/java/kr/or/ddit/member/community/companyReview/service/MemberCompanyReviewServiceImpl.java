@@ -5,10 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.mapper.common.CmnCodeGroupMapper;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.MemberMapper;
+import kr.or.ddit.mapper.community.CompanyReivewQuestionMapper;
 import kr.or.ddit.mapper.community.CompanyReviewMapper;
 import kr.or.ddit.mapper.resume.CareerMapper;
 import kr.or.ddit.mapper.resume.ResumeMapper;
@@ -32,7 +34,7 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	private final MemberMapper memberMapper;
 	private final ResumeMapper resumeMapper;
 	private final CareerMapper careerMapper;
-	
+	private final  CompanyReivewQuestionMapper companyReivewQuestionMapper; 
 
 	@Override
 	public List<CompanyVO> readCompanyList() {
@@ -45,14 +47,20 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 		
 	}
 
+	
+	@Transactional
 	@Override
 	public void createCompanyReview(CompanyReviewVO companyReview) {
-		companyReviewMapper.insertCompanyReview(companyReview);
+		 companyReviewMapper.insertCompanyReview(companyReview);
+		 for(CompanyReviewQuestionVO q : companyReview.getCompanyReviewQuestion()) {
+			 q.setCompanyReviewNo(companyReview.getCompanyReviewNo());
+			 companyReivewQuestionMapper.insertCompanyReviewQuestionWithAnswer(q);
+		 }
 	}
 
 	@Override
-	public void updateRemoveStatusMyCompanyReview(CompanyReviewVO companyReview) {
-		companyReviewMapper.updateDeleteStatusMyCompanyReview(companyReview);
+	public boolean updateRemoveStatusMyCompanyReview(CompanyReviewVO companyReview) {
+		return companyReviewMapper.updateDeleteStatusMyCompanyReview(companyReview);
 		
 	}
 

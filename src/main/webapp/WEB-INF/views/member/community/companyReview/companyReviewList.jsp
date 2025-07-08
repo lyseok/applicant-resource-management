@@ -24,10 +24,6 @@
 
 
 
-${resumes }
-
-
-
 <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand">리뷰가 궁금한 기업을 검색해보세요!</a>
@@ -58,10 +54,8 @@ ${resumes }
 	
 
 <c:url var="myReviewUrl" value="/member/companyReview/myReview" />
-
 	<div class="card">
 	  <div class="card-body">
-	  
 	      <button type="button" class="btn btn_violet" data-bs-toggle="modal" data-bs-target="#resumeModal">
 	        리뷰 등록하기
 	      </button>
@@ -80,9 +74,7 @@ ${resumes }
         <h5 class="modal-title" id="resumeModalLabel">근무했던 기업 중 하나를 선택해주세요</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-     
      	 <div class="modal-body">
-     
 			<div>
 				  <c:forEach items="${resumes}" var="resume">
 				    <c:forEach items="${resume.careerList}" var="career">
@@ -90,6 +82,8 @@ ${resumes }
 				        <div class="card mb-2 career-card" data-careerno="${career.careerNo }">
 				          <div class="card-body">
 				            	<strong>${career.company.comName}</strong><br>
+				            	${career.department }<br>
+				            	${career.responsibility }<br>
 				            	${career.startWorkDate } - ${career.retireDate }
 				          </div>
 				        </div>
@@ -101,12 +95,9 @@ ${resumes }
   
   
   <c:url var="formUrl" value="/member/companyReview/form" />
- 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        
-        <a class="btn btn_violet" href="${formUrl }">리뷰 등록하러 가기</a>
-        <button id = "submitBtn" type = "button" class = "btn btn_violet">등록하러가기</button>
+        <button id = "submitBtn" type = "button" class = "btn btn_violet">리뷰 등록하러가기 </button>
       </div>
     </div>
   </div>
