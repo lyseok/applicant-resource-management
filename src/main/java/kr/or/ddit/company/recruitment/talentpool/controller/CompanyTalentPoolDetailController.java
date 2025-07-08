@@ -13,20 +13,19 @@ import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping
+
 @Slf4j
 public class CompanyTalentPoolDetailController {
 
 	@Autowired
 	private CompanyTalentService CTservice; 
 	
-	@GetMapping("/TalentPool/detail/{no}")
+
 	public String detail(@PathVariable String no, Model model) {
 		ResumeVO detail = CTservice.selectResumeDetail(no);
 		
-		
 	    model.addAttribute("detail", detail); // 이 이름에 주의
 	    System.out.println("디테일 값 : " +detail);
-	    return "company/recruitment/TalentPoolDetail";
+	    return "company/recruitment/talentpooldetail";
 	}
 }

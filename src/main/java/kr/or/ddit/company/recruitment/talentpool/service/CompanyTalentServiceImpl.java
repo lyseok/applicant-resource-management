@@ -1,13 +1,18 @@
 package kr.or.ddit.company.recruitment.talentpool.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.common.TalentPoolMapper;
+import kr.or.ddit.vo.common.CityCodeVO;
+import kr.or.ddit.vo.common.JobVO;
 import kr.or.ddit.vo.common.MemberVO;
+import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
+import kr.or.ddit.vo.resume.EducationVO;
 import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 
@@ -48,7 +53,7 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 	}
 
 	@Override
-	public List<CareerVO> selectTalentPoolList() {
+	public List<ResumeVO> selectTalentPoolList() {
 		// TODO Auto-generated method stub
 		return TPMapper.selectTalentPoolList();
 	}
@@ -57,6 +62,35 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 	public ResumeVO selectResumeDetail(String userName) {
 		// TODO Auto-generated method stub
 		return TPMapper.selectResumeDetail(userName);
+	}
+
+	@Override
+	public List<TopJobVO> selectTopJob() {
+		// TODO Auto-generated method stub
+		return TPMapper.selectTopJob();
+	}
+
+	@Override
+	public List<JobVO> selectJob() {
+		// TODO Auto-generated method stub
+		return TPMapper.selectJob();
+	}
+
+	@Override
+	public List<CityCodeVO> selectlocation() {
+		// TODO Auto-generated method stub
+		return TPMapper.selectlocation();
+	}
+
+	@Override
+	public List<EducationVO> selecteducation() {
+		// TODO Auto-generated method stub
+		return TPMapper.selecteducation();
+	}
+	
+	@Override
+	public List<ResumeVO> selectTalentPoolListByFilter(Map<String, Object> filter) {
+	    return TPMapper.selectTalentPoolListByFilter(filter);
 	}
 
 //	@Override

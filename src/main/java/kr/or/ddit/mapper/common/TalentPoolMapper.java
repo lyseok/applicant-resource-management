@@ -1,11 +1,16 @@
 package kr.or.ddit.mapper.common;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.ddit.vo.common.CityCodeVO;
+import kr.or.ddit.vo.common.JobVO;
 import kr.or.ddit.vo.common.MemberVO;
+import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
+import kr.or.ddit.vo.resume.EducationVO;
 import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 @Mapper
@@ -26,10 +31,19 @@ public int insertMember(MemberVO member);
 	
 	public int updateMember(MemberVO member);
 	
-	public List<CareerVO> selectTalentPoolList();
+	public List<ResumeVO> selectTalentPoolList();
 	
 	public List<MySkillVO> selectSkillList();
 	 
 	public ResumeVO selectResumeDetail(String userName);
 	
+	public List<TopJobVO> selectTopJob();
+	
+	public List<JobVO> selectJob();
+	
+	public List<CityCodeVO> selectlocation();
+	
+	public List<EducationVO> selecteducation();
+
+	public List<ResumeVO> selectTalentPoolListByFilter(Map<String, Object> filter);
 }

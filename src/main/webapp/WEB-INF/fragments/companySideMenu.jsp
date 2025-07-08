@@ -122,7 +122,7 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">인재풀</span></li>
      
 	 <li class="menu-item">
-       <a href="/company" class="menu-link">
+       <a href="/talentpool/list" class="menu-link">
          <i class="menu-icon tf-icons bx bx-user-search"></i>
          <div data-i18n="Basic">인재검색</div>
        </a>
