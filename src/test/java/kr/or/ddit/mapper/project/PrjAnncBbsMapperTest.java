@@ -39,7 +39,7 @@ class PrjAnncBbsMapperTest {
 	void testInsertPrjAnncBbs() {
 		PrjAnncBbsVO vo = new PrjAnncBbsVO();
 		vo.setUserId("user01"); // 사용자 ID 입력
-		vo.setPrjEmpTitle("테스트 게시글"); // 프로젝트 담당 제목
+		vo.setPrjEmpTitle("테스트 게시글3"); // 프로젝트 담당 제목
 		vo.setPrjTopic("테스트입니다"); // 프로젝트 주제
 		vo.setPrjStartPlanDate("20250704"); // 시작 예정일
 		vo.setPrjEndPlanDate("20250804"); // 종료 예정일

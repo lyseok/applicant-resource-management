@@ -16,7 +16,29 @@
 	FROM PROJECT
 </select>
 
-<select id="selectProjectUserIdList">
+
+<resultMap type="ProjectVO" id="ProjectResultMap">
+    <!-- ProjectVO 매핑: B_ prefix -->
+    <id property="prjNo" column="B_PRJ_NO" />
+    <result property="userId" column="B_USER_ID" />
+    <result property="projectBoardNo" column="PROJECT_BOARD_NO" />
+    <result property="projectName" column="PROJECT_NAME" />
+    <result property="projectContents" column="PROJECT_CONTENTS" />
+    <result property="projectStatus" column="PROJECT_STATUS" />
+    <result property="createDate" column="CREATE_DATE" />
+    <result property="finishDate" column="FINISH_DATE" />
+    <result property="deleteDate" column="B_DELETE_DATE" />
+
+    <!-- PrjMemVO 리스트 매핑: A_ prefix -->
+    <collection property="prjMemList" ofType="PrjMemVO">
+        <id property="prjNo" column="A_PRJ_NO" />
+        <result property="userId" column="A_USER_ID" />
+        <result property="authorityCode" column="AUTHORITY_CODE" />
+        <result property="deleteDate" column="A_DELETE_DATE" />
+    </collection>
+</resultMap>
+
+<select id="selectProjectUserIdList" resultMap="ProjectResultMap">
 	SELECT 
 	    A.PRJ_NO AS A_PRJ_NO,
 	    A.USER_ID AS A_USER_ID,
