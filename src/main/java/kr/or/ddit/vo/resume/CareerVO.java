@@ -3,6 +3,7 @@ package kr.or.ddit.vo.resume;
 import java.io.Serializable;
 
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.MemberVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -29,4 +30,11 @@ public class CareerVO implements Serializable{
 	
 	//추가
 	private CompanyVO company;
+	private  ResumeVO resume;
+	private String userName;
+	private String userId;
+	private MySkillVO myskill;
+	private String mySkillName;
+	
+	
 }

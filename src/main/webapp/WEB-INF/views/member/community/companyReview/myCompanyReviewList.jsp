@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,23 +30,50 @@
     }
   </style>
 
+<script defer src="/js/member/community/companyView/myReviewDelete.js"></script>
 </head>
 <body>
   <div >
     <p class="h1">${member.memName } 님의 기업 리뷰 </p>
-   
   </div>
 
  <c:forEach items="${myReviewList}" var="mList">
   <div class="card">
     <div class="card-body review-card-body">
       <span>${mList.company.comName}</span>
-      <button type="button" class="delete-btn">
-        삭제
-      </button>
+       <c:choose>
+      
+        <c:when test="${mList.status == 'Y'}">
+          <button type="button"
+                  class="btn-secondary"
+                  disabled>
+            삭제요청됨
+          </button>
+        </c:when>
+
+    
+        <c:otherwise>
+          <button type="button"
+                  class="delete-btn"
+                  data-review-no="${mList.companyReviewNo}">
+            삭제
+          </button>
+        </c:otherwise>
+      </c:choose>
+    
+    
     </div>
   </div>
 </c:forEach>
-   
+
+
+ 
+	   	
+
+	   	
+	   	
+  
 </body>
 </html>
+
+
