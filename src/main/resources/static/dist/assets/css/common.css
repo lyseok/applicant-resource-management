@@ -50,6 +50,9 @@
 .h40{height:40px !important;}
 .h50{height:50px !important;}
 
+/* 최소높이 - min-height */
+.min-ht300{min-height:300px !important; }
+
 /* line-height */
 .lh40{line-height:40px !important;}
 .lh50{line-height:50px !important;}
@@ -60,6 +63,7 @@
 .btn.btn_violet{background-color:var(--violet90); border-color:var(--violet80); color:#fff; font-weight:bold;}
 .btn.btn_violet_line{background-color:#fff; border-color:var(--violet60); color:var(--violet100); font-weight:bold;}
 .btn.btn_gray_line{background-color:#fff; border-color:var(--gray60); color:var(--gray80); font-weight:bold;}
+.btn.btn_red_line{background-color:#fff; border-color:#b70000; color:#b70000; font-weight:bold;}
 
 
 /* 말줄임 2줄 */
