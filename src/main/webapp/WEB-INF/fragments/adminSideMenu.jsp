@@ -108,19 +108,19 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">게시판관리</span></li>
      
 	 <li class="menu-item">
-       <a href="/admin/community/adminBoard/aboardList" class="menu-link">
+       <a href="/admin/community/adminBoard/aboardList/type?boardTypeCode=BRDD-003" class="menu-link">
          <i class="menu-icon tf-icons bx bx-envelope-open"></i>
          <div data-i18n="Basic">공지사항</div>
        </a>
      </li>
 	 <li class="menu-item">
-       <a href="/admin" class="menu-link">
+       <a href="/admin/community/adminBoard/aboardList/type?boardTypeCode=BRDD-002" class="menu-link">
          <i class="menu-icon tf-icons bx bx-clipboard-detail"></i>
          <div data-i18n="Basic">FAQ게시판</div>
        </a>
      </li>
 	 <li class="menu-item">
-       <a href="/admin" class="menu-link">
+       <a href="/admin/community/adminBoard/aboardList/type?boardTypeCode=BRDD-001" class="menu-link">
          <i class="menu-icon tf-icons bx bx-message-question-mark"></i>
          <div data-i18n="Basic">문의게시판</div>
        </a>

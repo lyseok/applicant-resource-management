@@ -23,7 +23,7 @@ import kr.or.ddit.vo.community.CommuBoardVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/admin/commuBoard")
+@RequestMapping("/admin/community/commuBoard")
 @RequiredArgsConstructor
 public class AdminCommuBoardController {
 
@@ -44,7 +44,7 @@ public class AdminCommuBoardController {
 	}
 
 	// 게시글 단건조회
-	@GetMapping("/detail")
+	@GetMapping("/cboardDetail")
 	public String cboardDetail(String commuPostNo, Model model) {
 		CommuBoardVO cboard = service.readCommuBoard(commuPostNo).get();  
 		model.addAttribute("cboard", cboard);
@@ -55,7 +55,7 @@ public class AdminCommuBoardController {
 	}
 
 	// 카테고리별 게시글 목록조회
-	@GetMapping("/list/type")
+	@GetMapping("/cboardList/type")
 	public String cboardType(String categoryCode, Model model) {
 		List<CommuBoardVO> cboardList = service.readCommuBoardList(categoryCode);
 		model.addAttribute("cboardList", cboardList);
@@ -67,7 +67,7 @@ public class AdminCommuBoardController {
 	}
 		
 	// 등록 폼으로 이동
-	@GetMapping("/form")
+	@GetMapping("/cboardForm")
 	public String formUI(Model model) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
@@ -75,7 +75,7 @@ public class AdminCommuBoardController {
 	}
 	
 	// 수정 폼으로 이동
-	@GetMapping("/form/edit")
+	@GetMapping("/cboardForm/edit")
 	public String editForm(String commuPostNo, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {
 			CommuBoardVO cboard = service.readCommuBoard(commuPostNo).get();
@@ -87,7 +87,7 @@ public class AdminCommuBoardController {
 	}
 
 	// 폼 입력 데이터 처리
-	@PostMapping("/form/insert")
+	@PostMapping("/cboardForm/insert")
 	public String cboardForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) CommuBoardVO cboard
 		, BindingResult errors
@@ -110,7 +110,7 @@ public class AdminCommuBoardController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/form/update")
+	@PutMapping("/cboardForm/update")
 	public String cboardEdit(
 		String commuPostNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) CommuBoardVO cboard
@@ -133,7 +133,7 @@ public class AdminCommuBoardController {
 	}
 	
 	// 게시글 단건 삭제
-	@DeleteMapping("/remove")
+	@DeleteMapping("/cboardDetail/remove")
 	public String cboardDelete(String commuPostNo, Model model) {
 		service.removeCommuBoard(commuPostNo);
 		

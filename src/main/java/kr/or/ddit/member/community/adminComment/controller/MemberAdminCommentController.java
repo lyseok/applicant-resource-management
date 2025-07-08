@@ -23,7 +23,7 @@ import kr.or.ddit.vo.community.AdminCommentVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/member/adminComment")
+@RequestMapping("/member/community/adminComment")
 @RequiredArgsConstructor
 public class MemberAdminCommentController {
 
@@ -44,7 +44,7 @@ public class MemberAdminCommentController {
 	}
 	
 	// 댓글 단건조회
-	@GetMapping("/detail")  //"/admin/adminComment/detail?commentNo=ADCM000002"
+	@GetMapping("/acommentDetail")  //"/admin/adminComment/detail?commentNo=ADCM000002"
 	public String acommentDetail(String commentNo, Model model) {
 		AdminCommentVO acomment = service.readAdminCommentbyPk(commentNo).get();  
 		//service가 널일 일은 없음, commentNo는 없으면 false 처리됨
@@ -57,7 +57,7 @@ public class MemberAdminCommentController {
 	}
 	
 	// 게시글별 댓글 목록조회
-	@GetMapping("/list/board")  //"/admin/adminComment/list/board?boardNo=ABNO000001"
+	@GetMapping("/acommentList/board")  //"/admin/adminComment/list/board?boardNo=ABNO000001"
 	public String acommentType(String boardNo, Model model) {
 		List<AdminCommentVO> acommentList = service.searchAdminCommentCommentList(boardNo);
 		model.addAttribute("acommentList", acommentList);
@@ -69,7 +69,7 @@ public class MemberAdminCommentController {
 	}
 	
 	// 댓글 목록조회
-	@GetMapping("/list")
+	@GetMapping("/acommentList")
 	public String acommentList(Model model) {
 		List<AdminCommentVO> acommentList = service.searchAdminCommentList();
 		model.addAttribute("acommentList", acommentList);
@@ -80,7 +80,7 @@ public class MemberAdminCommentController {
 	}
 		
 	// 등록 폼으로 이동
-	@GetMapping("/form")
+	@GetMapping("/acommentForm")
 	public String formUI(Model model) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
@@ -88,7 +88,7 @@ public class MemberAdminCommentController {
 	}
 	
 	// 수정 폼으로 이동
-	@GetMapping("/form/edit")  //"/admin/adminComment/form/edit?commentNo=ADCM000003"
+	@GetMapping("/acommentForm/edit")  //"/admin/adminComment/form/edit?commentNo=ADCM000003"
 	public String editForm(String commentNo, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {  //모델에 acomment가 없으면, db에서 가져옴
 			AdminCommentVO acomment = service.readAdminCommentbyPk(commentNo).get();
@@ -100,7 +100,7 @@ public class MemberAdminCommentController {
 	}
 	
 	// 폼 입력 데이터 처리
-	@PostMapping("/form/insert")
+	@PostMapping("/acommentForm/insert")
 	public String acommentForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) AdminCommentVO acomment
 		, BindingResult errors
@@ -123,7 +123,7 @@ public class MemberAdminCommentController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/form/update")
+	@PutMapping("/acommentForm/update")
 	public String acommentEdit(
 		String commentNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) AdminCommentVO acomment
@@ -146,7 +146,7 @@ public class MemberAdminCommentController {
 	}
 	
 	// 댓글 단건 삭제
-	@DeleteMapping("/remove")
+	@DeleteMapping("/acommentDetail/remove")
 	public String acommentDelete(String commentNo, Model model) {
 		service.removeAdminComment(commentNo);
 		

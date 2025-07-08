@@ -3,11 +3,11 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-<title>띹잡 고객센터 | 게시글 상세 입력</title>
+<title>띹잡 고객센터 | 게시글 등록</title>
 
 <body>
 
-	<h4>관리자 게시글 입력 폼</h4>
+	<h4>관리자 게시판 등록폼</h4>
 
 <form:form action="/admin/adminBoard/form/insert" modelAttribute="aboard" method="post">
     

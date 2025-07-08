@@ -23,7 +23,7 @@ import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/company/adminBoard")
+@RequestMapping("/company/community/adminBoard")
 @RequiredArgsConstructor
 public class CompanyAdminBoardController {
 
@@ -44,7 +44,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 게시글 단건조회
-	@GetMapping("/detail")
+	@GetMapping("/aboardDetail")
 	public String aboardDetail(String boardNo, Model model) {
 		AdminBoardVO aboard = service.readAdminBoardByPk(boardNo).get();  
 		//service가 널일 일은 없음, boardNo는 없으면 false 처리됨
@@ -57,7 +57,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 유형별 게시글 목록조회
-	@GetMapping("/list/type")
+	@GetMapping("/aboardList/type")
 	public String aboardType(String boardTypeCode, Model model) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(boardTypeCode);
 		model.addAttribute("aboardList", aboardList);
@@ -69,7 +69,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 게시글 목록조회
-	@GetMapping("/list")
+	@GetMapping("/aboardList")
 	public String aboardList(Model model) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardList();
 		model.addAttribute("aboardList", aboardList);
@@ -80,7 +80,7 @@ public class CompanyAdminBoardController {
 	}
 		
 	// 등록 폼으로 이동
-	@GetMapping("/form")
+	@GetMapping("/aboardForm")
 	public String formUI(Model model) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
@@ -88,7 +88,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 수정 폼으로 이동
-	@GetMapping("/form/edit")
+	@GetMapping("/aboardForm/edit")
 	public String editForm(String boardNo, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {  //모델에 aboard가 없으면, db에서 가져옴
 			AdminBoardVO aboard = service.readAdminBoardByPk(boardNo).get();
@@ -100,7 +100,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 폼 입력 데이터 처리
-	@PostMapping("/form/insert")
+	@PostMapping("/aboardForm/insert")
 	public String aboardForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) AdminBoardVO aboard
 		, BindingResult errors
@@ -123,7 +123,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/form/update")
+	@PutMapping("/aboardForm/update")
 	public String aboardEdit(
 		String boardNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) AdminBoardVO aboard
@@ -146,7 +146,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 게시글 단건 삭제
-	@DeleteMapping("/remove")
+	@DeleteMapping("/aboardDetail/remove")
 	public String aboardDelete(String boardNo, Model model) {
 		service.removeAdminBoard(boardNo);
 		
