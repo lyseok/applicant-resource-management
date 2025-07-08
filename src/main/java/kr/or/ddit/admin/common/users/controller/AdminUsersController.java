@@ -55,7 +55,7 @@ public class AdminUsersController {
 		return "admin/common/users/userList";
 	}
 	
-	// 회원 단건조회
+	// 회원 아이디로 단건조회
 	@GetMapping("/userDetail")
 	public String userDetail(
 		@RequestParam(value = "userId", required = false) String userId
@@ -160,7 +160,7 @@ public class AdminUsersController {
 		return "admin/common/users/userDetail";
 	}
 	
-	// 소셜회원 단건조회
+	// 회원 이메일로 단건조회
 	@GetMapping("/userDetail/social")
 	public String socialUserDetail(
 		@RequestParam(value = "email", required = false) String email
