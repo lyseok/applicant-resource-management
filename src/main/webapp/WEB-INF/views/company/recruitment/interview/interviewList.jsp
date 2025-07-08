@@ -14,7 +14,7 @@
 	<p class="h1 mb-3 fw-bold">면접 목록</p>
 	<div
 		class="border-bottom d-flex justify-content-between align-items-end pb-2">
-		<p class="fs-14">총 ${introductionList.size() }건</p>
+		<p class="fs-14">총 <span id="list-size">0</span> 건</p>
 		<div class="TypoBox searchBar">
 			<div class="searchBarWrap">
 				<label class="searchBarLabel" for="listKeyword">검색어</label> <input
@@ -33,45 +33,67 @@
 		<div class="PostList_postList">
 			<ul id='interviewList'>
 			
-				<li class="PostList_postItem">
-					<div class="PostList_link ">
-						<div class="PostList_post">
-							<div class="ListItem_post">
-								<div class="ListItem_post_item">
-									<h3 class="h4 fw-bold">백엔드 개발자 모집 공고</h3>
-									<h3 class="h5">업무내용</h3>
-								</div>
-							</div>
-							<div class="ListItem_info">
-								<div class="ListItem_profile">
-									<span class="fw-bold">면접일시</span>
-									<span>2025-07-14 14:00:00</span>
-								</div>
-								<div class="ListItem_profile_postInfoList">
-									<div class="d-flex gap-2">
-										<div class="ListItem_profile_postInfoItem">
-											<span>단계</span><strong>3</strong>
-										</div>
-										<div class="ListItem_profile_divider"></div>
-										<div class="ListItem_profile_postInfoItem">
-											<span>채용인원</span><strong>2</strong>
-										</div>
-										<div class="ListItem_profile_divider"></div>
-										<div class="ListItem_profile_postInfoItem">
-											<span>면접인원</span><strong>10</strong>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="d-flex gap-2 justify-content-end w-100 mt-3">
-								<div class='btn btn_gray_line'>수정</div>
-								<div class='btn btn_red_line'>삭제</div>
-							</div>
-						</div>
-					</div>
-				</li>
+				<div class="p-6 d-flex flex-column align-items-center gap-2">
+					<span>띹잡에 등록된 면접이 없어요!</span>
+				</div>
 				
 			</ul>
 		</div>
 	</div>
+
+	<!-- 수정 확인 모달 -->
+	<div class="modal fade" id="editInterviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header border-0">
+					<h1 class="modal-title fs-5 fw-bold text-primary" id="exampleModalLabel">
+						<i class="bi bi-pencil-square me-1"></i> 면접 정보 수정
+					</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center py-4">
+					<div style="font-size:2.4rem; color:#007bff; margin-bottom:10px;">📝</div>
+					<p class="fs-5 mb-2 fw-semibold" style="color:#333;">
+						면접 정보를 <span style="color:#0d6efd;">수정</span>하시겠습니까?
+					</p>
+					<p class="text-secondary mb-0" style="font-size:1.1rem;">
+						변경한 내용은 즉시 반영되며,<br>실행 전 다시 한 번 확인해 주세요.
+					</p>
+				</div>
+				<div class="modal-footer border-0 justify-content-center">
+					<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary px-4" id="edit-interview-confirm-btn">수정하기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 삭제 확인 모달 -->
+	<div class="modal fade" id="deleteInterviewModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header border-0">
+					<h1 class="modal-title fs-5 fw-bold text-danger" id="deleteModalLabel">
+						<i class="bi bi-exclamation-triangle-fill me-1"></i> 면접 정보 삭제
+					</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center py-4">
+					<div style="font-size:2.4rem; color:#dc3545; margin-bottom:10px;">❗</div>
+					<p class="fs-5 mb-2 fw-semibold" style="color:#c82333;">
+						해당 면접 정보를 <span style="color:#dc3545;">정말 삭제</span>하시겠습니까?
+					</p>
+					<p class="text-secondary mb-0" style="font-size:1.08rem;">
+						삭제된 데이터는 복구할 수 없습니다.<br>
+						실행 전 반드시 다시 한 번 확인해 주세요.
+					</p>
+				</div>
+				<div class="modal-footer border-0 justify-content-center">
+					<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-danger px-4">삭제하기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>

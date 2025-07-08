@@ -4,7 +4,7 @@
  <!-- Menu -->
  <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
    <div class="app-brand demo">
-     <a href="index.html" class="app-brand-link">
+     <a href="/company" class="app-brand-link">
        <span class="app-brand-logo demo">
          <img src="/dist/assets/images/logo.png" alt="logo">
        </span>
@@ -107,7 +107,7 @@
        </a>
        <ul class="menu-sub">
          <li class="menu-item">
-           <a href="/company" class="menu-link">
+           <a href="/company/interview" class="menu-link">
              <div data-i18n="Account">면접관리</div>
            </a>
          </li>
