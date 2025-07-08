@@ -10,6 +10,6 @@ public class CompanyExamController {
 	
 	@GetMapping
 	public String makeExam() {
-		return "";
+		return "company/recruitment/companyExam/companyExam";
 	}
 }
