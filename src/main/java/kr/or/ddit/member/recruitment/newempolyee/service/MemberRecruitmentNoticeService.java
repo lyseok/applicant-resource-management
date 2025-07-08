@@ -17,5 +17,5 @@ public interface MemberRecruitmentNoticeService {
 	
 	 public RecruitmentNoticeVO selectliveRecruitmentDetail(String recruitmentNo);
 	 	// 상세정보
-
+	 
 }

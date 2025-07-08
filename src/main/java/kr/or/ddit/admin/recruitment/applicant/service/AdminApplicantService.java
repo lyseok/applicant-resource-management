@@ -6,7 +6,7 @@ import kr.or.ddit.mapper.recruitment.ApplicantMapper;
 import kr.or.ddit.vo.recruitment.ApplicantVO;
 
 public interface AdminApplicantService {
-	public List<ApplicantMapper> selectApplicantList();
+	public List<ApplicantVO> selectApplicantList();
 	public ApplicantVO selectApplicant(String applicantId);
 	public int insertApplicant(ApplicantVO vo);
 	public int updateApplicant(ApplicantVO vo);
