@@ -10,7 +10,6 @@
 <body>
 	<div>
 		<h1>시험 생성 페이지</h1>
-		<button class = "btn btn_violet">시험 생성</button>
 	</div>
 	
 	<div class = "card">
