@@ -45,7 +45,7 @@ public class AdminAdminBoardController {
 	}
 	
 	// 게시글 단건조회
-	@GetMapping("/aboardDetail")
+	@GetMapping("/aboardDetail")  //http://localhost/admin/community/adminBoard/aboardDetail?boardNo=ABNO000002
 	public String aboardDetail(
 		@RequestParam(value = "boardNo", required = false) String boardNo
 		, Model model
@@ -65,7 +65,7 @@ public class AdminAdminBoardController {
 	}
 	
 	// 유형별 게시글 목록조회
-	@GetMapping("/aboardList/type")
+	@GetMapping("/aboardList/type")  //http://localhost/admin/community/adminBoard/aboardList/type?boardTypeCode=UFAQ-U5
 	public String aboardType(String boardTypeCode, Model model) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(boardTypeCode);
 		model.addAttribute("aboardList", aboardList);
@@ -77,7 +77,7 @@ public class AdminAdminBoardController {
 	}
 	
 	// 게시글 목록조회
-	@GetMapping("/aboardList")
+	@GetMapping("/aboardList")  //http://localhost/admin/community/adminBoard/aboardList
 	public String aboardList(Model model) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardList();
 		model.addAttribute("aboardList", aboardList);

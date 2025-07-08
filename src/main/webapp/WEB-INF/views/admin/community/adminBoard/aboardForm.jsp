@@ -3,8 +3,10 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-<title>띹잡 고객센터 | 게시글 상세 입력</title>
-
+<head>
+	<title>띹잡 고객센터 | 게시글 상세 입력</title>
+	<script src="/js/admin/community/aboardForm.js"></script>
+</head>
 <body>
 
 	<h4>관리자 게시글 입력 폼</h4>
@@ -12,16 +14,31 @@
 <form:form action="/admin/adminBoard/form/insert" modelAttribute="aboard" method="post">
     
     <!-- 게시판 유형 선택 -->
-    <div>
-        <label for="boardTypeCode">게시판 유형</label>
-        <form:select path="boardTypeCode" id="boardTypeCode">
-            <form:option value="" label="-- 선택하세요 --" />
-            <form:option value="FAQ">자주 묻는 질문</form:option>
-            <form:option value="NOTICE">공지사항</form:option>
-            <form:option value="QNA">문의사항</form:option>
-        </form:select>
-        <form:errors path="boardTypeCode" cssClass="error" />
-    </div>
+	  <div>
+	    <label for="boardTypeCode">게시판 유형</label>
+	    <select id="boardTypeCode" name="boardTypeCode">
+	      <option value="">-- 선택하세요 --</option>
+	      <option value="BRDD-002">자주 묻는 질문</option>
+	      <option value="BRDD-003">공지사항</option>
+	      <option value="BRDD-001">문의사항</option>
+	    </select>
+	  </div>
+	
+	  <div id="faqTypeWrapper" style="display: none;">
+	    <label for="faqType">FAQ 유형</label>
+	    <select id="faqType" name="faqType">
+	      <option value="">-- 선택하세요 --</option>
+	      <option value="UFAQ">사용자 FAQ</option>
+	      <option value="CFAQ">기업 FAQ</option>
+	    </select>
+	  </div>
+	
+	  <div id="faqSubTypeWrapper" style="display: none;">
+	    <label for="faqSubType">FAQ 상세 항목</label>
+	    <select id="faqSubType" name="faqSubType">
+	      <option value="">-- 선택하세요 --</option>
+	    </select>
+	  </div>
 
     <!-- 제목 -->
     <div>
