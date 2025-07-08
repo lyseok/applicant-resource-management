@@ -25,7 +25,6 @@ public class ResumeVO implements Serializable{
 	private String resumeSubmitYn;
 	private String resumeDeleteDate;
 
-
 	private List<CareerVO> careerList;				// 경력
 	private List<SupportVO> supportList;			// 고용지원
 	private List<AwardVO> awardList;				// 수상
@@ -39,5 +38,5 @@ public class ResumeVO implements Serializable{
 	private List<EducationVO> educationList;		// 학력
 	private MemberVO member;
 	
-	
+
 }

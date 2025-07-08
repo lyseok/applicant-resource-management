@@ -23,7 +23,7 @@ public class AdminApplicantServiceImpl implements AdminApplicantService {
 	
 	
 	@Override
-	public List<ApplicantMapper> selectApplicantList() {
+	public List<ApplicantVO> selectApplicantList() {
 		
 		return AlMapper.selectApplicantList();
 	}

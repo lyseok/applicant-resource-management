@@ -14,7 +14,7 @@ import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 @Controller
 @RequestMapping("/member")
 public class MemberRecruitmentNoticeController {
-	
+
 	@Autowired
 	private MemberRecruitmentNoticeService service;
 
@@ -25,7 +25,7 @@ public class MemberRecruitmentNoticeController {
 //		model.addAttribute("boardCss",true);
 		return "member/recruitment/realTimeRecruitment";
 	}
-	
+
 	@GetMapping("/newEmployee")
 	public String SalaryList(Model model) {
 		List<RecruitmentNoticeVO> salaryList = service.salaryRecruitment();
@@ -33,5 +33,5 @@ public class MemberRecruitmentNoticeController {
 		model.addAttribute("salaryList", salaryList);
 		return "member/recruitment/NewEmpolyee";
 	}
-	
+
 }
