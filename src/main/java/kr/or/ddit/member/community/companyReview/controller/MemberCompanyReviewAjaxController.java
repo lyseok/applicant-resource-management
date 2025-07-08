@@ -2,6 +2,8 @@ package kr.or.ddit.member.community.companyReview.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,4 +37,19 @@ public class MemberCompanyReviewAjaxController {
 	    	log.info("{}",qList);
 			return qList;
 	    }
+	  
+	  @GetMapping("/myReviewDelete/{reviewNo}")
+	  public ResponseEntity<String> deleteMyReview(@PathVariable("reviewNo") String reviewNO) {
+		  CompanyReviewVO companyReview = new CompanyReviewVO();
+		  companyReview.setCompanyReviewNo(reviewNO);
+		  boolean success = companyReviewService.updateRemoveStatusMyCompanyReview(companyReview);
+		  
+		  if (success) {
+			  return ResponseEntity.ok("success");
+		  }else {
+			  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+		  }
+		  
+		  
+	  }
 }
