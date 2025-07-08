@@ -41,6 +41,11 @@ public class MemberAdminBoardAjaxController {
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
 		return service.readAdminBoardListByType(boardTypeCode);
 	}
+
+	@GetMapping
+	public List<AdminBoardVO> getAll(){
+		return service.readAdminBoardList();
+	}
 	
 	@PostMapping("/{boardTypeCode}")
 	public Map<String, Object> inBoard(

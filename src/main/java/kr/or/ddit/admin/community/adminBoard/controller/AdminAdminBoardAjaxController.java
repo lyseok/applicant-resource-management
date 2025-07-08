@@ -43,7 +43,7 @@ public class AdminAdminBoardAjaxController {
 	}
 	
 	@GetMapping
-	public List<AdminBoardVO> getAll(@PathVariable String boardTypeCode){
+	public List<AdminBoardVO> getAll(){
 		return service.readAdminBoardList();
 	}
 	
