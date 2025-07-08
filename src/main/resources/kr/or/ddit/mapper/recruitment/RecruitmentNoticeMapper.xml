@@ -13,6 +13,7 @@
 
 	<select id="salaryRecruitment" resultType="RecruitmentNoticeVO">
 		SELECT USER_ID
+			,RECRUITMENT_TITLE
     	    ,JOB_CODE
         	,RECRUITMENT_IMG
         	, RECRUITMENT_SALARY
