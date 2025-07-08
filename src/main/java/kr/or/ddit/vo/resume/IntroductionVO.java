@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 public class IntroductionVO implements Serializable{
 
 	private String introductionDeleteDate;
+	private String introductionSubmitYn;
 	private String introductionNo;
 	private String userId;
 	private String introductionName;

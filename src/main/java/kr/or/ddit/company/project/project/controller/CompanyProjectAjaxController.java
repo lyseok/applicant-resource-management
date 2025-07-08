@@ -30,18 +30,6 @@ public class CompanyProjectAjaxController {
 	
 	@GetMapping("/{userId}")
 	public List<ProjectVO> getProjectListByUserId(@PathVariable String userId) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-	    String role = "";
-	    for (GrantedAuthority authority : authorities) {
-	        role = authority.getAuthority(); // ex: "ROLE_ADMIN", "ROLE_USER"
-	    }
-	    
-	    if(role.contains("ROLE_USER")) {
-	    	String username = authentication.getName();
-	    	return service.readProjectUserIdList(username);	    	
-	    }
-	    
 		return service.readProjectUserIdList(userId);
 	}
 	

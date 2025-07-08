@@ -9,11 +9,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = {"videoInterviewNo", "interviewNo"})
 public class VideoInterviewVO implements Serializable{
 
+	private String endDate;
+	private String companyInterviewUrl;
+	private String videoInterviewDelDate;
 	private String videoInterviewNo;
 	private String interviewNo;
-	private String videoInterviewStartTime;
-	private String videoInterviewEndTime;
-	private String videoInterviewStatus;
-	private String videoInterviewUrl;
-	private String videoInterviewDelDate;
+	private String roomTitle;
+	private Integer maxJoinCount;
+	private String startDate;
 }	
