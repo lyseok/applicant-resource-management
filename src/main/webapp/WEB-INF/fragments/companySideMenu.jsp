@@ -108,6 +108,11 @@
        <ul class="menu-sub">
          <li class="menu-item">
            <a href="/company" class="menu-link">
+             <div data-i18n="Account">면접관리</div>
+           </a>
+         </li>
+         <li class="menu-item">
+           <a href="/company" class="menu-link">
              <div data-i18n="Account">면접문항관리</div>
            </a>
          </li>

@@ -8,7 +8,7 @@
             	<span class="blind">내알림 레이어 버튼</span>
             	<i class='bx  bx-bell'  ></i> 
             </button>
-            <div class="top_layer_assist alarm_layer_content" style="display:none;">
+            <div class="top_layer_assist alarm_layer_content" id="displayAlBtn" style="display:none;">
                 <strong class="title">알림</strong>
                 <span class="view_status">최근 30일간 저장내역 노출</span>
                 <div class="save_list_area ">
@@ -39,7 +39,7 @@
             <span class="user_name">userName</span>
             <i class='bx  bx-caret-down'  ></i> 
         </button>
-        <div class="layer_member" style="display:none;">
+        <div class="layer_member" id="displayMemBtn" style="display:none;">
             <ul>
                 <li>
                     <a href="/zf_user/persons/person-update" target="_blank">
@@ -66,10 +66,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)">
-                        <i class='bx  bx-door-open'  ></i> 
-                        <span class="txt">로그아웃</span>
-                    </a>
+                    <div class="logoutBtn">
+                        <a href="javascript:void(0)">
+                            <i class='bx  bx-door-open'  ></i> 
+                            <span class="txt">로그아웃</span>
+                        </a>
+                    </div>
                 </li>
             </ul>
         </div>
