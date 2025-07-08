@@ -5,7 +5,6 @@
 	SELECT 
 		INTERVIEW_NO
 		, PROCESS_NO
-		, USER_ID
 		, INTERVIEW_DATE
 		, INTERVIEW_LOCATION
 		, INTERVIEW_TYPE
@@ -17,7 +16,6 @@
 	SELECT 
 		INTERVIEW_NO
 		, PROCESS_NO
-		, USER_ID
 		, INTERVIEW_DATE
 		, INTERVIEW_LOCATION
 		, INTERVIEW_TYPE
@@ -36,7 +34,6 @@
 	INSERT INTO INTERVIEW (
 		INTERVIEW_NO
 		, PROCESS_NO
-		, USER_ID
 		, INTERVIEW_DATE
 		, INTERVIEW_LOCATION
 		, INTERVIEW_TYPE
@@ -44,7 +41,6 @@
 	) VALUES (
 		#{interviewNo}
 		, #{processNo}
-		, #{userId}
 		, SYSDATE
 		, #{interviewLocation}
 		, #{interviewType}
@@ -54,8 +50,7 @@
 	
 	<update id="updateInterview">
 	UPDATE INTERVIEW SET
-		USER_ID = #{userId}
-		, INTERVIEW_DATE = #{interviewDate}
+		INTERVIEW_DATE = #{interviewDate}
 		, INTERVIEW_LOCATION = #{interviewLocation}
 		, INTERVIEW_TYPE = #{interviewType}
 		, INTERVIEW_PASS_SCORE = #{interviewPassScore}
