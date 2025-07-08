@@ -52,6 +52,9 @@ public class introductionController {
 		, Model model
 	) {
 		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기
+		if(userId == null) {
+			
+		}
 		List<IntroductionVO> introductionList = service.readIntroductionList(userId);
 		model.addAttribute("introductionList", introductionList);
 		return "member/resume/mypage/intoruction/intoructionList";
