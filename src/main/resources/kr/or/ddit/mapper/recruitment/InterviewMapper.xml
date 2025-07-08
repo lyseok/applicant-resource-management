@@ -1,27 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.InterviewMapper">
-	<select id="selectInterviewList" resultType="InterviewVO">
-	SELECT 
-		INTERVIEW_NO
-		, PROCESS_NO
-		, INTERVIEW_DATE
-		, INTERVIEW_LOCATION
-		, INTERVIEW_TYPE
-		, INTERVIEW_PASS_SCORE 
-	FROM INTERVIEW
+	
+	<!-- RecruitmentNoticeVO -->
+	<resultMap id="recruitmentNoticeMap" type="kr.or.ddit.vo.recruitment.RecruitmentNoticeVO">
+		<id property="recruitmentNo" column="RENO_RECRUITMENT_NO"/>
+		<result property="userId" column="RENO_USER_ID"/>
+		<result property="recruitmentTitle" column="RENO_RECRUITMENT_TITLE"/>
+		<result property="jobCode" column="RENO_JOB_CODE"/>
+		<result property="yearCode" column="RENO_YEAR_CODE"/>
+		<result property="recContent" column="RENO_REC_CONTENT"/>
+		<result property="preferential" column="RENO_PREFERENTIAL"/>
+		<result property="cityCode" column="RENO_CITY_CODE"/>
+		<result property="districtCode" column="RENO_DISTRICT_CODE"/>
+		<result property="recPositionNumber" column="RENO_REC_POSITION_NUMBER"/>
+		<result property="recruitmentChargerTel" column="RENO_RECRUITMENT_CHARGER_TEL"/>
+		<result property="recruitmentSalary" column="RENO_RECRUITMENT_SALARY"/>
+		<result property="welfare" column="RENO_WELFARE"/>
+		<result property="recruitmentDesk" column="RENO_RECRUITMENT_DESK"/>
+		<result property="recruitmentImg" column="RENO_RECRUITMENT_IMG"/>
+		<result property="recruitmentStartdate" column="RENO_RECRUITMENT_STARTDATE"/>
+		<result property="recruitmentReceiptStart" column="RENO_RECRUITMENT_RECEIPT_START"/>
+		<result property="recruitmentFinishDate" column="RENO_RECRUITMENT_FINISH_DATE"/>
+		<result property="recruitmentDelDate" column="RENO_RECRUIMENT_DEL_DATE"/>
+	</resultMap>
+	
+	<!-- ApplicantVO -->
+	<resultMap id="applicantMap" type="kr.or.ddit.vo.recruitment.ApplicantVO">
+		<id property="applicantId" column="APP_APPLICANT_ID"/>
+		<result property="recruitmentNo" column="APP_RECRUITMENT_NO"/>
+		<result property="resumeNo" column="APP_RESUME_NO"/>
+		<result property="resumeViewYn" column="APP_RESUME_VIEW_YN"/>
+		<result property="userId" column="APP_USER_ID"/>
+		<result property="applicantDelDate" column="APP_APPLICANT_DEL_DATE"/>
+	</resultMap>
+
+	<!-- ApplicantRecordVO -->
+	<resultMap id="applicantRecordMap" type="kr.or.ddit.vo.recruitment.ApplicantRecordVO">
+		<id property="applicantRecordNo" column="APRE_APPLICANT_RECORD_NO"/>
+		<result property="recruitmentNo" column="APRE_RECRUITMENT_NO"/>
+		<result property="applicantId" column="APRE_APPLICANT_ID"/>
+		<result property="stepPassYn" column="APRE_STEP_PASS_YN"/>
+		<result property="stepApplicationYn" column="APRE_STEP_APPLICATION_YN"/>
+		<result property="interviewUrl" column="APRE_INTERVIEW_URL"/>
+		<result property="evaluationStartTime" column="APRE_EVALUATION_START_TIME"/>
+		<association property="applicant" resultMap="applicantMap"/>
+	</resultMap>
+	
+	<!-- RecruitProcessVO -->
+	<resultMap id="recruitProcessMap" type="kr.or.ddit.vo.recruitment.RecruitProcessVO">
+		<id property="recruitProcessNo" column="REPR_RECRUIT_PROCESS_NO"/>
+		<result property="recruitmentNo" column="REPR_RECRUITMENT_NO"/>
+		<result property="companyName" column="REPR_COMPANY_NAME"/>
+		<result property="recruitProcessStep" column="REPR_RECRUIT_PROCESS_STEP"/>
+		<result property="recruitProcessFinal" column="REPR_RECRUIT_PROCESS_FINAL"/>
+		<result property="recruitProcessType" column="REPR_RECRUIT_PROCESS_TYPE"/>
+		<association property="recruitmentNotice" resultMap="recruitmentNoticeMap"/>
+		<collection property="applicantRecordList" ofType="kr.or.ddit.vo.recruitment.ApplicantRecordVO"
+								resultMap="applicantRecordMap"/>
+	</resultMap>
+	
+	<!-- InterviewVO -->
+	<resultMap id="interviewMap" type="kr.or.ddit.vo.recruitment.InterviewVO">
+		<id property="interviewNo" column="INTR_INTERVIEW_NO"/>
+		<result property="processNo" column="INTR_PROCESS_NO"/>
+		<result property="interviewDate" column="INTR_INTERVIEW_DATE"/>
+		<result property="interviewLocation" column="INTR_INTERVIEW_LOCATION"/>
+		<result property="interviewType" column="INTR_INTERVIEW_TYPE"/>
+		<result property="interviewPassScore" column="INTR_INTERVIEW_PASS_SCORE"/>
+		<association property="recruitProcess" resultMap="recruitProcessMap"/>
+	</resultMap>
+	
+	<select id="selectInterviewList" resultMap="interviewMap">
+		SELECT
+			-- Interview 컬럼
+			INTR.INTERVIEW_NO               AS INTR_INTERVIEW_NO,
+			INTR.PROCESS_NO                 AS INTR_PROCESS_NO,
+			INTR.INTERVIEW_DATE             AS INTR_INTERVIEW_DATE,
+			INTR.INTERVIEW_LOCATION         AS INTR_INTERVIEW_LOCATION,
+			INTR.INTERVIEW_TYPE             AS INTR_INTERVIEW_TYPE,
+			INTR.INTERVIEW_PASS_SCORE       AS INTR_INTERVIEW_PASS_SCORE,
+
+			-- RecruitProcess 컬럼
+			REPR.RECRUIT_PROCESS_NO         AS REPR_RECRUIT_PROCESS_NO,
+			REPR.RECRUITMENT_NO             AS REPR_RECRUITMENT_NO,
+			REPR.COMPANY_NAME               AS REPR_COMPANY_NAME,
+			REPR.RECRUIT_PROCESS_STEP       AS REPR_RECRUIT_PROCESS_STEP,
+			REPR.RECRUIT_PROCESS_FINAL      AS REPR_RECRUIT_PROCESS_FINAL,
+			REPR.RECRUIT_PROCESS_TYPE       AS REPR_RECRUIT_PROCESS_TYPE,
+
+			-- RecruitmentNotice 컬럼
+			RENO.RECRUITMENT_NO             AS RENO_RECRUITMENT_NO,
+			RENO.USER_ID                    AS RENO_USER_ID,
+			RENO.JOB_CODE                   AS RENO_JOB_CODE,
+			RENO.YEAR_CODE                  AS RENO_YEAR_CODE,
+			RENO.REC_CONTENT                AS RENO_REC_CONTENT,
+			RENO.PREFERENTIAL               AS RENO_PREFERENTIAL,
+			RENO.CITY_CODE                  AS RENO_CITY_CODE,
+			RENO.DISTRICT_CODE              AS RENO_DISTRICT_CODE,
+			RENO.REC_POSITION_NUMBER        AS RENO_REC_POSITION_NUMBER,
+			RENO.RECRUITMENT_CHARGER_TEL    AS RENO_RECRUITMENT_CHARGER_TEL,
+			RENO.RECRUITMENT_SALARY         AS RENO_RECRUITMENT_SALARY,
+			RENO.WELFARE                    AS RENO_WELFARE,
+			RENO.RECRUITMENT_DESK           AS RENO_RECRUITMENT_DESK,
+			RENO.RECRUITMENT_IMG            AS RENO_RECRUITMENT_IMG,
+			RENO.RECRUITMENT_STARTDATE      AS RENO_RECRUITMENT_STARTDATE,
+			RENO.RECRUITMENT_RECEIPT_START  AS RENO_RECRUITMENT_RECEIPT_START,
+			RENO.RECRUITMENT_FINISH_DATE    AS RENO_RECRUITMENT_FINISH_DATE,
+			RENO.RECRUITMENT_TITLE          AS RENO_RECRUITMENT_TITLE,
+			RENO.RECRUIMENT_DEL_DATE        AS RENO_RECRUIMENT_DEL_DATE,
+
+			-- ApplicantRecord 컬럼
+			APRE.APPLICANT_RECORD_NO        AS APRE_APPLICANT_RECORD_NO,
+			APRE.RECRUITMENT_NO             AS APRE_RECRUITMENT_NO,
+			APRE.APPLICANT_ID               AS APRE_APPLICANT_ID,
+			APRE.STEP_PASS_YN               AS APRE_STEP_PASS_YN,
+			APRE.STEP_APPLICATION_YN        AS APRE_STEP_APPLICATION_YN,
+			APRE.INTERVIEW_URL              AS APRE_INTERVIEW_URL,
+			APRE.EVALUATION_START_TIME      AS APRE_EVALUATION_START_TIME,
+
+			-- ApplicantVO 컬럼
+			APP.APPLICANT_ID                AS APP_APPLICANT_ID,
+			APP.RECRUITMENT_NO              AS APP_RECRUITMENT_NO,
+			APP.RESUME_NO                   AS APP_RESUME_NO,
+			APP.RESUME_VIEW_YN              AS APP_RESUME_VIEW_YN,
+			APP.USER_ID                     AS APP_USER_ID,
+			APP.APPLICANT_DEL_DATE          AS APP_APPLICANT_DEL_DATE
+
+		FROM INTERVIEW INTR
+		LEFT OUTER JOIN RECRUIT_PROCESS REPR ON INTR.PROCESS_NO = REPR.RECRUIT_PROCESS_NO
+		LEFT OUTER JOIN RECRUITMENT_NOTICE RENO ON RENO.RECRUITMENT_NO = REPR.RECRUITMENT_NO
+		LEFT OUTER JOIN APPLICANT_RECORD APRE ON APRE.RECRUITMENT_NO = REPR.RECRUIT_PROCESS_NO
+		LEFT OUTER JOIN APPLICANT APP ON APRE.APPLICANT_ID = APP.APPLICANT_ID
 	</select>
 	
-	<select id="selectInterview" resultType="InterviewVO">
-	SELECT 
-		INTERVIEW_NO
-		, PROCESS_NO
-		, INTERVIEW_DATE
-		, INTERVIEW_LOCATION
-		, INTERVIEW_TYPE
-		, INTERVIEW_PASS_SCORE 
-	FROM INTERVIEW
-	WHERE INTERVIEW_NO = #{interviewNo}
+	<select id="selectInterview" resultMap="interviewMap">
+		SELECT
+			-- Interview 컬럼
+			INTR.INTERVIEW_NO               AS INTR_INTERVIEW_NO,
+			INTR.PROCESS_NO                 AS INTR_PROCESS_NO,
+			INTR.INTERVIEW_DATE             AS INTR_INTERVIEW_DATE,
+			INTR.INTERVIEW_LOCATION         AS INTR_INTERVIEW_LOCATION,
+			INTR.INTERVIEW_TYPE             AS INTR_INTERVIEW_TYPE,
+			INTR.INTERVIEW_PASS_SCORE       AS INTR_INTERVIEW_PASS_SCORE,
+
+			-- RecruitProcess 컬럼
+			REPR.RECRUIT_PROCESS_NO         AS REPR_RECRUIT_PROCESS_NO,
+			REPR.RECRUITMENT_NO             AS REPR_RECRUITMENT_NO,
+			REPR.COMPANY_NAME               AS REPR_COMPANY_NAME,
+			REPR.RECRUIT_PROCESS_STEP       AS REPR_RECRUIT_PROCESS_STEP,
+			REPR.RECRUIT_PROCESS_FINAL      AS REPR_RECRUIT_PROCESS_FINAL,
+			REPR.RECRUIT_PROCESS_TYPE       AS REPR_RECRUIT_PROCESS_TYPE,
+
+			-- RecruitmentNotice 컬럼
+			RENO.RECRUITMENT_NO             AS RENO_RECRUITMENT_NO,
+			RENO.USER_ID                    AS RENO_USER_ID,
+			RENO.JOB_CODE                   AS RENO_JOB_CODE,
+			RENO.YEAR_CODE                  AS RENO_YEAR_CODE,
+			RENO.REC_CONTENT                AS RENO_REC_CONTENT,
+			RENO.PREFERENTIAL               AS RENO_PREFERENTIAL,
+			RENO.CITY_CODE                  AS RENO_CITY_CODE,
+			RENO.DISTRICT_CODE              AS RENO_DISTRICT_CODE,
+			RENO.REC_POSITION_NUMBER        AS RENO_REC_POSITION_NUMBER,
+			RENO.RECRUITMENT_CHARGER_TEL    AS RENO_RECRUITMENT_CHARGER_TEL,
+			RENO.RECRUITMENT_SALARY         AS RENO_RECRUITMENT_SALARY,
+			RENO.WELFARE                    AS RENO_WELFARE,
+			RENO.RECRUITMENT_DESK           AS RENO_RECRUITMENT_DESK,
+			RENO.RECRUITMENT_IMG            AS RENO_RECRUITMENT_IMG,
+			RENO.RECRUITMENT_STARTDATE      AS RENO_RECRUITMENT_STARTDATE,
+			RENO.RECRUITMENT_RECEIPT_START  AS RENO_RECRUITMENT_RECEIPT_START,
+			RENO.RECRUITMENT_FINISH_DATE    AS RENO_RECRUITMENT_FINISH_DATE,
+			RENO.RECRUITMENT_TITLE          AS RENO_RECRUITMENT_TITLE,
+			RENO.RECRUIMENT_DEL_DATE        AS RENO_RECRUIMENT_DEL_DATE,
+
+			-- ApplicantRecord 컬럼
+			APRE.APPLICANT_RECORD_NO        AS APRE_APPLICANT_RECORD_NO,
+			APRE.RECRUITMENT_NO             AS APRE_RECRUITMENT_NO,
+			APRE.APPLICANT_ID               AS APRE_APPLICANT_ID,
+			APRE.STEP_PASS_YN               AS APRE_STEP_PASS_YN,
+			APRE.STEP_APPLICATION_YN        AS APRE_STEP_APPLICATION_YN,
+			APRE.INTERVIEW_URL              AS APRE_INTERVIEW_URL,
+			APRE.EVALUATION_START_TIME      AS APRE_EVALUATION_START_TIME,
+
+			-- ApplicantVO 컬럼
+			APP.APPLICANT_ID                AS APP_APPLICANT_ID,
+			APP.RECRUITMENT_NO              AS APP_RECRUITMENT_NO,
+			APP.RESUME_NO                   AS APP_RESUME_NO,
+			APP.RESUME_VIEW_YN              AS APP_RESUME_VIEW_YN,
+			APP.USER_ID                     AS APP_USER_ID,
+			APP.APPLICANT_DEL_DATE          AS APP_APPLICANT_DEL_DATE
+
+		FROM INTERVIEW INTR
+		LEFT OUTER JOIN RECRUIT_PROCESS REPR ON INTR.PROCESS_NO = REPR.RECRUIT_PROCESS_NO
+		LEFT OUTER JOIN RECRUITMENT_NOTICE RENO ON RENO.RECRUITMENT_NO = REPR.RECRUITMENT_NO
+		LEFT OUTER JOIN APPLICANT_RECORD APRE ON APRE.RECRUITMENT_NO = REPR.RECRUIT_PROCESS_NO
+		LEFT OUTER JOIN APPLICANT APP ON APRE.APPLICANT_ID = APP.APPLICANT_ID
+		WHERE INTR.INTERVIEW_NO = #{interviewNo}
 	</select>
 	
 	<insert id="insertInterview">
@@ -49,16 +223,16 @@
 	</insert>
 	
 	<update id="updateInterview">
-	UPDATE INTERVIEW SET
-		INTERVIEW_DATE = #{interviewDate}
-		, INTERVIEW_LOCATION = #{interviewLocation}
-		, INTERVIEW_TYPE = #{interviewType}
-		, INTERVIEW_PASS_SCORE = #{interviewPassScore}
-	 WHERE INTERVIEW_NO = #{interviewNo}
+		UPDATE INTERVIEW SET
+			INTERVIEW_DATE = #{interviewDate}
+			, INTERVIEW_LOCATION = #{interviewLocation}
+			, INTERVIEW_TYPE = #{interviewType}
+			, INTERVIEW_PASS_SCORE = #{interviewPassScore}
+		WHERE INTERVIEW_NO = #{interviewNo}
 	</update>
 	
 	<delete id="deleteInterview">
-	DELETE FROM INTERVIEW 
-	WHERE INTERVIEW_NO = #{interviewNo}
+		DELETE FROM INTERVIEW 
+		WHERE INTERVIEW_NO = #{interviewNo}
 	</delete>
 </mapper>
