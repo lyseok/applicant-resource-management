@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,7 @@ public class introductionController {
 	private final introductionService service; 
 	static final String MODELNAME = "introduction";
 	
+	
 	@ModelAttribute(MODELNAME)
 	public IntroductionListVO setupIntroductionListVO() { // 메서드 이름도 명확하게 변경
 	    // List 필드를 초기화하여 NPE 방지
@@ -51,10 +53,10 @@ public class introductionController {
 		@AuthenticationPrincipal UserDetails userDetails 
 		, Model model
 	) {
-		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기
-		if(userId == null) {
-			
+		if(userDetails == null) {
+			return "redirect:/login";
 		}
+		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기		
 		List<IntroductionVO> introductionList = service.readIntroductionList(userId);
 		model.addAttribute("introductionList", introductionList);
 		return "member/resume/mypage/intoruction/intoructionList";
