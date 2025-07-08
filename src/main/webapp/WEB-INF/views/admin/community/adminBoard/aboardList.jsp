@@ -4,7 +4,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
 <title>띹잡 고객센터 | 게시글 목록</title>
-
+<script>
+	document.addEventListener("DOMContentLoaded", ()=>{
+// 		$("body")
+	});
+</script>
 <body>
 
 	<h4>관리자 게시판 목록</h4>

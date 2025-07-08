@@ -69,11 +69,11 @@ public class AdminUsersAjaxController {
 		service.existsById(userId);
 		return Map.of("ok", true);
 	}
-	
+	/*
 	@GetMapping("/{email}")
 	public ResponseEntity<UsersVO> getOneSMember(@PathVariable String email) {
 	    return service.searchMemberByMail(email)
 	    		.map(ResponseEntity::ok)  //email 있으면 ok 반환
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
-	}
+	}  */
 }
