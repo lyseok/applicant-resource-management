@@ -60,22 +60,27 @@ public class CompanyTalentPoolController {
 
 
 	@PostMapping("/filter")
-	public String filterTalentPool(@RequestParam(required = false) String careerStart,
-			@RequestParam(required = false) String region, @RequestParam(required = false) String education,
-			@RequestParam(required = false) String graduate_edu, @RequestParam(required = false) String topJobPosition,
-			@RequestParam(required = false) String jobPosition, Model model) {
-		Map<String, Object> filter = new HashMap();
-		filter.put("careerStart", careerStart);
-		filter.put("region", region);
-		filter.put("education", education);
-		filter.put("graduateYn", graduate_edu);
-		filter.put("topJobPosition", topJobPosition);
-		filter.put("jobPosition", jobPosition);
-
+	public String filterTalentPool(
+		@RequestParam(required = false) String careerlong,
+		@RequestParam(required = false) String location,
+		@RequestParam(required = false) String edudone,
+		@RequestParam(required = false) String gedu,
+		@RequestParam(required = false) String Topjob,
+		@RequestParam(required = false) String Job,
+		Model model
+		) {
+		Map<String , Object> filter = new HashMap<>();
+		filter.put("careerlong",careerlong);
+		filter.put("location", location);
+		filter.put("edudone", edudone);
+		filter.put("gedu" , gedu);
+		filter.put("Topjob", Topjob);
+		filter.put("Job",Job);
+		
 		List<ResumeVO> filteredList = CTservice.selectTalentPoolListByFilter(filter);
-
-		model.addAttribute("talentpoolList", filteredList);
-		return "company/recruitment/TalentPool"; // 목록 JSP 그대로 재사용
+		model.addAttribute("talentpoolList",filteredList);
+		log.info("잘 나오나 봅시다 : {}" ,filteredList);
+		return "company/recruitment/talentpool/TalentPool";
 	}
 
 }

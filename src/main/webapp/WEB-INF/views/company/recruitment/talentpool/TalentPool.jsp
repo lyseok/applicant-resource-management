@@ -249,10 +249,11 @@ body {
 				<!-- 경력 필터 -->
 				<label>경력</label>
 				<div style="display: flex; gap: 10px;">
-					<select name="careerStart" varStatus="status">
-						<option>선택</option>
+					<select name="careerStart">
+						<option value="">선택</option>
 						<c:forEach begin="0" end="40" var="i" varStatus="status">
-							<option value="${i}">
+							<option value="${i}"
+								<c:if test="${careerStart == i}">selected</c:if>>
 								<c:choose>
 									<c:when test="${status.first}">1년 이하</c:when>
 									<c:otherwise>${i}년 이상</c:otherwise>
@@ -262,50 +263,56 @@ body {
 					</select>
 				</div>
 
-				<!-- 지역 필터 -->
 				<label>지역</label> <select name="location">
-    					<option value="">선택</option>
-    					<c:forEach var="city" items="${cityList}">
-        				<option value="${city.cityName}">${city.cityName}</option>
-    				</c:forEach>
-					</select>
+					<option value="">선택</option>
+					<c:forEach var="city" items="${cityList}">
+						<option value="${city.cityName}"
+							<c:if test="${location == city.cityName}">selected</c:if>>
+							${city.cityName}</option>
+					</c:forEach>
+				</select>
 
 				<!-- 최종학력 필터 -->
-				<label>최종학력</label> 
-					<select name="highest">
-    					<option value="">선택</option>
-    					<c:forEach var="fedu" items="${eduList}">
-        				<option value="${fedu.highestEducationCode}">${fedu.highestEducationCode}</option>
-    				</c:forEach>
-					</select>
+				<label>최종학력</label> <select name="highest">
+					<option value="">선택</option>
+					<c:forEach var="fedu" items="${eduList}">
+						<option value="${fedu.highestEducationCode}"
+							<c:if test="${highest == fedu.highestEducationCode}">selected</c:if>>
+							${fedu.highestEducationCode}</option>
+					</c:forEach>
+				</select>
 
 				<!-- 졸업 여부 필터 -->
 				<label>졸업 상태</label> 
 				<select name="graduate_edu">
-    					<option value="">선택</option>
-    					<c:forEach var="gedu" items="${eduList}">
-        				<option value="${gedu.graduateYn}">${gedu.graduateYn}</option>
-    				</c:forEach>
-					</select>
+					<option value="">선택</option>
+					<c:forEach var="gedu" items="${eduList}">
+						<option value="${gedu.graduateYn}"
+							<c:if test="${graduate_edu == gedu.graduateYn}">selected</c:if>>
+							${gedu.graduateYn}</option>
+					</c:forEach>
+				</select>
 
 				<!-- 직군 필터 -->
-				<label>직군</label>
-				 <select name="topJob">
-				 	<option value="">선택</option>
-				 	<c:forEach var="tjob" items="${tjobList }">
-				 	<option value="${tjob.topJobName}">${tjob.topJobName }</option>
-				 	</c:forEach>
+				<label>직군</label> <select name="topJob">
+					<option value="">선택</option>
+					<c:forEach var="tjob" items="${tjobList}">
+						<option value="${tjob.topJobName}"
+							<c:if test="${topJob == tjob.topJobName}">selected</c:if>>
+							${tjob.topJobName}</option>
+					</c:forEach>
 				</select>
 
 				<!-- 직무 필터 -->
-				<label>직무</label> 
-					<select name="job">
-    					<option value="">선택</option>
-    					<c:forEach var="job" items="${jobList}">
-        				<option value="${job.jobCode}">${job.jobName}</option>
-    				</c:forEach>
-					</select>
-				
+				<label>직무</label> <select name="job">
+					<option value="">선택</option>
+					<c:forEach var="job" items="${jobList}">
+						<option value="${job.jobCode}"
+							<c:if test="${job == job.jobCode}">selected</c:if>>
+							${job.jobName}</option>
+					</c:forEach>
+				</select>
+
 				<!-- 검색 버튼 -->
 				<div style="margin-top: 20px; text-align: right;">
 					<button type="submit"
@@ -322,37 +329,40 @@ body {
 						<div class="user-avatar"></div>
 						<div class="user-info">
 							<div class="user-meta">
-								<span class="user-name">${talent.userName}</span> 
-								<c:forEach var="career" items="${talent.careerList }" varStatus="status">
-								<span class="user-experience">경력 ${career.careerYear}년 
-								<c:if test="${talent.careerYear}">
-										<span class="new-badge">New</span>
-									</c:if>
-								</span>
+								<span class="user-name">${talent.userName}</span>
+								<c:forEach var="career" items="${talent.careerList }"
+									varStatus="status">
+									<span class="user-experience">경력 ${career.careerYear}년 <c:if
+											test="${talent.careerYear}">
+											<span class="new-badge">New</span>
+										</c:if>
+									</span>
 								</c:forEach>
 							</div>
 							<div class="user-position-salary">
-							<c:forEach var="job" items="${talent.careerList }" varStatus="status">
-								<span class="position-name">${job.jobCode}</span> <span
-									class="working-period"> <c:if
-										test="${not empty job.startWorkDate}">
+								<c:forEach var="job" items="${talent.careerList }"
+									varStatus="status">
+									<span class="position-name">${job.jobCode}</span>
+									<span class="working-period"> <c:if
+											test="${not empty job.startWorkDate}">
                                     (${job.startWorkDate} 
                                     <c:if
-											test="${not empty job.retireDate}">- ${talent.retireDate}</c:if>
-										<c:if test="${empty job.retireDate}">- 재직중</c:if>)
+												test="${not empty job.retireDate}">- ${talent.retireDate}</c:if>
+											<c:if test="${empty job.retireDate}">- 재직중</c:if>)
                                 </c:if> <c:if test="${not empty job.salary}">
                                     , 연봉 ${job.salary}
                                 </c:if>
-								</span>
+									</span>
 								</c:forEach>
 							</div>
-							<c:forEach var="job2" items="${job2.careerList }" varStatus="status">
-							<div class="user-description">${job2.responsibility}</div>
-							<div class="user-career-path">
-								<span class="company-team">${job2.jobCode}</span> (1년 2개월) <span
-									class="company-team">${job2.jobCode}</span> (2년)
-							</div>
-								</c:forEach>
+							<c:forEach var="jobtime" items="${jobtime.careerList }"
+								varStatus="status">
+								<div class="user-description">${jobtime.responsibility}</div>
+								<div class="user-career-path">
+									<span class="company-team">${jobtime.jobCode}</span> (1년 2개월) <span
+										class="company-team">${jobtime.jobCode}</span> (2년)
+								</div>
+							</c:forEach>
 							<div class="user-education">서울대학교 컴퓨터 공학과 (졸업)</div>
 						</div>
 						<div class="action-buttons">
