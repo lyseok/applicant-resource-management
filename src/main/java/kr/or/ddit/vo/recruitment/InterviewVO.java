@@ -22,5 +22,5 @@ public class InterviewVO implements Serializable{
 	private RecruitProcessVO recruitProcess;
 	
 	// 자식
-	private List<VideoInterviewVO> vieoInterviewList;
+	private List<VideoInterviewVO> vdieoInterviewList;
 }
