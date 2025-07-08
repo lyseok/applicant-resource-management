@@ -52,13 +52,14 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 	
 	private void setCodeName(InterviewVO inteVo) {
 		RecruitmentNoticeVO notiVo = inteVo.getRecruitProcess().getRecruitmentNotice();
-		String district = codeMapProvider.getCodeName(notiVo.getDistrictCode());
+		
+		String district = codeMapProvider.getDistrictName(notiVo.getDistrictCode());
 		notiVo.setDistrictCodeName(district);
 		
-		String job = codeMapProvider.getCodeName(notiVo.getJobCode());
+		String job = codeMapProvider.getJobName(notiVo.getJobCode());
 		notiVo.setJobCodeName(job);
 		
-		String city = codeMapProvider.getCodeName(notiVo.getCityCode());
+		String city = codeMapProvider.getCityName(notiVo.getCityCode());
 		notiVo.setCityCodeName(city);
 		
 		String year = codeMapProvider.getCodeName(notiVo.getYearCode());
