@@ -5,13 +5,15 @@
 		SELECT *
 		  FROM INTRODUCTION
 		 WHERE USER_ID = #{user_id}
+		   AND INTRODUCTION_DELETE_DATE IS NULL
 	</select>
 	
 	<select id="selectIntroductionDetail">
-		SELECT INTRODUCTION_NO, USER_ID, INTRODUCTION_NAME, INTRODUCTION_CONTENT 
+		SELECT INTRODUCTION_NO, USER_ID, INTRODUCTION_NAME, INTRODUCTION_CONTENT, INTRODUCTION_QUESTION 
 		  FROM INTRODUCTION
 		 WHERE INTRODUCTION_NO = #{introductionNo}
 	</select>
+	
 	
 	<insert id="insertIntroduction">
 		<selectKey resultType="string" keyProperty="introductionNo" order="BEFORE">
@@ -25,11 +27,13 @@
 			, USER_ID
 			, INTRODUCTION_NAME
 			, INTRODUCTION_CONTENT
+			, INTRODUCTION_CREATE_DATE
 		) VALUES (
 			#{introductionNo}
 			, #{userId}
 			, #{introductionName}
 			, #{introductionContent}
+			, TO_CHAR(SYSDATE, 'YYYYMMDD')
 		)
 	</insert>
 	
@@ -41,10 +45,24 @@
 		   AND USER_ID = #{userId}
 	</update>
 	
-	<delete id="deleteIntroduction">
+	<!-- <delete id="deleteIntroduction">
 		DELETE FROM INTRODUCTION 
 		 WHERE INTRODUCTION_NO = #{introductionNo}
 		   AND USER_ID = #{userId}
-	</delete>
+	</delete> -->
+	
+	<update id="deleteIntroduction">
+		UPDATE INTRODUCTION 
+		   SET INTRODUCTION_DELETE_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		 WHERE INTRODUCTION_NO = #{introductionNo}
+		   AND USER_ID = #{userId}
+	</update>
+	
+	<select id="selectIntroductionSearch">
+		SELECT *
+		  FROM INTRODUCTION
+		 WHERE INTRODUCTION_DELETE_DATE IS NULL
+           AND INTRODUCTION_NAME LIKE '%'||#{introductionName}||'%'
+	</select>
 	
 </mapper>
