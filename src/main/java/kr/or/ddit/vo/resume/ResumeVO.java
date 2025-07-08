@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.MemberVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,6 +25,7 @@ public class ResumeVO implements Serializable{
 	private String resumeSubmitYn;
 	private String resumeDeleteDate;
 
+
 	private List<CareerVO> careerList;				// 경력
 	private List<SupportVO> supportList;			// 고용지원
 	private List<AwardVO> awardList;				// 수상
@@ -35,8 +37,7 @@ public class ResumeVO implements Serializable{
 	private List<PortfolioVO> portfolioList;		// 포트폴리오
 	private List<MilitaryVO> militaryList;			// 병역
 	private List<EducationVO> educationList;		// 학력
+	private MemberVO member;
 	
-
 	
-
 }
