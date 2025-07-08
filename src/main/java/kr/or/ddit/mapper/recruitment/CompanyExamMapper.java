@@ -13,4 +13,8 @@ public interface CompanyExamMapper {
 	public int insertCompanyExam(CompanyExamVO vo);
 	public int updateCompanyExam(CompanyExamVO vo);
 	public int deleteCompanyExam(String companyExamNo);
+	
+	//추가
+	public List<CompanyExamVO> selectCompanyExamListById(String userId);
+	
 }
