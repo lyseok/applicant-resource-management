@@ -36,8 +36,8 @@ public class MemberScrabCompanyServiceImpl implements MemberScrabCompanyService 
 	}
 
 	@Override
-	public void removeCompany(ScrabCompanyVO scompany) {
-		mapper.deleteCompany(scompany);
+	public void removeScrabCompany(ScrabCompanyVO scompany) {
+		mapper.deleteScrabCompany(scompany);
 	}
 
 }

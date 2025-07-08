@@ -62,7 +62,7 @@ public class MemberScrabCompanyAjaxController {
 	public Map<String, Object> deleteSCompany(
 		@PathVariable ScrabCompanyVO scompany	
 	) {
-		service.removeCompany(scompany);
+		service.removeScrabCompany(scompany);
 		return Map.of("ok", true);
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import kr.or.ddit.vo.common.ScrabCompanyVO;
 import lombok.extern.slf4j.Slf4j;
+
 @SpringBootTest
 @Slf4j
 class ScrabCompanyMapperTest {
@@ -59,13 +60,13 @@ class ScrabCompanyMapperTest {
 	}
 
 	@Test
-	void testDeleteCompany() {
+	void testDeleteScrabCompany() {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 			
 		SCV.setCompanyId("QWER5");
 		SCV.setUserId("QWE1");
 		
-		mapper.deleteCompany(SCV);
+		mapper.deleteScrabCompany(SCV);
 		
 	}
 

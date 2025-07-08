@@ -146,7 +146,7 @@ public class MemberScrabCompanyController {
 	// 관심 기업 단건 삭제
 	@DeleteMapping("scompanyDetail/remove")
 	public String scompanyDelete(ScrabCompanyVO scompany, Model model) {
-		service.removeCompany(scompany);
+		service.removeScrabCompany(scompany);
 		
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);

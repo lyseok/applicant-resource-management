@@ -15,5 +15,5 @@ public interface MemberScrabCompanyService {
 	
 	public void modifyScrabCompany(ScrabCompanyVO scompany);
 	
-	public void removeCompany(ScrabCompanyVO scompany);
+	public void removeScrabCompany(ScrabCompanyVO scompany);
 }

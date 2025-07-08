@@ -3,12 +3,10 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-<title>띹잡 고객센터 | 게시글 목록</title>
-<script>
-	document.addEventListener("DOMContentLoaded", ()=>{
-// 		$("body")
-	});
-</script>
+<head>
+	<title>띹잡 고객센터 | 게시글 목록</title>
+	<script src="/js/admin/community/aboardList.js"></script>
+</head>
 <body>
 
 	<h4>관리자 게시판 목록</h4>
@@ -18,7 +16,9 @@
 		<tr>
 			<th>게시글 번호</th>
 			<th>사용자 ID</th>
-			<th>게시판 유형 코드</th>
+			<th id="aboardTypeCode">
+				<span id="faqTypeCode">게시판 유형 코드</span>
+			</th>
 			<th>제목</th>
 			<th>등록일시</th>
 			<th>내용</th>
