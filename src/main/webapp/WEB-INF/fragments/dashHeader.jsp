@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
 
 <header id="dashHeader" class="dash_header">
     <div class="wrap_top_btns">
@@ -32,13 +33,37 @@
    	</div>
 
     <div class="wrap_member">
-        <button type="button" class="btn_member">
-            <span class="user_photo">
-                <span id="gnb_personnal_photo_area_span" class="img"></span>
-            </span>
-            <span class="user_name">userName</span>
-            <i class='bx  bx-caret-down'  ></i> 
-        </button>
+<!--         <button type="button" class="btn_member"> -->
+<!--             <span class="user_photo"> -->
+<!--                 <span id="gnb_personnal_photo_area_span" class="img"></span> -->
+<!--             </span> -->
+<!--             <span class="user_name">userName</span> -->
+<!--             <i class='bx  bx-caret-down'  ></i>  -->
+<!--         </button> -->
+		
+
+		<button type="button" class="btn_member">
+		    <span class="user_photo">
+		        <span id="gnb_personnal_photo_area_span" class="img"></span>
+		    </span>
+		    <span class="user_name">
+		        <c:choose>
+		            <c:when test="${userType eq 'company'}">
+		                ${comName}
+		            </c:when>
+		            <c:when test="${userType eq 'admin'}">
+		                관리자
+		            </c:when>
+		            <c:when test="${userType eq 'member'}">
+		                ${memberName}
+		            </c:when>
+		            <c:otherwise>
+		                일반유저
+		            </c:otherwise>
+		        </c:choose>
+		    </span>
+		    <i class='bx bx-caret-down'></i>
+		</button>
         <div class="layer_member" id="displayMemBtn" style="display:none;">
             <ul>
                 <li>
