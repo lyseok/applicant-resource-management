@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.or.ddit.admin.common.codegroup.service.AdminCmnCodeGroupAjaxService;
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
+import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +29,18 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminAdminBoardAjaxController {
 	
 	private final AdminAdminBoardAjaxService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함, model에 안 담고 어떻게?
+	private final AdminCmnCodeGroupAjaxService cservice;
+	
+    // codeGroupNo 파라미터를 받아 단건 조회
+    @GetMapping("/cmncodegroup/{no}")
+    public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
+        return cservice.readCmnCodeGroupByPk(no);
+    }
 	
 	@GetMapping("/{boardTypeCode}/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
 	    return service.readAdminBoardByPk(boardNo)
-//	    		.map(ResponseEntity::ok)
-	    		.map(ab->ResponseEntity.ok(ab))  //boardNo 있으면 ok 반환
+	    		.map(ResponseEntity::ok)  //boardNo 있으면 ok 반환
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import kr.or.ddit.vo.common.AvatarVO;
-import kr.or.ddit.vo.common.UsersVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
