@@ -1,30 +1,35 @@
-const interviewListEl = document.querySelector("#interviewList");
-const listSizeEl = document.querySelector("#list-size");
-const editInterviewConfirmBtnEl = document.querySelector("#edit-interview-confirm-btn");
+const interviewListEl = document.querySelector('#interviewList');
+const listSizeEl = document.querySelector('#list-size');
+const editInterviewConfirmBtnEl = document.querySelector('#edit-interview-confirm-btn');
 
 interviewListEl.addEventListener('click', (event) => {
-	if(event.target.closest("li.PostList_postItem").classList.contains('saveInterview')) {
-		const postItem = event.target.closest("li.PostList_postItem");
-		if(postItem) {
-				let selectedInterviewNo = postItem.getAttribute("data-inte-no");
-				location.href = '/company/interview/detail?interviewNo=' + selectedInterviewNo;
-			}
+  if (
+    event.target
+      .closest('li.PostList_postItem')
+      .classList.contains('saveInterview')
+  ) {
+    const postItem = event.target.closest('li.PostList_postItem');
+    if (postItem) {
+      let selectedInterviewNo = postItem.getAttribute('data-inte-no');
+      location.href =
+        '/company/interview/detail?interviewNo=' + selectedInterviewNo;
     }
+  }
 });
 
 const getInterviewList = async () => {
-	const {status, data} = await axios.get("/ajax/company/interview");
-	
-	if(status == 200){
-		let html = ``;
+  const { status, data } = await axios.get('/ajax/company/interview');
 
-		listSizeEl.innerHTML = data.length;
-		data.forEach(inte => {
-			console.log(inte);
-			const reProcess = inte.recruitProcess;
-			const reNotice = reProcess.recruitmentNotice;
+  if (status == 200) {
+    let html = ``;
 
-			html += /* html */ `
+    listSizeEl.innerHTML = data.length;
+    data.forEach((inte) => {
+      console.log(inte);
+      const reProcess = inte.recruitProcess;
+      const reNotice = reProcess.recruitmentNotice;
+
+      html += /* html */ `
 				<li class="PostList_postItem saveInterview" data-inte-no='${inte.interviewNo}'>
 					<div class="PostList_link">
 						<div class="PostList_post">
@@ -55,19 +60,13 @@ const getInterviewList = async () => {
 									</div>
 								</div>
 							</div>
-							<div class="d-flex gap-2 justify-content-end w-100 mt-3">
-								<div class='btn btn_gray_line saveInterview' data-bs-toggle="modal" data-bs-target="#editInterviewModal">수정</div>
-								<div class='btn btn_red_line saveInterview' data-bs-toggle="modal" data-bs-target="#deleteInterviewModal">삭제</div>
-							</div>
 						</div>
 					</div>
 				</li>
 			`;
-		});
-		interviewListEl.innerHTML = html;
-	}
-	
-}
-
+    });
+    interviewListEl.innerHTML = html;
+  }
+};
 
 getInterviewList();
