@@ -24,7 +24,7 @@ public class LanguageSkillVO implements Serializable{
 	private String languageExamScore;
 	
 	private String languageExamLevelCode;
-	private String languageExamLevelCodeNamw;
+	private String languageExamLevelCodeName;
 	
 	private String deleteDate;
 }

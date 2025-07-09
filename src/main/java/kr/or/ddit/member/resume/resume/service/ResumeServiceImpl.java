@@ -222,6 +222,13 @@ public class ResumeServiceImpl implements ResumeService {
 		List<LanguageSkillVO> languageSkillList = resumeVO.getLanguageSkillList();
 		List<MilitaryVO> militaryList = resumeVO.getMilitaryList();
 		List<EducationVO> educationList = resumeVO.getEducationList();
+		educationList.forEach(i ->{
+			List<SpecialtyVO> list = i.getSpecialtyList();
+			list.forEach(ii->{
+				ii.setSubMajorCode(provider.getCodeName(ii.getSubMajorCode()));
+				log.info("{}", ii.getSubMajorCode());
+			});
+		});
 		
 		// 데이터 setting
 		for(CareerVO car : carrerList) {
@@ -229,17 +236,68 @@ public class ResumeServiceImpl implements ResumeService {
 			car.setJobGradeCodeName(provider.getCodeName(car.getJobGradeCode()));
 			car.setPositionCodeName(provider.getCodeName(car.getPositionCode()));
 			car.setCareerYearName(provider.getCodeName(car.getCareerYear()));
-			log.info("------->>> {}", car.getJobCodeName());
-			log.info("------->>> {}", car.getJobGradeCodeName());
-			log.info("------->>> {}", car.getPositionCodeName());
-			log.info("------->>> {}", car.getCareerYearName());
+			log.info("JobCode ------->>> {}", car.getJobCodeName());
+			log.info("JobGradeCode ------->>> {}", car.getJobGradeCodeName());
+			log.info("PositionCode ------->>> {}", car.getPositionCodeName());
+			log.info("CareerYear ------->>> {}", car.getCareerYearName());
+			log.info(" ");
 		}
+		log.info(" ");
 		
-		/*
-		 * for(SupportVO sup : supportList) { }
-		 */
+		for(SupportVO sup : supportList) {
+			sup.setDisabilityCodeName(provider.getCodeName(sup.getDisabilityCode()));
+			sup.setDisabilityLevelCodeName(provider.getCodeName(sup.getDisabilityLevelCode()));
+			log.info("Disability ------->>> {}", sup.getDisabilityCodeName());
+			log.info("DisabilityLevel ------->>> {}", sup.getDisabilityLevelCodeName());
+			log.info(" ");
+		}
+		log.info(" ");
+		
+		for(MyExperienceVO exp : myExperienceList) {
+			exp.setExpCodeName(provider.getCodeName(exp.getExpCode()));
+			log.info("ExpCode ------->>> {}", exp.getExpCodeName());
+		}
+		log.info(" ");
+		
+		for(LanguageSkillVO lang : languageSkillList) {
+			lang.setLanguageCodeName(provider.getCodeName(lang.getLanguageCode()));
+			lang.setLanguageExamCodeName(provider.getCodeName(lang.getLanguageExamCode()));
+			lang.setLanguageExamLevelCodeName(provider.getCodeName(lang.getLanguageExamLevelCode()));
+			log.info("LanguageCode ------->>> {}", lang.getLanguageCodeName());
+			log.info("LanguageExamCode ------->>> {}", lang.getLanguageExamCodeName());
+			log.info("LanguageExamLevelCode ------->>> {}", lang.getLanguageExamLevelCodeName());
+			log.info(" ");
+		}
+		log.info(" ");
+		
+		for(MilitaryVO mil : militaryList) {
+			mil.setServiceCategoryCode(provider.getCodeName(mil.getServiceCategoryCode()));
+			mil.setMilitaryTypeCode(provider.getCodeName(mil.getMilitaryTypeCode()));
+			mil.setMilitaryRankCode(provider.getCodeName(mil.getMilitaryRankCode()));
+			mil.setDischargeCode(provider.getCodeName(mil.getDischargeCode()));
+			log.info("ServiceCategory ------->>> {}", mil.getServiceCategoryCode());
+			log.info("MilitaryType ------->>> {}", mil.getMilitaryTypeCode());
+			log.info("MilitaryRank ------->>> {}", mil.getMilitaryTypeCode());
+			log.info("Discharge ------->>> {}", mil.getMilitaryTypeCode());
+			log.info(" ");
+		}
+		log.info(" ");
+		
+		for(EducationVO edu : educationList) {
+			edu.setDepartmentCode(provider.getCodeName(edu.getDepartmentCode()));
+			edu.setHighestEducationCode(provider.getCodeName(edu.getHighestEducationCode()));
+			log.info("MilitaryRank ------->>> {}", edu.getDepartmentCode());
+			log.info("Discharge ------->>> {}", edu.getHighestEducationCode());
+		}
+		log.info(" ");
 		
 		
+		
+	}
+
+	@Override
+	public void editResumeRemove(ResumeVO vo) {
+		// resumeMapper.deleteResume(null);
 		
 	}
 	 

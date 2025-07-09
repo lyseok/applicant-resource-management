@@ -56,7 +56,7 @@
 			        <c:forEach items="${education.specialtyList }" var="specialty">
 				        <li>
 				          <span class="list-label">전공</span>
-				          <span class="list-content">${specialty.mainMajor }</span>
+				          <span class="list-content">${specialty.mainMajor } / ${specialty.subMajorCode }</span>
 				        </li>
 				    </c:forEach>
 				</c:if>
@@ -254,5 +254,43 @@
 	      </ul>
 	    </div>
     </c:if>
+    
+    <!-- 병역 -->
+    <c:if test="${not empty resumeList.militaryList}">
+	    <div class="section">
+	      <div class="section-title">병역</div>
+	      <c:forEach items="${resumeList.militaryList }" var="mil">
+		      <ul class="section-list">
+		        <li>
+		          <span class="list-label">복무</span>
+		          <span class="list-content">${mil.serviceCategoryCode }</span>
+		        </li>
+		        <li>
+		          <span class="list-label">군별</span>
+		          <span class="list-content">${mil.militaryTypeCode }</span>
+		        </li>
+		        <li>
+		          <span class="list-label">계급</span>
+		          <span class="list-content">${mil.militaryRankCode }</span>
+		        </li>
+		        <li>
+		          <span class="list-label">전역사유</span>
+		          <span class="list-content">${mil.dischargeCode }</span>
+		        </li>
+		        <li>
+		          <span class="list-label">복무기간</span>
+		          <span class="list-content">${mil.militaryStartDate } ~ ${mil.militaryEndDate } </span>
+		        </li>
+		      </ul>
+	      </c:forEach>
+   		</div>
+	</c:if>
+  </div>
+  <div class="d-flex justify-content-between">
+  	<a href="/mypage/resume/list" class="btn btn_gray_line">목록</a>
+  	<div class="d-flex gap-1">
+  		<a href="" class="btn btn_red_line">삭제</a>
+  		<a href="" class="btn btn_violet_line">수정</a>
+  	</div>
   </div>
 </body>

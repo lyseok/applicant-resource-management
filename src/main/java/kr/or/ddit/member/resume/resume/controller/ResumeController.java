@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,6 +86,23 @@ public class ResumeController {
 	public String createResume() {
 		return "";
 	}
+	
+
+	// 삭제 로직 구현
+	@GetMapping("delete/{no}")
+	public String createResume(
+		@PathVariable String no
+	) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName(); // 아이디
+		ResumeVO vo = new ResumeVO();
+		vo.setUserId(username);
+		vo.setResumeNo(no);
+		service.removeResume(no); // >> 논리적 삭제작업 해줘야함, 매퍼, 서비스 작업 아직 안해줬음
+	    
+		return "";
+	}
+	
 	
 	/*
 	// 수정 로직 구현

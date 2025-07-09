@@ -68,7 +68,7 @@
   color: #2d3554;
   margin-bottom: 14px;
   padding-bottom:10px;
-  border-bottom:1px solid var(--gray30);
+  border-bottom:1px solid #333;
 }
 .section-title h6{
   font-weight:bold;	
