@@ -7,6 +7,7 @@
 			   , LICENSE_CODE
 			   , LICENSE_PASS_DATE
 		  FROM MY_LICENSE
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectMyLicenseDetail">
@@ -16,6 +17,7 @@
 			   , LICENSE_PASS_DATE
 		  FROM MY_LICENSE 
 		 WHERE MY_LICENSE = #{myLicense}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertMyLicense">

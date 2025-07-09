@@ -6,9 +6,9 @@ import kr.or.ddit.vo.resume.MilitaryVO;
 
 public interface MilitaryService {
 	// 목록 조회
-	public List<MilitaryVO> readMilitaryList();
+	public List<MilitaryVO> readMilitaryList(String no);
 	// 단건 조회
-	public MilitaryVO readMilitaryDetail(String no);
+	public MilitaryVO readMilitaryDetail(MilitaryVO vo);
 	// 등록
 	public void createMilitary(MilitaryVO vo);
 	// 수정

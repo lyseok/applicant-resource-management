@@ -6,7 +6,7 @@ import kr.or.ddit.vo.resume.SpecialtyVO;
 
 public interface SpecialtyService {
 	// 목록 조회
-	public List<SpecialtyVO> readSpecialtyList();
+	public List<SpecialtyVO> readSpecialtyList(String no);
 	// 단건 조회
 	public SpecialtyVO readSpecialtyDetail(SpecialtyVO vo);
 	// 등록
