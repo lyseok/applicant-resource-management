@@ -15,6 +15,7 @@ public class RecruitmentEducationVO implements Serializable{
 	private String recruitmentEdcucationCode;
 	@NotBlank
 	private String codeDetailNo;
+	private String codeDetailName;
 	@NotBlank
 	private String recruitmentNo;
 	private String recruitmentPositionDelDate;
