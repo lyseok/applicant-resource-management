@@ -1,0 +1,139 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script defer src = "/js/company/recruitment/companyExam/createCompanyExam.js"></script>
+
+  <style>
+    /* 전체 컨테이너 */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      padding: 24px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 32px;
+    }
+
+    /* 제목 */
+    h1 {
+      margin-bottom: 24px;
+      font-size: 1.8rem;
+      text-align: center;
+      color: #4a4a4a;
+    }
+
+    /* 카드 스타일 */
+    .card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    /* 레이블 + 입력 */
+    .card label {
+      display: flex;
+      flex-direction: column;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .card input[type="text"],
+    .card textarea {
+      margin-top: 6px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: vertical;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .card textarea {
+      min-height: 80px;
+    }
+
+    /* 문항 블록 */
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .option-row input[type="text"] {
+      flex: 1;
+    }
+    .option-row label {
+      font-size: 0.9rem;
+    }
+
+    /* 버튼 공통 */
+    .btn {
+      background-color: #7c3aed;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      margin-right: 8px;
+    }
+    .btn:hover {
+      background-color: #6b21a8;
+      transform: translateY(-1px);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    /* 보조 버튼 (문항/보기 추가) */
+    .btn-secondary {
+      background-color: #4a5568;
+    }
+    .btn-secondary:hover {
+      background-color: #2d3748;
+    }
+
+    /* 컨트롤 그룹 */
+    .actions {
+      text-align: center;
+      margin-top: 32px;
+    }
+  </style>
+
+</head>
+<body data-exam-id="${examNo}" >
+	<div class="container">
+		    <h1> ${empty examNo ? '시험 생성' : '시험 수정'} </h1>
+		    <div class="card">
+		      <label>
+		        시험명
+		        <input type="text" id="comExamName" placeholder="시험명을 입력하세요" />
+		      </label>
+		    </div>
+		
+		    <div id="questionContainer"></div>
+		 
+		    <div class="actions">
+		      <button id="addQuestionBtn" class="btn-secondary btn">+ 문제 추가</button>
+		    </div>
+		
+		    <div class="actions">
+		      <button id="submitAllBtn" class="btn">시험 생성</button>
+		    </div>
+	 </div>
+</body>
+</html>

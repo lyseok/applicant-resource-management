@@ -16,6 +16,8 @@ public interface PortfolioMapper {
 	public int insertPortfolio(PortfolioVO vo);
 	// 수정
 	public int updatePortfolio(PortfolioVO vo);
+	// 논리적 삭제
+	public int updatePortfolioDelete(PortfolioVO vo);
 	// 삭제
 	public int deletePortfolio(String no);
 }

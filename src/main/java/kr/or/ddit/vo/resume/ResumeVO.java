@@ -29,6 +29,8 @@ public class ResumeVO implements Serializable{
 	private String updateDate;
 	private String resumeSubmitYn;
 	private String resumeDeleteDate;
+	
+	private CompanyVO company;						// 기업정보
 
 	private List<CareerVO> careerList;				// 경력
 	private List<SupportVO> supportList;			// 고용지원

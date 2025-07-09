@@ -43,7 +43,8 @@
 	</update>
 	
 	<delete id="deleteRecruitmentPositon">
-	DELETE FROM RECRUITMENT_POSITION 
+	UPDATE RECRUITMENT_POSITION SET
+		 RECRUITMENT_POSITION_DEL_DATE = SYSDATE
 	WHERE RECRUITMENT_POSITION_CODE = #{recruitmentPositionCode}
 	</delete>
 </mapper>

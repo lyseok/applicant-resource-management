@@ -32,6 +32,11 @@ public class PortfolioServiceImpl implements PortfolioService {
 	public void editPortfolio(PortfolioVO vo) {
 		mapper.updatePortfolio(vo);
 	}
+	
+	@Override
+	public void updatePortfolioDelete(PortfolioVO vo) {
+		mapper.updatePortfolioDelete(vo);
+	}
 
 	@Override
 	public void removePortfolio(String no) {
