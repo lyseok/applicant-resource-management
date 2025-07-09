@@ -59,9 +59,9 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 	}
 
 	@Override
-	public ResumeVO selectResumeDetail(String userName) {
+	public ResumeVO selectResumeDetail(String userId) {
 		// TODO Auto-generated method stub
-		return TPMapper.selectResumeDetail(userName);
+		return TPMapper.selectResumeDetail(userId);
 	}
 
 	@Override
@@ -93,6 +93,16 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 	    return TPMapper.selectTalentPoolListByFilter(filter);
 	}
 
+	/*
+	 * @Override public CityCodeVO selectedlocation() { // TODO Auto-generated
+	 * method stub return TPMapper.selectedlocation(); }
+	 * 
+	 * @Override public EducationVO selectededucation() { // TODO Auto-generated
+	 * method stub return TPMapper.selectededucation(); }
+	 * 
+	 * @Override public TopJobVO selectedTopJob() { // TODO Auto-generated method
+	 * stub return TPMapper.selectedTopJob(); }
+	 */
 //	@Override
 //	public List<MySkillVO> selectMySkill() {
 //		// TODO Auto-generated method stub

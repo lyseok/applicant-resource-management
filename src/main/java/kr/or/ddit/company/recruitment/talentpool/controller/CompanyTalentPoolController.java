@@ -37,7 +37,11 @@ public class CompanyTalentPoolController {
 		List<JobVO> jobList = CTservice.selectJob();
 		List<CityCodeVO> cityList = CTservice.selectlocation();
 		List<EducationVO> eduList = CTservice.selecteducation();
-		log.info("{}", talentpoolList);
+		log.info("list 를 했을때 로그 : {}", talentpoolList);
+		log.info(" tjobList : {}", tjobList);
+		log.info(" jobList : {}", jobList);
+		log.info(" cityList : {}", cityList);
+		log.info(" eduList : {}", eduList);
 		model.addAttribute("talentpoolList", talentpoolList);
 		model.addAttribute("tjobList", tjobList);
 		model.addAttribute("jobList", jobList);
@@ -50,37 +54,39 @@ public class CompanyTalentPoolController {
 
 	@GetMapping("/detail/{no}")
 	public String detail(@PathVariable String no, Model model) {
-		ResumeVO detail = CTservice.selectResumeDetail(no);
-
+		ResumeVO detail = CTservice.selectResumeDetail(no);	
+		List<TopJobVO> tjobList = CTservice.selectTopJob();
+		List<JobVO> jobList = CTservice.selectJob();
 		model.addAttribute("boardCss", true);
+		model.addAttribute("tjobList", tjobList);
+		model.addAttribute("jobList", jobList);
 		model.addAttribute("detail", detail); // 이 이름에 주의
 		System.out.println("디테일 값 : " + detail);
+		System.out.println("tjob" + tjobList);
+		log.info("tjob" , tjobList);
 		return "company/recruitment/talentpool/TalentPoolDetail";
 	}
 
 
 	@PostMapping("/filter")
-	public String filterTalentPool(
-		@RequestParam(required = false) String careerlong,
-		@RequestParam(required = false) String location,
-		@RequestParam(required = false) String edudone,
-		@RequestParam(required = false) String gedu,
-		@RequestParam(required = false) String Topjob,
-		@RequestParam(required = false) String Job,
-		Model model
-		) {
-		Map<String , Object> filter = new HashMap<>();
-		filter.put("careerlong",careerlong);
-		filter.put("location", location);
-		filter.put("edudone", edudone);
-		filter.put("gedu" , gedu);
-		filter.put("Topjob", Topjob);
-		filter.put("Job",Job);
-		
-		List<ResumeVO> filteredList = CTservice.selectTalentPoolListByFilter(filter);
-		model.addAttribute("talentpoolList",filteredList);
-		log.info("잘 나오나 봅시다 : {}" ,filteredList);
-		return "company/recruitment/talentpool/TalentPool";
+	public String filterTalentPool(@RequestParam Map<String, Object> param, Model model) {
+	    List<ResumeVO> list = CTservice.selectTalentPoolListByFilter(param);
+	    model.addAttribute("talentpoolList", list);
+	    return "company/recruitment/talentpool/TalentpoolListFragment";  // <- JSP 조각 반환
 	}
-
+	
+	@PostMapping("/higtSearch")
+	public String higtSearch(@RequestParam(required = false)
+								String keywordlicense,
+							@RequestParam(required = false)
+								String keywordSkillName,
+								Model model) {
+		
+		model.addAttribute("keywordlicense", keywordlicense);
+		model.addAttribute("keywordSkillName", keywordSkillName);
+		return "company/recruitment/talentpool/TalentpoolListFragment";
+	}
+	
+	
+	
 }
