@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.ddit.admin.common.codegroup.service.AdminCmnCodeGroupAjaxService;
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
-import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +30,8 @@ public class AdminAdminBoardAjaxController {
 	private final AdminAdminBoardAjaxService service;
 	private final AdminCmnCodeGroupAjaxService cservice;
 	
-    // codeGroupNo 파라미터를 받아 단건 조회
-    @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/adminBoard/cmncodegroup/BRDD 로 cmnCodeList가 나옴(공지/faq/문의)
+    // codeGroupNo 파라미터를 받아 cmnCodeList 조회(BRDD, UFAQ, CFAQ)
+    @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/adminBoard/cmncodegroup/BRDD
     public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
         return cservice.readCmnCodeGroupByPk(no);
     }
@@ -46,7 +45,13 @@ public class AdminAdminBoardAjaxController {
 	
 	@GetMapping("/{boardTypeCode}")
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
-		return service.readAdminBoardListByType(service.matchBoardTypeCode(boardTypeCode));
+		return service.readAdminBoardListByType(boardTypeCode);
+	}
+
+	// boardTypeCode를 받아 detailNo 리스트 조회
+	@GetMapping("/detailCodeList/{boardTypeCode}")
+	public List<CmnCodeVO> cmnCodeList(@PathVariable String boardTypeCode){
+		return service.matchBoardTypeCode(boardTypeCode);
 	}
 	
 	@GetMapping

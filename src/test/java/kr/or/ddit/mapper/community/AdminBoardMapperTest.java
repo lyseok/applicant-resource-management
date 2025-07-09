@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,11 +51,12 @@ class AdminBoardMapperTest {
 	
 	@Test
 	void testSelectCodeNameEqType() {
-		assertDoesNotThrow(()->mapper.selectCodeNameEqType("UFAQ-U5"));
+		assertDoesNotThrow(()->mapper.selectCodeGroupNoByType("UFAQ-U5"));
 		
-		String boardTypeCode = mapper.selectCodeNameEqType("UFAQ-U5");
-
-		log.info("게시글 유형 : {}", boardTypeCode);
+		List<CmnCodeVO> codeGroupList = mapper.selectCodeGroupNoByType("UFAQ-U5");
+		codeGroupList.forEach(code->{
+			log.info("공통코드 그룹들 : {}", codeGroupList);
+		});
 	}
 
 	@Test
