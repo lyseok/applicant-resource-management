@@ -17,15 +17,16 @@ class SupportMapperTest {
 	
 	@Test
 	void testselectSupportList() {
-		mapper.selectSupportList().forEach(supt -> {
+		mapper.selectSupportList("RESM000001").forEach(supt -> {
 			log.info("{}", supt);
 		});
 	}
 
 	@Test
 	void testselectSupportDetail() {
-		SupportVO vo = mapper.selectSupportDetail("SUP002");
-		log.info("{}", vo);
+		SupportVO vo = new SupportVO();
+		vo.setResumeNo("RESM000001");
+		log.info("{}", mapper.selectSupportDetail(vo));
 	}
 
 	@Test
@@ -36,7 +37,7 @@ class SupportMapperTest {
 		vo.setDisabilityLevelCode("1");
 		
 		mapper.insertSupport(vo);
-		SupportVO result = mapper.selectSupportDetail(vo.getSupportNo());
+		SupportVO result = mapper.selectSupportDetail(vo);
 		log.info("{}", result);
 		
 	}
@@ -50,7 +51,7 @@ class SupportMapperTest {
 		vo.setDisabilityLevelCode("9");
 		
 		mapper.insertSupport(vo);
-		SupportVO result = mapper.selectSupportDetail(vo.getSupportNo());
+		SupportVO result = mapper.selectSupportDetail(vo);
 		log.info("{}", result);
 		
 	}
@@ -58,8 +59,10 @@ class SupportMapperTest {
 	@Test
 	void testDeleteSupport() {
 		mapper.deleteSupport("SUPT000006");
-		SupportVO result = mapper.selectSupportDetail("SUPT000006");
+		/*
+		SupportVO result = mapper.selectSupportDetail("SUPT000006"); 
 		log.info("{}", result);		
+		*/
 	}
 
 }

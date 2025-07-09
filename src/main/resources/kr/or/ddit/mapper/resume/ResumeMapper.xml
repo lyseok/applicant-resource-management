@@ -28,9 +28,10 @@
         <result property="comName"       column="COM_NAME"/>
       </association>
     </collection>
-    
-    
   </resultMap>
+  
+  
+  
 	<select id="selectResumeList">
 	  	SELECT  RESUME_NO
 		      , RESUME_MAIN_YN

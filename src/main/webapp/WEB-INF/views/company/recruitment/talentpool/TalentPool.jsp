@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
+<script defer src="/js/company/recruitment/talentpool/talentpool.js"></script>
+
 <head>
 <meta charset="UTF-8">
 <title>인재풀 목록</title>
@@ -226,36 +226,39 @@ body {
 	background-color: #f0f0f0;
 }
 </style>
-<script defer src="/js/company/recruitment/talentpool/talentpool.js"></script>
 </head>
 <body>
 
 	<!-- 🔍 상단 검색 바 -->
+	<form action="">
 	<div class="search-filter-bar">
-		<input type="text" name="keywordOr" placeholder="OR 키워드"> <input
-			type="text" name="keywordAnd" placeholder="AND 키워드"> <input
-			type="text" name="keywordNot" placeholder="NOT 키워드">
+		<input type="text" name="keywordlicense" placeholder="원하시는 자격증있나요?">
+		<input type="text" name="keywordSkillName" placeholder="원하시는 기술명있나요?">
 		<button type="submit">검색</button>
 	</div>
+	</form>
+	
+	
 
 	<!-- 📦 메인 컨텐츠 -->
 	<div class="main-wrapper">
 
 		<!-- 왼쪽 필터 -->
-		<form action="/filter" method="post">
+		<form id="filterForm" action="/talentpool/filter" method="post">
 			<div class="left-filter">
 				<h3>필터</h3>
 
 				<!-- 경력 필터 -->
 				<label>경력</label>
 				<div style="display: flex; gap: 10px;">
-					<select name="careerStart">
+					<select name="careerlong">
 						<option value="">선택</option>
 						<c:forEach begin="0" end="40" var="i" varStatus="status">
 							<option value="${i}"
-								<c:if test="${careerStart == i}">selected</c:if>>
+								<c:if test="${careerlong== i}">selected</c:if>>
 								<c:choose>
-									<c:when test="${status.first}">1년 이하</c:when>
+									<c:when test="${i == 0}">신입</c:when>
+									<c:when test="${i == 1}">1년 이하</c:when>
 									<c:otherwise>${i}년 이상</c:otherwise>
 								</c:choose>
 							</option>
@@ -273,112 +276,92 @@ body {
 				</select>
 
 				<!-- 최종학력 필터 -->
-				<label>최종학력</label> <select name="highest">
+				<label>최종학력</label> <select name="edudone">
 					<option value="">선택</option>
-					<c:forEach var="fedu" items="${eduList}">
-						<option value="${fedu.highestEducationCode}"
-							<c:if test="${highest == fedu.highestEducationCode}">selected</c:if>>
-							${fedu.highestEducationCode}</option>
-					</c:forEach>
+					<option value="1">중학교 졸업</option>
+					<option value="2">고등학교 졸업</option>
+					<option value="3">대학교(2,3년제) 졸업</option>
+					<option value="4">대학교(4년제) 졸업</option>
+					<option value="5">대학원</option>
+					<option value="6">기타학력</option>
+					<option value="7">학력무관</option>				
 				</select>
 
 				<!-- 졸업 여부 필터 -->
-				<label>졸업 상태</label> 
-				<select name="graduate_edu">
+				<label>졸업 상태</label> <select name="gedu">
 					<option value="">선택</option>
-					<c:forEach var="gedu" items="${eduList}">
-						<option value="${gedu.graduateYn}"
-							<c:if test="${graduate_edu == gedu.graduateYn}">selected</c:if>>
-							${gedu.graduateYn}</option>
-					</c:forEach>
+					<option value="1">졸업</option>
+					<option value="2">재학중</option>
+					<option value="3">휴학중</option>
+					<option value="4">수료</option>
+					<option value="5">중퇴</option>
+					<option value="6">자퇴</option>
+					<option value="7">졸업예정</option>				
 				</select>
 
-				<!-- 직군 필터 -->
-				<label>직군</label> <select name="topJob">
+				<!-- 직군 -->
+				<label>직군</label> <select id="positionSelect" name="topJob">
 					<option value="">선택</option>
 					<c:forEach var="tjob" items="${tjobList}">
-						<option value="${tjob.topJobName}"
+						<option value="${tjob.topJobCode}"
 							<c:if test="${topJob == tjob.topJobName}">selected</c:if>>
 							${tjob.topJobName}</option>
 					</c:forEach>
 				</select>
 
-				<!-- 직무 필터 -->
-				<label>직무</label> <select name="job">
+				<!-- 직무 -->
+				<label>직무</label> <select id="jobSelect" name="job">
 					<option value="">선택</option>
 					<c:forEach var="job" items="${jobList}">
 						<option value="${job.jobCode}"
-							<c:if test="${job == job.jobCode}">selected</c:if>>
-							${job.jobName}</option>
+							data-top-job-code="${job.topJobCode}">${job.jobName}</option>
 					</c:forEach>
 				</select>
+
 
 				<!-- 검색 버튼 -->
 				<div style="margin-top: 20px; text-align: right;">
 					<button type="submit"
 						style="background-color: #4285f4; color: white; padding: 10px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">검색하기</button>
 				</div>
+				<button type="button" id="resetFilter"
+					style="margin-left: 10px; background-color: #ccc; color: black; padding: 10px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+					초기화</button>
 			</div>
 		</form>
 
-		<!-- 오른쪽 리스트 -->
+
+		<!-- 오른쪽 콘텐츠 영역 -->
 		<div class="content-area">
-			<c:if test="${not empty talentpoolList}">
-				<c:forEach items="${talentpoolList}" var="talent">
-					<div class="user-card" data-user-id="${talent.userId}">
-						<div class="user-avatar"></div>
-						<div class="user-info">
-							<div class="user-meta">
-								<span class="user-name">${talent.userName}</span>
-								<c:forEach var="career" items="${talent.careerList }"
-									varStatus="status">
-									<span class="user-experience">경력 ${career.careerYear}년 <c:if
-											test="${talent.careerYear}">
-											<span class="new-badge">New</span>
-										</c:if>
-									</span>
-								</c:forEach>
-							</div>
-							<div class="user-position-salary">
-								<c:forEach var="job" items="${talent.careerList }"
-									varStatus="status">
-									<span class="position-name">${job.jobCode}</span>
-									<span class="working-period"> <c:if
-											test="${not empty job.startWorkDate}">
-                                    (${job.startWorkDate} 
-                                    <c:if
-												test="${not empty job.retireDate}">- ${talent.retireDate}</c:if>
-											<c:if test="${empty job.retireDate}">- 재직중</c:if>)
-                                </c:if> <c:if test="${not empty job.salary}">
-                                    , 연봉 ${job.salary}
-                                </c:if>
-									</span>
-								</c:forEach>
-							</div>
-							<c:forEach var="jobtime" items="${jobtime.careerList }"
-								varStatus="status">
-								<div class="user-description">${jobtime.responsibility}</div>
-								<div class="user-career-path">
-									<span class="company-team">${jobtime.jobCode}</span> (1년 2개월) <span
-										class="company-team">${jobtime.jobCode}</span> (2년)
-								</div>
-							</c:forEach>
-							<div class="user-education">서울대학교 컴퓨터 공학과 (졸업)</div>
-						</div>
-						<div class="action-buttons">
-							<button class="save-button">후보자 저장</button>
-							<button class="reject-button">이직제안 하기</button>
-						</div>
-					</div>
-				</c:forEach>
-			</c:if>
-
-			<c:if test="${empty talentpoolList}">
-				<p style="text-align: center; margin-top: 50px; color: #777;">검색
-					결과가 없습니다.</p>
-			</c:if>
+			<div id="talent-list-wrapper">
+				<jsp:include page="TalentpoolListFragment.jsp" />
+			</div>
 		</div>
-
 	</div>
+
+	<script>
+document.addEventListener("DOMContentLoaded", function () {
+	const form = document.getElementById("filterForm");
+	const talentListWrapper = document.getElementById("talent-list-wrapper");
+
+	form.addEventListener("submit", function (e) {
+		e.preventDefault();
+		const formData = new FormData(form);
+
+		fetch("/talentpool/filter", {
+			method: "POST",
+			body: formData
+		})
+			.then(res => res.text())
+			.then(html => {
+				talentListWrapper.innerHTML = html;
+			})
+			.catch(err => {
+				console.error("오류 발생:", err);
+				talentListWrapper.innerHTML = "<p style='color:red;'>검색 실패</p>";
+			});
+	});
+});
+</script>
+
 </body>
-</html>

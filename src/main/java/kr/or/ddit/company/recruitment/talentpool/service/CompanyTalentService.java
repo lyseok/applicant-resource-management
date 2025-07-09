@@ -33,7 +33,7 @@ public interface CompanyTalentService {
 	
 //	public List<MySkillVO> selectMySkill();
 	
-	public ResumeVO selectResumeDetail(String userName);
+	public ResumeVO selectResumeDetail(String userId);
 	
 	public List<TopJobVO> selectTopJob();
 
@@ -44,4 +44,12 @@ public interface CompanyTalentService {
 	public List<EducationVO> selecteducation();
 
 	public List<ResumeVO> selectTalentPoolListByFilter(Map<String, Object> filter);
+
+	/*
+	 * public CityCodeVO selectedlocation();
+	 * 
+	 * public EducationVO selectededucation();
+	 * 
+	 * public TopJobVO selectedTopJob();
+	 */
 }

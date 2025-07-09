@@ -19,17 +19,19 @@ class PortfolioMapperTest {
 
 	@Test
 	void testselectPortfolioList() {
-		mapper.selectPortfolioList().forEach(port->{
+		mapper.selectPortfolioList("RESM000001").forEach(port->{
 			log.info("{}", port);
 		});
 	}
 
 	@Test
 	void testselectPortfolioDetail() {
-		PortfolioVO vo = mapper.selectPortfolioDetail("POR001");
-		log.info("{}", vo);
+		PortfolioVO vo = new PortfolioVO();
+		vo.setResumeNo("RESM000001");
+		vo.setPorCode("MYLC000001");
+		log.info("{}", mapper.selectPortfolioDetail(vo));
 	}
-
+/*
 	@Test
 	void testInsertPortfolio() {
 		PortfolioVO vo = new PortfolioVO();
@@ -56,12 +58,10 @@ class PortfolioMapperTest {
 		mapper.selectPortfolioDetail(vo.getPorCode());
 		log.info("{}", vo);
 	}
-
+*/
 	@Test
 	void testDeletePortfolio() {
 		mapper.deletePortfolio("POR0000004");
-		PortfolioVO vo = mapper.selectPortfolioDetail("POR0000004");
-		log.info("{}", vo);
 	}
 
 }

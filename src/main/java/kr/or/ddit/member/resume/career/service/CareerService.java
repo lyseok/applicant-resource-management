@@ -9,7 +9,7 @@ public interface CareerService {
 	// 목록 조회
 	public List<CareerVO> readCareerList(String no);
 	// 단건 조회
-	public CareerVO readCareerDetail(ResumeVO vo);
+	public CareerVO readCareerDetail(CareerVO vo);
 	// 등록
 	public void createCareer(CareerVO vo);
 	// 수정

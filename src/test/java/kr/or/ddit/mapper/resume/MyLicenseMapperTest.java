@@ -18,15 +18,17 @@ class MyLicenseMapperTest {
 
 	@Test
 	void testselectMyLicenseList() {
-		mapper.selectMyLicenseList().forEach(lic -> {
+		mapper.selectMyLicenseList("RESM000001").forEach(lic -> {
 			log.info("{}", lic);
 		});
 	}
 
 	@Test
 	void testselectMyLicenseDetail() {
-		MyLicenseVO vo = mapper.selectMyLicenseDetail("ML00000006");
-		log.info("{}", vo);
+		MyLicenseVO vo = new MyLicenseVO();
+		vo.setResumeNo("RESM000001");
+		vo.setMyLicense("MYLC000001");
+		log.info("{}", mapper.selectMyLicenseDetail(vo));
 	}
 
 	@Test
@@ -37,7 +39,7 @@ class MyLicenseMapperTest {
 		vo.setLicensePassDate("20220406");
 		mapper.insertMyLicense(vo);
 		
-		mapper.selectMyLicenseDetail(vo.getLicenseCode());
+		mapper.selectMyLicenseDetail(vo);
 		log.info("{}", vo);
 	}
 
@@ -50,7 +52,7 @@ class MyLicenseMapperTest {
 		vo.setLicensePassDate("2024-04-01");
 		mapper.updateMyLicense(vo);
 		
-		MyLicenseVO result = mapper.selectMyLicenseDetail(vo.getMyLicense());
+		MyLicenseVO result = mapper.selectMyLicenseDetail(vo);
 		log.info("{}", result);
 	}
 
