@@ -12,6 +12,7 @@
 			   , MILITARY_END_DATE
 			   , MILITARY_REASON 
 		  FROM MILITARY
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectMilitaryDetail">
@@ -26,6 +27,7 @@
 			   , MILITARY_REASON 
 		  FROM MILITARY 
 		 WHERE MILITARY_NO = #{militaryNo}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertMilitary">

@@ -14,8 +14,8 @@ public class EducationServiceImpl implements EducationService {
 	private final EducationMapper mapper;
 	
 	@Override
-	public List<EducationVO> readEducationList() {
-		return mapper.selectEducationList();
+	public List<EducationVO> readEducationList(String no) {
+		return mapper.selectEducationList(no);
 	}
 
 	@Override

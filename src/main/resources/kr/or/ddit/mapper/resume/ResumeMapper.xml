@@ -32,37 +32,47 @@
     
   </resultMap>
 	<select id="selectResumeList">
-		SELECT RESUME_NO
-			   , USER_ID
-			   , USER_NAME
-			   , PHOTO
-			   , BIRTH
-			   , EMAIL
-			   , TEL
-			   , ADDRESS
-			   , VETERAN_REASON
-			   , UPDATE_DATE
-			   , RESUME_SUBMIT_YN
-			   , RESUME_DELETE_DATE
-		  FROM RESUME
+	  	SELECT  RESUME_NO
+		      , RESUME_MAIN_YN
+		      , INTRODUCTION_NO
+		      , USER_ID
+		      , USER_NAME
+		      , PHOTO
+		      , TO_CHAR(TO_DATE(BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
+		      , EMAIL
+		      , TEL
+		      , ADDRESS
+		      , VETERAN_REASON
+		      , TO_CHAR(TO_DATE(UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
+		      , RESUME_SUBMIT_YN
+		      , RESUME_DELETE_DATE
+		      , RESUME_NAME
+		  FROM resume
 		 WHERE USER_ID = #{userId}
 		   AND RESUME_DELETE_DATE IS NULL
+
 	</select>
 	
 	<select id="selectResumeDetail">
-		SELECT RESUME_NO
-			   , USER_ID
-			   , USER_NAME
-			   , PHOTO, BIRTH
-			   , EMAIL
-			   , TEL
-			   , ADDRESS
-			   , VETERAN_REASON
-			   , UPDATE_DATE
-			   , RESUME_SUBMIT_YN
-			   , RESUME_DELETE_DATE
-		  FROM RESUME
-		 WHERE RESUME_NO = #{resumeNo}
+	  	SELECT  RESUME_NO
+		      , RESUME_MAIN_YN
+		      , INTRODUCTION_NO
+		      , USER_ID
+		      , USER_NAME
+		      , PHOTO
+		      , TO_CHAR(TO_DATE(BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
+		      , EMAIL
+		      , TEL
+		      , ADDRESS
+		      , VETERAN_REASON
+		      , TO_CHAR(TO_DATE(UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
+		      , RESUME_SUBMIT_YN
+		      , RESUME_DELETE_DATE
+		      , RESUME_NAME
+		  FROM resume
+		 WHERE USER_ID = #{userId}
+		   AND RESUME_DELETE_DATE IS NULL
+		   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	
@@ -156,8 +166,8 @@
 		      r.UPDATE_DATE DESC
   </select>
   
-  <resultMap id="resumeResultMap" type="kr.or.ddit.vo.resume.ResumeVO">
-    <!-- ResumeVO 기본 필드 -->
+  <!--<resultMap id="resumeResultMap" type="kr.or.ddit.vo.resume.ResumeVO">
+    ResumeVO 기본 필드
     <id property="resumeNo" column="RESUME_NO"/>
     <result property="resumeMainYn" column="RESUME_MAIN_YN"/>
     <result property="introductionNo" column="INTRODUCTION_NO"/>
@@ -174,7 +184,7 @@
     <result property="resumeDeleteDate" column="RESUME_DELETE_DATE"/>
     <result property="resumeName" column="RESUME_NAME"/>
 
-    <!-- CareerVO -->
+    CareerVO
     <collection property="careerList" ofType="kr.or.ddit.vo.resume.CareerVO">
         <id property="careerNo" column="CAREER_NO"/>
         <result property="resumeNo" column="CAREER_RESUME_NO"/>
@@ -194,7 +204,7 @@
         <result property="comId" column="COM_ID"/>
     </collection>
 
-    <!-- SupportVO -->
+    SupportVO
     <collection property="supportList" ofType="kr.or.ddit.vo.resume.SupportVO">
         <id property="supportNo" column="SUPPORT_NO"/>
         <result property="resumeNo" column="SUPPORT_RESUME_NO"/>
@@ -203,7 +213,7 @@
         <result property="deleteDate" column="SUPPORT_DELETE_DATE"/>
     </collection>
 
-    <!-- AwardVO -->
+    AwardVO
     <collection property="awardList" ofType="kr.or.ddit.vo.resume.AwardVO">
         <id property="awardCode" column="AWARD_CODE"/>
         <result property="resumeNo" column="AWARD_RESUME_NO"/>
@@ -213,7 +223,7 @@
         <result property="deleteDate" column="AWARD_DELETE_DATE"/>
     </collection>
 
-    <!-- MyExperienceVO -->
+    MyExperienceVO
     <collection property="myExperienceList" ofType="kr.or.ddit.vo.resume.MyExperienceVO">
         <id property="myExpCode" column="MY_EXP_CODE"/>
         <result property="resumeNo" column="MY_EXP_RESUME_NO"/>
@@ -225,7 +235,7 @@
         <result property="deleteDate" column="MY_EXP_DELETE_DATE"/>
     </collection>
 
-    <!-- MySkillVO -->
+    MySkillVO
     <collection property="mySkillList" ofType="kr.or.ddit.vo.resume.MySkillVO">
         <id property="mySkillCode" column="MY_SKILL_CODE"/>
         <result property="resumeNo" column="MY_SKILL_RESUME_NO"/>
@@ -233,7 +243,7 @@
         <result property="deleteDate" column="MY_SKILL_DELETE_DATE"/>
     </collection>
 
-    <!-- LanguageSkillVO -->
+    LanguageSkillVO
     <collection property="languageSkillList" ofType="kr.or.ddit.vo.resume.LanguageSkillVO">
         <id property="languageSkillNo" column="LANGUAGE_SKILL_NO"/>
         <result property="resumeNo" column="LANGUAGE_SKILL_RESUME_NO"/>
@@ -247,7 +257,7 @@
         <result property="deleteDate" column="LANGUAGE_SKILL_DELETE_DATE"/>
     </collection>
 
-    <!-- PortfolioVO -->
+    PortfolioVO
     <collection property="portfolioList" ofType="kr.or.ddit.vo.resume.PortfolioVO">
         <id property="porCode" column="POR_CODE"/>
         <result property="resumeNo" column="PORTFOLIO_RESUME_NO"/>
@@ -258,7 +268,7 @@
         <result property="deleteDate" column="PORTFOLIO_DELETE_DATE"/>
     </collection>
 
-    <!-- MilitaryVO -->
+    MilitaryVO
     <collection property="militaryList" ofType="kr.or.ddit.vo.resume.MilitaryVO">
         <id property="militaryNo" column="MILITARY_NO"/>
         <result property="resumeNo" column="MILITARY_RESUME_NO"/>
@@ -272,7 +282,7 @@
         <result property="deleteDate" column="MILITARY_DELETE_DATE"/>
     </collection>
     
-    <!-- EducationVO (with specialtyList) -->
+    EducationVO (with specialtyList)
 	<collection property="educationList" ofType="kr.or.ddit.vo.resume.EducationVO">
 	    <id property="educationNo" column="EDUCATION_NO"/>
 	    <result property="resumeNo" column="EDUCATION_RESUME_NO"/>
@@ -286,7 +296,7 @@
 	    <result property="departmentCode" column="DEPARTMENT_CODE"/>
 	    <result property="deleteDate" column="EDUCATION_DELETE_DATE"/>
 	
-	    <!-- SpecialtyVO 리스트 -->
+	    SpecialtyVO 리스트
 	    <collection property="specialtyList" ofType="kr.or.ddit.vo.resume.SpecialtyVO">
 	        <id property="educationNo" column="SPECIALTY_EDUCATION_NO"/>
 	        <result property="resumeNo" column="SPECIALTY_RESUME_NO"/>
@@ -318,7 +328,7 @@
 	    res.RESUME_SUBMIT_YN AS RESUME_SUBMIT_YN,
 		res.RESUME_DELETE_DATE AS RESUME_DELETE_DATE,
 		res.RESUME_NAME AS RESUME_NAME,	
-	    -- career(car)
+	    -career(car)
 	    car.CAREER_NO AS CAREER_NO,
 	    car.RESUME_NO AS CAREER_RESUME_NO,
 	    car.JOB_CODE AS JOB_CODE,
@@ -336,14 +346,14 @@
 	    car.DELETE_DATE AS CAREER_DELETE_DATE,
 	    car.COM_ID AS COM_ID,
 	
-	    -- support(sup)
+	    -support(sup)
 	    sup.SUPPORT_NO AS SUPPORT_NO,
 	    sup.RESUME_NO AS SUPPORT_RESUME_NO,
 	    sup.DISABILITY_CODE AS DISABILITY_CODE,
 	    sup.DISABILITY_LEVEL_CODE AS DISABILITY_LEVEL_CODE,
 	    sup.DELETE_DATE AS SUPPORT_DELETE_DATE,
 	
-	    -- award(awa)
+	    -award(awa)
 	    awa.AWARD_CODE AS AWARD_CODE,
 	    awa.RESUME_NO AS AWARD_RESUME_NO,
 	    awa.AWARD_NAME AS AWARD_NAME,
@@ -351,7 +361,7 @@
 	    awa.HOSTING AS HOSTING,
 	    awa.DELETE_DATE AS AWARD_DELETE_DATE,
 	
-	    -- my_experience(mye)
+	    -my_experience(mye)
 	    mye.MY_EXP_CODE AS MY_EXP_CODE,
 	    mye.RESUME_NO AS MY_EXP_RESUME_NO,
 	    mye.EXP_CODE AS EXP_CODE,
@@ -361,13 +371,13 @@
 	    mye.EXP_END_DATE AS EXP_END_DATE,
 	    mye.DELETE_DATE AS MY_EXP_DELETE_DATE,
 	
-	    -- my_skill(mys)
+	    -my_skill(mys)
 	    mys.MY_SKILL_CODE AS MY_SKILL_CODE,
 	    mys.RESUME_NO AS MY_SKILL_RESUME_NO,
 	    mys.MY_SKILL_NAME AS MY_SKILL_NAME,
 	    mys.DELETE_DATE AS MY_SKILL_DELETE_DATE,
 	
-	    -- language_skill(lang)
+	    -language_skill(lang)
 	    lang.LANGUAGE_SKILL_NO AS LANGUAGE_SKILL_NO,
 	    lang.RESUME_NO AS LANGUAGE_SKILL_RESUME_NO,
 	    lang.LANGUAGE_EXAM_CODE AS LANGUAGE_EXAM_CODE,
@@ -379,7 +389,7 @@
 	    lang.LANGUAGE_EXAM_LEVEL_CODE AS LANGUAGE_EXAM_LEVEL_CODE,
 	    lang.DELETE_DATE AS LANGUAGE_SKILL_DELETE_DATE,
 	
-	    -- portfolio(port)
+	    -portfolio(port)
 	    port.POR_CODE AS POR_CODE,
 	    port.RESUME_NO AS PORTFOLIO_RESUME_NO,
 	    port.POR_FILE_ORIGINAL_NAME AS POR_FILE_ORIGINAL_NAME,
@@ -388,7 +398,7 @@
 	    port.POR_FILE_PATH AS POR_FILE_PATH,
 	    port.DELETE_DATE AS PORTFOLIO_DELETE_DATE,
 	
-	    -- military(mili)
+	    -military(mili)
 	    mili.MILITARY_NO AS MILITARY_NO,
 	    mili.RESUME_NO AS MILITARY_RESUME_NO,
 	    mili.SERVICE_CATEGORY_CODE AS SERVICE_CATEGORY_CODE,
@@ -400,7 +410,7 @@
 	    mili.MILITARY_REASON AS MILITARY_REASON,
 	    mili.DELETE_DATE AS MILITARY_DELETE_DATE,	    
 	    
-	    -- education(edu)
+	    -education(edu)
 	    edu.EDUCATION_NO AS EDUCATION_NO,
 	    edu.RESUME_NO AS EDUCATION_RESUME_NO,
 	    edu.HIGHEST_EDUCATION_CODE AS HIGHEST_EDUCATION_CODE,
@@ -413,7 +423,7 @@
 	    edu.DEPARTMENT_CODE AS DEPARTMENT_CODE,
 	    edu.DELETE_DATE AS EDUCATION_DELETE_DATE,
 	    
-	    -- education (edu)
+	    -education (edu)
 		edu.EDUCATION_NO AS EDUCATION_NO,
 		edu.RESUME_NO AS EDUCATION_RESUME_NO,
 		edu.HIGHEST_EDUCATION_CODE AS HIGHEST_EDUCATION_CODE,
@@ -426,7 +436,7 @@
 		edu.DEPARTMENT_CODE AS DEPARTMENT_CODE,
 		edu.DELETE_DATE AS EDUCATION_DELETE_DATE,
 		
-		-- specialty (spc)
+		-specialty (spc)
 		spc.EDUCATION_NO AS SPECIALTY_EDUCATION_NO,
 		spc.RESUME_NO AS SPECIALTY_RESUME_NO,
 		spc.MAIN_MAJOR AS MAIN_MAJOR,
@@ -448,5 +458,6 @@
 	LEFT JOIN specialty spc ON res.RESUME_NO = spc.RESUME_NO
 	WHERE res.user_id = #{userId}
 
-  </select>
+  </select> -->
+  
 </mapper>

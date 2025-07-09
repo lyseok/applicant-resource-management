@@ -64,7 +64,7 @@
   display:flex;
   justify-content:space-between;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   color: #2d3554;
   margin-bottom: 14px;
   padding-bottom:10px;
@@ -249,30 +249,6 @@
   margin-top: 4px;
   font-weight: 500;
 }
-.header-quick-menu {
-  display: flex;
-  gap: 10px;
-  margin: 28px 0 8px 0;
-}
-.header-quick-item {
-  background: #f7f8fc;
-  border-radius: 10px;
-  padding: 12px 18px;
-  font-size: 15px;
-  color: #222e4a;
-  border: 1px solid #e4e6ed;
-  min-width: 112px;
-  text-align: center;
-  font-weight: 500;
-}
-.header-quick-link {
-  color: #356de4;
-  font-size: 15px;
-  font-weight: bold;
-  text-decoration: none;
-  margin-left: 8px;
-  vertical-align: middle;
-}
 .myskill-list {
   display: flex;
   gap: 8px;
@@ -293,19 +269,6 @@
   border-top: 1px solid #e3e7ef;
   margin: 28px 0 25px 0;
 }
-.section {
-  margin-bottom: 18px;
-}
-.section-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #233057;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.section-title .must { color: #e06d0b; background: #fff1e0; border-radius: 6px; font-size:13px; padding: 2px 8px; margin-left: 4px;}
 .section-list {
   list-style: none;
   margin: 0;

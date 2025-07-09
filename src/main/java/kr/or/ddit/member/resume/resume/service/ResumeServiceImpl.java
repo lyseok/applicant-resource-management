@@ -50,17 +50,47 @@ public class ResumeServiceImpl implements ResumeService {
 	private final EducationMapper educationMapper;			// 학력
 	private final SpecialtyMapper specialtyMapper;			// 학력 - 하위 전공
 	
-	
+	// 리스트 조회
 	@Override
-	public List<ResumeVO> readResumeList(ResumeVO vo) {
-		List<ResumeVO> resume = resumeMapper.selectResumeList(vo);
+	public List<ResumeVO> readResumeList(String id) {
+		List<ResumeVO> resumeList = resumeMapper.selectResumeList(id);
+		for(ResumeVO resume:resumeList) {
+			resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
+			resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));
+			resume.setAwardList(awardMapper.selectAwardList(resume.getResumeNo()));
+			resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
+			resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
+			resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
+			// resume.setIntroductionList(IntroductionMapper.selectIntroductionList(resume.getResumeNo()));
+			resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
+			resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
+			resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
+			resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));			
+		}
 
-		return resumeMapper.selectResumeList(vo);
+		return resumeList;
 	}
 
+	// 상세조회
 	@Override
-	public ResumeVO readResumeDetail(String no) {
-		return resumeMapper.selectResumeDetail(no);
+	public ResumeVO readResumeDetail(ResumeVO vo) {
+		ResumeVO resume = resumeMapper.selectResumeDetail(vo);
+		if(resume==null) {
+			// return ; 
+		}
+		resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
+		resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));
+		resume.setAwardList(awardMapper.selectAwardList(resume.getResumeNo()));
+		resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
+		resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
+		resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
+		// resume.setIntroductionList(IntroductionMapper.selectIntroductionList(resume.getResumeNo()));
+		resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
+		resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
+		resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
+		resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));
+
+		return resume;
 	}
 
 	@Override
@@ -176,12 +206,6 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	public void removeResume(String no) {
 		resumeMapper.deleteResume(no);
-	}
-
-	@Override
-	public List<ResumeVO> readMemberList(String userId) {
-		return resumeMapper.memberResumeList(userId);
-		
 	}
 
 }

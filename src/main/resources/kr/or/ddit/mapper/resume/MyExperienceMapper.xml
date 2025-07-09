@@ -11,6 +11,7 @@
 			   , EXP_START_DATE
 			   , EXP_END_DATE 
 		  FROM MY_EXPERIENCE
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectMyExperienceDetail">
@@ -23,6 +24,7 @@
 			   , EXP_END_DATE 
 		  FROM MY_EXPERIENCE 
 		 WHERE MY_EXP_CODE = #{myExpCode}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertMyExperience">

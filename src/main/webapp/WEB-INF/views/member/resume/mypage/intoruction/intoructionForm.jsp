@@ -11,7 +11,7 @@
    <c:if test="${not empty introdCreate }">
       <title>자소서 등록</title>
    </c:if>
-   <link rel="stylesheet" href="/css/member/resume/intoruction.css" >
+   <link rel="stylesheet" href="/css/member/resume/introuction.css" >
    
    <script type="text/javascript">
       const introductionName = "${introdDetail.introductionName}";

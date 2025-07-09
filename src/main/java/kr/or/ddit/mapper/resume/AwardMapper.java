@@ -5,17 +5,18 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.or.ddit.vo.resume.AwardVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 
 @Mapper
 public interface AwardMapper {
 	// 목록 조회
-	public List<AwardVO> selectAwardList();
+	public List<AwardVO> selectAwardList(String no);
 	// 단건 조회
-	public AwardVO selectAwardDetail(String no);
+	public AwardVO selectAwardDetail(ResumeVO vo);
 	// 등록
-	public int insertAward(AwardVO vo);
+	public void insertAward(AwardVO vo);
 	// 수정
-	public int updateAward(AwardVO vo);
+	public void updateAward(AwardVO vo);
 	// 삭제
-	public int deleteAward(String no);
+	public void deleteAward(String no);
 }

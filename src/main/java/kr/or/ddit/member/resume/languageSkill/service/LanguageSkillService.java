@@ -6,9 +6,9 @@ import kr.or.ddit.vo.resume.LanguageSkillVO;
 
 public interface LanguageSkillService {
 	// 목록 조회
-	public List<LanguageSkillVO> readLanguageSkillList();
+	public List<LanguageSkillVO> readLanguageSkillList(String no);
 	// 단건 조회
-	public LanguageSkillVO readLanguageSkillDetail(String no);
+	public LanguageSkillVO readLanguageSkillDetail(LanguageSkillVO vo);
 	// 등록
 	public void createLanguageSkill(LanguageSkillVO vo);
 	// 수정

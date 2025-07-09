@@ -17,31 +17,27 @@
         <div class="contact">gptresume@gmail.com&nbsp; | &nbsp;010-****-0064</div>
         <div class="address">주소: (34944) 대전 중구 계룡로</div>
         <div class="info-badge">대표 이력서 번호 001</div>
-        <div class="header-quick-menu">
-          <div class="header-quick-item">학력</div>
-          <div class="header-quick-item">경력</div>
-          <div class="header-quick-item">취업경험</div>
-          <div class="header-quick-item">포트폴리오</div>
-          <a class="header-quick-link" href="#">http://localhost/mypage/...</a>
-        </div>
       </div>
     </div>
 
 
-    <!-- 내 스킬 -->
-    <div class="myskill-list">
-      <div class="myskill-item">Java</div>
-      <div class="myskill-item">JS</div>
-      <div class="myskill-item">Spring</div>
-      <div class="myskill-item">SQL</div>
-      <div class="myskill-item">React</div>
+    <!-- 학력 -->
+    <div class="section">
+      <div class="section-title">나의 스킬</div>
+	    <!-- 내 스킬 -->
+	    <div class="myskill-list">
+	      <div class="myskill-item">Java</div>
+	      <div class="myskill-item">JS</div>
+	      <div class="myskill-item">Spring</div>
+	      <div class="myskill-item">SQL</div>
+	      <div class="myskill-item">React</div>
+	    </div>
     </div>
 
-    <hr class="resume-line">
 
     <!-- 학력 -->
     <div class="section">
-      <div class="section-title">학력 <span class="must">필수</span></div>
+      <div class="section-title">학력</div>
       <ul class="section-list">
         <li>
           <span class="list-label">학교명</span>
@@ -58,11 +54,11 @@
       </ul>
     </div>
 
-    <hr class="resume-line">
+    
 
     <!-- 경력 -->
     <div class="section">
-      <div class="section-title">경력 <span class="must">필수</span></div>
+      <div class="section-title">경력</div>
       <ul class="section-list">
         <li>
           <span class="list-label">기간</span>
@@ -83,11 +79,11 @@
       </ul>
     </div>
 
-    <hr class="resume-line">
+    
 
     <!-- 경험/활동/교육 -->
     <div class="section">
-      <div class="section-title">경험/활동/교육 <span class="must">필수</span></div>
+      <div class="section-title">경험/활동/교육</div>
       <ul class="section-list">
         <li>
           <span class="list-label">기간</span>
@@ -104,11 +100,11 @@
       </ul>
     </div>
 
-    <hr class="resume-line">
+    
 
-    <!-- 자격/어학/수상 -->
+    <!-- 자격 -->
     <div class="section">
-      <div class="section-title">자격/어학/수상</div>
+      <div class="section-title">자격증</div>
       <ul class="section-list">
         <li>
           <span class="list-label">취득일</span>
@@ -125,7 +121,45 @@
       </ul>
     </div>
 
-    <hr class="resume-line">
+    <!-- 어학자격증 -->
+    <div class="section">
+      <div class="section-title">어학 자격증</div>
+      <ul class="section-list">
+        <li>
+          <span class="list-label">취득일</span>
+          <span class="list-content">2025.01</span>
+        </li>
+        <li>
+          <span class="list-label">명칭</span>
+          <span class="list-content">2종보통운전면허</span>
+        </li>
+        <li>
+          <span class="list-label">발급기관</span>
+          <span class="list-content">대전남부경찰서(도로교통공단)</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 수상내역 -->
+    <div class="section">
+      <div class="section-title">수상</div>
+      <ul class="section-list">
+        <li>
+          <span class="list-label">취득일</span>
+          <span class="list-content">2025.01</span>
+        </li>
+        <li>
+          <span class="list-label">명칭</span>
+          <span class="list-content">2종보통운전면허</span>
+        </li>
+        <li>
+          <span class="list-label">발급기관</span>
+          <span class="list-content">대전남부경찰서(도로교통공단)</span>
+        </li>
+      </ul>
+    </div>
+
+    
 
     <!-- 포트폴리오 및 기타문서 -->
     <div class="section">
@@ -144,11 +178,11 @@
       </ul>
     </div>
 
-    <hr class="resume-line">
+    
 
     <!-- 자기소개서 -->
     <div class="section">
-      <div class="section-title">자기소개서 <span class="must">필수</span></div>
+      <div class="section-title">자기소개서</div>
       <ul class="section-list">
         <li style="flex-direction:column;align-items:flex-start;">
           <span class="selfintro-title">이력서의 자소서_250705_1307</span>
@@ -157,7 +191,7 @@
       </ul>
     </div>
 
-    <hr class="resume-line">
+    
 
     <!-- 취업우대사항 -->
     <div class="section">

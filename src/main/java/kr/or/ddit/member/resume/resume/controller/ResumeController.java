@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,7 +46,7 @@ public class ResumeController {
 			return "redirect:/login";
 		}
 		String userId = authentication.getName();	// 현재 로그인된 사용자의 id값 가져오기
-		List<ResumeVO> resumeList = service.readMemberList(userId);
+		List<ResumeVO> resumeList = service.readResumeList(userId);
 		log.info("{}", resumeList);
 		model.addAttribute(MODELNAME, resumeList);
 		return "member/resume/mypage/resume/resumeList";
@@ -53,19 +54,23 @@ public class ResumeController {
 	
 	
 	// 상세조회
-	@GetMapping("detail")
+	@GetMapping("{no}")
 	public String getResumeDetail(
 		Model model
+		, @PathVariable String no
 	){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		// 로그인 되어 있지 않을경우 로그인 폼으로 리턴
 		if(authentication == null) {
 			return "redirect:/login";
 		}
+		ResumeVO vo = new ResumeVO();
 		String userId = authentication.getName();	// 현재 로그인된 사용자의 id값 가져오기
-		List<ResumeVO> resumeList = service.readMemberList(userId);
-		log.info("{}", resumeList);
-		model.addAttribute(MODELNAME, resumeList);
+		vo.setUserId(userId);
+		vo.setResumeNo(no);
+		ResumeVO resume = service.readResumeDetail(vo);
+		log.info("{}", resume);
+		model.addAttribute(MODELNAME, resume);
 		return "member/resume/mypage/resume/resumeDetail";
 	}
 	

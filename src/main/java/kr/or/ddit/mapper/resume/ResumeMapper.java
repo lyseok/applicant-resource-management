@@ -9,9 +9,9 @@ import kr.or.ddit.vo.resume.ResumeVO;
 @Mapper
 public interface ResumeMapper {
 	// 전체 리스트 조회
-	public List<ResumeVO> selectResumeList(ResumeVO ResumeVO);
+	public List<ResumeVO> selectResumeList(String userId);
 	// 단건 조회
-	public ResumeVO selectResumeDetail(String ResumeNo);
+	public ResumeVO selectResumeDetail(ResumeVO ResumeVO);
 	// 등록
 	public int insertResume(ResumeVO ResumeVO);
 	// 수정
@@ -19,9 +19,4 @@ public interface ResumeMapper {
 	// 삭제
 	public int deleteResume(String ResumeNo);
 	
-	//사용자 이력서/커리어 조회
-	public List<ResumeVO> selectResumeWithCareers(String userId);
-	
-	//사용자용 이력서 조회
-	public List<ResumeVO> memberResumeList(String userId);
 }

@@ -18,10 +18,11 @@ class EducationMapperTest {
 
 	@Autowired
 	EducationMapper mapper;
+	ResumeMapper resumemapper;
 	
 	@Test
 	void testselectEducationList() {
-		List<EducationVO> list = mapper.selectEducationList();
+		List<EducationVO> list = mapper.selectEducationList("RESM000001");
 		list.forEach(ed->{
 			log.info("{}", ed);
 		});
@@ -61,19 +62,21 @@ class EducationMapperTest {
 	@Test
 	void testUpdateEducation() {
 		EducationVO vo = new EducationVO();
-		vo.setEducationNo("EDCT000003");
+		vo.setEducationNo("EDCT000001");
 		vo.setResumeNo("RESM000002");
 		vo.setHighestEducationCode("4");
-		vo.setSchoolName("수정후 삭제할거임!!!");
+		vo.setSchoolName("한남대학교");
 		vo.setGraduateYn("1");
 		vo.setTransferYn("N");
 		vo.setEntranceDate("2020-03-25");
 		vo.setGraduateDate("2024-04-23");
-		vo.setLocation("뿌우ㅐㅜ라엥");
+		vo.setLocation("대전광역시");
 		vo.setDepartmentCode("1");
-		int result = mapper.updateEducation(vo);
+		mapper.updateEducation(vo);
 		
-		assertEquals(1, result);
+		EducationVO updated = mapper.selectEducationDetail(vo);
+		assertNotNull(updated);
+
 	}
 
 	@Test
@@ -81,8 +84,10 @@ class EducationMapperTest {
 		EducationVO vo = new EducationVO();
 		vo.setEducationNo("EDCT000002");
 		vo.setResumeNo("RESM000002");
-		int result = mapper.deleteEducation(vo);
-		assertEquals(1, result);
+		mapper.deleteEducation(vo);
+
+		EducationVO delete = mapper.selectEducationDetail(vo);
+		assertNotNull(delete);
 	}
 
 }
