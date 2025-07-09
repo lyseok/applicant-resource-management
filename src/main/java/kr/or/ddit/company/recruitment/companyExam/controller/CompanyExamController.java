@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.or.ddit.company.common.company.service.CompanyService;
@@ -22,7 +23,6 @@ public class CompanyExamController {
 	
 	@GetMapping
 	public String examList(Model model) {
-		
 		model.addAttribute("user", sevice.readCompanyById(getUserId()));
 		return "company/recruitment/companyExam/companyExamList";
 	}
@@ -32,6 +32,19 @@ public class CompanyExamController {
 	public String makeExam() {
 		return "company/recruitment/companyExam/companyExamForm";
 	}
+	
+	@GetMapping("/detail/{examNo}")
+	public String examDetail(@PathVariable("examNo") String examNo, Model model) {
+		model.addAttribute("examNo", examNo);
+		return "company/recruitment/companyExam/companyExamDetail";
+	}
+	
+	@GetMapping("/edit/{examNo}")
+	public String examEdit(@PathVariable("examNo") String examNo, Model model) {
+		model.addAttribute("examNo", examNo);
+		return "company/recruitment/companyExam/companyExamForm";
+	}
+	
 	
 	
 	public String getUserId() {

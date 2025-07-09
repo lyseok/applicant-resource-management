@@ -14,9 +14,8 @@ public interface CompanyExamService {
 	
 	public void createCompanyExam(CompanyExamVO companyExam);
 	
-	public void createCompanyExamQuestions(ComExamQuestionsVO comExamQuestion);
 	
-	public void createCompanyExamOptions(ComExamOptionVO comExamOption);
+	public boolean editExamDeleteDate(String examNo);
 	
-	public boolean removeCompanyExam(String examNo);
+	public CompanyExamVO readCompanyExamWithQuestionAndOption(String examNo);
 }

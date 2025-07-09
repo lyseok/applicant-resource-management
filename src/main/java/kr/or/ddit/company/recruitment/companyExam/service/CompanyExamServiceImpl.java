@@ -32,35 +32,39 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 	@Override
 	public void createCompanyExam(CompanyExamVO companyExam) {	
 		companyExamMapper.insertCompanyExam(companyExam);
-	}
-
-	@Transactional
-	@Override
-	public void createCompanyExamQuestions(ComExamQuestionsVO comExamQuestion) {
-		comExamQuestionsMapper.insertComExamQuest(comExamQuestion);
+		String examNo = companyExam.getComExamNo();
 		
+		for (ComExamQuestionsVO q: companyExam.getQuestionList()) {
+			q.setComExamNo(examNo);
+			comExamQuestionsMapper.insertComExamQuest(q);
+			String questionNo = q.getComQuestionsNo();
+			
+			for (ComExamOptionVO o : q.getOptionList()) {
+				o.setComQuestionsNo(questionNo);
+				comExamOptionMapper.insertComExamOption(o);
+			}
+		}
 	}
 
 
-	@Override
-	public void createCompanyExamOptions(ComExamOptionVO comExamOption) {
-		comExamOptionMapper.insertComExamOption(comExamOption);
-		
-	}
 
 	@Override
 	public CompanyVO readCompanyById(String userId) {
 		return companyMapper.selectCompanyById(userId);
-		
 	}
 
-	@Transactional
+	
 	@Override
-	public boolean removeCompanyExam(String examNo) {
-		
-		companyExamMapper.deleteComExamOptionByExamNo(examNo);
-		companyExamMapper.deleteComExamQuestByExamNo(examNo);
-		return companyExamMapper.deleteCompanyExam(examNo) > 0;
+	public CompanyExamVO readCompanyExamWithQuestionAndOption(String examNo) {
+		return companyExamMapper.selectCompanyExamWithQuestionAndOption(examNo);
 	}
+
+
+	@Override
+	public boolean editExamDeleteDate(String examNo) {
+		return companyExamMapper.updateExamDeleteDate(examNo);
+	}
+
+	
 
 }

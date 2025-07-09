@@ -13,10 +13,10 @@ public interface CompanyExamMapper {
 	public int insertCompanyExam(CompanyExamVO vo);
 	public int updateCompanyExam(CompanyExamVO vo);
 	public int deleteCompanyExam(String companyExamNo);
-	public int deleteComExamQuestByExamNo(String comExamNo);
-	public int deleteComExamOptionByExamNo(String ComExamNo);
+	
 	
 	//추가
 	public List<CompanyExamVO> selectCompanyExamListById(String userId);
-	
+	public CompanyExamVO selectCompanyExamWithQuestionAndOption(String examNo);
+	public boolean updateExamDeleteDate(String companyExamNo);
 }

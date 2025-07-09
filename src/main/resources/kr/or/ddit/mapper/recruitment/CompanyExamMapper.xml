@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.CompanyExamMapper">
+
+	<resultMap type="CompanyExamVO" id="ComExamViewMap">
+		   <id     property="comExamNo"      column="com_exam_no" />
+		    <result property="userId"         column="user_id" />
+		    <result property="comExamName"    column="com_exam_name" />
+		    <result property="comExamDelDate" column="com_exam_del_date" />
+		
+		
+		<collection property="questionList" ofType="ComExamQuestionsVO">
+		  <id     property="comQuestionsNo"      column="com_questions_no" />
+	      <result property="comExamNo"           column="ce_com_exam_no" />
+	      <result property="comExamContents"     column="com_exam_contents" />
+	      <result property="comExamQuestDelDate" column="com_exam_quest_del_date" />
+		
+		
+		
+		<collection property="optionList" ofType="ComExamOptionVO">
+			<id     property="comOptionNo"        column="com_option_no" />
+	        <result property="comQuestionsNo"     column="cq_com_questions_no" />
+	        <result property="comOptionContent"   column="com_option_content" />
+	        <result property="comOptionCorrectYn" column="com_option_correct_yn" />
+	        <result property="comOptionDelDate"   column="com_option_del_date" />
+		</collection>
+	</collection>
+	</resultMap>
+
 	<select id="selectCompanyExamList" resultType="CompanyExamVO">
 	SELECT 
 		COM_EXAM_NO
@@ -23,7 +49,36 @@
 		, USER_ID
 		, COM_EXAM_NAME 
 	FROM COMPANY_EXAM WHERE USER_ID = #{userId}
+		AND COM_EXAM_DEL_DATE IS NULL
 	</select>
+	
+	
+	
+	
+	<select id="selectCompanyExamWithQuestionAndOption" resultMap = "ComExamViewMap">
+		 SELECT 
+	      ce.COM_EXAM_NO,
+	      ce.USER_ID,
+	      ce.COM_EXAM_NAME,
+	      ce.COM_EXAM_DEL_DATE,
+	      cq.COM_QUESTIONS_NO,
+	      cq.COM_EXAM_NO,
+	      cq.COM_EXAM_CONTENTS,
+	      cq.COM_EXAM_QUEST_DEL_DATE,
+	      co.COM_OPTION_NO,
+	      co.COM_QUESTIONS_NO,
+	      co.COM_OPTION_CONTENT,
+	      co.COM_OPTION_CORRECT_YN,
+	      co.COM_OPTION_DEL_DATE
+	    FROM COMPANY_EXAM ce
+	    LEFT JOIN COM_EXAM_QUESTIONS cq
+	      ON ce.COM_EXAM_NO = cq.COM_EXAM_NO
+	    LEFT JOIN COM_EXAM_OPTION co
+	      ON cq.COM_QUESTIONS_NO = co.COM_QUESTIONS_NO
+	    WHERE ce.COM_EXAM_NO = #{comExamNo}
+	</select>
+	
+	
 	
 	<insert id="insertCompanyExam">
 	<selectKey resultType="string" keyProperty="comExamNo" order="BEFORE">
@@ -44,28 +99,22 @@
 	</insert>
 	
 	<update id="updateCompanyExam">
-	UPDATE COMPANY_EXAM SET 
-		COM_EXAM_NAME = #{comExamName} 
-	WHERE COM_EXAM_NO = #{comExamNo}
+		UPDATE COMPANY_EXAM SET 
+			COM_EXAM_NAME = #{comExamName} 
+		WHERE COM_EXAM_NO = #{comExamNo}
 	</update>
 	
-	<delete id="deleteOptionsByExamNo">
-    DELETE FROM COM_EXAM_OPTION
-     WHERE COM_QUESTIONS_NO IN (
-       SELECT COM_QUESTIONS_NO
-         FROM COM_EXAM_QUESTIONS
-        WHERE COM_EXAM_NO = #{comExamNo}
-     )
-  </delete>
-
-  <delete id="deleteQuestionsByExamNo">
-    DELETE FROM COM_EXAM_QUESTIONS
-     WHERE COM_EXAM_NO = #{comExamNo}
-  </delete>
+	<update id="updateExamDeleteDate">
+		UPDATE COMPANY_EXAM
+	       SET COM_EXAM_DEL_DATE = SYSDATE
+	    WHERE COM_EXAM_NO = #{examNo}
+	</update>
 	
+	
+		
 	<delete id="deleteCompanyExam">
-	DELETE FROM COMPANY_EXAM 
-	WHERE COM_EXAM_NO = #{comExamNo}
+		DELETE FROM COMPANY_EXAM 
+		WHERE COM_EXAM_NO = #{comExamNo}
 	</delete>
 	
 	

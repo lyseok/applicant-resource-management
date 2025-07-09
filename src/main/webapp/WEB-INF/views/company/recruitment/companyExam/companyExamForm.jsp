@@ -115,30 +115,25 @@
   </style>
 
 </head>
-<body>
-	 <div class="container">
-    <h1>시험 생성 페이지</h1>
-
-    <div class="card">
-      <label>
-        시험명
-        <input type="text" id="comExamName" placeholder="시험명을 입력하세요" />
-      </label>
-    </div>
-
-    <div id="questionContainer"></div>
- a
-    <div class="actions">
-      <button id="addQuestionBtn" class="btn-secondary btn">+ 문제 추가</button>
-    </div>
-
-    <div class="actions">
-      <button id="submitAllBtn" class="btn">시험 생성</button>
-    </div>
-  </div>
-  
-  
-  
-  
+<body data-exam-id="${examNo}" >
+	<div class="container">
+		    <h1> ${empty examNo ? '시험 생성' : '시험 수정'} </h1>
+		    <div class="card">
+		      <label>
+		        시험명
+		        <input type="text" id="comExamName" placeholder="시험명을 입력하세요" />
+		      </label>
+		    </div>
+		
+		    <div id="questionContainer"></div>
+		 
+		    <div class="actions">
+		      <button id="addQuestionBtn" class="btn-secondary btn">+ 문제 추가</button>
+		    </div>
+		
+		    <div class="actions">
+		      <button id="submitAllBtn" class="btn">시험 생성</button>
+		    </div>
+	 </div>
 </body>
 </html>

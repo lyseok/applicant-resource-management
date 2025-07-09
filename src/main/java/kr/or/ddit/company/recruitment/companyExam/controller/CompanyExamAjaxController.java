@@ -29,49 +29,50 @@ public class CompanyExamAjaxController {
 	
 	@PostMapping("/exam")
 	public ResponseEntity<String> createExam(@RequestBody CompanyExamVO exam) {
-		//exam.setUserId(getLoginId());
-		
-		exam.setUserId("testCompany");
-		
-		companyExamService.createCompanyExam(exam);
 		log.info("exam : {}", exam);
-		return ResponseEntity.ok(exam.getComExamNo());
+		exam.setUserId(getUserId());
+		//exam.setUserId("testCompany");
+		companyExamService.createCompanyExam(exam);
+		return ResponseEntity.ok("등록 성공");
 		
 	}
-	
-	
-	@PostMapping("/question")
-	public ResponseEntity<String> createExamQuestion(@RequestBody ComExamQuestionsVO examQuestion){
-		companyExamService.createCompanyExamQuestions(examQuestion);
-		log.info("examQuestion: {}", examQuestion);
-		return ResponseEntity.ok(examQuestion.getComQuestionsNo());
-	}
-	
-	@PostMapping("/option")
-	public ResponseEntity<String> createExamOption(@RequestBody ComExamOptionVO examOption){
-		companyExamService.createCompanyExamOptions(examOption);
-		log.info("examOption : {}", examOption);
-		return ResponseEntity.ok("시험 등록 성공");
-	}
-	
+
 	
 	@GetMapping("/list")
 	public List<CompanyExamVO> examMyList(){
-		List<CompanyExamVO>	list =  companyExamService.readCompanyExamListById("testCompany");
+		List<CompanyExamVO>	list =  companyExamService.readCompanyExamListById(getUserId());
 		log.info("list : {}", list);
 		return list;
 	}
 	
-	@DeleteMapping("/delete{examNo}")
-	public ResponseEntity<Void> examDelete(@PathVariable("examNo") String examNo) {
-		boolean success = companyExamService.removeCompanyExam(examNo);
+	@GetMapping("/delete/{examNo}")
+	public ResponseEntity<?> examDelete(@PathVariable("examNo") String examNo) {
+		log.info("examNo : {}", examNo);
+		boolean success = companyExamService.editExamDeleteDate(examNo);
 		if (success) {
-			 return ResponseEntity.noContent().build();
+			return ResponseEntity.ok("삭제 성공");
 		}else {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok("삭제 실패");
 		}
 	}
 	
+	
+	@GetMapping("/detail/{examNo}")
+	public CompanyExamVO examDetail(@PathVariable("examNo") String examNo){
+		log.info("examNo:{}", examNo);
+		CompanyExamVO exam = companyExamService.readCompanyExamWithQuestionAndOption(examNo);
+		log.info("exam : {}", exam);
+		
+		return exam;
+	}
+	
+	
+	@PostMapping("/full")
+	public ResponseEntity<String> createFullExam(@RequestBody CompanyExamVO exam){
+		exam.setUserId(getUserId());
+		companyExamService.createCompanyExam(exam);
+		return ResponseEntity.ok("성공");
+	}
 	
 	
 	
