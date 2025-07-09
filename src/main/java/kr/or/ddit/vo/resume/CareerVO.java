@@ -31,6 +31,8 @@ public class CareerVO implements Serializable{
 	private String positionCodeName;
 	
 	private String careerYear;
+	private String careerYearName;
+	
 	private String salary;
 	private String location;
 	private String deleteDate;

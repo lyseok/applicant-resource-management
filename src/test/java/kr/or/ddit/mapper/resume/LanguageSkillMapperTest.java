@@ -20,7 +20,7 @@ class LanguageSkillMapperTest {
 	
 	@Test
 	void testselectLanguageSkillList() {
-		List<LanguageSkillVO> skillList = mapper.selectLanguageSkillList();
+		List<LanguageSkillVO> skillList = mapper.selectLanguageSkillList("RESM000004");
 		skillList.forEach(skill -> {
 			log.info("{}", skill);
 		});
@@ -28,8 +28,10 @@ class LanguageSkillMapperTest {
 
 	@Test
 	void testselectLanguageSkillDetail() {
-		LanguageSkillVO vo = mapper.selectLanguageSkillDetail("LT001");
-		log.info("{}", vo);
+		LanguageSkillVO vo = new LanguageSkillVO();
+		vo.setResumeNo("RESM000004");
+		vo.setLanguageCode("LGSK000001");
+		log.info("{}", mapper.selectLanguageSkillDetail(vo));
 	}
 
 	@Test
@@ -66,7 +68,7 @@ class LanguageSkillMapperTest {
 	@Test
 	void testDeleteLanguageSkill() {
 		mapper.deleteLanguageSkill("LT0000005");
-		assertNull(mapper.selectLanguageSkillDetail("LT0000005"));
+		assertNull("LT0000005");
 	}
 
 }

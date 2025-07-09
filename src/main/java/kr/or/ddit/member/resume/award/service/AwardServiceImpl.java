@@ -20,7 +20,7 @@ public class AwardServiceImpl implements AwardService {
 	}
 
 	@Override
-	public AwardVO readAwardDetail(ResumeVO vo) {
+	public AwardVO readAwardDetail(AwardVO vo) {
 		return mapper.selectAwardDetail(vo);
 	}
 

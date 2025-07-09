@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.resume.AwardMapper;
 import kr.or.ddit.mapper.resume.CareerMapper;
 import kr.or.ddit.mapper.resume.EducationMapper;
@@ -18,6 +19,7 @@ import kr.or.ddit.mapper.resume.ResumeMapper;
 import kr.or.ddit.mapper.resume.SpecialtyMapper;
 import kr.or.ddit.mapper.resume.IntroductionMapper;
 import kr.or.ddit.mapper.resume.SupportMapper;
+import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import kr.or.ddit.vo.resume.AwardVO;
 import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.EducationVO;
@@ -32,10 +34,14 @@ import kr.or.ddit.vo.resume.ResumeVO;
 import kr.or.ddit.vo.resume.SpecialtyVO;
 import kr.or.ddit.vo.resume.SupportVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
+	private final CodeMapProvider provider;
+	
 	private final ResumeMapper resumeMapper;				// 이력서
 	private final CareerMapper careerMapper;				// 경력
 	private final SupportMapper supportMapper;				// 고용지원
@@ -89,7 +95,7 @@ public class ResumeServiceImpl implements ResumeService {
 		resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
 		resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
 		resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));
-
+		setCodeName(resume);
 		return resume;
 	}
 
@@ -207,5 +213,35 @@ public class ResumeServiceImpl implements ResumeService {
 	public void removeResume(String no) {
 		resumeMapper.deleteResume(no);
 	}
+	
+	private void setCodeName(ResumeVO resumeVO) {
+		// 리스트 꺼내기
+		List<CareerVO> carrerList = resumeVO.getCareerList();
+		List<SupportVO> supportList = resumeVO.getSupportList();
+		List<MyExperienceVO> myExperienceList = resumeVO.getMyExperienceList();
+		List<LanguageSkillVO> languageSkillList = resumeVO.getLanguageSkillList();
+		List<MilitaryVO> militaryList = resumeVO.getMilitaryList();
+		List<EducationVO> educationList = resumeVO.getEducationList();
+		
+		// 데이터 setting
+		for(CareerVO car : carrerList) {
+			car.setJobCodeName(provider.getJobName(car.getJobCode()));
+			car.setJobGradeCodeName(provider.getCodeName(car.getJobGradeCode()));
+			car.setPositionCodeName(provider.getCodeName(car.getPositionCode()));
+			car.setCareerYearName(provider.getCodeName(car.getCareerYear()));
+			log.info("------->>> {}", car.getJobCodeName());
+			log.info("------->>> {}", car.getJobGradeCodeName());
+			log.info("------->>> {}", car.getPositionCodeName());
+			log.info("------->>> {}", car.getCareerYearName());
+		}
+		
+		/*
+		 * for(SupportVO sup : supportList) { }
+		 */
+		
+		
+		
+	}
+	 
 
 }

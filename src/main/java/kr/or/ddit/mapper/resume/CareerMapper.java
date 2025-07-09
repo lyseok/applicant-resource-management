@@ -12,7 +12,7 @@ public interface CareerMapper {
 	// 목록 조회
 	public List<CareerVO> selectCareerList(String no);
 	// 단건 조회
-	public CareerVO selectCareerDetail(ResumeVO vo);
+	public CareerVO selectCareerDetail(CareerVO vo);
 	// 등록
 	public void insertCareer(CareerVO vo);
 	// 수정
