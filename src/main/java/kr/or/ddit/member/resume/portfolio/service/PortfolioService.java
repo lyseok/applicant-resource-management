@@ -13,6 +13,8 @@ public interface PortfolioService {
 	public void createPortfolio(PortfolioVO vo);
 	// 수정
 	public void editPortfolio(PortfolioVO vo);
+	// 논리적 삭제
+	public void updatePortfolioDelete(PortfolioVO vo);
 	// 삭제
 	public void removePortfolio(String no);
 }

@@ -12,7 +12,7 @@ public interface AwardMapper {
 	// 목록 조회
 	public List<AwardVO> selectAwardList(String no);
 	// 단건 조회
-	public AwardVO selectAwardDetail(ResumeVO vo);
+	public AwardVO selectAwardDetail(AwardVO vo);
 	// 등록
 	public void insertAward(AwardVO vo);
 	// 수정

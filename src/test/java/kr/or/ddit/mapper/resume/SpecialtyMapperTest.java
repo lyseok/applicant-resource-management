@@ -20,7 +20,7 @@ class SpecialtyMapperTest {
 	
 	@Test
 	void testSelectSpecialtyList() {
-		List<SpecialtyVO> list = mapper.selectSpecialtyList();
+		List<SpecialtyVO> list = mapper.selectSpecialtyList("RESM000001");
 		list.forEach(vo -> {
 			log.info("{}", vo);
 		});

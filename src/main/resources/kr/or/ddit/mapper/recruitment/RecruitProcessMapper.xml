@@ -59,4 +59,10 @@
 		, RECRUIT_PROCESS_TYPE = #{recruitProcessType} 
 	WHERE RECRUIT_PROCESS_NO = #{recruitProcessNo}
 	</update>
+	
+	<delete id="deleteRecruitProcess">
+		UPDATE RECRUIT_PROCESS SET
+			RECRUIT_PROCESS_DEL_DATE = SYSDATE
+		WHERE RECRUI_PROCESS_NO = #{recruitProcessNo}
+	</delete>
 </mapper>

@@ -2,26 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.PortfolioMapper">
 	<select id="selectPortfolioList">
-		SELECT POR_CODE
-			   , RESUME_NO
-			   , POR_FILE_ORIGINAL_NAME
-			   , POR_FILE_SAVE_NAME
-			   , POR_FILE_SIZE
-			   , POR_FILE_PATH 
-		  FROM PORTFOLIO
-     	 WHERE RESUME_NO = #{resumeNo}
+     	 SELECT POR_CODE
+			  , RESUME_NO
+			  , POR_NAME
+			  , POR_START_DATE
+			  , POR_END_DATE
+			  , POR_INFORMATION
+			  , TO_CHAR(TO_DATE(DELETE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS DELETE_DATE
+		 FROM PORTFOLIO
+		WHERE DELETE_DATE IS NULL
+		  AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectPortfolioDetail">
-		SELECT POR_CODE
-			   , RESUME_NO
-			   , POR_FILE_ORIGINAL_NAME
-			   , POR_FILE_SAVE_NAME
-			   , POR_FILE_SIZE
-			   , POR_FILE_PATH 
-		  FROM PORTFOLIO 
-		 WHERE POR_CODE = #{porCode}
-     	   AND RESUME_NO = #{resumeNo}
+		  SELECT POR_CODE
+		      , RESUME_NO
+		      , POR_NAME
+		      , TO_CHAR(TO_DATE(POR_START_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS POR_START_DATE
+		      , TO_CHAR(TO_DATE(POR_END_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS POR_END_DATE
+		      , POR_INFORMATION
+		      , TO_CHAR(TO_DATE(DELETE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS DELETE_DATE
+		 FROM PORTFOLIO
+		WHERE DELETE_DATE IS NULL
+		  AND RESUME_NO = #{resumeNo}
+		  AND POR_CODE = #{porCode}
 	</select>
 	
 	<insert id="insertPortfolio">
@@ -31,30 +35,43 @@
 		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(POR_CODE), LENGTH('PTPL' ) + 1)), 0) + 1, 6, '0')
 		    FROM PORTFOLIO
 		</selectKey>
-		INSERT INTO PORTFOLIO (		
-			POR_CODE
-			, RESUME_NO
-			, POR_FILE_ORIGINAL_NAME
-			, POR_FILE_SAVE_NAME
-			, POR_FILE_SIZE
-			, POR_FILE_PATH
-		) VALUES (
-			#{porCode}
-			, #{resumeNo}
-			, #{porFileOriginalName}
-			, #{porFileSaveName}
-			, #{porFileSize}
-			, #{porFilePath}
-		)
+		INSERT INTO PORTFOLIO (
+	        POR_CODE
+	      , RESUME_NO
+	      , POR_FILE_ORIGINAL_NAME
+	      , POR_FILE_SAVE_NAME
+	      , POR_FILE_SIZE
+	      , POR_FILE_PATH
+	      , DELETE_DATE
+	    ) VALUES (
+	        #{porCode}
+	      , #{resumeNo}
+	      , #{porFileOriginalName}
+	      , #{porFileSaveName}
+	      , #{porFileSize}
+	      , #{porFilePath}
+	      , #{deleteDate}
+	    )
 	</insert>
 	
 	<update id="updatePortfolio">
-		UPDATE PORTFOLIO 
-		   SET RESUME_NO = #{resumeNo}
-		       , POR_FILE_ORIGINAL_NAME = #{porFileOriginalName}
-		       , POR_FILE_SAVE_NAME = #{porFileSaveName}
-		       , POR_FILE_SIZE = #{porFileSize}
-		       , POR_FILE_PATH = #{porFilePath}
+		UPDATE PORTFOLIO
+		   SET RESUME_NO         = #{resumeNo}
+		     , POR_NAME          = #{porName}
+		     , POR_START_DATE    = #{porStartDate}
+		     , POR_END_DATE      = #{porEndDate}
+		     , POR_INFORMATION    = #{porInformation}
+		 WHERE POR_CODE = #{porCode}
+	</update>
+	
+	<update id="updatePortfolioDelete">
+		UPDATE PORTFOLIO
+		   SET RESUME_NO         = #{resumeNo}
+		     , POR_NAME          = #{porName}
+		     , POR_START_DATE    = #{porStartDate}
+		     , POR_END_DATE      = #{porEndDate}
+		     , POR_INFORMATION    = #{porInformation}
+		     , DELETE_DATE       = SYSDATE
 		 WHERE POR_CODE = #{porCode}
 	</update>
 	
