@@ -19,4 +19,7 @@ public interface CareerMapper {
 	public void updateCareer(CareerVO vo);
 	// 삭제
 	public void deleteCareer(String no);
+	
+	//추가
+	public CareerVO selectCareerDetail(String careerNo);
 }
