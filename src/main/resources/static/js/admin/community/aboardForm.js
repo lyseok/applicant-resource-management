@@ -29,40 +29,38 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
-	const boardTypeSelect = document.getElementById('boardTypeCode');
-	const faqTypeSelect = document.getElementById('faqType');
-	const faqTypeWrapper = document.getElementById('faqTypeWrapper');
+	const aboardTC = document.querySelector('#aboardTC');
+	const faqType = document.querySelector('#faqType');
+	const faqTypeWrapper = document.querySelector('#faqTypeWrapper');
 
-	const faqSubTypeSelect = document.getElementById('faqSubType');
-	const faqSubTypeWrapper = document.getElementById('faqSubTypeWrapper');
+	const faqSubType = document.querySelector('#faqSubType');
+	const faqSubTypeWrapper = document.querySelector('#faqSubTypeWrapper');
 
-	// 1차 선택 시 FAQ 유형 드러내기
-	boardTypeSelect.addEventListener('change', function() {
-		faqTypeSelect.value = "";
-		faqSubTypeSelect.innerHTML = '<option value="">-- 선택하세요 --</option>';
-		faqSubTypeWrapper.style.display = 'none';
+	// 1차 선택 시 회원유형 선택가능 옵션으로
+	aboardTC.addEventListener('change', function() {
+		faqType.value = "";
+		faqSubTypeWrapper.value = "";
 
 		if (this.value === 'BRDD-002') {
-			faqTypeWrapper.style.display = 'block';
+			faqTypeWrapper.disabled = false;
 		} else {
-			faqTypeWrapper.style.display = 'none';
+			faqTypeWrapper.disabled = true;
 		}
 	});
 
-	// 2차 선택 시 상세 FAQ 드러내기
-	faqTypeSelect.addEventListener('change', function() {
+	// 2차 선택 시 질문유형 선택가능 옵션으로
+	faqType.addEventListener('change', function() {
 		const selected = this.value;
-		faqSubTypeSelect.innerHTML = '<option value="">-- 선택하세요 --</option>';
-		faqSubTypeWrapper.style.display = 'none';
+		faqSubType.value = "";
 
 		if (optionsMap[selected]) {
 			Object.entries(optionsMap[selected]).forEach(([value, label]) => {
 				const option = document.createElement('option');
 				option.value = value;
 				option.textContent = label;
-				faqSubTypeSelect.appendChild(option);
+				faqSubType.disabled = true;
 			});
-			faqSubTypeWrapper.style.display = 'block';
+			faqSubTypeWrapper.disabled = false;
 		}
 	});
 });

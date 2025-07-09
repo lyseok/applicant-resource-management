@@ -2,6 +2,7 @@ package kr.or.ddit.vo.community;
 
 import java.io.Serializable;
 
+import jakarta.validation.constraints.NotBlank;
 import kr.or.ddit.vo.common.AvatarVO;
 import kr.or.ddit.vo.common.UsersVO;
 import lombok.Data;
@@ -13,6 +14,7 @@ public class CommuCommentVO implements Serializable {
 	private String commuCommentNo;
 	private String commuPostNo;
 	private String avatarId;
+	@NotBlank(message = "내용을 입력해주세요.")
 	private String commuCommentContent;
 	private String commuCommentWriteDate;
 	private String commuCommentStatus;

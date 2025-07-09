@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import kr.or.ddit.admin.common.codegroup.service.AdminCmnCodeGroupAjaxService;
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
+import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
@@ -23,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/admin/adminBoard")
+@RequestMapping("/ajax/admin/community/adminBoard")
 @RequiredArgsConstructor
 public class AdminAdminBoardAjaxController {
 	
@@ -86,5 +90,23 @@ public class AdminAdminBoardAjaxController {
 	) {
 		service.removeAdminBoard(boardNo);
 		return Map.of("ok", true);
+	}
+	
+	private final ErrorsUtils errorsUtils; // <- 주입 받고
+
+	// 입력 검증
+	@PostMapping("/aboardChk")
+	public ResponseEntity<?> saveAboard(
+		@Valid @RequestBody AdminBoardVO dto
+		, BindingResult bindingResult
+	) {
+		log.info("{}", dto);
+		
+		if(bindingResult.hasErrors()) {
+			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
+			return ResponseEntity.badRequest().body(errors);
+		}
+		
+	    return ResponseEntity.ok("ok");
 	}
 }
