@@ -19,7 +19,10 @@ const detailDate = async () => {
 
 detailDate();
 const setData = (data) => {
-  const recruitProcess = data.recruitProcess;
+  const interview = data;
+  const interviewQuestionList = interview.interviewQuestionList;
+  const videoInterview = interview.videoInterview;
+  const recruitProcess = interview.recruitProcess;
   const applicantRecordList = recruitProcess.applicantRecordList;
   const recruitmentNotice = recruitProcess.recruitmentNotice;
   console.log(recruitProcess);
@@ -28,23 +31,27 @@ const setData = (data) => {
 
   // 예시 데이터 (실제로는 axios 등으로 받아옴)
   const detail = {
-    title: recruitProcess.recruitmentTitle,
-    jobName: '백엔드 개발자',
-    hireCount: 3,
-    interviewType: '대면면접',
-    interviewDate: '2025-07-14 14:00:00',
-    interviewLocation: '서울 본사 3층',
-    scoreItems: ['인성', '코딩테스트', '협업능력'],
+    title: recruitmentNotice.recruitmentTitle,
+    jobName: recruitmentNotice.jobCodeName,
+    hireCount: recruitmentNotice.recPositionNumber,
+    interviewType: interview.interviewType === 'Y' ? '화상면접' : '대면면접',
+    interviewDate: interview.interviewDate,
+    interviewLocation: interview.interviewLocation,
+    scoreItems: interviewQuestionList.map(
+      (item) => item.interviewQuestionContent
+    ),
     videoInterview: {
-      roomTitle: '백엔드 채용 1차',
-      maxJoinCount: 10,
-      startTime: '2025-07-14 10:00:00',
-      endTime: '2025-07-14 11:00:00',
+      roomTitle: videoInterview.roomTitle,
+      maxJoinCount: videoInterview.maxJoinCount,
+      startTime: videoInterview.startDate,
+      endTime: videoInterview.endDate,
     },
-    applicants: [
-      { name: '홍길동', resumeUrl: '#', time: '2025-07-14 14:10', score: 92 },
-      { name: '김철수', resumeUrl: '#', time: '2025-07-14 14:20', score: 85 },
-    ],
+    applicants: applicantRecordList.map((item) => ({
+      name: item.applicantName,
+      resumeUrl: '#', // 필요시 item.resumeUrl 등으로 교체
+      time: item.evaluationStartTime ? item.evaluationStartTime : '', // null 처리
+      score: item.score ?? 0, // item.score가 없다면 0, 실제로는 적절히 매핑
+    })),
   };
 
   // 뿌리기

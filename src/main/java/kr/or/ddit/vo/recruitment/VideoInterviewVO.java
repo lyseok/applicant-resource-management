@@ -18,4 +18,5 @@ public class VideoInterviewVO implements Serializable{
 	private String endDate;
 	private String companyInterviewUrl;
 	private String videoInterviewDelDate;
+	private String roomId;
 }	
