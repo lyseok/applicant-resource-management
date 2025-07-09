@@ -19,6 +19,7 @@ import kr.or.ddit.vo.common.JobVO;
 import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.EducationVO;
+import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,14 +80,16 @@ public class CompanyTalentPoolController {
 	public String higtSearch(@RequestParam(required = false)
 								String keywordlicense,
 							@RequestParam(required = false)
-								String keywordSkillName,
+								String skillName,
 								Model model) {
-		
+		List<MySkillVO> skillList = CTservice.selectSearchSkill(skillName);
+		log.info("테스트 로고 : {} ",skillList);
 		model.addAttribute("keywordlicense", keywordlicense);
-		model.addAttribute("keywordSkillName", keywordSkillName);
+		model.addAttribute("keywordSkillName", skillName);
 		return "company/recruitment/talentpool/TalentpoolListFragment";
-	}
 	
+	}
+	 
 	
 	
 }

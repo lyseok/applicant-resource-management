@@ -230,10 +230,10 @@ body {
 <body>
 
 	<!-- 🔍 상단 검색 바 -->
-	<form action="">
+	<form action="/talentpool/higtSearch" method="post">
 	<div class="search-filter-bar">
 		<input type="text" name="keywordlicense" placeholder="원하시는 자격증있나요?">
-		<input type="text" name="keywordSkillName" placeholder="원하시는 기술명있나요?">
+		<input type="text" name="skillName" placeholder="원하시는 기술명있나요?">
 		<button type="submit">검색</button>
 	</div>
 	</form>

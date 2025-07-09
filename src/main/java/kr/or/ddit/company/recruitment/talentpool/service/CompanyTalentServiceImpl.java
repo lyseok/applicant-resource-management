@@ -93,6 +93,12 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 	    return TPMapper.selectTalentPoolListByFilter(filter);
 	}
 
+	@Override
+	public List<MySkillVO> selectSearchSkill(String skillName) {
+		// TODO Auto-generated method stub
+		return TPMapper.selectSearchSkill(skillName);
+	}
+
 	/*
 	 * @Override public CityCodeVO selectedlocation() { // TODO Auto-generated
 	 * method stub return TPMapper.selectedlocation(); }

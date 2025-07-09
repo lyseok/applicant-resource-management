@@ -47,6 +47,7 @@ public int insertMember(MemberVO member);
 
 	public List<ResumeVO> selectTalentPoolListByFilter(Map<String, Object> filter);
 
+	public List<MySkillVO> selectSearchSkill(String skillName);
 	/*
 	 * public CityCodeVO selectedlocation();
 	 * 
