@@ -20,7 +20,7 @@ public class CareerServiceImpl implements CareerService {
 	}
 
 	@Override
-	public CareerVO readCareerDetail(ResumeVO vo) {
+	public CareerVO readCareerDetail(CareerVO vo) {
 		return mapper.selectCareerDetail(vo);
 	}
 
