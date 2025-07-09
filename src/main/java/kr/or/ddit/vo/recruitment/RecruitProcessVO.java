@@ -16,6 +16,7 @@ public class RecruitProcessVO implements Serializable{
 	private String recruitProcessStep;
 	private String recruitProcessFinal;
 	private String recruitProcessType;
+	private String recruitProcessTypeName;
 	private String recruitProcessDelDate;
 	
 	// 부모

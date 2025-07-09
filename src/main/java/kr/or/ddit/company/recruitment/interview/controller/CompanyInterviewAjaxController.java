@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.or.ddit.company.recruitment.interview.service.CompanyInterviewService;
 import kr.or.ddit.vo.recruitment.InterviewVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/ajax/company/interview")
@@ -24,6 +26,8 @@ public class CompanyInterviewAjaxController {
 	
 	@GetMapping("/{no}")
 	public InterviewVO interviewDetail(@PathVariable String no) {
-		return service.readInterview(no);
+		InterviewVO data = service.readInterview(no);
+		log.info("{}", data);
+		return data;
 	}
 }

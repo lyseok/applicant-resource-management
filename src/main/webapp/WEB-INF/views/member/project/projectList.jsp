@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="/dist/assets/css/board/postList.css" >
 	<link rel="stylesheet" href="/dist/assets/css/board/profile.css" >
 		<link rel="stylesheet" href="/dist/assets/css/board/board_ui.css" >
+	
 </head>
 <body>
 	<p class="h1 mb-3 fw-bold">프로젝트 목록</p>
