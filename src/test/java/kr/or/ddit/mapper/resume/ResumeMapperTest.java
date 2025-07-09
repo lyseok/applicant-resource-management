@@ -17,9 +17,9 @@ class ResumeMapperTest {
 
 	@Test
 	void testSelectResumeList() {
-		mapper.selectResumeList().forEach(re-> {
-			log.info("{}", re);
-		});
+//		mapper.selectResumeList().forEach(re-> {
+//			log.info("{}", re);
+//		});
 	}
 
 	@Test
@@ -63,6 +63,12 @@ class ResumeMapperTest {
 	void testDeleteResume() {
 		mapper.deleteResume("RESM000004");
 		log.info("{}", mapper.selectResumeDetail("RESM000004"));
+	}
+	
+	@Test 
+	public void testtestetst() {
+		String member = "USR001";
+		log.info("{}", mapper.memberResumeList(member));
 	}
 
 }

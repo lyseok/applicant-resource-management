@@ -9,6 +9,7 @@
 			   , POR_FILE_SIZE
 			   , POR_FILE_PATH 
 		  FROM PORTFOLIO
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectPortfolioDetail">
@@ -20,6 +21,7 @@
 			   , POR_FILE_PATH 
 		  FROM PORTFOLIO 
 		 WHERE POR_CODE = #{porCode}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertPortfolio">

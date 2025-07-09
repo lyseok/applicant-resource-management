@@ -25,7 +25,7 @@
 		<p class="fw-bold">✍ 맞춤법 검사를 통한 편리한 작성</p>
 		<div class="">
 			<!-- <button type="button" class="btn btn_gray_line h50">파일로 등록</button> -->
-			<a class="btn btn_violet h50 lh50" href="/mypage/intoruction/create">자소서 등록하기</a>
+			<a class="btn btn_violet h50 lh50" href="/mypage/intoruction/create">자소서 등록</a>
 		</div>
 	</div>
 	
@@ -53,8 +53,8 @@
 							<p class="text-truncate w800">${introduction.introductionContent}</p>
 						</div>
 						<div class="d-flex gap-1">
-							<a class="btn btn_violet_line fw-normal" href="<c:url value="/mypage/intoruction/edit/${introduction.introductionNo}"/>">수정하기</a>
-							<a class="btn btn_red_line fw-normal" href="<c:url value="/mypage/intoruction/delete/${introduction.introductionNo}"/>" onclick="return confirmDelete();">삭제하기</a>
+							<a class="btn btn_gray_line fw-normal" href="<c:url value="/mypage/intoruction/edit/${introduction.introductionNo}"/>">수정</a>
+							<a class="btn btn_red_line fw-normal" href="<c:url value="/mypage/intoruction/delete/${introduction.introductionNo}"/>" onclick="return confirmDelete();">삭제</a>
 						</div>
 					</li>
 				</ul>

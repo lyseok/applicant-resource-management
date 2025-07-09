@@ -14,13 +14,13 @@ public class MyExperienceServiceImpl implements MyExperienceService {
 	private final MyExperienceMapper mapper;
 	
 	@Override
-	public List<MyExperienceVO> readMyExperienceList() {
-		return mapper.selectMyExperienceList();
+	public List<MyExperienceVO> readMyExperienceList(String no) {
+		return mapper.selectMyExperienceList(no);
 	}
 
 	@Override
-	public MyExperienceVO readMyExperienceDetail(String no) {
-		return mapper.selectMyExperienceDetail(no);
+	public MyExperienceVO readMyExperienceDetail(MyExperienceVO vo) {
+		return mapper.selectMyExperienceDetail(vo);
 	}
 
 	@Override

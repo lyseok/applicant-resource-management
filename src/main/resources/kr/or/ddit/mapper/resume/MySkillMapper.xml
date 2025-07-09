@@ -6,6 +6,7 @@
 			   , RESUME_NO
 			   , MY_SKILL_NAME 
 		  FROM MY_SKILL
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectMySkillDetail">
@@ -14,6 +15,7 @@
 			   , MY_SKILL_NAME
 		  FROM MY_SKILL 
 		 WHERE MY_SKILL_CODE = #{mySkillCode}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertMySkill">
