@@ -35,7 +35,7 @@ public int insertMember(MemberVO member);
 	
 	public List<MySkillVO> selectSkillList();
 	 
-	public ResumeVO selectResumeDetail(String userName);
+	public ResumeVO selectResumeDetail(String userId);
 	
 	public List<TopJobVO> selectTopJob();
 	
@@ -46,5 +46,14 @@ public int insertMember(MemberVO member);
 	public List<EducationVO> selecteducation();
 
 	public List<ResumeVO> selectTalentPoolListByFilter(Map<String, Object> filter);
+
+	/*
+	 * public CityCodeVO selectedlocation();
+	 * 
+	 * public EducationVO selectededucation();
+	 * 
+	 * public TopJobVO selectedTopJob();
+	 */
+
 }
 

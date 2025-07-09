@@ -51,6 +51,6 @@ public class RecruitmentNoticeVO implements Serializable{
 	private String recruitmentDelDate;
 	
 	private List<RecruitmentPositionVO> positionList;
-	private List<RecruitmentEducationVO> educationList;
+	RecruitmentEducationVO education;
 	private List<RecruitmentSkillVO> skillList;
 }
