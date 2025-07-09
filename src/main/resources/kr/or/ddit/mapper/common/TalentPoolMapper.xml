@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.TalentPoolMapper">
-	<select id="selectTalentPoolList" resultType="CareerVO">
+	
+	
+	
+	<select id="selectlocation" resultType="CityCodeVO">
+		SELECT CITY_NAME
+		FROM CITY_CODE
+	</select>
+
+	<select id="selecteducation" resultType="EducationVO">
+		SELECT 
+   			 HIGHEST_EDUCATION_CODE
+    		, GRADUATE_YN
+		FROM 
+    		EDUCATION
+	</select>
+	
+	
+	<select id="selectTopJob" resultType="TopJobVO">
+		SELECT *
+		FROM TOP_JOB
+	</select>
+	
+	<select id="selectJob" resultType="JobVO">
+		SELECT *
+		FROM JOB
+		<!-- WHERE = #{tobJob} -->
+	</select>
+
+	<select id="selectTalentPoolList" resultType="resumeVO">
 		SELECT
 		A.USER_NAME,
+		A.USER_ID,
 		B.JOB_CODE,
 		B.START_WORK_DATE,
 		B.RETIRE_DATE,
@@ -28,6 +57,7 @@
 
 		GROUP BY
 		A.USER_NAME,
+		A.USER_ID,
 		B.JOB_CODE,
 		B.START_WORK_DATE,
 		B.RETIRE_DATE,
@@ -44,76 +74,110 @@
 		A.USER_NAME
 	</select>
 
-<!-- 	<select id="selectResumeDetail" resultType="ResumeVO"> -->
-<!-- 		SELECT -->
-<!-- 		A.USER_NAME, -->
-<!-- 		B.JOB_CODE, -->
-<!-- 		B.START_WORK_DATE, -->
-<!-- 		B.RETIRE_DATE, -->
-<!-- 		B.TENURE, -->
-<!-- 		B.RESPONSIBILITY, -->
-<!-- 		B.FREELANCER, -->
-<!-- 		B.JOB_GRADE_CODE, -->
-<!-- 		B.POSITION_CODE, -->
-<!-- 		B.CAREER_YEAR, -->
-<!-- 		B.SALARY, -->
-<!-- 		B.LOCATION, -->
-<!-- 		LISTAGG(C.MY_SKILL_NAME, ', ') WITHIN GROUP (ORDER BY C.MY_SKILL_NAME) AS SKILLS -->
-<!-- 		FROM RESUME A -->
-<!-- 		JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO -->
-<!-- 		LEFT JOIN MY_SKILL C ON A.RESUME_NO = C.RESUME_NO -->
-<!-- 		WHERE A.USER_NAME = #{userName} -->
-<!-- 		GROUP BY -->
-<!-- 		A.USER_NAME, B.JOB_CODE, B.START_WORK_DATE, B.RETIRE_DATE, B.TENURE, -->
-<!-- 		B.RESPONSIBILITY, B.FREELANCER, B.JOB_GRADE_CODE, B.POSITION_CODE, -->
-<!-- 		B.CAREER_YEAR, B.SALARY, B.LOCATION, A.RESUME_NO -->
-<!-- 	</select> -->
+	<!-- <select id="selectResumeDetail" resultType="ResumeVO"> -->
+	<!-- SELECT -->
+	<!-- A.USER_NAME, -->
+	<!-- B.JOB_CODE, -->
+	<!-- B.START_WORK_DATE, -->
+	<!-- B.RETIRE_DATE, -->
+	<!-- B.TENURE, -->
+	<!-- B.RESPONSIBILITY, -->
+	<!-- B.FREELANCER, -->
+	<!-- B.JOB_GRADE_CODE, -->
+	<!-- B.POSITION_CODE, -->
+	<!-- B.CAREER_YEAR, -->
+	<!-- B.SALARY, -->
+	<!-- B.LOCATION, -->
+	<!-- LISTAGG(C.MY_SKILL_NAME, ', ') WITHIN GROUP (ORDER BY C.MY_SKILL_NAME) 
+		AS SKILLS -->
+	<!-- FROM RESUME A -->
+	<!-- JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO -->
+	<!-- LEFT JOIN MY_SKILL C ON A.RESUME_NO = C.RESUME_NO -->
+	<!-- WHERE A.USER_NAME = #{userName} -->
+	<!-- GROUP BY -->
+	<!-- A.USER_NAME, B.JOB_CODE, B.START_WORK_DATE, B.RETIRE_DATE, B.TENURE, -->
+	<!-- B.RESPONSIBILITY, B.FREELANCER, B.JOB_GRADE_CODE, B.POSITION_CODE, -->
+	<!-- B.CAREER_YEAR, B.SALARY, B.LOCATION, A.RESUME_NO -->
+	<!-- </select> -->
 
 
-	<resultMap id="resumeMap" type="kr.or.ddit.vo.resume.ResumeVO">
-	    <!-- 기본 ResumeVO 매핑 -->
-	    <id property="resumeNo" column="resume_no"/>
-	    <result property="userId" column="user_id"/>
-	    <result property="userName" column="user_name"/>
-	    <result property="photo" column="photo"/>
-	    <result property="birth" column="birth"/>
-	    <result property="email" column="email"/>
-	    <result property="tel" column="tel"/>
-	    <result property="address" column="address"/>
-	    <result property="veteranReason" column="veteran_reason"/>
-	    <result property="updateDate" column="update_date"/>
-	    <result property="resumeSubmitYn" column="resume_submit_yn"/>
-	    <result property="resumeDeleteDate" column="resume_delete_date"/>
-	
-	    <!-- MemberVO 매핑 -->
-	    <association property="member" javaType="kr.or.ddit.vo.common.MemberVO">
-	        <result property="userId" column="user_id"/>
-	        <result property="memName" column="mem_name"/>
-	        <result property="memEmail" column="mem_email"/>
-	        <result property="memBir" column="mem_bir"/>
-	        <result property="memTel" column="mem_tel"/>
-	        <result property="memAdd1" column="mem_add1"/>
-	        <result property="memAdd2" column="mem_add2"/>
-	        <result property="memImg" column="mem_img"/>
-	    </association>
-	
-	    <!-- MySkillVO 리스트 매핑 -->
-	    <collection property="mySkillList" ofType="kr.or.ddit.vo.resume.MySkillVO">
-	        <id property="mySkillCode" column="my_skill_code"/>
-	        <result property="resumeNo" column="resume_no"/>
-	        <result property="mySkillName" column="my_skill_name"/>
-	        <result property="deleteDate" column="delete_date"/>
-	    </collection>
+	<resultMap id="resumeMap"
+		type="kr.or.ddit.vo.resume.ResumeVO">
+		<!-- 기본 ResumeVO 매핑 -->
+		<id property="resumeNo" column="resume_no" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="photo" column="photo" />
+		<result property="birth" column="birth" />
+		<result property="email" column="email" />
+		<result property="tel" column="tel" />
+		<result property="address" column="address" />
+		<result property="veteranReason" column="veteran_reason" />
+		<result property="updateDate" column="update_date" />
+		<result property="resumeSubmitYn" column="resume_submit_yn" />
+		<result property="resumeDeleteDate" column="resume_delete_date" />
+
+		<!-- MemberVO 매핑 -->
+		<association property="member"
+			javaType="kr.or.ddit.vo.common.MemberVO">
+			<result property="userId" column="user_id" />
+			<result property="memName" column="mem_name" />
+			<result property="memEmail" column="mem_email" />
+			<result property="memBir" column="mem_bir" />
+			<result property="memTel" column="mem_tel" />
+			<result property="memAdd1" column="mem_add1" />
+			<result property="memAdd2" column="mem_add2" />
+			<result property="memImg" column="mem_img" />
+		</association>
+
+		<!-- MySkillVO 리스트 매핑 -->
+		<collection property="mySkillList"
+			ofType="kr.or.ddit.vo.resume.MySkillVO">
+			<id property="mySkillCode" column="my_skill_code" />
+			<result property="resumeNo" column="resume_no" />
+			<result property="mySkillName" column="my_skill_name" />
+			<result property="deleteDate" column="delete_date" />
+		</collection>
+		
+		<!-- careerVO 매핑 -->
+		<collection property="careerList" ofType="CareerVO">
+    <id property="careerNo" column="career_no"/>
+    <result property="resumeNo" column="resume_no"/>
+    <result property="jobCode" column="job_code"/>
+    <result property="startWorkDate" column="start_work_date"/>
+    <result property="retireDate" column="retire_date"/>
+    <result property="tenure" column="tenure"/>
+    <result property="department" column="department"/>
+    <result property="responsibility" column="responsibility"/>
+    <result property="freelancer" column="freelancer"/>
+    <result property="jobGradeCode" column="job_grade_code"/>
+    <result property="positionCode" column="position_code"/>
+    <result property="careerYear" column="career_year"/>
+    <result property="salary" column="salary"/>
+    <result property="location" column="location"/>
+    <result property="deleteDate" column="delete_date"/>
+    <result property="comId" column="com_id"/>
+		</collection>
+		
+		<!-- myLicenseList 매핑 -->
+		<collection property="myLicenseList" ofType="MyLicenseVO">
+    <id property="myLicense" column="my_license"/>
+    <result property="resumeNo" column="resume_no"/>
+    <result property="licenseCode" column="license_code"/>
+    <result property="licensePassDate" column="license_pass_date"/>
+    <result property="deleteDate" column="delete_date"/>
+</collection>
 	</resultMap>
 
 	<select id="selectResumeDetail" resultMap="resumeMap">
-	select
+		select
 		*
-	from resume r, member m, my_skill s
-	where r.user_id = m.user_id
-	and r.resume_no = s.resume_no
-	and r.user_id = #{user_id}
-	and r.resume_main_yn = 'Y'
+		from resume r, member m, my_skill s, career c
+		where r.user_id = m.user_id
+		and r.resume_no = s.resume_no
+        and r.resume_no = c.resume_no
+		and r.user_id = #{userId}
+		and r.resume_main_yn = 'Y'
 
 	</select>
 
