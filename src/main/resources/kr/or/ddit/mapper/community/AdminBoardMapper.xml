@@ -52,11 +52,16 @@
 		WHERE
 			BOARD_TYPE_CODE = #{boardTypeCode}
 	</select>
-	<!-- WHERE
-			BOARD_TYPE_CODE IN  /* ('UFAQ-U1','UFAQ-U2','UFAQ-U3'...) */ 
-			<foreach collection="faqList" open="(" close=")" index="i" separator="," item="">
-				#{faqList[i]}
-			</foreach> -->
+
+	<select id="selectCodeNameEqType" parameterType="String">  <!-- 공통 코드 이름을 통해 메뉴에 뿌리는 쿼리 -->
+		SELECT
+		   CMN_CODE.CODE_NAME
+		FROM CMN_CODE
+		JOIN ADMIN_BOARD
+		ON CMN_CODE.CODE_DETAIL_NO = ADMIN_BOARD.BOARD_TYPE_CODE
+		   WHERE 
+		   ADMIN_BOARD.BOARD_TYPE_CODE = #{boardTypeCode}
+	</select>
 	
 	<select id="selectAdminBoardList">
 		SELECT 

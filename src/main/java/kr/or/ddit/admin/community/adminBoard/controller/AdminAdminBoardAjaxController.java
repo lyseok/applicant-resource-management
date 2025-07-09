@@ -32,11 +32,11 @@ public class AdminAdminBoardAjaxController {
 	private final AdminCmnCodeGroupAjaxService cservice;
 	
     // codeGroupNo 파라미터를 받아 단건 조회
-    @GetMapping("/cmncodegroup/{no}")
+    @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/adminBoard/cmncodegroup/BRDD 로 cmnCodeList가 나옴(공지/faq/문의)
     public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
         return cservice.readCmnCodeGroupByPk(no);
     }
-	
+
 	@GetMapping("/{boardTypeCode}/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
 	    return service.readAdminBoardByPk(boardNo)
@@ -46,7 +46,7 @@ public class AdminAdminBoardAjaxController {
 	
 	@GetMapping("/{boardTypeCode}")
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
-		return service.readAdminBoardListByType(boardTypeCode);
+		return service.readAdminBoardListByType(service.matchBoardTypeCode(boardTypeCode));
 	}
 	
 	@GetMapping

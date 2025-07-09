@@ -10,6 +10,7 @@ public interface AdminAdminBoardAjaxService {
 	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo);
 	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode);
 	public List<AdminBoardVO> readAdminBoardList();
+	public String matchBoardTypeCode(String boardTypeCode);
 	public void createAdminBoard(AdminBoardVO board);
 	public void modifyAdminBoard(AdminBoardVO board);
 	public void removeAdminBoard(String boardNo);

@@ -67,7 +67,7 @@ public class AdminAdminBoardController {
 	// 유형별 게시글 목록조회
 	@GetMapping("/aboardList/type")  //http://localhost/admin/community/adminBoard/aboardList/type?boardTypeCode=UFAQ-U5
 	public String aboardType(String boardTypeCode, Model model) {
-		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(boardTypeCode);
+		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(service.matchBoardTypeCode(boardTypeCode));
 		model.addAttribute("aboardList", aboardList);
 		model.addAttribute("boardTypeCode", boardTypeCode);
 
@@ -86,7 +86,7 @@ public class AdminAdminBoardController {
 		model.addAttribute("searchBar", true);		
 		return "admin/community/adminBoard/aboardList";  //위랑 똑같네...? 이렇게 써도 되나
 	}
-		
+	
 	// 등록 폼으로 이동
 	@GetMapping("/aboardForm")
 	public String formUI(Model model) {

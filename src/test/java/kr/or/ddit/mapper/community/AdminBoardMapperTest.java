@@ -3,6 +3,7 @@ package kr.or.ddit.mapper.community;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -45,6 +46,15 @@ class AdminBoardMapperTest {
 		list.forEach(board->{
 			log.info("{}", board);
 		});
+	}
+	
+	@Test
+	void testSelectCodeNameEqType() {
+		assertDoesNotThrow(()->mapper.selectCodeNameEqType("UFAQ-U5"));
+		
+		String boardTypeCode = mapper.selectCodeNameEqType("UFAQ-U5");
+
+		log.info("게시글 유형 : {}", boardTypeCode);
 	}
 
 	@Test

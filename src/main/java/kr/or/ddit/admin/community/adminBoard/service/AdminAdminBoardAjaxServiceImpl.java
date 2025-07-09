@@ -48,6 +48,11 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	}
 
 	@Override
+	public String matchBoardTypeCode(String boardTypeCode) {
+		return mapper.selectCodeNameEqType(boardTypeCode);
+	}
+
+	@Override
 	public void createAdminBoard(AdminBoardVO board) {
 		mapper.insertAdminBoard(board);		
 	}
@@ -62,4 +67,5 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	public void removeAdminBoard(String boardNo) {
 		mapper.deleteAdminBoard(boardNo);
 	}
+
 }

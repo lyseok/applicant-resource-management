@@ -3,6 +3,7 @@ package kr.or.ddit.vo.community;
 import java.io.Serializable;
 import java.util.List;
 
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.UsersVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ public class AdminBoardVO implements Serializable {
 	private String boardStatus;
 	
 	private String codeName;
+	private transient CmnCodeVO code;
 
 	private transient UsersVO users;
 	private transient List<AdminCommentVO> adminCommentList;
