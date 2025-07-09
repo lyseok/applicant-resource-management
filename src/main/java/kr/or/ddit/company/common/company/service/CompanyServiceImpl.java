@@ -47,10 +47,12 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	@Transactional
-	public void registerCompany(UsersVO user, CompanyVO company) {
+	public void registerCompany(CompanyVO company) {
+		String encoded = passwordEncoder.encode(company.getUserPassword());
+		company.setUserPassword(encoded);
 		
+		userMapper.insertUser(company);
+		companyMapper.insertCompany(company);
 	}
-
-
 
 }
