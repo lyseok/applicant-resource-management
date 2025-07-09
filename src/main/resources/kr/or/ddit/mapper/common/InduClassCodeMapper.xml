@@ -1,11 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.InduClassCodeMapper">
-<select id="selectInduClassCodeList">
-	SELECT 
-		INDU_CLASS_NO
-		, INDU_CLASS_NAME
-	FROM INDU_CLASS_CODE
+
+<resultMap id="InduClassWithInduAndBusinessTypeMap" type="kr.or.ddit.vo.common.InduClassCodeVO">
+    <id property="induClassNo" column="induClassNo"/>
+    <result property="induClassName" column="induClassName"/>
+    
+    <association property="induCodeVO" javaType="kr.or.ddit.vo.common.InduCodeVO">
+        <id property="induNo" column="induNo"/>
+        <result property="induClassNo" column="induInduClassNo"/>
+        <result property="induName" column="induName"/>
+        
+        <collection property="businessTypeCodeVO" ofType="kr.or.ddit.vo.common.BusinessTypeCodeVO">
+            <id property="businessTypeNo" column="businessTypeNo"/>
+            <result property="induNo" column="btInduNo"/>
+            <result property="businessTypeName" column="businessTypeName"/>
+        </collection>
+    </association>
+</resultMap>
+
+<select id="selectInduClassCodeList" resultMap="InduClassWithInduAndBusinessTypeMap">
+	SELECT
+        ic.indu_class_no     AS induClassNo,
+        ic.indu_class_name   AS induClassName,
+        
+        i.indu_no            AS induNo,
+        i.indu_class_no      AS induInduClassNo,   -- 조인에서 구분용 별칭!
+        i.indu_name          AS induName,
+
+        bt.business_type_no  AS businessTypeNo,
+        bt.indu_no           AS btInduNo,          -- 구분용 별칭!
+        bt.business_type_name AS businessTypeName
+
+    FROM
+        indu_class_code ic
+    LEFT JOIN
+        indu_code i ON ic.indu_class_no = i.indu_class_no
+    LEFT JOIN
+        business_type_code bt ON i.indu_no = bt.indu_no
+    ORDER BY ic.indu_class_no, i.indu_no, bt.business_type_no
 </select>
 
 <select id="selectInduClassCodeBuPk">
