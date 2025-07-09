@@ -19,6 +19,8 @@ public class AdminBoardVO implements Serializable {
 	private String boardDeleteDate;
 	private Integer boardPostHit;
 	private String boardStatus;
+	
+	private String codeName;
 
 	private transient UsersVO users;
 	private transient List<AdminCommentVO> adminCommentList;

@@ -31,10 +31,10 @@
 	<tbody>
 		<c:if test="${not empty aboardList}">
 			<c:forEach items="${aboardList}" var="aboard">
-				<c:url value="/admin/adminBoard/detail" var="detailURL">
+				<c:url value="/admin/community/adminBoard/aboardDetail" var="detailURL">
 					<c:param name="boardNo" value="${aboard.boardNo }"/>
 				</c:url>
-				<c:url value="/admin/adminBoard/list" var="typeURL">
+				<c:url value="/admin/community/adminBoard/aboardList/type" var="typeURL">
 					<c:param name="boardTypeCode" value="${aboard.boardTypeCode }"/>
 				</c:url>
 				<tr>
