@@ -11,7 +11,10 @@ public class MyLicenseVO implements Serializable{
 
 	private String myLicense;
 	private String resumeNo;
+	
 	private String licenseCode;
+	private String licenseCodeName;
+	
 	private String licensePassDate;
 	private String deleteDate;
 }

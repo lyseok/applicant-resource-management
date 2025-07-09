@@ -11,7 +11,10 @@ public class MyExperienceVO implements Serializable{
 
 	private String myExpCode;
 	private String resumeNo;
+	
 	private String expCode;
+	private String expCodeName;
+	
 	private String expName;
 	private String organizationName;
 	private String expStartDate;
