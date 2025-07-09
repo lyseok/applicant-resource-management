@@ -17,7 +17,7 @@
 	        alert('${error}'); // 'error' FlashAttribute를 확인
 	    </script>
 	</c:if>
-   <script type="text/javascript" src="/js/member/resume/intoructionList.js" defer></script>
+   <script type="text/javascript" src="/js/member/resume/introuctionList.js" defer></script>
 </head>
 <body>
 	<p class="h1 mb-3 fw-bold">자소서 관리</p>
@@ -25,7 +25,7 @@
 		<p class="fw-bold">✍ 맞춤법 검사를 통한 편리한 작성</p>
 		<div class="">
 			<!-- <button type="button" class="btn btn_gray_line h50">파일로 등록</button> -->
-			<a class="btn btn_violet h50 lh50" href="/mypage/intoruction/create">자소서 등록하기</a>
+			<a class="btn btn_violet h50 lh50" href="/mypage/introduction/create">자소서 등록</a>
 		</div>
 	</div>
 	
@@ -36,7 +36,7 @@
 				<label class="searchBarLabel" for="listKeyword">검색어</label>
 				<input type="text" id="listKeyword" class="searchBarInput" placeholder="자기소개서 제목, 문항, 내용으로 검색해보세요." maxlength="24" autocomplete="off" value="">
 			</div>
-			<a href="/mypage/intoruction/search?${introductionNo}" class="searchBarBtn">
+			<a href="/mypage/introduction/search?${introductionNo}" class="searchBarBtn">
 				<span class="material-symbols-outlined">search</span>
 			</a>
 		</div>
@@ -49,12 +49,12 @@
 				<ul>
 					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
-							<a class="d-block h4 fw-bold" href="<c:url value="/mypage/intoruction/${introduction.introductionNo}"/>">${introduction.introductionName}</a>
+							<a class="d-block h4 fw-bold" href="<c:url value="/mypage/introduction/${introduction.introductionNo}"/>">${introduction.introductionName}</a>
 							<p class="text-truncate w800">${introduction.introductionContent}</p>
 						</div>
 						<div class="d-flex gap-1">
-							<a class="btn btn_violet_line fw-normal" href="<c:url value="/mypage/intoruction/edit/${introduction.introductionNo}"/>">수정하기</a>
-							<a class="btn btn_red_line fw-normal" href="<c:url value="/mypage/intoruction/delete/${introduction.introductionNo}"/>" onclick="return confirmDelete();">삭제하기</a>
+							<a class="btn btn_violet_line fw-normal" href="<c:url value="/mypage/introduction/edit/${introduction.introductionNo}"/>">수정</a>
+							<a class="btn btn_red_line fw-normal" href="<c:url value="/mypage/introduction/delete/${introduction.introductionNo}"/>" onclick="return confirmDelete();">삭제</a>
 						</div>
 					</li>
 				</ul>

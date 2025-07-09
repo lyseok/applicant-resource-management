@@ -6,13 +6,13 @@
 <head>
    <meta charset="UTF-8">
    <title>자소서 수정</title>
-   <link rel="stylesheet" href="/css/member/resume/intoruction.css" >
+   <link rel="stylesheet" href="/css/member/resume/introuction.css" >
    
    <script type="text/javascript">
       const introductionName = "${introdDetail.introductionName}";
       const introductionContent = "${introdDetail.introductionContent}";
    </script>
-   <script type="text/javascript" src="/js/member/resume/intoruction.js"></script>
+   <script type="text/javascript" src="/js/member/resume/introuction.js"></script>
    
 </head>
 <body>
@@ -43,9 +43,12 @@
 		            </div>
 		        </div>
 		    </div>
-	         <div class="text-end mt-3">
-	            <a class="btn btn_violet_line" href="/mypage/intoruction/${introduction.introductionNo }">취소</a>
-	            <button class="btn btn_violet" type="submit">작성완료</button>
+		    <div class="text-end mt-3 d-flex justify-content-between">
+		    	<a href="/mypage/introduction/list" class="btn btn_gray_line">목록</a>
+		         <div class="">
+		            <a class="btn btn_red_line" href="/mypage/introduction/${introduction.introductionNo }">취소</a>
+		            <button class="btn btn_violet" type="submit">등록</button>
+		         </div>
 	         </div>
 		  </form:form>
          <div class="fixed_btn_wrap">

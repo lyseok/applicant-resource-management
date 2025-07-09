@@ -9,13 +9,13 @@ import kr.or.ddit.vo.resume.MyLicenseVO;
 @Mapper
 public interface MyLicenseMapper {
 	// 목록 조회
-	public List<MyLicenseVO> selectMyLicenseList();
+	public List<MyLicenseVO> selectMyLicenseList(String no);
 	// 단건 조회
-	public MyLicenseVO selectMyLicenseDetail(String MyLicenseNo);
+	public MyLicenseVO selectMyLicenseDetail(MyLicenseVO vo);
 	// 등록
-	public int insertMyLicense(MyLicenseVO MyLicenseVO);
+	public int insertMyLicense(MyLicenseVO vo);
 	// 수정
-	public int updateMyLicense(MyLicenseVO MyLicenseVO);
+	public int updateMyLicense(MyLicenseVO vo);
 	// 삭제
-	public int deleteMyLicense(String MyLicenseNo);
+	public int deleteMyLicense(String no);
 }

@@ -6,7 +6,7 @@ import kr.or.ddit.vo.resume.EducationVO;
 
 public interface EducationService {
 	// 목록 조회
-	public List<EducationVO> readEducationList();
+	public List<EducationVO> readEducationList(String no);
 	// 단건 조회
 	public EducationVO readEducationDetail(EducationVO vo);
 	// 등록

@@ -6,9 +6,9 @@ import kr.or.ddit.vo.resume.SupportVO;
 
 public interface SupportService {
 	// 목록 조회
-	public List<SupportVO> readSupportList();
+	public List<SupportVO> readSupportList(String no);
 	// 단건 조회
-	public SupportVO readSupportDetail(String no);
+	public SupportVO readSupportDetail(SupportVO vo);
 	// 등록
 	public void createSupport(SupportVO vo);
 	// 수정

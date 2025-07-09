@@ -6,9 +6,9 @@ import kr.or.ddit.vo.resume.MyExperienceVO;
 
 public interface MyExperienceService {
 	// 목록 조회
-	public List<MyExperienceVO> readMyExperienceList();
+	public List<MyExperienceVO> readMyExperienceList(String no);
 	// 단건 조회
-	public MyExperienceVO readMyExperienceDetail(String no);
+	public MyExperienceVO readMyExperienceDetail(MyExperienceVO vo);
 	// 등록
 	public void createMyExperience(MyExperienceVO vo);
 	// 수정

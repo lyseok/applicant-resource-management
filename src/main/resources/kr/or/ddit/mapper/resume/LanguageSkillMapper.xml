@@ -12,6 +12,7 @@
 			   , LANGUAGE_EXAM_SCORE
 			   , LANGUAGE_EXAM_LEVEL_CODE 
 		  FROM LANGUAGE_SKILL
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectLanguageSkillDetail">
@@ -26,6 +27,7 @@
 			   , LANGUAGE_EXAM_LEVEL_CODE 
 		  FROM LANGUAGE_SKILL 
 		 WHERE LANGUAGE_SKILL_NO = #{languageSkillNo}
+     	   AND RESUME_NO = #{resumeNo}		 
 	</select>
 	
 	<insert id="insertLanguageSkill">

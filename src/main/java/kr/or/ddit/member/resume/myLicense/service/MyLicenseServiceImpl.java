@@ -14,13 +14,13 @@ public class MyLicenseServiceImpl implements MyLicenseService {
 	private final MyLicenseMapper mapper;
 	
 	@Override
-	public List<MyLicenseVO> readMyLicenseList() {
-		return mapper.selectMyLicenseList();
+	public List<MyLicenseVO> readMyLicenseList(String no) {
+		return mapper.selectMyLicenseList(no);
 	}
 
 	@Override
-	public MyLicenseVO readMyLicenseDetail(String no) {
-		return mapper.selectMyLicenseDetail(no);
+	public MyLicenseVO readMyLicenseDetail(MyLicenseVO vo) {
+		return mapper.selectMyLicenseDetail(vo);
 	}
 
 	@Override

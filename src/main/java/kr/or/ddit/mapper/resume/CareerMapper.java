@@ -5,17 +5,18 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.or.ddit.vo.resume.CareerVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 
 @Mapper
 public interface CareerMapper {
 	// 목록 조회
-	public List<CareerVO> selectCareerList();
+	public List<CareerVO> selectCareerList(String no);
 	// 단건 조회
-	public CareerVO selectCareerDetail(String no);
+	public CareerVO selectCareerDetail(ResumeVO vo);
 	// 등록
-	public int insertCareer(CareerVO vo);
+	public void insertCareer(CareerVO vo);
 	// 수정
-	public int updateCareer(CareerVO vo);
+	public void updateCareer(CareerVO vo);
 	// 삭제
-	public int deleteCareer(String no);
+	public void deleteCareer(String no);
 }
