@@ -10,4 +10,6 @@ import lombok.EqualsAndHashCode;
 public class InduClassCodeVO implements Serializable{
 	private String induClassNo;
 	private String induClassName;
+	
+	private InduCodeVO induCodeVO;
 }

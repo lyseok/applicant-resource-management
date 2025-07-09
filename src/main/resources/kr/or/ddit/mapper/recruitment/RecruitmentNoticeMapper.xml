@@ -71,18 +71,19 @@
 		, USER_ID
 		, RECRUITMENT_TITLE
 		, JOB_CODE
-		,YEAR_CODE
+		, YEAR_CODE
 		, REC_CONTENT
 		, PREFERENTIAL
 		, CITY_CODE
 		, DISTRICT_CODE
-		,REC_POSITION_NUMBER
+		, REC_POSITION_NUMBER
 		, RECRUITMENT_CHARGER_TEL
 		, RECRUITMENT_SALARY
-		,WELFARE, RECRUITMENT_DESK
+		, WELFARE
+		, RECRUITMENT_DESK
 		, RECRUITMENT_IMG
 		, RECRUITMENT_STARTDATE
-		,RECRUITMENT_RECEIPT_START
+		, RECRUITMENT_RECEIPT_START
 		, RECRUITMENT_FINISH_DATE
 		)VALUES (
 		#{recruitmentNo}
@@ -90,7 +91,7 @@
 		, #{recruitmentTitle}
 		, #{jobCode}
 		, #{yearCode}
-		,#{recContent}
+		, #{recContent}
 		, #{preferential}
 		, #{cityCode}
 		, #{districtCode}
@@ -111,28 +112,19 @@
 		USER_ID = #{userId}
 		, JOB_CODE =#{jobCode}
 		, YEAR_CODE = #{yearCode}
-		,
-		REC_CONTENT = #{recContent}
-		,PREFERENTIAL = #{preferential}
-		, CITY_CODE
-		= #{cityCode}
+		, REC_CONTENT = #{recContent}
+		, PREFERENTIAL = #{preferential}
+		, CITY_CODE = #{cityCode}
 		, DISTRICT_CODE = #{districtCode}
-		, REC_POSITION_NUMBER =
-		#{recPositionNumber}
-		,RECRUITMENT_CHARGER_TEL =
-		#{recruitmentChargerTel}
+		, REC_POSITION_NUMBER = #{recPositionNumber}
+		, RECRUITMENT_CHARGER_TEL = #{recruitmentChargerTel}
 		, RECRUITMENT_SALARY= #{recruitmentSalary}
-		,
-		WELFARE = #{welfare}
+		, WELFARE = #{welfare}
 		, RECRUITMENT_DESK =#{recruitmentDesk}
-		,
-		RECRUITMENT_IMG = #{recruitmentImg}
-		,RECRUITMENT_STARTDATE =
-		#{recruitmentStartdate}
-		,RECRUITMENT_RECEIPT_START =
-		#{recruitmentReceiptStart}
-		,RECRUITMENT_FINISH_DATE =
-		#{recruitmentFinishDate}
+		, RECRUITMENT_IMG = #{recruitmentImg}
+		, RECRUITMENT_STARTDATE = #{recruitmentStartdate}
+		, RECRUITMENT_RECEIPT_START = #{recruitmentReceiptStart}
+		, RECRUITMENT_FINISH_DATE = #{recruitmentFinishDate}
 		, RECRUITMENT_TITLE =#{recruitmentTitle}
 		WHERE RECRUITMENT_NO = #{recruitmentNo}
 	</update>
@@ -143,24 +135,26 @@
 		RECRUITMENT_NO
 		, USER_ID, JOB_CODE
 		, YEAR_CODE, REC_CONTENT
-		,PREFERENTIAL
+		, PREFERENTIAL
 		, CITY_CODE
-		,
-		DISTRICT_CODE
+		, DISTRICT_CODE
 		, REC_POSITION_NUMBER
-		,RECRUITMENT_CHARGER_TEL
-		,
-		RECRUITMENT_SALARY
+		, RECRUITMENT_CHARGER_TEL
+		, RECRUITMENT_SALARY
 		, WELFARE
 		, RECRUITMENT_DESK
-		,RECRUITMENT_IMG
-		,
-		RECRUITMENT_STARTDATE
+		, RECRUITMENT_IMG
+		, RECRUITMENT_STARTDATE
 		, RECRUITMENT_RECEIPT_START
-		,RECRUITMENT_FINISH_DATE
+		, RECRUITMENT_FINISH_DATE
 		, RECRUITMENT_TITLE
 		FROM RECRUITMENT_NOTICE
 	</select>
 
+	<update id="deleteRecruitmentNotice">
+		UPDATE RECRUITMENT_NOTICE SET
+			RECRUITMENT_DEL_DATE = SYSDATE
+		WHERE RECRUITMENT_NO = #{recruitmentNo}
+	</update>
 
 </mapper>

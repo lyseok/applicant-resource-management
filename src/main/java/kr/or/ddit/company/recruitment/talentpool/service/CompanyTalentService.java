@@ -1,14 +1,19 @@
 package kr.or.ddit.company.recruitment.talentpool.service;
 
 import java.util.List;
+import java.util.Map;
 
+import kr.or.ddit.vo.common.CityCodeVO;
+import kr.or.ddit.vo.common.JobVO;
 import kr.or.ddit.vo.common.MemberVO;
+import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
+import kr.or.ddit.vo.resume.EducationVO;
 import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 
 public interface CompanyTalentService {
-public int insertMember(MemberVO member);
+	public int insertMember(MemberVO member);
 	
 	/**
 	 * 한사람의 회원 정보 조회
@@ -24,9 +29,19 @@ public int insertMember(MemberVO member);
 	
 	public int updateMember(MemberVO member);
 	
-	public List<CareerVO> selectTalentPoolList();
+	public List<ResumeVO> selectTalentPoolList();
 	
 //	public List<MySkillVO> selectMySkill();
 	
 	public ResumeVO selectResumeDetail(String userName);
+	
+	public List<TopJobVO> selectTopJob();
+
+	public List<JobVO> selectJob();
+	
+	public List<CityCodeVO> selectlocation();
+	
+	public List<EducationVO> selecteducation();
+
+	public List<ResumeVO> selectTalentPoolListByFilter(Map<String, Object> filter);
 }

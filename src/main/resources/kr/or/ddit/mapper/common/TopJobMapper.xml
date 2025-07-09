@@ -3,11 +3,11 @@
 <mapper namespace="kr.or.ddit.mapper.common.TopJobMapper">
 	<insert id="insertTopJob">
 	<selectKey resultType="string" keyProperty="topJobCode" order="BEFORE">
-    SELECT
-        'TJOB'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(TOP_JOB_CODE), LENGTH('TJOB' ) + 1)), 0) + 1, 6, '0')
-    FROM TOP_JOB
-</selectKey>
+	    SELECT
+	        'TJOB'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(TOP_JOB_CODE), LENGTH('TJOB' ) + 1)), 0) + 1, 6, '0')
+	    FROM TOP_JOB
+	</selectKey>
 		INSERT INTO TOP_JOB (
 		TOP_JOB_CODE
 		, TOP_JOB_NAME
@@ -17,11 +17,28 @@
 		)
 	</insert>
 
-	<select id="selectTopJobList">
+	<resultMap id="TopJobWithJobVOListMap" type="kr.or.ddit.vo.common.TopJobVO">
+	    <id property="topJobCode" column="topJobCode" />
+	    <result property="topJobName" column="topJobName" />
+	    <collection property="jobVO" ofType="kr.or.ddit.vo.common.JobVO">
+	        <id property="jobCode" column="jobCode" />
+	        <result property="topJobCode" column="jobTopJobCode" />
+	        <result property="jobName" column="jobName" />
+	    </collection>
+	</resultMap>
+
+	<select id="selectTopJobList" resultMap="TopJobWithJobVOListMap">
 		SELECT
-		TOP_JOB_CODE
-		, TOP_JOB_NAME
-		FROM TOP_JOB
+	        t.top_job_code     AS topJobCode,
+	        t.top_job_name     AS topJobName,
+	        j.job_code         AS jobCode,
+	        j.top_job_code     AS jobTopJobCode,
+	        j.job_name         AS jobName
+	    FROM
+	        top_job t
+	    LEFT JOIN
+	        job j ON t.top_job_code = j.top_job_code
+	    ORDER BY t.top_job_code, j.job_code
 	</select>
 
 	<select id="selectTopJobByPk">
