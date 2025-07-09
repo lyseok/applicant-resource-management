@@ -46,4 +46,6 @@
 	DELETE FROM COM_EXAM_QUESTIONS 
 	WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
 	</delete>
+	
+	
 </mapper>
