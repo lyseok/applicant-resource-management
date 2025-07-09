@@ -9,8 +9,8 @@ import kr.or.ddit.vo.community.CommuBoardVO;
 @Mapper
 public interface CommuBoardMapper {
 
-	public CommuBoardVO selectCommuBoard(String commuPostNo);
-	public List<CommuBoardVO> selectCommuBoardList(String categoryCode);
+	public CommuBoardVO selectCommuBoardByPk(String commuPostNo);
+	public List<CommuBoardVO> selectCommuBoardListByCate(String categoryCode);
 	public int insertCommuBoard(CommuBoardVO board);
 	public int updateCommuBoard(CommuBoardVO board);
 	public int deleteCommuBoard(String commuPostNo);

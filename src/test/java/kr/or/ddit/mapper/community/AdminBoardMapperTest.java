@@ -3,6 +3,7 @@ package kr.or.ddit.mapper.community;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,9 +31,9 @@ class AdminBoardMapperTest {
 
 	@Test
 	void testSelectAdminBoardListByType() {
-		assertDoesNotThrow(()->mapper.selectAdminBoardListByType("BRDD-001"));
+		assertDoesNotThrow(()->mapper.selectAdminBoardListByType("UFAQ-U5"));
 		
-		List<AdminBoardVO> list = mapper.selectAdminBoardListByType("BRDD-001");
+		List<AdminBoardVO> list = mapper.selectAdminBoardListByType("UFAQ-U5");
 		list.forEach(board->{
 			log.info("{}", board);
 		});
@@ -46,15 +48,25 @@ class AdminBoardMapperTest {
 			log.info("{}", board);
 		});
 	}
+	
+	@Test
+	void testSelectCodeNameEqType() {
+		assertDoesNotThrow(()->mapper.selectCodeGroupNoByType("UFAQ-U5"));
+		
+		List<CmnCodeVO> codeGroupList = mapper.selectCodeGroupNoByType("UFAQ-U5");
+		codeGroupList.forEach(code->{
+			log.info("공통코드 그룹들 : {}", codeGroupList);
+		});
+	}
 
 	@Test
 	void testInsertAdminBoard() {
 		AdminBoardVO board = new AdminBoardVO();
 		
 		board.setUserId("USR007");
-		board.setBoardTypeCode("BRDD-002");
-		board.setBoardTitle("자주 묻는 사항 테스트입니다");
-		board.setBoardContent("테스트 내용입니다");
+		board.setBoardTypeCode("UFAQ-U5");
+		board.setBoardTitle("개인회원 탈퇴 방법");
+		board.setBoardContent("탈퇴시 방법입니다.");
 		board.setBoardPostHit(0);
 		board.setBoardStatus("R");
 		

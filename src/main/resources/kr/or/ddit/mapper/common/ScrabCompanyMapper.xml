@@ -4,46 +4,52 @@
 
 	<insert id="insertScrabCompany">
 		INSERT INTO SCRAB_COMPANY (
-		USER_ID
-		, COMPANY_ID
-		, SCRAB_COMPANY_DATE
+			  USER_ID
+			, COMPANY_ID
+			, SCRAB_COMPANY_DATE
 		) VALUES (
-		#{userId}
-		, #{companyId}
-		, SYSDATE
+			  #{userId}
+			, #{companyId}
+			, SYSDATE
 		)
 	</insert>
 
 	<select id="selectScrabCompanyList">
 		SELECT
-		USER_ID
-		, COMPANY_ID
-		, SCRAB_COMPANY_DATE
+			  USER_ID
+			, COMPANY_ID
+			, SCRAB_COMPANY_DATE
 		FROM SCRAB_COMPANY
 	</select>
 
 	<select id="selectScrabCompanyByPk">
 		SELECT
-		USER_ID
-		, COMPANY_ID
-		, SCRAB_COMPANY_DATE
+			  USER_ID
+			, COMPANY_ID
+			, SCRAB_COMPANY_DATE
 		FROM SCRAB_COMPANY
-		WHERE USER_ID = #{userId}
-		AND COMPANY_ID = #{companyId}
+		WHERE 
+			USER_ID = #{userId}
+			AND 
+			COMPANY_ID = #{companyId}
 	</select>
 
 	<update id="updateScrabCompany">
 		UPDATE SCRAB_COMPANY
 		SET
-		SCRAB_COMPANY_DATE = SYSDATE
-		WHERE USER_ID = #{userId}
-		AND COMPANY_ID = #{companyId}
+			SCRAB_COMPANY_DATE = SYSDATE
+		WHERE 
+			USER_ID = #{userId}
+			AND 
+			COMPANY_ID = #{companyId}
 	</update>
 
-	<delete id="deleteCompany">
+	<delete id="deleteScrabCompany">
 		DELETE FROM SCRAB_COMPANY
-		WHERE USER_ID = #{userId}
-		AND COMPANY_ID = #{companyId}
+		WHERE 
+			USER_ID = #{userId}
+			AND 
+			COMPANY_ID = #{companyId}
 	</delete>
 
 </mapper>

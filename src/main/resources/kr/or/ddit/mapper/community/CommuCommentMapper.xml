@@ -2,7 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.CommuCommentMapper">
 
-	<select id="selectCommuCommentbyPk" resultType="CommuCommentVO">
+	<resultMap type="CommuCommentVO" id="commuCommentMap" autoMapping="true">
+		<id property="commuCommentNo" column="COMMU_COMMENT_NO"/>		
+		<association property="avatar" javaType="AvatarVO" autoMapping="true"/>
+	</resultMap>
+	
+	<select id="selectCommuCommentbyPk" resultMap="commuCommentMap">
 		SELECT 
 			  COMMU_COMMENT_NO
 			, COMMU_POST_NO
@@ -12,7 +17,7 @@
 			, COMMU_COMMENT_STATUS
 			, COMMU_COMMENT_DELETE_DATE 
 		FROM 
-			COMMU_COMMENT 
+			COMMU_COMMENT NATURAL JOIN AVATAR
 		WHERE 
 			COMMU_COMMENT_NO = #{commuCommentNo}
 	</select>
@@ -30,8 +35,6 @@
 			COMMU_COMMENT
 		WHERE 
 			COMMU_POST_NO = #{commuPostNo}
-			AND
-			COMMU_COMMENT_STATUS != 'D'
 	</select>
 
 	<select id="searchCommuCommentList" resultType="CommuCommentVO">

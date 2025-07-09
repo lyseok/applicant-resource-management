@@ -9,14 +9,14 @@ import kr.or.ddit.vo.common.ScrabCompanyVO;
 @Mapper
 public interface ScrabCompanyMapper {
 
-		public List<ScrabCompanyVO> selectScrabCompanyList();
-		
-		public ScrabCompanyVO selectScrabCompanyByPk(ScrabCompanyVO vo);
-		
-		public int insertScrabCompany(ScrabCompanyVO vo);
-		
-		public int updateScrabCompany(ScrabCompanyVO vo);
-		
-		public int deleteCompany(ScrabCompanyVO vo);
-	
+	public List<ScrabCompanyVO> selectScrabCompanyList();
+
+	public ScrabCompanyVO selectScrabCompanyByPk(ScrabCompanyVO vo);
+
+	public int insertScrabCompany(ScrabCompanyVO vo);
+
+	public int updateScrabCompany(ScrabCompanyVO vo);
+
+	public int deleteScrabCompany(ScrabCompanyVO vo);
+
 }
