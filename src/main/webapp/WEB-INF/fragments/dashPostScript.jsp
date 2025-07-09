@@ -35,6 +35,7 @@
 <script src="/dist/dashboard/assets/js/main.js"></script>
 
 <script src="/js/fragments/dashCommon.js"></script>
+<script src="/js/fragments/dashHeader.js"></script>
 
 <!-- Page JS -->
 <!-- Place this tag in your head or just before your close body tag, -->
