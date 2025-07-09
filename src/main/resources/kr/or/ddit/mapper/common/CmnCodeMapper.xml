@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.CmnCodeMapper">
 
+
+<select id="selectAll" resultType="CmnCodeVO">
+    SELECT CODE_DETAIL_NO AS codeDetailNo, CODE_NAME AS codeName
+    FROM CMN_CODE
+    WHERE USE_YN = 'Y'
+</select>
+
 <select id="selectCmnCodeByPk">
 	SELECT 
 		CODE_DETAIL_NO
