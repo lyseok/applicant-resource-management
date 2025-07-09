@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <head>
   <meta charset="UTF-8">
@@ -7,52 +8,62 @@
   <link rel="stylesheet" href="/css/member/resume/resume.css" >
 </head>
 <body>
+<h1 class="h1">${resumeList }</h1>
   <div class="resume-main-wrap">
     <!-- Header -->
     <div class="resume-header">
       <div class="profile-img">🙍‍♂️</div>
       <div class="header-info">
-        <span class="name">이예솔</span>
-        <span class="age">1997 (28세)</span>
-        <div class="contact">gptresume@gmail.com&nbsp; | &nbsp;010-****-0064</div>
-        <div class="address">주소: (34944) 대전 중구 계룡로</div>
-        <div class="info-badge">대표 이력서 번호 001</div>
+        <span class="name">${resumeList.userName }</span>
+        <span class="age">${resumeList.birth } (28세)</span>
+        <div class="contact">${resumeList.birth } /  ${resumeList.tel }</div>
+        <div class="address">${resumeList.address } </div>
+        <c:if test="${not empty resumeList.resumeSubmitYn}">
+        	<div class="info-badge">대표 이력서 번호 ${resumeList.resumeNo }</div>
+        </c:if>
       </div>
     </div>
 
 
+    <!-- 나의 스킬 -->
+    <c:if test="${not empty resumeList.mySkillList}">
+	    <div class="section">
+	      <div class="section-title">나의 스킬</div>
+		    <div class="myskill-list">
+		    <c:forEach items="${resumeList.mySkillList }" var="skill">
+		      <div class="myskill-item">${skill.mySkillName }</div>
+		      </c:forEach>
+		    </div>
+	   	</div>
+	</c:if>
+
+
     <!-- 학력 -->
-    <div class="section">
-      <div class="section-title">나의 스킬</div>
-	    <!-- 내 스킬 -->
-	    <div class="myskill-list">
-	      <div class="myskill-item">Java</div>
-	      <div class="myskill-item">JS</div>
-	      <div class="myskill-item">Spring</div>
-	      <div class="myskill-item">SQL</div>
-	      <div class="myskill-item">React</div>
+    <c:if test="${not empty resumeList.educationList}">
+	    <div class="section">
+	      <div class="section-title">학력</div>
+		    <c:forEach items="${resumeList.educationList }" var="education">
+		      <ul class="section-list">
+		        <li>
+		          <span class="list-label">학교명</span>
+		          <span class="list-content"><b>${education.schoolName }</b></span>
+		        </li>
+		        <li>
+		          <span class="list-label">졸업구분</span>
+		          <span class="list-content">${education.graduateYn }</span>
+		        </li>
+    			<c:if test="${not empty education.specialtyList}">
+			        <c:forEach items="${education.specialtyList }" var="specialty">
+				        <li>
+				          <span class="list-label">전공</span>
+				          <span class="list-content">${specialty.mainMajor }</span>
+				        </li>
+				    </c:forEach>
+				</c:if>
+		      </ul>
+		    </c:forEach>
 	    </div>
-    </div>
-
-
-    <!-- 학력 -->
-    <div class="section">
-      <div class="section-title">학력</div>
-      <ul class="section-list">
-        <li>
-          <span class="list-label">학교명</span>
-          <span class="list-content"><b>wee초등학교</b></span>
-        </li>
-        <li>
-          <span class="list-label">전공</span>
-          <span class="list-content">정보 없음</span>
-        </li>
-        <li>
-          <span class="list-label">졸업구분</span>
-          <span class="list-content">졸업</span>
-        </li>
-      </ul>
-    </div>
+	</c:if>
 
     
 

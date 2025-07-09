@@ -17,7 +17,7 @@
       const introductionName = "${introdDetail.introductionName}";
       const introductionContent = "${introdDetail.introductionContent}";
    </script>
-   <script type="text/javascript" src="/js/member/resume/intoruction.js"></script>
+   <script type="text/javascript" src="/js/member/resume/introuction.js"></script>
    
 </head>
 <body>
@@ -57,9 +57,9 @@
 		            </div>
 		        </div>
 		    </div>
-	         <div class="text-end mt-3">
-	            <button class="btn btn_violet" type="submit">작성완료</button>
-	            <a class="btn btn_violet_line" href="/mypage/intoruction/list">목록</a>
+	         <div class="text-end mt-3 d-flex justify-content-between">
+	            <a class="btn btn_gray_line" href="/mypage/introduction/list">목록</a>
+	            <button class="btn btn_violet" type="submit">등록</button>
 	         </div>
 		  </form:form>
          <div class="fixed_btn_wrap">

@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/mypage/intoruction")
+@RequestMapping("/mypage/introduction")
 @RequiredArgsConstructor
 public class introductionController {
 	private final introductionService service; 
@@ -49,7 +49,7 @@ public class introductionController {
 	
 	// 자소서 리스트 가져오기
 	@GetMapping("/list")
-	public String getIntoruction(
+	public String getintroduction(
 		@AuthenticationPrincipal UserDetails userDetails 
 		, Model model
 	) {
@@ -59,27 +59,27 @@ public class introductionController {
 		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기		
 		List<IntroductionVO> introductionList = service.readIntroductionList(userId);
 		model.addAttribute("introductionList", introductionList);
-		return "member/resume/mypage/intoruction/intoructionList";
+		return "member/resume/mypage/introduction/introductionList";
 	}
 	
 	// 자소서 상세페이지 이동
 	@GetMapping("{no}")
-	public String getIntoructionDetailForm(
+	public String getintroductionDetailForm(
 		@PathVariable String no 
 		, Model model
 	) {
 		IntroductionVO introdDetail = service.readIntroductionDetail(no);
 		model.addAttribute("introdDetail", introdDetail);
-		return "member/resume/mypage/intoruction/intoructionDetail";
+		return "member/resume/mypage/introduction/introductionDetail";
 	}
 	
 	// 자소서 등록페이지 이동
 	@GetMapping("create")
-	public String getIntoructionCreateForm(
+	public String getintroductionCreateForm(
 		Model model
 	) {
 		model.addAttribute("introdCreate", true);
-		return "member/resume/mypage/intoruction/intoructionForm";
+		return "member/resume/mypage/introduction/introductionForm";
 	}
 	
 	// 자소서 등록 로직 구현 controller
@@ -99,7 +99,7 @@ public class introductionController {
 	        	itrd.setUserId(userId);
 	        	service.createIntroduction(itrd);
 	        }
-	        lvn = "redirect:/mypage/intoruction/list";
+	        lvn = "redirect:/mypage/introduction/list";
 		} else {
 			log.info("유효성 검사 실패!!!");
 			 String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
@@ -108,7 +108,7 @@ public class introductionController {
 	        // 입력 데이터 유지용 add FlashAttribute
 	        redirectAttributes.addFlashAttribute(MODELNAME, itrdListVO);
 			
-	        lvn = "redirect:/mypage/intoruction/create"; // 입력데이터 가지고 다시 입력 폼으로 보내줌			
+	        lvn = "redirect:/mypage/introduction/create"; // 입력데이터 가지고 다시 입력 폼으로 보내줌			
 		}
 		return lvn;
 	}
@@ -116,7 +116,7 @@ public class introductionController {
 	
 	// 자소서 삭제 업데이트 후 목록 페이지 이동
 	@GetMapping("delete/{no}")
-	public String getIntoructionCreate (
+	public String getintroductionCreate (
 		Model model
 		, @AuthenticationPrincipal UserDetails userDetails
 		, @PathVariable String no 
@@ -140,26 +140,26 @@ public class introductionController {
 	        redirectAttributes.addFlashAttribute("error", "자소서 삭제 중 오류가 발생했습니다.");
 	    }
 
-		return "redirect:/mypage/intoruction/list";
+		return "redirect:/mypage/introduction/list";
 	}
 	
 
 	
 	// 자소서 수정 페이지 이동
 	@GetMapping("edit/{no}")
-	public String getIntoructionEditForm (
+	public String getintroductionEditForm (
 		Model model
 		, @PathVariable String no
 	) {
 		log.info("=====>{}", no);
 		model.addAttribute(MODELNAME, service.readIntroductionDetail(no));
 		model.addAttribute("introdEdit", true);
-		return "member/resume/mypage/intoruction/intoructionEdit";
+		return "member/resume/mypage/introduction/introductionEdit";
 	}	
 	
 	// 자소서 수정 로직 수행
 	@PostMapping("edit/{no}")
-	public String getIntoructionEdit (
+	public String getintroductionEdit (
 		@AuthenticationPrincipal UserDetails userDetails 
 		, @PathVariable String no 
 		, @Validated(UpdateGroup.class) @ModelAttribute IntroductionVO itrdVO 
@@ -172,7 +172,7 @@ public class introductionController {
 			itrdVO.setUserId(userId);
 			itrdVO.setIntroductionNo(no);
 			service.editIntroduction(itrdVO);
-			lvn = "redirect:/mypage/intoruction/" + itrdVO.getIntroductionNo();
+			lvn = "redirect:/mypage/introduction/" + itrdVO.getIntroductionNo();
 		} else {
 			log.info("유효성 검사 실패!!!");
 			String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
@@ -180,7 +180,7 @@ public class introductionController {
 
 	        // 입력 데이터 유지용 add FlashAttribute
 	        redirectAttributes.addFlashAttribute(MODELNAME, itrdVO);
-	        lvn = "redirect:/mypage/intoruction/edit/" + itrdVO.getIntroductionNo();
+	        lvn = "redirect:/mypage/introduction/edit/" + itrdVO.getIntroductionNo();
 		}		
 		return lvn;
 	}
@@ -189,12 +189,12 @@ public class introductionController {
 	
 	// 검색 로직 수행
 	@GetMapping("search")
-	public String getIntoructionSearch(
+	public String getintroductionSearch(
 		Model model
 		, @RequestParam String keyword
 	) {
 		model.addAttribute("introductionList", service.readIntroductionSearch(keyword));
-		return "member/resume/mypage/intoruction/intoructionList";
+		return "member/resume/mypage/introduction/introductionList";
 	}
 }
 
