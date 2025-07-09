@@ -14,13 +14,13 @@ public class SubIntroductionServiceImpl implements SubIntroductionService {
 	private final SubIntroductionMapper mapper;
 
 	@Override
-	public List<SubIntroductionVO> readSubIntroductionList() {
-		return mapper.selectSubIntroductionList();
+	public List<SubIntroductionVO> readSubIntroductionList(String no) {
+		return mapper.selectSubIntroductionList(no);
 	}
 
 	@Override
-	public SubIntroductionVO readSubIntroductionDetail(String no) {
-		return mapper.selectSubIntroductionDetail(no);
+	public SubIntroductionVO readSubIntroductionDetail(SubIntroductionVO vo) {
+		return mapper.selectSubIntroductionDetail(vo);
 	}
 
 	@Override

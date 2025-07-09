@@ -14,13 +14,13 @@ public class MySkillServiceImpl implements MySkillService {
 	private final MySkillMapper mapper;
 	
 	@Override
-	public List<MySkillVO> readMySkillList() {
-		return mapper.selectMySkillList();
+	public List<MySkillVO> readMySkillList(String no) {
+		return mapper.selectMySkillList(no);
 	}
 
 	@Override
-	public MySkillVO readMySkillDetail(String no) {
-		return mapper.selectMySkillDetail(no);
+	public MySkillVO readMySkillDetail(MySkillVO vo) {
+		return mapper.selectMySkillDetail(vo);
 	}
 
 	@Override

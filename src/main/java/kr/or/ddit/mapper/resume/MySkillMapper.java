@@ -9,9 +9,9 @@ import kr.or.ddit.vo.resume.MySkillVO;
 @Mapper
 public interface MySkillMapper {
 	// 목록 조회
-	public List<MySkillVO> selectMySkillList();
+	public List<MySkillVO> selectMySkillList(String no);
 	// 단건 조회
-	public MySkillVO selectMySkillDetail(String no);
+	public MySkillVO selectMySkillDetail(MySkillVO vo);
 	// 등록
 	public int insertMySkill(MySkillVO vo);
 	// 수정

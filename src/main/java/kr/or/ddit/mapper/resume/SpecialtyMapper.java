@@ -9,7 +9,7 @@ import kr.or.ddit.vo.resume.SpecialtyVO;
 @Mapper
 public interface SpecialtyMapper {
 	// 목록 조회
-	public List<SpecialtyVO> selectSpecialtyList();
+	public List<SpecialtyVO> selectSpecialtyList(String no);
 	// 단건 조회
 	public SpecialtyVO selectSpecialtyDetail(SpecialtyVO vo);
 	// 등록

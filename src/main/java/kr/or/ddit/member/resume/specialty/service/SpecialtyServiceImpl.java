@@ -14,8 +14,8 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 	private final SpecialtyMapper mapper;
 	
 	@Override
-	public List<SpecialtyVO> readSpecialtyList() {
-		return mapper.selectSpecialtyList();
+	public List<SpecialtyVO> readSpecialtyList(String no) {
+		return mapper.selectSpecialtyList(no);
 	}
 
 	@Override

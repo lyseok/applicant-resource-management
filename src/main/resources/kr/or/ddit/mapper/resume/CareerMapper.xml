@@ -18,6 +18,7 @@
 			   , LOCATION
 			   , COM_ID
 		  FROM CAREER
+		 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectCareerDetail">
@@ -38,6 +39,7 @@
 			   , COM_ID 
 		  FROM CAREER 
 		 WHERE CAREER_NO = #{careerNo}
+		   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertCareer">

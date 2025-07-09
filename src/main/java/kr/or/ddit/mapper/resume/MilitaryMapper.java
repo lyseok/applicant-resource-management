@@ -9,13 +9,13 @@ import kr.or.ddit.vo.resume.MilitaryVO;
 @Mapper
 public interface MilitaryMapper {
 	// 목록 조회
-	public List<MilitaryVO> selectMilitaryList();
+	public List<MilitaryVO> selectMilitaryList(String no);
 	// 단건 조회
-	public MilitaryVO selectMilitaryDetail(String militaryNo);
+	public MilitaryVO selectMilitaryDetail(MilitaryVO vo);
 	// 등록
-	public int insertMilitary(MilitaryVO militaryVO);
+	public int insertMilitary(MilitaryVO vo);
 	// 수정
-	public int updateMilitary(MilitaryVO militaryVO);
+	public int updateMilitary(MilitaryVO vo);
 	// 삭제
-	public int deleteMilitary(String militaryNo);
+	public int deleteMilitary(String vo);
 }

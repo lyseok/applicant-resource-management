@@ -6,13 +6,13 @@
 <head>
    <meta charset="UTF-8">
    <title>자소서 상세보기</title>
-   <link rel="stylesheet" href="/css/member/resume/intoruction.css" >
+   <link rel="stylesheet" href="/css/member/resume/introuction.css" >
    
    <script type="text/javascript">
       const introductionName = "${introdDetail.introductionName}";
       const introductionContent = "${introdDetail.introductionContent}";
    </script>
-   <script type="text/javascript" src="/js/member/resume/intoruction.js"></script>
+   <script type="text/javascript" src="/js/member/resume/introuction.js"></script>
 </head>
 <body>
    
@@ -36,9 +36,9 @@
 	            </div>
 	        </div>
 	    </div>	    
-        <div class="text-end mt-3">
-            <a class="btn btn_violet_line" href="/mypage/intoruction/edit/${introdDetail.introductionNo }">수정</a>
-            <a class="btn btn_violet" href="/mypage/intoruction/list">목록</a>
+        <div class="text-end mt-3 d-flex justify-content-between">
+            <a class="btn btn_gray_line" href="/mypage/introduction/list">목록</a>
+            <a class="btn btn_violet_line" href="/mypage/introduction/edit/${introdDetail.introductionNo }">수정</a>
         </div>
       </div>
    

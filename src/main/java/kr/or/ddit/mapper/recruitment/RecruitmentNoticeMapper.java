@@ -26,4 +26,5 @@ public interface RecruitmentNoticeMapper {
  
  public int updateRecruitmentNotice(RecruitmentNoticeVO recruitmentNoticeVO);
  
+ public int deleteRecruitmentNotice(String recruitmentNo);
 }

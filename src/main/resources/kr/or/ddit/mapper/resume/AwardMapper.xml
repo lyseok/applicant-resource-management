@@ -3,11 +3,11 @@
 <mapper namespace="kr.or.ddit.mapper.resume.AwardMapper">
 	<select id="selectAwardList">
 		SELECT AWARD_CODE
-			   , RESUME_NO
 			   , AWARD_NAME
 			   , AWARD_DATE
 			   , HOSTING 
 		  FROM AWARD
+		 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectAwardDetail">
@@ -18,6 +18,7 @@
 			   , HOSTING 
 		  FROM AWARD
 		 WHERE AWARD_CODE = #{awardCode}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertAward">
