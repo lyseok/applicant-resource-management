@@ -19,4 +19,5 @@ public interface CompanyExamMapper {
 	public List<CompanyExamVO> selectCompanyExamListById(String userId);
 	public CompanyExamVO selectCompanyExamWithQuestionAndOption(String examNo);
 	public boolean updateExamDeleteDate(String companyExamNo);
+	public List<CompanyExamVO> selctCompanyExamListByExamNo(String comapnyExamNo);
 }
