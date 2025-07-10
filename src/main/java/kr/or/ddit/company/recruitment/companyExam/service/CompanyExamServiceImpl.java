@@ -1,6 +1,9 @@
 package kr.or.ddit.company.recruitment.companyExam.service;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +66,41 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 	@Override
 	public boolean editExamDeleteDate(String examNo) {
 		return companyExamMapper.updateExamDeleteDate(examNo);
+	}
+
+	@Transactional
+	@Override
+	public boolean editCompanyExam(CompanyExamVO companyExam) {
+		String examNo = companyExam.getComExamNo();
+		
+		int update = companyExamMapper.updateCompanyExam(companyExam);
+		if(update == 0) return false;
+		
+		
+		List<ComExamQuestionsVO> existingQuestions = comExamQuestionsMapper.selectByExamNo(examNo);
+		Set<String> incoming = new HashSet<>();
+		
+		for(ComExamQuestionsVO q : companyExam.getQuestionList()) {
+			q.setComExamNo(examNo);
+			
+			if(q.getComQuestionsNo() == null) {
+				comExamQuestionsMapper.insertComExamQuest(q);
+			}else {
+				comExamQuestionsMapper.updateComExamQuest(q);
+			}
+			
+			String questionNo = q.getComQuestionsNo();
+			incoming.add(questionNo);
+			
+			
+			List<ComExamOptionVO> existingOptions  = ComExamOptionMapper.selectByQuestionNo(questionNo);
+			Set<String> incomingONos = new HashSet<>();
+			
+			for(ComExamOptionVO o : q.getOptionList()) {
+				o.setComOptionNo(questionNo);
+				
+			}
+		}
 	}
 
 	
