@@ -31,7 +31,8 @@
         </div>        
       </div>
     </div>
-	
+    
+	<%@ include file="/WEB-INF/fragments/loading.jsp" %>
   <%@ include file="/WEB-INF/fragments/dashPostScript.jsp" %>
 </body>
 </html>
