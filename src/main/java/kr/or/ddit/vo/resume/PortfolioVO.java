@@ -14,6 +14,7 @@ public class PortfolioVO implements Serializable{
     private String porName;          // 포트폴리오 명 (POR_NAME)
     private String porStartDate;     // 작업 시작일자 (POR_START_DATE)
     private String porEndDate;       // 작업 종료일자 (POR_END_DATE)
-    private String porInformation;    // 작업 설명 (POR_INFOMATION)
+    private String porInformation;   // 작업 설명 (POR_INFOMATION)
     private String deleteDate;       // 삭제일시 (DELETE_DATE)
+    private String porUrl;      	 // 포트폴리오경로 (PRO_URL)
 }

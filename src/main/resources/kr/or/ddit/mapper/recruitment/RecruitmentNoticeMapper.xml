@@ -5,20 +5,88 @@
 	<!-- <resultMap type="RecruitmentNoticeVO" id="liveDetailMap" autoMapping="true"> 
 		<id property="recruitmentNo" column="RECRUITMENT_NO"/> </resultMap> -->
 
-	<!-- <select id="hotRecruitment" resultType="RecruitmentNoticeVO">
-		SELECT *
-		FROM RECUITMENT_NOTICE
-		ORDER BY (조회수 관련)
-	</select> -->
+	<!-- <select id="hotRecruitment" resultType="RecruitmentNoticeVO"> SELECT 
+		* FROM RECUITMENT_NOTICE ORDER BY (조회수 관련) </select> -->
+	<resultMap id="companyMap" type="kr.or.ddit.vo.common.CompanyVO">
+		<id property="userId" column="COM_USER_ID" />
+		<result property="comName" column="COM_NAME" />
+		<result property="comInfo" column="COM_INFO" />
+		<result property="comNum" column="COM_NUM" />
+		<result property="comEmail" column="COM_EMAIL" />
+		<result property="comUrl" column="COM_URL" />
+		<result property="comCreateYear" column="COM_CREATE_YEAR" />
+		<result property="comMem" column="COM_MEM" />
+		<result property="comLogo" column="COM_LOGO" />
+		<result property="comPayment" column="COM_PAYMENT" />
+		<result property="industryType" column="INDUSTRY_TYPE" />
+	</resultMap>
+
+	<resultMap id="recruitmentEducationMap" type="kr.or.ddit.vo.recruitment.RecruitmentEducationVO">
+		<id property="recruitmentEducationCode" column="EDU_RECRUITMENT_EDUCATION_CODE" />
+		<result property="codeDetailNo" column="EDU_CODE_DETAIL_NO" />
+		<result property="recruitmentEduDelDate" column="EDU_RECRUITMENT_EDU_DEL_DATE" />
+	</resultMap>
+
+	<resultMap id="recruitmentPositionMap" type="kr.or.ddit.vo.recruitment.RecruitmentPositionVO">
+		<id property="recruitmentPositionCode" column="REP_RECRUITMENT_POSITION_CODE" />
+		<result property="codeDetailNo" column="REP_CODE_DETAIL_NO" />
+		<result property="recruitmentPositionDelDate" column="REP_RECRUITMENT_POSITION_DEL_DATE" />
+	</resultMap>
+
+	<resultMap id="recruitmentSkillMap" type="kr.or.ddit.vo.recruitment.RecruitmentSkillVO">
+		<id property="recruitSkillCode" column="RSK_RECRUIT_SKILL_CODE" />
+		<result property="recruitSkillName" column="RSK_RECRUIT_SKILL_NAME" />
+		<result property="recruitSkillDelDate" column="RSK_RECRUIT_SKILL_DEL_DATE" />
+	</resultMap>
+
+	<resultMap id="recruitProcessMap" type="kr.or.ddit.vo.recruitment.RecruitProcessVO">
+		<id property="recruitProcessNo" column="REPR_RECRUIT_PROCESS_NO" />
+		<result property="recruitProcessStep" column="REPR_RECRUIT_PROCESS_STEP" />
+		<result property="recruitProcessFinal" column="REPR_RECRUIT_PROCESS_FINAL" />
+		<result property="recruitProcessType" column="REPR_RECRUIT_PROCESS_TYPE" />
+		<result property="recruitProcessDelDate" column="REPR_RECRUIT_PROCESS_DEL_DATE" />
+	</resultMap>
+
+	<resultMap id="recruitmentNoticeMap" type="kr.or.ddit.vo.recruitment.RecruitmentNoticeVO">
+		<id property="recruitmentNo" column="RENO_RECRUITMENT_NO" />
+		<result property="userId" column="RENO_USER_ID" />
+		<result property="recruitmentTitle" column="RENO_RECRUITMENT_TITLE" />
+		<result property="jobCode" column="RENO_JOB_CODE" />
+		<result property="yearCode" column="RENO_YEAR_CODE" />
+		<result property="recContent" column="RENO_REC_CONTENT" />
+		<result property="preferential" column="RENO_PREFERENTIAL" />
+		<result property="cityCode" column="RENO_CITY_CODE" />
+		<result property="districtCode" column="RENO_DISTRICT_CODE" />
+		<result property="recPositionNumber" column="RENO_REC_POSITION_NUMBER" />
+		<result property="recruitmentChargerTel" column="RENO_RECRUITMENT_CHARGER_TEL" />
+		<result property="recruitmentSalary" column="RENO_RECRUITMENT_SALARY" />
+		<result property="welfare" column="RENO_WELFARE" />
+		<result property="recruitmentDesk" column="RENO_RECRUITMENT_DESK" />
+		<result property="recruitmentImg" column="RENO_RECRUITMENT_IMG" />
+		<result property="recruitmentStartdate" column="RENO_RECRUITMENT_STARTDATE" />
+		<result property="recruitmentReceiptStart" column="RENO_RECRUITMENT_RECEIPT_START" />
+		<result property="recruitmentFinishDate" column="RENO_RECRUITMENT_FINISH_DATE" />
+		<result property="recruitmentDelDate" column="RENO_RECRUIMENT_DEL_DATE" />
+
+		<association property="company" resultMap="companyMap" />
+		<association property="education" resultMap="recruitmentEducationMap" />
+		<collection property="positionList" resultMap="recruitmentPositionMap" />
+		<collection property="skillList" resultMap="recruitmentSkillMap" />
+		<collection property="processList" resultMap="recruitProcessMap" />
+	</resultMap>
+	
+	
 
 	<select id="salaryRecruitment" resultType="RecruitmentNoticeVO">
 		SELECT USER_ID
-			,RECRUITMENT_TITLE
-    	    ,JOB_CODE
-        	,RECRUITMENT_IMG
-        	, RECRUITMENT_SALARY
-		FROM RECRUITMENT_NOTICE
-		ORDER BY RECRUITMENT_SALARY DESC
+		, RECRUITMENT_TITLE
+		, JOB_CODE
+		, RECRUITMENT_IMG
+		, RECRUITMENT_SALARY
+		FROM
+		RECRUITMENT_NOTICE
+		ORDER BY RECRUITMENT_SALARY
+		DESC
 
 	</select>
 
@@ -28,32 +96,81 @@
 		RECRUITMENT_SALARY,
 		RECRUITMENT_FINISH_DATE
 		FROM RECRUITMENT_NOTICE
-		ORDER BY RECRUITMENT_STARTDATE DESC;
+		ORDER BY
+		RECRUITMENT_STARTDATE DESC;
 	</select>
 
 	<select id="selectliveRecruitmentDetail"
-		resultType="RecruitmentNoticeVO">
-		SELECT
-		RECRUITMENT_NO
-		,USER_ID
-		,JOB_CODE
-		,YEAR_CODE
-		,REC_CONTENT
-		,PREFERENTIAL
-		,CITY_CODE
-		,DISTRICT_CODE
-		,REC_POSITION_NUMBER
-		,RECRUITMENT_CHARGER_TEL
-		,RECRUITMENT_SALARY
-		,WELFARE
-		,RECRUITMENT_DESK
-		,RECRUITMENT_IMG
-		,RECRUITMENT_STARTDATE
-		,RECRUITMENT_RECEIPT_START
-		,RECRUITMENT_FINISH_DATE
-		,RECRUITMENT_TITLE
-		FROM RECRUITMENT_NOTICE
-		WHERE RECRUITMENT_NO = #{recruitmentNo}
+		resultMap="recruitmentNoticeMap">
+	SELECT
+	-- RECRUITMENT_NOTICE
+	rn.RECRUITMENT_NO                       AS RENO_RECRUITMENT_NO,
+	rn.USER_ID                              AS RENO_USER_ID,
+	rn.RECRUITMENT_TITLE                    AS RENO_RECRUITMENT_TITLE,
+	rn.JOB_CODE                             AS RENO_JOB_CODE,
+	rn.YEAR_CODE                            AS RENO_YEAR_CODE,
+	rn.REC_CONTENT                          AS RENO_REC_CONTENT,
+	rn.PREFERENTIAL                         AS RENO_PREFERENTIAL,
+	rn.CITY_CODE                            AS RENO_CITY_CODE,
+	rn.DISTRICT_CODE                        AS RENO_DISTRICT_CODE,
+	rn.REC_POSITION_NUMBER                  AS RENO_REC_POSITION_NUMBER,
+	rn.RECRUITMENT_CHARGER_TEL              AS RENO_RECRUITMENT_CHARGER_TEL,
+	rn.RECRUITMENT_SALARY                   AS RENO_RECRUITMENT_SALARY,
+	rn.WELFARE                              AS RENO_WELFARE,
+	rn.RECRUITMENT_DESK                     AS RENO_RECRUITMENT_DESK,
+	rn.RECRUITMENT_IMG                      AS RENO_RECRUITMENT_IMG,
+	rn.RECRUITMENT_STARTDATE                AS RENO_RECRUITMENT_STARTDATE,
+	rn.RECRUITMENT_RECEIPT_START            AS RENO_RECRUITMENT_RECEIPT_START,
+	rn.RECRUITMENT_FINISH_DATE              AS RENO_RECRUITMENT_FINISH_DATE,
+	rn.RECRUITMENT_DEL_DATE                 AS RENO_RECRUITMENT_DEL_DATE,
+
+	-- COMPANY
+	c.USER_ID                               AS COM_USER_ID,
+	c.COM_NAME                              AS COM_NAME,
+	c.COM_INFO                              AS COM_INFO,
+	c.COM_NUM                               AS COM_NUM,
+	c.COM_EMAIL  							AS COM_EMAIL,
+	c.COM_URL 								AS COM_URL,
+	c.COM_CREATE_YEAR 						AS COM_CREATE_YEAR,
+	c.COM_MEM 								AS COM_MEM,
+	c.COM_LOGO 								AS COM_LOGO,
+	c.COM_PAYMENT 							AS COM_PAYMENT,
+	c.INDUSTRY_TYPE							AS INDUSTRY_TYPE,
+
+	-- RECRUITMENT_EDUCATION (1:1)
+	re.RECRUITMENT_EDUCATION_CODE 			AS EDU_RECRUITMENT_EDUCATION_CODE,
+	re.CODE_DETAIL_NO 						AS EDU_CODE_DETAIL_NO,
+	re.RECRUITMENT_EDU_DEL_DATE 			AS EDU_RECRUITMENT_EDU_DEL_DATE,
+
+	-- RECRUITMENT_POSITION (1:N)
+	rp.RECRUITMENT_POSITION_CODE 			AS REP_RECRUITMENT_POSITION_CODE,
+	rp.CODE_DETAIL_NO 						AS REP_CODE_DETAIL_NO,
+	rp.RECRUITMENT_POSITION_DEL_DATE 		AS REP_RECRUITMENT_POSITION_DEL_DATE,
+
+	-- RECRUITMENT_SKILL (1:N)
+	rs.RECRUIT_SKILL_CODE	 				AS RSK_RECRUIT_SKILL_CODE,
+	rs.RECRUIT_SKILL_NAME 					AS RSK_RECRUIT_SKILL_NAME,
+	rs.RECRUIT_SKILL_DEL_DATE 				AS RSK_RECRUIT_SKILL_DEL_DATE,
+
+	-- RECRUIT_PROCESS (1:N)
+	rp2.RECRUIT_PROCESS_NO 					AS REPR_RECRUIT_PROCESS_NO,
+	rp2.RECRUIT_PROCESS_STEP 				AS REPR_RECRUIT_PROCESS_STEP,
+	rp2.RECRUIT_PROCESS_FINAL 				AS REPR_RECRUIT_PROCESS_FINAL,
+	rp2.RECRUIT_PROCESS_TYPE 				AS REPR_RECRUIT_PROCESS_TYPE,
+	rp2.RECRUIT_PROCESS_DEL_DATE 			AS REPR_RECRUIT_PROCESS_DEL_DATE
+
+	FROM RECRUITMENT_NOTICE rn
+	JOIN COMPANY c
+	ON rn.USER_ID = c.USER_ID
+	LEFT JOIN RECRUITMENT_EDUCATION re
+	ON rn.RECRUITMENT_NO = re.RECRUITMENT_NO
+	LEFT JOIN RECRUITMENT_POSITION rp
+	ON rn.RECRUITMENT_NO = rp.RECRUITMENT_NO
+	LEFT JOIN RECRUITMENT_SKILL rs
+	ON rn.RECRUITMENT_NO = rs.RECRUITMENT_NO
+	LEFT JOIN RECRUIT_PROCESS rp2
+	ON rn.RECRUITMENT_NO = rp2.RECRUITMENT_NO
+	WHERE rn.RECRUITMENT_NO = #{recruitmentNo}
 	</select>
 
 
@@ -63,18 +180,21 @@
 			order="BEFORE">
 			SELECT
 			'RECR'||
-			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUITMENT_NO), LENGTH('RECR' ) + 1)), 0) + 1, 6, '0')
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUITMENT_NO),
+			LENGTH('RECR' ) + 1)), 0) + 1, 6, '0')
 			FROM RECRUITMENT_NOTICE
 		</selectKey>
 		INSERT INTO RECRUITMENT_NOTICE (
 		RECRUITMENT_NO
 		, USER_ID
-		, RECRUITMENT_TITLE
+		,
+		RECRUITMENT_TITLE
 		, JOB_CODE
 		, YEAR_CODE
 		, REC_CONTENT
 		, PREFERENTIAL
-		, CITY_CODE
+		,
+		CITY_CODE
 		, DISTRICT_CODE
 		, REC_POSITION_NUMBER
 		, RECRUITMENT_CHARGER_TEL
@@ -82,27 +202,34 @@
 		, WELFARE
 		, RECRUITMENT_DESK
 		, RECRUITMENT_IMG
-		, RECRUITMENT_STARTDATE
+		,
+		RECRUITMENT_STARTDATE
 		, RECRUITMENT_RECEIPT_START
-		, RECRUITMENT_FINISH_DATE
+		,
+		RECRUITMENT_FINISH_DATE
 		)VALUES (
 		#{recruitmentNo}
 		, #{userId}
-		, #{recruitmentTitle}
+		,
+		#{recruitmentTitle}
 		, #{jobCode}
 		, #{yearCode}
 		, #{recContent}
-		, #{preferential}
+		,
+		#{preferential}
 		, #{cityCode}
 		, #{districtCode}
 		, #{recPositionNumber}
-		, #{recruitmentChargerTel}
+		,
+		#{recruitmentChargerTel}
 		, #{recruitmentSalary}
 		, #{welfare}
-		, #{recruitmentDesk}
+		,
+		#{recruitmentDesk}
 		, #{recruitmentImg}
 		, SYSDATE
-		, #{recruitmentReceiptStart}
+		,
+		#{recruitmentReceiptStart}
 		, #{recruitmentFinishDate}
 		)
 	</insert>
@@ -110,23 +237,33 @@
 	<update id="updateRecruitmentNotice">
 		UPDATE RECRUITMENT_NOTICE SET
 		USER_ID = #{userId}
-		, JOB_CODE =#{jobCode}
+		,
+		JOB_CODE =#{jobCode}
 		, YEAR_CODE = #{yearCode}
-		, REC_CONTENT = #{recContent}
+		, REC_CONTENT =
+		#{recContent}
 		, PREFERENTIAL = #{preferential}
 		, CITY_CODE = #{cityCode}
 		, DISTRICT_CODE = #{districtCode}
-		, REC_POSITION_NUMBER = #{recPositionNumber}
-		, RECRUITMENT_CHARGER_TEL = #{recruitmentChargerTel}
+		, REC_POSITION_NUMBER =
+		#{recPositionNumber}
+		, RECRUITMENT_CHARGER_TEL =
+		#{recruitmentChargerTel}
 		, RECRUITMENT_SALARY= #{recruitmentSalary}
-		, WELFARE = #{welfare}
+		,
+		WELFARE = #{welfare}
 		, RECRUITMENT_DESK =#{recruitmentDesk}
-		, RECRUITMENT_IMG = #{recruitmentImg}
-		, RECRUITMENT_STARTDATE = #{recruitmentStartdate}
-		, RECRUITMENT_RECEIPT_START = #{recruitmentReceiptStart}
-		, RECRUITMENT_FINISH_DATE = #{recruitmentFinishDate}
+		,
+		RECRUITMENT_IMG = #{recruitmentImg}
+		, RECRUITMENT_STARTDATE =
+		#{recruitmentStartdate}
+		, RECRUITMENT_RECEIPT_START =
+		#{recruitmentReceiptStart}
+		, RECRUITMENT_FINISH_DATE =
+		#{recruitmentFinishDate}
 		, RECRUITMENT_TITLE =#{recruitmentTitle}
-		WHERE RECRUITMENT_NO = #{recruitmentNo}
+		WHERE
+		RECRUITMENT_NO = #{recruitmentNo}
 	</update>
 
 	<select id="readRecruitmentNoticeList"
@@ -134,18 +271,22 @@
 		SELECT
 		RECRUITMENT_NO
 		, USER_ID, JOB_CODE
-		, YEAR_CODE, REC_CONTENT
+		, YEAR_CODE,
+		REC_CONTENT
 		, PREFERENTIAL
 		, CITY_CODE
 		, DISTRICT_CODE
-		, REC_POSITION_NUMBER
+		,
+		REC_POSITION_NUMBER
 		, RECRUITMENT_CHARGER_TEL
 		, RECRUITMENT_SALARY
-		, WELFARE
+		,
+		WELFARE
 		, RECRUITMENT_DESK
 		, RECRUITMENT_IMG
 		, RECRUITMENT_STARTDATE
-		, RECRUITMENT_RECEIPT_START
+		,
+		RECRUITMENT_RECEIPT_START
 		, RECRUITMENT_FINISH_DATE
 		, RECRUITMENT_TITLE
 		FROM RECRUITMENT_NOTICE
@@ -153,7 +294,8 @@
 
 	<update id="deleteRecruitmentNotice">
 		UPDATE RECRUITMENT_NOTICE SET
-			RECRUITMENT_DEL_DATE = SYSDATE
+		RECRUITMENT_DEL_DATE =
+		SYSDATE
 		WHERE RECRUITMENT_NO = #{recruitmentNo}
 	</update>
 

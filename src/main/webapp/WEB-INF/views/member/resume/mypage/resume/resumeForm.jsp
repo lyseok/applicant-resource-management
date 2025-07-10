@@ -5,16 +5,24 @@
   <meta charset="UTF-8">
   <title>사람인 이력서 섹션별 추가폼</title>
   <link rel="stylesheet" href="/css/member/resume/resume.css" >
+  <script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
 </head>
 <body>
   <div class="resume-wrap">
+   
     <!-- Header -->
     <div class="resume-header">
-      <div class="profile-img">🙍‍♂️</div>
+      <div class="profile-img">${memberInfo.memImg }</div>
       <div class="header-info">
-        <span class="name">이예솔</span><span class="age">1997 (28세)</span>
-        <div class="contact">gptresume@gmail.com | 010-****-0064</div>
-        <div class="info-badge">대표 이력서 번호 001</div>
+      	<div class="d-flex align-items-center">
+	        <span class="name lh1">${memberInfo.memName }</span>
+	        <span class="age lh1">${memberInfo.memBir }</span>
+        </div>
+        <div class="contact d-flex gap-4">
+        	<span class="d-flex align-items-center gap-1"><i class='bx  bx-envelope-alt'  ></i> ${memberInfo.memEmail }</span>
+        	<span class="d-flex align-items-center gap-1"><i class='bx  bx-mobile'  ></i> ${memberInfo.memTel }</span>
+        </div>
+        <div class="address d-flex align-items-center gap-1"><i class='bx  bx-home-alt'  ></i> ${memberInfo.memAdd1 } ${memberInfo.memAdd2 }</div>
       </div>
     </div>
 
@@ -348,30 +356,4 @@
       </form>
     </div>
   </div>
-  <script>
-    // 폼 토글 함수: 하나만 열리게
-    function toggleForm(key, closeOnly = false) {
-      const ids = [
-        'edu','career','skill','exp','cert','portfolio','selfintro','prefer'
-      ];
-      ids.forEach(id => {
-        const form = document.getElementById('form-' + id);
-        if (!form) return;
-        if (id === key && !closeOnly) form.classList.add('active');
-        else form.classList.remove('active');
-      });
-      // 스크롤 자연스럽게 이동 (폼이 열릴 때만)
-      if (!closeOnly) {
-        setTimeout(() => {
-          document.getElementById('form-'+key).scrollIntoView({behavior:'smooth',block:'center'});
-        }, 80);
-      }
-    }
-    // 임시 폼 submit
-    function submitForm(e, key) {
-      e.preventDefault();
-      alert("입력하신 값이 임시로 저장되었습니다!");
-      toggleForm(key, true);
-    }
-  </script>
 </body>

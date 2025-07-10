@@ -9,6 +9,7 @@
 			  , POR_END_DATE
 			  , POR_INFORMATION
 			  , TO_CHAR(TO_DATE(DELETE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS DELETE_DATE
+			  , POR_URL
 		 FROM PORTFOLIO
 		WHERE DELETE_DATE IS NULL
 		  AND RESUME_NO = #{resumeNo}
@@ -22,6 +23,7 @@
 		      , TO_CHAR(TO_DATE(POR_END_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS POR_END_DATE
 		      , POR_INFORMATION
 		      , TO_CHAR(TO_DATE(DELETE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS DELETE_DATE
+		      , POR_URL
 		 FROM PORTFOLIO
 		WHERE DELETE_DATE IS NULL
 		  AND RESUME_NO = #{resumeNo}
@@ -43,6 +45,7 @@
 	      , POR_FILE_SIZE
 	      , POR_FILE_PATH
 	      , DELETE_DATE
+	      , POR_URL
 	    ) VALUES (
 	        #{porCode}
 	      , #{resumeNo}
@@ -51,6 +54,7 @@
 	      , #{porFileSize}
 	      , #{porFilePath}
 	      , #{deleteDate}
+	      , #{porUrl}
 	    )
 	</insert>
 	
@@ -60,7 +64,8 @@
 		     , POR_NAME          = #{porName}
 		     , POR_START_DATE    = #{porStartDate}
 		     , POR_END_DATE      = #{porEndDate}
-		     , POR_INFORMATION    = #{porInformation}
+		     , POR_INFORMATION   = #{porInformation}
+		     , POR_URL   		 = #{porUrl}
 		 WHERE POR_CODE = #{porCode}
 	</update>
 	
@@ -70,7 +75,8 @@
 		     , POR_NAME          = #{porName}
 		     , POR_START_DATE    = #{porStartDate}
 		     , POR_END_DATE      = #{porEndDate}
-		     , POR_INFORMATION    = #{porInformation}
+		     , POR_INFORMATION   = #{porInformation}
+		     , POR_URL   		 = #{porUrl}
 		     , DELETE_DATE       = SYSDATE
 		 WHERE POR_CODE = #{porCode}
 	</update>
