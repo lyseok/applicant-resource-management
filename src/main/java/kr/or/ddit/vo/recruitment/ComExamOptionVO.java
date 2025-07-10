@@ -12,9 +12,9 @@ public class ComExamOptionVO implements Serializable{
 
 	private String comOptionNo;
 	private String comQuestionsNo;
-	@NotBlank
+	@NotBlank(message = "보기 내용을 입력해주세요.")
 	private String comOptionContent;
-	@NotBlank
+	@NotBlank(message = "정답을 체크해주세요.")
 	private String comOptionCorrectYn;
 	private String comOptionDelDate;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,11 +14,11 @@ import lombok.EqualsAndHashCode;
 public class CompanyExamVO implements Serializable{
 
 	private String comExamNo;
-	@NotBlank
 	private String userId;
-	@NotBlank
+	@NotBlank(message = "시험 명을 입력해주세요")
 	private String comExamName;
 	private String comExamDelDate;
+
 	@Valid
 	private List<ComExamQuestionsVO> questionList;
 }

@@ -53,27 +53,65 @@
 		   AND RESUME_DELETE_DATE IS NULL
 
 	</select>
+	<resultMap id="resumeDetailtMap" type="kr.or.ddit.vo.resume.ResumeVO">
+	    <!-- ResumeVO 기본 필드 매핑 -->
+	    <id     property="resumeNo"         column="RESUME_NO"/>
+	    <result property="resumeName"       column="RESUME_NAME"/>
+	    <result property="resumeMainYn"     column="RESUME_MAIN_YN"/>
+	    <result property="introductionNo"   column="INTRODUCTION_NO"/>
+	    <result property="userId"           column="USER_ID"/>
+	    <result property="userName"         column="USER_NAME"/>
+	    <result property="photo"            column="PHOTO"/>
+	    <result property="birth"            column="BIRTH"/>
+	    <result property="email"            column="EMAIL"/>
+	    <result property="tel"              column="TEL"/>
+	    <result property="address"          column="ADDRESS"/>
+	    <result property="veteranReason"    column="VETERAN_REASON"/>
+	    <result property="updateDate"       column="UPDATE_DATE"/>
+	    <result property="resumeSubmitYn"   column="RESUME_SUBMIT_YN"/>
+	    <result property="resumeDeleteDate" column="RESUME_DELETE_DATE"/>
 	
-	<select id="selectResumeDetail">
-	  	SELECT  RESUME_NO
-		      , RESUME_MAIN_YN
-		      , INTRODUCTION_NO
-		      , USER_ID
-		      , USER_NAME
-		      , PHOTO
-		      , TO_CHAR(TO_DATE(BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
-		      , EMAIL
-		      , TEL
-		      , ADDRESS
-		      , VETERAN_REASON
-		      , TO_CHAR(TO_DATE(UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
-		      , RESUME_SUBMIT_YN
-		      , RESUME_DELETE_DATE
-		      , RESUME_NAME
-		  FROM resume
-		 WHERE USER_ID = #{userId}
-		   AND RESUME_DELETE_DATE IS NULL
-		   AND RESUME_NO = #{resumeNo}
+	    <!-- IntroductionVO는 introduction property에 중첩 매핑 -->
+	    <association property="introduction" javaType="kr.or.ddit.vo.resume.IntroductionVO">
+	        <id     property="introductionNo"        column="INTRODUCTION_NO"/>
+	        <result property="introductionName"      column="INTRODUCTION_NAME"/>
+	        <result property="introductionContent"   column="INTRODUCTION_CONTENT"/>
+	        <result property="introductionQuestion"  column="INTRODUCTION_QUESTION"/>
+	        <result property="introductionCreateDate" column="INTRODUCTION_CREATE_DATE"/>
+	        <result property="introductionDeleteDate" column="INTRODUCTION_DELETE_DATE"/>
+	        <result property="introductionSubmitYn"   column="INTRODUCTION_SUBMIT_YN"/>
+	        <result property="userId"                 column="USER_ID"/>
+	    </association>
+	</resultMap>
+		
+	<select id="selectResumeDetail" resultMap="resumeDetailtMap">
+		SELECT  
+			RE.RESUME_NO
+			, RE.RESUME_MAIN_YN
+			, RE.INTRODUCTION_NO
+			, RE.USER_ID
+			, RE.USER_NAME
+			, RE.PHOTO
+			, TO_CHAR(TO_DATE(RE.BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
+			, RE.EMAIL
+			, RE.TEL
+			, RE.ADDRESS
+			, RE.VETERAN_REASON
+			, TO_CHAR(TO_DATE(RE.UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
+			, RE.RESUME_SUBMIT_YN
+			, RE.RESUME_DELETE_DATE
+			, RE.RESUME_NAME		   
+			, INT.INTRODUCTION_NAME
+			, INT.INTRODUCTION_CONTENT
+			, INT.INTRODUCTION_QUESTION
+			, TO_CHAR(INT.INTRODUCTION_CREATE_DATE, 'YYYY-MM-DD') AS INTRODUCTION_CREATE_DATE
+			, TO_CHAR(INT.INTRODUCTION_DELETE_DATE, 'YYYY-MM-DD') AS INTRODUCTION_DELETE_DATE
+			, INT.INTRODUCTION_SUBMIT_YN
+		FROM RESUME RE
+		LEFT JOIN INTRODUCTION INT ON RE.INTRODUCTION_NO = INT.INTRODUCTION_NO		  
+		WHERE RE.USER_ID = #{userId}
+		AND RE.RESUME_DELETE_DATE IS NULL
+		AND RE.RESUME_NO = #{resumeNo}
 	</select>
 	
 	
@@ -166,299 +204,5 @@
 		    ORDER BY
 		      r.UPDATE_DATE DESC
   </select>
-  
-  <!--<resultMap id="resumeResultMap" type="kr.or.ddit.vo.resume.ResumeVO">
-    ResumeVO 기본 필드
-    <id property="resumeNo" column="RESUME_NO"/>
-    <result property="resumeMainYn" column="RESUME_MAIN_YN"/>
-    <result property="introductionNo" column="INTRODUCTION_NO"/>
-    <result property="userId" column="USER_ID"/>
-    <result property="userName" column="USER_NAME"/>
-    <result property="photo" column="PHOTO"/>
-    <result property="birth" column="BIRTH"/>
-    <result property="email" column="EMAIL"/>
-    <result property="tel" column="TEL"/>
-    <result property="address" column="ADDRESS"/>
-    <result property="veteranReason" column="VETERAN_REASON"/>
-    <result property="updateDate" column="UPDATE_DATE"/>
-    <result property="resumeSubmitYn" column="RESUME_SUBMIT_YN"/>
-    <result property="resumeDeleteDate" column="RESUME_DELETE_DATE"/>
-    <result property="resumeName" column="RESUME_NAME"/>
-
-    CareerVO
-    <collection property="careerList" ofType="kr.or.ddit.vo.resume.CareerVO">
-        <id property="careerNo" column="CAREER_NO"/>
-        <result property="resumeNo" column="CAREER_RESUME_NO"/>
-        <result property="jobCode" column="JOB_CODE"/>
-        <result property="startWorkDate" column="START_WORK_DATE"/>
-        <result property="retireDate" column="RETIRE_DATE"/>
-        <result property="tenure" column="TENURE"/>
-        <result property="department" column="DEPARTMENT"/>
-        <result property="responsibility" column="RESPONSIBILITY"/>
-        <result property="freelancer" column="FREELANCER"/>
-        <result property="jobGradeCode" column="JOB_GRADE_CODE"/>
-        <result property="positionCode" column="POSITION_CODE"/>
-        <result property="careerYear" column="CAREER_YEAR"/>
-        <result property="salary" column="SALARY"/>
-        <result property="location" column="CAREER_LOCATION"/>
-        <result property="deleteDate" column="CAREER_DELETE_DATE"/>
-        <result property="comId" column="COM_ID"/>
-    </collection>
-
-    SupportVO
-    <collection property="supportList" ofType="kr.or.ddit.vo.resume.SupportVO">
-        <id property="supportNo" column="SUPPORT_NO"/>
-        <result property="resumeNo" column="SUPPORT_RESUME_NO"/>
-        <result property="disabilityCode" column="DISABILITY_CODE"/>
-        <result property="disabilityLevelCode" column="DISABILITY_LEVEL_CODE"/>
-        <result property="deleteDate" column="SUPPORT_DELETE_DATE"/>
-    </collection>
-
-    AwardVO
-    <collection property="awardList" ofType="kr.or.ddit.vo.resume.AwardVO">
-        <id property="awardCode" column="AWARD_CODE"/>
-        <result property="resumeNo" column="AWARD_RESUME_NO"/>
-        <result property="awardName" column="AWARD_NAME"/>
-        <result property="awardDate" column="AWARD_DATE"/>
-        <result property="hosting" column="HOSTING"/>
-        <result property="deleteDate" column="AWARD_DELETE_DATE"/>
-    </collection>
-
-    MyExperienceVO
-    <collection property="myExperienceList" ofType="kr.or.ddit.vo.resume.MyExperienceVO">
-        <id property="myExpCode" column="MY_EXP_CODE"/>
-        <result property="resumeNo" column="MY_EXP_RESUME_NO"/>
-        <result property="expCode" column="EXP_CODE"/>
-        <result property="expName" column="EXP_NAME"/>
-        <result property="organizationName" column="ORGANIZATION_NAME"/>
-        <result property="expStartDate" column="EXP_START_DATE"/>
-        <result property="expEndDate" column="EXP_END_DATE"/>
-        <result property="deleteDate" column="MY_EXP_DELETE_DATE"/>
-    </collection>
-
-    MySkillVO
-    <collection property="mySkillList" ofType="kr.or.ddit.vo.resume.MySkillVO">
-        <id property="mySkillCode" column="MY_SKILL_CODE"/>
-        <result property="resumeNo" column="MY_SKILL_RESUME_NO"/>
-        <result property="mySkillName" column="MY_SKILL_NAME"/>
-        <result property="deleteDate" column="MY_SKILL_DELETE_DATE"/>
-    </collection>
-
-    LanguageSkillVO
-    <collection property="languageSkillList" ofType="kr.or.ddit.vo.resume.LanguageSkillVO">
-        <id property="languageSkillNo" column="LANGUAGE_SKILL_NO"/>
-        <result property="resumeNo" column="LANGUAGE_SKILL_RESUME_NO"/>
-        <result property="languageExamCode" column="LANGUAGE_EXAM_CODE"/>
-        <result property="languageCode" column="LANGUAGE_CODE"/>
-        <result property="languageExamName" column="LANGUAGE_EXAM_NAME"/>
-        <result property="passDate" column="LANGUAGE_PASS_DATE"/>
-        <result property="languageExamType" column="LANGUAGE_EXAM_TYPE"/>
-        <result property="languageExamScore" column="LANGUAGE_EXAM_SCORE"/>
-        <result property="languageExamLevelCode" column="LANGUAGE_EXAM_LEVEL_CODE"/>
-        <result property="deleteDate" column="LANGUAGE_SKILL_DELETE_DATE"/>
-    </collection>
-
-    PortfolioVO
-    <collection property="portfolioList" ofType="kr.or.ddit.vo.resume.PortfolioVO">
-        <id property="porCode" column="POR_CODE"/>
-        <result property="resumeNo" column="PORTFOLIO_RESUME_NO"/>
-        <result property="porFileOriginalName" column="POR_FILE_ORIGINAL_NAME"/>
-        <result property="porFileSaveName" column="POR_FILE_SAVE_NAME"/>
-        <result property="porFileSize" column="POR_FILE_SIZE"/>
-        <result property="porFilePath" column="POR_FILE_PATH"/>
-        <result property="deleteDate" column="PORTFOLIO_DELETE_DATE"/>
-    </collection>
-
-    MilitaryVO
-    <collection property="militaryList" ofType="kr.or.ddit.vo.resume.MilitaryVO">
-        <id property="militaryNo" column="MILITARY_NO"/>
-        <result property="resumeNo" column="MILITARY_RESUME_NO"/>
-        <result property="serviceCategoryCode" column="SERVICE_CATEGORY_CODE"/>
-        <result property="militaryTypeCode" column="MILITARY_TYPE_CODE"/>
-        <result property="militaryRankCode" column="MILITARY_RANK_CODE"/>
-        <result property="dischargeCode" column="DISCHARGE_CODE"/>
-        <result property="militaryStartDate" column="MILITARY_START_DATE"/>
-        <result property="militaryEndDate" column="MILITARY_END_DATE"/>
-        <result property="militaryReason" column="MILITARY_REASON"/>
-        <result property="deleteDate" column="MILITARY_DELETE_DATE"/>
-    </collection>
-    
-    EducationVO (with specialtyList)
-	<collection property="educationList" ofType="kr.or.ddit.vo.resume.EducationVO">
-	    <id property="educationNo" column="EDUCATION_NO"/>
-	    <result property="resumeNo" column="EDUCATION_RESUME_NO"/>
-	    <result property="highestEducationCode" column="HIGHEST_EDUCATION_CODE"/>
-	    <result property="schoolName" column="SCHOOL_NAME"/>
-	    <result property="graduateYn" column="GRADUATE_YN"/>
-	    <result property="transferYn" column="TRANSFER_YN"/>
-	    <result property="entranceDate" column="ENTRANCE_DATE"/>
-	    <result property="graduateDate" column="GRADUATE_DATE"/>
-	    <result property="location" column="EDUCATION_LOCATION"/>
-	    <result property="departmentCode" column="DEPARTMENT_CODE"/>
-	    <result property="deleteDate" column="EDUCATION_DELETE_DATE"/>
-	
-	    SpecialtyVO 리스트
-	    <collection property="specialtyList" ofType="kr.or.ddit.vo.resume.SpecialtyVO">
-	        <id property="educationNo" column="SPECIALTY_EDUCATION_NO"/>
-	        <result property="resumeNo" column="SPECIALTY_RESUME_NO"/>
-	        <result property="mainMajor" column="MAIN_MAJOR"/>
-	        <result property="subMajor" column="SUB_MAJOR"/>
-	        <result property="subMajorCode" column="SUB_MAJOR_CODE"/>
-	        <result property="deleteDate" column="SPECIALTY_DELETE_DATE"/>
-	    </collection>
-	</collection>
-</resultMap>
-
-
-  
-  
-  <select id="memberResumeList" resultMap="resumeResultMap">
-  	SELECT
-	    res.RESUME_NO AS RESUME_NO,
-	    res.RESUME_MAIN_YN AS RESUME_MAIN_YN,
-	    res.INTRODUCTION_NO AS INTRODUCTION_NO,
-	    res.USER_ID AS USER_ID,
-	    res.USER_NAME AS USER_NAME,
-	    res.PHOTO AS PHOTO,
-	    res.BIRTH AS BIRTH,
-	    res.EMAIL AS EMAIL,
-	    res.TEL AS TEL,
-	    res.ADDRESS AS ADDRESS,
-	    res.VETERAN_REASON AS VETERAN_REASON,
-	    TO_CHAR(TO_DATE(res.UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE,
-	    res.RESUME_SUBMIT_YN AS RESUME_SUBMIT_YN,
-		res.RESUME_DELETE_DATE AS RESUME_DELETE_DATE,
-		res.RESUME_NAME AS RESUME_NAME,	
-	    -career(car)
-	    car.CAREER_NO AS CAREER_NO,
-	    car.RESUME_NO AS CAREER_RESUME_NO,
-	    car.JOB_CODE AS JOB_CODE,
-	    car.START_WORK_DATE AS START_WORK_DATE,
-	    car.RETIRE_DATE AS RETIRE_DATE,
-	    car.TENURE AS TENURE,
-	    car.DEPARTMENT AS DEPARTMENT,
-	    car.RESPONSIBILITY AS RESPONSIBILITY,
-	    car.FREELANCER AS FREELANCER,
-	    car.JOB_GRADE_CODE AS JOB_GRADE_CODE,
-	    car.POSITION_CODE AS POSITION_CODE,
-	    car.CAREER_YEAR AS CAREER_YEAR,
-	    car.SALARY AS SALARY,
-	    car.LOCATION AS CAREER_LOCATION,
-	    car.DELETE_DATE AS CAREER_DELETE_DATE,
-	    car.COM_ID AS COM_ID,
-	
-	    -support(sup)
-	    sup.SUPPORT_NO AS SUPPORT_NO,
-	    sup.RESUME_NO AS SUPPORT_RESUME_NO,
-	    sup.DISABILITY_CODE AS DISABILITY_CODE,
-	    sup.DISABILITY_LEVEL_CODE AS DISABILITY_LEVEL_CODE,
-	    sup.DELETE_DATE AS SUPPORT_DELETE_DATE,
-	
-	    -award(awa)
-	    awa.AWARD_CODE AS AWARD_CODE,
-	    awa.RESUME_NO AS AWARD_RESUME_NO,
-	    awa.AWARD_NAME AS AWARD_NAME,
-	    awa.AWARD_DATE AS AWARD_DATE,
-	    awa.HOSTING AS HOSTING,
-	    awa.DELETE_DATE AS AWARD_DELETE_DATE,
-	
-	    -my_experience(mye)
-	    mye.MY_EXP_CODE AS MY_EXP_CODE,
-	    mye.RESUME_NO AS MY_EXP_RESUME_NO,
-	    mye.EXP_CODE AS EXP_CODE,
-	    mye.EXP_NAME AS EXP_NAME,
-	    mye.ORGANIZATION_NAME AS ORGANIZATION_NAME,
-	    mye.EXP_START_DATE AS EXP_START_DATE,
-	    mye.EXP_END_DATE AS EXP_END_DATE,
-	    mye.DELETE_DATE AS MY_EXP_DELETE_DATE,
-	
-	    -my_skill(mys)
-	    mys.MY_SKILL_CODE AS MY_SKILL_CODE,
-	    mys.RESUME_NO AS MY_SKILL_RESUME_NO,
-	    mys.MY_SKILL_NAME AS MY_SKILL_NAME,
-	    mys.DELETE_DATE AS MY_SKILL_DELETE_DATE,
-	
-	    -language_skill(lang)
-	    lang.LANGUAGE_SKILL_NO AS LANGUAGE_SKILL_NO,
-	    lang.RESUME_NO AS LANGUAGE_SKILL_RESUME_NO,
-	    lang.LANGUAGE_EXAM_CODE AS LANGUAGE_EXAM_CODE,
-	    lang.LANGUAGE_CODE AS LANGUAGE_CODE,
-	    lang.LANGUAGE_EXAM_NAME AS LANGUAGE_EXAM_NAME,
-	    lang.PASS_DATE AS LANGUAGE_PASS_DATE,
-	    lang.LANGUAGE_EXAM_TYPE AS LANGUAGE_EXAM_TYPE,
-	    lang.LANGUAGE_EXAM_SCORE AS LANGUAGE_EXAM_SCORE,
-	    lang.LANGUAGE_EXAM_LEVEL_CODE AS LANGUAGE_EXAM_LEVEL_CODE,
-	    lang.DELETE_DATE AS LANGUAGE_SKILL_DELETE_DATE,
-	
-	    -portfolio(port)
-	    port.POR_CODE AS POR_CODE,
-	    port.RESUME_NO AS PORTFOLIO_RESUME_NO,
-	    port.POR_FILE_ORIGINAL_NAME AS POR_FILE_ORIGINAL_NAME,
-	    port.POR_FILE_SAVE_NAME AS POR_FILE_SAVE_NAME,
-	    port.POR_FILE_SIZE AS POR_FILE_SIZE,
-	    port.POR_FILE_PATH AS POR_FILE_PATH,
-	    port.DELETE_DATE AS PORTFOLIO_DELETE_DATE,
-	
-	    -military(mili)
-	    mili.MILITARY_NO AS MILITARY_NO,
-	    mili.RESUME_NO AS MILITARY_RESUME_NO,
-	    mili.SERVICE_CATEGORY_CODE AS SERVICE_CATEGORY_CODE,
-	    mili.MILITARY_TYPE_CODE AS MILITARY_TYPE_CODE,
-	    mili.MILITARY_RANK_CODE AS MILITARY_RANK_CODE,
-	    mili.DISCHARGE_CODE AS DISCHARGE_CODE,
-	    mili.MILITARY_START_DATE AS MILITARY_START_DATE,
-	    mili.MILITARY_END_DATE AS MILITARY_END_DATE,
-	    mili.MILITARY_REASON AS MILITARY_REASON,
-	    mili.DELETE_DATE AS MILITARY_DELETE_DATE,	    
-	    
-	    -education(edu)
-	    edu.EDUCATION_NO AS EDUCATION_NO,
-	    edu.RESUME_NO AS EDUCATION_RESUME_NO,
-	    edu.HIGHEST_EDUCATION_CODE AS HIGHEST_EDUCATION_CODE,
-	    edu.SCHOOL_NAME AS SCHOOL_NAME,
-	    edu.GRADUATE_YN AS GRADUATE_YN,
-	    edu.TRANSFER_YN AS TRANSFER_YN,
-	    edu.ENTRANCE_DATE AS ENTRANCE_DATE,
-	    edu.GRADUATE_DATE AS GRADUATE_DATE,
-	    edu.LOCATION AS EDUCATION_LOCATION,
-	    edu.DEPARTMENT_CODE AS DEPARTMENT_CODE,
-	    edu.DELETE_DATE AS EDUCATION_DELETE_DATE,
-	    
-	    -education (edu)
-		edu.EDUCATION_NO AS EDUCATION_NO,
-		edu.RESUME_NO AS EDUCATION_RESUME_NO,
-		edu.HIGHEST_EDUCATION_CODE AS HIGHEST_EDUCATION_CODE,
-		edu.SCHOOL_NAME AS SCHOOL_NAME,
-		edu.GRADUATE_YN AS GRADUATE_YN,
-		edu.TRANSFER_YN AS TRANSFER_YN,
-		edu.ENTRANCE_DATE AS ENTRANCE_DATE,
-		edu.GRADUATE_DATE AS GRADUATE_DATE,
-		edu.LOCATION AS EDUCATION_LOCATION,
-		edu.DEPARTMENT_CODE AS DEPARTMENT_CODE,
-		edu.DELETE_DATE AS EDUCATION_DELETE_DATE,
-		
-		-specialty (spc)
-		spc.EDUCATION_NO AS SPECIALTY_EDUCATION_NO,
-		spc.RESUME_NO AS SPECIALTY_RESUME_NO,
-		spc.MAIN_MAJOR AS MAIN_MAJOR,
-		spc.SUB_MAJOR AS SUB_MAJOR,
-		spc.SUB_MAJOR_CODE AS SUB_MAJOR_CODE,
-		spc.DELETE_DATE AS SPECIALTY_DELETE_DATE
-			    
-	
-	FROM resume res
-	LEFT JOIN career car ON res.RESUME_NO = car.RESUME_NO
-	LEFT JOIN support sup ON res.RESUME_NO = sup.RESUME_NO
-	LEFT JOIN award awa ON res.RESUME_NO = awa.RESUME_NO
-	LEFT JOIN my_experience mye ON res.RESUME_NO = mye.RESUME_NO
-	LEFT JOIN my_skill mys ON res.RESUME_NO = mys.RESUME_NO
-	LEFT JOIN language_skill lang ON res.RESUME_NO = lang.RESUME_NO
-	LEFT JOIN portfolio port ON res.RESUME_NO = port.RESUME_NO
-	LEFT JOIN military mili ON res.RESUME_NO = mili.RESUME_NO
-	LEFT JOIN education edu ON res.RESUME_NO = edu.RESUME_NO
-	LEFT JOIN specialty spc ON res.RESUME_NO = spc.RESUME_NO
-	WHERE res.user_id = #{userId}
-
-  </select> -->
-  
+  <select id=""></select>
 </mapper>

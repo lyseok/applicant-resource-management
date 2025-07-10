@@ -26,7 +26,7 @@
 		<p class="fw-bold">✍ 빠르게 이력서를 등록하고 싶다면?</p>
 		<div class="">
 			<!-- <button type="button" class="btn btn_gray_line h50">파일로 등록</button> -->
-			<a class="btn btn_violet h50 lh50" href="/mypage/intoruction/create">이력서 등록</a>
+			<a class="btn btn_violet h50 lh50" href="/mypage/resume/create">이력서 등록</a>
 		</div>
 	</div>
 	
@@ -56,7 +56,7 @@
 					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
 							<a class="d-block h4 fw-bold mb-4" href="<c:url value="/mypage/resume/${resume.resumeNo}"/>">${resume.resumeName}</a>
-							<div class="d-flex gap-5 icon_box mb-3">
+							<div class="d-flex gap-4 icon_box mb-3">
 								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
 									<c:if test="${empty resume.careerList[0] }">
 										<i class='bx  bx-education'  ></i> 신입
@@ -77,7 +77,7 @@
 								</span>
 								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
 									<c:if test="${not empty resume.myLicenseList[0] }">
-										<i class='bx  bx-translate'  ></i> 보유 자격 ${resume.languageSkillList.size() }개
+										<i class='bx  bx-credit-card-front'  ></i>  보유 자격 ${resume.languageSkillList.size() }개
 									</c:if>
 								</span>
 							</div>

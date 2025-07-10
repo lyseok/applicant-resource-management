@@ -13,15 +13,18 @@
 						<span class="user-name">${talent.userName}</span>
 						<c:if test="${not empty talent.careerList}">
 							<c:forEach var="career" items="${talent.careerList}">
-								<span class="user-experience">경력 ${career.careerYear}년</span>
+								<span class="user-experience">경력 ${career.careerYearName}</span>
 							</c:forEach>
 						</c:if>
 					</div>
 					<div class="user-position-salary">
-						<c:forEach var="career" items="${talent.careerList}">
-							<c:if test="${not empty career.jobCode}">
-								<span class="position-name">${career.jobCode}</span>
+						<c:forEach var="joblist" items="${talent.joblist}">
+							<c:if test="${not empty joblist.jobName}">
+								<span class="position-name">${joblist.jobName}</span>
 							</c:if>
+							</c:forEach>
+							
+							<c:forEach var="career" items="${talent.careerList}">
 							<span class="working-period"> (${career.startWorkDate} <c:choose>
 									<c:when test="${not empty career.retireDate}"> - ${career.retireDate}</c:when>
 									<c:otherwise> - 재직중</c:otherwise>
@@ -42,6 +45,5 @@
 		<p style="text-align: center; margin-top: 50px; color: #777;">검색
 			결과가 없습니다.</p>
 	</c:if>
-
 </div>
 

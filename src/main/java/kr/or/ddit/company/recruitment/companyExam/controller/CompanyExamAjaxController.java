@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
 import kr.or.ddit.company.recruitment.companyExam.service.CompanyExamService;
+import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.recruitment.ComExamOptionVO;
 import kr.or.ddit.vo.recruitment.ComExamQuestionsVO;
 import kr.or.ddit.vo.recruitment.CompanyExamVO;
@@ -28,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/ajax/company/companyExam")
 public class CompanyExamAjaxController {
 	private final CompanyExamService companyExamService;
+	private final ErrorsUtils errorsUtils;
 	
 
 	
@@ -61,26 +67,39 @@ public class CompanyExamAjaxController {
 	
 	
 	@PostMapping("/create")
-	public ResponseEntity<String> createExam(@RequestBody CompanyExamVO exam){
-		exam.setUserId(getUserId());
-		companyExamService.createCompanyExam(exam);
-		return ResponseEntity.ok("성공");
-	}
+    public ResponseEntity<?> createExam(
+            @Valid @RequestBody CompanyExamVO exam,
+            BindingResult br
+    ) {
+        if (br.hasErrors()) {
+            MultiValueMap<String, String> errors = errorsUtils.errorsToMap(br);
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        exam.setUserId(getUserId());
+        companyExamService.createCompanyExam(exam);
+        return ResponseEntity.ok("등록 성공");
+    }
 	
-	@PutMapping("/edit/{examNo}")
-	public ResponseEntity<String> editExam(@PathVariable String examNo,  @RequestBody CompanyExamVO exam){
-		exam.setComExamNo(examNo);
-		boolean success = companyExamService.editCompanyExamInfo(exam);
-		
-		if(success) {
-			return ResponseEntity.ok("수정 성공 ");
-			
-		}else {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("존재하지 않는 시험입니다.");
-		}
-		
-	}
+	 @PutMapping("/edit/{examNo}")
+	    public ResponseEntity<?> editExam(
+	            @PathVariable String examNo,
+	            @Valid @RequestBody CompanyExamVO exam,
+	            BindingResult br
+	    ) {
+	        if (br.hasErrors()) {
+	            MultiValueMap<String, String> errors = errorsUtils.errorsToMap(br);
+	            return ResponseEntity.badRequest().body(errors);
+	        }
+
+	        exam.setComExamNo(examNo);
+	        boolean success = companyExamService.editCompanyExamInfo(exam);
+	        if (!success) {
+	            return ResponseEntity.notFound().build();
+	        }
+
+	        return ResponseEntity.ok("수정 성공");
+	    }
 	
 	
 	
