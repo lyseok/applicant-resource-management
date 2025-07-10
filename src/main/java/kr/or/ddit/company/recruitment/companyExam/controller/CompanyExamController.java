@@ -30,7 +30,7 @@ public class CompanyExamController {
 	
 	@GetMapping("/form")
 	public String makeExam() {
-		return "company/recruitment/companyExam/companyExamForm2";
+		return "company/recruitment/companyExam/companyExamForm";
 	}
 	
 	@GetMapping("/detail/{examNo}")
@@ -42,7 +42,7 @@ public class CompanyExamController {
 	@GetMapping("/edit/{examNo}")
 	public String examEdit(@PathVariable("examNo") String examNo, Model model) {
 		model.addAttribute("examNo", examNo);
-		return "company/recruitment/companyExam/companyExamForm2";
+		return "company/recruitment/companyExam/companyExamForm";
 	}
 	
 	
