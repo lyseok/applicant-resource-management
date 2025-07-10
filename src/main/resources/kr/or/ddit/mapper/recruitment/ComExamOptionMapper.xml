@@ -20,6 +20,14 @@
 	WHERE COM_OPTION_NO = #{comOptionNo}
 	</select>
 	
+	
+	<select id="selectByQuestionNo" resultType="ComExamOptionVO">
+	  SELECT COM_OPTION_NO, COM_QUESTIONS_NO, COM_OPTION_CONTENT, COM_OPTION_CORRECT_YN
+	    FROM COM_EXAM_OPTION
+	   WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
+	     AND COM_OPTION_DEL_DATE IS NULL
+	</select>
+	
 	<insert id="insertComExamOption">
 	<selectKey resultType="string" keyProperty="comOptionNo" order="BEFORE">
     SELECT
@@ -49,6 +57,18 @@
 	
 	<delete id="deleteComExamOption">
 	DELETE FROM COM_EXAM_OPTION 
-	WHERE COM_OPTION_NO = #{comOptionNo}
+		WHERE COM_OPTION_NO = #{comOptionNo}
 	</delete>
+	
+	<update id="updateDeleteDateComExamOption" parameterType="string">
+	  UPDATE COM_EXAM_OPTION
+	     SET COM_OPTION_DEL_DATE = SYSDATE
+	   WHERE COM_OPTION_NO      = #{comOptionNo}
+	</update>
+
+	<update id="updateDeleteDateByQuestionNo" parameterType="string">
+	  UPDATE COM_EXAM_OPTION
+	     SET COM_OPTION_DEL_DATE = SYSDATE
+	   WHERE COM_QUESTIONS_NO   = #{comQuestionsNo}
+	</update>
 </mapper>

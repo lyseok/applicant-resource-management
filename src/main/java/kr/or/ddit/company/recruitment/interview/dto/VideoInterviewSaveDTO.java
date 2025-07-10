@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import kr.or.ddit.vo.recruitment.ApplicantRecordVO;
 import lombok.Data;
 
 @Data
@@ -25,4 +26,6 @@ public class VideoInterviewSaveDTO {
     
     @Valid
     private List<ApplicantTimeDTO> applicantTimes; // 지원자별 시간 리스트
+    
+    private List<ApplicantRecordVO> applicantRecordList;
 }
