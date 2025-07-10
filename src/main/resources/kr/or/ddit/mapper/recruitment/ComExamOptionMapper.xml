@@ -20,6 +20,14 @@
 	WHERE COM_OPTION_NO = #{comOptionNo}
 	</select>
 	
+	
+	<select id="selectByQuestionNo" resultType="ComExamOptionVO">
+	  SELECT COM_OPTION_NO, COM_QUESTIONS_NO, COM_OPTION_CONTENT, COM_OPTION_CORRECT_YN
+	    FROM COM_EXAM_OPTION
+	   WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
+	     AND COM_OPTION_DEL_DATE IS NULL
+	</select>
+	
 	<insert id="insertComExamOption">
 	<selectKey resultType="string" keyProperty="comOptionNo" order="BEFORE">
     SELECT

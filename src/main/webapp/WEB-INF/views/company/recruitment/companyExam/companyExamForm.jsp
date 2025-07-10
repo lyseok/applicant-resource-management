@@ -112,11 +112,29 @@
       text-align: center;
       margin-top: 32px;
     }
+    
+    
+    .delete-question-btn,
+	.delete-opt-btn {
+  background: transparent;
+  border: none;
+  color: #e53e3e;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.5rem;
+}
+
+/* hover 시 색 조금 진하게 */
+.delete-question-btn:hover,
+.delete-opt-btn:hover {
+  color: #c53030;
+}
   </style>
 
 </head>
-<body data-exam-id="${examNo}" >
-	<div class="container">
+<body>
+	<div  id="container" class="container" data-exam-id="${examNo}" >
 		    <h1> ${empty examNo ? '시험 생성' : '시험 수정'} </h1>
 		    <div class="card">
 		      <label>

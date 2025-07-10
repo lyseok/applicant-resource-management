@@ -13,4 +13,7 @@ public interface ComExamQuestionsMapper {
 	public int insertComExamQuest(ComExamQuestionsVO vo);
 	public int updateComExamQuest(ComExamQuestionsVO vo);
 	public int deleteComExamQuest(String comQuestionsNo);
+	
+	
+	public List<ComExamQuestionsVO> selectByExamNo(String examNo);
 }
