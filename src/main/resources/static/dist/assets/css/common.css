@@ -1,6 +1,7 @@
 
 /* 폰트사이즈 */
 .fs-14{font-size:14px !important;}
+.fs-16{font-size:14px !important;}
 
 /* padding */
 .p-6{padding:6rem !important;}
@@ -52,8 +53,12 @@
 
 /* 최소높이 - min-height */
 .min-ht300{min-height:300px !important; }
+.min-ht400{min-height:400px !important; }
+.min-ht500{min-height:500px !important; }
 
 /* line-height */
+.lh_normal{line-height:normal !important;}
+.lh1{line-height:1 !important;}
 .lh40{line-height:40px !important;}
 .lh50{line-height:50px !important;}
 

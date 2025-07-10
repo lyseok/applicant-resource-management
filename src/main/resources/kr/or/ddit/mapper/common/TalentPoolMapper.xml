@@ -2,6 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.TalentPoolMapper">
 
+
+	<select id="selectSearchSkillAndLicense"
+		resultMap="resumeResultMap" parameterType="map">
+		SELECT
+		A.RESUME_NO,
+		A.USER_NAME,
+		A.USER_ID,
+		A.EMAIL,
+		A.ADDRESS,
+		B.JOB_CODE,
+		B.START_WORK_DATE,
+		B.RETIRE_DATE,
+		B.RESPONSIBILITY,
+		B.CAREER_YEAR,
+		B.SALARY,
+		B.LOCATION,
+		C.MY_SKILL_NAME,
+		L.MY_LICENSE
+		FROM RESUME A
+		LEFT JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO
+		LEFT JOIN MY_SKILL C ON A.RESUME_NO = C.RESUME_NO
+		LEFT JOIN MY_LICENSE L ON A.RESUME_NO = L.RESUME_NO
+		<where>
+			<if test="skillName != null and skillName != ''">
+				AND C.MY_SKILL_NAME LIKE '%' || #{skillName} || '%'
+			</if>
+			<if test="keywordlicense != null and keywordlicense != ''">
+				AND L.MY_LICENSE LIKE '%' || #{license} || '%'
+			</if>
+		</where>
+		ORDER BY A.USER_NAME
+	</select>
+
+	<!-- <select id="selectSearchSkill" resultMap="resumeResultMap"> SELECT 
+		A.RESUME_NO, A.USER_NAME, A.USER_ID, A.EMAIL, A.ADDRESS, B.JOB_CODE, B.START_WORK_DATE, 
+		B.RETIRE_DATE, B.RESPONSIBILITY, B.CAREER_YEAR, B.SALARY, B.LOCATION, C.MY_SKILL_NAME 
+		FROM RESUME A LEFT JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO LEFT JOIN MY_SKILL 
+		C ON A.RESUME_NO = C.RESUME_NO WHERE c.MY_SKILL_NAME LIKE '%' || #{skillName} 
+		|| '%' ORDER BY A.USER_NAME </select> -->
+
 	<resultMap id="resumefilterResultMap"
 		type="kr.or.ddit.vo.resume.ResumeVO">
 		<id property="resumeNo" column="RESUME_NO" />
@@ -27,13 +67,12 @@
 			<result property="graduateYn" column="GRADUATE_YN" />
 		</collection>
 
-
-
 	</resultMap>
 
 	<!-- 2. select 문 분리 -->
-	<select id="selectTalentPoolListByFilter" resultMap="resumeResultMap">
-	SELECT
+	<select id="selectTalentPoolListByFilter"
+		resultMap="resumeResultMap">
+		SELECT
 		R.RESUME_NO,
 		R.USER_ID,
 		R.USER_NAME,
@@ -48,46 +87,49 @@
 		C.SALARY,
 		E.HIGHEST_EDUCATION_CODE,
 		E.GRADUATE_YN
-	FROM RESUME R
-	LEFT JOIN CAREER C ON R.RESUME_NO = C.RESUME_NO
-	LEFT JOIN JOB J ON C.JOB_CODE = J.JOB_CODE
-	LEFT JOIN TOP_JOB TJ ON J.TOP_JOB_CODE = TJ.TOP_JOB_CODE
-	LEFT JOIN EDUCATION E ON R.RESUME_NO = E.RESUME_NO
-	<where>
-		R.RESUME_MAIN_YN = 'Y'
+		FROM
+		RESUME R
+		LEFT JOIN CAREER C ON R.RESUME_NO = C.RESUME_NO
+		LEFT JOIN JOB J
+		ON C.JOB_CODE = J.JOB_CODE
+		LEFT JOIN TOP_JOB TJ ON J.TOP_JOB_CODE =
+		TJ.TOP_JOB_CODE
+		LEFT JOIN EDUCATION E ON R.RESUME_NO = E.RESUME_NO
+		<where>
+			R.RESUME_MAIN_YN = 'Y'
 
-		<!-- 경력 필터 -->
-		<if test="careerlong != null and careerlong != ''">
-			AND C.CAREER_YEAR &gt;= #{careerlong}
-		</if>
+			<!-- 경력 필터 -->
+			<if test="careerlong != null and careerlong != ''">
+				AND C.CAREER_YEAR &gt;= #{careerlong}
+			</if>
 
-		<!-- 지역 필터 -->
-		<if test="location != null and location != ''">
-			AND R.ADDRESS LIKE '%' || #{location} || '%'
-		</if>
+			<!-- 지역 필터 -->
+			<if test="location != null and location != ''">
+				AND R.ADDRESS LIKE '%' || #{location} || '%'
+			</if>
 
-		<!-- 최종학력 필터 -->
-		<if test="edudone != null and edudone != ''">
-			AND E.HIGHEST_EDUCATION_CODE = #{edudone}
-		</if>
+			<!-- 최종학력 필터 -->
+			<if test="edudone != null and edudone != ''">
+				AND E.HIGHEST_EDUCATION_CODE = #{edudone}
+			</if>
 
-		<!-- 졸업여부 필터 -->
-		<if test="gedu != null and gedu != ''">
-			AND E.GRADUATE_YN = #{gedu}
-		</if>
+			<!-- 졸업여부 필터 -->
+			<if test="gedu != null and gedu != ''">
+				AND E.GRADUATE_YN = #{gedu}
+			</if>
 
-		<!-- 직군 필터 -->
-		<if test="topJob != null and topJob != ''">
-			AND TJ.TOP_JOB_NAME = #{topJob}
-		</if>
+			<!-- 직군 필터 -->
+			<if test="topJob != null and topJob != ''">
+				AND TJ.TOP_JOB_NAME = #{topJob}
+			</if>
 
-		<!-- 직무 필터 -->
-		<if test="job != null and job != ''">
-			AND J.JOB_CODE = #{job}
-		</if>
-	</where>
-	ORDER BY R.UPDATE_DATE DESC
-</select>
+			<!-- 직무 필터 -->
+			<if test="job != null and job != ''">
+				AND J.JOB_CODE = #{job}
+			</if>
+		</where>
+		ORDER BY R.UPDATE_DATE DESC
+	</select>
 
 
 	<!-- 필터용 xml -->
@@ -156,7 +198,15 @@
 			ofType="kr.or.ddit.vo.resume.MySkillVO">
 			<result property="mySkillName" column="MY_SKILL_NAME" />
 		</collection>
+
+		<collection property="joblist"
+			ofType="kr.or.ddit.vo.common.JobVO">
+			<result property="jobCode" column="JOB_CODE" />
+			<result property="topJobCode" column="TOP_JOB_CODE" />
+			<result property="jobName" column="JOB_NAME" />
+		</collection>
 	</resultMap>
+
 
 
 	<select id="selectTalentPoolList" resultMap="resumeResultMap">
@@ -173,15 +223,17 @@
 		B.CAREER_YEAR,
 		B.SALARY,
 		B.LOCATION,
-		C.MY_SKILL_NAME
+		C.MY_SKILL_NAME,
+		D.JOB_CODE AS JOB_CODE,
+		D.TOP_JOB_CODE,
+		D.JOB_NAME
 		FROM RESUME A
-		LEFT JOIN CAREER B ON A.RESUME_NO =
-		B.RESUME_NO
+		LEFT JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO
 		LEFT JOIN MY_SKILL C ON A.RESUME_NO = C.RESUME_NO
-		ORDER BY
-		A.USER_NAME
-
+		LEFT JOIN JOB D ON B.JOB_CODE = D.JOB_CODE
+		ORDER BY A.USER_NAME
 	</select>
+
 
 	<!-- <select id="selectResumeDetail" resultType="ResumeVO"> -->
 	<!-- SELECT -->
