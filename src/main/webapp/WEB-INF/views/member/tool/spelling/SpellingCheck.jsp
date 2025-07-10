@@ -4,9 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>맞춤법검사페이지</title>
 </head>
-<body>
+<h2>문장을 입력하세요</h2>
+
+    <textarea name="sentence" rows="5" cols="60"></textarea><br/>
 
 </body>
 </html>

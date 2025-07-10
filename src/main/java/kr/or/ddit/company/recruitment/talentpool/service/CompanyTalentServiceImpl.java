@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.common.TalentPoolMapper;
 import kr.or.ddit.vo.common.CityCodeVO;
 import kr.or.ddit.vo.common.JobVO;
@@ -15,12 +16,15 @@ import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.EducationVO;
 import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CompanyTalentServiceImpl implements CompanyTalentService {
 
-	@Autowired
-	TalentPoolMapper TPMapper;
+	private final TalentPoolMapper TPMapper;
+	private final CodeMapProvider codeMapProvier;
+	
 	
 	@Override
 	public int insertMember(MemberVO member) {
@@ -54,8 +58,12 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 
 	@Override
 	public List<ResumeVO> selectTalentPoolList() {
-		// TODO Auto-generated method stub
-		return TPMapper.selectTalentPoolList();
+		List<ResumeVO> resumeList = TPMapper.selectTalentPoolList();
+		for(ResumeVO rvo : resumeList) {
+			setCodeName(rvo);
+		}
+		
+		return resumeList;
 	}
 
 	@Override
@@ -94,27 +102,25 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 	}
 
 	@Override
-	public List<MySkillVO> selectSearchSkill(String skillName) {
+	public List<ResumeVO> selectSearchSkillAndLicense(Map<String, String> paramMap) {
 		// TODO Auto-generated method stub
-		return TPMapper.selectSearchSkill(skillName);
+		return TPMapper.selectSearchSkillAndLicense(paramMap);
 	}
 
-	/*
-	 * @Override public CityCodeVO selectedlocation() { // TODO Auto-generated
-	 * method stub return TPMapper.selectedlocation(); }
-	 * 
-	 * @Override public EducationVO selectededucation() { // TODO Auto-generated
-	 * method stub return TPMapper.selectededucation(); }
-	 * 
-	 * @Override public TopJobVO selectedTopJob() { // TODO Auto-generated method
-	 * stub return TPMapper.selectedTopJob(); }
-	 */
-//	@Override
-//	public List<MySkillVO> selectMySkill() {
-//		// TODO Auto-generated method stub
-//		return TPMapper.selectSkillList();
-//	}
-	
-	
 
+	private void setCodeName(ResumeVO rvo) {
+		List<CareerVO> careerList = rvo.getCareerList();
+		for(CareerVO career : careerList) {
+			String cmnCode = codeMapProvier.getCodeName(career.getCareerYear());
+			career.setCareerYearName(cmnCode);
+		}	
+		
+		List<JobVO> joblist = rvo.getJoblist();
+		for(JobVO job : joblist) {
+			String cmnjCode = codeMapProvier.getJobName(job.getJobCode());
+			job.setJobName(cmnjCode);
+		}
+
+	
+	}
 }

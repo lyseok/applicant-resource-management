@@ -38,11 +38,8 @@ public class CompanyTalentPoolController {
 		List<JobVO> jobList = CTservice.selectJob();
 		List<CityCodeVO> cityList = CTservice.selectlocation();
 		List<EducationVO> eduList = CTservice.selecteducation();
+		System.out.println("출력값 : " + talentpoolList);
 		log.info("list 를 했을때 로그 : {}", talentpoolList);
-		log.info(" tjobList : {}", tjobList);
-		log.info(" jobList : {}", jobList);
-		log.info(" cityList : {}", cityList);
-		log.info(" eduList : {}", eduList);
 		model.addAttribute("talentpoolList", talentpoolList);
 		model.addAttribute("tjobList", tjobList);
 		model.addAttribute("jobList", jobList);
@@ -71,24 +68,26 @@ public class CompanyTalentPoolController {
 
 	@PostMapping("/filter")
 	public String filterTalentPool(@RequestParam Map<String, Object> param, Model model) {
-	    List<ResumeVO> list = CTservice.selectTalentPoolListByFilter(param);
-	    model.addAttribute("talentpoolList", list);
-	    return "company/recruitment/talentpool/TalentpoolListFragment";  // <- JSP 조각 반환
+	    List<ResumeVO> talentpoolList = CTservice.selectTalentPoolListByFilter(param);
+	    model.addAttribute("talentpoolList", talentpoolList);
+	    return "company/recruitment/talentpool/TalentpoolListFragment"; 
 	}
 	
 	@PostMapping("/higtSearch")
 	public String higtSearch(@RequestParam(required = false)
-								String keywordlicense,
+								String license,
 							@RequestParam(required = false)
 								String skillName,
 								Model model) {
-		List<MySkillVO> skillList = CTservice.selectSearchSkill(skillName);
-		log.info("테스트 로고 : {} ",skillList);
-		model.addAttribute("keywordlicense", keywordlicense);
-		model.addAttribute("keywordSkillName", skillName);
-		return "company/recruitment/talentpool/TalentpoolListFragment";
-	
-	}
+		 Map<String, String> paramMap = new HashMap<>();
+		    paramMap.put("skillName", skillName);
+		    paramMap.put("keywordlicense", license);
+
+		    List<ResumeVO> talentpoolList = CTservice.selectSearchSkillAndLicense(paramMap);
+
+		    model.addAttribute("talentpoolList", talentpoolList);
+		    return "company/recruitment/talentpool/TalentpoolListFragment";
+		}
 	 
 	
 	
