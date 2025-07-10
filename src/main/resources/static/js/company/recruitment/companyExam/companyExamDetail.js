@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const examNo = examDiv.dataset.examId;
 	const examQuestion = document.querySelector('.exam-question')
 	//const examEdit = document.getElementById('exam-edit-btn')
+	const exitBtnEl = document.getElementById('exitBtn');
 
 	console.log("체크", examNo);
 
@@ -42,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		window.location.href = `/company/companyExam/edit/${examNo}`;
 	})
 
+
+	exitBtnEl.addEventListener('click', () =>{
+		location.href = '/company/companyExam'
+	})
 
 
 })

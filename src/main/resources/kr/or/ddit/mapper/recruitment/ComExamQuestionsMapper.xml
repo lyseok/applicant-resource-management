@@ -18,6 +18,13 @@
 	WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
 	</select>
 	
+	<select id="selectByQuestionExamNo" resultType="ComExamQuestionsVO">
+	  SELECT COM_QUESTIONS_NO, COM_EXAM_NO, COM_EXAM_CONTENTS
+	    FROM COM_EXAM_QUESTIONS
+	   WHERE COM_EXAM_NO = #{examNo}
+	     AND COM_EXAM_QUEST_DEL_DATE IS NULL
+	</select>
+	
 	<insert id="insertComExamQuest">
 	<selectKey resultType="string" keyProperty="comQuestionsNo" order="BEFORE">
     SELECT
@@ -46,6 +53,12 @@
 	DELETE FROM COM_EXAM_QUESTIONS 
 	WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
 	</delete>
+	
+	<update id="updateDeleteDateComExamQuestion" parameterType="string">
+	  UPDATE COM_EXAM_QUESTIONS
+	     SET COM_EXAM_QUEST_DEL_DATE = SYSDATE
+	   WHERE COM_QUESTIONS_NO       = #{comQuestionsNo}
+	</update>
 	
 	
 </mapper>

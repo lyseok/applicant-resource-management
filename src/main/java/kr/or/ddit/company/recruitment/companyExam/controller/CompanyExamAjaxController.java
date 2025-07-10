@@ -2,6 +2,7 @@ package kr.or.ddit.company.recruitment.companyExam.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,15 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyExamAjaxController {
 	private final CompanyExamService companyExamService;
 	
-	@PostMapping("/exam")
-	public ResponseEntity<String> createExam(@RequestBody CompanyExamVO exam) {
-		log.info("exam : {}", exam);
-		exam.setUserId(getUserId());
-		//exam.setUserId("testCompany");
-		companyExamService.createCompanyExam(exam);
-		return ResponseEntity.ok("등록 성공");
-		
-	}
 
 	
 	@GetMapping("/list")
@@ -67,11 +60,26 @@ public class CompanyExamAjaxController {
 	}
 	
 	
-	@PostMapping("/full")
-	public ResponseEntity<String> createFullExam(@RequestBody CompanyExamVO exam){
+	@PostMapping("/create")
+	public ResponseEntity<String> createExam(@RequestBody CompanyExamVO exam){
 		exam.setUserId(getUserId());
 		companyExamService.createCompanyExam(exam);
 		return ResponseEntity.ok("성공");
+	}
+	
+	@PutMapping("/edit/{examNo}")
+	public ResponseEntity<String> editExam(@PathVariable String examNo,  @RequestBody CompanyExamVO exam){
+		exam.setComExamNo(examNo);
+		boolean success = companyExamService.editCompanyExamInfo(exam);
+		
+		if(success) {
+			return ResponseEntity.ok("수정 성공 ");
+			
+		}else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("존재하지 않는 시험입니다.");
+		}
+		
 	}
 	
 	
