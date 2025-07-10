@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/member/adminBoard")
+@RequestMapping("/ajax/member/community/adminBoard")
 @RequiredArgsConstructor
 public class MemberAdminBoardAjaxController {
 	

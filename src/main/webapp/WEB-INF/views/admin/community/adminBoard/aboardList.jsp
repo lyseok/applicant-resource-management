@@ -5,7 +5,7 @@
 
 <head>
 <title>띹잡 고객센터 | 게시글 목록</title>
-<%-- 	<script src="/js/admin/community/aboardList.js"></script> --%>
+<%-- 	<script src="/js/admin/community/adminBoard/aboardList.js"></script> --%>
 <style>
 
 </style>
