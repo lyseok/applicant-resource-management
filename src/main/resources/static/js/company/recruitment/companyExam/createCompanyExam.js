@@ -1,4 +1,4 @@
-// createCompanyExam2.js
+//json 형식으로 바꿔주는 함수 
 function formToJson(form) {
   const data = new FormData(form);
   const json = {};
@@ -21,6 +21,7 @@ function formToJson(form) {
   return json;
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
   const containerEl    = document.getElementById('container');
   const formEl         = document.getElementById('examForm');
@@ -31,10 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let questionCount = 0;
 
-  // --- 문제 카드 추가 ---
+  //문제추가
   function addQuestionBlock(idx, data) {
     const div = document.createElement('div');
-    div.className = 'card p-3 mb-3 question-card';
+    div.className = 'card question-card';
     div.dataset.idx = idx;
     if (data?.comQuestionsNo) div.dataset.qNo = data.comQuestionsNo;
 
@@ -44,29 +45,53 @@ document.addEventListener('DOMContentLoaded', () => {
         <button type="button" class="btn-close remove-question"></button>
       </div>
       <div class="mb-2">
+	     ${ data?.comQuestionsNo
+	        ? `<input type="hidden"
+	                  name="questionList[${idx}].comQuestionsNo"
+	                  value="${data.comQuestionsNo}">`
+	       : '' }
+		  ${data?.comExamQuestDelDate !== undefined
+		     ? `<input type="hidden"
+		               name="questionList[${idx}].comExamQuestDelDate"
+		               value="">`
+		     : `<input type="hidden"
+		               name="questionList[${idx}].comExamQuestDelDate"
+		               value="">`}
         <textarea class="form-control"
                   id="questionList[${idx}].comExamContents"
                   name="questionList[${idx}].comExamContents"
                   rows="2"
                   placeholder="문제 내용을 입력">${data?.comExamContents||''}</textarea>
-        <span id="error-question-${idx}" class="text-danger small"></span>
+      
       </div>
       <div id="optList${idx}" class="mb-2"></div>
+	 
       <button type="button"
               class="btn btn-sm btn-outline-secondary mb-2 add-opt-btn"
               data-qidx="${idx}">
         + 보기 추가
       </button>
+	 
     `;
     document.getElementById('questionContainer').append(div);
 
     // 삭제 버튼: 카드 제거 후 인덱스 재정렬
-    div.querySelector('.remove-question').addEventListener('click', () => {
-      div.remove();
-      reindexQuestions();
-    });
+	 div.querySelector('.remove-question').addEventListener('click', () => {
+	   const delInput = div.querySelector(
+	     `input[name="questionList[${idx}].comExamQuestDelDate"]`
+	   );
+	   if (delInput) {
+	     delInput.value = new Date().toISOString();
+	   }
+	   
+	   div.style.display = 'none';
+	   reindexQuestions();
+	 });
+	
+	
+	
 
-    // 기존 보기가 있으면 렌더
+    // 기존 보기가 있으면 보여줌 
     if (data?.optionList) {
       data.optionList.forEach((opt, optIdx) => {
         appendOption(
@@ -91,7 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('보기는 최대 5개까지 가능합니다.');
         return;
       }
-      const newIdx = optListEl.querySelectorAll('.option-row').length;
+      //const newIdx = optListEl.querySelectorAll('.option-row').length;
+	  const newIdx = visibleCount;
       appendOption(idx, newIdx, '', false, null);
     });
   }
@@ -101,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const row = document.createElement('div');
     row.className = 'input-group mb-1 option-row';
 
-    // 기존 옵션이면 hidden inputs 로 comOptionNo, comOptionDelDate 관리
+    
     const hiddenNo = comOptionNo
       ? `<input type="hidden"
                 name="questionList[${qIdx}].optionList[${optIdx}].comOptionNo"
@@ -141,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const optListEl = document.getElementById(`optList${qIdx}`);
     optListEl.append(row);
 
-    // 삭제 버튼: 논리 삭제 표시 + 화면 숨김
+    
     row.querySelector('.remove-opt').addEventListener('click', () => {
       const delInput = row.querySelector(
         `input[name="questionList[${qIdx}].optionList[${optIdx}].comOptionDelDate"]`
@@ -185,45 +211,62 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 서버 Validation Error 표시 함수 ---
   function showFieldErrors(errors) {
-    console.log('>> 서버 검증 에러:', errors);
     Object.entries(errors).forEach(([field, messages]) => {
-      // 1) 보기 수(@Size) 에러
+      // 1) 보기 개수(@Size) 에러: optList 컨테이너 아래
       if (/^questionList\[\d+\]\.optionList(\.size)?$/.test(field)) {
         const idx = field.match(/^questionList\[(\d+)\]/)[1];
-        const errEl = document.getElementById(`error-question-${idx}`);
-        if (errEl) errEl.textContent = messages.join(', ');
+        const optList = document.getElementById(`optList${idx}`);
+        // 기존 에러 메시지 제거
+        const next = optList.nextElementSibling;
+        if (next && next.classList.contains('text-danger')) next.remove();
+        // 새 span 생성·삽입
+        const span = document.createElement('span');
+        span.className = 'text-danger small d-block';
+        span.textContent = messages.join(', ');
+        optList.insertAdjacentElement('afterend', span);
         return;
       }
-      // 2) 보기 내용(NotBlank) 에러
+
+      // 2) 보기 내용(NotBlank) 에러: input 바로 아래
       const optMatch = field.match(
         /^questionList\[(\d+)\]\.optionList\[(\d+)\]\.comOptionContent$/
       );
       if (optMatch) {
-        const [, qIdx, oIdx] = optMatch;
+        const [ , qIdx, oIdx ] = optMatch;
         const input = formEl.querySelector(
           `input[name="questionList[${qIdx}].optionList[${oIdx}].comOptionContent"]`
         );
-        if (input) {
-          const ex = input.parentElement.querySelector('.text-danger');
-          if (ex) ex.remove();
-          const span = document.createElement('span');
-          span.className = 'text-danger small d-block';
-          span.textContent = messages.join(', ');
-          input.insertAdjacentElement('afterend', span);
-        }
+        if (!input) return;
+        // 기존 span 제거
+        const nxt = input.nextElementSibling;
+        if (nxt && nxt.classList.contains('text-danger')) nxt.remove();
+        // 새 span 생성·삽입
+        const span = document.createElement('span');
+        span.className = 'text-danger small d-block';
+        span.textContent = messages.join(', ');
+        input.insertAdjacentElement('afterend', span);
         return;
       }
-      // 3) 문제 내용(NotBlank) 에러
+
+      // 3) 문제 내용(NotBlank) 에러: textarea 바로 아래
       const qMatch = field.match(/^questionList\[(\d+)\]\.comExamContents$/);
       if (qMatch) {
         const idx = qMatch[1];
-        const errEl = document.getElementById(`error-question-${idx}`);
-        if (errEl) errEl.textContent = messages.join(', ');
+        const ta = document.getElementById(`questionList[${idx}].comExamContents`);
+        if (!ta) return;
+        // 기존 span 제거
+        const nxt = ta.nextElementSibling;
+        if (nxt && nxt.classList.contains('text-danger')) nxt.remove();
+        // 새 span 생성·삽입
+        const span = document.createElement('span');
+        span.className = 'text-danger small d-block';
+        span.textContent = messages.join(', ');
+        ta.insertAdjacentElement('afterend', span);
         return;
       }
-      // 4) 기타 일반 폼 필드 에러
+
+      // 4) 기타 일반 필드 에러
       const el = formEl.querySelector(`[name="${field}"]`);
       if (el) {
         const nxt = el.nextElementSibling;
@@ -236,6 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  
+  
+  
   // --- 초기 로드 & 문제 추가 핸들러 ---
   if (existingExamNo) {
     axios.get(`/ajax/company/companyExam/detail/${existingExamNo}`)
@@ -259,14 +305,16 @@ document.addEventListener('DOMContentLoaded', () => {
     reindexQuestions();
   });
 
-  // --- 제출 핸들러 ---
+
   submitBtn.addEventListener('click', () => {
     const data   = formToJson(formEl);
     const method = existingExamNo ? 'put' : 'post';
     const url    = existingExamNo
                  ? `/ajax/company/companyExam/edit/${existingExamNo}`
                  : '/ajax/company/companyExam/create';
-
+	
+				 
+	showLoading()
     axios[method](url, data)
       .then(() => {
         alert(existingExamNo ? '수정 완료' : '등록 완료');
@@ -279,10 +327,25 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error(err);
           alert('서버 오류가 발생했습니다.');
         }
-      });
+      })
+	  .finally(() => {
+	    hideLoading();
+	  });
   });
 
   exitBtn.addEventListener('click', () => {
     location.href = '/company/companyExam';
   });
+  
+  
+  
+  
+  
+  // 로딩 show/hide 함수
+  function showLoading() {
+    document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
+  }
+  function hideLoading() {
+    document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
+  }
 });

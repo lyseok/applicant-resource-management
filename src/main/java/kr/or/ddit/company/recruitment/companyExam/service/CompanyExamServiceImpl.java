@@ -37,16 +37,23 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 		companyExamMapper.insertCompanyExam(companyExam);
 		String examNo = companyExam.getComExamNo();
 		
-		for (ComExamQuestionsVO q: companyExam.getQuestionList()) {
-			q.setComExamNo(examNo);
-			comExamQuestionsMapper.insertComExamQuest(q);
-			String questionNo = q.getComQuestionsNo();
-			
-			for (ComExamOptionVO o : q.getOptionList()) {
-				o.setComQuestionsNo(questionNo);
-				comExamOptionMapper.insertComExamOption(o);
-			}
-		}
+		
+		
+		 if (companyExam.getQuestionList() != null) {
+	            for (ComExamQuestionsVO q : companyExam.getQuestionList()) {
+	                q.setComExamNo(examNo);
+	                comExamQuestionsMapper.insertComExamQuest(q);
+	                String questionNo = q.getComQuestionsNo();
+
+	                // 3) 옵션들 삽입 (optionList 가 null 이면 건너뜀)
+	                if (q.getOptionList() != null) {
+	                    for (ComExamOptionVO o : q.getOptionList()) {
+	                        o.setComQuestionsNo(questionNo);
+	                        comExamOptionMapper.insertComExamOption(o);
+	                    }
+	                }
+	            }
+	        }
 	}
 
 
@@ -94,20 +101,21 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 			
 			
 			List<ComExamOptionVO> existingOptions = comExamOptionMapper.selectByQuestionNo(questionNo);
-		
-		
-			
 			Set<String> incomingONo = new HashSet<>();
 			
 			for(ComExamOptionVO o : q.getOptionList()) {
 				o.setComQuestionsNo(questionNo);
 				
-				if(o.getComOptionNo() == null) {
-					comExamOptionMapper.insertComExamOption(o);
-				}else {
-					comExamOptionMapper.updateComExamOption(o);
-				}
-				incomingONo.add(o.getComOptionNo());				
+				 if (o.getComOptionDelDate() != null && !o.getComOptionDelDate().isEmpty()) {           
+	                    comExamOptionMapper.updateDeleteDateComExamOption(o.getComOptionNo());
+	                }
+	                else if (o.getComOptionNo() == null) {   
+	                    comExamOptionMapper.insertComExamOption(o);
+	                }
+	                else {
+	                    comExamOptionMapper.updateComExamOption(o);
+	                }
+	                incomingONo.add(o.getComOptionNo());			
 			}
 			
 			
@@ -118,15 +126,16 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 			}
 			
 			
-			for(ComExamQuestionsVO existQ : existingQuestions ) {
-				if(!incomingQNo.contains(existQ.getComQuestionsNo())){
-					comExamOptionMapper.updateDeleteDateByQuestionNo(existQ.getComQuestionsNo());
-					comExamQuestionsMapper.updateDeleteDateComExamQuestion(existQ.getComQuestionsNo());
-				}
-			}
-			
 			
 		}
+		
+		for(ComExamQuestionsVO existQ : existingQuestions ) {
+			if(!incomingQNo.contains(existQ.getComQuestionsNo())){
+				comExamOptionMapper.updateDeleteDateByQuestionNo(existQ.getComQuestionsNo());
+				comExamQuestionsMapper.updateDeleteDateComExamQuestion(existQ.getComQuestionsNo());
+			}
+		}
+		
 		return true;
 	}
 

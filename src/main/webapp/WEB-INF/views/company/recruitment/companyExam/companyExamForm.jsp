@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>회사 시험 ${empty examNo ? '등록' : '수정'}</title>
-  <script defer src="/js/company/recruitment/companyExam/createCompanyExam2.js"></script>
+  <script defer src="/js/company/recruitment/companyExam/createCompanyExam.js"></script>
 </head>
 <body>
   <div class="container py-4" id="container" data-exam-id="${examNo}">
@@ -14,7 +14,7 @@
       ${empty examNo ? '시험 생성' : '시험 수정'}
     </h1>
     <form id="examForm">
-      <!-- 시험명 -->
+      
       <div class="mb-3">
         <label for="comExamName" class="form-label">시험명</label>
         <input type="text"
@@ -22,10 +22,9 @@
                id="comExamName"
                name="comExamName"
                placeholder="시험명을 입력하세요"/>
-        <!-- 에러 메시지 삽입 위치 -->
+      
       </div>
 
-      <!-- 문제 컨테이너 (JS가 동적으로 <div.question-card>를 추가) -->
       <div id="questionContainer"></div>
 
       <div class="mb-3">
