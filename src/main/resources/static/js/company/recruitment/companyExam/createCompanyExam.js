@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
- 
+  
   const containerEl         = document.getElementById('container');            
   const questionContainerEl = document.getElementById('questionContainer');   
   const addQuestionBtnEl    = document.getElementById('addQuestionBtn');    
@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const examNameInput       = document.getElementById('comExamName');         
   const existingExamNo      = containerEl.dataset.examId || null;          
   const exitBtnEl 			= document.getElementById('exitBtn'); 
+  const examEditModalEl 	= document.getElementById('examEditModal');
+  const addExamModalEl 		= document.getElementById('addExamModal');
  
   let questionCount = 0;  
 
@@ -76,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <input type="text"
              placeholder="보기 내용을 입력"
              value="${value}" />
+     
       <label>
         <input type="radio"
                name="correct${qIdx}"
@@ -131,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     const cards = document.querySelectorAll('.question-card');
     const questionList = [];
-
+   	const optionList = [];
     for (const card of cards) {
       const idx   = card.dataset.idx;
       const text  = card.querySelector('textarea').value.trim();
@@ -149,7 +152,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const optionList = [];
+	  for(let i = 0; i < opts.length; i++){
+		if(!opts[i].value.trim()){
+			errEl.textContent = `문제 ${idx + 1}의 보기 ${i + 1} 내용을 입력하세요`;
+			return;
+		}
+	  }
+	  errEl.textContent = '';
+
+ 
       let hasAnswer = false;
       opts.forEach((inp, j) => {
         const val = inp.value.trim();
@@ -166,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         errEl.textContent = `문제 ${+idx + 1} 정답을 선택하세요`;
         return;
       }
+      errEl.textContent = '';
 
       questionList.push({
         comQuestionsNo: card.dataset.qNo || null,

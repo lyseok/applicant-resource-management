@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,7 +152,18 @@
 		    </div>
 		
 		    <div class="actions">
-		      <button id="submitAllBtn" class="btn">${empty examNo ? '시험 생성' : '시험 수정'} </button>
+		       <c:choose>
+				    <c:when test="${empty examNo}">
+				      <button  id="submitAllBtn" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExamModal">
+				        시험 생성
+				      </button>
+				    </c:when>
+				    <c:otherwise>
+				      <button id="submitAllBtn" type="button"  class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#examEditModal">
+				        시험 수정
+				      </button>
+				    </c:otherwise>
+				  </c:choose>
 		      <button id="exitBtn" class="btn">목록</button>
 		    </div>
 	 </div>
