@@ -49,7 +49,7 @@
       </div>
       
       <!-- 화상면접 정보가 있을 때만 노출 -->
-      <div id="videoInterviewArea" style="display:none;" class="mb-5">
+      <div id="videoInterviewArea" style="display:none;" class="mb-5 ">
         <div class="row gy-2">
           <span class="fw-bold fs-4 text-secondary mb-1">화상면접 정보</span>
           <div class="col-md-6">
@@ -68,6 +68,10 @@
             <label class="fw-bold fs-5 text-secondary mb-1">종료 시간</label>
             <div class="fs-6" id="videoEndTime">-</div>
           </div>
+        </div>
+        <div class=" d-flex justify-content-end w-100 gap-2">
+          <button class="btn btn_gray_line" id="joinVideoInterviewBtn" data-bs-toggle="modal" data-bs-target="#joinInterviewModal">화상면접 접속</button>
+          <button class="btn btn-primary" id="editVideoInterviewBtn">화상면접 수정</button>
         </div>
       </div>
       
@@ -121,7 +125,7 @@
 				</div>
 				<div class="modal-footer border-0 justify-content-center">
 					<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary px-4" id="edit-interview-confirm-btn">수정하기</button>
+					<button type="button" class="btn btn-primary px-4" id="edit-interview-confirm-btn">수정</button>
 				</div>
 			</div>
 		</div>
@@ -149,35 +153,35 @@
 				</div>
 				<div class="modal-footer border-0 justify-content-center">
 					<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-danger px-4">삭제하기</button>
+					<button type="button" class="btn btn-danger px-4">삭제</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-  <!-- 추가 확인 모달 -->
-<div class="modal fade" id="addInterviewModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+  <!-- 화상채팅 접속 확인 모달 -->
+<div class="modal fade" id="joinInterviewModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0">
                 <h1 class="modal-title fs-5 fw-bold text-success" id="addModalLabel">
-                    <i class="bi bi-plus-circle-fill me-1"></i> 면접 정보 추가
+                    <i class="bi bi-plus-circle-fill me-1"></i> 화상 면접 접속
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center py-4">
                 <div style="font-size:2.4rem; color:#28a745; margin-bottom:10px;">🟢</div>
                 <p class="fs-5 mb-2 fw-semibold" style="color:#218838;">
-                    새로운 면접 정보를 <span style="color:#28a745;">추가</span>하시겠습니까?
+                    화상 면접 방에 <span style="color:#28a745;">입장</span>하시겠습니까?
                 </p>
                 <p class="text-secondary mb-0" style="font-size:1.08rem;">
-                    입력한 정보가 등록됩니다.<br>
-                    실행 전 내용을 다시 한 번 확인해 주세요.
+                    생성된 화상면접 방으로 이동합니다.<br>
+                    실행 전 정보를 확인해 주세요.
                 </p>
             </div>
             <div class="modal-footer border-0 justify-content-center">
                 <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-success px-4">추가하기</button>
+                <button type="button" class="btn btn-success px-4" id="startInterviewBtn">접속</button>
             </div>
         </div>
     </div>
