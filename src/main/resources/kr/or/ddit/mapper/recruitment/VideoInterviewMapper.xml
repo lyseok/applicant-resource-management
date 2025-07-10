@@ -2,63 +2,76 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.VideoInterviewMapper">
 	<select id="selectVideoInterviewList" resultType="VideoInterviewVO">
-	SELECT 
-		VIDEO_INTERVIEW_NO
-		, INTERVIEW_NO
-		, VIDEO_INTERVIEW_START_TIME
-		, VIDEO_INTERVIEW_END_TIME
-		, VIDEO_INTERVIEW_STATUS
-		, VIDEO_INTERVIEW_URL
-	 FROM VIDEO_INTERVIEW
+		SELECT 
+			INTERVIEW_NO
+			, ROOM_TITLE
+			, MAX_JOIN_COUNT
+			, START_DATE
+			, END_DATE
+			, COMPANY_INTERVIEW_URL
+			, VIDEO_INTERVIEW_DEL_DATE
+			, ROOM_ID
+		FROM VIDEO_INTERVIEW
 	</select>
 	
 	<select id="selectVideoInterview" resultType="VideoInterviewVO">
-	SELECT 
-		VIDEO_INTERVIEW_NO
-		, INTERVIEW_NO
-		, VIDEO_INTERVIEW_START_TIME
-		, VIDEO_INTERVIEW_END_TIME
-		, VIDEO_INTERVIEW_STATUS
-		, VIDEO_INTERVIEW_URL 
-	FROM VIDEO_INTERVIEW 
-	WHERE VIDEO_INTERVIEW_NO = #{videoInterviewNo} 
+		SELECT 
+			INTERVIEW_NO
+			, ROOM_TITLE
+			, MAX_JOIN_COUNT
+			, START_DATE
+			, END_DATE
+			, COMPANY_INTERVIEW_URL
+			, VIDEO_INTERVIEW_DEL_DATE
+			, ROOM_ID
+		FROM VIDEO_INTERVIEW
+		WHERE INTERVIEW_NO = #{interviewNo}
 	</select>
 	
 	<insert id="insertVideoInterview">
-	<selectKey resultType="string" keyProperty="videoInterviewNo" order="BEFORE">
-    SELECT
-        'VITV'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(VIDEO_INTERVIEW_NO), LENGTH('VITV' ) + 1)), 0) + 1, 6, '0')
-    FROM VIDEO_INTERVIEW
-	</selectKey>
-	INSERT INTO VIDEO_INTERVIEW (
-		VIDEO_INTERVIEW_NO
-		, INTERVIEW_NO
-		, VIDEO_INTERVIEW_START_TIME
-		, VIDEO_INTERVIEW_END_TIME
-		, VIDEO_INTERVIEW_STATUS
-		, VIDEO_INTERVIEW_URL
-	) VALUES (
-		#{videoInterviewNo}
-		, #{interviewNo}
-		, TO_DATE(#{videoInterviewStartTime}, 'YYYY-MM-DD HH24:MI')
-		, TO_DATE(#{videoInterviewEndTime}, 'YYYY-MM-DD HH24:MI')
-		, #{videoInterviewStatus}
-		, #{videoInterviewUrl}
-	)
+		INSERT INTO VIDEO_INTERVIEW (
+			INTERVIEW_NO
+			, ROOM_TITLE
+			, MAX_JOIN_COUNT
+			, START_DATE
+			, END_DATE
+			, COMPANY_INTERVIEW_URL
+			, VIDEO_INTERVIEW_DEL_DATE
+			, ROOM_ID
+		) VALUES (
+			#{interviewNo}
+			, #{roomTitle}
+			, #{maxJoinCount}
+			, TO_DATE(REPLACE(#{startDate}, 'T', ' '), 'YYYY-MM-DD HH24:MI')
+			, TO_DATE(REPLACE(#{endDate}, 'T', ' '), 'YYYY-MM-DD HH24:MI')
+			, #{companyInterviewUrl}
+			, #{videoInterviewDelDate}
+			, #{roomId}
+		)
 	</insert>
 	
 	<update id="updateVideoInterview">
-	UPDATE VIDEO_INTERVIEW SET 
-		VIDEO_INTERVIEW_START_TIME = TO_DATE(#{videoInterviewStartTime}, 'YYYY-MM-DD HH24:MI')
-		, VIDEO_INTERVIEW_END_TIME = TO_DATE(#{videoInterviewEndTime}, 'YYYY-MM-DD HH24:MI')
-		, VIDEO_INTERVIEW_STATUS = #{videoInterviewStatus}
-		, VIDEO_INTERVIEW_URL = #{videoInterviewUrl}
-	WHERE VIDEO_INTERVIEW_NO = #{videoInterviewNo} 
+	    UPDATE VIDEO_INTERVIEW
+	    SET
+	        ROOM_TITLE = #{roomTitle},
+	        MAX_JOIN_COUNT = #{maxJoinCount},
+	        START_DATE = TO_DATE(REPLACE(#{startDate}, 'T', ' '), 'YYYY-MM-DD HH24:MI'),
+	        END_DATE = TO_DATE(REPLACE(#{endDate}, 'T', ' '), 'YYYY-MM-DD HH24:MI'),
+	        COMPANY_INTERVIEW_URL = #{companyInterviewUrl},
+	        VIDEO_INTERVIEW_DEL_DATE = #{videoInterviewDelDate},
+	        ROOM_ID = #{roomId}
+	    WHERE INTERVIEW_NO = #{interviewNo}
 	</update>
+
+	<select id="getCompanyVideoURL" resultType="string" parameterType="map">
+		SELECT VIIN.COMPANY_INTERVIEW_URL
+		FROM VIDEO_INTERVIEW VIIN, INTERVIEW INTE, RECRUIT_PROCESS PEPR, RECRUITMENT_NOTICE RENO
+		WHERE VIIN.INTERVIEW_NO = INTE.INTERVIEW_NO
+		AND INTE.PROCESS_NO = PEPR.RECRUIT_PROCESS_NO
+		AND PEPR.RECRUITMENT_NO = RENO.RECRUITMENT_NO
+		AND VIIN.INTERVIEW_NO = 'INTV000001'
+		AND RENO.USER_ID = 'corp03'
+	</select>
 	
-	<delete id="deleteVideoInterview">
-	DELETE FROM VIDEO_INTERVIEW 
-	WHERE VIDEO_INTERVIEW_NO = #{videoInterviewNo} 
-	</delete>
+	
 </mapper>
