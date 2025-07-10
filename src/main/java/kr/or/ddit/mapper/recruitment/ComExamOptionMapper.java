@@ -13,4 +13,9 @@ public interface ComExamOptionMapper {
 	public int insertComExamOption(ComExamOptionVO vo);
 	public int updateComExamOption(ComExamOptionVO vo);
 	public int deleteComExamOption(String ComOptionNo);
-}
+	
+	public List<ComExamOptionVO> selectByQuestionNo(String questionNo);
+	
+	public int softDeleteByQuestionNo(String comOptionNo);
+	public int softDeleteComExamOption(String comQuestionNo);
+} 

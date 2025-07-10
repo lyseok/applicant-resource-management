@@ -54,5 +54,11 @@
 	WHERE COM_QUESTIONS_NO = #{comQuestionsNo}
 	</delete>
 	
+	<update id="softDeleteComExamQuest" parameterType="string">
+	  UPDATE COM_EXAM_QUESTIONS
+	     SET COM_EXAM_QUEST_DEL_DATE = SYSDATE
+	   WHERE COM_QUESTIONS_NO       = #{comQuestionsNo}
+	</update>
+	
 	
 </mapper>

@@ -16,4 +16,6 @@ public interface ComExamQuestionsMapper {
 	
 	
 	public List<ComExamQuestionsVO> selectByExamNo(String examNo);
+	
+	public int softDeleteComExamQuest(String comQuestionNo);
 }

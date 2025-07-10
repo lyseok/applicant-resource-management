@@ -57,6 +57,18 @@
 	
 	<delete id="deleteComExamOption">
 	DELETE FROM COM_EXAM_OPTION 
-	WHERE COM_OPTION_NO = #{comOptionNo}
+		WHERE COM_OPTION_NO = #{comOptionNo}
 	</delete>
+	
+	<update id="softDeleteComExamOption" parameterType="string">
+	  UPDATE COM_EXAM_OPTION
+	     SET COM_OPTION_DEL_DATE = SYSDATE
+	   WHERE COM_OPTION_NO      = #{comOptionNo}
+	</update>
+
+	<update id="softDeleteByQuestionNo" parameterType="string">
+	  UPDATE COM_EXAM_OPTION
+	     SET COM_OPTION_DEL_DATE = SYSDATE
+	   WHERE COM_QUESTIONS_NO   = #{comQuestionsNo}
+	</update>
 </mapper>

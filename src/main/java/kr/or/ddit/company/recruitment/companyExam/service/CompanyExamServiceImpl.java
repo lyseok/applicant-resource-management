@@ -78,7 +78,7 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 		
 		
 		List<ComExamQuestionsVO> existingQuestions = comExamQuestionsMapper.selectByExamNo(examNo);
-		Set<String> incoming = new HashSet<>();
+		Set<String> incomingQNo = new HashSet<>();
 		
 		for(ComExamQuestionsVO q : companyExam.getQuestionList()) {
 			q.setComExamNo(examNo);
@@ -90,17 +90,43 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 			}
 			
 			String questionNo = q.getComQuestionsNo();
-			incoming.add(questionNo);
+			incomingQNo.add(questionNo);
 			
 			
-			List<ComExamOptionVO> existingOptions  = ComExamOptionMapper.selectByQuestionNo(questionNo);
-			Set<String> incomingONos = new HashSet<>();
+			List<ComExamOptionVO> existingOptions = comExamOptionMapper.selectByQuestionNo(questionNo);
+		
+		
+			
+			Set<String> incomingONo = new HashSet<>();
 			
 			for(ComExamOptionVO o : q.getOptionList()) {
 				o.setComOptionNo(questionNo);
-				
+				if(o.getComOptionNo() == null) {
+					comExamOptionMapper.insertComExamOption(o);
+				}else {
+					comExamOptionMapper.updateComExamOption(o);
+				}
+				incomingONo.add(o.getComOptionNo());				
 			}
+			
+			
+			for(ComExamOptionVO existO : existingOptions) {
+				if (!incomingONo.contains(existO.getComOptionNo())) {
+					comExamOptionMapper.softDeleteComExamOption(existO.getComOptionNo());
+				}
+			}
+			
+			
+			for(ComExamQuestionsVO existQ : existingQuestions ) {
+				if(!incomingONo.contains(existQ.getComQuestionsNo())){
+					comExamOptionMapper.softDeleteByQuestionNo(existQ.getComQuestionsNo());
+					comExamQuestionsMapper.softDeleteComExamQuest(existQ.getComQuestionsNo());
+				}
+			}
+			
+			
 		}
+		return false;
 	}
 
 	
