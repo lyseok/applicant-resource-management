@@ -171,7 +171,7 @@
 
 				<div class="result-box">
 					<p><strong>총 연차 휴가일수:</strong></p>
-					<div id="result">결과가 여기에 표시됩니다.</div>
+					<div id="result">결과가 여기에 표시됩니다.</div> 
 				</div>
 			</div>
 		</div>
