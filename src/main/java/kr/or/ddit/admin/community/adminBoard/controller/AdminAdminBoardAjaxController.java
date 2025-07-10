@@ -20,7 +20,6 @@ import kr.or.ddit.admin.common.codegroup.service.AdminCmnCodeGroupAjaxService;
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
-import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +32,10 @@ public class AdminAdminBoardAjaxController {
 	
 	private final AdminAdminBoardAjaxService service;
 	private final AdminCmnCodeGroupAjaxService cservice;
+	private final ErrorsUtils errorsUtils;
 	
-    // codeGroupNo 파라미터를 받아 cmnCodeList 조회(BRDD, UFAQ, CFAQ)
+    // codeGroupNo 파라미터(BRDD, UFAQ, CFAQ)를 받아 
+	// codeDetailNo 목록(BRDD-001, BRDD-002, BRDD-003...)과 codeName("문의사항", "FAQ", "공지사항"...) 조회
     @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/adminBoard/cmncodegroup/BRDD
     public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
         return cservice.readCmnCodeGroupByPk(no);
@@ -52,12 +53,6 @@ public class AdminAdminBoardAjaxController {
 		return service.readAdminBoardListByType(boardTypeCode);
 	}
 
-	// boardTypeCode를 받아 detailNo 리스트 조회
-	@GetMapping("/detailCodeList/{boardTypeCode}")
-	public List<CmnCodeVO> cmnCodeList(@PathVariable String boardTypeCode){
-		return service.matchBoardTypeCode(boardTypeCode);
-	}
-	
 	@GetMapping
 	public List<AdminBoardVO> getAll(){
 		return service.readAdminBoardList();
@@ -91,8 +86,6 @@ public class AdminAdminBoardAjaxController {
 		service.removeAdminBoard(boardNo);
 		return Map.of("ok", true);
 	}
-	
-	private final ErrorsUtils errorsUtils; // <- 주입 받고
 
 	// 입력 검증
 	@PostMapping("/aboardChk")

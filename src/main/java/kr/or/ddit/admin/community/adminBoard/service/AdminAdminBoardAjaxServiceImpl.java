@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.community.AdminBoardMapper;
-import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 
@@ -46,11 +45,6 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 			setCodeName(aboard);
 		}
 		return aboardList;
-	}
-
-	@Override
-	public List<CmnCodeVO> matchBoardTypeCode(String boardTypeCode) {
-		return mapper.selectCodeGroupNoByType(boardTypeCode);
 	}
 
 	@Override
