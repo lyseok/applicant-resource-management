@@ -42,7 +42,7 @@ class ApplicantMapperTest {
 	void testUpdateApplicant() {
 		ApplicantVO vo = new ApplicantVO();
 		vo.setResumeViewYn("Y");
-		vo.setStatus("N");
+//		vo.setStatus("N");
 		vo.setApplicantId("APPL000001");
 		assertEquals(1, mapper.updateApplicant(vo));
 	}

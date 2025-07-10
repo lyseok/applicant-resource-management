@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,29 +13,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+import kr.or.ddit.admin.common.codegroup.service.AdminCmnCodeGroupAjaxService;
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
+import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/admin/adminBoard")
+@RequestMapping("/ajax/admin/community/adminBoard")
 @RequiredArgsConstructor
 public class AdminAdminBoardAjaxController {
 	
-	private AdminAdminBoardAjaxService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final AdminAdminBoardAjaxService service;
+	private final AdminCmnCodeGroupAjaxService cservice;
 	
+    // codeGroupNo 파라미터를 받아 cmnCodeList 조회(BRDD, UFAQ, CFAQ)
+    @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/adminBoard/cmncodegroup/BRDD
+    public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
+        return cservice.readCmnCodeGroupByPk(no);
+    }
+
 	@GetMapping("/{boardTypeCode}/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
 	    return service.readAdminBoardByPk(boardNo)
-//	    		.map(ResponseEntity::ok)
-	    		.map(ab->ResponseEntity.ok(ab))  //boardNo 있으면 ok 반환
+	    		.map(ResponseEntity::ok)  //boardNo 있으면 ok 반환
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	
@@ -41,16 +51,22 @@ public class AdminAdminBoardAjaxController {
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
 		return service.readAdminBoardListByType(boardTypeCode);
 	}
+
+	// boardTypeCode를 받아 detailNo 리스트 조회
+	@GetMapping("/detailCodeList/{boardTypeCode}")
+	public List<CmnCodeVO> cmnCodeList(@PathVariable String boardTypeCode){
+		return service.matchBoardTypeCode(boardTypeCode);
+	}
 	
 	@GetMapping
-	public List<AdminBoardVO> getAll(@PathVariable String boardTypeCode){
+	public List<AdminBoardVO> getAll(){
 		return service.readAdminBoardList();
 	}
 	
 	@PostMapping("/{boardTypeCode}")
 	public Map<String, Object> inBoard(
-			@PathVariable String boardTypeCode
-			, @RequestBody AdminBoardVO board
+		@PathVariable String boardTypeCode
+		, @RequestBody AdminBoardVO board
 	) {
 		service.createAdminBoard(board);
 	    return Map.of("ok", true);
@@ -74,5 +90,23 @@ public class AdminAdminBoardAjaxController {
 	) {
 		service.removeAdminBoard(boardNo);
 		return Map.of("ok", true);
+	}
+	
+	private final ErrorsUtils errorsUtils; // <- 주입 받고
+
+	// 입력 검증
+	@PostMapping("/aboardChk")
+	public ResponseEntity<?> saveAboard(
+		@Valid @RequestBody AdminBoardVO dto
+		, BindingResult bindingResult
+	) {
+		log.info("{}", dto);
+		
+		if(bindingResult.hasErrors()) {
+			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
+			return ResponseEntity.badRequest().body(errors);
+		}
+		
+	    return ResponseEntity.ok("ok");
 	}
 }

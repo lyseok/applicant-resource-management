@@ -6,7 +6,7 @@
 		SELECT 
 			  TAG_NO
 			, BOARD_NO
-			, COMMU_TAG_DATE 
+			, TO_CHAR(TO_DATE(COMMU_TAG_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS COMMU_TAG_DATE
 		FROM 
 			COMMU_TAG 
 		WHERE 
@@ -15,22 +15,22 @@
 			BOARD_NO = #{boardNo}
 	</select>
 	
-	<select id="searchCommuTagTagList">
+	<select id="selectCommuTagTagList">
 		SELECT 
 			  TAG_NO
 			, BOARD_NO
-			, COMMU_TAG_DATE
+			, TO_CHAR(TO_DATE(COMMU_TAG_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS COMMU_TAG_DATE
 		FROM 
 			COMMU_TAG
 		WHERE 
 			BOARD_NO = #{boardNo}
 	</select>
 
-	<select id="searchCommuTagBoardList">
+	<select id="selectCommuTagBoardList">
 		SELECT 
 			  TAG_NO
 			, BOARD_NO
-			, COMMU_TAG_DATE
+			, TO_CHAR(TO_DATE(COMMU_TAG_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS COMMU_TAG_DATE
 		FROM 
 			COMMU_TAG
 		WHERE 
@@ -41,7 +41,7 @@
 		SELECT 
 			  TAG_NO
 			, BOARD_NO
-			, COMMU_TAG_DATE
+			, TO_CHAR(TO_DATE(COMMU_TAG_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS COMMU_TAG_DATE
 		FROM 
 			COMMU_TAG
 	</select>
