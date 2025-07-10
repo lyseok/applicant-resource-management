@@ -19,6 +19,7 @@ import kr.or.ddit.mapper.resume.ResumeMapper;
 import kr.or.ddit.mapper.resume.SpecialtyMapper;
 import kr.or.ddit.mapper.resume.IntroductionMapper;
 import kr.or.ddit.mapper.resume.SupportMapper;
+import kr.or.ddit.member.resume.exception.ResumeNotFoundException;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import kr.or.ddit.vo.resume.AwardVO;
 import kr.or.ddit.vo.resume.CareerVO;
@@ -83,7 +84,7 @@ public class ResumeServiceImpl implements ResumeService {
 		ResumeVO resume = resumeMapper.selectResumeDetail(vo);
 		log.info("♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥ {}", resume.getIntroduction());
 		if(resume==null) {
-			// return ; 
+			throw new ResumeNotFoundException("이력서를 찾을 수 없습니다. (ID: " + vo.getResumeNo() + ")"); 
 		}
 		resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
 		resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));

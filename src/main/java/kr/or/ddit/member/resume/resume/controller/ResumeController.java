@@ -1,5 +1,6 @@
 package kr.or.ddit.member.resume.resume.controller;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +42,8 @@ public class ResumeController {
 		Model model
 	){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		// 로그인 되어 있지 않을경우 로그인 폼으로 리턴
-		if(authentication == null) {
-			return "redirect:/login";
-		}
-		String userId = authentication.getName();	// 현재 로그인된 사용자의 id값 가져오기
+		String userId = authentication.getName();
+		
 		List<ResumeVO> resumeList = service.readResumeList(userId);
 		log.info("{}", resumeList);
 		model.addAttribute(MODELNAME, resumeList);
@@ -60,12 +58,9 @@ public class ResumeController {
 		, @PathVariable String no
 	){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		// 로그인 되어 있지 않을경우 로그인 폼으로 리턴
-		if(authentication == null) {
-			return "redirect:/login";
-		}
+		String userId = authentication.getName();
+		
 		ResumeVO vo = new ResumeVO();
-		String userId = authentication.getName();	// 현재 로그인된 사용자의 id값 가져오기
 		vo.setUserId(userId);
 		vo.setResumeNo(no);
 		ResumeVO resume = service.readResumeDetail(vo);
@@ -76,15 +71,7 @@ public class ResumeController {
 	
 	// 등록 폼 이동
 	@GetMapping("create")
-	public String getCreateResumeForm(
-	
-	) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		// 로그인 되어 있지 않을경우 로그인 폼으로 리턴
-		if(authentication == null) {
-			return "redirect:/login";
-		}
-		
+	public String getCreateResumeForm() {		
 		return "member/resume/mypage/resume/resumeForm";
 	}
 	
@@ -118,6 +105,14 @@ public class ResumeController {
 		return "";
 	}
 	*/
+	
+	
+	// 어센티케이션을 받아서 로그인한 사용자인지 체크, 익명 유저인 경우 로그인페이지로 이동 / 회원인경우 userId 리턴
+	public String getUserId() {
+		Authentication  authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();	// 현재 로그인된 사용자의 id값 가져오기
+		return userId;
+	}
 	
 	
 }
