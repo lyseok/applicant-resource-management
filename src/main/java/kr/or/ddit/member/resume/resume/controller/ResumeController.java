@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.ddit.member.resume.resume.service.ResumeService;
-import kr.or.ddit.vo.resume.IntroductionListVO;
-import kr.or.ddit.vo.resume.IntroductionVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ResumeController {
 	private final ResumeService service;
+	
 	static final String MODELNAME = "resumeList";
 
 	@ModelAttribute(MODELNAME)
@@ -77,7 +76,15 @@ public class ResumeController {
 	
 	// 등록 폼 이동
 	@GetMapping("create")
-	public String getCreateResumeForm() {
+	public String getCreateResumeForm(
+	
+	) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// 로그인 되어 있지 않을경우 로그인 폼으로 리턴
+		if(authentication == null) {
+			return "redirect:/login";
+		}
+		
 		return "member/resume/mypage/resume/resumeForm";
 	}
 	

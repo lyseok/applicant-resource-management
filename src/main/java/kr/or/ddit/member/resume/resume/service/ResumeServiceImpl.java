@@ -81,6 +81,7 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	public ResumeVO readResumeDetail(ResumeVO vo) {
 		ResumeVO resume = resumeMapper.selectResumeDetail(vo);
+		log.info("♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥ {}", resume.getIntroduction());
 		if(resume==null) {
 			// return ; 
 		}
@@ -90,7 +91,6 @@ public class ResumeServiceImpl implements ResumeService {
 		resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
 		resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
 		resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
-		// resume.setIntroductionList(IntroductionMapper.selectIntroductionList(resume.getResumeNo()));
 		resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
 		resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
 		resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
@@ -286,8 +286,10 @@ public class ResumeServiceImpl implements ResumeService {
 		for(EducationVO edu : educationList) {
 			edu.setDepartmentCode(provider.getCodeName(edu.getDepartmentCode()));
 			edu.setHighestEducationCode(provider.getCodeName(edu.getHighestEducationCode()));
+			edu.setGraduateYn(provider.getCodeName(edu.getGraduateYn()));
 			log.info("MilitaryRank ------->>> {}", edu.getDepartmentCode());
 			log.info("Discharge ------->>> {}", edu.getHighestEducationCode());
+			log.info("Discharge ------->>> {}", edu.getGraduateYn());
 		}
 		log.info(" ");
 		

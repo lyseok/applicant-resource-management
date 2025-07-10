@@ -8,16 +8,20 @@
   <link rel="stylesheet" href="/css/member/resume/resume.css" >
 </head>
 <body>
-<h1 class="h1">${resumeList }</h1>
-  <div class="resume-main-wrap">
+  <div class="resume-main-wrap resume_detail_wrap">
     <!-- Header -->
     <div class="resume-header">
       <div class="profile-img">🙍‍♂️</div>
       <div class="header-info">
-        <span class="name">${resumeList.userName }</span>
-        <span class="age">${resumeList.birth } (28세)</span>
-        <div class="contact">${resumeList.birth } /  ${resumeList.tel }</div>
-        <div class="address">${resumeList.address } </div>
+      	<div class="d-flex align-items-center">
+	        <span class="name lh1">${resumeList.userName }</span>
+	        <span class="age lh1">${resumeList.birth }</span>
+        </div>
+        <div class="contact d-flex gap-4">
+        	<span><i class='bx  bx-envelope-alt'  ></i> ${resumeList.email }</span>
+        	<span><i class='bx  bx-mobile'  ></i> ${resumeList.tel }</span>
+        </div>
+        <div class="address d-flex"><i class='bx  bx-home-alt'  ></i> ${resumeList.address } </div>
         <c:if test="${not empty resumeList.resumeSubmitYn}">
         	<div class="info-badge">대표 이력서 번호 ${resumeList.resumeNo }</div>
         </c:if>
@@ -42,26 +46,22 @@
     <c:if test="${not empty resumeList.educationList}">
 	    <div class="section">
 	      <div class="section-title">학력</div>
-		    <c:forEach items="${resumeList.educationList }" var="education">
-		      <ul class="section-list">
-		        <li>
-		          <span class="list-label">학교명</span>
-		          <span class="list-content"><b>${education.schoolName }</b></span>
-		        </li>
-		        <li>
-		          <span class="list-label">졸업구분</span>
-		          <span class="list-content">${education.graduateYn }</span>
-		        </li>
-    			<c:if test="${not empty education.specialtyList}">
-			        <c:forEach items="${education.specialtyList }" var="specialty">
-				        <li>
-				          <span class="list-label">전공</span>
-				          <span class="list-content">${specialty.mainMajor } / ${specialty.subMajorCode }</span>
-				        </li>
-				    </c:forEach>
-				</c:if>
+		      <ul class="section-list card_wrap">
+			    <c:forEach items="${resumeList.educationList }" var="education">
+			        <li>
+			          <div class="list-content">
+			          	<b>${education.schoolName }</b>
+			          	<span>(${education.graduateYn })</span>
+		    			<c:if test="${not empty education.specialtyList}">
+					        <c:forEach items="${education.specialtyList }" var="specialty">
+						          <div class="list-content">${specialty.mainMajor } / ${specialty.subMajorCode }</div>
+						    </c:forEach>
+						</c:if>
+						<div class="text-secondary fs-14">${education.entranceDate} ~ ${education.graduateDate}</div>
+			          </div>
+			        </li>
+			    </c:forEach>
 		      </ul>
-		    </c:forEach>
 	    </div>
 	</c:if>
 
@@ -71,28 +71,61 @@
     <c:if test="${not empty resumeList.careerList}">
 	    <div class="section">
 	      <div class="section-title">경력</div>
-	      <c:forEach items="${resumeList.careerList }" var="career">
-		      <ul class="section-list">
-		        <li>
-		          <span class="list-label">기간</span>
-		          <span class="list-content">${career.startWorkDate } ~ ${career.retireDate }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">회사명</span>
-		          <span class="list-content">${career.company.comName }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">부서/직무</span>
-		          <span class="list-content">${career.department } / ${career.responsibility }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">경력기간</span>
-		          <span class="list-content">${career.careerYearName }년</span>
-		        </li>
-		      </ul>
-	      </c:forEach>
+	      <ul class="section-list card_wrap">
+      		<c:forEach items="${resumeList.careerList }" var="career">
+	        <li>
+	          <div class="list-content">
+	          	<div class="">
+		          	<b>${career.company.comName }</b>								<!-- 회사명 -->
+		          	<span class="text-secondary fs-14">(${career.startWorkDate } ~ ${career.retireDate })</span>	<!-- 기간 -->
+		          	<div>${career.department } / ${career.responsibility }</div>	<!-- 부서/직무 -->
+	          	</div>
+	          	<div>경력: ${career.careerYearName }</div>	<!-- 경력기간 -->
+	          </div>
+	        </li>
+      		</c:forEach>
+	      </ul>
 	    </div>
 	</c:if>
+	
+
+    <!-- 포트폴리오 및 기타문서 -->
+    <c:if test="${not empty resumeList.portfolioList}">
+	    <div class="section">
+	      <div class="section-title">포트폴리오</div>
+	      <ul class="section-list">
+		      <c:forEach items="${resumeList.portfolioList }" var="portfolio">
+		        <li>
+		          <div class="list-content">
+		          	<b class="h5 fw-bold text-dark">${portfolio.porName }</b>
+		          	<div class="text-secondary fs-14">${portfolio.porStartDate } ~ ${portfolio.porEndDate }</div>
+		          	<a herf="${portfolio.porUrl }" class="my-1 text-decoration-underline">${portfolio.porUrl }</a>
+		            <div>${portfolio.porInformation }</div>
+		          </div>
+		        </li>
+	    	  </c:forEach>
+	      </ul>
+	    </div>
+    </c:if>
+
+    
+
+    <!-- 자기소개서 -->
+    <c:if test="${not empty resumeList.introduction}">
+	    <div class="section">
+	      <div class="section-title">자기소개서</div>
+	      <ul class="section-list">		      		
+	        <li>
+	          <div class="list-content">
+	          	<b class="h5 fw-bold text-dark">${resumeList.introduction.introductionName }</b>		<!-- 제목 -->
+	          	<span class="text-secondary fs-14 ms-2"> ${resumeList.introduction.introductionCreateDate}</span>
+	          	<div class="my-3">${resumeList.introduction.introductionQuestion }</div>	<!-- 문항 -->
+	          	<div>${resumeList.introduction.introductionContent }</div>					<!-- 내용 -->
+	          </div>
+	        </li>
+	      </ul>
+	    </div>
+    </c:if>
 
     
 
@@ -100,22 +133,17 @@
     <c:if test="${not empty resumeList.myExperienceList}">
 	    <div class="section">
 	      <div class="section-title">경험</div>
+	      <ul class="section-list">
 		      <c:forEach items="${resumeList.myExperienceList }" var="exp">
-		      <ul class="section-list">
 		        <li>
-		          <span class="list-label">기간</span>
-		          <span class="list-content">${exp.expStartDate } ~ ${exp.expEndDate }</span>
+		          <div class="list-content">
+		          	<b>${exp.expName }</b>									<!-- 활동명 -->
+		          	<span>(${exp.expCodeName })</span>						<!-- 활동 구분 -->
+		          	<div class="text-secondary fs-14">${exp.expStartDate } ~ ${exp.expEndDate }</div>	<!-- 활동기간 -->
+		          </div>
 		        </li>
-		        <li>
-		          <span class="list-label">활동명</span>
-		          <span class="list-content">${exp.expName }</span>
-		        </li>
-		        <!-- <li>
-		          <span class="list-label">설명</span>
-		          <span class="list-content"><p></p></span>
-		        </li> -->
-		      </ul>
 		      </c:forEach>
+	      </ul>
 	    </div>
 	</c:if>
 
@@ -124,18 +152,18 @@
     <c:if test="${not empty resumeList.myLicenseList}">
 	    <div class="section">
 	      <div class="section-title">자격증</div>
-		      <c:forEach items="${resumeList.myLicenseList }" var="license">
-			      <ul class="section-list">
-			        <li>
-			          <span class="list-label">취득일</span>
-			          <span class="list-content">${license.licensePassDate }</span>
-			        </li>
-			        <li>
-			          <span class="list-label">명칭</span>
-			          <span class="list-content">${license.licenseCodeName }</span>
-			        </li>
+		      <ul class="section-list">
+			      <c:forEach items="${resumeList.myLicenseList }" var="license">
+				      <li>
+				          <div class="list-content">
+				          	<b>${license.licenseCode }</b>						<!-- 활동명 -->
+				          	<span class="text-secondary fs-14">${license.licensePassDate }</span>					<!-- 활동 구분 -->
+				          	<div>산업인력공단</div>	<!-- 활동기간 -->
+				          	<div></div>	
+				          </div>
+				        </li>
+			      	</c:forEach>
 			      </ul>
-		      </c:forEach>
 		      <!-- <li>
 		        <span class="list-label">발급기관</span>
 		        <span class="list-content">대전남부경찰서(도로교통공단)</span>
@@ -147,22 +175,17 @@
     <c:if test="${not empty resumeList.languageSkillList}">
 	    <div class="section">
 	      <div class="section-title">어학 자격증</div>
-	      <c:forEach items="${resumeList.languageSkillList }" var="lang">
 		      <ul class="section-list">
-		        <li>
-		          <span class="list-label">취득일</span>
-		          <span class="list-content">${lang.passDate }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">명칭</span>
-		          <span class="list-content">${lang.languageExamName }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">급수</span>
-		          <span class="list-content">${lang.languageExamLevelCodeName } - 바인딩 잘 되는지 확인필요</span>
-		        </li>
+	      		<c:forEach items="${resumeList.languageSkillList }" var="lang">
+			        <li>
+			          <div class="list-content">
+			          	<b>${lang.languageExamName }</b>		<!-- 어학 자격명 -->
+			          	<span>(${lang.languageExamLevelCode }) <-- - 바인딩 잘 되는지 확인필요</span> <!--  -->
+			          	<div class="text-secondary fs-14">${lang.passDate }</div>			<!-- 어학 자격증 취득기간 -->
+			          </div>
+			        </li>
+	      		</c:forEach>
 		      </ul>
-	      </c:forEach>
 	    </div>
 	</c:if>
 
@@ -170,75 +193,19 @@
     <c:if test="${not empty resumeList.awardList}">
 	    <div class="section">
 	      <div class="section-title">수상</div>
-	      <c:forEach items="${resumeList.awardList }" var="award">
-		      <ul class="section-list">
+	      <ul class="section-list">
+		      <c:forEach items="${resumeList.awardList }" var="award">			      		
 		        <li>
-		          <span class="list-label">취득일</span>
-		          <span class="list-content">${award.awardDate }</span>
+		          <div class="list-content">
+		          	<b>${award.awardName }</b>		<!-- 어학 자격명 -->
+		          	<span class="text-secondary fs-14">(${award.awardDate })</span> <!--  -->
+		          	<div>${award.hosting }</div>			<!-- 어학 자격증 취득기간 -->
+		          </div>
 		        </li>
-		        <li>
-		          <span class="list-label">수상명</span>
-		          <span class="list-content">${award.awardName }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">주최기관</span>
-		          <span class="list-content">${award.hosting }</span>
-		        </li>
-		      </ul>
-	      </c:forEach>
+		      </c:forEach>
+	      </ul>
    		</div>
 	</c:if>
-
-    
-
-    <!-- 포트폴리오 및 기타문서 -->
-    <c:if test="${not empty resumeList.portfolioList}">
-	    <div class="section">
-	      <div class="section-title">포트폴리오</div>
-	      <c:forEach items="${resumeList.portfolioList }" var="portfolio">
-		      <ul class="section-list">
-		        <li>
-		          <span class="list-label">포트폴리오</span>
-		          <span class="list-content">
-		            <!-- <a class="portfolio-link" href="http://localhost/mypage/resume/detail">http://localhost/mypage/resume/detail</a> -->
-		            <%-- <span>${ }</span> --%>
-		            <br>
-		            <span style="font-size:13px;color:#b5b8c6;">직접수행한 프로젝트와 협업프로젝트에서 제작한 포트폴리오와 독립된 포트폴리오입니다.</span>
-		          </span>
-		        </li>
-		      </ul>
-	      </c:forEach>
-	    </div>
-    </c:if>
-
-    
-
-    <!-- 자기소개서 -->
-    <c:if test="${not empty resumeList.introductionList}">
-	    <div class="section">
-	      <div class="section-title">자기소개서</div>
-	      <c:forEach items="${resumeList.introductionList }" var="intr">
-		      <ul class="section-list">
-		        <li style="flex-direction:column;align-items:flex-start;">
-		          <span class="selfintro-title">자기소개서 명</span>
-		          <span class="selfintro-content">${intr.introductionName }</span>
-		        </li>
-		        <li style="flex-direction:column;align-items:flex-start;">
-		          <span class="selfintro-title">자기소개서 문항</span>
-		          <span class="selfintro-content">${intr.introductionQuestion }</span>
-		        </li>
-		        <li style="flex-direction:column;align-items:flex-start;">
-		          <span class="selfintro-title">자기소개서 내용</span>
-		          <span class="selfintro-content">${intr.introductionContent }</span>
-		        </li>
-		        <li style="flex-direction:column;align-items:flex-start;">
-		          <span class="selfintro-title">작성일시</span>
-		          <span class="selfintro-content">${intr.introductionCreateDate }</span>
-		        </li>
-		      </ul>
-	      </c:forEach>
-	    </div>
-    </c:if>
 
     
 
@@ -246,11 +213,17 @@
     <c:if test="${not empty resumeList.supportList}">
 	    <div class="section">
 	      <div class="section-title">취업우대사항</div>
-	      <ul class="section-list">
-	        <li>
-	          <span class="prefer-label">고용지원대상:</span>
-	          <span class="prefer-content">청년내일채움공제(고졸이상), 장애인(장애인등록증소지자 이상)</span>
-	        </li>
+	      <ul class="section-list col50">	      		
+	          <li class="border-0 lh1"><b class="list-content">고용지원대상</b></li>
+	          <li class="border-0 lh1 "><b class="list-content">장애 등급</b></li>
+		      <c:forEach items="${resumeList.supportList }" var="sup">			      		
+		        <li class="py-1">
+		          <div class="list-content">${sup.disabilityCodeName }</div>
+		        </li>
+		        <li class="py-1">
+		          <div class="list-content">${sup.disabilityLevelCodeName }</div>
+		        </li>
+		      </c:forEach>
 	      </ul>
 	    </div>
     </c:if>
@@ -259,30 +232,17 @@
     <c:if test="${not empty resumeList.militaryList}">
 	    <div class="section">
 	      <div class="section-title">병역</div>
-	      <c:forEach items="${resumeList.militaryList }" var="mil">
 		      <ul class="section-list">
-		        <li>
-		          <span class="list-label">복무</span>
-		          <span class="list-content">${mil.serviceCategoryCode }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">군별</span>
-		          <span class="list-content">${mil.militaryTypeCode }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">계급</span>
-		          <span class="list-content">${mil.militaryRankCode }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">전역사유</span>
-		          <span class="list-content">${mil.dischargeCode }</span>
-		        </li>
-		        <li>
-		          <span class="list-label">복무기간</span>
-		          <span class="list-content">${mil.militaryStartDate } ~ ${mil.militaryEndDate } </span>
-		        </li>
-		      </ul>
-	      </c:forEach>
+	      		<c:forEach items="${resumeList.militaryList }" var="mil">
+			        <li>
+			          <div class="list-content">
+			          	<b>${mil.serviceCategoryCode }</b>								<!-- 복무 -->
+			          	<div>${mil.militaryTypeCode } / ${mil.militaryRankCode }</div>	<!-- 군별 / 계급 -->
+			          	<div>${mil.dischargeCode } <span class="text-secondary fs-14">(${mil.militaryStartDate } ~ ${mil.militaryEndDate })</span></div>	<!-- 전역사유 / 복무기간 -->			          	
+			          </div>
+			        </li>
+		      </c:forEach>
+	      </ul>
    		</div>
 	</c:if>
   </div>

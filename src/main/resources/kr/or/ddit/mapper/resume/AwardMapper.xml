@@ -4,7 +4,7 @@
 	<select id="selectAwardList">
 		SELECT AWARD_CODE
 			   , AWARD_NAME
-			   , AWARD_DATE
+			   , TO_CHAR(TO_DATE(AWARD_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS AWARD_DATE
 			   , HOSTING 
 		  FROM AWARD
 		 WHERE RESUME_NO = #{resumeNo}
@@ -14,7 +14,7 @@
 		SELECT AWARD_CODE
 			   , RESUME_NO
 			   , AWARD_NAME
-			   , AWARD_DATE
+			   , TO_CHAR(TO_DATE(AWARD_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS AWARD_DATE
 			   , HOSTING 
 		  FROM AWARD
 		 WHERE AWARD_CODE = #{awardCode}

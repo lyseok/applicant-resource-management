@@ -193,19 +193,19 @@
 
 
 /* 상세페이지 */
-.resume-main-wrap {
+.resume_detail_wrap {
 	padding:40px;
 }
-.resume-header {
+.resume_detail_wrap .resume-header {
   display: flex;
   align-items: flex-start;
   gap: 36px;
   margin-bottom: 34px;
   min-height: 72px;
 }
-.profile-img {
-  width: 68px;
-  height: 68px;
+.resume_detail_wrap .profile-img {
+  width: 120px;
+  height: 126px;
   border-radius: 20px;
   background: #f5f6fa;
   display: flex;
@@ -215,76 +215,97 @@
   color: #bbc1cc;
   border: 1px solid #e5e7ef;
 }
-.header-info .name {
+.resume_detail_wrap .header-info .name {
   font-size: 24px;
   font-weight: 700;
   color: #2c3a5b;
   margin-right: 10px;
   vertical-align: middle;
 }
-.header-info .age {
+.resume_detail_wrap .header-info .age {
   color: #97a1b7;
   font-size: 16px;
   font-weight: 400;
   margin-left: 2px;
 }
-.header-info .contact {
+.resume_detail_wrap .header-info .contact {
   color: #434b5e;
   margin: 13px 0 4px 0;
   font-size: 15px;
   font-weight: 500;
 }
-.header-info .address {
+.resume_detail_wrap .header-info .address {
   color: #7b869e;
   font-size: 14px;
   margin-bottom: 7px;
 }
-.header-info .info-badge {
-  background: #f6f8fb;
-  color: #426edc;
+.resume_detail_wrap .header-info .info-badge {
+  background: var(--violet20);
+  color: var(--violet80);
   border-radius: 9px;
   padding: 4px 12px;
   font-size: 13px;
   display: inline-block;
   margin-top: 4px;
   font-weight: 500;
+  border:1px solid var(--violet30);
 }
-.myskill-list {
+.resume_detail_wrap .myskill-list {
   display: flex;
   gap: 8px;
   margin: 6px 0 20px 0;
 }
-.myskill-item {
-  background: #f1f4fb;
-  color: #2754c4;
-  border-radius: 7px;
+.resume_detail_wrap .myskill-item {
+  background:var(--violet20);
+  color: var(--violet80);
+  border-radius: 20px;
   font-size: 14px;
   padding: 5px 13px;
   font-weight: 500;
-  border: 1px solid #d5dff5;
+  border: 1px solid var(--violet30);
   display: inline-block;
 }
-.resume-line {
+.resume_detail_wrap .resume-line {
   border: none;
   border-top: 1px solid #e3e7ef;
   margin: 28px 0 25px 0;
 }
-.section-list {
+
+.resume_detail_wrap .section-list {
+  display:flex;
+  flex-wrap:wrap;
   list-style: none;
   margin: 0;
   padding: 0;
   font-size: 15px;
 }
-.section-list > li {
+.resume_detail_wrap .section-list > li {
   border-bottom: 1px solid #f1f2f6;
   padding: 15px 0 13px 0;
   line-height: 1.7;
   display: flex;
   align-items: flex-start;
   gap: 24px;
+  width:50%;
 }
-.section-list > li:last-child { border-bottom: none;}
-.list-label {
+.resume_detail_wrap .section-list > li:last-child { border-bottom: none;}
+
+/* 경력전용 li 스타일 */
+.section-list.card_wrap{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.section-list.card_wrap li{
+	flex:calc((100% - 60px) / 4);
+	border:1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+}
+.resume_detail_wrap .section-list.card_wrap > li:last-child{
+	border-bottom:1px solid #ddd;
+}
+.resume_detail_wrap .list-label {
   min-width: 108px;
   color: #8294b3;
   font-weight: 500;
@@ -293,43 +314,24 @@
   flex-shrink: 0;
   margin-top: 2px;
 }
-.list-content {
+.resume_detail_wrap .list-content {
   color: #232c45;
   font-size: 15px;
   flex: 1;
   word-break: break-all;
 }
-.portfolio-link {
-  color: #2e5ae2;
-  text-decoration: underline;
-  font-weight: 500;
-  font-size: 15px;
-}
-.selfintro-title {
-  font-size: 16px;
-  color: #436bcf;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.selfintro-content {
+.resume_detail_wrap .selfintro-content {
   white-space: pre-line;
   font-size: 15px;
   color: #232c45;
   margin-bottom: 8px;
 }
-.prefer-label {
+.resume_detail_wrap .prefer-label {
   font-weight: 500;
   color: #4a5c85;
   margin-right: 6px;
 }
-.prefer-content {
+.resume_detail_wrap .prefer-content {
   color: #505d7a;
   font-size: 14px;
-}
-/* 반응형 */
-@media (max-width: 1200px) {
-  .resume-main-wrap { width: 98vw; padding: 16px 2vw;}
-}
-@media (max-width: 700px) {
-  .resume-header { flex-direction: column; gap: 12px;}
 }
