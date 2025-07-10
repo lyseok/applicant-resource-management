@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let questionCount = 0;
 
-  //문제추가
+  //문제추가-
   function addQuestionBlock(idx, data) {
     const div = document.createElement('div');
     div.className = 'card question-card';
