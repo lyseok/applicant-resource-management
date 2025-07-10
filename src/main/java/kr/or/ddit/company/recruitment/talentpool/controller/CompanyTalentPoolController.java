@@ -50,6 +50,7 @@ public class CompanyTalentPoolController {
 		return "company/recruitment/talentpool/TalentPool";
 	}
 
+	 
 	@GetMapping("/detail/{no}")
 	public String detail(@PathVariable String no, Model model) {
 		ResumeVO detail = CTservice.selectResumeDetail(no);	
