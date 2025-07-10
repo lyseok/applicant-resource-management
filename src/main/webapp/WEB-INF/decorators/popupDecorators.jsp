@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title><sitemesh:write property="title" /></title>
+	<%@ include file="/WEB-INF/fragments/dashPreStyle.jsp" %>
+	<sitemesh:write property="head" />
+</head>
+
+<body>
+  <div class="layout-wrapper layout-content-navbar layout-menu-fixed">
+    <div class="layout-container">
+      <sitemesh:write property="body"/>     
+    </div>
+  </div>
+	<%@ include file="/WEB-INF/fragments/loading.jsp" %>
+  <%@ include file="/WEB-INF/fragments/popupPostScript.jsp" %>
+</body>
+</html>
