@@ -23,12 +23,12 @@ public class AdminCommuTagServiceImpl implements AdminCommuTagService {
 
 	@Override
 	public List<CommuTagVO> searchCommuTagTagList(String boardNo) {
-		return mapper.searchCommuTagTagList(boardNo);
+		return mapper.selectCommuTagTagList(boardNo);
 	}
 
 	@Override
 	public List<CommuTagVO> searchCommuTagBoardList(String tagNo) {
-		return mapper.searchCommuTagBoardList(tagNo);
+		return mapper.selectCommuTagBoardList(tagNo);
 	}
 	
 	@Override

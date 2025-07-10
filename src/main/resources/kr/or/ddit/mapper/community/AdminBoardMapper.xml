@@ -2,24 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.community.AdminBoardMapper">
 
-	<select id="selectAdminBoardByPk" resultType="AdminBoardVO">
-		SELECT 
-			  BOARD_NO
-			, USER_ID
-			, BOARD_TYPE_CODE
-			, BOARD_TITLE
-			, BOARD_WRITE_DATE
-			, BOARD_CONTENT
-			, BOARD_DELETE_DATE
-			, BOARD_POST_HIT
-			, BOARD_STATUS 
-		FROM 
-			ADMIN_BOARD 
-		WHERE 
-			BOARD_NO = #{boardNo}
+	<resultMap type="AdminBoardVO" id="adminBoardMap" autoMapping="true">
+		<id property="boardNo" column="BOARD_NO"/>		
+		<association property="users" javaType="UsersVO" autoMapping="true"/>
+		<collection property="adminCommentList" javaType="list" ofType="AdminCommentVO">
+			<id property="boardCommentNo" column="BOARD_COMMENT_NO"/>  <!-- 같은 이름 컬럼이 있어 둘다 id 넣어줌 -->
+			<result property="userId" column="USER_ID"/>  <!-- result엔 다른 VO와 중복되지 않고, 가져올 컬럼만 적음 -->
+			<result property="boardCommentContent" column="BOARD_COMMENT_CONTENT"/>
+			<result property="boardCommentStatus" column="BOARD_COMMENT_STATUS"/>
+		</collection>
+	</resultMap>
+
+	<select id="selectAdminBoardByPk" resultMap="adminBoardMap">
+		WITH ADMIN_BOARD_VIEW AS (
+            SELECT 
+				  BOARD_NO
+				, USER_ID
+				, BOARD_TYPE_CODE
+				, BOARD_TITLE
+				, BOARD_WRITE_DATE
+				, BOARD_CONTENT
+				, BOARD_DELETE_DATE
+				, BOARD_POST_HIT
+				, BOARD_STATUS 
+			FROM ADMIN_BOARD NATURAL JOIN USERS
+	        WHERE BOARD_NO = #{boardNo}
+		)
+		SELECT
+            ADMIN_BOARD_VIEW.*
+            , BOARD_COMMENT_CONTENT
+            , BOARD_COMMENT_STATUS
+		FROM ADMIN_BOARD_VIEW LEFT OUTER JOIN ADMIN_COMMENT 
+        ON (ADMIN_BOARD_VIEW.BOARD_NO = ADMIN_COMMENT.BOARD_NO)
 	</select>
 
-	<select id="selectAdminBoardListByType" resultType="AdminBoardVO">
+	<select id="selectAdminBoardListByType">
 		SELECT 
 			  BOARD_NO
 			, USER_ID
@@ -34,14 +51,19 @@
 			ADMIN_BOARD
 		WHERE
 			BOARD_TYPE_CODE = #{boardTypeCode}
-			AND
-			BOARD_STATUS != 'D'
 	</select>
-	<!-- WHERE
-			BOARD_TYPE_CODE IN  /* ('UFAQ-U1','UFAQ-U2','UFAQ-U3'...) */ 
-			<foreach collection="faqList" open="(" close=")" index="i" separator="," item="">
-				#{faqList[i]}
-			</foreach> -->
+
+	<select id="selectCodeGroupNoByType" parameterType="String">  <!-- 공통 코드 이름을 통해 메뉴에 뿌리는 쿼리 -->
+		SELECT CODE_DETAIL_NO
+		FROM CMN_CODE
+		WHERE CODE_GROUP_NO = 
+		    (SELECT
+		        CMN_CODE.CODE_GROUP_NO
+		    FROM CMN_CODE
+		    JOIN ADMIN_BOARD
+			    ON CMN_CODE.CODE_DETAIL_NO = ADMIN_BOARD.BOARD_TYPE_CODE
+			WHERE ADMIN_BOARD.BOARD_TYPE_CODE = #{boardTypeCode})
+	</select>
 	
 	<select id="selectAdminBoardList">
 		SELECT 
