@@ -57,23 +57,48 @@ document.addEventListener("DOMContentLoaded", () => {
   aboardSV.addEventListener("click", (e) => {
     e.preventDefault();
 
-    const boardTitle = document
-      .querySelector('[data-field="boardTitle"]')
-      .value.trim();
-    const boardContent = document
-      .querySelector('[data-field="boardContent"]')
-      .value.trim();
-    const boardTypeCode = subTC.value || faqTC.value || aboardTC.value; // 가장 상세한 걸 우선
-
+    // 요소들
+    const boardTitleEl = document.querySelector('[data-field="boardTitle"]');
+    const boardContentEl = document.querySelector(
+      '[data-field="boardContent"]'
+    );
     const boardNo = document.querySelector("input[name='boardNo']")?.value;
-    const isEdit = !!boardNo;
+    const isEdit = Boolean(boardNo);
+    const boardTypeCodeEl = subTC.value || faqTC.value || aboardTC.value;
 
-    // 기본 검증
-    if (!boardTitle || !boardContent || !boardTypeCode) {
-      alert("모든 항목을 입력해주세요.");
-      return;
+    const boardTitle = boardTitleEl.value.trim();
+    const boardContent = boardContentEl.value.trim();
+
+    // 기존 에러 메시지 제거
+    document.querySelectorAll(".invalid-feedback").forEach((el) => el.remove());
+    document
+      .querySelectorAll(".is-invalid")
+      .forEach((el) => el.classList.remove("is-invalid"));
+
+    let hasError = false;
+
+    // 유틸: 에러 표시
+    function showError(el, message) {
+      el.classList.add("is-invalid");
+      const feedback = document.createElement("div");
+      feedback.className = "invalid-feedback";
+      feedback.textContent = message;
+      el.insertAdjacentElement("afterend", feedback);
     }
 
+
+    // 개별 검증
+    if (!boardTitle) showError(boardTitleEl, "제목을 입력해주세요.");
+    if (!boardContent) showError(boardContentEl, "내용을 입력해주세요.");
+    if (!boardTypeCode) showError(boardTypeCodeEl, "글 유형을 선택해주세요.");
+
+    if (aboardTC.value=="") showError(aboardTC, "게시판 유형을 선택해주세요.");
+    if (!faqTC.disabled && !faqTC.value) showError(faqTC, "회원 유형을 선택해주세요.");
+    if (!subTC.disabled && !subTC.value) showError(subTC, "질문 유형을 선택해주세요.");
+
+    if (hasError) return;
+
+    // 저장 요청
     const method = isEdit ? "PUT" : "POST";
     const url = isEdit
       ? `/ajax/admin/community/adminBoard/${boardTypeCode}/${boardNo}`
@@ -100,7 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((err) => {
         console.error("저장 중 오류:", err);
-        alert("저장 중 오류가 발생했습니다.");
       });
   });
 });
