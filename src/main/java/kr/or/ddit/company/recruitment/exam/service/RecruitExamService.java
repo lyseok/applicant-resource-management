@@ -5,4 +5,5 @@ import java.util.List;
 import kr.or.ddit.vo.recruitment.RecruitmentExamVO;
 
 public interface RecruitExamService {
+	public void copyCompanyExamToRecruit(String processNo, String companyExamNo, RecruitmentExamVO exam);
 }
