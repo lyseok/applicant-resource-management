@@ -9,10 +9,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "myExpCode")
 public class MyExperienceVO implements Serializable{
 
-	private String myExpCode;
+	private String myExpCode;	//pk
 	private String resumeNo;
 	
-	private String expCode;
+	private String expCode;		// 경험구분코드 (공통)
 	private String expCodeName;
 	
 	private String expName;

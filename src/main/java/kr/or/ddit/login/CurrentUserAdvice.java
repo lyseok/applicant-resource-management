@@ -43,6 +43,7 @@ public class CurrentUserAdvice {
             } else if (user instanceof MemberVO) {
                 model.addAttribute("userType", "member");
                 model.addAttribute("memberName", ((MemberVO) user).getMemName());
+                model.addAttribute("memberInfo", ((MemberVO) user));
             } else {
                 model.addAttribute("userType", "user");
             }
