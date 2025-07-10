@@ -13,6 +13,8 @@ public interface ResumeService {
 	public void createResume(ResumeVO vo);
 	// 수정
 	public void editResume(ResumeVO vo);
+	// 논리 삭제
+	public void editResumeRemove(ResumeVO vo);
 	// 삭제
 	public void removeResume(String no);
 	
