@@ -25,28 +25,35 @@
 	</select>
 	
 	<insert id="insertApplicantRecord">
-	<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
-    SELECT
-        'APRC'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(APPLICANT_RECORD_NO), LENGTH('APRC' ) + 1)), 0) + 1, 6, '0')
-    FROM APPLICANT_RECORD
- 	</selectKey>
-	INSERT INTO APPLICANT_RECORD (
-		APPLICANT_RECORD_NO
-		, RECRUITMENT_NO
-		, APPLICANT_ID
-		, RECRUIT_PROCESS_STEP
-		, STEP_PASS_YN
-		, STEP_APPLICATION_YN
-	) VALUES (
-		#{applicantRecordNo}
-		, #{recruitmentNo}
-		, #{applicantId}
-		, #{recruitProcessStep}
-		, 'N'
-		, 'N'
-	)
+		<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
+	    SELECT
+	        'APRC'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(APPLICANT_RECORD_NO), LENGTH('APRC' ) + 1)), 0) + 1, 6, '0')
+	    FROM APPLICANT_RECORD
+	 	</selectKey>
+		INSERT INTO APPLICANT_RECORD (
+			APPLICANT_RECORD_NO
+			, RECRUITMENT_NO
+			, APPLICANT_ID
+			, RECRUIT_PROCESS_STEP
+			, STEP_PASS_YN
+			, STEP_APPLICATION_YN
+		) VALUES (
+			#{applicantRecordNo}
+			, #{recruitmentNo}
+			, #{applicantId}
+			, #{recruitProcessStep}
+			, 'N'
+			, 'N'
+		)
 	</insert>
+	
+	<update id="updateInterviewURL">
+		UPDATE APPLICANT_RECORD 
+		SET 
+			INTERVIEW_URL = #{interviewUrl}
+		WHERE APPLICANT_RECORD_NO =	#{applicantRecordNo}
+	</update>
 	
 	<update id="updateApplicantRecord">
 	UPDATE APPLICANT_RECORD SET 

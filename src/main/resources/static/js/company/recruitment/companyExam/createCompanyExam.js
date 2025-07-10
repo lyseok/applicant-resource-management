@@ -1,111 +1,204 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const questionContainer = document.getElementById('questionContainer');
-  const addQbtn = "";
-  const existingExamNo = body.dataset.examId;
-  let questionCount = 0;
+ 
+  const containerEl         = document.getElementById('container');            
+  const questionContainerEl = document.getElementById('questionContainer');   
+  const addQuestionBtnEl    = document.getElementById('addQuestionBtn');    
+  const submitBtnEl         = document.getElementById('submitAllBtn');        
+  const examNameInput       = document.getElementById('comExamName');         
+  const existingExamNo      = containerEl.dataset.examId || null;          
+  const exitBtnEl 			= document.getElementById('exitBtn'); 
+ 
+  let questionCount = 0;  
 
-  // 문제/보기 블록 생성 함수
-  function addQuestionBlock(idx) {
+ 
+  function addQuestionBlock(idx, data) {
     const card = document.createElement('div');
-    card.className = 'card';
-    card.id = `qCard${idx}`;
+    card.className = 'card question-card';
+    card.dataset.idx = idx;
+    if (data?.comQuestionsNo) {
+      card.dataset.qNo = data.comQuestionsNo;  
+    }
     card.innerHTML = `
-      <h3>문제 ${idx + 1}</h3>
-      <textarea id="qText${idx}" rows="2" placeholder="문제 내용을 입력"></textarea>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3>문제 ${idx + 1}</h3>
+        <button type="button" class="delete-question-btn">×</button>
+      </div>
+      <textarea id="questionText${idx}"
+                rows="2"
+                placeholder="문제를 입력하세요"
+      >${data?.comExamContents || ''}</textarea>
+      <span class="text-danger" id="question${idx}Error"></span>
       <div id="optList${idx}"></div>
-      <button type="button" class="btn-secondary btn" id="addOptBtn${idx}">+ 보기 추가</button>
+      <button type="button"
+              class="btn-secondary btn add-opt-btn"
+              data-qidx="${idx}"
+      >+ 보기 추가</button>
     `;
-    questionContainer.append(card);
+    questionContainerEl.append(card);
 
+
+    card.querySelector('.delete-question-btn')
+        .addEventListener('click', () => card.remove());
+
+    
     let optCount = 0;
-    const addOptBtn = document.getElementById(`addOptBtn${idx}`);
-    addOptBtn.addEventListener('click', () => {
-      const row = document.createElement('div');
-      row.className = 'option-row';
-      row.innerHTML = `
-        <input type="text" id="q${idx}opt${optCount}" placeholder="보기 내용 입력" />
-        <label>
-          <input type="radio" name="correct${idx}" value="${optCount}" /> 정답
-        </label>
-      `;
-      document.getElementById(`optList${idx}`).append(row);
+    if (data?.optionList) {
+      data.optionList.forEach(opt => {
+        appendOption(idx, optCount,
+                     opt.comOptionContent,
+                     opt.comOptionCorrectYn === 'Y',
+                     opt.comOptionNo);
+        optCount++;
+      });
+    }
+
+   
+    card.querySelector('.add-opt-btn')
+        .addEventListener('click', () => {
+			
+	  if(optCount >= 5){
+		alert('보기는 5개까지 생성 가능합니다.');
+		return;
+	  }
+      appendOption(idx, optCount, '', false, null);
       optCount++;
+      if(optCount === 5)card.querySelector('.add-opt-btn').disabled = ture;
     });
   }
 
-  // 초기 1문제 블록
-  addQuestionBlock(questionCount);
-  questionCount++;
+ 
+  function appendOption(qIdx, optIdx, value = '', isCorrect = false, optNo = null) {
+    const row = document.createElement('div');
+    row.className = 'option-row';
+    if (optNo) row.dataset.optNo = optNo;  
 
-  // 문제 추가 버튼
-  document.getElementById('addQuestionBtn').addEventListener('click', () => {
+    row.innerHTML = `
+      <input type="text"
+             placeholder="보기 내용을 입력"
+             value="${value}" />
+      <label>
+        <input type="radio"
+               name="correct${qIdx}"
+               value="${optIdx}"
+               ${isCorrect ? 'checked' : ''}
+        /> 정답
+      </label>
+      <button type="button" class="delete-opt-btn">×</button>
+    `;
+    document.getElementById(`optList${qIdx}`).append(row);
+
+
+    row.querySelector('.delete-opt-btn')
+       .addEventListener('click', () => row.remove());
+  }
+
+
+  if (existingExamNo) {
+    
+    axios.get(`/ajax/company/companyExam/detail/${existingExamNo}`)
+         .then(resp => {
+           const exam = resp.data;
+           examNameInput.value = exam.comExamName;
+           exam.questionList.forEach((q, i) => {
+             addQuestionBlock(i, q);
+             questionCount++;
+           });
+         })
+         .catch(() => alert('시험 정보를 불러오는 중 오류 발생'));
+  } else {
+    
+    addQuestionBlock(0);
+    questionCount = 1;
+  }
+
+
+  addQuestionBtnEl.addEventListener('click', () => {
     addQuestionBlock(questionCount);
     questionCount++;
   });
-  
-  
- 
- 
- 	
 
-  // 전체 제출 버튼
-  document.getElementById('submitAllBtn').addEventListener('click', async () => {
-    const examName = document.getElementById('comExamName').value.trim();
-    if (!examName) {
-      return alert('시험명을 입력하세요!');
+  
+  submitBtnEl.addEventListener('click', async () => {
+   
+    const name = examNameInput.value.trim();
+    if (!name) {
+      document.getElementById('comExamNameError')
+              .textContent = '시험명을 입력하세요';
+      return;
     }
+    document.getElementById('comExamNameError').textContent = '';
 
-    // questionList 수집
+  
+    const cards = document.querySelectorAll('.question-card');
     const questionList = [];
-    for (let i = 0; i < questionCount; i++) {
-      const qText = document.getElementById(`qText${i}`).value.trim();
-      if (!qText) {
-        return alert(`문제 ${i + 1} 내용을 입력하세요!`);
+
+    for (const card of cards) {
+      const idx   = card.dataset.idx;
+      const text  = card.querySelector('textarea').value.trim();
+      const errEl = document.getElementById(`question${idx}Error`);
+      if (!text) {
+        errEl.textContent = `문제 ${+idx + 1}를 입력하세요`;
+        return;
+      }
+      errEl.textContent = '';
+
+      const opts  = card.querySelectorAll(`#optList${idx} input[type="text"]`);
+      const radios = card.querySelectorAll(`input[name="correct${idx}"]`);
+      if (opts.length < 2) {
+        errEl.textContent = `문제 ${+idx + 1} 보기를 2개 이상 입력하세요`;
+        return;
       }
 
-      const optsContainer = document.getElementById(`optList${i}`);
-      const textInputs = optsContainer.querySelectorAll('input[type=text]');
-      const radios     = document.getElementsByName(`correct${i}`);
-      if (textInputs.length === 0) {
-        return alert(`문제 ${i + 1} 보기를 하나 이상 추가하세요!`);
-      }
-
-      // optionList 생성
       const optionList = [];
-      textInputs.forEach((input, j) => {
-        const content = input.value.trim();
-        if (!content) return;
-        const isCorrect = Array.from(radios).some(r => r.checked && +r.value === j);
+      let hasAnswer = false;
+      opts.forEach((inp, j) => {
+        const val = inp.value.trim();
+        if (!val) return;
+        const isC = radios[j]?.checked;
+        if (isC) hasAnswer = true;
         optionList.push({
-          comOptionContent: content,
-          comOptionCorrectYn: isCorrect ? 'Y' : 'N'
+          comOptionNo: inp.closest('.option-row').dataset.optNo || null,
+          comOptionContent: val,
+          comOptionCorrectYn: isC ? 'Y' : 'N'
         });
       });
+      if (!hasAnswer) {
+        errEl.textContent = `문제 ${+idx + 1} 정답을 선택하세요`;
+        return;
+      }
 
       questionList.push({
-        comExamContents: qText,
+        comQuestionsNo: card.dataset.qNo || null,
+        comExamContents: text,
         optionList
       });
     }
 
-  
-	    const payload = {
-	      comExamName: examName,
-	      questionList
-	    };
+   
+    const payload = {
+      comExamNo: existingExamNo,
+      comExamName: name,
+      questionList
+    };
+    const method = existingExamNo ? 'put' : 'post';
+    const url    = existingExamNo
+                 ? `/ajax/company/companyExam/edit/${existingExamNo}`
+                 : '/ajax/company/companyExam/create';
 
     try {
-      const data = await axios.post(
-        '/ajax/company/companyExam/full',
-        payload
-      );
-        alert(data);
-        window.location.href = '/company/companyExam';
-      
-   
-    } catch (err) {
-      console.error(err);
+      await axios[method](url, payload);
+      alert(existingExamNo ? '수정 완료' : '등록 완료');
+      location.href = '/company/companyExam';
+    } catch (e) {
+      console.error(e);
       alert('저장 중 오류 발생');
     }
   });
+  
+  
+  
+  exitBtnEl.addEventListener('click', () =>{
+	  location.href = '/company/companyExam';
+  })
+  
 });

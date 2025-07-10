@@ -34,18 +34,21 @@ const setData = (data) => {
     title: recruitmentNotice.recruitmentTitle,
     jobName: recruitmentNotice.jobCodeName,
     hireCount: recruitmentNotice.recPositionNumber,
+    interviewTypeCode: interview.interviewType,
     interviewType: interview.interviewType === 'Y' ? '화상면접' : '대면면접',
     interviewDate: interview.interviewDate,
     interviewLocation: interview.interviewLocation,
     scoreItems: interviewQuestionList.map(
       (item) => item.interviewQuestionContent
     ),
-    videoInterview: {
-      roomTitle: videoInterview.roomTitle,
-      maxJoinCount: videoInterview.maxJoinCount,
-      startTime: videoInterview.startDate,
-      endTime: videoInterview.endDate,
-    },
+    videoInterview: videoInterview && videoInterview.roomTitle
+    ? {
+        roomTitle: videoInterview.roomTitle,
+        maxJoinCount: videoInterview.maxJoinCount,
+        startTime: videoInterview.startDate,
+        endTime: videoInterview.endDate,
+      }
+    : null, // 또는 {} 도 가능
     applicants: applicantRecordList.map((item) => ({
       name: item.applicantName,
       resumeUrl: '#', // 필요시 item.resumeUrl 등으로 교체
@@ -69,16 +72,35 @@ const setData = (data) => {
     .join('');
 
   // 화상면접 정보가 있으면
-  if (detail.videoInterview) {
-    document.getElementById('videoInterviewArea').style.display = '';
-    document.getElementById('roomTitle').textContent =
-      detail.videoInterview.roomTitle;
-    document.getElementById('maxJoinCount').textContent =
-      detail.videoInterview.maxJoinCount + '명';
-    document.getElementById('videoStartTime').textContent =
-      detail.videoInterview.startTime;
-    document.getElementById('videoEndTime').textContent =
-      detail.videoInterview.endTime;
+  if(detail.interviewTypeCode === 'Y'){
+    const videoArea = document.getElementById('videoInterviewArea');
+    if (detail.videoInterview) {
+      videoArea.style.display = '';
+      document.getElementById('roomTitle').textContent =
+        detail.videoInterview.roomTitle;
+      document.getElementById('maxJoinCount').textContent =
+        detail.videoInterview.maxJoinCount + '명';
+      document.getElementById('videoStartTime').textContent =
+        detail.videoInterview.startTime;
+      document.getElementById('videoEndTime').textContent =
+        detail.videoInterview.endTime;
+    } else {
+      // 안내문구와 버튼 추가
+      videoArea.style.display = '';
+      videoArea.innerHTML = `
+        <div class="p-4 text-center text-secondary">
+          <div class="mb-3 fw-semibold fs-5">등록된 화상면접 정보가 없습니다.</div>
+          <button class="btn btn-primary" id="addVideoInterviewBtn">
+            화상면접 등록
+          </button>
+        </div>
+      `;
+      document.getElementById('addVideoInterviewBtn').onclick = function() {
+        // 등록 페이지 이동
+        const interviewNo = getParam('interviewNo');
+        location.href="/company/interview/create?interviewNo=" + interviewNo;
+      };
+    }
   }
 
   // 지원자 리스트
@@ -94,4 +116,30 @@ const setData = (data) => {
     `
     )
     .join('');
+};
+
+
+
+
+document.getElementById('editVideoInterviewBtn').onclick = function() {
+  // 수정 페이지 이동
+  const interviewNo = getParam('interviewNo');
+  location.href="/company/interview/create?interviewNo=" + interviewNo;
+};
+
+document.getElementById('startInterviewBtn').onclick = async function() {
+  const interviewNo = getParam('interviewNo'); // 인터뷰 번호 파라미터에서 가져오기
+  try {
+    const res = await axios.get('/ajax/company/videointerview/' + interviewNo, {
+      params: { interviewNo }
+    });
+    const url = res.data;
+    if (url) {
+      window.open(url, '_blank'); // 새 창으로 열기
+    } else {
+      alert('화상면접 주소를 찾을 수 없습니다.');
+    }
+  } catch (e) {
+    alert('화상면접 접속 주소를 불러오는 데 실패했습니다.');
+  }
 };
