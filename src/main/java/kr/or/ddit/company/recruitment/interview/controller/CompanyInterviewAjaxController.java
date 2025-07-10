@@ -50,7 +50,7 @@ public class CompanyInterviewAjaxController {
 			return ResponseEntity.badRequest().body(errors);
 		}
 		
-		service.createInterview(dto);
+		service.createInterviewLogic(dto);
 		
 	    return ResponseEntity.ok("ok");
 	}

@@ -22,7 +22,7 @@
 		<result property="recruitmentStartdate" column="RENO_RECRUITMENT_STARTDATE"/>
 		<result property="recruitmentReceiptStart" column="RENO_RECRUITMENT_RECEIPT_START"/>
 		<result property="recruitmentFinishDate" column="RENO_RECRUITMENT_FINISH_DATE"/>
-		<result property="recruitmentDelDate" column="RENO_RECRUIMENT_DEL_DATE"/>
+		<result property="recruitmentDelDate" column="RENO_RECRUITMENT_DEL_DATE"/>
 	</resultMap>
 	
 	<!-- ApplicantVO -->
@@ -62,8 +62,7 @@
 	</resultMap>
 	
 	<resultMap id="videoInterviewMap" type="kr.or.ddit.vo.recruitment.VideoInterviewVO">
-	    <id property="videoInterviewNo" column="VIV_VIDEO_INTERVIEW_NO"/>
-	    <result property="interviewNo" column="VIV_INTERVIEW_NO"/>
+	    <id property="interviewNo" column="VIV_INTERVIEW_NO"/>
 	    <result property="roomTitle" column="VIV_ROOM_TITLE"/>
 	    <result property="maxJoinCount" column="VIV_MAX_JOIN_COUNT"/>
 	    <result property="startDate" column="VIV_START_DATE"/>
@@ -135,7 +134,7 @@
 			RENO.RECRUITMENT_RECEIPT_START  AS RENO_RECRUITMENT_RECEIPT_START,
 			RENO.RECRUITMENT_FINISH_DATE    AS RENO_RECRUITMENT_FINISH_DATE,
 			RENO.RECRUITMENT_TITLE          AS RENO_RECRUITMENT_TITLE,
-			RENO.RECRUIMENT_DEL_DATE        AS RENO_RECRUIMENT_DEL_DATE,
+			RENO.RECRUITMENT_DEL_DATE       AS RENO_RECRUITMENT_DEL_DATE,
 
 			-- ApplicantRecord 컬럼
 			APRE.APPLICANT_RECORD_NO        AS APRE_APPLICANT_RECORD_NO,
@@ -199,7 +198,7 @@
 			RENO.RECRUITMENT_RECEIPT_START  AS RENO_RECRUITMENT_RECEIPT_START,
 			RENO.RECRUITMENT_FINISH_DATE    AS RENO_RECRUITMENT_FINISH_DATE,
 			RENO.RECRUITMENT_TITLE          AS RENO_RECRUITMENT_TITLE,
-			RENO.RECRUIMENT_DEL_DATE        AS RENO_RECRUIMENT_DEL_DATE,
+			RENO.RECRUITMENT_DEL_DATE       AS RENO_RECRUITMENT_DEL_DATE,
 
 			-- ApplicantRecord 컬럼
 			APRE.APPLICANT_RECORD_NO        AS APRE_APPLICANT_RECORD_NO,
@@ -220,7 +219,6 @@
 			APP.APPLICANT_DEL_DATE          AS APP_APPLICANT_DEL_DATE,
 			
 			-- VideoInterview 컬럼
-		    VIV.VIDEO_INTERVIEW_NO          AS VIV_VIDEO_INTERVIEW_NO,
 		    VIV.INTERVIEW_NO                AS VIV_INTERVIEW_NO,
 		    VIV.ROOM_TITLE                  AS VIV_ROOM_TITLE,
 		    VIV.MAX_JOIN_COUNT              AS VIV_MAX_JOIN_COUNT,
