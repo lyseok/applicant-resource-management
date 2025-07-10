@@ -24,4 +24,5 @@ public class RecruitmentExamVO implements Serializable{
 	@NotBlank
 	private Integer recruitExamTime;
 	private String recruitExamDelDate;
+	
 }
