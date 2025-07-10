@@ -3,8 +3,6 @@ package kr.or.ddit.company.recruitment.videointerview.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.recruitment.VideoInterviewMapper;

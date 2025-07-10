@@ -10,8 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import kr.or.ddit.common.exception.VideoInterviewCreateException;
-import kr.or.ddit.company.recruitment.interview.dto.VideoInterviewSaveDTO;
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.dto.VideoInterviewSaveDTO;
 import kr.or.ddit.mapper.recruitment.ApplicantRecordMapper;
 import kr.or.ddit.mapper.recruitment.InterviewMapper;
 import kr.or.ddit.mapper.recruitment.VideoInterviewMapper;
