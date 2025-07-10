@@ -29,15 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyExamAjaxController {
 	private final CompanyExamService companyExamService;
 	
-//	@PostMapping("/exam")
-//	public ResponseEntity<String> createExam(@RequestBody CompanyExamVO exam) {
-//		log.info("exam : {}", exam);
-//		exam.setUserId(getUserId());
-//		//exam.setUserId("testCompany");
-//		companyExamService.createCompanyExam(exam);
-//		return ResponseEntity.ok("등록 성공");
-//		
-//	}
 
 	
 	@GetMapping("/list")
@@ -79,7 +70,7 @@ public class CompanyExamAjaxController {
 	@PutMapping("/edit/{examNo}")
 	public ResponseEntity<String> editExam(@PathVariable String examNo,  @RequestBody CompanyExamVO exam){
 		exam.setComExamNo(examNo);
-		boolean success = companyExamService.editCompanyExam(exam);
+		boolean success = companyExamService.editCompanyExamInfo(exam);
 		
 		if(success) {
 			return ResponseEntity.ok("수정 성공 ");

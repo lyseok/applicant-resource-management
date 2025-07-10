@@ -140,6 +140,7 @@
 		      <label>
 		        시험명
 		        <input type="text" id="comExamName" placeholder="시험명을 입력하세요" />
+		        <span id="comExamNameError" class="text-danger small"></span>
 		      </label>
 		    </div>
 		
@@ -150,8 +151,70 @@
 		    </div>
 		
 		    <div class="actions">
-		      <button id="submitAllBtn" class="btn">시험 생성</button>
+		      <button id="submitAllBtn" class="btn">${empty examNo ? '시험 생성' : '시험 수정'} </button>
+		      <button id="exitBtn" class="btn">목록</button>
 		    </div>
 	 </div>
+	 
+	 
+	 
+	 
+	 
+	<!-- 시험 수정 확인 모달 -->
+	<div class="modal fade" id="examEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header border-0">
+					<h1 class="modal-title fs-5 fw-bold text-primary" id="exampleModalLabel">
+						<i class="bi bi-pencil-square me-1"></i> 시험 수정
+					</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center py-4">
+					<div style="font-size:2.4rem; color:#007bff; margin-bottom:10px;">📝</div>
+					<p class="fs-5 mb-2 fw-semibold" style="color:#333;">
+						시함 <span style="color:#0d6efd;">수정</span>하시겠습니까?
+					</p>
+					<p class="text-secondary mb-0" style="font-size:1.1rem;">
+						변경한 내용은 즉시 반영되며,<br>실행 전 다시 한 번 확인해 주세요.
+					</p>
+				</div>
+				<div class="modal-footer border-0 justify-content-center">
+					<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary px-4">수정하기</button>
+				</div>
+			</div>
+	</div>
+	
+	
+	
+	<!-- 추가 확인 모달 -->
+<div class="modal fade" id="addExamModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title fs-5 fw-bold text-success" id="addModalLabel">
+                    <i class="bi bi-plus-circle-fill me-1"></i> 시험 추가
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div style="font-size:2.4rem; color:#28a745; margin-bottom:10px;">🟢</div>
+                <p class="fs-5 mb-2 fw-semibold" style="color:#218838;">
+                    새로운 시험 <span style="color:#28a745;">추가</span>하시겠습니까?
+                </p>
+                <p class="text-secondary mb-0" style="font-size:1.08rem;">
+                    입력한 정보가 등록됩니다.<br>
+                    실행 전 내용을 다시 한 번 확인해 주세요.
+                </p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-success px-4">추가하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </body>
 </html>

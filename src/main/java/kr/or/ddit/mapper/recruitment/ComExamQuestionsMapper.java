@@ -15,7 +15,6 @@ public interface ComExamQuestionsMapper {
 	public int deleteComExamQuest(String comQuestionsNo);
 	
 	
-	public List<ComExamQuestionsVO> selectByExamNo(String examNo);
-	
-	public int softDeleteComExamQuest(String comQuestionNo);
+	public List<ComExamQuestionsVO> selectByQuestionExamNo(String examNo);
+	public int updateDeleteDateComExamQuestion(String comQuestionNo);
 }

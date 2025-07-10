@@ -16,7 +16,7 @@ public interface CompanyExamService {
 	
 	public boolean editExamDeleteDate(String examNo);
 	
-	public boolean editCompanyExam(CompanyExamVO companyExam);
+	public boolean editCompanyExamInfo(CompanyExamVO companyExam);
 	
 	public CompanyExamVO readCompanyExamWithQuestionAndOption(String examNo);
 

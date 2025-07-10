@@ -70,14 +70,14 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 
 	@Transactional
 	@Override
-	public boolean editCompanyExam(CompanyExamVO companyExam) {
+	public boolean editCompanyExamInfo(CompanyExamVO companyExam) {
 		String examNo = companyExam.getComExamNo();
 		
 		int update = companyExamMapper.updateCompanyExam(companyExam);
 		if(update == 0) return false;
 		
 		
-		List<ComExamQuestionsVO> existingQuestions = comExamQuestionsMapper.selectByExamNo(examNo);
+		List<ComExamQuestionsVO> existingQuestions = comExamQuestionsMapper.selectByQuestionExamNo(examNo);
 		Set<String> incomingQNo = new HashSet<>();
 		
 		for(ComExamQuestionsVO q : companyExam.getQuestionList()) {
@@ -100,7 +100,8 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 			Set<String> incomingONo = new HashSet<>();
 			
 			for(ComExamOptionVO o : q.getOptionList()) {
-				o.setComOptionNo(questionNo);
+				o.setComQuestionsNo(questionNo);
+				
 				if(o.getComOptionNo() == null) {
 					comExamOptionMapper.insertComExamOption(o);
 				}else {
@@ -112,21 +113,21 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 			
 			for(ComExamOptionVO existO : existingOptions) {
 				if (!incomingONo.contains(existO.getComOptionNo())) {
-					comExamOptionMapper.softDeleteComExamOption(existO.getComOptionNo());
+					comExamOptionMapper.updateDeleteDateComExamOption(existO.getComOptionNo());
 				}
 			}
 			
 			
 			for(ComExamQuestionsVO existQ : existingQuestions ) {
-				if(!incomingONo.contains(existQ.getComQuestionsNo())){
-					comExamOptionMapper.softDeleteByQuestionNo(existQ.getComQuestionsNo());
-					comExamQuestionsMapper.softDeleteComExamQuest(existQ.getComQuestionsNo());
+				if(!incomingQNo.contains(existQ.getComQuestionsNo())){
+					comExamOptionMapper.updateDeleteDateByQuestionNo(existQ.getComQuestionsNo());
+					comExamQuestionsMapper.updateDeleteDateComExamQuestion(existQ.getComQuestionsNo());
 				}
 			}
 			
 			
 		}
-		return false;
+		return true;
 	}
 
 	

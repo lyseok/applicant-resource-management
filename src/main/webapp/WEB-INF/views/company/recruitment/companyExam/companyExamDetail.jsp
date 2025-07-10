@@ -29,6 +29,10 @@
 			<button id="exam-edit-btn" data-exam-id="${examNo}" class="btn btn_violet_line">
 	    		수정
 	  		</button>
+	  		<button id="exitBtn" class="btn btn_violet_line">
+	    		목록
+	  		</button>
+	  		
 			<div class = "card exam-question"></div>
 		</div>
 	</div>
