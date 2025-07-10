@@ -48,8 +48,9 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	}
 
 	@Override
-	public void createAdminBoard(AdminBoardVO board) {
-		mapper.insertAdminBoard(board);		
+	public String createAdminBoard(AdminBoardVO board) {
+	    mapper.insertAdminBoard(board);
+	    return board.getBoardNo(); // board 객체에 selectKey로 세팅된 값
 	}
 
 	@Override

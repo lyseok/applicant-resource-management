@@ -117,17 +117,15 @@ public class AdminAdminBoardController {
 	) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
-		String lvn;
+		String boardNo = service.createAdminBoard(aboard);
 		if(!errors.hasErrors()) {
-			service.createAdminBoard(aboard);
-			lvn = "admin/community/adminBoard/aboardDetail";
+			return "redirect:/admin/community/adminBoard/aboardDetail?boardNo=" + boardNo;
 		}else {
 			String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
 			redirectAttributes.addFlashAttribute(MODELNAME, aboard);
 			redirectAttributes.addFlashAttribute(errorsName, errors);
-			lvn = "admin/community/adminBoard/aboardForm";
+			return "redirect:/admin/community/adminBoard/aboardForm/insert?boardNo=" + boardNo;
 		}
-		return lvn;
 	}
 	
 	// 폼 수정 데이터 처리

@@ -32,7 +32,6 @@ public class AdminAdminBoardAjaxController {
 	
 	private final AdminAdminBoardAjaxService service;
 	private final AdminCmnCodeGroupAjaxService cservice;
-	private final ErrorsUtils errorsUtils;
 	
     // codeGroupNo 파라미터(BRDD, UFAQ, CFAQ)를 받아 
 	// codeDetailNo 목록(BRDD-001, BRDD-002, BRDD-003...)과 codeName("문의사항", "FAQ", "공지사항"...) 조회
@@ -41,6 +40,7 @@ public class AdminAdminBoardAjaxController {
         return cservice.readCmnCodeGroupByPk(no);
     }
 
+    // 해당 유형의 해당 글의 게시글 단건조회
 	@GetMapping("/{boardTypeCode}/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
 	    return service.readAdminBoardByPk(boardNo)
@@ -48,25 +48,29 @@ public class AdminAdminBoardAjaxController {
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	
+	// 유형별 게시글 목록조회
 	@GetMapping("/{boardTypeCode}")
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
 		return service.readAdminBoardListByType(boardTypeCode);
 	}
 
+	// 전체 게시글 목록조회
 	@GetMapping
 	public List<AdminBoardVO> getAll(){
 		return service.readAdminBoardList();
 	}
 	
+	// 해당 유형의 등록
 	@PostMapping("/{boardTypeCode}")
 	public Map<String, Object> inBoard(
 		@PathVariable String boardTypeCode
 		, @RequestBody AdminBoardVO board
 	) {
-		service.createAdminBoard(board);
-	    return Map.of("ok", true);
+		String boardNo = service.createAdminBoard(board);  //boardNo 받아서 뷰에서 사용
+	    return Map.of("ok", true, "boardNo", boardNo);
 	}
 	
+	// 해당 유형의 해당 글의 게시글 수정
 	@PutMapping("/{boardTypeCode}/{boardNo}")
 	public Map<String, Object> editBoard(
 		@PathVariable String boardTypeCode
@@ -78,6 +82,7 @@ public class AdminAdminBoardAjaxController {
 	    return Map.of("ok", true);	// 수정 후 Detail 이동
 	}
 	
+	// 해당 유형의 해당 글의 게시글 삭제
 	@DeleteMapping("/{boardTypeCode}/{boardNo}")
 	public Map<String, Object> deleteBoard(
 		@PathVariable String boardTypeCode
@@ -87,19 +92,4 @@ public class AdminAdminBoardAjaxController {
 		return Map.of("ok", true);
 	}
 
-	// 입력 검증
-	@PostMapping("/aboardChk")
-	public ResponseEntity<?> saveAboard(
-		@Valid @RequestBody AdminBoardVO dto
-		, BindingResult bindingResult
-	) {
-		log.info("{}", dto);
-		
-		if(bindingResult.hasErrors()) {
-			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
-			return ResponseEntity.badRequest().body(errors);
-		}
-		
-	    return ResponseEntity.ok("ok");
-	}
 }
