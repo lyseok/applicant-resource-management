@@ -82,7 +82,6 @@
 	</select>
 	
 	
-	
 	<insert id="insertCompanyExam">
 	<selectKey resultType="string" keyProperty="comExamNo" order="BEFORE">
     SELECT

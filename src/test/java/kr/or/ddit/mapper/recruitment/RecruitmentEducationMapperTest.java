@@ -39,7 +39,7 @@ class RecruitmentEducationMapperTest {
 	void testUpdateRecruitmentEducation() {
 		RecruitmentEducationVO vo = new RecruitmentEducationVO();
 		vo.setCodeDetailNo("EDUC-002");
-		vo.setRecruitmentEdcucationCode("REED000001");
+		vo.setRecruitmentEducationCode("REED000001");
 		assertEquals(1, mapper.updateRecruitmentEducation(vo));
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import kr.or.ddit.validate.UpdateGroup;
+import kr.or.ddit.vo.common.CompanyVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -51,6 +52,8 @@ public class RecruitmentNoticeVO implements Serializable{
 	private String recruitmentDelDate;
 	
 	private List<RecruitmentPositionVO> positionList;
-	RecruitmentEducationVO education;
+	private RecruitmentEducationVO education;
 	private List<RecruitmentSkillVO> skillList;
+	private List<RecruitProcessVO> processList;
+	private CompanyVO company;
 }

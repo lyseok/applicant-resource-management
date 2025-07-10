@@ -8,15 +8,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = "recruitmentEdcucationCode")
+@EqualsAndHashCode(of = "recruitmentEducationCode")
 public class RecruitmentEducationVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
-	private String recruitmentEdcucationCode;
+	private String recruitmentEducationCode;
 	@NotBlank
 	private String codeDetailNo;
 	private String codeDetailName;
 	@NotBlank
 	private String recruitmentNo;
-	private String recruitmentPositionDelDate;
+	private String recruitmentEduDelDate;
 }
