@@ -90,9 +90,9 @@ document.getElementById('submitEvaluationBtn').onclick = async function() {
 
   // 1. 선택된 지원자(applicantId)
   const selectedApplicantRecordNo = applicantSelect.value;
-const selectedApplicant = applicantList.find(a => a.applicantRecordNo === selectedApplicantRecordNo);
-const applicantId = selectedApplicant.applicantId;
-const interviewScoreNo = interviewScoreMap[applicantId];
+  const selectedApplicant = applicantList.find(a => a.applicantRecordNo === selectedApplicantRecordNo);
+  const applicantId = selectedApplicant.applicantId;
+  const interviewScoreNo = interviewScoreMap[applicantId];
   console.log(interviewScoreNo);
 
   // 3. 평가 항목 리스트 생성
