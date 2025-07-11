@@ -59,13 +59,17 @@ public class RecruitServiceImpl implements RecruitService {
 	
 	private void setCodeName(RecruitmentNoticeVO notiVo) {
 		List<RecruitmentPositionVO> positionList = notiVo.getPositionList();
-		for(RecruitmentPositionVO position : positionList) {
-			String cmnCode = codeMapProvider.getCodeName(position.getCodeDetailNo()); 
-			position.setCodeDetailName(cmnCode);
+		if(notiVo.getPositionList() != null) {
+			for(RecruitmentPositionVO position : positionList) {
+				String cmnCode = codeMapProvider.getCodeName(position.getCodeDetailNo()); 
+				position.setCodeDetailName(cmnCode);
+			}			
 		}
 		RecruitmentEducationVO education = notiVo.getEducation();
-		String cmnCode = codeMapProvider.getCodeName(education.getCodeDetailNo());
-		education.setCodeDetailName(cmnCode);
+		if(notiVo.getEducation() != null) {			
+			String cmnCode = codeMapProvider.getCodeName(education.getCodeDetailNo());
+			education.setCodeDetailName(cmnCode);
+		}
 		
 		String district = codeMapProvider.getDistrictName(notiVo.getDistrictCode());
 		notiVo.setDistrictCodeName(district);
