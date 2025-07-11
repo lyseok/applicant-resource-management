@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -23,24 +24,23 @@
 	display: flex;
 	flex-direction: column;
 	width: 180px;
-	border: 1px solid #333;
+	border-top: 2px solid #333;
+	border-bottom: 1px solid #333;
 	box-sizing: border-box;
 	margin-right: 25px;
 	padding: 0;
-	border-radius: 10px;
-	overflow: hidden;
 }
 
 .tool-remote h3 {
 	margin: 0;
 	padding: 0;
-	background: #eaeaea;
 	font-size: 16px;
 	text-align: center;
-	flex: 1; /* 높이의 1/5 */
+	flex: 1;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+    border-bottom: 1px solid #333;
 }
 
 .tool-remote ul {
@@ -49,11 +49,11 @@
 	padding: 0;
 	display: flex;
 	flex-direction: column;
-	flex: 4; /* 높이의 4/5 */
+	flex: 4;
 }
 
 .tool-remote ul li {
-	flex: 1; /* 4개 메뉴가 동일 높이 */
+	flex: 1;
 	padding: 0 15px;
 	border-bottom: 1px solid #333;
 	display: flex;
@@ -66,9 +66,10 @@
 	border-bottom: none;
 }
 
-.tool-remote ul li.active, .tool-remote ul li:hover {
-	background: var(--violet120);
-	color: #fff;
+.tool-remote ul li.active,
+.tool-remote ul li:hover {
+	color: var(--violet100);
+	font-weight:bold;
 }
 
 /* 우측 콘텐츠 */
@@ -136,10 +137,10 @@
 		<div class="tool-remote">
 			<h3>취업 Tool 리모콘</h3>
 			<ul>
-				<li class="active" onclick="selectTool(1)">1. 글자수 세기</li>
-				<li onclick="selectTool(2)">2. 맞춤법 검사기</li>
-				<li onclick="selectTool(3)">3. 연차계산기</li>
-				<li onclick="selectTool(4)">4. 실수령액 계산기</li>
+				<li class="active" onclick="location.href='/count_text'">1. 글자수 세기</li>
+				<li onclick="location.href='/spelling'">2. 맞춤법 검사기</li>
+				<li onclick="location.href='/countyear'">3. 연차계산기</li>
+				<li onclick="location.href='/salarycalc'">4. 실수령액 계산기</li>
 			</ul>
 		</div>
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.or.ddit.member.common.mypage.scrab.scrabCompany.service.MemberScrabCompanyService;
@@ -57,16 +58,16 @@ public class MemberScrabCompanyController {
 	// 관심 기업 단건조회
 	@GetMapping("/scompanyDetail")
 	public String scompanyDetail(
-		@ModelAttribute ScrabCompanyVO scompany
+		@RequestParam(value = "companyId", required = false) String companyId
 		, Model model
 	) {
-		ScrabCompanyVO vo = null;
-	    if (scompany.getUserId() != null && scompany.getCompanyId() != null) {
-	    	vo = service.searchScrabCompanyByPk(scompany).orElse(null);
+		ScrabCompanyVO scompany = null;
+	    if (companyId != null) {
+	    	scompany = service.searchScrabCompanyByComId(companyId).orElse(null);
 	    }
 		//service가 널일 일은 없음, scompany는 없으면 false 처리됨
 		//동기 컨트롤러니까 jsp에서 if jstl로 처리, 비동기는 (!vo)로 처리
-		model.addAttribute("scompany", vo);
+		model.addAttribute("scompany", scompany);
 
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
@@ -83,14 +84,10 @@ public class MemberScrabCompanyController {
 	
 	// 수정 폼으로 이동
 	@GetMapping("/scompanyForm/edit")
-	public String editForm(
-		@ModelAttribute ScrabCompanyVO scompany
-		, Model model
-	) {
-		ScrabCompanyVO vo = null;
+	public String editForm(String companyId, Model model) {
 		if(!model.containsAttribute(MODELNAME)) {  //모델에 scompany가 없으면, db에서 가져옴
-			vo = service.searchScrabCompanyByPk(scompany).get();
-			model.addAttribute(MODELNAME, vo);
+			ScrabCompanyVO scompany = service.searchScrabCompanyByComId(companyId).get();
+			model.addAttribute(MODELNAME, scompany);
 		}
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);

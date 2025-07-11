@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/ajax/company/companyExam")
+@RequestMapping("/ajax/company/company_exam")
 public class CompanyExamAjaxController {
 	private final CompanyExamService companyExamService;
 	private final ErrorsUtils errorsUtils;

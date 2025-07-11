@@ -73,18 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
       </button>
 	 
     `;
+    
     document.getElementById('questionContainer').append(div);
-
-    // 삭제 버튼: 카드 제거 후 인덱스 재정렬
 	 div.querySelector('.remove-question').addEventListener('click', () => {
+	   
 	   const delInput = div.querySelector(
 	     `input[name="questionList[${idx}].comExamQuestDelDate"]`
 	   );
-	   if (delInput) {
-	     delInput.value = new Date().toISOString();
-	   }
-	   
-	   div.style.display = 'none';
+	   if (delInput) delInput.value = new Date().toISOString();
+	   div.remove();
+	 
 	   reindexQuestions();
 	 });
 	
@@ -179,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 인덱스 재정렬 함수 (추가된 부분) ---
+  // --- 문제/보기 인덱스 재정렬
   function reindexQuestions() {
     document.querySelectorAll('.question-card').forEach((card, newIdx) => {
       card.dataset.idx = newIdx;
@@ -282,9 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   
   
-  // --- 초기 로드 & 문제 추가 핸들러 ---
+  // --- 초기 로드 / 문제 추가
   if (existingExamNo) {
-    axios.get(`/ajax/company/companyExam/detail/${existingExamNo}`)
+    axios.get(`/ajax/company/company_exam/detail/${existingExamNo}`)
       .then(resp => {
         const exam = resp.data;
         formEl['comExamName'].value = exam.comExamName;
@@ -310,15 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const data   = formToJson(formEl);
     const method = existingExamNo ? 'put' : 'post';
     const url    = existingExamNo
-                 ? `/ajax/company/companyExam/edit/${existingExamNo}`
-                 : '/ajax/company/companyExam/create';
+                 ? `/ajax/company/company_exam/edit/${existingExamNo}`
+                 : '/ajax/company/company_exam/create';
 	
 				 
 	showLoading()
     axios[method](url, data)
       .then(() => {
         alert(existingExamNo ? '수정 완료' : '등록 완료');
-        location.href = '/company/companyExam';
+        location.href = '/company/company_exam';
       })
       .catch(err => {
         if (err.response?.status === 400 && err.response.data) {
@@ -334,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   exitBtn.addEventListener('click', () => {
-    location.href = '/company/companyExam';
+    location.href = '/company/company_exam';
   });
   
   
