@@ -24,14 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
 							<br>
 				            <ul class="list-group">
 				              ${q.optionList.map((opt, oi) =>
-
-					` <li class="list-group-item">
-				                  보기 ${oi + 1}: ${opt.comOptionContent}
-				                  ${opt.comOptionCorrectYn === 'Y' ? '<strong>(정답)</strong>' : ''}
-				                </li>
-				              `).join('')}
-				            </ul>
-				          </div>`;
+			
+								` <li class="list-group-item">
+							               보기 ${oi + 1}: ${opt.comOptionContent}
+							                ${opt.comOptionCorrectYn === 'Y' ? '<strong>(정답)</strong>' : ''}
+							      </li>`).join('')}
+							</ul>
+						</div>`;
 
 				examQuestion.innerHTML = html;
 

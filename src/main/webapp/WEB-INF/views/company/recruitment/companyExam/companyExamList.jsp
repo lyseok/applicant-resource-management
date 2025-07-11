@@ -15,7 +15,7 @@
     }
 	
 	
-	    /* 그리드 레이아웃 */
+	   
 		#examList {
 		  display: flex;
 		  flex-direction: column;
@@ -23,8 +23,8 @@
 		}
 
 	   .exam-card {
-	  display: flex;                /* ← 추가 */
-	  align-items: center;          /* 세로 가운데 정렬 */
+	  display: flex;              
+	  align-items: center;          
 	  width: 100%;
 	  box-sizing: border-box;
 	  background: #fff;
@@ -36,10 +36,10 @@
 	}
 		
 	.exam-name {
-	  flex: 1;                      /* ← 추가: 남은 공간을 이름이 차지 */
+	  flex: 1;                      
 	  font-size: 1.1rem;
 	  font-weight: 600;
-	  margin-bottom: 0;             /* margin-bottom 대신 간격이 필요하면 padding으로 조절 */
+	  margin-bottom: 0;            
 	  color: #333;
 	}
     .exam-card:hover {
@@ -54,7 +54,7 @@
     }
     
 
-    /* 시험 건수 */
+    
     #examCount {
       margin-top: 16px;
       font-size: 1rem;
