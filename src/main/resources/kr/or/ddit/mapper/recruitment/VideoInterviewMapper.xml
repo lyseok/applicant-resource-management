@@ -71,6 +71,9 @@
 		AND PEPR.RECRUITMENT_NO = RENO.RECRUITMENT_NO
 		AND VIIN.INTERVIEW_NO = 'INTV000001'
 		AND RENO.USER_ID = 'corp03'
+		
+<!-- 		AND VIIN.INTERVIEW_NO = #{interviewNo} -->
+<!-- 		AND RENO.USER_ID = #{userId} -->
 	</select>
 	
 	

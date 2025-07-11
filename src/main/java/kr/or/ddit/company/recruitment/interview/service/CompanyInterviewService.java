@@ -2,7 +2,7 @@ package kr.or.ddit.company.recruitment.interview.service;
 
 import java.util.List;
 
-import kr.or.ddit.company.recruitment.interview.dto.VideoInterviewSaveDTO;
+import kr.or.ddit.dto.VideoInterviewSaveDTO;
 import kr.or.ddit.vo.recruitment.InterviewVO;
 
 public interface CompanyInterviewService {

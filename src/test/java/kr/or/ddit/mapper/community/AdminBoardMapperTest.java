@@ -3,7 +3,6 @@ package kr.or.ddit.mapper.community;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,16 +47,6 @@ class AdminBoardMapperTest {
 		});
 	}
 	
-	@Test
-	void testSelectCodeNameEqType() {
-		assertDoesNotThrow(()->mapper.selectCodeGroupNoByType("UFAQ-U5"));
-		
-		List<CmnCodeVO> codeGroupList = mapper.selectCodeGroupNoByType("UFAQ-U5");
-		codeGroupList.forEach(code->{
-			log.info("공통코드 그룹들 : {}", codeGroupList);
-		});
-	}
-
 	@Test
 	void testInsertAdminBoard() {
 		AdminBoardVO board = new AdminBoardVO();

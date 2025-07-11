@@ -33,7 +33,7 @@ class InterviewScoreMapperTest {
 	void testInsertInterviewScore() {
 		InterviewScoreVO vo = new InterviewScoreVO();
 		vo.setInterviewNo("INTV000001");
-		vo.setInterviewQuestionNo("INQE000001");
+//		vo.setInterviewQuestionNo("INQE000001");
 		vo.setApplicantId("APPL000001");
 		vo.setApplicantRating(30);
 		assertEquals(1, mapper.insertInterviewScore(vo));

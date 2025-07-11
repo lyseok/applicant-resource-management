@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.or.ddit.mapper.recruitment.InterviewQuestionScoreMapper">
+	
+	<select id="selectInterviewQuestionScoreList">
+		SELECT 
+			INTERVIEW_SCORE_NO
+			, INTERVIEW_QUESTION_NO
+			, INTERVIEW_QUESTION_SCORE
+		FROM INTERVIEW_QUESTION_SCORE
+	</select>
+	
+	<select id="selectInterviewQuestionScore">
+		SELECT 
+			INTERVIEW_SCORE_NO
+			, INTERVIEW_QUESTION_NO
+			, INTERVIEW_QUESTION_SCORE
+		FROM INTERVIEW_QUESTION_SCORE
+		WHERE INTERVIEW_SCORE_NO = #{interviewScoreNo}
+		AND INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
+	</select>
+	
+	<insert id="insertInterviewQuestionScore">
+		INSERT INTO INTERVIEW_QUESTION_SCORE (
+			INTERVIEW_SCORE_NO
+			, INTERVIEW_QUESTION_NO
+			, INTERVIEW_QUESTION_SCORE
+		) VALUES (
+			#{interviewScoreNo}
+			, #{interviewQuestionNo}
+			, #{interviewQuestionScore}
+		)
+	</insert>
+	
+	<update id="updateInterviewQuestionScore">
+		UPDATE INTERVIEW_QUESTION_SCORE
+		SET 
+			INTERVIEW_QUESTION_SCORE = #{interviewQuestionScore}
+		WHERE INTERVIEW_SCORE_NO = #{interviewScoreNo}
+		AND INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
+	</update>
+	
+	<delete id="deleteInterviewQuestionScore">
+		DELETE FROM INTERVIEW_QUESTION_SCORE
+		WHERE INTERVIEW_SCORE_NO = #{interviewScoreNo}
+		AND INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
+	</delete>
+	
+</mapper>

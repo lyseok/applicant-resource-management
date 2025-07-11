@@ -36,48 +36,33 @@
         ON (ADMIN_BOARD_VIEW.BOARD_NO = ADMIN_COMMENT.BOARD_NO)
 	</select>
 
-	<select id="selectAdminBoardListByType">
+	<select id="selectAdminBoardListByType" resultMap="adminBoardMap">
 		SELECT 
-			  BOARD_NO
-			, USER_ID
-			, BOARD_TYPE_CODE
-			, BOARD_TITLE
-			, BOARD_WRITE_DATE
-			, BOARD_CONTENT
-			, BOARD_DELETE_DATE
-			, BOARD_POST_HIT
-			, BOARD_STATUS 
-		FROM 
-			ADMIN_BOARD
-		WHERE
-			BOARD_TYPE_CODE = #{boardTypeCode}
+			   A.BOARD_NO
+			 , A.USER_ID
+			 , A.BOARD_TYPE_CODE
+			 , A.BOARD_TITLE
+			 , A.BOARD_CONTENT
+			 , A.BOARD_STATUS
+		FROM ADMIN_BOARD A
+		INNER JOIN USERS U 
+			ON A.USER_ID = U.USER_ID
+		WHERE A.USER_ID = #{userId}
+			AND A.BOARD_TYPE_CODE = #{boardTypeCode}
 	</select>
 
-	<select id="selectCodeGroupNoByType" parameterType="String">  <!-- 공통 코드 이름을 통해 메뉴에 뿌리는 쿼리 -->
-		SELECT CODE_DETAIL_NO
-		FROM CMN_CODE
-		WHERE CODE_GROUP_NO = 
-		    (SELECT
-		        CMN_CODE.CODE_GROUP_NO
-		    FROM CMN_CODE
-		    JOIN ADMIN_BOARD
-			    ON CMN_CODE.CODE_DETAIL_NO = ADMIN_BOARD.BOARD_TYPE_CODE
-			WHERE ADMIN_BOARD.BOARD_TYPE_CODE = #{boardTypeCode})
-	</select>
-	
-	<select id="selectAdminBoardList">
+	<select id="selectAdminBoardList" resultMap="adminBoardMap">
 		SELECT 
-			  BOARD_NO
-			, USER_ID
-			, BOARD_TYPE_CODE
-			, BOARD_TITLE
-			, BOARD_WRITE_DATE
-			, BOARD_CONTENT
-			, BOARD_DELETE_DATE
-			, BOARD_POST_HIT
-			, BOARD_STATUS 
-		FROM 
-			ADMIN_BOARD
+			  A.BOARD_NO
+			, A.USER_ID
+			, A.BOARD_TYPE_CODE
+			, A.BOARD_TITLE
+			, A.BOARD_CONTENT
+			, A.BOARD_STATUS
+		FROM ADMIN_BOARD A
+		INNER JOIN USERS U 
+			ON A.USER_ID = U.USER_ID
+		WHERE A.USER_ID = #{userId}
 	</select>
 	
 	<insert id="insertAdminBoard" parameterType="AdminBoardVO">
