@@ -47,7 +47,7 @@ public class MemberCompanyReviewController {
 		model.addAttribute("companyList", companyList);
 		
     	List<ResumeVO> resumes = companyReviewService.readResumeWithCareers(getLoginId());
-    	log.info("{}", resumes);
+    	log.info("resumes------------------------{}", resumes);
     	model.addAttribute("resumes", resumes);
 		return "member/community/companyReview/companyReviewList";
 	}
@@ -87,10 +87,10 @@ public class MemberCompanyReviewController {
 	 @GetMapping("/form/{careerNo}")
 	 public String reviewFormUI(@PathVariable String careerNo, Model model) {
 		 	CareerVO career = companyReviewService.readCareerDetail(careerNo);
+		 	log.info("career------------------------{}", career);
 		 	model.addAttribute("career", career);
 		 	String no = "REVU";
 	    	List<CmnCodeVO> questionList = companyReviewService.readCmnCodeGroupQuestionList(no);
-	    	log.info("{}",questionList);
 	    	model.addAttribute("questionList",questionList);
 	    	return "member/community/companyReview/companyReviewForm";
 	 }
@@ -105,7 +105,9 @@ public class MemberCompanyReviewController {
 			, BindingResult errors
 			, RedirectAttributes redirectAttributes
 			) {
+		 log.debug(">>> formProcess: submitted CompanyReviewVO={}", companyReview);
 			if(errors.hasErrors()) {
+			    log.debug(">>> formProcess: validation errors, returning to form");
 				return "member/community/companyReview/companyReviewForm";
 			}
 			companyReview.setUserId(getLoginId());
@@ -119,7 +121,10 @@ public class MemberCompanyReviewController {
 
 
     private String getLoginId() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    	   Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+           String userId = auth.getName();
+           log.debug(">>> getLoginId: {}", userId);
+           return userId;
     }
 	 
 }
