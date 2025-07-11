@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
-@RequestMapping("/member/companyReview")
+@RequestMapping("/member/company_review")
 @Slf4j
 @RequiredArgsConstructor
 public class MemberCompanyReviewController {
@@ -52,7 +52,7 @@ public class MemberCompanyReviewController {
 		return "member/community/companyReview/companyReviewList";
 	}
 	
-	@GetMapping("/myReview")
+	@GetMapping("/my_review")
 	public String myReview(Model model) {
 	    log.info("🔐 요청자: {}", getLoginId());
     	List<CompanyReviewVO> myReviewList = companyReviewService.readMyCompanyReviewList(getLoginId());
@@ -113,7 +113,7 @@ public class MemberCompanyReviewController {
 			companyReview.setUserId(getLoginId());
 			companyReviewService.createCompanyReview(companyReview);
 			redirectAttributes.addFlashAttribute("msg", "리뷰가 등록되었습니다.");
-	        return "redirect:/member/companyReview";
+	        return "redirect:/member/company_review";
 		
 	}
 	

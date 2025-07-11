@@ -37,7 +37,7 @@
 	<ul>
 	  <c:forEach items="${companyList}" var="company">
 	    <li style="list-style:none; margin-bottom:10px;">
-	      <a  href="<c:url value='/member/companyReview/detail/${company.userId}'/>"
+	      <a  href="<c:url value='/member/company_review/detail/${company.userId}'/>"
 	         style="text-decoration:none; color:inherit;">
 	        <div class="card">
 	          <div class="card-body">
@@ -53,7 +53,7 @@
 	
 	
 
-<c:url var="myReviewUrl" value="/member/companyReview/myReview" />
+<c:url var="myReviewUrl" value="/member/company_review/my_review" />
 	<div class="card">
 	  <div class="card-body">
 	      <button type="button" class="btn btn_violet" data-bs-toggle="modal" data-bs-target="#resumeModal">
@@ -94,7 +94,7 @@
          </div>
   
   
-  <c:url var="formUrl" value="/member/companyReview/form" />
+  <c:url var="formUrl" value="/member/company_review/form" />
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
         <button id = "submitBtn" type = "button" class = "btn btn_violet">리뷰 등록하러가기 </button>

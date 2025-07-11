@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 			const reviewNo = btn.getAttribute('data-review-no');
 			 if (!confirm('삭제 하시겠습니까?')) return;
 			   			
-			axios.get(`/ajax/member/companyReview/myReviewDelete/${reviewNo}`)
+			axios.get(`/ajax/member/company_review/my_review/delete/${reviewNo}`)
 				  .then(resp => {
 						if(resp.data === 'success'){
 							btn.textContent = '삭제요청성공!';

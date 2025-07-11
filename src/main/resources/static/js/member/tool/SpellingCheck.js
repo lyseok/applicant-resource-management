@@ -1,38 +1,47 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('textInput');
-  const result = document.getElementById('spellResult');
+function startSpellCheck() {
+	const textarea = document.getElementById("textInput");
+	const resultBox = document.getElementById("spellResult");
+	const text = textarea.value.trim();
 
-  let debounceTimer = null;
+	if (!text) {
+		alert("검사할 문장을 입력하세요.");
+		return;
+	}
 
-  input.addEventListener('input', () => {
-    clearTimeout(debounceTimer);
-    
-    debounceTimer = setTimeout(() => {
-      const text = input.value.trim();
-      if (!text) {
-        result.innerHTML = '';
-        return;
-      }
+	fetch("/spell/check", {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: new URLSearchParams({ text })
+	})
+	.then(res => res.json())
+	.then(data => {
+		const wrongWords = Object.entries(data)
+			.filter(([_, isCorrect]) => isCorrect === false)
+			.map(([word], index) => `잘못된 부분 ${index + 1}번째 → '${word}'`);
 
-      fetch('/spell/check', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ text })  // JSON key: "text"
-      })
-      .then(response => {
-        if (!response.ok) throw new Error('서버 오류 발생');
-        return response.json();
-      })
-      .then(data => {
-        // 예상: data.correctedText 혹은 data.result
-        result.innerHTML = data.correctedText || '<span style="color:red;">오류 응답</span>';
-      })
-      .catch(err => {
-        console.error('맞춤법 요청 실패:', err);
-        result.innerHTML = '<span style="color:red;">검사 실패</span>';
-      });
-    }, 400); // 0.4초 지연 후 요청
-  });
-});
+		resultBox.innerHTML = wrongWords.length > 0
+			? `<pre>${wrongWords.join('\n')}</pre>`
+			: "<span style='color:gray;'>오타가 없습니다.</span>";
+	})
+	.catch(() => {
+		resultBox.innerHTML = "<span style='color:red;'>오류 발생</span>";
+	});
+}
+
+
+// 선택/복사 기능은 필요 시 유지
+function copySpell() {
+	const textarea = document.getElementById("textInput");
+	if (!textarea.value.trim()) {
+		alert("복사할 내용이 없습니다.");
+		return;
+	}
+	textarea.select();
+	document.execCommand("copy");
+	alert("복사 완료");
+}
+
+function resetSpell() {
+	document.getElementById("textInput").value = "";
+	document.getElementById("spellResult").innerHTML = "";
+}
