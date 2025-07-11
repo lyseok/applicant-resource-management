@@ -18,7 +18,7 @@
 <c:set var="options" value="${['매우 아니다','아니다','보통','그렇다','매우 그렇다']}" />
 
 
-<form action="${pageContext.request.contextPath}/member/companyReview" method = "post">
+<form action="${pageContext.request.contextPath}/member/company_review" method = "post">
 	<input type = "hidden" name = "comId" value = "${career.comId }"/>
 	<input type = "hidden" name = "jobCode" value = "${career.jobCode }"/>
 	<input type = "hidden" name = "workingYn" value = "${career.tenure }"/>
@@ -57,7 +57,7 @@
 		<input type = "text" name = "companyReviewOneLine" required>  
 	</div>
 	
-	<c:url var="homeUrl" value="/member/companyReview" />
+	<c:url var="homeUrl" value="/member/company_review" />
 
 		<div class="card">
 		  <div class="card-body">

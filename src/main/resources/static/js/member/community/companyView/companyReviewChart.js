@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(comId);
 
   Promise.all([
-    axios.get("/ajax/member/companyReview/reviewQuestion"),
-    axios.get("/ajax/member/companyReview/reviewDetail/" + comId)
+    axios.get("/ajax/member/company_review/review_question"),
+    axios.get("/ajax/member/company_review/detail/" + comId)
   ])
   .then(([qResp, rResp]) => {
     const questions = qResp.data;   // CmnCodeVO 리스트
