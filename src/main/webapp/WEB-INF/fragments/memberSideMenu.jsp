@@ -3,7 +3,7 @@
   <!-- Menu -->
   <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-      <a href="index.html" class="app-brand-link">
+      <a href="/mypage" class="app-brand-link">
         <span class="app-brand-logo demo">
           <img src="/dist/assets/images/logo.png" alt="logo">
         </span>
@@ -28,18 +28,18 @@
 
       <li class="menu-header small text-uppercase"><span class="menu-header-text">이력서</span></li>
       <li class="menu-item">
-        <a href="/mypage/intoruction/list" class="menu-link menu-toggle">
+        <a href="/mypage/resume/list" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-file"></i>
           <div>이력서 관리</div>
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="/mypage/intoruction/list" class="menu-link">
+            <a href="/mypage/resume/list" class="menu-link">
               <div>이력서 목록</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="/mypage/intoruction/create" class="menu-link">이력서 등록</a>
+            <a href="/mypage/resume/create" class="menu-link">이력서 등록</a>
           </li>
         </ul>
       </li>
