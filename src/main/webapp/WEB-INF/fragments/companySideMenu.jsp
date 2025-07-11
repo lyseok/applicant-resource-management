@@ -173,7 +173,7 @@
     <li class="menu-header small text-uppercase"><span class="menu-header-text">고객센테</span></li>
 
     <li class="menu-item">
-      <a href="/company" class="menu-link">
+      <a href="/company/board/admin_board" class="menu-link">
         <i class="menu-icon tf-icons bx bx-envelope-open"></i>
         <div data-i18n="Basic">공지사항</div>
       </a>

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/admin/community/adminBoard")
+@RequestMapping("/ajax/admin/board/admin_board")
 @RequiredArgsConstructor
 public class AdminAdminBoardAjaxController {
 	
@@ -35,7 +37,7 @@ public class AdminAdminBoardAjaxController {
 	
     // codeGroupNo 파라미터(BRDD, UFAQ, CFAQ)를 받아 
 	// codeDetailNo 목록(BRDD-001, BRDD-002, BRDD-003...)과 codeName("문의사항", "FAQ", "공지사항"...) 조회
-    @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/adminBoard/cmncodegroup/BRDD
+    @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/admin_board/cmncodegroup/BRDD
     public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
         return cservice.readCmnCodeGroupByPk(no);
     }
@@ -48,16 +50,13 @@ public class AdminAdminBoardAjaxController {
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	
-	// 유형별 게시글 목록조회
-	@GetMapping("/{boardTypeCode}")
+	// 유형별 게시글 목록조회, 작성자 아이디를 여기서 가져오면 단건에선 안 가져와도 됨
+	@GetMapping("/{boardTypeCode}")  
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName(); // 아이디
+	    log.info("🔐 요청자: {}", username);
 		return service.readAdminBoardListByType(boardTypeCode);
-	}
-
-	// 전체 게시글 목록조회
-	@GetMapping
-	public List<AdminBoardVO> getAll(){
-		return service.readAdminBoardList();
 	}
 	
 	// 해당 유형의 등록
@@ -66,12 +65,12 @@ public class AdminAdminBoardAjaxController {
 		@PathVariable String boardTypeCode
 		, @RequestBody AdminBoardVO board
 	) {
-		String boardNo = service.createAdminBoard(board);  //boardNo 받아서 뷰에서 사용
-	    return Map.of("ok", true, "boardNo", boardNo);
+		service.createAdminBoard(board);
+	    return Map.of("ok", true);
 	}
 	
-	// 해당 유형의 해당 글의 게시글 수정
-	@PutMapping("/{boardTypeCode}/{boardNo}")
+	// 해당 유형의 해당 글의 게시글 수정, 삭제 상태 변경
+	@PostMapping("/{boardTypeCode}/{boardNo}")
 	public Map<String, Object> editBoard(
 		@PathVariable String boardTypeCode
 		, @PathVariable String boardNo
@@ -82,14 +81,21 @@ public class AdminAdminBoardAjaxController {
 	    return Map.of("ok", true);	// 수정 후 Detail 이동
 	}
 	
-	// 해당 유형의 해당 글의 게시글 삭제
-	@DeleteMapping("/{boardTypeCode}/{boardNo}")
-	public Map<String, Object> deleteBoard(
-		@PathVariable String boardTypeCode
-		, @PathVariable String boardNo	
-	) {
-		service.removeAdminBoard(boardNo);
-		return Map.of("ok", true);
-	}
+	//에러 검증
+	private final ErrorsUtils errorsUtils; // <- 주입 받고
 
+	@PostMapping("/check")
+	public ResponseEntity<?> saveAboard(
+		@Valid @RequestBody AdminBoardVO vo
+		, BindingResult bindingResult
+	) {
+		log.info("{}", vo);
+		
+		if(bindingResult.hasErrors()) {
+			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
+			return ResponseEntity.badRequest().body(errors);
+		}
+		
+	    return ResponseEntity.ok("ok");
+	}
 }
