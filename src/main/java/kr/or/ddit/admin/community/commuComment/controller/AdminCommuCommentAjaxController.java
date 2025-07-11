@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/admin/commuComment")
+@RequestMapping("/ajax/admin/board/commu_comment")
 @RequiredArgsConstructor
 public class AdminCommuCommentAjaxController {
 
@@ -39,6 +41,9 @@ public class AdminCommuCommentAjaxController {
 	
 	@GetMapping("/{commuPostNo}")
 	public List<CommuCommentVO> getComments(@PathVariable String commuPostNo){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName(); // 아이디
+	    log.info("🔐 요청자: {}", username);
 		return service.searchCommuCommentPostList(commuPostNo);
 	}
 	
@@ -56,7 +61,8 @@ public class AdminCommuCommentAjaxController {
 	    return Map.of("ok", true);
 	}
 	
-	@PutMapping("/{commuPostNo}/{commuCommentNo}")
+	// 수정, 삭제 상태 변경
+	@PostMapping("/{commuPostNo}/{commuCommentNo}")
 	public Map<String, Object> editComment(
 		@PathVariable String commuPostNo
 		, @PathVariable String commuCommentNo
@@ -65,14 +71,5 @@ public class AdminCommuCommentAjaxController {
 		comment.setCommuCommentNo(commuCommentNo);
 	    service.modifyCommuComment(comment);
 	    return Map.of("ok", true);	// 수정 후 Detail 이동
-	}
-	
-	@DeleteMapping("/{commuPostNo}/{commuCommentNo}")
-	public Map<String, Object> deleteComment(
-		@PathVariable String commuPostNo
-		, @PathVariable String commuCommentNo	
-	) {
-		service.removeCommuComment(commuCommentNo);
-		return Map.of("ok", true);
 	}
 }

@@ -23,7 +23,7 @@ import kr.or.ddit.vo.common.ScrabRecruitmentVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/ajax/member/common/mypage/scrab/scrabRecruitment")
+@RequestMapping("/ajax/member/mypage/scrab_recruit")
 @RequiredArgsConstructor
 public class MemberScrabRecruitmentController {
 
@@ -44,7 +44,7 @@ public class MemberScrabRecruitmentController {
 	}
 	
 	// 관심 공고 목록조회
-	@GetMapping("/srecruitList")
+	@GetMapping("/list")
 	public String srecruitList(Model model) {
 		List<ScrabRecruitmentVO> srecruitList = service.readScrabRecruitmentList();
 		model.addAttribute("srecruitList", srecruitList);
@@ -55,7 +55,7 @@ public class MemberScrabRecruitmentController {
 	}
 	
 	// 관심 공고 단건조회
-	@GetMapping("/srecruitDetail")
+	@GetMapping("/detail")
 	public String srecruitDetail(
 		@ModelAttribute ScrabRecruitmentVO srecruit
 		, Model model
@@ -74,7 +74,7 @@ public class MemberScrabRecruitmentController {
 	}
 	
 	// 등록 폼으로 이동
-	@GetMapping("/srecruitForm")
+	@GetMapping("/form")
 	public String formUI(Model model) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
@@ -82,7 +82,7 @@ public class MemberScrabRecruitmentController {
 	}
 	
 	// 수정 폼으로 이동
-	@GetMapping("/srecruitForm/edit")
+	@GetMapping("/form/edit")
 	public String editForm(
 		@ModelAttribute ScrabRecruitmentVO srecruit
 		, Model model
@@ -98,7 +98,7 @@ public class MemberScrabRecruitmentController {
 	}
 
 	// 폼 입력 데이터 처리
-	@PostMapping("/srecruitForm/insert")
+	@PostMapping("/form/insert")
 	public String srecruitForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) ScrabRecruitmentVO srecruit
 		, BindingResult errors
@@ -121,7 +121,7 @@ public class MemberScrabRecruitmentController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/srecruitForm/update")
+	@PutMapping("/form/edit")
 	public String srecruitEdit(
 		ScrabRecruitmentVO srecruit
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) ScrabRecruitmentVO vo
@@ -144,7 +144,7 @@ public class MemberScrabRecruitmentController {
 	}
 	
 	// 관심 공고 단건 삭제
-	@DeleteMapping("srecruitDetail/remove")
+	@DeleteMapping("detail/remove")
 	public String srecruitDelete(ScrabRecruitmentVO srecruit, Model model) {
 		service.removeScrabRecruitment(srecruit);
 		

@@ -23,7 +23,7 @@ import kr.or.ddit.vo.community.CommuBoardVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/member/community/commuBoard")
+@RequestMapping("/member/board/commu_board")
 @RequiredArgsConstructor
 public class MemberCommuBoardController {
 
@@ -44,7 +44,7 @@ public class MemberCommuBoardController {
 	}
 
 	// 게시글 단건조회
-	@GetMapping("/cboardDetail")
+	@GetMapping("/detail")
 	public String cboardDetail(String commuPostNo, Model model) {
 		CommuBoardVO cboard = service.readCommuBoard(commuPostNo).get();  
 		model.addAttribute("cboard", cboard);
@@ -55,7 +55,7 @@ public class MemberCommuBoardController {
 	}
 
 	// 카테고리별 게시글 목록조회
-	@GetMapping("/cboardList/type")
+	@GetMapping("/list/type")
 	public String cboardType(String categoryCode, Model model) {
 		List<CommuBoardVO> cboardList = service.readCommuBoardList(categoryCode);
 		model.addAttribute("cboardList", cboardList);
@@ -67,7 +67,7 @@ public class MemberCommuBoardController {
 	}
 		
 	// 등록 폼으로 이동
-	@GetMapping("/cboardForm")
+	@GetMapping("/form")
 	public String formUI(Model model) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
@@ -75,7 +75,7 @@ public class MemberCommuBoardController {
 	}
 	
 	// 수정 폼으로 이동
-	@GetMapping("/cboardForm/edit")
+	@GetMapping("/form/edit")
 	public String editForm(String commuPostNo, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {
 			CommuBoardVO cboard = service.readCommuBoard(commuPostNo).get();
@@ -87,7 +87,7 @@ public class MemberCommuBoardController {
 	}
 
 	// 폼 입력 데이터 처리
-	@PostMapping("/cboardForm/insert")
+	@PostMapping("/form/insert")
 	public String cboardForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) CommuBoardVO cboard
 		, BindingResult errors
@@ -110,7 +110,7 @@ public class MemberCommuBoardController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/cboardForm/update")
+	@PutMapping("/form/edit")
 	public String cboardEdit(
 		String commuPostNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) CommuBoardVO cboard
@@ -130,15 +130,5 @@ public class MemberCommuBoardController {
 			lvn = "member/community/commuBoard/cboardForm";
 		}
 		return lvn;
-	}
-	
-	// 게시글 단건 삭제
-	@DeleteMapping("/cboardDetail/remove")
-	public String cboardDelete(String commuPostNo, Model model) {
-		service.removeCommuBoard(commuPostNo);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "member/community/commuBoard/cboardList";
 	}
 }
