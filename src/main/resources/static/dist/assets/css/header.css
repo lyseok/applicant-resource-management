@@ -1646,6 +1646,10 @@ body::-webkit-scrollbar-thumb:hover {
     vertical-align: top;
     margin-left:8px;
 }
+
+.wrap_header .layer_member ul li a:hover .txt{	
+	text-decoration:underline;
+}
 .wrap_header .wrap_member .btn_member.expanded+.layer_member {
     display: block
 }

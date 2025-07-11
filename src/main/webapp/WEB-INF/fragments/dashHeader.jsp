@@ -64,41 +64,42 @@
 		    </span>
 		    <i class='bx bx-caret-down'></i>
 		</button>
-        <div class="layer_member" id="displayMemBtn" style="display:none;">
-            <ul>
-                <li>
-                    <a href="/zf_user/persons/person-update" target="_blank">
-                        <i class='bx  bx-cog'  ></i> 
-                        <span class="txt">계정정보 설정</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/zf_user/member/set-incoming-email">
-                        <i class='bx  bx-envelope-alt'  ></i> 
-                        <span class="txt">메일 수신 설정</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/zf_user/persons/edit-passwd" target="_blank">
-                        <i class='bx  bx-lock-keyhole'  ></i> 
-                        <span class="txt">비밀번호 변경</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/zf_user/member/my-logins" target="_blank">
-                        <i class='bx  bx-car-key'  ></i> 
-                        <span class="txt">로그인 관리</span>
-                    </a>
-                </li>
-                <li>
-                    <div class="logoutBtn">
-                        <a href="javascript:void(0)">
-                            <i class='bx  bx-door-open'  ></i> 
-                            <span class="txt">로그아웃</span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        
+       <div class="layer_member" id="displayMemBtn" style="display:none;">
+         <ul>
+             <li>
+                 <a href="javascript:void(0)" target="_blank">
+                     <span class="material-symbols-outlined">settings</span> 
+                     <span class="txt">계정정보 설정</span>
+                 </a>
+             </li>
+             <li>
+                 <a href="javascript:void(0)">
+                     <span class="material-symbols-outlined">mail</span> 
+                     <span class="txt">메일 수신 설정</span>
+                 </a>
+             </li>
+             <li>
+                 <a href="javascript:void(0)" target="_blank">
+                     <span class="material-symbols-outlined">lock</span> 
+                     <span class="txt">비밀번호 변경</span>
+                 </a>
+             </li>
+             <li>
+                 <a href="javascript:void(0)" target="_blank">
+                     <span class="material-symbols-outlined">person</span> 
+                     <span class="txt">로그인 관리</span>
+                 </a>
+             </li>
+             <li>
+                 <div class="logoutBtn">
+                     <a href="javascript:void(0)">
+                         <span class="material-symbols-outlined">logout</span> 
+                         <span class="txt">로그아웃</span>
+                     </a>
+                 </div>
+             </li>
+         </ul>
+     </div>
     </div>
 </header>

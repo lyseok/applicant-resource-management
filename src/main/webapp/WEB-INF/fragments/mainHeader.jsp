@@ -42,25 +42,25 @@
 	                <div class="layer_member" id="displayMemBtn" style="display:none;">
 			            <ul>
 			                <li>
-			                    <a href="/zf_user/persons/person-update" target="_blank">
+			                    <a href="javascript:void(0)" target="_blank">
 			                        <span class="material-symbols-outlined">settings</span> 
 			                        <span class="txt">계정정보 설정</span>
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="/zf_user/member/set-incoming-email">
+			                    <a href="javascript:void(0)">
 			                        <span class="material-symbols-outlined">mail</span> 
 			                        <span class="txt">메일 수신 설정</span>
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="/zf_user/persons/edit-passwd" target="_blank">
+			                    <a href="javascript:void(0)" target="_blank">
 			                        <span class="material-symbols-outlined">lock</span> 
 			                        <span class="txt">비밀번호 변경</span>
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="/zf_user/member/my-logins" target="_blank">
+			                    <a href="javascript:void(0)" target="_blank">
 			                        <span class="material-symbols-outlined">person</span> 
 			                        <span class="txt">로그인 관리</span>
 			                    </a>
