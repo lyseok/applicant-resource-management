@@ -64,7 +64,7 @@
 		</div>
 	</c:if>
 	<c:if test="${empty scompanyList}">
-		<p>관심 기업이 없습니다, 등록해보세요!</p>
+		<p>관심 기업이 없습니다, 등록해보세요!</p><br>
            <a href="/member/recruitment/recruitmentNotice" class="item" onmousedown="">
                <strong class="title">나에게 맞는 공고가<br>보고싶다면?</strong>
                <span class="txt link">추천 공고 보러가기</span>

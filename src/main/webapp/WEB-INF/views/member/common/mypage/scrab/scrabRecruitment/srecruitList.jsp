@@ -3,13 +3,79 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-<title>띹잡 마이페이지 | 관심공고 리스트</title>
 
+<head>
+	<meta charset="UTF-8">
+	<title>띹잡 마이페이지 | 관심공고 리스트</title>
+
+	<%-- 에러 메시지를 표시하려면 다음과 같이 추가해야 합니다. --%>
+	<c:if test="${not empty error }">
+	    <script>
+	        alert('${error}'); // 'error' FlashAttribute를 확인
+	    </script>
+	</c:if>
+	   <script type="text/javascript" src="/js/member/common/mypage/scrab/scrabRecruit/srecruitList.js" defer></script>
+</head>
 <body>
-<div>
-	<p class="h4">스크랩 공고/관심기업</p>
+
+	<p class="h1 mb-3 fw-bold">관심공고</p>
 	
+	<div class="border-bottom d-flex justify-content-between align-items-end pb-2">
+		<p class="fs-14">총 ${srecruitList.size() }건</p>
+		<div class="TypoBox searchBar">
+			<div class="searchBarWrap">
+				<label class="searchBarLabel" for="listKeyword">검색어</label>
+				<input type="text" id="listKeyword" class="searchBarInput" placeholder="관심 공고를 검색해보세요" maxlength="24" autocomplete="off" value="">
+			</div>
+			<a href="/ajax/member/common/mypage/scrab/scrabRecruitment/srecruitDetail?recruitNo=${srecruit.recruitNo }" class="searchBarBtn"><!-- 링크 확인필요 -->
+				<span class="material-symbols-outlined">search</span>
+			</a>
+		</div>
+	</div>
+	<%-- 관심기업 존재 여부에 따른 분기 --%>
+	<c:if test="${not empty scompanyList}">
+		<div class="">
+			<c:forEach items="${scompanyList }" var="scompany">
+				<ul>
+					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
+						<div class="">
+							<a class="d-block h4 fw-bold" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/${scompany.companyId}"/>">${scompany.companyId.comName}</a>
+							<p class="text-truncate w800">${introduction.introductionContent}</p>
+						</div>
+						<div class="d-flex gap-1">
+							<a class="btn btn_violet_line fw-normal" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/edit/${scompany.companyId}"/>">수정</a>
+							<a class="btn btn_red_line fw-normal" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/delete/${scompany.companyId}"/>" onclick="return confirmDelete();">삭제</a>
+						</div>
+					</li>
+				</ul>
+			</c:forEach>
+			<div class="PageBox">
+	            <span class="BtnType SizeS active">1</span>
+	            <button class="BtnType SizeS page" data-page="2">2</button>
+	            <button class="BtnType SizeS page" data-page="3">3</button>
+	            <button class="BtnType SizeS page" data-page="4">4</button>
+	            <button class="BtnType SizeS page" data-page="5">5</button>
+	            <button class="BtnType SizeS page" data-page="6">6</button>
+	            <button class="BtnType SizeS page" data-page="7">7</button>
+	            <button class="BtnType SizeS page" data-page="8">8</button>
+	            <button class="BtnType SizeS page" data-page="9">9</button>
+	            <button class="BtnType SizeS page" data-page="10">10</button>
+	            <button data-page="11" class="BtnType SizeS BtnNext btnNext">다음</button>
+	        </div>
+		</div>
+	</c:if>
+	<c:if test="${empty scompanyList}">
+		<p>관심 기업이 없습니다, 등록해보세요!</p><br>
+           <a href="/member/recruitment/recruitmentNotice" class="item" onmousedown="">
+               <strong class="title">나에게 맞는 공고가<br>보고싶다면?</strong>
+               <span class="txt link">추천 공고 보러가기</span>
+           </a>
+	</c:if>
+	
+</body>
+
 	<%-- 스크랩(개수)/관심기업(개수) --%>
+	<%--
 	<ul>
 		<li>
 			<a href="/member/common/mypage/scrab/scrabRecruitment/srecruitList">
@@ -22,7 +88,9 @@
 			</a>
 		</li>
 	</ul>
+	--%>
 	<%-- 목록 관리, 검색 바 --%>
+	<%--
 	<div>
 		<div>
 			<span>
@@ -76,13 +144,17 @@
 		<input type="text" class="Typo search" name="keyword" value placeholder="키워드 입력">
 		<button type="button" id="keyword_srecruit_search" onmousedown=""></button>
 	</div>
+	--%>
 	<%-- 공고 목록 --%>
+	<%--
 	<div class="activity_list basic">
 		<span class="blind">공고 리스트</span>
 		<div class="list_recruit">
 			<ul class="wrap_list">
 				<li class="row" data-idx="">
+	--%>
 				<%-- 체크박스 --%>
+				<%--
 				<div class="InpBox scrap_check">
 					<span class="Chk">
 						<input type="checkbox" name="scrap_check[]" class="idx_chk checkbox_idx">
@@ -91,12 +163,16 @@
 						</label>
 					</span>
 				</div>
+				--%>
 				<%-- 공고 하나 --%>
 				<%-- 공고 회사 이름 --%>
+				<%--
 				<div class="col_corp">
 					<a href="/member/common/mypage/scrab/scrabRecruitment/srecruitDetail">${srecruit.comName}</a>
 				</div>
+			 	--%>
 				<%-- 공고 제목 --%>
+				<%--
 				<div class="col_informs">
 					<strong class="tit">
 						<a href="/member/common/mypage/scrab/scrabRecruitment/srecruitDetail"></a>
@@ -119,7 +195,9 @@
 						<span class="blind">스크랩 공고 삭제</span>
 					</button>
 				</div>
+				--%>
 				<%-- 공고 스크랩 날짜 --%>
+				<%--
 				<button id="memo" type="button" class="btnText txt memo_summary">
 					<span class="scrab_date">${srecruit.scrabRecruitmentDate} 스크랩</span>
 					공고와 완련된 중요 메모를 남기세요
@@ -128,6 +206,7 @@
 		</ul>
 	</div>
 </div>
-	
-<!-- 사람인 벤치마킹 끝 -->	
+
 </body>
+
+--%>
