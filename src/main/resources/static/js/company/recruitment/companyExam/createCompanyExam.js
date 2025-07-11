@@ -73,18 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
       </button>
 	 
     `;
+    
     document.getElementById('questionContainer').append(div);
-
-    // 삭제 버튼: 카드 제거 후 인덱스 재정렬
 	 div.querySelector('.remove-question').addEventListener('click', () => {
+	   
 	   const delInput = div.querySelector(
 	     `input[name="questionList[${idx}].comExamQuestDelDate"]`
 	   );
-	   if (delInput) {
-	     delInput.value = new Date().toISOString();
-	   }
-	   
-	   div.style.display = 'none';
+	   if (delInput) delInput.value = new Date().toISOString();
+	   div.remove();
+	 
 	   reindexQuestions();
 	 });
 	
