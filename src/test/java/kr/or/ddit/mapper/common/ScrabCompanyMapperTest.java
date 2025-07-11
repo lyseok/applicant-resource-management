@@ -41,8 +41,8 @@ class ScrabCompanyMapperTest {
 	void testInsertScrabCompany() {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 		
-		SCV.setCompanyId("QWER5");
-		SCV.setUserId("QWE1");
+		SCV.setCompanyId("corp03");
+		SCV.setUserId("USR001");
 				
 		mapper.insertScrabCompany(SCV);
 		

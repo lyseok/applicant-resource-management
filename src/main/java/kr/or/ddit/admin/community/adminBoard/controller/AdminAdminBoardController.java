@@ -117,21 +117,19 @@ public class AdminAdminBoardController {
 	) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
-		String lvn;
+		String boardNo = service.createAdminBoard(aboard);
 		if(!errors.hasErrors()) {
-			service.createAdminBoard(aboard);
-			lvn = "admin/community/adminBoard/aboardDetail";
+			return "redirect:/admin/community/adminBoard/aboardDetail?boardNo=" + boardNo;
 		}else {
 			String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
 			redirectAttributes.addFlashAttribute(MODELNAME, aboard);
 			redirectAttributes.addFlashAttribute(errorsName, errors);
-			lvn = "admin/community/adminBoard/aboardForm";
+			return "redirect:/admin/community/adminBoard/aboardForm/insert?boardNo=" + boardNo;
 		}
-		return lvn;
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/aboardForm/update")
+	@PostMapping("/aboardForm/update")
 	public String aboardEdit(
 		String boardNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) AdminBoardVO aboard
@@ -141,16 +139,14 @@ public class AdminAdminBoardController {
 	) {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
-		String lvn;
 		if(!errors.hasErrors()) {
 			service.modifyAdminBoard(aboard);
-			lvn = "admin/community/adminBoard/aboardDetail";
+			return "redirect:/admin/community/adminBoard/aboardDetail?boardNo=" + boardNo;
 		}else {
 			redirectAttributes.addFlashAttribute(MODELNAME, aboard);
 			redirectAttributes.addFlashAttribute("errors", errorsUtils.errorsToMap(errors));
-			lvn = "admin/community/adminBoard/aboardForm";
+			return "redirect:/admin/community/adminBoard/aboardForm/edit?boardNo=" + boardNo;
 		}
-		return lvn;
 	}
 	
 	// 게시글 단건 삭제

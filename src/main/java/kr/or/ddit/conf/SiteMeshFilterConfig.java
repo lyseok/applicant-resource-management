@@ -22,6 +22,7 @@ public class SiteMeshFilterConfig {
                     .addExcludedPath("/ajax/**")                 // ajax 요청 경로 필터 제외
                     .addExcludedPath("/rest/**")                 // REST API 요청 경로 필터 제외
                     .addExcludedPath("*.html")                   // 정적 HTML 파일 필터 제외
+                    .addDecoratorPath("/popup/**", "popupDecorators.jsp")
                     .addDecoratorPath("/mypage", "memberDashDecorators.jsp") // 일반 - 마이페이지 적용할 데코레이터 지정
                     .addDecoratorPath("/mypage/**", "memberDashDecorators.jsp") // 일반 - 마이페이ㅇ 적용할 데코레이터 지정
                     .addDecoratorPath("/company", "companyDashDecorators.jsp") // 관리 페이지에 적용할 데코레이터 지정

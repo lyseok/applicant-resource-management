@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kr.or.ddit.company.recruitment.interview.dto.VideoInterviewSaveDTO;
 import kr.or.ddit.company.recruitment.interview.service.CompanyInterviewService;
+import kr.or.ddit.dto.VideoInterviewSaveDTO;
 import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.recruitment.InterviewVO;
 import kr.or.ddit.vo.recruitment.VideoInterviewVO;

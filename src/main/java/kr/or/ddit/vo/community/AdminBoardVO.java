@@ -26,7 +26,6 @@ public class AdminBoardVO implements Serializable {
 	private String boardStatus;
 	
 	private String codeName;  //공통코드그룹명에 따른 공통코드 리스트 가져옴
-	private transient CmnCodeVO code;  //공통코드에 따른 공통코드그룹 리스트 가져옴
 
 	private transient UsersVO users;
 	private transient List<AdminCommentVO> adminCommentList;  // 게시판 댓글 리스트
