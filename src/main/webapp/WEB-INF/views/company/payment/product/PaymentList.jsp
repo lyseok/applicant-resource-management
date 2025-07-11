@@ -55,13 +55,13 @@
 <body>
     <h1>여기는 결제리스트 페이지</h1>
     <div class="product-list">
-        <div class="product global">
+        <div class="product_global" name="global" onclick="">
             <div class="product-title">Global 등급</div>
             <div class="product-content">Global 등급 내용</div>
         </div>
-        <div class="product premium">
-            <div class="product-title">Premium 등급</div>
-            <div class="product-content">Premium 내용</div>
+        <div class="product_platianum" name="platinum" onclick="">
+            <div class="product-title">Platinum 등급</div>
+            <div class="product-content">Platinum 내용</div>
         </div>
     </div>
 </body>

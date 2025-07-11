@@ -1,4 +1,4 @@
-package kr.or.ddit.company.payload.controller;
+package kr.or.ddit.company.payment.product.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
