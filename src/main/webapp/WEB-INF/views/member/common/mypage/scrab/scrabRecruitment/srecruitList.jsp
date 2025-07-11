@@ -32,15 +32,15 @@
 			</a>
 		</div>
 	</div>
-	<%-- 관심기업 존재 여부에 따른 분기 --%>
-	<c:if test="${not empty scompanyList}">
+	<%-- 관심공고 존재 여부에 따른 분기 --%>
+	<c:if test="${not empty srecruitList}">
 		<div class="">
-			<c:forEach items="${scompanyList }" var="scompany">
+			<c:forEach items="${srecruitList }" var="srecruit">
 				<ul>
 					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
-							<a class="d-block h4 fw-bold" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/${scompany.companyId}"/>">${scompany.companyId.comName}</a>
-							<p class="text-truncate w800">${introduction.introductionContent}</p>
+							<a class="d-block h4 fw-bold" href="<c:url value="/ajax/member/common/mypage/scrab/scrabRecruitment/${srecruit.recruitmentNo}"/>">$srecruit.recruitmentNo.recruitmentTitle}</a>
+							<p class="text-truncate w800">${srecruit.recruitmentNo}</p>
 						</div>
 						<div class="d-flex gap-1">
 							<a class="btn btn_violet_line fw-normal" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/edit/${scompany.companyId}"/>">수정</a>
