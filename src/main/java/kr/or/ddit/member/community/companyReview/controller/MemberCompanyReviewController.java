@@ -24,6 +24,8 @@ import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewQuestionVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
+import kr.or.ddit.vo.resume.CareerVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,18 +45,21 @@ public class MemberCompanyReviewController {
 		List<CompanyVO> companyList = companyReviewService.readCompanyList();
 		log.info("회사 리스트 : {}",companyReviewService.readCompanyList());
 		model.addAttribute("companyList", companyList);
+		
+    	List<ResumeVO> resumes = companyReviewService.readResumeWithCareers(getLoginId());
+    	log.info("resumes------------------------{}", resumes);
+    	model.addAttribute("resumes", resumes);
 		return "member/community/companyReview/companyReviewList";
 	}
 	
 	@GetMapping("/myReview")
 	public String myReview(Model model) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    String userId = authentication.getName(); // 아이디
-	    log.info("🔐 요청자: {}", userId);
-    	List<CompanyReviewVO> myReviewList = companyReviewService.readMyCompanyReviewList(userId);
-    	MemberVO member =  companyReviewService.readMemberById(userId);
+	    log.info("🔐 요청자: {}", getLoginId());
+    	List<CompanyReviewVO> myReviewList = companyReviewService.readMyCompanyReviewList(getLoginId());
+    	MemberVO member =  companyReviewService.readMemberById(getLoginId());
     	log.info("{}", myReviewList);
     	log.info("{}", member);
+    	
     	model.addAttribute("myReviewList", myReviewList);
     	model.addAttribute("member", member);
 		return "member/community/companyReview/myCompanyReviewList";
@@ -64,26 +69,28 @@ public class MemberCompanyReviewController {
 	
 	 @GetMapping("/detail/{id}") 
 	 public String review(Model model, @PathVariable("id") String id) {
-		 String no = "REVU";
+		String no = "REVU";
     	List<CmnCodeVO> questionList = companyReviewService.readCmnCodeGroupQuestionList(no);
     	log.info("{}",questionList);
     	model.addAttribute("questionList",questionList);
-		 CompanyVO company = companyReviewService.readCompany(id);
-		 model.addAttribute("company", company);
-		 model.addAttribute("id", id);
-		 return "member/community/companyReview/companyReviewDetail";
-	  
+		CompanyVO company = companyReviewService.readCompany(id);
+		model.addAttribute("company", company);
+		model.addAttribute("id", id);
+		return "member/community/companyReview/companyReviewDetail";
 	 }
 	 
 	  
 	 
 	 
 	 
-	 @GetMapping("/form")
-	 public String reviewFormUI(Model model) {
-		 String no = "REVU";
+	 
+	 @GetMapping("/form/{careerNo}")
+	 public String reviewFormUI(@PathVariable String careerNo, Model model) {
+		 	CareerVO career = companyReviewService.readCareerDetail(careerNo);
+		 	log.info("career------------------------{}", career);
+		 	model.addAttribute("career", career);
+		 	String no = "REVU";
 	    	List<CmnCodeVO> questionList = companyReviewService.readCmnCodeGroupQuestionList(no);
-	    	log.info("{}",questionList);
 	    	model.addAttribute("questionList",questionList);
 	    	return "member/community/companyReview/companyReviewForm";
 	 }
@@ -91,16 +98,33 @@ public class MemberCompanyReviewController {
 	 
 	 
 	 
-	 //여기부터 수정
+	
 	@PostMapping()
 	public String formProcess(
-			@Validated(InsertGroup.class)@ModelAttribute CompanyReviewQuestionVO question
+			@Validated(InsertGroup.class) @ModelAttribute CompanyReviewVO companyReview
 			, BindingResult errors
 			, RedirectAttributes redirectAttributes
 			) {
-		
-		return null;
+		 log.debug(">>> formProcess: submitted CompanyReviewVO={}", companyReview);
+			if(errors.hasErrors()) {
+			    log.debug(">>> formProcess: validation errors, returning to form");
+				return "member/community/companyReview/companyReviewForm";
+			}
+			companyReview.setUserId(getLoginId());
+			companyReviewService.createCompanyReview(companyReview);
+			redirectAttributes.addFlashAttribute("msg", "리뷰가 등록되었습니다.");
+	        return "redirect:/member/companyReview";
 		
 	}
+	
+	
+
+
+    private String getLoginId() {
+    	   Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+           String userId = auth.getName();
+           log.debug(">>> getLoginId: {}", userId);
+           return userId;
+    }
 	 
 }

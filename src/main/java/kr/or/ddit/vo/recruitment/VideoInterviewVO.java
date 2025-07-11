@@ -2,6 +2,7 @@ package kr.or.ddit.vo.recruitment;
 
 import java.io.Serializable;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,9 +12,11 @@ public class VideoInterviewVO implements Serializable{
 
 	private String videoInterviewNo;
 	private String interviewNo;
-	private String videoInterviewStartTime;
-	private String videoInterviewEndTime;
-	private String videoInterviewStatus;
-	private String videoInterviewUrl;
+	private String roomTitle;
+	private Integer maxJoinCount;
+	private String startDate;
+	private String endDate;
+	private String companyInterviewUrl;
 	private String videoInterviewDelDate;
+	private String roomId;
 }	

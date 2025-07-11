@@ -8,6 +8,7 @@
 			   , SUB_MAJOR
 			   , SUB_MAJOR_CODE
 		  FROM SPECIALTY
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectSpecialtyDetail">

@@ -13,5 +13,6 @@ public interface InterviewScoreMapper {
 	public int insertInterviewScore(InterviewScoreVO vo);
 	public int updateInterviewScore(InterviewScoreVO vo);
 	public int deleteInterviewScore(String InterviewScoreNo);
+	public String selectInterviewScoreNo(InterviewScoreVO vo);
 	
 }

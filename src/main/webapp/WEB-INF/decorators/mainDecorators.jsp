@@ -48,6 +48,7 @@
   <%@ include file="/WEB-INF/fragments/mainFooter.jsp" %>
 
   <%@ include file="/WEB-INF/fragments/mainPostScript.jsp" %>
+  <%@ include file="/WEB-INF/fragments/loading.jsp" %>
 </body>
 <!-- [Body] end -->
 

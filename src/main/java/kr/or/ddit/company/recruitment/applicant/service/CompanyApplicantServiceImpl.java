@@ -23,7 +23,7 @@ public class CompanyApplicantServiceImpl implements CompanyApplicantService {
 	
 	
 	@Override
-	public List<ApplicantMapper> selectApplicantList() {
+	public List<ApplicantVO> selectApplicantList() {
 		
 		return AlMapper.selectApplicantList();
 	}

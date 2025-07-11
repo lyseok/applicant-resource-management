@@ -14,13 +14,13 @@ public class SupportServiceImpl implements SupportService {
 	private final SupportMapper mapper;
 	
 	@Override
-	public List<SupportVO> readSupportList() {
-		return mapper.selectSupportList();
+	public List<SupportVO> readSupportList(String no) {
+		return mapper.selectSupportList(no);
 	}
 
 	@Override
-	public SupportVO readSupportDetail(String no) {
-		return mapper.selectSupportDetail(no);
+	public SupportVO readSupportDetail(SupportVO vo) {
+		return mapper.selectSupportDetail(vo);
 	}
 
 	@Override

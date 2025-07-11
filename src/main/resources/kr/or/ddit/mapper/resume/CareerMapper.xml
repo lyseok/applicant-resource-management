@@ -1,31 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.CareerMapper">
-	<select id="selectCareerList">
-		SELECT CAREER_NO
-			   , RESUME_NO
-			   , JOB_CODE
-			   , START_WORK_DATE
-			   , RETIRE_DATE
-			   , TENURE
-			   , DEPARTMENT
-			   , RESPONSIBILITY
-			   , FREELANCER
-			   , JOB_GRADE_CODE
-			   , POSITION_CODE
-			   , CAREER_YEAR
-			   , SALARY
-			   , LOCATION
-			   , COM_ID
-		  FROM CAREER
+
+	<resultMap id="careerMap" type="kr.or.ddit.vo.resume.CareerVO">
+	    <id     property="careerNo"         column="CAREER_NO"/>
+	    <result property="resumeNo"         column="RESUME_NO"/>
+	    <result property="jobCode"          column="JOB_CODE"/>
+	    <result property="startWorkDate"    column="START_WORK_DATE"/>
+	    <result property="retireDate"       column="RETIRE_DATE"/>
+	    <result property="tenure"           column="TENURE"/>
+	    <result property="department"       column="DEPARTMENT"/>
+	    <result property="responsibility"   column="RESPONSIBILITY"/>
+	    <result property="freelancer"       column="FREELANCER"/>
+	    <result property="jobGradeCode"     column="JOB_GRADE_CODE"/>
+	    <result property="positionCode"     column="POSITION_CODE"/>
+	    <result property="careerYear"       column="CAREER_YEAR"/>
+	    <result property="salary"           column="SALARY"/>
+	    <result property="location"         column="LOCATION"/>
+	    <result property="comId"            column="COM_ID"/>
+	    
+	    <!-- CompanyVO 바인딩 (association) -->
+	    <association property="company" javaType="kr.or.ddit.vo.common.CompanyVO">
+	        <id     property="userId"         column="USER_ID"/>
+	        <result property="comName"        column="COM_NAME"/>
+	        <result property="comInfo"        column="COM_INFO"/>
+	        <result property="comNum"         column="COM_NUM"/>
+	        <result property="comEmail"       column="COM_EMAIL"/>
+	        <result property="comUrl"         column="COM_URL"/>
+	        <result property="comCreateYear"  column="COM_CREATE_YEAR"/>
+	        <result property="comMem"         column="COM_MEM"/>
+	        <result property="comLogo"        column="COM_LOGO"/>
+	        <result property="comPayment"     column="COM_PAYMENT"/>
+	        <result property="industryType"   column="INDUSTRY_TYPE"/>
+	    </association>
+	</resultMap>
+	<select id="selectCareerList" resultMap="careerMap">
+		SELECT
+		      cr.CAREER_NO AS CAREER_NO
+		    , cr.RESUME_NO AS RESUME_NO
+		    , cr.JOB_CODE AS JOB_CODE
+		    , TO_CHAR(TO_DATE(cr.START_WORK_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS START_WORK_DATE
+		    , TO_CHAR(TO_DATE(cr.RETIRE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS RETIRE_DATE
+		    , cr.TENURE AS TENURE
+		    , cr.DEPARTMENT AS DEPARTMENT
+		    , cr.RESPONSIBILITY AS RESPONSIBILITY
+		    , cr.FREELANCER AS FREELANCER
+		    , cr.JOB_GRADE_CODE AS JOB_GRADE_CODE
+		    , cr.POSITION_CODE AS POSITION_CODE
+		    , cr.CAREER_YEAR AS CAREER_YEAR
+		    , cr.SALARY AS SALARY
+		    , cr.LOCATION AS LOCATION
+		    , cr.COM_ID AS COM_ID
+	        -- COMPANY 테이블 컬럼 (필요시 JOIN 해주세요)
+		    , com.USER_ID         AS COM_USER_ID
+		    , com.COM_NAME        AS COM_NAME
+		    , com.COM_INFO        AS COM_INFO
+		    , com.COM_NUM         AS COM_NUM
+		    , com.COM_EMAIL       AS COM_EMAIL
+		    , com.COM_URL         AS COM_URL
+		    , com.COM_CREATE_YEAR AS COM_CREATE_YEAR
+		    , com.COM_MEM         AS COM_MEM
+		    , com.COM_LOGO        AS COM_LOGO
+		    , com.COM_PAYMENT     AS COM_PAYMENT
+		    , com.INDUSTRY_TYPE   AS COM_INDUSTRY_TYPE
+		FROM
+		    CAREER cr
+		INNER JOIN
+		    COMPANY com ON cr.COM_ID = com.USER_ID
+		WHERE
+		    cr.RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectCareerDetail">
 		SELECT CAREER_NO
 			   , RESUME_NO
 			   , JOB_CODE
-			   , START_WORK_DATE
-			   , RETIRE_DATE
+			   , TO_CHAR(TO_DATE(START_WORK_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS START_WORK_DATE
+			   , TO_CHAR(TO_DATE(RETIRE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS RETIRE_DATE
 			   , TENURE
 			   , DEPARTMENT
 			   , RESPONSIBILITY
@@ -38,6 +89,7 @@
 			   , COM_ID 
 		  FROM CAREER 
 		 WHERE CAREER_NO = #{careerNo}
+		   
 	</select>
 	
 	<insert id="insertCareer">

@@ -11,4 +11,5 @@ public interface introductionService {
 	public void createIntroduction(IntroductionVO vo);
 	public void editIntroduction(IntroductionVO vo);
 	public void removeIntroduction(IntroductionVO vo);
+	public List<IntroductionVO> readIntroductionSearch(String name);
 }

@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.resume;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,4 +21,10 @@ public class EducationVO implements Serializable{
 	private String location;
 	private String departmentCode;
 	private String deleteDate;
+	
+	private List<SpecialtyVO> specialtyList;
 }
+/*
+ * <c:forEach var="edu" items="${talent.educationList }" varStatus="status">
+ * <option>${edu. }</option> </c:forEach>
+ */

@@ -42,9 +42,9 @@ class PrjMemMapperTest {
 	@Test
 	void testInsertPrjRcrtPsncnt() {
 		PrjMemVO vo = new PrjMemVO();
-		vo.setPrjNo("PRJT000001");
-		vo.setUserId("user02");
-		vo.setAuthorityCode("PL");
+		vo.setPrjNo("PRJT000007");
+		vo.setUserId("testUser");
+		vo.setAuthorityCode("BA");
 
 		assertEquals(1, mapper.insertPrjRcrtPsncnt(vo));
 	}

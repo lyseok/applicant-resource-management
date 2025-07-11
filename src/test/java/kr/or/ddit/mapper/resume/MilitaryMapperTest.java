@@ -15,15 +15,17 @@ class MilitaryMapperTest {
 	
 	@Test
 	void testselectMilitaryList() {
-		mapper.selectMilitaryList().forEach(mil -> {
+		mapper.selectMilitaryList("RESM000001").forEach(mil -> {
 			log.info("{}", mil);
 		});
 	}
 
 	@Test
 	void testselectMilitaryDetail() {
-		MilitaryVO vo =  mapper.selectMilitaryDetail("MLT001");
-		log.info("{}", vo);
+		MilitaryVO vo =  new MilitaryVO();
+		vo.setResumeNo("RESM000001");
+		vo.setMilitaryNo("MLTR000001");
+		log.info("{}", mapper.selectMilitaryDetail(vo));
 	}
 
 	@Test
@@ -38,7 +40,7 @@ class MilitaryMapperTest {
 		vo.setMilitaryEndDate("20250101");
 		vo.setMilitaryReason("안알랴줌");	// 병역사유
 		mapper.insertMilitary(vo);
-		mapper.selectMilitaryDetail("MLT001");
+		mapper.selectMilitaryDetail(vo);
 		log.info("{}", vo);
 		
 	}
@@ -51,7 +53,7 @@ class MilitaryMapperTest {
 		vo.setServiceCategoryCode("A");
 		vo.setMilitaryReason("병역사유 수정했지롱");	// 병역사유
 		mapper.updateMilitary(vo);
-		mapper.selectMilitaryDetail("MLT0000002");
+		mapper.selectMilitaryDetail(vo);
 		log.info("{}", vo);
 	}
 
@@ -59,7 +61,7 @@ class MilitaryMapperTest {
 	void testDeleteMilitary() {
 		MilitaryVO vo = new MilitaryVO();
 		mapper.deleteMilitary("MLT0000003");
-		mapper.selectMilitaryDetail("MLT0000003");
+		mapper.selectMilitaryDetail(vo);
 	}
 
 }

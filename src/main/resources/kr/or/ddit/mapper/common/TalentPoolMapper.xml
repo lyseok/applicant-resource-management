@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.TalentPoolMapper">
+
+
+	<select id="selectSearchSkillAndLicense"
+		resultMap="resumeResultMap" parameterType="map">
+		SELECT
+		A.RESUME_NO,
+		A.USER_NAME,
+		A.USER_ID,
+		A.EMAIL,
+		A.ADDRESS,
+		B.JOB_CODE,
+		B.START_WORK_DATE,
+		B.RETIRE_DATE,
+		B.RESPONSIBILITY,
+		B.CAREER_YEAR,
+		B.SALARY,
+		B.LOCATION,
+		C.MY_SKILL_NAME,
+		L.MY_LICENSE
+		FROM RESUME A
+		LEFT JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO
+		LEFT JOIN MY_SKILL C ON A.RESUME_NO = C.RESUME_NO
+		LEFT JOIN MY_LICENSE L ON A.RESUME_NO = L.RESUME_NO
+		<where>
+			<if test="skillName != null and skillName != ''">
+				AND C.MY_SKILL_NAME LIKE '%' || #{skillName} || '%'
+			</if>
+			<if test="keywordlicense != null and keywordlicense != ''">
+				AND L.MY_LICENSE LIKE '%' || #{license} || '%'
+			</if>
+		</where>
+		ORDER BY A.USER_NAME
+	</select>
+
+	<!-- <select id="selectSearchSkill" resultMap="resumeResultMap"> SELECT 
+		A.RESUME_NO, A.USER_NAME, A.USER_ID, A.EMAIL, A.ADDRESS, B.JOB_CODE, B.START_WORK_DATE, 
+		B.RETIRE_DATE, B.RESPONSIBILITY, B.CAREER_YEAR, B.SALARY, B.LOCATION, C.MY_SKILL_NAME 
+		FROM RESUME A LEFT JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO LEFT JOIN MY_SKILL 
+		C ON A.RESUME_NO = C.RESUME_NO WHERE c.MY_SKILL_NAME LIKE '%' || #{skillName} 
+		|| '%' ORDER BY A.USER_NAME </select> -->
+
+	<resultMap id="resumefilterResultMap"
+		type="kr.or.ddit.vo.resume.ResumeVO">
+		<id property="resumeNo" column="RESUME_NO" />
+		<result property="userId" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="address" column="ADDRESS" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="email" column="EMAIL" />
+
+		<!-- 경력 리스트 -->
+		<collection property="careerList"
+			ofType="kr.or.ddit.vo.resume.CareerVO">
+			<result property="careerYear" column="CAREER_YEAR" />
+			<result property="jobCode" column="JOB_CODE" />
+			<result property="salary" column="SALARY" />
+		</collection>
+
+		<!-- 교육 리스트 -->
+		<collection property="educationList"
+			ofType="kr.or.ddit.vo.resume.EducationVO">
+			<result property="highestEducationCode"
+				column="HIGHEST_EDUCATION_CODE" />
+			<result property="graduateYn" column="GRADUATE_YN" />
+		</collection>
+
+	</resultMap>
+
+	<!-- 2. select 문 분리 -->
+	<select id="selectTalentPoolListByFilter"
+		resultMap="resumeResultMap">
+		SELECT
+		R.RESUME_NO,
+		R.USER_ID,
+		R.USER_NAME,
+		R.ADDRESS,
+		R.UPDATE_DATE,
+		R.EMAIL,
+		C.CAREER_YEAR,
+		J.JOB_CODE,
+		J.JOB_NAME,
+		J.TOP_JOB_CODE,
+		TJ.TOP_JOB_NAME,
+		C.SALARY,
+		E.HIGHEST_EDUCATION_CODE,
+		E.GRADUATE_YN
+		FROM
+		RESUME R
+		LEFT JOIN CAREER C ON R.RESUME_NO = C.RESUME_NO
+		LEFT JOIN JOB J
+		ON C.JOB_CODE = J.JOB_CODE
+		LEFT JOIN TOP_JOB TJ ON J.TOP_JOB_CODE =
+		TJ.TOP_JOB_CODE
+		LEFT JOIN EDUCATION E ON R.RESUME_NO = E.RESUME_NO
+		<where>
+			R.RESUME_MAIN_YN = 'Y'
+
+			<!-- 경력 필터 -->
+			<if test="careerlong != null and careerlong != ''">
+				AND C.CAREER_YEAR &gt;= #{careerlong}
+			</if>
+
+			<!-- 지역 필터 -->
+			<if test="location != null and location != ''">
+				AND R.ADDRESS LIKE '%' || #{location} || '%'
+			</if>
+
+			<!-- 최종학력 필터 -->
+			<if test="edudone != null and edudone != ''">
+				AND E.HIGHEST_EDUCATION_CODE = #{edudone}
+			</if>
+
+			<!-- 졸업여부 필터 -->
+			<if test="gedu != null and gedu != ''">
+				AND E.GRADUATE_YN = #{gedu}
+			</if>
+
+			<!-- 직군 필터 -->
+			<if test="topJob != null and topJob != ''">
+				AND TJ.TOP_JOB_NAME = #{topJob}
+			</if>
+
+			<!-- 직무 필터 -->
+			<if test="job != null and job != ''">
+				AND J.JOB_CODE = #{job}
+			</if>
+		</where>
+		ORDER BY R.UPDATE_DATE DESC
+	</select>
+
+
+	<!-- 필터용 xml -->
+
+	<!-- <select id="selectedlocation" resultType="CityCodeVO" > SELECT CITY_NAME 
+		FROM CITY_CODE WHERE CITY_NAME =#{cityName} </select> <select id="selectededucation" 
+		resultType="EducationVO"> SELECT HIGHEST_EDUCATION_CODE , GRADUATE_YN FROM 
+		EDUCATION WHERE HIGHEST_EDUCATION_CODE = #{highestEducationCode} AND GRADUATE_YN 
+		= #{graduateYn} </select> <select id="selectedTopJob" resultType="TopJobVO"> 
+		SELECT * FROM TOP_JOB WHERE TOP_JOB_CODE =#{topJobCode} </select> <select 
+		id="selectedJob" resultType= "JobVO"> SELECT * FROM JOB WHERE = #{jobName} 
+		</select> -->
+
+
+
+
+	<!-- 조회용 xml -->
+
+	<select id="selectlocation" resultType="CityCodeVO">
+		SELECT CITY_NAME
+		FROM
+		CITY_CODE
+	</select>
+
+	<select id="selecteducation" resultType="EducationVO">
+		SELECT
+		HIGHEST_EDUCATION_CODE
+		, GRADUATE_YN
+		FROM
+		EDUCATION
+	</select>
+
+
+	<select id="selectTopJob" resultType="TopJobVO">
+		SELECT *
+		FROM TOP_JOB
+	</select>
+
+	<select id="selectJob" resultType="JobVO">
+		SELECT *
+		FROM JOB
+		<!-- WHERE = #{tobJob} -->
+	</select>
+
+
+
+	<resultMap id="resumeResultMap" type="ResumeVO">
+		<id property="resumeNo" column="RESUME_NO" />
+		<result property="userId" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="email" column="EMAIL" />
+		<result property="address" column="ADDRESS" />
+
+		<collection property="careerList"
+			ofType="kr.or.ddit.vo.resume.CareerVO">
+			<result property="jobCode" column="JOB_CODE" />
+			<result property="careerYear" column="CAREER_YEAR" />
+			<result property="salary" column="SALARY" />
+			<result property="responsibility" column="RESPONSIBILITY" />
+			<result property="startWorkDate" column="START_WORK_DATE" />
+			<result property="retireDate" column="RETIRE_DATE" />
+			<result property="location" column="LOCATION" />
+		</collection>
+
+		<collection property="mySkillList"
+			ofType="kr.or.ddit.vo.resume.MySkillVO">
+			<result property="mySkillName" column="MY_SKILL_NAME" />
+		</collection>
+
+		<collection property="joblist"
+			ofType="kr.or.ddit.vo.common.JobVO">
+			<result property="jobCode" column="JOB_CODE" />
+			<result property="topJobCode" column="TOP_JOB_CODE" />
+			<result property="jobName" column="JOB_NAME" />
+		</collection>
+	</resultMap>
+
+
+
+	<select id="selectTalentPoolList" resultMap="resumeResultMap">
+		SELECT
+		A.RESUME_NO,
+		A.USER_NAME,
+		A.USER_ID,
+		A.EMAIL,
+		A.ADDRESS,
+		B.JOB_CODE,
+		B.START_WORK_DATE,
+		B.RETIRE_DATE,
+		B.RESPONSIBILITY,
+		B.CAREER_YEAR,
+		B.SALARY,
+		B.LOCATION,
+		C.MY_SKILL_NAME,
+		D.JOB_CODE AS JOB_CODE,
+		D.TOP_JOB_CODE,
+		D.JOB_NAME
+		FROM RESUME A
+		LEFT JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO
+		LEFT JOIN MY_SKILL C ON A.RESUME_NO = C.RESUME_NO
+		LEFT JOIN JOB D ON B.JOB_CODE = D.JOB_CODE
+		ORDER BY A.USER_NAME
+	</select>
+
+
+	<!-- <select id="selectResumeDetail" resultType="ResumeVO"> -->
+	<!-- SELECT -->
+	<!-- A.USER_NAME, -->
+	<!-- B.JOB_CODE, -->
+	<!-- B.START_WORK_DATE, -->
+	<!-- B.RETIRE_DATE, -->
+	<!-- B.TENURE, -->
+	<!-- B.RESPONSIBILITY, -->
+	<!-- B.FREELANCER, -->
+	<!-- B.JOB_GRADE_CODE, -->
+	<!-- B.POSITION_CODE, -->
+	<!-- B.CAREER_YEAR, -->
+	<!-- B.SALARY, -->
+	<!-- B.LOCATION, -->
+	<!-- LISTAGG(C.MY_SKILL_NAME, ', ') WITHIN GROUP (ORDER BY C.MY_SKILL_NAME) 
+		AS SKILLS -->
+	<!-- FROM RESUME A -->
+	<!-- JOIN CAREER B ON A.RESUME_NO = B.RESUME_NO -->
+	<!-- LEFT JOIN MY_SKILL C ON A.RESUME_NO = C.RESUME_NO -->
+	<!-- WHERE A.USER_NAME = #{userName} -->
+	<!-- GROUP BY -->
+	<!-- A.USER_NAME, B.JOB_CODE, B.START_WORK_DATE, B.RETIRE_DATE, B.TENURE, -->
+	<!-- B.RESPONSIBILITY, B.FREELANCER, B.JOB_GRADE_CODE, B.POSITION_CODE, -->
+	<!-- B.CAREER_YEAR, B.SALARY, B.LOCATION, A.RESUME_NO -->
+	<!-- </select> -->
+
+
+	<resultMap id="resumeMap"
+		type="kr.or.ddit.vo.resume.ResumeVO">
+		<!-- 기본 ResumeVO 매핑 -->
+		<id property="resumeNo" column="resume_no" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="photo" column="photo" />
+		<result property="birth" column="birth" />
+		<result property="email" column="email" />
+		<result property="tel" column="tel" />
+		<result property="address" column="address" />
+		<result property="veteranReason" column="veteran_reason" />
+		<result property="updateDate" column="update_date" />
+		<result property="resumeSubmitYn" column="resume_submit_yn" />
+		<result property="resumeDeleteDate" column="resume_delete_date" />
+
+		<!-- MemberVO 매핑 -->
+		<association property="member"
+			javaType="kr.or.ddit.vo.common.MemberVO">
+			<result property="userId" column="user_id" />
+			<result property="memName" column="mem_name" />
+			<result property="memEmail" column="mem_email" />
+			<result property="memBir" column="mem_bir" />
+			<result property="memTel" column="mem_tel" />
+			<result property="memAdd1" column="mem_add1" />
+			<result property="memAdd2" column="mem_add2" />
+			<result property="memImg" column="mem_img" />
+		</association>
+
+		<!-- MySkillVO 리스트 매핑 -->
+		<collection property="mySkillList"
+			ofType="kr.or.ddit.vo.resume.MySkillVO">
+			<id property="mySkillCode" column="my_skill_code" />
+			<result property="resumeNo" column="resume_no" />
+			<result property="mySkillName" column="my_skill_name" />
+			<result property="deleteDate" column="delete_date" />
+		</collection>
+
+		<!-- careerVO 매핑 -->
+		<collection property="careerList" ofType="CareerVO">
+			<id property="careerNo" column="career_no" />
+			<result property="resumeNo" column="resume_no" />
+			<result property="jobCode" column="job_code" />
+			<result property="startWorkDate" column="start_work_date" />
+			<result property="retireDate" column="retire_date" />
+			<result property="tenure" column="tenure" />
+			<result property="department" column="department" />
+			<result property="responsibility" column="responsibility" />
+			<result property="freelancer" column="freelancer" />
+			<result property="jobGradeCode" column="job_grade_code" />
+			<result property="positionCode" column="position_code" />
+			<result property="careerYear" column="career_year" />
+			<result property="salary" column="salary" />
+			<result property="location" column="location" />
+			<result property="deleteDate" column="delete_date" />
+			<result property="comId" column="com_id" />
+		</collection>
+
+		<!-- myLicenseList 매핑 -->
+		<collection property="myLicenseList" ofType="MyLicenseVO">
+			<id property="myLicense" column="my_license" />
+			<result property="resumeNo" column="resume_no" />
+			<result property="licenseCode" column="license_code" />
+			<result property="licensePassDate" column="license_pass_date" />
+			<result property="deleteDate" column="delete_date" />
+		</collection>
+	</resultMap>
+
+	<select id="selectResumeDetail" resultMap="resumeMap">
+		select
+		*
+		from resume r,
+		member m, my_skill s, career c
+		where r.user_id = m.user_id
+		and
+		r.resume_no = s.resume_no
+		and r.resume_no = c.resume_no
+		and r.user_id =
+		#{userId}
+		and
+		r.RESUME_SUBMIT_YN = 'Y'
+
+	</select>
+
+	<!-- <select id="selectSkillList" resultType="MySkillVO"> SELECT MY_SKILL_NAME 
+		FROM MY_SKILL A INNER JOIN RESUME B ON A.RESUME_NO = B.RESUME_NO WHERE USER_NAME 
+		= #{useName} </select> -->
+
+	<select id="selectMember" parameterType="string"
+		resultType="MemberVO">
+		SELECT
+		MEM_ID
+		, MEM_PASSWORD
+		, MEM_NAME
+		, MEM_REGNO1
+		,
+		MEM_REGNO2
+		, MEM_BIR
+		, MEM_ZIP
+		, MEM_ADD1
+		, MEM_ADD2
+		, MEM_HOMETEL
+		,
+		MEM_COMTEL
+		, MEM_HP
+		, MEM_MAIL
+		, MEM_JOB
+		, MEM_HOPPY
+		, MEM_MEMORIAL
+		,
+		MEM_MEMORIALDAY
+		, MEM_MILEAGE
+		, MEM_DELETE
+		, MEM_ROLE
+		FROM MEMBER
+		WHERE
+		MEM_ID = #{username}
+	</select>
+
+	<insert id="insertMember">
+		INSERT INTO MEMBER(
+		MEM_ID
+		,MEM_PASSWORD
+		,MEM_NAME
+		,MEM_REGNO1
+		,MEM_REGNO2
+		,MEM_BIR
+		,MEM_ZIP
+		,MEM_ADD1
+		,MEM_ADD2
+		,MEM_HOMETEL
+		,MEM_COMTEL
+		,MEM_HP
+		,MEM_MAIL
+		,MEM_JOB
+		,MEM_HOPPY
+		,MEM_MEMORIAL
+		,MEM_MEMORIALDAY
+		)VALUES(
+		#{memId},
+		#{memPassword},
+		#{memName},
+		#{memRegno1},
+		#{memRegno2},
+		#{memBir},
+		#{memZip},
+		#{memAdd1},
+		#{memAdd2},
+		#{memHometel},
+		#{memComtel},
+		#{memHp},
+		#{memMail},
+		#{memJob},
+		#{memHoppy},
+		#{memMemorial},
+		#{memMemorialday}
+		)
+	</insert>
+	<select id="selectMemberByMail" parameterType="string"
+		resultType="MemberVO">
+		SELECT
+		MEM_ID
+		, MEM_PASSWORD
+		, MEM_NAME
+		, MEM_REGNO1
+		,
+		MEM_REGNO2
+		, MEM_BIR
+		, MEM_ZIP
+		, MEM_ADD1
+		, MEM_ADD2
+		, MEM_HOMETEL
+		,
+		MEM_COMTEL
+		, MEM_HP
+		, MEM_MAIL
+		, MEM_JOB
+		, MEM_HOPPY
+		, MEM_MEMORIAL
+		,
+		MEM_MEMORIALDAY
+		, MEM_MILEAGE
+		, MEM_DELETE
+		, MEM_ROLE
+		FROM MEMBER
+		WHERE
+		MEM_MAIL = #{mail}
+	</select>
+
+	<update id="updateMemDelete">
+		UPDATE MEMBER
+		SET MEM_DELETE= 'T'
+		WHERE MEM_ID =
+		#{memId}
+	</update>
+
+	<update id="updateMember">
+		UPDATE MEMBER
+		SET MEM_NAME =#{memName}
+		,MEM_REGNO1
+		=#{memRegno1}
+		,MEM_REGNO2
+		=#{memRegno2}
+		,MEM_BIR =#{memBir}
+		,MEM_ZIP
+		=#{memZip}
+		,MEM_ADD1
+		=#{memAdd1}
+		,MEM_ADD2 =#{memAdd2}
+		,MEM_HOMETEL
+		=#{memHometel}
+		,MEM_COMTEL =#{memComtel}
+		,MEM_HP =#{memHp}
+		,MEM_MAIL
+		=#{memMail}
+		,MEM_JOB =#{memJob}
+		,MEM_HOPPY =#{memHoppy}
+		,MEM_MEMORIAL
+		=#{memMemorial}
+		,MEM_MEMORIALDAY=#{memMemorialday}
+		WHERE MEM_ID =
+		#{memId}
+	</update>
+
+</mapper>

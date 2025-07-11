@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.project;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,4 +18,6 @@ public class ProjectVO implements Serializable {
 	private String createDate;
 	private String finishDate;
 	private String deleteDate;
+	
+	private List<PrjMemVO> prjMemList;
 }

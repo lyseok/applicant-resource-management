@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.EmailAuthMapper">
+	<insert id="upsertAuthCode">
+		MERGE INTO EMAIL_AUTH ea
+		USING DUAL
+		ON (ea.EMAIL = #{email})
+		WHEN MATCHED THEN
+		UPDATE SET AUTH_CODE = #{authCode}, EXPIRE_TIME = SYSTIMESTAMP + INTERVAL
+		'3' MINUTE
+		WHEN NOT MATCHED THEN
+		INSERT (EMAIL, AUTH_CODE, EXPIRE_TIME)
+		VALUES (#{email}, #{authCode}, SYSTIMESTAMP + INTERVAL '3' MINUTE)
+	</insert>
+
+	<select id="verifyAuthCode" resultType="int">
+		SELECT COUNT(1)
+		FROM EMAIL_AUTH
+		WHERE EMAIL = #{email}
+		AND AUTH_CODE = #{authCode}
+		AND EXPIRE_TIME > SYSTIMESTAMP
+	</select>
+</mapper>

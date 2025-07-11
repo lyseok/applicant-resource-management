@@ -22,22 +22,22 @@ class CommuBoardMapperTest {
 	CommuBoardMapper mapper;
 	
 	@Test
-	void testSelectCommuBoard() {
-		CommuBoardVO board = mapper.selectCommuBoard("CMBD000001");
+	void testSelectCommuBoardByPk() {
+		CommuBoardVO board = mapper.selectCommuBoardByPk("CMBD000001");
 
 		log.info("{}", board);
 	}
 
 	@Test
 	@DisplayName("셀렉트")
-	void testSelectCommuBoardList() {
-		assertDoesNotThrow(()->mapper.selectCommuBoardList("CATE-001"));
+	void testSelectCommuBoardListByCate() {
+		assertDoesNotThrow(()->mapper.selectCommuBoardListByCate("CATE-003"));
 		
-		List<CommuBoardVO> list = mapper.selectCommuBoardList("CATE-001");
+		List<CommuBoardVO> list = mapper.selectCommuBoardListByCate("CATE-003");
 		log.info("리스트 확인 : {}", list);
-		list.forEach(c->log.info("아무거나{}", c));
+		list.forEach(c->log.info("상세 내용 : {}", c));
 		
-		assertEquals(0, list.size());
+		assertEquals(1, list.size());
 	}
 
 	@Test
@@ -52,7 +52,7 @@ class CommuBoardMapperTest {
 		
 		assertEquals(1, mapper.insertCommuBoard(board));
 		
-		log.info("{}", mapper.selectCommuBoard("CMBD000001"));
+		log.info("{}", mapper.selectCommuBoardByPk("CMBD000001"));
 	}
 
 	@Test
@@ -71,13 +71,13 @@ class CommuBoardMapperTest {
 		
 		assertEquals(1, mapper.updateCommuBoard(board));
 		
-		log.info("{}", mapper.selectCommuBoard("CMBD000001"));
+		log.info("{}", mapper.selectCommuBoardByPk("CMBD000001"));
 	}
 
 	@Test
 	void testDeleteCommuBoard() {
 		log.info("{}", mapper.deleteCommuBoard("CMBD000001"));
-		assertNull(mapper.selectCommuBoard("CMBD000001"));
+		assertNull(mapper.selectCommuBoardByPk("CMBD000001"));
 	}
 
 }

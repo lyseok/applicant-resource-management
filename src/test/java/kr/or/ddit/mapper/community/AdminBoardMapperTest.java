@@ -29,9 +29,9 @@ class AdminBoardMapperTest {
 
 	@Test
 	void testSelectAdminBoardListByType() {
-		assertDoesNotThrow(()->mapper.selectAdminBoardListByType("BRDD-001"));
+		assertDoesNotThrow(()->mapper.selectAdminBoardListByType("UFAQ-U5"));
 		
-		List<AdminBoardVO> list = mapper.selectAdminBoardListByType("BRDD-001");
+		List<AdminBoardVO> list = mapper.selectAdminBoardListByType("UFAQ-U5");
 		list.forEach(board->{
 			log.info("{}", board);
 		});
@@ -46,15 +46,15 @@ class AdminBoardMapperTest {
 			log.info("{}", board);
 		});
 	}
-
+	
 	@Test
 	void testInsertAdminBoard() {
 		AdminBoardVO board = new AdminBoardVO();
 		
 		board.setUserId("USR007");
-		board.setBoardTypeCode("BRDD-002");
-		board.setBoardTitle("자주 묻는 사항 테스트입니다");
-		board.setBoardContent("테스트 내용입니다");
+		board.setBoardTypeCode("UFAQ-U5");
+		board.setBoardTitle("개인회원 탈퇴 방법");
+		board.setBoardContent("탈퇴시 방법입니다.");
 		board.setBoardPostHit(0);
 		board.setBoardStatus("R");
 		

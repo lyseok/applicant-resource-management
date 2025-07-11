@@ -3,39 +3,306 @@ package kr.or.ddit.member.resume.resume.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.mapper.resume.AwardMapper;
+import kr.or.ddit.mapper.resume.CareerMapper;
+import kr.or.ddit.mapper.resume.EducationMapper;
+import kr.or.ddit.mapper.resume.LanguageSkillMapper;
+import kr.or.ddit.mapper.resume.MilitaryMapper;
+import kr.or.ddit.mapper.resume.MyExperienceMapper;
+import kr.or.ddit.mapper.resume.MyLicenseMapper;
+import kr.or.ddit.mapper.resume.MySkillMapper;
+import kr.or.ddit.mapper.resume.PortfolioMapper;
 import kr.or.ddit.mapper.resume.ResumeMapper;
+import kr.or.ddit.mapper.resume.SpecialtyMapper;
+import kr.or.ddit.mapper.resume.IntroductionMapper;
+import kr.or.ddit.mapper.resume.SupportMapper;
+import kr.or.ddit.member.resume.exception.ResumeNotFoundException;
+import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
+import kr.or.ddit.vo.resume.AwardVO;
+import kr.or.ddit.vo.resume.CareerVO;
+import kr.or.ddit.vo.resume.EducationVO;
+import kr.or.ddit.vo.resume.IntroductionVO;
+import kr.or.ddit.vo.resume.LanguageSkillVO;
+import kr.or.ddit.vo.resume.MilitaryVO;
+import kr.or.ddit.vo.resume.MyExperienceVO;
+import kr.or.ddit.vo.resume.MyLicenseVO;
+import kr.or.ddit.vo.resume.MySkillVO;
+import kr.or.ddit.vo.resume.PortfolioVO;
 import kr.or.ddit.vo.resume.ResumeVO;
+import kr.or.ddit.vo.resume.SpecialtyVO;
+import kr.or.ddit.vo.resume.SupportVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
-	private final ResumeMapper mapper;
+	private final CodeMapProvider provider;
 	
+	private final ResumeMapper resumeMapper;				// 이력서
+	private final CareerMapper careerMapper;				// 경력
+	private final SupportMapper supportMapper;				// 고용지원
+	private final AwardMapper awardMapper;					// 수상
+	private final MyExperienceMapper myExperienceMapper;	// 보유경험
+	private final MySkillMapper mySkillMapper;				// 보유 기술
+	private final MyLicenseMapper myLicenseMapper;			// 보유 자격
+	private final IntroductionMapper IntroductionMapper;	// 자기소개서 > 이력서에서 insert하면 제출자소서에도 추가로 insert 해주는건지?
+	private final LanguageSkillMapper languageSkillMapper;	// 어학
+	private final PortfolioMapper portfolioMapper;			// 포트폴리오
+	private final MilitaryMapper militaryMapper;			// 병역
+	private final EducationMapper educationMapper;			// 학력
+	private final SpecialtyMapper specialtyMapper;			// 학력 - 하위 전공
+	
+	// 리스트 조회
 	@Override
-	public List<ResumeVO> readResumeList() {
-		return mapper.selectResumeList();
+	public List<ResumeVO> readResumeList(String id) {
+		List<ResumeVO> resumeList = resumeMapper.selectResumeList(id);
+		for(ResumeVO resume:resumeList) {
+			resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
+			resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));
+			resume.setAwardList(awardMapper.selectAwardList(resume.getResumeNo()));
+			resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
+			resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
+			resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
+			// resume.setIntroductionList(IntroductionMapper.selectIntroductionList(resume.getResumeNo()));
+			resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
+			resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
+			resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
+			resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));			
+		}
+
+		return resumeList;
+	}
+
+	// 상세조회
+	@Override
+	public ResumeVO readResumeDetail(ResumeVO vo) {
+		ResumeVO resume = resumeMapper.selectResumeDetail(vo);
+		log.info("♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥ {}", resume.getIntroduction());
+		if(resume==null) {
+			throw new ResumeNotFoundException("이력서를 찾을 수 없습니다. (ID: " + vo.getResumeNo() + ")"); 
+		}
+		resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
+		resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));
+		resume.setAwardList(awardMapper.selectAwardList(resume.getResumeNo()));
+		resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
+		resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
+		resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
+		resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
+		resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
+		resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
+		resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));
+		setCodeName(resume);
+		return resume;
 	}
 
 	@Override
-	public ResumeVO readResumeDetail(String no) {
-		return mapper.selectResumeDetail(no);
-	}
+	@Transactional
+	public void createResume(ResumeVO resumeVO) {
+		resumeMapper.insertResume(resumeVO);
+		
+		// 경력
+		if(resumeVO.getCareerList() != null) {
+			for(CareerVO career:resumeVO.getCareerList()) {
+				career.setCareerNo(resumeVO.getResumeNo());		// 이력서번호(부모 pk) 세팅; 
+				careerMapper.insertCareer(career);
+			}
+		}
+		
+		// 고용지원
+		if(resumeVO.getSupportList() != null) {
+			for(SupportVO support:resumeVO.getSupportList()) {
+				support.setSupportNo(resumeVO.getResumeNo());	// 이력서번호(부모 pk) 세팅; 
+				supportMapper.insertSupport(support);
+			}
+		}
+		
+		// 수상
+        if (resumeVO.getAwardList() != null) {
+            for (AwardVO award : resumeVO.getAwardList()) {
+                award.setResumeNo(resumeVO.getResumeNo());
+                awardMapper.insertAward(award);
+            }
+        }
+        
+        // 보유경험
+        if (resumeVO.getMyExperienceList() != null) {
+        	for (MyExperienceVO myExperience : resumeVO.getMyExperienceList()) {
+        		myExperience.setResumeNo(resumeVO.getResumeNo());
+        		myExperienceMapper.insertMyExperience(myExperience);
+        	}
+        }
+        
+        // 보유기술
+        if (resumeVO.getMySkillList() != null) {
+        	for (MySkillVO mySkill : resumeVO.getMySkillList()) {
+        		mySkill.setResumeNo(resumeVO.getResumeNo());
+        		mySkillMapper.insertMySkill(mySkill);
+        	}
+        }
+        
+        // 보유자격
+        if (resumeVO.getMyLicenseList() != null) {
+        	for (MyLicenseVO myLicense : resumeVO.getMyLicenseList()) {
+        		myLicense.setResumeNo(resumeVO.getResumeNo());
+        		myLicenseMapper.insertMyLicense(myLicense);
+        	}
+        }
 
-	@Override
-	public void createResume(ResumeVO vo) {
-		mapper.insertResume(vo);
+        // 자소서 - 여기 어떻게 할건지 아직 미정
+        /*
+        if (resumeVO.getIntroductionList() != null) {
+        	for (IntroductionVO introduction : resumeVO.getIntroductionList()) {
+        		introduction.setResumeNo(resumeVO.getResumeNo());
+        		myLicenseMapper.insertMyLicense(introduction);
+        	}
+        }
+        */
+        
+        // 어학
+        if (resumeVO.getLanguageSkillList() != null) {
+        	for (LanguageSkillVO languageSkill : resumeVO.getLanguageSkillList()) {
+        		languageSkill.setResumeNo(resumeVO.getResumeNo());
+        		languageSkillMapper.insertLanguageSkill(languageSkill);
+        	}
+        }
+        
+        // 포트폴리오
+        if (resumeVO.getPortfolioList() != null) {
+        	for (PortfolioVO portfolio : resumeVO.getPortfolioList()) {
+        		portfolio.setResumeNo(resumeVO.getResumeNo());
+        		portfolioMapper.insertPortfolio(portfolio);
+        	}
+        }
+        
+        // 병역
+        if (resumeVO.getMilitaryList() != null) {
+        	for (MilitaryVO military : resumeVO.getMilitaryList()) {
+        		military.setResumeNo(resumeVO.getResumeNo());
+        		militaryMapper.insertMilitary(military);
+        	}
+        }
+		
+		// 사용자가 학력을 입력한경우
+		if (resumeVO.getEducationList() != null) {
+            for (EducationVO education : resumeVO.getEducationList()) {
+                education.setResumeNo(resumeVO.getResumeNo());
+                educationMapper.insertEducation(education); // educationNo 세팅
+
+                // 3. 전공 insert (specialtyList)
+                if (education.getSpecialtyList() != null) {
+                    for (SpecialtyVO specialty : education.getSpecialtyList()) {
+                        specialty.setEducationNo(education.getEducationNo());
+                        specialty.setResumeNo(resumeVO.getResumeNo());
+                        specialtyMapper.insertSpecialty(specialty);
+                    }
+                }
+            }
+        }
 	}
 
 	@Override
 	public void editResume(ResumeVO vo) {
-		mapper.updateResume(vo);
+		resumeMapper.updateResume(vo);
 	}
 
 	@Override
 	public void removeResume(String no) {
-		mapper.deleteResume(no);
+		resumeMapper.deleteResume(no);
 	}
+	
+	private void setCodeName(ResumeVO resumeVO) {
+		// 리스트 꺼내기
+		List<CareerVO> carrerList = resumeVO.getCareerList();
+		List<SupportVO> supportList = resumeVO.getSupportList();
+		List<MyExperienceVO> myExperienceList = resumeVO.getMyExperienceList();
+		List<LanguageSkillVO> languageSkillList = resumeVO.getLanguageSkillList();
+		List<MilitaryVO> militaryList = resumeVO.getMilitaryList();
+		List<EducationVO> educationList = resumeVO.getEducationList();
+		educationList.forEach(i ->{
+			List<SpecialtyVO> list = i.getSpecialtyList();
+			list.forEach(ii->{
+				ii.setSubMajorCode(provider.getCodeName(ii.getSubMajorCode()));
+				log.info("{}", ii.getSubMajorCode());
+			});
+		});
+		
+		// 데이터 setting
+		for(CareerVO car : carrerList) {
+			car.setJobCodeName(provider.getJobName(car.getJobCode()));
+			car.setJobGradeCodeName(provider.getCodeName(car.getJobGradeCode()));
+			car.setPositionCodeName(provider.getCodeName(car.getPositionCode()));
+			car.setCareerYearName(provider.getCodeName(car.getCareerYear()));
+			log.info("JobCode ------->>> {}", car.getJobCodeName());
+			log.info("JobGradeCode ------->>> {}", car.getJobGradeCodeName());
+			log.info("PositionCode ------->>> {}", car.getPositionCodeName());
+			log.info("CareerYear ------->>> {}", car.getCareerYearName());
+			log.info(" ");
+		}
+		log.info(" ");
+		
+		for(SupportVO sup : supportList) {
+			sup.setDisabilityCodeName(provider.getCodeName(sup.getDisabilityCode()));
+			sup.setDisabilityLevelCodeName(provider.getCodeName(sup.getDisabilityLevelCode()));
+			log.info("Disability ------->>> {}", sup.getDisabilityCodeName());
+			log.info("DisabilityLevel ------->>> {}", sup.getDisabilityLevelCodeName());
+			log.info(" ");
+		}
+		log.info(" ");
+		
+		for(MyExperienceVO exp : myExperienceList) {
+			exp.setExpCodeName(provider.getCodeName(exp.getExpCode()));
+			log.info("ExpCode ------->>> {}", exp.getExpCodeName());
+		}
+		log.info(" ");
+		
+		for(LanguageSkillVO lang : languageSkillList) {
+			lang.setLanguageCodeName(provider.getCodeName(lang.getLanguageCode()));
+			lang.setLanguageExamCodeName(provider.getCodeName(lang.getLanguageExamCode()));
+			lang.setLanguageExamLevelCodeName(provider.getCodeName(lang.getLanguageExamLevelCode()));
+			log.info("LanguageCode ------->>> {}", lang.getLanguageCodeName());
+			log.info("LanguageExamCode ------->>> {}", lang.getLanguageExamCodeName());
+			log.info("LanguageExamLevelCode ------->>> {}", lang.getLanguageExamLevelCodeName());
+			log.info(" ");
+		}
+		log.info(" ");
+		
+		for(MilitaryVO mil : militaryList) {
+			mil.setServiceCategoryCode(provider.getCodeName(mil.getServiceCategoryCode()));
+			mil.setMilitaryTypeCode(provider.getCodeName(mil.getMilitaryTypeCode()));
+			mil.setMilitaryRankCode(provider.getCodeName(mil.getMilitaryRankCode()));
+			mil.setDischargeCode(provider.getCodeName(mil.getDischargeCode()));
+			log.info("ServiceCategory ------->>> {}", mil.getServiceCategoryCode());
+			log.info("MilitaryType ------->>> {}", mil.getMilitaryTypeCode());
+			log.info("MilitaryRank ------->>> {}", mil.getMilitaryTypeCode());
+			log.info("Discharge ------->>> {}", mil.getMilitaryTypeCode());
+			log.info(" ");
+		}
+		log.info(" ");
+		
+		for(EducationVO edu : educationList) {
+			edu.setDepartmentCode(provider.getCodeName(edu.getDepartmentCode()));
+			edu.setHighestEducationCode(provider.getCodeName(edu.getHighestEducationCode()));
+			edu.setGraduateYn(provider.getCodeName(edu.getGraduateYn()));
+			log.info("MilitaryRank ------->>> {}", edu.getDepartmentCode());
+			log.info("Discharge ------->>> {}", edu.getHighestEducationCode());
+			log.info("Discharge ------->>> {}", edu.getGraduateYn());
+		}
+		log.info(" ");
+		
+		
+		
+	}
+
+	@Override
+	public void editResumeRemove(ResumeVO vo) {
+		// resumeMapper.deleteResume(null);
+		
+	}
+	 
 
 }

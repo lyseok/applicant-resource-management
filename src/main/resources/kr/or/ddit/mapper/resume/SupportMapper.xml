@@ -7,6 +7,7 @@
 			   , DISABILITY_CODE
 			   , DISABILITY_LEVEL_CODE 
 		  FROM SUPPORT
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectSupportDetail">
@@ -16,6 +17,7 @@
 			   , DISABILITY_LEVEL_CODE 
 		  FROM SUPPORT
 		 WHERE SUPPORT_NO = #{supportNo}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertSupport">

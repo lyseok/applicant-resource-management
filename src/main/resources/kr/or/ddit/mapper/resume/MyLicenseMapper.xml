@@ -5,17 +5,19 @@
 		SELECT MY_LICENSE
 			   , RESUME_NO
 			   , LICENSE_CODE
-			   , LICENSE_PASS_DATE
+			   , TO_CHAR(TO_DATE(LICENSE_PASS_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS LICENSE_PASS_DATE
 		  FROM MY_LICENSE
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectMyLicenseDetail">
 		SELECT MY_LICENSE
 			   , RESUME_NO
 			   , LICENSE_CODE
-			   , LICENSE_PASS_DATE
+			   , TO_CHAR(TO_DATE(LICENSE_PASS_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS LICENSE_PASS_DATE
 		  FROM MY_LICENSE 
 		 WHERE MY_LICENSE = #{myLicense}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertMyLicense">

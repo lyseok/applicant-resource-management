@@ -14,13 +14,13 @@ public class PortfolioServiceImpl implements PortfolioService {
 	private final PortfolioMapper mapper;
 	
 	@Override
-	public List<PortfolioVO> readPortfolioList() {
-		return mapper.selectPortfolioList();
+	public List<PortfolioVO> readPortfolioList(String no) {
+		return mapper.selectPortfolioList(no);
 	}
 
 	@Override
-	public PortfolioVO readPortfolioDetail(String no) {
-		return mapper.selectPortfolioDetail(no);
+	public PortfolioVO readPortfolioDetail(PortfolioVO vo) {
+		return mapper.selectPortfolioDetail(vo);
 	}
 
 	@Override
@@ -31,6 +31,11 @@ public class PortfolioServiceImpl implements PortfolioService {
 	@Override
 	public void editPortfolio(PortfolioVO vo) {
 		mapper.updatePortfolio(vo);
+	}
+	
+	@Override
+	public void updatePortfolioDelete(PortfolioVO vo) {
+		mapper.updatePortfolioDelete(vo);
 	}
 
 	@Override

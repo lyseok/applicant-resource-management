@@ -8,9 +8,10 @@
 			   , EXP_CODE
 			   , EXP_NAME
 			   , ORGANIZATION_NAME
-			   , EXP_START_DATE
-			   , EXP_END_DATE 
+			   , TO_CHAR(TO_DATE(EXP_START_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS EXP_START_DATE
+			   , TO_CHAR(TO_DATE(EXP_END_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS EXP_END_DATE
 		  FROM MY_EXPERIENCE
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectMyExperienceDetail">
@@ -19,10 +20,11 @@
 			   , EXP_CODE
 			   , EXP_NAME
 			   , ORGANIZATION_NAME
-			   , EXP_START_DATE
-			   , EXP_END_DATE 
+			   , TO_CHAR(TO_DATE(EXP_START_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS EXP_START_DATE
+			   , TO_CHAR(TO_DATE(EXP_END_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS EXP_END_DATE
 		  FROM MY_EXPERIENCE 
 		 WHERE MY_EXP_CODE = #{myExpCode}
+     	   AND RESUME_NO = #{resumeNo}
 	</select>
 	
 	<insert id="insertMyExperience">

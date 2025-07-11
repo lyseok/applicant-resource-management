@@ -1,33 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.EducationMapper">
-	<select id="selectEducationList">
-		SELECT EDUCATION_NO
-			   , RESUME_NO
-			   , HIGHEST_EDUCATION_CODE
-			   , SCHOOL_NAME, GRADUATE_YN
-			   , TRANSFER_YN
-			   , ENTRANCE_DATE
-			   , GRADUATE_DATE
-			   , LOCATION
-			   , DEPARTMENT_CODE 
-		  FROM EDUCATION
+	<resultMap id="educationResultMap" type="kr.or.ddit.vo.resume.EducationVO">
+	    <id property="educationNo" column="EDUCATION_NO"/>
+	    <result property="resumeNo" column="EDUCATION_RESUME_NO"/>
+	    <result property="highestEducationCode" column="HIGHEST_EDUCATION_CODE"/>
+	    <result property="schoolName" column="SCHOOL_NAME"/>
+	    <result property="graduateYn" column="GRADUATE_YN"/>
+	    <result property="transferYn" column="TRANSFER_YN"/>
+	    <result property="entranceDate" column="ENTRANCE_DATE"/>
+	    <result property="graduateDate" column="GRADUATE_DATE"/>
+	    <result property="location" column="EDUCATION_LOCATION"/>
+	    <result property="departmentCode" column="DEPARTMENT_CODE"/>
+	    <result property="deleteDate" column="EDUCATION_DELETE_DATE"/>
+	
+	    <collection property="specialtyList" ofType="kr.or.ddit.vo.resume.SpecialtyVO">
+	        <id property="educationNo" column="SPECIALTY_EDUCATION_NO"/>
+	        <result property="resumeNo" column="SPECIALTY_RESUME_NO"/>
+	        <result property="mainMajor" column="MAIN_MAJOR"/>
+	        <result property="subMajor" column="SUB_MAJOR"/>
+	        <result property="subMajorCode" column="SUB_MAJOR_CODE"/>
+	        <result property="deleteDate" column="SPECIALTY_DELETE_DATE"/>
+	    </collection>
+	</resultMap>
+		
+	<select id="selectEducationList" resultMap="educationResultMap">
+		SELECT
+	        -- education 테이블
+	        edu.EDUCATION_NO AS EDUCATION_NO,
+	        edu.RESUME_NO AS EDUCATION_RESUME_NO,
+	        edu.HIGHEST_EDUCATION_CODE AS HIGHEST_EDUCATION_CODE,
+	        edu.SCHOOL_NAME AS SCHOOL_NAME,
+	        edu.GRADUATE_YN AS GRADUATE_YN,
+	        edu.TRANSFER_YN AS TRANSFER_YN,
+		    TO_CHAR(TO_DATE(edu.ENTRANCE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS ENTRANCE_DATE,
+		    TO_CHAR(TO_DATE(edu.GRADUATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS GRADUATE_DATE,
+	        edu.LOCATION AS EDUCATION_LOCATION,
+	        edu.DEPARTMENT_CODE AS DEPARTMENT_CODE,
+	        edu.DELETE_DATE AS EDUCATION_DELETE_DATE,
+	        
+	        -- specialty 테이블
+	        spc.EDUCATION_NO AS SPECIALTY_EDUCATION_NO,
+	        spc.RESUME_NO AS SPECIALTY_RESUME_NO,
+	        spc.MAIN_MAJOR AS MAIN_MAJOR,
+	        spc.SUB_MAJOR AS SUB_MAJOR,
+	        spc.SUB_MAJOR_CODE AS SUB_MAJOR_CODE,
+	        spc.DELETE_DATE AS SPECIALTY_DELETE_DATE
+	
+	    FROM education edu
+	    LEFT JOIN specialty spc
+	        ON edu.EDUCATION_NO = spc.EDUCATION_NO
+	    WHERE edu.RESUME_NO = #{resumeNo} 
 	</select>
 	
 	<select id="selectEducationDetail">
-		SELECT EDUCATION_NO
-			   , RESUME_NO
-			   , HIGHEST_EDUCATION_CODE
-			   , SCHOOL_NAME
-			   , GRADUATE_YN
-			   , TRANSFER_YN
-			   , ENTRANCE_DATE
-			   , GRADUATE_DATE
-			   , LOCATION
-			   , DEPARTMENT_CODE 
-		  FROM EDUCATION 
-		 WHERE EDUCATION_NO = #{educationNo}
-		   AND RESUME_NO = #{resumeNo}
+		SELECT
+	        -- education 테이블
+	        edu.EDUCATION_NO AS EDUCATION_NO,
+	        edu.RESUME_NO AS EDUCATION_RESUME_NO,
+	        edu.HIGHEST_EDUCATION_CODE AS HIGHEST_EDUCATION_CODE,
+	        edu.SCHOOL_NAME AS SCHOOL_NAME,
+	        edu.GRADUATE_YN AS GRADUATE_YN,
+	        edu.TRANSFER_YN AS TRANSFER_YN,
+		    TO_CHAR(TO_DATE(edu.ENTRANCE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS ENTRANCE_DATE,
+		    TO_CHAR(TO_DATE(edu.GRADUATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS GRADUATE_DATE,
+	        edu.LOCATION AS EDUCATION_LOCATION,
+	        edu.DEPARTMENT_CODE AS DEPARTMENT_CODE,
+	        edu.DELETE_DATE AS EDUCATION_DELETE_DATE,
+	        
+	        -- specialty 테이블
+	        spc.EDUCATION_NO AS SPECIALTY_EDUCATION_NO,
+	        spc.RESUME_NO AS SPECIALTY_RESUME_NO,
+	        spc.MAIN_MAJOR AS MAIN_MAJOR,
+	        spc.SUB_MAJOR AS SUB_MAJOR,
+	        spc.SUB_MAJOR_CODE AS SUB_MAJOR_CODE,
+	        spc.DELETE_DATE AS SPECIALTY_DELETE_DATE	
+	    FROM education edu
+	    LEFT JOIN specialty spc ON edu.EDUCATION_NO = spc.EDUCATION_NO
+	    WHERE edu.RESUME_NO = #{resumeNo}
+          and edu.EDUCATION_NO = #{educationNo}
 	</select>
 	
 	<insert id="insertEducation">

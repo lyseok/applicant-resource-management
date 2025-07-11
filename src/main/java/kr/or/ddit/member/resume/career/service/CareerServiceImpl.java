@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.resume.CareerMapper;
 import kr.or.ddit.vo.resume.CareerVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -14,13 +15,13 @@ public class CareerServiceImpl implements CareerService {
 	private final CareerMapper mapper;
 	
 	@Override
-	public List<CareerVO> readCareerList() {
-		return mapper.selectCareerList();
+	public List<CareerVO> readCareerList(String no) {
+		return mapper.selectCareerList(no);
 	}
 
 	@Override
-	public CareerVO readCareerDetail(String no) {
-		return mapper.selectCareerDetail(no);
+	public CareerVO readCareerDetail(CareerVO vo) {
+		return mapper.selectCareerDetail(vo);
 	}
 
 	@Override

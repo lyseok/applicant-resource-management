@@ -11,12 +11,20 @@ public class LanguageSkillVO implements Serializable{
 
 	private String languageSkillNo;
 	private String resumeNo;
+	
 	private String languageExamCode;
+	private String languageExamCodeName;
+	
 	private String languageCode;
+	private String languageCodeName;
+	
 	private String languageExamName;
 	private String passDate;
 	private String languageExamType;
 	private String languageExamScore;
+	
 	private String languageExamLevelCode;
+	private String languageExamLevelCodeName;
+	
 	private String deleteDate;
 }

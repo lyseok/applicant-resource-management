@@ -3,11 +3,11 @@
 <mapper namespace="kr.or.ddit.mapper.common.CityCodeMapper">
 	<insert id="insertCityCode">
 	<selectKey resultType="string" keyProperty="cityCodeNo" order="BEFORE">
-    SELECT
-        'CICO'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(CITY_CODE_NO), LENGTH('CICO' ) + 1)), 0) + 1, 6, '0')
-    FROM CITY_CODE
-</selectKey>
+	    SELECT
+	        'CICO'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(CITY_CODE_NO), LENGTH('CICO' ) + 1)), 0) + 1, 6, '0')
+	    FROM CITY_CODE
+	</selectKey>
 		INSERT INTO CITY_CODE (
 		CITY_CODE_NO
 		,CITY_NAME
@@ -17,11 +17,28 @@
 		)
 	</insert>
 
-	<select id="selectCityCodeList">
+	<resultMap id="CityWithDistrictListMap" type="kr.or.ddit.vo.common.CityCodeVO">
+	    <id property="cityCodeNo" column="cityCodeNo" />
+	    <result property="cityName" column="cityName" />
+	    <collection property="districtCodeVO" ofType="kr.or.ddit.vo.common.DistrictCodeVO">
+	        <id property="districtCodeNo" column="districtCodeNo" />
+	        <result property="cityCodeNo" column="cityCodeNo" />
+	        <result property="districtName" column="districtName" />
+	    </collection>
+	</resultMap>
+
+	<select id="selectCityCodeList" resultMap="CityWithDistrictListMap">
 		SELECT
-		CITY_CODE_NO
-		,CITY_NAME
-		FROM CITY_CODE
+	        c.city_code_no      AS cityCodeNo,
+	        c.city_name         AS cityName,
+	        d.district_code_no  AS districtCodeNo,
+	        d.city_code_no      AS districtCityCodeNo,  -- 별칭 (혹시 DistrictVO의 cityCodeNo에 넣으려면!)
+	        d.district_name     AS districtName
+	    FROM
+	        city_code c
+	    LEFT JOIN
+	        district_code d ON c.city_code_no = d.city_code_no
+	    ORDER BY c.city_code_no, d.district_code_no
 	</select>
 
 	<select id="selectCityCodeByPk">

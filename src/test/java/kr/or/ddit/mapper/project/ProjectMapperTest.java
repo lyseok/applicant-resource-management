@@ -38,9 +38,9 @@ class ProjectMapperTest {
 	@Test
 	void testInsertPrjRcrtPsncnt() {
 		ProjectVO vo = new ProjectVO();
-		vo.setUserId("user01"); // 사용자 ID
-		vo.setProjectBoardNo("PJAB000001"); // 게시판 번호
-		vo.setProjectName("TEST"); // 프로젝트명
+		vo.setUserId("testUser"); // 사용자 ID
+		vo.setProjectBoardNo("PJAB000006"); // 게시판 번호
+		vo.setProjectName("TEST2"); // 프로젝트명
 		vo.setProjectContents("TEST PROJECT"); // 프로젝트 내용
 		vo.setProjectStatus("PROG001"); // 상태
 

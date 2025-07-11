@@ -1,6 +1,10 @@
-
+/* flex-direction */
+.direction-column{
+	flex-direction:column !important;
+}
 /* 폰트사이즈 */
 .fs-14{font-size:14px !important;}
+.fs-16{font-size:14px !important;}
 
 /* padding */
 .p-6{padding:6rem !important;}
@@ -50,7 +54,14 @@
 .h40{height:40px !important;}
 .h50{height:50px !important;}
 
+/* 최소높이 - min-height */
+.min-ht300{min-height:300px !important; }
+.min-ht400{min-height:400px !important; }
+.min-ht500{min-height:500px !important; }
+
 /* line-height */
+.lh_normal{line-height:normal !important;}
+.lh1{line-height:1 !important;}
 .lh40{line-height:40px !important;}
 .lh50{line-height:50px !important;}
 
@@ -60,6 +71,7 @@
 .btn.btn_violet{background-color:var(--violet90); border-color:var(--violet80); color:#fff; font-weight:bold;}
 .btn.btn_violet_line{background-color:#fff; border-color:var(--violet60); color:var(--violet100); font-weight:bold;}
 .btn.btn_gray_line{background-color:#fff; border-color:var(--gray60); color:var(--gray80); font-weight:bold;}
+.btn.btn_red_line{background-color:#fff; border-color:#b70000; color:#b70000; font-weight:bold;}
 
 
 /* 말줄임 2줄 */
@@ -76,6 +88,25 @@
   white-space: normal;
 }
 
+/* 라디오버튼 커스텀 */
+.form-check-wrap .form-check{
+	display:flex;
+	align-items:center;
+	gap:7px;
+}
+.form-check-wrap .form-check input{
+	padding:0;
+	width:20px;
+	height:20px;
+	margin-top:0;
+}
+.form-check-wrap .form-check input:checked,
+.form-check-wrap .form-check input[type=checkbox]:indeterminate{
+	background-color:var(--violet100);
+}
+.form-check-wrap .form-check label{
+	margin-top:0;
+}
 
 /* popover/tooltip */
 .toolTipWrap {

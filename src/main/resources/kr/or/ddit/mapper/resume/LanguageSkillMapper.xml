@@ -7,11 +7,12 @@
 			   , LANGUAGE_EXAM_CODE
 			   , LANGUAGE_CODE
 			   , LANGUAGE_EXAM_NAME
-			   , PASS_DATE
+			   , TO_CHAR(TO_DATE(PASS_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS PASS_DATE
 			   , LANGUAGE_EXAM_TYPE
 			   , LANGUAGE_EXAM_SCORE
 			   , LANGUAGE_EXAM_LEVEL_CODE 
 		  FROM LANGUAGE_SKILL
+     	 WHERE RESUME_NO = #{resumeNo}
 	</select>
 	
 	<select id="selectLanguageSkillDetail">
@@ -20,12 +21,13 @@
 			   , LANGUAGE_EXAM_CODE
 			   , LANGUAGE_CODE
 			   , LANGUAGE_EXAM_NAME
-			   , PASS_DATE
+			   , TO_CHAR(TO_DATE(PASS_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS PASS_DATE
 			   , LANGUAGE_EXAM_TYPE
 			   , LANGUAGE_EXAM_SCORE
 			   , LANGUAGE_EXAM_LEVEL_CODE 
 		  FROM LANGUAGE_SKILL 
 		 WHERE LANGUAGE_SKILL_NO = #{languageSkillNo}
+     	   AND RESUME_NO = #{resumeNo}		 
 	</select>
 	
 	<insert id="insertLanguageSkill">

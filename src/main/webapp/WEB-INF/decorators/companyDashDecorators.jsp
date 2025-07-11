@@ -20,7 +20,7 @@
         <div class="layout-page">
 			
           <div class="content-wrapper">
-        	<%@ include file="/WEB-INF/fragments/dashheader.jsp" %>
+        	<%@ include file="/WEB-INF/fragments/dashHeader.jsp" %>
             <div class="container-xxl flex-grow-1 container-p-y">
               <!-- Layout Demo -->
               <div class="layout-demo-wrapper">
@@ -32,6 +32,7 @@
       </div>
     </div>
 	
+  <%@ include file="/WEB-INF/fragments/loading.jsp" %>
   <%@ include file="/WEB-INF/fragments/dashPostScript.jsp" %>
 </body>
 </html>

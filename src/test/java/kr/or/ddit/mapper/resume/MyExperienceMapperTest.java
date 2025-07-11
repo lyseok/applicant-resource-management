@@ -17,15 +17,17 @@ class MyExperienceMapperTest {
 	
 	@Test
 	void testselectMyExperienceList() {
-		mapper.selectMyExperienceList().forEach(ex ->{
+		mapper.selectMyExperienceList("RESM000001").forEach(ex ->{
 			log.info("{}", ex);
 		});
 	}
 
 	@Test
 	void testselectMyExperienceDetail() {
-		MyExperienceVO vo = mapper.selectMyExperienceDetail("EXP001");
-		log.info("{}", vo);		
+		MyExperienceVO vo = new MyExperienceVO();
+		vo.setResumeNo("RESM000001");
+		vo.setMyExpCode("MYEX000001");
+		log.info("{}", mapper.selectMyExperienceDetail(vo));		
 	}
 
 	@Test
@@ -58,7 +60,7 @@ class MyExperienceMapperTest {
 	@Test
 	void testDeleteMyExperience() {
 		mapper.deleteMyExperience("EXPR000004");
-		assertNull(mapper.selectMyExperienceDetail("EXPR000004"));
+		assertNull(mapper.deleteMyExperience("EXPR000004"));
 		
 	}
 

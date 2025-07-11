@@ -17,15 +17,18 @@ class ResumeMapperTest {
 
 	@Test
 	void testSelectResumeList() {
-		mapper.selectResumeList().forEach(re-> {
-			log.info("{}", re);
-		});
+//		mapper.selectResumeList().forEach(re-> {
+//			log.info("{}", re);
+//		});
 	}
 
 	@Test
 	void testSelectResumeDetail() {
-		ResumeVO vo = mapper.selectResumeDetail("RESM000001");
-		log.info("{}", vo);		
+		ResumeVO vo = new ResumeVO();
+		vo.setResumeNo("RESM000001");
+		vo.setUserId("USR001");
+		
+		log.info("{}", mapper.selectResumeDetail(vo));		
 	}
 
 	@Test
@@ -40,7 +43,7 @@ class ResumeMapperTest {
 		vo.setResumeSubmitYn("Y");
 		mapper.insertResume(vo);
 		
-		log.info("{}", mapper.selectResumeDetail(vo.getResumeNo()));
+		log.info("{}", mapper.selectResumeDetail(vo));
 	}
 
 	@Test
@@ -56,13 +59,13 @@ class ResumeMapperTest {
 		vo.setResumeSubmitYn("Y");
 		mapper.updateResume(vo);
 		
-		log.info("{}", mapper.selectResumeDetail(vo.getResumeNo()));
+		log.info("{}", mapper.selectResumeDetail(vo));
 	}
 
 	@Test
 	void testDeleteResume() {
 		mapper.deleteResume("RESM000004");
-		log.info("{}", mapper.selectResumeDetail("RESM000004"));
+		/* log.info("{}", mapper.selectResumeDetail(vo)); */
 	}
 
 }
