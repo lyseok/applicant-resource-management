@@ -32,4 +32,5 @@ public class InterviewVO implements Serializable{
 	// 자식
 	private VideoInterviewVO videoInterview;
 	private List<InterviewQuestionVO> interviewQuestionList;
+	private List<InterviewScoreVO> interviewScoreList;
 }
