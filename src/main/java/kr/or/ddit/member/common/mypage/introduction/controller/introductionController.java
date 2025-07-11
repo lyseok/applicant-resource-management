@@ -83,7 +83,7 @@ public class introductionController {
 	}
 	
 	// 자소서 등록 로직 구현 controller
-	@PostMapping("/create")
+	@PostMapping("create")
 	public String createIntrodcution(
 		// @RequestBody Map<String, String> formDataMap
 		@AuthenticationPrincipal UserDetails userDetails 

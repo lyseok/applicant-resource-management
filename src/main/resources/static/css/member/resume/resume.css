@@ -125,7 +125,7 @@
   margin-top: 22px;
   padding: 34px 30px 22px 30px;
   position: relative;
-  display: none;
+  /* display: none; */
 }
 .section-form-wrap.active {
   display: flex;
