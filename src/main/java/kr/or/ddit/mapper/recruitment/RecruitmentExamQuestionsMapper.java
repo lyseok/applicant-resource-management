@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.or.ddit.vo.recruitment.RecruitmentExamQuestionsVO;
 
 @Mapper
-public interface RecruimentExamQuestionsMapper {
+public interface RecruitmentExamQuestionsMapper {
 	public List<RecruitmentExamQuestionsVO> selectRecrExamQuestList();
 	public RecruitmentExamQuestionsVO selectRecrExamQuest(String recruitExamQuestNo);
 	public int insertRecrExamQuest(RecruitmentExamQuestionsVO vo);

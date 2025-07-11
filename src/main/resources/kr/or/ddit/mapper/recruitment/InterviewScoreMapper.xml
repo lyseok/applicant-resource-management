@@ -4,7 +4,6 @@
 	<select id="selectInterviewScoreList" resultType="InterviewScoreVO">
 	SELECT 
 		INTERVIEW_SCORE_NO
-		, INTERVIEW_QUESTION_NO
 		, INTERVIEW_NO
 		, APPLICANT_ID
 		, APPLICANT_RATING 
@@ -14,12 +13,18 @@
 	<select id="selectInterviewScore" resultType="InterviewScoreVO">
 	SELECT 
 		INTERVIEW_SCORE_NO
-		, INTERVIEW_QUESTION_NO
 		, INTERVIEW_NO
 		, APPLICANT_ID
 		, APPLICANT_RATING 
 	FROM INTERVIEW_SCORE 
 	WHERE INTERVIEW_SCORE_NO = #{interviewScoreNo}
+	</select>
+	
+	<select id="selectInterviewScoreNo" parameterType="InterviewScoreVO" resultType="string">
+	    SELECT INTERVIEW_SCORE_NO
+	    FROM INTERVIEW_SCORE
+	    WHERE INTERVIEW_NO = #{interviewNo}
+	      AND APPLICANT_ID = #{applicantId}
 	</select>
 	
 	<insert id="insertInterviewScore">
@@ -31,13 +36,11 @@
 	</selectKey>
 	INSERT INTO INTERVIEW_SCORE (
 		INTERVIEW_SCORE_NO
-		, INTERVIEW_QUESTION_NO
 		, INTERVIEW_NO
 		, APPLICANT_ID
 		, APPLICANT_RATING
 	) VALUES (
 		#{interviewScoreNo}
-		, #{interviewQuestionNo}
 		, #{interviewNo}
 		, #{applicantId}
 		, #{applicantRating}

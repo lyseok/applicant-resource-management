@@ -10,8 +10,8 @@ import kr.or.ddit.vo.community.CommuTagVO;
 public interface CommuTagMapper {
 
 	public CommuTagVO selectCommuTagByPk(String tagNo, String boardNo);  //해당 게시글의 태그 하나
-	public List<CommuTagVO> searchCommuTagTagList(String boardNo);  //해당 게시글의 태그들
-	public List<CommuTagVO> searchCommuTagBoardList(String tagNo);  //해당 태그가 걸린 게시글들
+	public List<CommuTagVO> selectCommuTagTagList(String boardNo);  //해당 게시글의 태그들
+	public List<CommuTagVO> selectCommuTagBoardList(String tagNo);  //해당 태그가 걸린 게시글들
 	public List<CommuTagVO> selectCommuTagList();  //게시글 태그 전부
 	public int insertCommuTag(CommuTagVO tag);
 	public int deleteCommuTag(String tagNo, String boardNo);

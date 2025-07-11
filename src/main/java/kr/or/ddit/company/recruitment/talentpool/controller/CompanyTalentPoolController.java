@@ -19,6 +19,7 @@ import kr.or.ddit.vo.common.JobVO;
 import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.EducationVO;
+import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,11 +38,8 @@ public class CompanyTalentPoolController {
 		List<JobVO> jobList = CTservice.selectJob();
 		List<CityCodeVO> cityList = CTservice.selectlocation();
 		List<EducationVO> eduList = CTservice.selecteducation();
+		System.out.println("출력값 : " + talentpoolList);
 		log.info("list 를 했을때 로그 : {}", talentpoolList);
-		log.info(" tjobList : {}", tjobList);
-		log.info(" jobList : {}", jobList);
-		log.info(" cityList : {}", cityList);
-		log.info(" eduList : {}", eduList);
 		model.addAttribute("talentpoolList", talentpoolList);
 		model.addAttribute("tjobList", tjobList);
 		model.addAttribute("jobList", jobList);
@@ -52,6 +50,7 @@ public class CompanyTalentPoolController {
 		return "company/recruitment/talentpool/TalentPool";
 	}
 
+	 
 	@GetMapping("/detail/{no}")
 	public String detail(@PathVariable String no, Model model) {
 		ResumeVO detail = CTservice.selectResumeDetail(no);	
@@ -70,23 +69,27 @@ public class CompanyTalentPoolController {
 
 	@PostMapping("/filter")
 	public String filterTalentPool(@RequestParam Map<String, Object> param, Model model) {
-	    List<ResumeVO> list = CTservice.selectTalentPoolListByFilter(param);
-	    model.addAttribute("talentpoolList", list);
-	    return "company/recruitment/talentpool/TalentpoolListFragment";  // <- JSP 조각 반환
+	    List<ResumeVO> talentpoolList = CTservice.selectTalentPoolListByFilter(param);
+	    model.addAttribute("talentpoolList", talentpoolList);
+	    return "company/recruitment/talentpool/TalentpoolListFragment"; 
 	}
 	
 	@PostMapping("/higtSearch")
 	public String higtSearch(@RequestParam(required = false)
-								String keywordlicense,
+								String license,
 							@RequestParam(required = false)
-								String keywordSkillName,
+								String skillName,
 								Model model) {
-		
-		model.addAttribute("keywordlicense", keywordlicense);
-		model.addAttribute("keywordSkillName", keywordSkillName);
-		return "company/recruitment/talentpool/TalentpoolListFragment";
-	}
-	
+		 Map<String, String> paramMap = new HashMap<>();
+		    paramMap.put("skillName", skillName);
+		    paramMap.put("keywordlicense", license);
+
+		    List<ResumeVO> talentpoolList = CTservice.selectSearchSkillAndLicense(paramMap);
+
+		    model.addAttribute("talentpoolList", talentpoolList);
+		    return "company/recruitment/talentpool/TalentpoolListFragment";
+		}
+	 
 	
 	
 }

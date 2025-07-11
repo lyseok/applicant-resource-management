@@ -16,7 +16,7 @@ public class ResumeVO implements Serializable{
 
 	private String resumeName;
 	private String resumeMainYn;
-	private String introductionNo;
+	private String IntroductionNo;
 	private String resumeNo;
 	private String userId;
 	private String userName;
@@ -38,7 +38,7 @@ public class ResumeVO implements Serializable{
 	private List<MyExperienceVO> myExperienceList;	// 보유경험
 	private List<MySkillVO> mySkillList;			// 보유기술
 	private List<MyLicenseVO> myLicenseList;		// 보유자격
-	private List<IntroductionVO> introductionList;	// 자기소개서
+	private IntroductionVO introduction;			// 자기소개서
 	private List<LanguageSkillVO> languageSkillList;// 어학
 	private List<PortfolioVO> portfolioList;		// 포트폴리오
 	private List<MilitaryVO> militaryList;			// 병역

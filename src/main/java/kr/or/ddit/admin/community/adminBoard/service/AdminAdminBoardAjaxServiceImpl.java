@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.community.AdminBoardMapper;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
@@ -13,26 +14,43 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxService{
 
-	private final AdminBoardMapper mapper;
-
+	private final AdminBoardMapper mapper;  //UserMapper를 넣어야 하나?
+	private final CodeMapProvider codeMapProvider;
+	
 	@Override
 	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo) {
-		return Optional.ofNullable(mapper.selectAdminBoardByPk(boardNo));
+		Optional<AdminBoardVO> aboard = Optional.ofNullable(mapper.selectAdminBoardByPk(boardNo));
+		aboard.ifPresent(this::setCodeName); // Optional의 값이 존재할 때만 setCodeName 호출
+		return aboard;
+	}
+
+	private void setCodeName(AdminBoardVO aboard) {
+		String boardTypeCode = codeMapProvider.getCodeName(aboard.getBoardTypeCode());
+		aboard.setCodeName(boardTypeCode);
 	}
 
 	@Override
 	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode) {
-		return mapper.selectAdminBoardListByType(boardTypeCode);
+		List<AdminBoardVO> aboardList = mapper.selectAdminBoardListByType(boardTypeCode);
+		for(AdminBoardVO aboard : aboardList) {
+			setCodeName(aboard);
+		}
+		return aboardList;
 	}
 		
 	@Override
 	public List<AdminBoardVO> readAdminBoardList() {
-		return mapper.selectAdminBoardList();
+		List<AdminBoardVO> aboardList = mapper.selectAdminBoardList();
+		for(AdminBoardVO aboard : aboardList) {
+			setCodeName(aboard);
+		}
+		return aboardList;
 	}
 
 	@Override
-	public void createAdminBoard(AdminBoardVO board) {
-		mapper.insertAdminBoard(board);		
+	public String createAdminBoard(AdminBoardVO board) {
+	    mapper.insertAdminBoard(board);
+	    return board.getBoardNo(); // board 객체에 selectKey로 세팅된 값
 	}
 
 	@Override
@@ -45,4 +63,5 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	public void removeAdminBoard(String boardNo) {
 		mapper.deleteAdminBoard(boardNo);
 	}
+
 }

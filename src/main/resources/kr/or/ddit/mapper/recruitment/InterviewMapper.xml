@@ -22,7 +22,7 @@
 		<result property="recruitmentStartdate" column="RENO_RECRUITMENT_STARTDATE"/>
 		<result property="recruitmentReceiptStart" column="RENO_RECRUITMENT_RECEIPT_START"/>
 		<result property="recruitmentFinishDate" column="RENO_RECRUITMENT_FINISH_DATE"/>
-		<result property="recruitmentDelDate" column="RENO_RECRUIMENT_DEL_DATE"/>
+		<result property="recruitmentDelDate" column="RENO_RECRUITMENT_DEL_DATE"/>
 	</resultMap>
 	
 	<!-- ApplicantVO -->
@@ -44,6 +44,7 @@
 		<result property="stepApplicationYn" column="APRE_STEP_APPLICATION_YN"/>
 		<result property="interviewUrl" column="APRE_INTERVIEW_URL"/>
 		<result property="evaluationStartTime" column="APRE_EVALUATION_START_TIME"/>
+		<result property="applicantName" column="APRE_APPLICANT_NAME"/>
 		<association property="applicant" resultMap="applicantMap"/>
 	</resultMap>
 	
@@ -60,6 +61,24 @@
 								resultMap="applicantRecordMap"/>
 	</resultMap>
 	
+	<resultMap id="videoInterviewMap" type="kr.or.ddit.vo.recruitment.VideoInterviewVO">
+	    <id property="interviewNo" column="VIV_INTERVIEW_NO"/>
+	    <result property="roomTitle" column="VIV_ROOM_TITLE"/>
+	    <result property="maxJoinCount" column="VIV_MAX_JOIN_COUNT"/>
+	    <result property="startDate" column="VIV_START_DATE"/>
+	    <result property="endDate" column="VIV_END_DATE"/>
+	    <result property="companyInterviewUrl" column="VIV_COMPANY_INTERVIEW_URL"/>
+	    <result property="videoInterviewDelDate" column="VIV_VIDEO_INTERVIEW_DEL_DATE"/>
+	</resultMap>
+	
+	<resultMap id="interviewQuestionMap" type="kr.or.ddit.vo.recruitment.InterviewQuestionVO">
+	    <id property="interviewQuestionNo" column="INQ_INTERVIEW_QUESTION_NO"/>
+	    <result property="interviewNo" column="INQ_INTERVIEW_NO"/>
+	    <result property="interviewQuestionContent" column="INQ_INTERVIEW_QUESTION_CONTENT"/>
+	    <result property="interviewQuestionScore" column="INQ_INTERVIEW_QUESTION_SCORE"/>
+	    <result property="interviewQuestionDelDate" column="INQ_INTERVIEW_QUESTION_DEL_DATE"/>
+	</resultMap>
+	
 	<!-- InterviewVO -->
 	<resultMap id="interviewMap" type="kr.or.ddit.vo.recruitment.InterviewVO">
 		<id property="interviewNo" column="INTR_INTERVIEW_NO"/>
@@ -68,7 +87,14 @@
 		<result property="interviewLocation" column="INTR_INTERVIEW_LOCATION"/>
 		<result property="interviewType" column="INTR_INTERVIEW_TYPE"/>
 		<result property="interviewPassScore" column="INTR_INTERVIEW_PASS_SCORE"/>
+		
 		<association property="recruitProcess" resultMap="recruitProcessMap"/>
+		
+		<association property="videoInterview" resultMap="videoInterviewMap"/>
+		
+		<collection property="interviewQuestionList"
+                ofType="kr.or.ddit.vo.recruitment.InterviewQuestionVO"
+                resultMap="interviewQuestionMap"/>
 	</resultMap>
 	
 	<select id="selectInterviewList" resultMap="interviewMap">
@@ -108,7 +134,7 @@
 			RENO.RECRUITMENT_RECEIPT_START  AS RENO_RECRUITMENT_RECEIPT_START,
 			RENO.RECRUITMENT_FINISH_DATE    AS RENO_RECRUITMENT_FINISH_DATE,
 			RENO.RECRUITMENT_TITLE          AS RENO_RECRUITMENT_TITLE,
-			RENO.RECRUIMENT_DEL_DATE        AS RENO_RECRUIMENT_DEL_DATE,
+			RENO.RECRUITMENT_DEL_DATE       AS RENO_RECRUITMENT_DEL_DATE,
 
 			-- ApplicantRecord 컬럼
 			APRE.APPLICANT_RECORD_NO        AS APRE_APPLICANT_RECORD_NO,
@@ -126,7 +152,8 @@
 			APP.RESUME_VIEW_YN              AS APP_RESUME_VIEW_YN,
 			APP.USER_ID                     AS APP_USER_ID,
 			APP.APPLICANT_DEL_DATE          AS APP_APPLICANT_DEL_DATE
-
+			
+		    
 		FROM INTERVIEW INTR
 		LEFT OUTER JOIN RECRUIT_PROCESS REPR ON INTR.PROCESS_NO = REPR.RECRUIT_PROCESS_NO
 		LEFT OUTER JOIN RECRUITMENT_NOTICE RENO ON RENO.RECRUITMENT_NO = REPR.RECRUITMENT_NO
@@ -171,7 +198,7 @@
 			RENO.RECRUITMENT_RECEIPT_START  AS RENO_RECRUITMENT_RECEIPT_START,
 			RENO.RECRUITMENT_FINISH_DATE    AS RENO_RECRUITMENT_FINISH_DATE,
 			RENO.RECRUITMENT_TITLE          AS RENO_RECRUITMENT_TITLE,
-			RENO.RECRUIMENT_DEL_DATE        AS RENO_RECRUIMENT_DEL_DATE,
+			RENO.RECRUITMENT_DEL_DATE       AS RENO_RECRUITMENT_DEL_DATE,
 
 			-- ApplicantRecord 컬럼
 			APRE.APPLICANT_RECORD_NO        AS APRE_APPLICANT_RECORD_NO,
@@ -181,6 +208,7 @@
 			APRE.STEP_APPLICATION_YN        AS APRE_STEP_APPLICATION_YN,
 			APRE.INTERVIEW_URL              AS APRE_INTERVIEW_URL,
 			APRE.EVALUATION_START_TIME      AS APRE_EVALUATION_START_TIME,
+			APRE.APPLICANT_NAME     		AS APRE_APPLICANT_NAME,
 
 			-- ApplicantVO 컬럼
 			APP.APPLICANT_ID                AS APP_APPLICANT_ID,
@@ -188,13 +216,31 @@
 			APP.RESUME_NO                   AS APP_RESUME_NO,
 			APP.RESUME_VIEW_YN              AS APP_RESUME_VIEW_YN,
 			APP.USER_ID                     AS APP_USER_ID,
-			APP.APPLICANT_DEL_DATE          AS APP_APPLICANT_DEL_DATE
+			APP.APPLICANT_DEL_DATE          AS APP_APPLICANT_DEL_DATE,
+			
+			-- VideoInterview 컬럼
+		    VIV.INTERVIEW_NO                AS VIV_INTERVIEW_NO,
+		    VIV.ROOM_TITLE                  AS VIV_ROOM_TITLE,
+		    VIV.MAX_JOIN_COUNT              AS VIV_MAX_JOIN_COUNT,
+		    VIV.START_DATE                  AS VIV_START_DATE,
+		    VIV.END_DATE                    AS VIV_END_DATE,
+		    VIV.COMPANY_INTERVIEW_URL       AS VIV_COMPANY_INTERVIEW_URL,
+		    VIV.VIDEO_INTERVIEW_DEL_DATE    AS VIV_VIDEO_INTERVIEW_DEL_DATE,
+		    
+		    -- InterviewQuestion 컬럼
+			INQ.INTERVIEW_QUESTION_NO         AS INQ_INTERVIEW_QUESTION_NO,
+			INQ.INTERVIEW_NO                  AS INQ_INTERVIEW_NO,
+			INQ.INTERVIEW_QUESTION_CONTENT    AS INQ_INTERVIEW_QUESTION_CONTENT,
+			INQ.INTERVIEW_QUESTION_SCORE      AS INQ_INTERVIEW_QUESTION_SCORE,
+			INQ.INTERVIEW_QUESTION_DEL_DATE   AS INQ_INTERVIEW_QUESTION_DEL_DATE
 
 		FROM INTERVIEW INTR
 		LEFT OUTER JOIN RECRUIT_PROCESS REPR ON INTR.PROCESS_NO = REPR.RECRUIT_PROCESS_NO
 		LEFT OUTER JOIN RECRUITMENT_NOTICE RENO ON RENO.RECRUITMENT_NO = REPR.RECRUITMENT_NO
 		LEFT OUTER JOIN APPLICANT_RECORD APRE ON APRE.RECRUITMENT_NO = REPR.RECRUIT_PROCESS_NO
 		LEFT OUTER JOIN APPLICANT APP ON APRE.APPLICANT_ID = APP.APPLICANT_ID
+		LEFT OUTER JOIN VIDEO_INTERVIEW VIV ON INTR.INTERVIEW_NO = VIV.INTERVIEW_NO
+		LEFT OUTER JOIN INTERVIEW_QUESTION INQ ON INTR.INTERVIEW_NO = INQ.INTERVIEW_NO
 		WHERE INTR.INTERVIEW_NO = #{interviewNo}
 	</select>
 	

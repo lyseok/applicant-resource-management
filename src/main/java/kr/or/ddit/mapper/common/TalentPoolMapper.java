@@ -46,14 +46,10 @@ public int insertMember(MemberVO member);
 	public List<EducationVO> selecteducation();
 
 	public List<ResumeVO> selectTalentPoolListByFilter(Map<String, Object> filter);
+	
+	public List<ResumeVO> selectSearchSkillAndLicense(Map<String, String> paramMap);
+	
 
-	/*
-	 * public CityCodeVO selectedlocation();
-	 * 
-	 * public EducationVO selectededucation();
-	 * 
-	 * public TopJobVO selectedTopJob();
-	 */
 
 }
 

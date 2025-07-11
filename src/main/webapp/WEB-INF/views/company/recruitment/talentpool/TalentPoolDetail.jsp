@@ -110,15 +110,7 @@ h2 {
 				<div class="modal-body">
 					<!-- 제안 포지션 -->
 					<div class="mb-3">
-						<label>직무</label> <select id="jobSelect" class="form-select">
-							<option value="">선택</option>
-							<c:forEach var="job" items="${jobList}">
-								<option value="${job.jobCode}"
-									data-top-job-code="${job.topJobCode}">${job.jobName}</option>
-							</c:forEach>
-						</select>
-					</div>
-
+					
 					<!-- 직무 -->
 					<div class="mb-3">
 						<label>직군</label> <select name="topJob" id="positionSelect">
@@ -128,6 +120,18 @@ h2 {
 							</c:forEach>
 						</select>
 					</div>
+					
+					
+						<label>직무</label> <select id="jobSelect" class="form-select">
+							<option value="">선택</option>
+							<c:forEach var="job" items="${jobList}">
+								<option value="${job.jobCode}"
+									data-top-job-code="${job.topJobCode}">${job.jobName}</option>
+							</c:forEach>
+						</select>
+					</div>
+
+					
 
 					<!-- 제안 내용 -->
 					<div class="mb-3">

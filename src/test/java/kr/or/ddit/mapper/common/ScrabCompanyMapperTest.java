@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import kr.or.ddit.vo.common.ScrabCompanyVO;
 import lombok.extern.slf4j.Slf4j;
+
 @SpringBootTest
 @Slf4j
 class ScrabCompanyMapperTest {
@@ -28,19 +29,20 @@ class ScrabCompanyMapperTest {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 		
 		SCV.setUserId("QWE1");
+		SCV.setCompanyId("QWER5");
 		
+		log.info("companyId 안 넣고도 값 나오나 확인 : {}", mapper.selectScrabCompanyByPk(SCV));
 		
-		mapper.selectScrabCompanyByPk(SCV);
-		
-		
+		assertDoesNotThrow(()->mapper.selectScrabCompanyByPk(SCV));
+		assertNotNull(mapper.selectScrabCompanyByPk(SCV));
 	}
 
 	@Test
 	void testInsertScrabCompany() {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 		
-		SCV.setCompanyId("QWER5");
-		SCV.setUserId("QWE1");
+		SCV.setCompanyId("corp03");
+		SCV.setUserId("USR001");
 				
 		mapper.insertScrabCompany(SCV);
 		
@@ -58,13 +60,13 @@ class ScrabCompanyMapperTest {
 	}
 
 	@Test
-	void testDeleteCompany() {
+	void testDeleteScrabCompany() {
 		ScrabCompanyVO SCV = new ScrabCompanyVO();
 			
 		SCV.setCompanyId("QWER5");
 		SCV.setUserId("QWE1");
 		
-		mapper.deleteCompany(SCV);
+		mapper.deleteScrabCompany(SCV);
 		
 	}
 
