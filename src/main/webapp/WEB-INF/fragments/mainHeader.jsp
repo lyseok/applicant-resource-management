@@ -120,7 +120,7 @@
                         <span class="txt">기업·연봉</span>
                     </a>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">기업리뷰</span></a></li>
+                        <li><a href="/member/companyReview"><span class="txt">기업리뷰</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">연봉정보</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">면접후기</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">합격 자소서</span></a></li>
@@ -198,7 +198,7 @@
                 <div class="major">
                     <span class="depth1"><span class="txt">기업·연봉</span></span>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">기업리뷰</span></a></li>
+                        <li><a href="/member/companyReview"><span class="txt">기업리뷰</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">연봉정보</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">면접후기</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">합격 자소서</span></a></li>

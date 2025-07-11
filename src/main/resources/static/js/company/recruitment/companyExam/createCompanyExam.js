@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 인덱스 재정렬 함수 (추가된 부분) ---
+  // --- 문제/보기 인덱스 재정렬
   function reindexQuestions() {
     document.querySelectorAll('.question-card').forEach((card, newIdx) => {
       card.dataset.idx = newIdx;
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   
   
-  // --- 초기 로드 & 문제 추가 핸들러 ---
+  // --- 초기 로드 / 문제 추가
   if (existingExamNo) {
     axios.get(`/ajax/company/companyExam/detail/${existingExamNo}`)
       .then(resp => {

@@ -115,8 +115,12 @@
 
 /* ===== 추가 폼 스타일 ===== */
 .section-form-wrap {
-  background: #f7fafd;
-  border: 1.5px solid #cdd6e6;
+  display:flex;
+  flex-wrap:wrap;
+  column-gap:40px;
+  row-gap:15px;
+  background: #fff;
+  border: 1.5px solid #dbdbdb;
   border-radius: 12px;
   margin-top: 22px;
   padding: 34px 30px 22px 30px;
@@ -124,7 +128,7 @@
   display: none;
 }
 .section-form-wrap.active {
-  display: block;
+  display: flex;
   animation: fadeIn 0.28s;
 }
 @keyframes fadeIn {
@@ -132,9 +136,9 @@
   100% { opacity: 1; transform: translateY(0);}
 }
 .section-form-row {
-  margin-bottom: 16px;
+  width:calc((100% - 40px) / 2);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 24px;
 }
 .section-form-row label {
@@ -142,13 +146,12 @@
   font-size: 15px;
   color: #395081;
   font-weight: bold;
-  margin-top: 5px;
 }
 .section-form-row input,
 .section-form-row select,
 .section-form-row textarea {
   flex: 1;
-  border: 1px solid #b7c6db;
+  border: 1px solid #dbdbdb;
   border-radius: 7px;
   padding: 7px 11px;
   font-size: 15px;
@@ -157,13 +160,19 @@
   outline: none;
   transition: border 0.2s;
 }
+.section-form-row input::placeholder,
+.section-form-row select::placeholder,
+.section-form-row textarea::placeholder{
+	color:#ccc;
+}
 .section-form-row textarea {
   min-height: 54px;
   resize: vertical;
 }
 .section-form-btns {
+  width:100%;
   text-align: right;
-  margin-top: 24px;
+  margin-top: 10px;
 }
 .btn-form {
   background: #3066d3;
