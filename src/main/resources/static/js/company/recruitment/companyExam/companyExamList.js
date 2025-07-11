@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 			 const examL = document.getElementById('examList');
 			 const examCount = document.getElementById('examCount')
 			 let examNo = "";
-			axios.get('/ajax/company/companyExam/list')
+			axios.get('/ajax/company/company_exam/list')
 				 .then(resp =>{
 				    const examList = resp.data;
 				    examCount.textContent = `총 ${examList.length}건의 시험이 등록되어 있습니다.`;
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 								card.addEventListener('click', event =>{
 									 if (event.target.closest('.btn-open-delete-modal')) return;
 									 const examNo = card.dataset.examId;
-									 window.location.href = `/company/companyExam/detail/${examNo}`;
+									 window.location.href = `/company/company_exam/detail/${examNo}`;
 								})
 							})
 					})
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 			if(!examNo){
 				return alert('삭제할 시험을 선택해 주세요!');
 			}
-		    axios.get(`/ajax/company/companyExam/delete/${examNo}`)
+		    axios.get(`/ajax/company/company_exam/delete/${examNo}`)
 		      .then(resp => {
 					const result = resp.data
 					console.log("체킁", result);
