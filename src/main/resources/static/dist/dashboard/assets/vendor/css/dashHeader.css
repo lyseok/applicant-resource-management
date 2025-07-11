@@ -28,7 +28,7 @@
     /* display: none; */
     overflow: hidden;
     position: absolute;
-    top: 24px;
+    top: 36px;
     right:-20px;
     padding-top: 23px;
     width: 376px;
@@ -140,7 +140,7 @@
 }
 .dash_header .layer_member {
     position: absolute;
-    top: 28px;
+    top: 40px;
     right: 0;
     width: 168px;
     border: 1px solid #edeef0;
@@ -162,9 +162,20 @@
     box-sizing: border-box;
     align-items: center;
 }
-.dash_header .layer_member ul li a i {
-    font-size:24px;
-    color: #afbac8
+.dash_header .layer_member ul li a:hover{
+	color:#333;
+}
+.dash_header .layer_member ul li a:hover .txt{	
+	text-decoration:underline;
+}
+.dash_header .layer_member ul li a span {
+    font-size:26px;
+    color: #3b3b3b;    
+	font-variation-settings:
+		'FILL' 0,
+		'wght' 200,
+		'GRAD' 0,
+		'opsz' 24
 }
 .dash_header .layer_member ul li a .txt {
     position: relative;
@@ -173,7 +184,7 @@
     font-size: 14px;
     line-height: 18px;
     vertical-align: top;
-    margin-left:10px;
+    margin-left:8px;
 }
 .dash_header .wrap_member .btn_member.expanded+.layer_member {
     display: block

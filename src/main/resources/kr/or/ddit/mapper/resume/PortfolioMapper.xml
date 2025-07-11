@@ -40,19 +40,19 @@
 		INSERT INTO PORTFOLIO (
 	        POR_CODE
 	      , RESUME_NO
-	      , POR_FILE_ORIGINAL_NAME
-	      , POR_FILE_SAVE_NAME
-	      , POR_FILE_SIZE
-	      , POR_FILE_PATH
+	      , POR_NAME
+		  , POR_START_DATE
+		  , POR_END_DATE
+		  , POR_INFORMATION
 	      , DELETE_DATE
 	      , POR_URL
 	    ) VALUES (
 	        #{porCode}
 	      , #{resumeNo}
-	      , #{porFileOriginalName}
-	      , #{porFileSaveName}
-	      , #{porFileSize}
-	      , #{porFilePath}
+	      , #{porName}
+	      , #{porStartDate}
+	      , #{porEndDate}
+	      , #{porInformation}
 	      , #{deleteDate}
 	      , #{porUrl}
 	    )
