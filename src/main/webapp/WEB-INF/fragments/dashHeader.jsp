@@ -46,7 +46,7 @@
 		    <span class="user_photo">
 		        <span id="gnb_personnal_photo_area_span" class="img"></span>
 		    </span>
-		    <span class="user_name">
+		    <!-- <span class="user_name">
 		        <c:choose>
 		            <c:when test="${userType eq 'company'}">
 		                ${comName}
@@ -61,7 +61,8 @@
 		                일반유저
 		            </c:otherwise>
 		        </c:choose>
-		    </span>
+		    </span> -->
+            <span class="user_name" id="user_name"></span>
 		    <i class='bx bx-caret-down'></i>
 		</button>
         <div class="layer_member" id="displayMemBtn" style="display:none;">
