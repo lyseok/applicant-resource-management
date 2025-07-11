@@ -74,7 +74,7 @@ public class CompanyTalentPoolController {
 	    return "company/recruitment/talentpool/TalentpoolListFragment"; 
 	}
 	
-	@PostMapping("/higtSearch")
+	@PostMapping("/higtsearch")
 	public String higtSearch(@RequestParam(required = false)
 								String license,
 							@RequestParam(required = false)

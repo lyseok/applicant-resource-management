@@ -150,8 +150,8 @@
 	                    <span class="txt">취업TOOL</span>
 	                </a>
 	                <ul class="depth2">
-                        <li><a href="/Spelling"><span class="txt">맞춤법 검사기</span></a></li>
-                        <li><a href="/countText"><span class="txt">글자 수 세기</span></a></li>
+                        <li><a href="/spelling"><span class="txt">맞춤법 검사기</span></a></li>
+                        <li><a href="/count_text"><span class="txt">글자 수 세기</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">연봉계산</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">실수령액 계산기</span></a></li>
                         <li><a href="/countyear"><span class="txt">연차계산기</span></a></li>
@@ -229,8 +229,8 @@
                 <div class="major">
                     <span class="depth1"><span class="txt">취업TOOL</span></span>
                     <ul class="depth2">
-                        <li><a href="/Spelling" class="new"><span class="txt">맞춤법 검사기</span></a></li>
-                        <li><a href="/countText"><span class="txt">글자 수 세기</span></a></li>
+                        <li><a href="/spelling" class="new"><span class="txt">맞춤법 검사기</span></a></li>
+                        <li><a href="/count_text"><span class="txt">글자 수 세기</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">연봉계산</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">실수령액 계산기</span></a></li>
                         <li><a href="/countyear"><span class="txt">연차계산기</span></a></li>
