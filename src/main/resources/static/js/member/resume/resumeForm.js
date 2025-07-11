@@ -14,10 +14,10 @@ const typeCounters = {
 
 const templateMap = {
   edu: idx => `
-    <div class="section-form-wrap" id="form-edu${idx}">
+    <div class="section-form-wrap" id="form-edu${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>최종 학력</label>
-        <select name="resumeVO.educationList[${idx}].highestEducationCode" required id="highestEducationCode">
+        <select name="resumeVO.educationList[${idx}].highestEducationCode" required id="highestEducationCode${idx}">
           <!-- 코드에 맞게 추가 -->
         </select>
       </div>
@@ -73,7 +73,7 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label>전공 구분</label>
-        <select name="resumeVO.educationList[${idx}].specialtyList[0].subMajorCode">
+        <select name="resumeVO.educationList[${idx}].specialtyList[0].subMajorCode" id="majorTypeCode${idx}" data-idx="${idx}">
           <!-- 코드에 맞게 추가 -->
         </select>
       </div>
@@ -88,7 +88,7 @@ const templateMap = {
     </div>
   `,
   career: idx => `
-    <div class="section-form-wrap" id="form-career${idx}">
+    <div class="section-form-wrap" id="form-career${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>회사명</label>
         <div class="d-flex gap-2 w-100">
@@ -98,7 +98,7 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label>직무</label>
-        <select name="resumeVO.careerList[${idx}].jobCode" required>
+        <select name="resumeVO.careerList[${idx}].jobCode" required id="jobCode${idx}">
           <option value="">선택</option>
         </select>
       </div>
@@ -146,19 +146,19 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label>직급</label>
-        <select name="resumeVO.careerList[${idx}].jobGradeCode">
+        <select name="resumeVO.careerList[${idx}].jobGradeCode"id="jobGradeCode${idx}">
           <option value="">선택</option>
         </select>
       </div>
       <div class="section-form-row">
         <label>직책</label>
-        <select name="resumeVO.careerList[${idx}].positionCode">
+        <select name="resumeVO.careerList[${idx}].positionCode" id="positionCode${idx}">
           <option value="">선택</option>
         </select>
       </div>
       <div class="section-form-row">
         <label>연차</label>
-        <select name="resumeVO.careerList[${idx}].careerYear">
+        <select name="resumeVO.careerList[${idx}].careerYear" id="careerYear${idx}">
           <option value="">선택</option>
         </select>
       </div>
@@ -177,7 +177,7 @@ const templateMap = {
     </div>
   `,
   skill: idx => `
-    <div class="section-form-wrap" id="form-skill${idx}">
+    <div class="section-form-wrap" id="form-skill${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>보유기술명</label>
         <input type="text" name="resumeVO.mySkillList[${idx}].mySkillName" placeholder="예: Java, Spring, React" maxlength="255" required>
@@ -189,7 +189,7 @@ const templateMap = {
     </div>
   `,
   exp: idx => `
-    <div class="section-form-wrap" id="form-exp${idx}">
+    <div class="section-form-wrap" id="form-exp${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>경험구분</label>
         <select name="resumeVO.myExperienceList[${idx}].expCode" required>
@@ -219,7 +219,7 @@ const templateMap = {
     </div>
   `,
   support: idx => `
-    <div class="section-form-wrap" id="form-support${idx}">
+    <div class="section-form-wrap" id="form-support${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>장애유형</label>
         <select name="resumeVO.supportList[${idx}].disabilityCode" required>
@@ -239,7 +239,7 @@ const templateMap = {
     </div>
   `,
   license: idx => `
-    <div class="section-form-wrap" id="form-license${idx}">
+    <div class="section-form-wrap" id="form-license${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>자격증명</label>
         <input type="text" name="resumeVO.myLicenseList[${idx}].licenseCode" required placeholder="자격증 명을 입력해주세요.">
@@ -255,7 +255,7 @@ const templateMap = {
     </div>
   `,
   language: idx => `
-    <div class="section-form-wrap" id="form-language${idx}">
+    <div class="section-form-wrap" id="form-language${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>시험 구분</label>
         <select name="resumeVO.languageSkillList[${idx}].languageExamCode" required>
@@ -295,7 +295,7 @@ const templateMap = {
     </div>
   `,
   award: idx => `
-    <div class="section-form-wrap" id="form-award${idx}">
+    <div class="section-form-wrap" id="form-award${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>수상명</label>
         <input type="text" name="resumeVO.awardList[${idx}].awardName" placeholder="예: 프로그래밍 경진대회 대상" maxlength="255" required>
@@ -315,7 +315,7 @@ const templateMap = {
     </div>
   `,
   portfolio: idx => `
-    <div class="section-form-wrap" id="form-portfolio${idx}">
+    <div class="section-form-wrap" id="form-portfolio${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>포트폴리오 이름</label>
         <input type="text" name="resumeVO.portfolioList[${idx}].porName" placeholder="예: 쇼핑몰 구축 프로젝트" maxlength="60" required>
@@ -343,7 +343,7 @@ const templateMap = {
     </div>
   `,
   selfintro: idx => `
-    <div class="section-form-wrap" id="form-selfintro${idx}">
+    <div class="section-form-wrap" id="form-selfintro${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>자기소개서 제목</label>
         <input type="text" name="resumeVO.introduction.introductionName" maxlength="85" placeholder="예: 성장하는 개발자" required>
@@ -361,7 +361,7 @@ const templateMap = {
     </div>
   `,
   military: idx => `
-    <div class="section-form-wrap" id="form-military${idx}">
+    <div class="section-form-wrap" id="form-military${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>복무구분</label>
         <select name="resumeVO.militaryList[${idx}].serviceCategoryCode" required>
@@ -407,10 +407,98 @@ const templateMap = {
   // ※ selfintro(자기소개서)는 List가 아니라 단일 IntroductionVO이므로, 'resumeVO.introduction.introductionName'처럼 리스트 인덱스 없음! ✔️
 };
 
+// 1. select 셋업 정보를 한 곳에 모아둠
+const selectLoadConfig = {
+  edu: [
+
+	{
+	  selector: el => el.querySelector("#highestEducationCode" + el.dataset.idx),
+	  url: "/ajax/code/cmncodegroup/EDUC",
+	  key: "cmnCodeList", // 배열이 담긴 데이터 키
+	  valueKey: "codeDetailNo",  // 옵션 value
+	  labelKey: "codeName"       // 옵션 text
+	},
+	{
+	  selector: el => el.querySelector("#majorTypeCode" + el.dataset.idx),
+	  url: "/ajax/code/cmncodegroup/SPEC",
+	  key: "cmnCodeList",
+	  valueKey: "codeDetailNo",
+	  labelKey: "codeName"
+	}
+  ],
+  career: [
+    { 
+		selector: el => el.querySelector("#jobCode" + el.dataset.idx),
+		url: "/ajax/code/job",
+		key: "",  // 만약 배열이 data 전체라면 빈 문자열
+		valueKey: "jobCode",
+		labelKey: "jobName"
+    },
+    { 
+		selector: el => el.querySelector("#jobGradeCode" + el.dataset.idx),
+		url: "/ajax/code/cmncodegroup/RANK",
+		key: "cmnCodeList",
+		valueKey: "codeDetailNo",
+		labelKey: "codeName"
+    },
+    { 
+		selector: el => el.querySelector("#positionCode" + el.dataset.idx),
+		url: "/ajax/code/cmncodegroup/SEAT",
+		key: "cmnCodeList",
+		valueKey: "codeDetailNo",
+		labelKey: "codeName"
+    },
+    { 
+		selector: el => el.querySelector("#careerYear" + el.dataset.idx),
+		url: "/ajax/code/cmncodegroup/YEXP",
+		key: "cmnCodeList",
+		valueKey: "codeDetailNo",
+		labelKey: "codeName"
+    },
+  ],
+  // ...type별 추가
+};
+
+// 2. 폼이 새로 생길 때마다 selectLoadConfig의 배열을 순회하며 요청&세팅
+async function setDynamicSelects(type, formElem) {
+  const confArr = selectLoadConfig[type];
+  if (!confArr) return;
+
+  for (const conf of confArr) {
+    const selectElem = conf.selector(formElem);
+    if (selectElem) {
+      await setSelectOptionsByApi(selectElem, conf.url, conf.key, conf.valueKey, conf.labelKey);
+    }
+  }
+}
+
+// 3. 
+async function setSelectOptionsByApi(selectElem, url, arrKey, valueKey, labelKey) {
+  if (!selectElem) return;
+  try {
+    const resp = await axios.get(url);
+    let list;
+    if (!arrKey) {
+      list = Array.isArray(resp.data) ? resp.data : resp.data; // 배열이 data 전체일 때
+    } else {
+      list = resp.data[arrKey];
+    }
+    selectElem.innerHTML = list.map(i =>
+      `<option value="${i[valueKey]}">${i[labelKey]}</option>`
+    ).join("");
+  } catch (err) {
+    console.error("옵션 로드 실패:", err);
+  }
+}
+
+
+
+
+
 // ---- JS 추가 바인딩 부분 ----
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll(".add-btn").forEach(btn => {
-    btn.addEventListener("click", function() {
+    btn.addEventListener("click", async function() {
       const btnId = btn.id;								// 모든 btn 찾기
       if (!btnId.startsWith('btn-')) return;
       const type = btnId.replace('btn-', '');			// id 찾기
@@ -431,7 +519,11 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
       formContainer.insertAdjacentHTML('beforeend', templateFunc(idx));
-      // 공통코드 비동기 요청
+	  const newForm = formContainer.lastElementChild;
+	  await setDynamicSelects(type, newForm); // 이 한 줄로 모든 select 세팅!
+
+      
+		/*// 공통코드 비동기 요청
 		axios.get("/ajax/code/cmncodegroup/EDUC")
 			.then(resp=>{
 				const list = resp.data.cmnCodeList;
@@ -447,7 +539,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				hec.innerHTML = html;
 			}).catch(err=>{
 				console.error(err);
-			})
+			})*/
       
       // 동적으로 생성된 취소 버튼에 이벤트 위임 (formContainer에서 이벤트 위임)
       formContainer.addEventListener("click", function(e) {

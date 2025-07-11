@@ -61,52 +61,7 @@
          </li>
       </ul>
      </li>
-     
-     <li class="menu-header small text-uppercase"><span class="menu-header-text">프로젝트</span></li>
-      <li class="menu-item">
-        <a href="/mypage" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-garage"></i>
-          <div data-i18n="Basic">마이 홈</div>
-        </a>
-      </li>
-
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">이력서</span></li>
-      <li class="menu-item">
-        <a href="/mypage/resume/list" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-file"></i>
-          <div>이력서 관리</div>
-        </a>
-        <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="/mypage/resume/list" class="menu-link">
-              <div>이력서 목록</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/mypage/resume/create" class="menu-link">이력서 등록</a>
-          </li>
-        </ul>
-      </li>
-      <li class="menu-item">
-        <a href="/mypage/resume/list" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-face"></i>
-          <div data-i18n="Account">자소서 관리</div>
-        </a>
-        <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="/mypage/introduction/list" class="menu-link">
-              <div data-i18n="Account">자소서 목록</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/mypage/introduction/create" class="menu-link">
-              <div data-i18n="Notifications">자소서 등록</div>
-            </a>
-          </li>
-        </ul>
-      </li>
-
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">프로젝트</span></li>
+	  <li class="menu-header small text-uppercase"><span class="menu-header-text">프로젝트</span></li>
       <li class="menu-item">
         <a href="/mypage/resume/list" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-chart-bar-big-columns"></i>
