@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	console.log("체크", examNo);
 
-	axios.get(`/ajax/company/companyExam/detail/${examNo}`)
+	axios.get(`/ajax/company/company_exam/detail/${examNo}`)
 		.then(resp => {
 			const exam = resp.data;
 			console.log(exam);
@@ -39,12 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 	document.getElementById('exam-edit-btn').addEventListener('click', () => {
-		window.location.href = `/company/companyExam/edit/${examNo}`;
+		window.location.href = `/company/company_exam/edit/${examNo}`;
 	})
 
 
 	exitBtnEl.addEventListener('click', () =>{
-		location.href = '/company/companyExam'
+		location.href = '/company/company_exam'
 	})
 
 
