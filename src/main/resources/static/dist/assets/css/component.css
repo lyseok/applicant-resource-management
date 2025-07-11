@@ -1,5 +1,4 @@
 
-
 .inpChk>input[type="checkbox"]:focus+label, .inpRdo>input[type="radio"]:focus+label {
     outline: 1px solid #94b6ed;
     -webkit-box-shadow: 0 0 2px #94b6ed;
