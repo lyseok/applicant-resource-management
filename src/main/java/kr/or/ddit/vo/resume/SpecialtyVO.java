@@ -11,8 +11,8 @@ public class SpecialtyVO implements Serializable{
 
 	private String educationNo;
 	private String resumeNo;
-	private String mainMajor;
-	private String subMajor;
-	private String subMajorCode;
-	private String deleteDate;
+	private String mainMajor;		// 주전공명
+	private String subMajor;		// 부전공명
+	private String subMajorCode;	// 부전공 구분 코드
+	private String deleteDate;		// 삭제일시
 }

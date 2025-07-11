@@ -1,4 +1,7 @@
-
+/* flex-direction */
+.direction-column{
+	flex-direction:column !important;
+}
 /* 폰트사이즈 */
 .fs-14{font-size:14px !important;}
 .fs-16{font-size:14px !important;}
@@ -85,6 +88,25 @@
   white-space: normal;
 }
 
+/* 라디오버튼 커스텀 */
+.form-check-wrap .form-check{
+	display:flex;
+	align-items:center;
+	gap:7px;
+}
+.form-check-wrap .form-check input{
+	padding:0;
+	width:20px;
+	height:20px;
+	margin-top:0;
+}
+.form-check-wrap .form-check input:checked,
+.form-check-wrap .form-check input[type=checkbox]:indeterminate{
+	background-color:var(--violet100);
+}
+.form-check-wrap .form-check label{
+	margin-top:0;
+}
 
 /* popover/tooltip */
 .toolTipWrap {
