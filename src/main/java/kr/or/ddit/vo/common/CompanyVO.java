@@ -31,4 +31,8 @@ public class CompanyVO extends UsersVO implements Serializable{
 	private MultipartFile comImage;
 	private String comPayment;
 	private String industryType;
+	
+	public String getMemName() {
+		return comName;
+	}
 }
