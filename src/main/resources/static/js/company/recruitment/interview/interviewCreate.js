@@ -10,18 +10,28 @@ function getParam(name) {
 
 const detailDate = async () => {
   const interviewNo = getParam('interviewNo');
-  const { data, status } = await axios.get(
-    '/ajax/company/interview/' + interviewNo
-  );
-  if (status) {
-    console.log(data);
-    setData(data);
-  }
+  showLoading(); // 요청 전 로딩 표시
+  const saved = JSON.parse(localStorage.getItem('interviewDetail'));
+  setData(saved);
+  // try {
+  //   const { data, status } = await axios.get(
+  //     '/ajax/company/interview/' + interviewNo
+  //   );
+  //   if (status) {
+  //     console.log(data);
+  //     setData(data);
+  //   }
+  // } catch (err) {
+  //   console.error(err);
+  // } finally {
+  //   hideLoading(); // 요청 완료/실패 모두에서 로딩 숨김
+  // }
 };
 
-detailDate();
+
 
 const setData = (data) => {
+
   const interview = data;
   const interviewQuestionList = interview.interviewQuestionList;
   const videoInterview = interview.videoInterview;
@@ -29,7 +39,6 @@ const setData = (data) => {
   const applicantRecordList = recruitProcess.applicantRecordList;
   const recruitmentNotice = recruitProcess.recruitmentNotice;
 
-  // 예시 데이터 (실제로는 axios 등으로 받아옴)
   const detail = {
     title: recruitmentNotice.recruitmentTitle,
     roomTitle: videoInterview?.roomTitle,
@@ -217,8 +226,12 @@ cancelBtnEl.addEventListener('click', () => {
 
 // 로딩 show/hide 함수
 function showLoading() {
-  document.getElementById('loadingSpinner').style.display = 'flex';
+  document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
 }
 function hideLoading() {
-  document.getElementById('loadingSpinner').style.display = 'none';
+  document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
 }
+
+
+detailDate();  
+hideLoading();

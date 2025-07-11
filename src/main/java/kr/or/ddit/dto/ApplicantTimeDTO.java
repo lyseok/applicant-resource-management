@@ -1,4 +1,4 @@
-package kr.or.ddit.company.recruitment.interview.dto;
+package kr.or.ddit.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

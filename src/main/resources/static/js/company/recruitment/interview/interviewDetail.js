@@ -13,6 +13,8 @@ const detailDate = async () => {
   );
   if (status) {
     console.log(data);
+
+    localStorage.setItem('interviewDetail', JSON.stringify(data));
     setData(data);
   }
 };
@@ -127,19 +129,57 @@ document.getElementById('editVideoInterviewBtn').onclick = function() {
   location.href="/company/interview/create?interviewNo=" + interviewNo;
 };
 
+// document.getElementById('startInterviewBtn').onclick = async function() {
+//   const interviewNo = getParam('interviewNo'); // 인터뷰 번호 파라미터에서 가져오기
+//   openEvaluationPopup();
+//   try {
+//     const res = await axios.get('/ajax/company/videointerview/' + interviewNo, {
+//       params: { interviewNo }
+//     });
+//     const url = res.data;
+//     if (url) {
+//       window.open(url, '_blank'); // 새 창으로 열기
+//     } else {
+//       alert('화상면접 주소를 찾을 수 없습니다.');
+//     }
+//   } catch (e) {
+//     alert('화상면접 접속 주소를 불러오는 데 실패했습니다.');
+//   }
+// };
+
 document.getElementById('startInterviewBtn').onclick = async function() {
-  const interviewNo = getParam('interviewNo'); // 인터뷰 번호 파라미터에서 가져오기
+  // 1. 비동기 요청해서 "화상면접" 주소로 새 창 먼저 띄우기
+  const interviewNo = getParam('interviewNo');
+  let interviewPopup;
   try {
     const res = await axios.get('/ajax/company/videointerview/' + interviewNo, {
       params: { interviewNo }
     });
     const url = res.data;
     if (url) {
-      window.open(url, '_blank'); // 새 창으로 열기
+      interviewPopup = window.open(url, '_blank'); // 새 창으로 열기
     } else {
       alert('화상면접 주소를 찾을 수 없습니다.');
     }
   } catch (e) {
     alert('화상면접 접속 주소를 불러오는 데 실패했습니다.');
+    return;
   }
+
+  // 2. 1초 뒤에 평가 팝업 띄우기
+  setTimeout(() => {
+    openEvaluationPopup(); // localStorage 세팅 및 팝업창 오픈
+
+    // 모달닫기
+    const modalEl = document.getElementById('joinInterviewModal'); // 닫을 모달의 id
+    if (modalEl) {
+      const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modalInstance.hide();
+    }
+  }, 500); // 1000ms = 1초
 };
+
+function openEvaluationPopup() {
+  // 팝업 오픈 (url/이름/옵션)
+  window.open('/popup/evaluate', 'evaluate_popup', 'width=600,height=760,scrollbars=yes');
+}
