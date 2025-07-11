@@ -26,15 +26,9 @@ class ScrabCompanyMapperTest {
 
 	@Test
 	void testSelectScrabCompanyByPk() {
-		ScrabCompanyVO SCV = new ScrabCompanyVO();
-		
-		SCV.setUserId("QWE1");
-		SCV.setCompanyId("QWER5");
-		
-		log.info("companyId 안 넣고도 값 나오나 확인 : {}", mapper.selectScrabCompanyByPk(SCV));
-		
-		assertDoesNotThrow(()->mapper.selectScrabCompanyByPk(SCV));
-		assertNotNull(mapper.selectScrabCompanyByPk(SCV));
+		log.info("확인 : {}", mapper.selectScrabCompanyByPk("corp03"));
+		assertDoesNotThrow(()->mapper.selectScrabCompanyByPk("corp03"));
+		assertNotNull(mapper.selectScrabCompanyByPk("corp03"));
 	}
 
 	@Test

@@ -97,7 +97,7 @@
 <body>
 	<div class="exam-container">
 	    <div>${user.comName}님이 등록하신 시험입니다.</div>
-	    <a href="/company/companyExam/form">
+	    <a href="/company/company_exam/form">
 	      <button class="btn_violet">시험 등록</button>
 	    </a>
    </div>

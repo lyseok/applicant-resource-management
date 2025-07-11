@@ -1598,3 +1598,54 @@ body::-webkit-scrollbar-thumb:hover {
     top: 10px;
     right: 10px
 }
+
+/* 250712 - 멤버 로그인 토글 추가 */
+.wrap_header .member_btn{
+	cursor:pointer;
+}
+.wrap_header .layer_member {
+    position: absolute;
+    top: 28px;
+    right: 0;
+    width: 168px;
+    border: 1px solid #edeef0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    text-align: left;
+    background: #fff;
+    box-shadow: 2px 6px 16px 0 rgba(17,42,128,0.08);
+    padding-top:0 !important;
+}
+.wrap_header .layer_member ul {
+    padding: 8px 0
+}
+.wrap_header .layer_member ul li a {
+    display: flex;
+    position: relative;
+    padding: 9px 20px;
+    width: 166px;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.wrap_header .layer_member ul li a span {
+    font-size:26px;
+    color: #3b3b3b;
+	font-variation-settings:
+		'FILL' 0,
+		'wght' 200,
+		'GRAD' 0,
+		'opsz' 24
+}
+.wrap_header .layer_member ul li a .txt {
+    position: relative;
+    z-index: 2;
+    color: #5c667b;
+    font-size: 14px;
+    line-height: 18px;
+    vertical-align: top;
+    margin-left:8px;
+}
+.wrap_header .wrap_member .btn_member.expanded+.layer_member {
+    display: block
+}

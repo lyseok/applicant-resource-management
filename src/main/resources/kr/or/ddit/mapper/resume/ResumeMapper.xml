@@ -124,6 +124,7 @@
 		</selectKey>
 		INSERT INTO RESUME (
 			RESUME_NO
+			, RESUME_NAME
 			, USER_ID
 			, USER_NAME
 			, PHOTO
@@ -137,6 +138,7 @@
 			, RESUME_DELETE_DATE
 		) VALUES (
 			#{resumeNo}
+			, #{resumeName}
 			, #{userId}
 			, #{userName}
 			, #{photo}
