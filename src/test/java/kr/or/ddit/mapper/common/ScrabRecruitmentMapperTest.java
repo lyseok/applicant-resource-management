@@ -42,8 +42,8 @@ class ScrabRecruitmentMapperTest {
 	void testInsertScrabRecruitment() {
 		ScrabRecruitmentVO SRV = new ScrabRecruitmentVO();
 
-		SRV.setUserId("qwsad");
-		SRV.setRecruitmentNo("qwsad");
+		SRV.setUserId("USR001");
+		SRV.setRecruitmentNo("RECR000001");
 
 		mapper.insertScrabRecruitment(SRV);
 
