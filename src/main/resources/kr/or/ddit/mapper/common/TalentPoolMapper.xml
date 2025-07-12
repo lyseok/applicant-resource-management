@@ -349,6 +349,27 @@
 	<!-- <select id="selectSkillList" resultType="MySkillVO"> SELECT MY_SKILL_NAME 
 		FROM MY_SKILL A INNER JOIN RESUME B ON A.RESUME_NO = B.RESUME_NO WHERE USER_NAME 
 		= #{useName} </select> -->
+		
+	<select id="selectCareer">
+		SELECT 
+			CAREER_NO
+			, RESUME_NO
+			, JOB_CODE
+			, START_WORK_DATE
+			, RETIRE_DATE
+			, TENURE
+			, DEPARTMENT
+			, RESPONSIBILITY
+			, FREELANCER
+			, JOB_GRADE_CODE
+			, POSITION_CODE
+			, CAREER_YEAR
+			, SALARY
+			, LOCATION
+			, DELETE_DATE
+			, COM_ID
+		FROM CAREER
+	</select>
 
 	<select id="selectMember" parameterType="string"
 		resultType="MemberVO">

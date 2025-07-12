@@ -1,12 +1,10 @@
-package kr.or.ddit.mapper.common;
+package kr.or.ddit.company.payment.payment.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import kr.or.ddit.vo.common.PaymentVO;
-@Mapper
-public interface PaymentMapper {
+
+public interface PaymentService {
 	public List<PaymentVO> selectPaymentList();
 
 	public PaymentVO selectPaymentByPk(PaymentVO vo);
@@ -16,4 +14,5 @@ public interface PaymentMapper {
 	public int updatePayment(PaymentVO vo);
 
 	public int deletePayment(String paymentNo);
+	
 }
