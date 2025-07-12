@@ -34,5 +34,16 @@
 	
   <%@ include file="/WEB-INF/fragments/dashPostScript.jsp" %>
   <%@ include file="/WEB-INF/fragments/loading.jsp" %>
+<script>
+  axios.get('/ajax/userinfo')
+    .then(res => {
+      const data = res.data;
+      let name = '일반유저';
+      if (data.userType === 'company') name = data.userName;
+      else if (data.userType === 'admin') name = '관리자';
+      else if (data.userType === 'member') name = data.userName;
+      document.getElementById('user_name').textContent = name;
+  });
+</script>
 </body>
 </html>
