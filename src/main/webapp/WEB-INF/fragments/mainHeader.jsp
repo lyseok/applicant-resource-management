@@ -36,9 +36,45 @@
             
 	            <sec:authorize access="isAuthenticated()">
 	            	<%-- 로그인이 되어 있을때 --%>
-	                <span class="btn_sign signin">
+	                <span class="btn_sign signin member_btn" >
 						<sec:authentication property="principal.realUser.memName" />
 	                </span>
+	                <div class="layer_member" id="displayMemBtn" style="display:none;">
+			            <ul>
+			                <li>
+			                    <a href="javascript:void(0)" target="_blank">
+			                        <span class="material-symbols-outlined">settings</span> 
+			                        <span class="txt">계정정보 설정</span>
+			                    </a>
+			                </li>
+			                <li>
+			                    <a href="/mypage">
+			                        <span class="material-symbols-outlined">mail</span> 
+			                        <span class="txt">마이페이지</span>
+			                    </a>
+			                </li>
+			                <li>
+			                    <a href="javascript:void(0)" target="_blank">
+			                        <span class="material-symbols-outlined">lock</span> 
+			                        <span class="txt">비밀번호 변경</span>
+			                    </a>
+			                </li>
+			                <li>
+			                    <a href="javascript:void(0)" target="_blank">
+			                        <span class="material-symbols-outlined">person</span> 
+			                        <span class="txt">로그인 관리</span>
+			                    </a>
+			                </li>
+			                <li>
+			                    <div class="logoutBtn">
+			                        <a href="javascript:void(0)">
+			                            <span class="material-symbols-outlined">logout</span> 
+			                            <span class="txt">로그아웃</span>
+			                        </a>
+			                    </div>
+			                </li>
+			            </ul>
+			        </div>
 	                <hr>
 	                <span class="btn_sign signin logoutBtn">로그아웃</span>
 				</sec:authorize>
@@ -238,19 +274,43 @@
                     </ul>
                 </div>
                 <div class="personalize">
-                    <a href="/zf_user/member/persons/main" class="myhome" data-nav-track="ga_lead|main-gnb|total_menu|myhome">MY<svg class="arrow" aria-hidden="true" focusable="false">
+                    <a href="/zf_user/member/persons/main" class="myhome">MY<svg class="arrow" aria-hidden="true" focusable="false">
                             <use xlink:href="#svg_gnb_profile_bracket"></use>
                         </svg></a>
                     <ul class="items">
-                        <li><a href="/mypage/resume/list" data-nav-track="ga_lead|main-gnb|total_menu|resume-manage">이력서 관리</a></li>
-                        <li><a href="/zf_user/persons/scrap-recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a></li>
-                        <li><a href="/zf_user/persons/apply-status-list" data-nav-track="ga_lead|main-gnb|total_menu|apply_list">지원현황</a></li>
-                        <li><a href="/zf_user/jobs/read-jobs" data-nav-track="ga_lead|main-gnb|total_menu|recent">최근본</a></li>
+						<li><a href="/mypage/resume/list" data-nav-track="ga_lead|main-gnb|total_menu|resume-manage">이력서 관리</a></li>
+						<li><a href="/zf_user/persons/scrap-recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a></li>
+						<li><a href="/zf_user/persons/apply-status-list" data-nav-track="ga_lead|main-gnb|total_menu|apply_list">지원현황</a></li>
+						<li><a href="/zf_user/jobs/read-jobs" data-nav-track="ga_lead|main-gnb|total_menu|recent">최근본</a></li>
                     </ul>
                 </div>
             </div>
             
         </div>
     </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 버튼과 레이어 변수 저장
+        const memberBtn = document.querySelector('.member_btn');
+        const memberLayer = document.querySelector('.layer_member');
+
+        // 멤버 버튼 클릭 이벤트
+        memberBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isOpen = memberLayer.style.display === 'block';
+            // 토글
+            memberLayer.style.display = isOpen ? 'none' : 'block';
+        });
+
+        // 외부 클릭시 닫기 (버튼/레이어 아닌 부분 클릭시)
+        document.addEventListener('click', function(event) {
+            if (!memberBtn.contains(event.target) && !memberLayer.contains(event.target)) {
+                memberLayer.style.display = 'none';
+            }
+        });
+        
+    });
+    </script>
 </header>
 

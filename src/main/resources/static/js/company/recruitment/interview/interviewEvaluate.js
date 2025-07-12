@@ -70,7 +70,7 @@ function renderEvaluationForm() {
         ${[1,2,3,4,5].map(score => `
           <label class="btn btn-outline-secondary">
             <input type="radio" name="score_${q.interviewQuestionNo}" value="${score}" required> 
-            ${score}: ${['매우 그렇지 않다', '그렇지 않다', '보통이다', '그렇다', '매우 그렇다'][score-1]}
+            ${['매우 그렇지 않다', '그렇지 않다', '보통이다', '그렇다', '매우 그렇다'][score-1]}
           </label>
         `).join('')}
       </div>
