@@ -65,6 +65,7 @@ public class AdminAdminBoardAjaxController {
 		@PathVariable String boardTypeCode
 		, @RequestBody AdminBoardVO board
 	) {
+		log.info("찍힘 확인 : {}", board);
 		service.createAdminBoard(board);
 	    return Map.of("ok", true);
 	}

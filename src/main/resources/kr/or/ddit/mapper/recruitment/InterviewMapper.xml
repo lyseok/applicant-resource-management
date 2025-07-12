@@ -97,7 +97,7 @@
                 resultMap="interviewQuestionMap"/>
 	</resultMap>
 	
-<<<<<<< HEAD
+
 	
 	<select id="selectMyInterviewList" resultType="java.util.HashMap">
 		SELECT 
@@ -141,8 +141,7 @@
 	</select>
 	
 <!-- 	기업      -->
-=======
->>>>>>> refs/heads/feature/#024_일반회원스크랩관리
+
 	<select id="selectInterviewList" resultMap="interviewMap">
 		SELECT
 			-- Interview 컬럼

@@ -88,8 +88,8 @@
 			, #{boardTitle}
 			, sysdate
 			, #{boardContent}
-			, #{boardPostHit}
-			, #{boardStatus}
+			, 0
+			, 'R'
 		)
 	</insert>
 

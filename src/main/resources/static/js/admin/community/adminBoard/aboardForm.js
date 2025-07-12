@@ -1,6 +1,7 @@
 /**
  * 
  */
+/*
 aboardForm.onsubmit = async (e) => {
 	e.preventDefault();
 
@@ -13,3 +14,4 @@ aboardForm.onsubmit = async (e) => {
 
 	alert(result.message);
 };
+*/
