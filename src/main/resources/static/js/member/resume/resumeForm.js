@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (!formContainer) return;
       const secCont = section.querySelector(`.section-content`);		// 기존 보여지던 div 찾기
       if (!secCont) return;
-      const cansel = section.querySelector(`.section-form-btns .btn_red_line`);		// 기존 보여지던 div 찾기
+      const cansel = section.querySelector(`.section-form-btns .btn_red_line`);		// 취소버튼
       console.log(cansel);
       if (!secCont) return;
       let  idx = typeCounters[type] = (typeCounters[type] || 0) + 1;
@@ -435,14 +435,14 @@ document.addEventListener("DOMContentLoaded", function() {
 		axios.get("/ajax/code/cmncodegroup/EDUC")
 			.then(resp=>{
 				const list = resp.data.cmnCodeList;
-				console.log(list);
+				// console.log(list);
 				const hec = document.querySelector("#highestEducationCode");
-				console.log(hec);
+				// console.log(hec);
 				let html = ""; 
 				list.forEach(i=>{
-					console.log(i)
+					// console.log(i)
 					html += `<option value="${i.codeDetailNo}">${i.codeName}</option>`;
-					console.log(html)
+					// console.log(html)
 				})
 				hec.innerHTML = html;
 			}).catch(err=>{
@@ -466,6 +466,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const count = typeCounters[type] || 0;
     const sectionContent = section.querySelector(`.section-content`);
     const listContainer = section.querySelector(`.listContainer`);
+    console.log(sectionContent, listContainer);
     if (count <= 1) {
       if (sectionContent) sectionContent.classList.remove('d-none');
       if (listContainer) listContainer.classList.add('d-none');
