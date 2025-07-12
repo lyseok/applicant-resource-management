@@ -15,4 +15,5 @@ public interface RecruitmentExamMapper {
 	public int deleteRecruitExam(String recruitExamNo);
 	
 	public List<RecruitmentExamVO> selectMyRecruitExams(String userId);
+	public List<RecruitmentExamVO> selectRecruitExamQuestionWithOptionByNo(String recruitExamNo);
 }

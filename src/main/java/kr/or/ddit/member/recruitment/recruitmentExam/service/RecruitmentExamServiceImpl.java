@@ -18,4 +18,9 @@ public class RecruitmentExamServiceImpl implements RecruitmentExamService {
 		return recruitmentExamMapper.selectMyRecruitExams(userId);
 	}
 
+	@Override
+	public List<RecruitmentExamVO> readRecruitExamQuestionWithOptionByNo(String recruitExamNo) {
+		return recruitmentExamMapper.selectRecruitExamQuestionWithOptionByNo(recruitExamNo);
+	}
+
 }

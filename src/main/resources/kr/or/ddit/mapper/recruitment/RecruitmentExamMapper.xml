@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.RecruitmentExamMapper">
+
+	<resultMap id="questionWithOptionMap" type="RecruitmentExamQuestionsVO">
+	    <id property="recruitExamQuestNo" column="recruitExamQuestNo"/>
+	    <result property="recruitExamNo" column="recruitExamNo"/>
+	    <result property="recruitExamQuestContent" column="recruitExamQuestContent"/>
+		    <collection property="optionList" ofType="RecruitmentExamOptionVO">
+		        <id property="recruitOptionNo" column="recruitOptionNo"/>
+		        <result property="recruitExamQuestNo" column="recruitExamQuestNo"/>
+		        <result property="recruitExamOptionContent" column="recruitExamOptionContent"/>
+		        <result property="recruitExamOptionCorrectYn" column="recruitExamOptionCorrectYn"/>
+		    </collection>
+	</resultMap>
+
+
+
 	<select id="selectRecruitExamList" resultType="RecruitmentExamVO">
 	SELECT 
 		RECRUIT_EXAM_NO
@@ -84,6 +99,22 @@
 	    WHERE a.USER_ID = #{userId}
 	      AND a.APPLICANT_DEL_DATE IS NULL
 	    ORDER BY e.RECRUIT_EXAM_START_DATE
+  </select>
+  
+  
+  <select id="selectRecruitExamQuestionWithOptionByNo" resultMap="questionWithOptionMap">
+  	    SELECT 
+        q.RECRUIT_EXAM_QUEST_NO AS recruitExamQuestNo,
+        q.RECRUIT_EXAM_NO AS recruitExamNo,
+        q.RECRUIT_EXAM_QUEST_CONTENT AS recruitExamQuestContent,
+        o.RECRUIT_OPTION_NO AS recruitOptionNo,
+        o.RECRUIT_EXAM_OPTION_CONTENT AS recruitExamOptionContent,
+        o.RECRUIT_EXAM_OPTION_CORRECT_YN AS recruitExamOptionCorrectYn
+    FROM RECRUITMENT_EXAM_QUESTIONS q
+    JOIN RECRUITMENT_EXAM_OPTION o ON q.RECRUIT_EXAM_QUEST_NO = o.RECRUIT_EXAM_QUEST_NO
+    WHERE q.RECRUIT_EXAM_NO = #{recruitExamNo}
+    ORDER BY q.RECRUIT_EXAM_QUEST_NO, o.RECRUIT_OPTION_NO
+  
   </select>
 	
 	

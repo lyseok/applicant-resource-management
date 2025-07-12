@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
  <style>
-    /* 커스텀 색상 */
+    
     .banner { background: #ebe8ff; }
     .btn-purple { background: #6f49fd; color: #fff; }
     .exam-item { cursor: pointer; transition: background .2s; }
@@ -33,13 +33,11 @@
     </div>
 
     <!-- 총 개수 -->
-    <div id="total-count" class="mb-2 text-muted">총 0건</div>
+    <div id="exam-count" class="mb-2 text-muted">총 0건</div>
 
     <!-- 시험 리스트 -->
     <div id="exam-list" class="list-group">
-      <div class="list-group-item text-center text-muted">
-        로딩 중...
-      </div>
+      <div class="list-group-item text-center text-muted">로딩 중...</div>
     </div>
   </div>
 
