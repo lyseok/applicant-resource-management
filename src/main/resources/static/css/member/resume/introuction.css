@@ -15,7 +15,7 @@
     background: var(--white);
     border-radius: 8px;
     z-index: 1;
-    filter: drop-shadow(0 4px 16px rgba(17, 42, 128, .08));
+    border:1px solid #dbdbdb;
     margin: 0 auto;
     scroll-behavior: smooth;
 }

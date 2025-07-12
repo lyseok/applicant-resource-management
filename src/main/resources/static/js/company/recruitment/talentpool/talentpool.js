@@ -125,6 +125,29 @@ function handleFilterSubmit() {
   });
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+	const form = document.getElementById("filterForm");
+	const talentListWrapper = document.getElementById("talent-list-wrapper");
+
+	form.addEventListener("submit", function (e) {
+		e.preventDefault();
+		const formData = new FormData(form);
+
+		fetch("/talentpool/filter", {
+			method: "POST",
+			body: formData
+		})
+			.then(res => res.text())
+			.then(html => {
+				talentListWrapper.innerHTML = html;
+			})
+			.catch(err => {
+				console.error("오류 발생:", err);
+				talentListWrapper.innerHTML = "<p style='color:red;'>검색 실패</p>";
+			});
+	});
+});
+
 // 상단필터 검색
 function bindAdvancedSearch() {
   const searchBtn = document.querySelector(".search-filter-bar button");

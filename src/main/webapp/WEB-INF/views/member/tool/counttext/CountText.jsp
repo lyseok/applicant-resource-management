@@ -137,10 +137,10 @@
 		<div class="tool-remote">
 			<h3>취업 Tool 리모콘</h3>
 			<ul>
-				<li class="active" onclick="selectTool(1)">1. 글자수 세기</li>
-				<li onclick="selectTool(2)">2. 맞춤법 검사기</li>
-				<li onclick="selectTool(3)">3. 연차계산기</li>
-				<li onclick="selectTool(4)">4. 실수령액 계산기</li>
+				<li class="active" onclick="location.href='/count_text'">1. 글자수 세기</li>
+				<li onclick="location.href='/spelling'">2. 맞춤법 검사기</li>
+				<li onclick="location.href='/countyear'">3. 연차계산기</li>
+				<li onclick="location.href='/salarycalc'">4. 실수령액 계산기</li>
 			</ul>
 		</div>
 

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class EmploymentToolController {
 
-	@GetMapping("/countText")
+	@GetMapping("/count_text")
 	public String countTextForm() {
 		return "member/tool/counttext/CountText";
 	}
