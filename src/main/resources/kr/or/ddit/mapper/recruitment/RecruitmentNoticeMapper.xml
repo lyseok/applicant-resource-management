@@ -75,7 +75,36 @@
 		<collection property="processList" resultMap="recruitProcessMap" />
 	</resultMap>
 	
-	
+	<select id="selectMyRecruitNotice" resultType="java.util.HashMap">
+	SELECT
+		R.RECRUITMENT_NO AS recruitmentNo,
+		R.RECRUITMENT_TITLE AS recruitmentTitle,
+		R.JOB_CODE AS jobCode,
+		R.RECRUITMENT_STARTDATE AS startDate,
+		R.RECRUITMENT_FINISH_DATE AS finishDate,
+		R.RECRUITMENT_SALARY AS salary,
+		R.CITY_CODE AS cityCode,
+		R.DISTRICT_CODE AS districtCode,
+		R.REC_CONTENT AS recContent,
+		COUNT(A.APPLICANT_ID) AS applicantCount
+	FROM
+	RECRUITMENT_NOTICE R
+	LEFT JOIN
+	APPLICANT A ON R.RECRUITMENT_NO = A.RECRUITMENT_NO
+	WHERE R.USER_ID = #{userId}
+	GROUP BY
+		R.RECRUITMENT_NO,
+		R.RECRUITMENT_TITLE,
+		R.JOB_CODE,
+		R.RECRUITMENT_STARTDATE,
+		R.RECRUITMENT_FINISH_DATE,
+		R.RECRUITMENT_SALARY,
+		R.CITY_CODE,
+		R.DISTRICT_CODE,
+		R.REC_CONTENT
+	ORDER BY
+		R.RECRUITMENT_STARTDATE DESC
+	</select>
 
 	<select id="salaryRecruitment" resultType="RecruitmentNoticeVO">
 		SELECT USER_ID

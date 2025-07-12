@@ -48,9 +48,9 @@
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="javascript:void(0)">
+			                    <a href="/mypage">
 			                        <span class="material-symbols-outlined">mail</span> 
-			                        <span class="txt">메일 수신 설정</span>
+			                        <span class="txt">마이페이지</span>
 			                    </a>
 			                </li>
 			                <li>
