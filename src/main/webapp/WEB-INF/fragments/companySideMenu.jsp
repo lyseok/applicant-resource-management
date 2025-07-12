@@ -58,7 +58,7 @@
     <li class="menu-header small text-uppercase"><span class="menu-header-text">채용관리</span></li>
 
     <li class="menu-item">
-      <a href="/company" class="menu-link">
+      <a href="/company/recruit_notice/list" class="menu-link">
         <i class="menu-icon tf-icons bx bx-file-detail"></i>
         <div data-i18n="Basic">공고관리</div>
       </a>
