@@ -38,6 +38,21 @@ public class AdminAdminCommentController {
 		return "admin/community/adminComment/acommentForm";
 	}
 	
+	// 문의사항별 관리자 답글 목록조회
+	@GetMapping  //"/admin/board/admin_comment?no=ABNO000001"
+	public String acommentType(
+		String no
+		, Model model
+	) {
+		List<AdminCommentVO> acommentList = service.searchAdminCommentCommentList(no);
+		model.addAttribute("acommentList", acommentList);
+		model.addAttribute("no", no);
+
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/adminComment/acommentList";
+	}
+	
 	/*
 	private ErrorsUtils errorsUtils;
 	
@@ -68,21 +83,6 @@ public class AdminAdminCommentController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "admin/community/adminComment/acommentDetail";
-	}
-	
-	// 게시글별 댓글 목록조회
-	@GetMapping("/list/admin_board")  //"/admin/board/admin_comment/list/admin_board?no=ABNO000001"
-	public String acommentType(
-		@RequestParam(value = "no") String boardNo
-		, Model model
-	) {
-		List<AdminCommentVO> acommentList = service.searchAdminCommentCommentList(boardNo);
-		model.addAttribute("acommentList", acommentList);
-		model.addAttribute("boardNo", boardNo);
-
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/adminComment/acommentList";
 	}
 	
 	// 댓글 목록조회

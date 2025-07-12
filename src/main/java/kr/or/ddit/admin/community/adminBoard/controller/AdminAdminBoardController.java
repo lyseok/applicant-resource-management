@@ -40,6 +40,31 @@ public class AdminAdminBoardController { // 동기 컨트롤러는 페이지 이
 		return "admin/community/adminBoard/aboardForm";
 	}
 	
+	// 게시글 목록조회 - 관리자가 게시판 타입 상관없이 조회할 경우 사용할 듯
+	@GetMapping("/list")  //http://localhost/admin/admin_board/list
+	public String aboardList(Model model) {
+		List<AdminBoardVO> aboardList = service.readAdminBoardList();
+		model.addAttribute("aboardList", aboardList);
+		
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);		
+		return "admin/community/adminBoard/aboardList";
+	}
+	
+	// 유형별 게시글 목록조회
+	@GetMapping  //http://localhost/admin/admin_board?type=UFAQ-U5
+	public String aboardType(
+		String type
+		, Model model			
+	) {
+		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(type);
+		model.addAttribute("aboardList", aboardList);
+		model.addAttribute("type", type);
+
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/adminBoard/aboardList";
+	}
 	
 	/*
 	private ErrorsUtils errorsUtils;
@@ -74,40 +99,6 @@ public class AdminAdminBoardController { // 동기 컨트롤러는 페이지 이
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "admin/community/adminBoard/aboardDetail";
-	}
-	
-	// 유형별 게시글 목록조회
-	@GetMapping("/list/type")  //http://localhost/admin/admin_board/list/type?code=UFAQ-U5
-	public String aboardType(
-		@RequestParam(value = "code", required = false) String boardTypeCode
-		, Model model			
-	) {
-		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(boardTypeCode);
-		model.addAttribute("aboardList", aboardList);
-		model.addAttribute("boardTypeCode", boardTypeCode);
-
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/adminBoard/aboardList";
-	}
-	
-	// 게시글 목록조회
-	@GetMapping("/list")  //http://localhost/admin/admin_board/list
-	public String aboardList(Model model) {
-		List<AdminBoardVO> aboardList = service.readAdminBoardList();
-		model.addAttribute("aboardList", aboardList);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);		
-		return "admin/community/adminBoard/aboardList";
-	}
-	
-	// 등록 폼으로 이동
-	@GetMapping("/form")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/adminBoard/aboardForm";
 	}
 	
 	// 수정 폼으로 이동

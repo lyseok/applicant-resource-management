@@ -37,6 +37,18 @@ public class AdminCommuBoardController {
 		return "admin/community/commuBoard/cboardForm";
 	}
 	
+	// 카테고리별 게시글 목록조회
+	@GetMapping  ///admin/board/commu_board?type=CATE-002
+	public String cboardType(String type, Model model) {
+		List<CommuBoardVO> cboardList = service.readCommuBoardList(type);
+		model.addAttribute("cboardList", cboardList);
+		model.addAttribute("type", type);
+
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/commuBoard/cboardList";
+	}
+	
 	/*
 	private ErrorsUtils errorsUtils;
 	
@@ -64,18 +76,6 @@ public class AdminCommuBoardController {
 		return "admin/community/commuBoard/cboardDetail";
 	}
 
-	// 카테고리별 게시글 목록조회
-	@GetMapping("/list/type")
-	public String cboardType(String categoryCode, Model model) {
-		List<CommuBoardVO> cboardList = service.readCommuBoardList(categoryCode);
-		model.addAttribute("cboardList", cboardList);
-		model.addAttribute("categoryCode", categoryCode);
-
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/commuBoard/cboardList";
-	}
-	
 	// 수정 폼으로 이동
 	@GetMapping("/form/edit")
 	public String editForm(String commuPostNo, Model model) {  

@@ -50,12 +50,9 @@ public class AdminAdminBoardAjaxController {
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	
-	// 유형별 게시글 목록조회, 작성자 아이디를 여기서 가져오면 단건에선 안 가져와도 됨
+	// 유형별 게시글 목록조회
 	@GetMapping("/{boardTypeCode}")  
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    String username = authentication.getName(); // 아이디
-	    log.info("🔐 요청자: {}", username);
 		return service.readAdminBoardListByType(boardTypeCode);
 	}
 	
