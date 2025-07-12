@@ -28,8 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AdminAdminCommentAjaxController {
 	
-	private AdminAdminCommentAjaxService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final AdminAdminCommentAjaxService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{boardNo}/{boardCommentNo}")
 	public ResponseEntity<AdminCommentVO> getOneComment(@PathVariable String commentNo) {

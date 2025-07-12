@@ -4,17 +4,17 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <head>
-	<title>띹잡 고객센터 | 게시글 상세 입력</title>
+	<title>띹잡 고객센터 | 게시글 등록</title>
 	<script src="/js/admin/community/adminBoard/aboardForm.js"></script>
 </head>
 
 <body>
+
+<p class="h4">관리자 게시판</p><br>
+
   <h1><sec:authentication property="principal.realUser.userId" var="userId"/></h1>
 	<form id="aboardForm">
-		<input type="text" name="boardNo" placeholder="게시글 번호">
-		<input type="text" name="userId" placeholder="사용자 ID">
-		<input type="text" name="boardTypeCode" placeholder="게시판 유형 코드">
-		<input type="hidden" name="userId" value="${userId}" placeholder="사용자 ID"><br>
+		<input type="hidden" name="userId" value="${userId}"><br>
 		<label>게시판 유형 코드</label>
 		<select name="boardTypeCode">
 			<option value="-1">--선택--</option>
@@ -43,7 +43,7 @@
 		<br>
 		<input type="text" name="boardTitle" placeholder="제목">
 		<input type="text" name="boardContent" placeholder="내용">
-	  <button type="submit">전송</button>
+	  <button type="submit">등록</button>
 	</form>
 <script>
 const aboardForm = document.querySelector("#aboardForm");

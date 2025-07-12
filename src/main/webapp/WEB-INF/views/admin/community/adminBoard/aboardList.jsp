@@ -20,16 +20,17 @@ fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 			const aboardList = document.querySelector("#aboardList");
 			let html = "";
 			rslt.forEach(item => {
+				console.log("아이템 나오니? :", item);
 				html += `
-					<li>게시글 번호: ${item.boardNo}</li>
-					<li>사용자 ID: ${item.userId}</li>
-					<li>게시판 유형 코드: ${item.boardTypeCode}</li>
-					<li>제목: ${item.boardTitle}</li>
-					<li>등록일시: ${item.boardWriteDate}</li>
-					<li>내용: ${item.boardContent}</li>
-					<li>삭제일시: ${item.boardDeleteDate}</li>
-					<li>조회수: ${item.boardPostHit}</li>
-					<li>게시글 상태: ${item.boardStatus}</li>`;
+					<li>게시글 번호: \${item.boardNo}</li>
+					<li>사용자 ID: \${item.userId}</li>
+					<li>게시판 유형 코드: \${item.boardTypeCode}</li>
+					<li>제목: \${item.boardTitle}</li>
+					<li>등록일시: \${item.boardWriteDate}</li>
+					<li>내용: \${item.boardContent}</li>
+					<li>삭제일시: \${item.boardDeleteDate}</li>
+					<li>조회수: \${item.boardPostHit}</li>
+					<li>게시글 상태: \${item.boardStatus}</li>`;
 			});
 			aboardList.innerHTML = html;
 		});
