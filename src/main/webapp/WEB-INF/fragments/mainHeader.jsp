@@ -279,7 +279,7 @@
                         </svg></a>
                     <ul class="items">
 						<li><a href="/mypage/resume/list" data-nav-track="ga_lead|main-gnb|total_menu|resume-manage">이력서 관리</a></li>
-						<li><a href="/zf_user/persons/scrap-recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a></li>
+						<li><a href="/ajax/member/mypage/scrab_recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a></li>
 						<li><a href="/zf_user/persons/apply-status-list" data-nav-track="ga_lead|main-gnb|total_menu|apply_list">지원현황</a></li>
 						<li><a href="/zf_user/jobs/read-jobs" data-nav-track="ga_lead|main-gnb|total_menu|recent">최근본</a></li>
                     </ul>
