@@ -41,7 +41,6 @@
 			<option value="CFAQ-C11">기업회원-KoMate</option>
 		</select>
 		<br>
->>>>>>> refs/remotes/origin/feature/#024_일반회원스크랩관리
 		<input type="text" name="boardTitle" placeholder="제목">
 		<input type="text" name="boardContent" placeholder="내용">
 	  <button type="submit">전송</button>
