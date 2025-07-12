@@ -36,9 +36,45 @@
             
 	            <sec:authorize access="isAuthenticated()">
 	            	<%-- 로그인이 되어 있을때 --%>
-	                <span class="btn_sign signin">
+	                <span class="btn_sign signin member_btn" >
 						<sec:authentication property="principal.realUser.memName" />
 	                </span>
+	                <div class="layer_member" id="displayMemBtn" style="display:none;">
+			            <ul>
+			                <li>
+			                    <a href="javascript:void(0)" target="_blank">
+			                        <span class="material-symbols-outlined">settings</span> 
+			                        <span class="txt">계정정보 설정</span>
+			                    </a>
+			                </li>
+			                <li>
+			                    <a href="javascript:void(0)">
+			                        <span class="material-symbols-outlined">mail</span> 
+			                        <span class="txt">메일 수신 설정</span>
+			                    </a>
+			                </li>
+			                <li>
+			                    <a href="javascript:void(0)" target="_blank">
+			                        <span class="material-symbols-outlined">lock</span> 
+			                        <span class="txt">비밀번호 변경</span>
+			                    </a>
+			                </li>
+			                <li>
+			                    <a href="javascript:void(0)" target="_blank">
+			                        <span class="material-symbols-outlined">person</span> 
+			                        <span class="txt">로그인 관리</span>
+			                    </a>
+			                </li>
+			                <li>
+			                    <div class="logoutBtn">
+			                        <a href="javascript:void(0)">
+			                            <span class="material-symbols-outlined">logout</span> 
+			                            <span class="txt">로그아웃</span>
+			                        </a>
+			                    </div>
+			                </li>
+			            </ul>
+			        </div>
 	                <hr>
 	                <span class="btn_sign signin logoutBtn">로그아웃</span>
 				</sec:authorize>
@@ -120,7 +156,7 @@
                         <span class="txt">기업·연봉</span>
                     </a>
                     <ul class="depth2">
-                        <li><a href="/member/companyReview"><span class="txt">기업리뷰</span></a></li>
+                        <li><a href="/member/company_review"><span class="txt">기업리뷰</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">연봉정보</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">면접후기</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">합격 자소서</span></a></li>
@@ -150,8 +186,8 @@
 	                    <span class="txt">취업TOOL</span>
 	                </a>
 	                <ul class="depth2">
-                        <li><a href="/Spelling"><span class="txt">맞춤법 검사기</span></a></li>
-                        <li><a href="/countText"><span class="txt">글자 수 세기</span></a></li>
+                        <li><a href="/spelling"><span class="txt">맞춤법 검사기</span></a></li>
+                        <li><a href="/count_text"><span class="txt">글자 수 세기</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">연봉계산</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">실수령액 계산기</span></a></li>
                         <li><a href="/countyear"><span class="txt">연차계산기</span></a></li>
@@ -198,7 +234,7 @@
                 <div class="major">
                     <span class="depth1"><span class="txt">기업·연봉</span></span>
                     <ul class="depth2">
-                        <li><a href="/member/companyReview"><span class="txt">기업리뷰</span></a></li>
+                        <li><a href="/member/company_review"><span class="txt">기업리뷰</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">연봉정보</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">면접후기</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">합격 자소서</span></a></li>
@@ -229,8 +265,8 @@
                 <div class="major">
                     <span class="depth1"><span class="txt">취업TOOL</span></span>
                     <ul class="depth2">
-                        <li><a href="/Spelling" class="new"><span class="txt">맞춤법 검사기</span></a></li>
-                        <li><a href="/countText"><span class="txt">글자 수 세기</span></a></li>
+                        <li><a href="/spelling" class="new"><span class="txt">맞춤법 검사기</span></a></li>
+                        <li><a href="/count_text"><span class="txt">글자 수 세기</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">연봉계산</span></a></li>
                         <li><a href="javascript:void(0)"><span class="txt">실수령액 계산기</span></a></li>
                         <li><a href="/countyear"><span class="txt">연차계산기</span></a></li>
@@ -238,19 +274,43 @@
                     </ul>
                 </div>
                 <div class="personalize">
-                    <a href="/zf_user/member/persons/main" class="myhome" data-nav-track="ga_lead|main-gnb|total_menu|myhome">MY<svg class="arrow" aria-hidden="true" focusable="false">
+                    <a href="/zf_user/member/persons/main" class="myhome">MY<svg class="arrow" aria-hidden="true" focusable="false">
                             <use xlink:href="#svg_gnb_profile_bracket"></use>
                         </svg></a>
                     <ul class="items">
-                        <li><a href="/zf_user/resume/resume-manage" data-nav-track="ga_lead|main-gnb|total_menu|resume-manage">이력서 관리</a></li>
-                        <li><a href="/zf_user/persons/scrap-recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a></li>
-                        <li><a href="/zf_user/persons/apply-status-list" data-nav-track="ga_lead|main-gnb|total_menu|apply_list">지원현황</a></li>
-                        <li><a href="/zf_user/jobs/read-jobs" data-nav-track="ga_lead|main-gnb|total_menu|recent">최근본</a></li>
+						<li><a href="/mypage/resume/list" data-nav-track="ga_lead|main-gnb|total_menu|resume-manage">이력서 관리</a></li>
+						<li><a href="/zf_user/persons/scrap-recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a></li>
+						<li><a href="/zf_user/persons/apply-status-list" data-nav-track="ga_lead|main-gnb|total_menu|apply_list">지원현황</a></li>
+						<li><a href="/zf_user/jobs/read-jobs" data-nav-track="ga_lead|main-gnb|total_menu|recent">최근본</a></li>
                     </ul>
                 </div>
             </div>
             
         </div>
     </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 버튼과 레이어 변수 저장
+        const memberBtn = document.querySelector('.member_btn');
+        const memberLayer = document.querySelector('.layer_member');
+
+        // 멤버 버튼 클릭 이벤트
+        memberBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isOpen = memberLayer.style.display === 'block';
+            // 토글
+            memberLayer.style.display = isOpen ? 'none' : 'block';
+        });
+
+        // 외부 클릭시 닫기 (버튼/레이어 아닌 부분 클릭시)
+        document.addEventListener('click', function(event) {
+            if (!memberBtn.contains(event.target) && !memberLayer.contains(event.target)) {
+                memberLayer.style.display = 'none';
+            }
+        });
+        
+    });
+    </script>
 </header>
 

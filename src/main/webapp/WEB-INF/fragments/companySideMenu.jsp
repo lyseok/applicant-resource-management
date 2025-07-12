@@ -88,7 +88,7 @@
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="/company/companyExam" class="menu-link">
+          <a href="/company/company_exam" class="menu-link">
             <div data-i18n="Account">시험관리</div>
           </a>
         </li>

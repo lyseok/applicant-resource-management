@@ -14,7 +14,7 @@ import kr.or.ddit.company.recruitment.companyExam.service.CompanyExamService;
 import kr.or.ddit.vo.common.CompanyVO;
 
 @Controller
-@RequestMapping("/company/companyExam")
+@RequestMapping("/company/company_exam")
 public class CompanyExamController {
 	
 	@Autowired

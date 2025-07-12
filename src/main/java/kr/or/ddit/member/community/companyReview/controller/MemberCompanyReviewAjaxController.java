@@ -18,19 +18,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/ajax/member/companyReview")
+@RequestMapping("/ajax/member/company_review")
 public class MemberCompanyReviewAjaxController {
 	private final MemberCompanyReviewService companyReviewService;
 
 	
-	   @GetMapping("/reviewDetail/{id}")
+	   @GetMapping("/detail/{id}")
 	    public List<CompanyReviewVO> reviewDetail(@PathVariable String id){
 	    	List<CompanyReviewVO> reviewInfo = companyReviewService.readReivewQAList(id);
 	    	log.info("{}", reviewInfo);
 	    	return reviewInfo;
 	    }
 	
-	  @GetMapping("/reviewQuestion")
+	  @GetMapping("/review_question")
 	    public List<CmnCodeVO> reviewQ(){
 	    	String no = "REVU";
 	    	List<CmnCodeVO> qList = companyReviewService.readCmnCodeGroupQuestionList(no);
@@ -38,7 +38,7 @@ public class MemberCompanyReviewAjaxController {
 			return qList;
 	    }
 	  
-	  @GetMapping("/myReviewDelete/{reviewNo}")
+	  @GetMapping("/my_review/delete/{reviewNo}")
 	  public ResponseEntity<String> deleteMyReview(@PathVariable("reviewNo") String reviewNO) {
 		  CompanyReviewVO companyReview = new CompanyReviewVO();
 		  companyReview.setCompanyReviewNo(reviewNO);
