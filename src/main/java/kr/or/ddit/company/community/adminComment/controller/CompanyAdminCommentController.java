@@ -23,11 +23,21 @@ import kr.or.ddit.vo.community.AdminCommentVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/company/community/adminComment")
+@RequestMapping("/company/board/admin_comment")
 @RequiredArgsConstructor
 public class CompanyAdminCommentController {
 
 	private final CompanyAdminCommentAjaxService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "company/community/adminBoard/aboardForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -44,7 +54,7 @@ public class CompanyAdminCommentController {
 	}
 	
 	// 댓글 단건조회
-	@GetMapping("/acommentDetail")  //"/admin/adminComment/detail?commentNo=ADCM000002"
+	@GetMapping("/detail")  //"/admin/board/admin_comment/detail?commentNo=ADCM000002"
 	public String acommentDetail(String commentNo, Model model) {
 		AdminCommentVO acomment = service.readAdminCommentbyPk(commentNo).get();  
 		//service가 널일 일은 없음, commentNo는 없으면 false 처리됨
@@ -57,7 +67,7 @@ public class CompanyAdminCommentController {
 	}
 	
 	// 게시글별 댓글 목록조회
-	@GetMapping("/acommentList/board")  //"/admin/adminComment/list/board?boardNo=ABNO000001"
+	@GetMapping("/list/board")  //"/admin/board/admin_comment/list/board?boardNo=ABNO000001"
 	public String acommentType(String boardNo, Model model) {
 		List<AdminCommentVO> acommentList = service.searchAdminCommentCommentList(boardNo);
 		model.addAttribute("acommentList", acommentList);
@@ -69,7 +79,7 @@ public class CompanyAdminCommentController {
 	}
 	
 	// 댓글 목록조회
-	@GetMapping("/acommentList")
+	@GetMapping("/list")
 	public String acommentList(Model model) {
 		List<AdminCommentVO> acommentList = service.searchAdminCommentList();
 		model.addAttribute("acommentList", acommentList);
@@ -78,17 +88,9 @@ public class CompanyAdminCommentController {
 		model.addAttribute("searchBar", true);		
 		return "company/community/adminComment/acommentList";
 	}
-		
-	// 등록 폼으로 이동
-	@GetMapping("/acommentForm")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "company/community/adminComment/acommentForm";
-	}
 	
 	// 수정 폼으로 이동
-	@GetMapping("/acommentForm/edit")  //"/admin/adminComment/form/edit?commentNo=ADCM000003"
+	@GetMapping("/form/edit")  //"/admin/board/admin_comment/form/edit?commentNo=ADCM000003"
 	public String editForm(String commentNo, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {  //모델에 acomment가 없으면, db에서 가져옴
 			AdminCommentVO acomment = service.readAdminCommentbyPk(commentNo).get();
@@ -100,7 +102,7 @@ public class CompanyAdminCommentController {
 	}
 	
 	// 폼 입력 데이터 처리
-	@PostMapping("/acommentForm/insert")
+	@PostMapping("/form/insert")
 	public String acommentForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) AdminCommentVO acomment
 		, BindingResult errors
@@ -123,7 +125,7 @@ public class CompanyAdminCommentController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/acommentForm/update")
+	@PostMapping("/form/update")
 	public String acommentEdit(
 		String commentNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) AdminCommentVO acomment
@@ -144,14 +146,5 @@ public class CompanyAdminCommentController {
 		}
 		return lvn;
 	}
-	
-	// 댓글 단건 삭제
-	@DeleteMapping("/acommentDetail/remove")
-	public String acommentDelete(String commentNo, Model model) {
-		service.removeAdminComment(commentNo);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "company/community/adminComment/acommentList";
-	}
+	*/
 }

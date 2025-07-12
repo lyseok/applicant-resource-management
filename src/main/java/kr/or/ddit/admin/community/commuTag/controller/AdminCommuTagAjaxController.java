@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/admin/commuTag")
+@RequestMapping("/ajax/admin/board/commu_tag")
 @RequiredArgsConstructor
 public class AdminCommuTagAjaxController {
 
@@ -34,8 +36,7 @@ public class AdminCommuTagAjaxController {
 		, @PathVariable String boardNo
 	) {
 	    return service.readCommuTagByPk(tagNo, boardNo)
-//	    		.map(ResponseEntity::ok)
-	    		.map(ct->ResponseEntity.ok(ct))  //있으면 ok 반환
+	    		.map(ResponseEntity::ok)
 	            .orElse(ResponseEntity.status(404).body(null));  //없으면 404 반환
 	}
 	

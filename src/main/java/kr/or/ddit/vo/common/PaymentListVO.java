@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.common;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,4 +15,6 @@ public class PaymentListVO implements Serializable{
 	private String paymentAmount;
 	private String paymentStatus;
 	private String paymentApprovalnum;
+	
+	private List<PaymentListVO> paymentList;
 }

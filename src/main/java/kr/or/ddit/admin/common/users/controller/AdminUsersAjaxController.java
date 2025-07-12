@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,22 +46,15 @@ public class AdminUsersAjaxController {
 	    return Map.of("ok", true);
 	}
 	
-	@PutMapping("/{userId}")
+	// 수정, 탈퇴 회원 상태 변경
+	@PostMapping("/{userId}")
 	public Map<String, Object> editUser(
 		@PathVariable String userId
 		,  @RequestBody UsersVO user
 	) {
 		user.setUserId(userId);
 	    service.modifyUser(user);
-	    return Map.of("ok", true);	// 수정 후 Detail 이동
-	}
-	
-	@DeleteMapping("/{userId}")
-	public Map<String, Object> deleteUser(
-		@PathVariable String userId	
-	) {
-		service.removeUser(userId);
-		return Map.of("ok", true);
+	    return Map.of("ok", true);	// 수정 후 리스트로(!) 이동하는 게 나을듯
 	}
 	
 	@GetMapping("/{userId}/check")
