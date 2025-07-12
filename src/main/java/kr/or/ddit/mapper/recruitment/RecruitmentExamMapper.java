@@ -13,4 +13,6 @@ public interface RecruitmentExamMapper {
 	public int insertRecruitExam(RecruitmentExamVO vo);
 	public int updateRecruitExam(RecruitmentExamVO vo);
 	public int deleteRecruitExam(String recruitExamNo);
+	
+	public List<RecruitmentExamVO> selectMyRecruitExams(String userId);
 }

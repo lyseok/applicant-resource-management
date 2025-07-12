@@ -61,4 +61,30 @@
 	DELETE FROM RECRUITMENT_EXAM 
 	WHERE RECRUIT_EXAM_NO = #{recruitExamNo}
 	</delete>
+	
+	<select id="selectMyRecruitExams"
+          parameterType="string"
+          resultType="kr.or.ddit.vo.recruitment.RecruitmentExamVO">
+	    SELECT 
+	      e.RECRUIT_EXAM_NO,
+	      e.PROCESS_NO,
+	      e.RECRUIT_EXAM_NAME,
+	      e.RECRUIT_EXAM_CUTLINE,
+	     TO_CHAR(e.RECRUIT_EXAM_START_DATE,'YYYY-MM-DD HH24:MI') AS RECRUIT_EXAM_START_DATE,
+	      e.RECRUIT_EXAM_TIME,
+	      e.RECRUIT_EXAM_DEL_DATE
+	    FROM APPLICANT a
+	    JOIN RECRUIT_PROCESS p
+	      ON a.RECRUITMENT_NO = p.RECRUITMENT_NO
+	     AND p.RECRUIT_PROCESS_TYPE = 'RERP-001'
+	     AND p.RECRUIT_PROCESS_DEL_DATE IS NULL
+	    JOIN RECRUITMENT_EXAM e
+	      ON p.RECRUIT_PROCESS_NO = e.PROCESS_NO
+	     AND e.RECRUIT_EXAM_DEL_DATE IS NULL
+	    WHERE a.USER_ID = #{userId}
+	      AND a.APPLICANT_DEL_DATE IS NULL
+	    ORDER BY e.RECRUIT_EXAM_START_DATE
+  </select>
+	
+	
 </mapper>
