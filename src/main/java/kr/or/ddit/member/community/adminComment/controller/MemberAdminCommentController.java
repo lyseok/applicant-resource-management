@@ -28,6 +28,16 @@ import lombok.RequiredArgsConstructor;
 public class MemberAdminCommentController {
 
 	private final MemberAdminCommentAjaxService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "member/community/adminComment/acommentForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -78,15 +88,7 @@ public class MemberAdminCommentController {
 		model.addAttribute("searchBar", true);		
 		return "member/community/adminComment/acommentList";
 	}
-		
-	// 등록 폼으로 이동
-	@GetMapping("/form")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "member/community/adminComment/acommentForm";
-	}
-	
+
 	// 수정 폼으로 이동
 	@GetMapping("/form/edit")  
 	public String editForm(String commentNo, Model model) {  
@@ -144,4 +146,5 @@ public class MemberAdminCommentController {
 		}
 		return lvn;
 	}
+	*/
 }

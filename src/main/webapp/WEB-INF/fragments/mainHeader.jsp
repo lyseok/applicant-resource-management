@@ -257,9 +257,9 @@
                 </div>
                 <div class="minor">
                     <ul class="items">
-                        <li><a href="/ajax/company/board/admin_board/BRDD-002"><span class="material-symbols-outlined">headset_mic</span>고객센터</a></li>
-                        <li><a href="/ajax/company/board/admin_board/BRDD-003"><span class="material-symbols-outlined">campaign</span>공지사항</a></li>
-                        <li><a href="/ajax/company/board/admin_board/BRDD-003?event=event"><span class="material-symbols-outlined">celebration</span>이벤트</a></li>
+                        <li><a href="/ajax/member/board/admin_board/BRDD-002"><span class="material-symbols-outlined">headset_mic</span>고객센터</a></li>
+                        <li><a href="/ajax/member/board/admin_board/BRDD-003"><span class="material-symbols-outlined">campaign</span>공지사항</a></li>
+                        <li><a href="/ajax/member/board/admin_board/BRDD-003?event=event"><span class="material-symbols-outlined">celebration</span>이벤트</a></li>
                     </ul>
                 </div>
                 <div class="major">

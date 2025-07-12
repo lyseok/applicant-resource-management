@@ -28,6 +28,16 @@ import lombok.RequiredArgsConstructor;
 public class MemberAdminBoardController {
 
 	private final MemberAdminBoardAjaxService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "member/community/adminBoard/aboardForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -77,14 +87,6 @@ public class MemberAdminBoardController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);		
 		return "member/community/adminBoard/aboardList";
-	}
-		
-	// 등록 폼으로 이동
-	@GetMapping("/form")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "member/community/adminBoard/aboardForm";
 	}
 	
 	// 수정 폼으로 이동
@@ -144,4 +146,5 @@ public class MemberAdminBoardController {
 		}
 		return lvn;
 	}
+	*/
 }

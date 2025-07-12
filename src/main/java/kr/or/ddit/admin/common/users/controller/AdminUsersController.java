@@ -29,6 +29,16 @@ import lombok.RequiredArgsConstructor;
 public class AdminUsersController {
 
 	private final AdminUsersService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/common/users/userForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -72,14 +82,6 @@ public class AdminUsersController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "admin/common/users/userDetail";
-	}
-	
-	// 등록 폼으로 이동
-	@GetMapping("/form")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/common/users/userForm";
 	}
 	
 	// 수정 폼으로 이동
@@ -168,4 +170,5 @@ public class AdminUsersController {
 		model.addAttribute("searchBar", true);
 		return "admin/common/users/userDetail";
 	}
+	*/
 }

@@ -28,6 +28,16 @@ import lombok.RequiredArgsConstructor;
 public class AdminCommuBoardController {
 
 	private final AdminCommuBoardService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/commuBoard/cboardForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -64,14 +74,6 @@ public class AdminCommuBoardController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "admin/community/commuBoard/cboardList";
-	}
-		
-	// 등록 폼으로 이동
-	@GetMapping("/form")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/commuBoard/cboardForm";
 	}
 	
 	// 수정 폼으로 이동
@@ -131,4 +133,5 @@ public class AdminCommuBoardController {
 		}
 		return lvn;
 	}
+	*/
 }

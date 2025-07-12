@@ -23,11 +23,21 @@ import kr.or.ddit.vo.common.ScrabRecruitmentVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/ajax/member/mypage/scrab_recruit")
+@RequestMapping("/member/mypage/scrab_recruit")
 @RequiredArgsConstructor
 public class MemberScrabRecruitmentController {
 
 	private final MemberScrabRecruitmentService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "member/common/mypage/scrab/scrabRecruitment/srecruitForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -71,14 +81,6 @@ public class MemberScrabRecruitmentController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "member/common/mypage/scrab/scrabRecruitment/srecruitDetail";
-	}
-	
-	// 등록 폼으로 이동
-	@GetMapping("/form")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "member/common/mypage/scrab/scrabRecruitment/srecruitForm";
 	}
 	
 	// 수정 폼으로 이동
@@ -152,5 +154,5 @@ public class MemberScrabRecruitmentController {
 		model.addAttribute("searchBar", true);
 		return "member/common/mypage/scrab/scrabRecruitment/srecruitList";
 	}
-	
+	*/
 }

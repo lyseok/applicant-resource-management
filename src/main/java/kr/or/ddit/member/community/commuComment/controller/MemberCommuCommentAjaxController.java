@@ -32,8 +32,7 @@ public class MemberCommuCommentAjaxController {
 	@GetMapping("/{commuPostNo}/{commuCommentNo}")
 	public ResponseEntity<CommuCommentVO> getOneComment(@PathVariable String commuCommentNo) {
 	    return service.readCommuCommentbyPk(commuCommentNo)
-//	    		.map(ResponseEntity::ok)
-	    		.map(cc->ResponseEntity.ok(cc))  //commuCommentNo 있으면 ok 반환
+	    		.map(ResponseEntity::ok)
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	

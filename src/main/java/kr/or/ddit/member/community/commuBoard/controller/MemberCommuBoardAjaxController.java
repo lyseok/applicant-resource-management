@@ -32,8 +32,7 @@ public class MemberCommuBoardAjaxController {
 	@GetMapping("/{categoryCode}/{commuPostNo}")
 	public ResponseEntity<CommuBoardVO> getOneBoard(@PathVariable String commuPostNo) {
 	    return service.readCommuBoard(commuPostNo)
-//	    		.map(ResponseEntity::ok)
-	    		.map(cp->ResponseEntity.ok(cp))  //commuPostNo 있으면 ok 반환
+	    		.map(ResponseEntity::ok)
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	

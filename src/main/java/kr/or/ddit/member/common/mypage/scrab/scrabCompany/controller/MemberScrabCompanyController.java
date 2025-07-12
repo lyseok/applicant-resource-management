@@ -29,6 +29,16 @@ import lombok.RequiredArgsConstructor;
 public class MemberScrabCompanyController {
 
 	private final MemberScrabCompanyService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "member/common/mypage/scrab/scrabCompany/scompanyForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -72,14 +82,6 @@ public class MemberScrabCompanyController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "member/common/mypage/scrab/scrabCompany/scompanyDetail";
-	}
-	
-	// 등록 폼으로 이동
-	@GetMapping("/form")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "member/common/mypage/scrab/scrabCompany/scompanyForm";
 	}
 	
 	// 수정 폼으로 이동
@@ -149,5 +151,5 @@ public class MemberScrabCompanyController {
 		model.addAttribute("searchBar", true);
 		return "member/common/mypage/scrab/scrabCompany/scompanyList";
 	}
-	
+	*/
 }

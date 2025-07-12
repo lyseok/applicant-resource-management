@@ -34,8 +34,7 @@ public class AdminAdminCommentAjaxController {
 	@GetMapping("/{boardNo}/{boardCommentNo}")
 	public ResponseEntity<AdminCommentVO> getOneComment(@PathVariable String commentNo) {
 	    return service.readAdminCommentbyPk(commentNo)
-//	    		.map(ResponseEntity::ok)
-	    		.map(ac->ResponseEntity.ok(ac))  //commentNo 있으면 ok 반환
+	    		.map(ResponseEntity::ok)
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 상태코드 404 객체 반환
 	}
 	
