@@ -32,10 +32,19 @@
 							</span>
 							<c:if test="${not empty career.salary}">, 연봉 ${career.salary}</c:if>
 						</c:forEach>
+						
+							<c:forEach var="school" items="${talent.educationList }">
+								<c:when test="${not empty school.schoolName }">
+									<span>${school.schoolName }</span>
+								</c:when>
+								<c:otherwise>
+									<span>학교이름 없음</span>
+								</c:otherwise>
+							</c:forEach>
 					</div>
 				</div>
 				<div class="action-buttons">
-					<button class="save-button">후보자 저장</button>
+					<button class="btn btn_violet">후보자 저장</button>
 					
 				</div>
 			</div>

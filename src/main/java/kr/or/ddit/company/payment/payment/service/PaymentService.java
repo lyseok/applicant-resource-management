@@ -1,0 +1,18 @@
+package kr.or.ddit.company.payment.payment.service;
+
+import java.util.List;
+
+import kr.or.ddit.vo.common.PaymentVO;
+
+public interface PaymentService {
+	public List<PaymentVO> selectPaymentList();
+
+	public PaymentVO selectPaymentByPk(PaymentVO vo);
+
+	public int insertPayment(PaymentVO vo);
+
+	public int updatePayment(PaymentVO vo);
+
+	public int deletePayment(String paymentNo);
+	
+}

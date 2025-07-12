@@ -23,11 +23,33 @@ import kr.or.ddit.vo.community.CommuBoardVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/admin/community/commuBoard")
+@RequestMapping("/admin/board/commu_board")
 @RequiredArgsConstructor
 public class AdminCommuBoardController {
 
 	private final AdminCommuBoardService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/commuBoard/cboardForm";
+	}
+	
+	// 카테고리별 게시글 목록조회
+	@GetMapping  ///admin/board/commu_board?type=CATE-002
+	public String cboardType(String type, Model model) {
+		List<CommuBoardVO> cboardList = service.readCommuBoardList(type);
+		model.addAttribute("cboardList", cboardList);
+		model.addAttribute("type", type);
+
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/commuBoard/cboardList";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -44,7 +66,7 @@ public class AdminCommuBoardController {
 	}
 
 	// 게시글 단건조회
-	@GetMapping("/cboardDetail")
+	@GetMapping("/detail")
 	public String cboardDetail(String commuPostNo, Model model) {
 		CommuBoardVO cboard = service.readCommuBoard(commuPostNo).get();  
 		model.addAttribute("cboard", cboard);
@@ -54,28 +76,8 @@ public class AdminCommuBoardController {
 		return "admin/community/commuBoard/cboardDetail";
 	}
 
-	// 카테고리별 게시글 목록조회
-	@GetMapping("/cboardList/type")
-	public String cboardType(String categoryCode, Model model) {
-		List<CommuBoardVO> cboardList = service.readCommuBoardList(categoryCode);
-		model.addAttribute("cboardList", cboardList);
-		model.addAttribute("categoryCode", categoryCode);
-
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/commuBoard/cboardList";
-	}
-		
-	// 등록 폼으로 이동
-	@GetMapping("/cboardForm")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/commuBoard/cboardForm";
-	}
-	
 	// 수정 폼으로 이동
-	@GetMapping("/cboardForm/edit")
+	@GetMapping("/form/edit")
 	public String editForm(String commuPostNo, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {
 			CommuBoardVO cboard = service.readCommuBoard(commuPostNo).get();
@@ -87,7 +89,7 @@ public class AdminCommuBoardController {
 	}
 
 	// 폼 입력 데이터 처리
-	@PostMapping("/cboardForm/insert")
+	@PostMapping("/form/insert")
 	public String cboardForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) CommuBoardVO cboard
 		, BindingResult errors
@@ -110,7 +112,7 @@ public class AdminCommuBoardController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/cboardForm/update")
+	@PostMapping("/form/edit")
 	public String cboardEdit(
 		String commuPostNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) CommuBoardVO cboard
@@ -131,14 +133,5 @@ public class AdminCommuBoardController {
 		}
 		return lvn;
 	}
-	
-	// 게시글 단건 삭제
-	@DeleteMapping("/cboardDetail/remove")
-	public String cboardDelete(String commuPostNo, Model model) {
-		service.removeCommuBoard(commuPostNo);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/commuBoard/cboardList";
-	}
+	*/
 }

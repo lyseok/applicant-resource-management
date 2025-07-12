@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/member/commuTag")
+@RequestMapping("/ajax/member/board/commu_tag")
 @RequiredArgsConstructor
 public class MemberCommuTagAjaxController {
 
@@ -35,8 +35,7 @@ public class MemberCommuTagAjaxController {
 		, @PathVariable String boardNo
 	) {
 	    return service.readCommuTagByPk(tagNo, boardNo)
-//	    		.map(ResponseEntity::ok)
-	    		.map(ct->ResponseEntity.ok(ct))  //있으면 ok 반환
+	    		.map(ResponseEntity::ok)
 	            .orElse(ResponseEntity.status(404).body(null));  //없으면 404 반환
 	}
 	
