@@ -9,16 +9,17 @@
 <body>
 
 	<ul id="aboardList"></ul>
+	<input type="hidden" value="boardTypeCode" name="boardTypeCode">
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-const boardTypeCode = "${boardTypeCode}";
-fetch(`/ajax/admin/board/admin_board/${boardTypeCode}`)
+const boardTypeCode = "${type}";
+fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 	.then(resp => {resp.json()
 		.then(rslt=> {
 			const aboardList = document.querySelector("#aboardList");
 			let html = "";
-			list.forEach(item => {
+			rslt.forEach(item => {
 				html += `
 					<li>게시글 번호: ${item.boardNo}</li>
 					<li>사용자 ID: ${item.userId}</li>
