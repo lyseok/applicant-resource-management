@@ -5,7 +5,7 @@
 	
 	<select id="selectRecruitprocessList" resultType="RecruitProcessVO">
 	SELECT 
-		RECURUIT_PROCESS_NO
+		RECRUIT_PROCESS_NO
 		, RECRUITMENT_NO
 		, COMPANY_NAME
 		, RECRUIT_PROCESS_STEP
@@ -16,16 +16,16 @@
 	
 	<select id="selectRecruitprocess" resultType="RecruitProcessVO">
 	SELECT 
-		RECURUIT_PROCESS_NO
+		RECRUIT_PROCESS_NO
 		, RECRUITMENT_NO
 		, COMPANY_NAME
 		,RECRUIT_PROCESS_STEP
 		, RECRUIT_PROCESS_FINAL
 		, RECRUIT_PROCESS_TYPE 
 	FROM RECRUIT_PROCESS 
-	WHERE RECURUIT_PROCESS_NO = #{recuruitProcessNo}
+	WHERE RECRUIT_PROCESS_NO = #{recruitProcessNo}
 	</select>
-	
+
 	<insert id="insertRecruitProcess">
 	 	<selectKey resultType="string" keyProperty="recruitProcessNo" order="BEFORE">
 		    SELECT
@@ -65,4 +65,6 @@
 			RECRUIT_PROCESS_DEL_DATE = SYSDATE
 		WHERE RECRUI_PROCESS_NO = #{recruitProcessNo}
 	</delete>
+
+
 </mapper>

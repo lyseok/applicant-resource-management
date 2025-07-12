@@ -4,9 +4,9 @@ let selectedApplicantRecordNo = null; // 전역 변수
 loadIntroductionList();
 
 // 검색 버튼 클릭 시
-document.getElementById('searchBtn').onclick = () => {
-  loadIntroductionList(1, document.getElementById('listKeyword').value);
-};
+// document.getElementById('searchBtn').onclick = () => {
+//   loadIntroductionList(1, document.getElementById('listKeyword').value);
+// };
 
 
 // 리스트 불러오기 함수
@@ -53,7 +53,7 @@ function renderIntroductionList(list) {
   }
   area.innerHTML = list.map(data => `
     <ul>
-      <li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center" data-notice="${data.RENO_RECRUITMENT_NO}">
+      <li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center" data-interview="${data.INTR_INTERVIEW_NO}">
         <div>
           <p class="d-block h4 fw-bold">${data.RENO_RECRUITMENT_TITLE}</p>
           <p class="text-truncate w800">${data.RENO_REC_CONTENT}</p>
@@ -75,10 +75,10 @@ function renderIntroductionList(list) {
   `).join('');
 
   // li 클릭시 상세 페이지 이동 (면접 상세)
-  area.querySelectorAll('li[data-notice]').forEach(li => {
+  area.querySelectorAll('li[data-interview]').forEach(li => {
     li.addEventListener('click', function() {
-      const noticeNo = this.dataset.notice;
-      location.href = `/mypage/interview/detail?recruitmentNo=${noticeNo}`;
+      const interviewNo = this.dataset.interview;
+      location.href = `/mypage/interview/detail?interviewNo=${interviewNo}`;
     });
   });
 

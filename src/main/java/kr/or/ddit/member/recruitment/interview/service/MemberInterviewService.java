@@ -7,6 +7,6 @@ import kr.or.ddit.vo.recruitment.InterviewVO;
 
 public interface MemberInterviewService {
 	public List<Map<String, Object>> readMyInterviewList();
-	public InterviewVO readInterviewDetail();
+	public List<Map<String, Object>> readInterviewDetail(String no);
 
 }
