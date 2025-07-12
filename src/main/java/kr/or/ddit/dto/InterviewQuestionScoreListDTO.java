@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class InterviewQuestionScoreListDTO {
+	private String applicantId;
     @Valid
     private List<InterviewQuestionScoreVO> interviewQuestionScoreList;
 }

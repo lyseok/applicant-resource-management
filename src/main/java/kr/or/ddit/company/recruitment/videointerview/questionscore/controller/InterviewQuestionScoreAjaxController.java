@@ -27,7 +27,7 @@ public class InterviewQuestionScoreAjaxController {
 			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
 			return ResponseEntity.badRequest().body(errors);
 		}
-		service.createInterviewQuestionScoreList(dto.getInterviewQuestionScoreList());
+		service.createInterviewQuestionScoreList(dto);
 		
 		return ResponseEntity.ok("ok");
 	}

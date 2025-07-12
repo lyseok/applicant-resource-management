@@ -70,7 +70,7 @@
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="/company" class="menu-link">
+          <a href="/company/applicant_record" class="menu-link">
             <div data-i18n="Account">지원자관리</div>
           </a>
         </li>
@@ -131,7 +131,7 @@
     <li class="menu-header small text-uppercase"><span class="menu-header-text">인재풀</span></li>
 
     <li class="menu-item">
-      <a href="/talentpool/list" class="menu-link">
+      <a href="/company/talentpool/list" class="menu-link">
         <i class="menu-icon tf-icons bx bx-user-search"></i>
         <div data-i18n="Basic">인재검색</div>
       </a>

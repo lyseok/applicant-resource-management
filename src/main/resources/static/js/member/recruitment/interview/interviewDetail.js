@@ -1,6 +1,7 @@
 // 면접상세 데이터 불러오기 예시
 // 면접번호 등으로 조회
-const interviewNo = 'INTV000001'; // 예시
+const params = new URLSearchParams(window.location.search);
+const interviewNo = params.get('interviewNo');
 
 axios.get(`/ajax/member/mypage/interview/${interviewNo}`)
   .then(res => {

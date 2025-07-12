@@ -1,13 +1,10 @@
 package kr.or.ddit.company.recruitment.interview.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import kr.or.ddit.common.exception.VideoInterviewCreateException;
 import kr.or.ddit.conf.CodeMapProvider;
@@ -22,10 +19,6 @@ import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import kr.or.ddit.vo.recruitment.VideoInterviewVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 @Slf4j
 @Service

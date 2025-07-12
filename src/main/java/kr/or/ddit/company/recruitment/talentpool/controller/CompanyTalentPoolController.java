@@ -24,7 +24,7 @@ import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequestMapping("/talentpool")
+@RequestMapping("/company/talentpool")
 @Controller
 public class CompanyTalentPoolController {
 
