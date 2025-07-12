@@ -1,6 +1,7 @@
 package kr.or.ddit.mapper.recruitment;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -10,6 +11,8 @@ import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 @Mapper
 public interface RecruitmentNoticeMapper {
  public List<RecruitmentNoticeVO> readRecruitmentNoticeList();
+ 
+ public List<Map<String, Object>> selectMyRecruitNotice(String userId); 
   
  public Optional<RecruitmentNoticeVO> realTimeRecruitment();
  // 최신순으로 보기
