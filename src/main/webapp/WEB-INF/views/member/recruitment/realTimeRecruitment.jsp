@@ -25,7 +25,7 @@
     </style>
     <script>
         function goToDetail(recruitmentNo) {
-            location.href = '/member/recruitment/detail?no=' + recruitmentNo;
+            location.href = '/recruit_notice/' + recruitmentNo;
         }
     </script>
 </head>
