@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/admin/InComment")
+@RequestMapping("/ajax/admin/board/in_comment")
 @RequiredArgsConstructor
 public class AdminInCommentAjaxController {
 

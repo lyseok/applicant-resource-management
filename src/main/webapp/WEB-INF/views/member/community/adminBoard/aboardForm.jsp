@@ -9,7 +9,7 @@
 	<c:set var="actionPath" value="/member/community/adminBoard/aboardForm/insert" />
 	<!-- 수정 -->
 	<c:if test="${not empty aboard.boardNo}">
-		<c:set var="actionPath" value="/member/community/adminBoard/aboardForm/update" />
+		<c:set var="actionPath" value="/member/community/adminBoard/aboardForm/edit" />
 	</c:if>
 	<!-- 등록 수정 둘다 여기로 옴 -->
 	<form:form action="${actionPath}" method="post" modelAttribute="aboard">
