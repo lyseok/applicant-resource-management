@@ -97,7 +97,7 @@
         <a href="/company/interview" class='btn btn_gray_line'>목록</a>
         <div class="d-flex gap-2 justify-content-end mt-3">
           <div class='btn btn_gray_line saveInterview' data-bs-toggle="modal" data-bs-target="#editInterviewModal">수정</div>
-          <div class='btn btn_red_line saveInterview' data-bs-toggle="modal" data-bs-target="#deleteInterviewModal">삭제</div>
+          <!-- <div class='btn btn_red_line saveInterview' data-bs-toggle="modal" data-bs-target="#deleteInterviewModal">삭제</div> -->
         </div>
       </div>
       

@@ -13,6 +13,8 @@ public interface ApplicantRecordMapper {
 	public int insertApplicantRecord(ApplicantRecordVO vo);
 	public int updateApplicantRecord(ApplicantRecordVO vo);
 	public int deleteApplicantRecord(String ApplicantRecordNo);
+	public String selectMemberVideoURL(String ApplicantRecordNo);
 	
 	public int updateInterviewURL(ApplicantRecordVO vo);
+	public int updateApplication(String ApplicantRecordNo);
 }

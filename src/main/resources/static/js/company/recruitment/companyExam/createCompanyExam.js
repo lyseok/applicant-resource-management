@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // --- 초기 로드 / 문제 추가
   if (existingExamNo) {
-    axios.get(`/ajax/company/companyExam/detail/${existingExamNo}`)
+    axios.get(`/ajax/company/company_exam/detail/${existingExamNo}`)
       .then(resp => {
         const exam = resp.data;
         formEl['comExamName'].value = exam.comExamName;
@@ -308,15 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const data   = formToJson(formEl);
     const method = existingExamNo ? 'put' : 'post';
     const url    = existingExamNo
-                 ? `/ajax/company/companyExam/edit/${existingExamNo}`
-                 : '/ajax/company/companyExam/create';
+                 ? `/ajax/company/company_exam/edit/${existingExamNo}`
+                 : '/ajax/company/company_exam/create';
 	
 				 
 	showLoading()
     axios[method](url, data)
       .then(() => {
         alert(existingExamNo ? '수정 완료' : '등록 완료');
-        location.href = '/company/companyExam';
+        location.href = '/company/company_exam';
       })
       .catch(err => {
         if (err.response?.status === 400 && err.response.data) {
@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   exitBtn.addEventListener('click', () => {
-    location.href = '/company/companyExam';
+    location.href = '/company/company_exam';
   });
   
   

@@ -43,9 +43,7 @@ body {
 	cursor: pointer;
 }
 
-.search-filter-bar button:hover {
-	background-color: #3367d6;
-}
+
 
 /* 전체 레이아웃 */
 .main-wrapper {
@@ -230,11 +228,11 @@ body {
 <body>
 
 	<!-- 🔍 상단 검색 바 -->
-	<form action="/talentpool/higtSearch" method="post">
+	<form action="/company/talentpool/higtsearch" method="post">
 	<div class="search-filter-bar">
 		<input type="text" name="license" placeholder="원하시는 자격증있나요?">
 		<input type="text" name="skillName" placeholder="원하시는 기술명있나요?">
-		<button type="submit">검색</button>
+		<button class="btn btn_violet" type="submit">검색</button>
 	</div>
 	</form>
 	
@@ -244,25 +242,21 @@ body {
 	<div class="main-wrapper">
 
 		<!-- 왼쪽 필터 -->
-		<form id="filterForm" action="/talentpool/filter" method="post">
+		<form id="filterForm" action="/company/talentpool/filter" method="post">
 			<div class="left-filter">
 				<h3>필터</h3>
 
 				<!-- 경력 필터 -->
 				<label>경력</label>
 				<div style="display: flex; gap: 10px;">
-					<select name="careerlong">
-						<option value="">선택</option>
-						<c:forEach begin="0" end="40" var="i" varStatus="status">
-							<option value="${i}"
-								<c:if test="${careerlong== i}">selected</c:if>>
-								<c:choose>
-									<c:when test="${i == 0}">신입</c:when>
-									<c:when test="${i == 1}">1년 이하</c:when>
-									<c:otherwise>${i}년 이상</c:otherwise>
-								</c:choose>
-							</option>
-						</c:forEach>
+					<select name="careerlong" id="yearSel">
+						<option value="" >선택</option>
+<%-- 						<c:forEach var="career" items="${careerList}"> --%>
+<%-- 							<option value="${career.careerYear}"  --%>
+<%-- 							<c:if test="${careerlong == career.careerYear}"> selected</c:if>> --%>
+<%-- 							${career.careerYear } --%>
+<!-- 							</option> -->
+<%-- 						</c:forEach> --%>
 					</select>
 				</div>
 
@@ -276,27 +270,14 @@ body {
 				</select>
 
 				<!-- 최종학력 필터 -->
-				<label>최종학력</label> <select name="edudone">
-					<option value="">선택</option>
-					<option value="1">중학교 졸업</option>
-					<option value="2">고등학교 졸업</option>
-					<option value="3">대학교(2,3년제) 졸업</option>
-					<option value="4">대학교(4년제) 졸업</option>
-					<option value="5">대학원</option>
-					<option value="6">기타학력</option>
-					<option value="7">학력무관</option>				
+				<label>최종학력</label> 
+				<select name="edudone" id="finedu">
+					<option value="">선택</option>		
 				</select>
 
 				<!-- 졸업 여부 필터 -->
-				<label>졸업 상태</label> <select name="gedu">
-					<option value="">선택</option>
-					<option value="1">졸업</option>
-					<option value="2">재학중</option>
-					<option value="3">휴학중</option>
-					<option value="4">수료</option>
-					<option value="5">중퇴</option>
-					<option value="6">자퇴</option>
-					<option value="7">졸업예정</option>				
+				<label>졸업 상태</label> <select name="gedu" id="edustatus">
+					<option value="">선택</option>	
 				</select>
 
 				<!-- 직군 -->
@@ -320,13 +301,10 @@ body {
 
 
 				<!-- 검색 버튼 -->
-				<div style="margin-top: 20px; text-align: right;">
-					<button type="submit"
-						style="background-color: #4285f4; color: white; padding: 10px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">검색하기</button>
+				<div class="d-flex justify-content-between mt-3">
+					<button type="button" id="resetFilter" class="btn btn_red_line">초기화</button>
+					<button type="submit"  class="btn btn_violet">검색하기</button>
 				</div>
-				<button type="button" id="resetFilter"
-					style="margin-left: 10px; background-color: #ccc; color: black; padding: 10px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
-					초기화</button>
 			</div>
 		</form>
 
@@ -339,29 +317,5 @@ body {
 		</div>
 	</div>
 
-	<script>
-document.addEventListener("DOMContentLoaded", function () {
-	const form = document.getElementById("filterForm");
-	const talentListWrapper = document.getElementById("talent-list-wrapper");
-
-	form.addEventListener("submit", function (e) {
-		e.preventDefault();
-		const formData = new FormData(form);
-
-		fetch("/talentpool/filter", {
-			method: "POST",
-			body: formData
-		})
-			.then(res => res.text())
-			.then(html => {
-				talentListWrapper.innerHTML = html;
-			})
-			.catch(err => {
-				console.error("오류 발생:", err);
-				talentListWrapper.innerHTML = "<p style='color:red;'>검색 실패</p>";
-			});
-	});
-});
-</script>
 
 </body>

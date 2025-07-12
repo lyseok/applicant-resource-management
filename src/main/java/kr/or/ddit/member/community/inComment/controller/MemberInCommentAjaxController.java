@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/member/InComment")
+@RequestMapping("/ajax/member/board/in_comment")
 @RequiredArgsConstructor
 public class MemberInCommentAjaxController {
 
@@ -33,8 +33,7 @@ public class MemberInCommentAjaxController {
 		, @PathVariable String avatarId
 	) {
 	    return service.readInCommentByPk(commentNo, avatarId)
-//	    		.map(ResponseEntity::ok)
-	    		.map(ic->ResponseEntity.ok(ic))  //있으면 ok 반환
+	    		.map(ResponseEntity::ok)
 	            .orElse(ResponseEntity.status(404).body(null));  //없으면 404 반환
 	}
 	

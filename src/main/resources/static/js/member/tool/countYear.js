@@ -1,28 +1,41 @@
-function calculateAnnuaILeave(){
-    const startDate = new Date(document.getElementById('startDate').value);
-    const workMonths = parseInt(document.getElementById('workMonths').value);
-    const attendanceRate = parseInt(document.getElementById('attendanceRate').value);
+document.addEventListener('DOMContentLoaded', () => {
+	const startDateInput = document.getElementById('startDate');
+	const workMonthsInput = document.getElementById('workMonths');
 
-    let annualLeaveDays = 0;
+	startDateInput.addEventListener('change', () => {
+		const startDate = new Date(startDateInput.value);
+		const today = new Date();
 
-    if(workMonths < 12){
-        annualLeaveDays = workMonths;
-        if(attendanceRate >=80){
-            annualLeaveDays = Math.min(11, annualLeaveDays);    // 출근율 80% 이상, 최대 11일
-        }else {
-            annualLeaveDays = 0;    // 출근율 80% 미만
-        }
-    }
-    else {
-        const fullYears = Math.floor(workMonths / 12);
-        annualLeaveDays = 15 + Math.floor((fullYears -1)/2 );
-        annualLeaveDays = Math.min(25, annualLeaveDays);    // 최대 25일
+		// 오늘 이후 날짜 선택 방지
+		if (startDate > today) {
+			alert('입사일은 오늘 이후일 수 없습니다.');
+			startDateInput.value = '';
+			workMonthsInput.value = '';
+			return;
+		}
 
-        // 1년 미만의근무기간동안 사용한 연차 공재
-        const remainingMonths = workMonths % 12;
-        if(remainingMonths > 0 && attendanceRate >= 80) {
-            annualLeaveDays -=remainingMonths;
-        }
-    }
-    document.getElementById('result').innerText = `총연차 휴가일수  : ${annualLeaveDays} 일 `;
-}
+		// 한 달 미만 입사
+		const diffTime = today - startDate;
+		const diffDays = diffTime / (1000 * 60 * 60 * 24);
+		if (diffDays < 30) {
+			alert('입사한지 1개월이 경과하지 않았습니다.');
+			workMonthsInput.value = '';
+			return;
+		}
+
+		// 개월 수 계산
+		const startYear = startDate.getFullYear();
+		const startMonth = startDate.getMonth();
+		const todayYear = today.getFullYear();
+		const todayMonth = today.getMonth();
+
+		let months = (todayYear - startYear) * 12 + (todayMonth - startMonth);
+
+		// 입사일 일이 오늘보다 크면 1개월 미만으로 간주하고 -1
+		if (today.getDate() < startDate.getDate()) {
+			months--;
+		}
+
+		workMonthsInput.value = months;
+	});
+});

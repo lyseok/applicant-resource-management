@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -72,25 +73,43 @@ public class ResumeController {
 	// 등록 폼 이동
 	@GetMapping("create")
 	public String getCreateResumeForm() {		
+		String userId = getUserId();
+		log.info("{}", userId);
 		return "member/resume/mypage/resume/resumeForm";
 	}
 	
+	/*
 	// 등록 로직 구현
+	@ResponseBody
 	@PostMapping("create")
-	public String createResume() {
+	public String createResume(
+		// @PathVariable ResumeVO vo
+		@RequestBody ResumeVO resumeVO
+	) {
+		String userId = getUserId();
+		resumeVO.setUserId(userId);
+		service.createResume(resumeVO);
+		
 		return "";
 	}
-	
+	*/
+
+	// 등록 로직 구현
+	@ResponseBody
+	@PostMapping("create")
+	public String createResume(@RequestBody ResumeVO vo) {
+		service.createResume(vo);
+		return "redirect:/mypage/resume/list";
+	}
 
 	// 삭제 로직 구현
 	@GetMapping("delete/{no}")
 	public String createResume(
 		@PathVariable String no
 	) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    String username = authentication.getName(); // 아이디
+		String userId = getUserId();
 		ResumeVO vo = new ResumeVO();
-		vo.setUserId(username);
+		vo.setUserId(userId);
 		vo.setResumeNo(no);
 		service.removeResume(no); // >> 논리적 삭제작업 해줘야함, 매퍼, 서비스 작업 아직 안해줬음
 	    

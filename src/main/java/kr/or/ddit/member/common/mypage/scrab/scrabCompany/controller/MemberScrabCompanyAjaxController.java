@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 // 일반회원의 마이페이지 스크랩 중 관심기업 조회
 @RestController
-@RequestMapping("/ajax/member/common/mypage/scrab/scrabCompany")
+@RequestMapping("/ajax/member/mypage/scrab_company")
 @RequiredArgsConstructor
 public class MemberScrabCompanyAjaxController {
 
@@ -32,9 +32,9 @@ public class MemberScrabCompanyAjaxController {
 	}
 	
 	// 관심 기업 단건조회
-	@GetMapping("/{scompany}")  //String이 아니라 vo를 넣었으니 확인필요
-	public ResponseEntity<ScrabCompanyVO> getOneSCompany(@RequestBody ScrabCompanyVO scompany) {
-	    return service.searchScrabCompanyByPk(scompany)
+	@GetMapping("/{companyId}")
+	public ResponseEntity<ScrabCompanyVO> getOneSCompany(@RequestBody String companyId) {
+	    return service.searchScrabCompanyByComId(companyId)
 	    		.map(ResponseEntity::ok)  //scompany 있으면 ok 반환
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}

@@ -22,7 +22,7 @@ import kr.or.ddit.vo.common.UsersVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/membersignup")
+@RequestMapping("/member_signup")
 @Slf4j
 public class MemberRegisterController {
 	

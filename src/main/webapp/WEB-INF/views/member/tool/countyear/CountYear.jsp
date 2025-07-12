@@ -20,24 +20,23 @@
 	display: flex;
 	flex-direction: column;
 	width: 180px;
-	border: 1px solid #333;
+	border-top: 2px solid #333;
+	border-bottom: 1px solid #333;
 	box-sizing: border-box;
 	margin-right: 25px;
 	padding: 0;
-	border-radius: 10px;
-	overflow: hidden;
 }
 
 .tool-remote h3 {
 	margin: 0;
 	padding: 0;
-	background: #eaeaea;
 	font-size: 16px;
 	text-align: center;
 	flex: 1;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+    border-bottom: 1px solid #333;
 }
 
 .tool-remote ul {
@@ -65,8 +64,8 @@
 
 .tool-remote ul li.active,
 .tool-remote ul li:hover {
-	background: var(--violet120, #6a1b9a);
-	color: #fff;
+	color: var(--violet100);
+	font-weight:bold;
 }
 
 /* 우측 콘텐츠 */
@@ -127,16 +126,54 @@
 	background-color: var(--violet100, #8e24aa);
 }
 
-/* 결과 출력 영역 */
-.result-box {
-	flex: 1;
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	padding: 16px;
-	background-color: #f9f9f9;
-	font-size: 14px;
-	box-sizing: border-box;
+.form-display-row {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  align-items: flex-start;
 }
+
+#container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.result-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 중앙 정렬 */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.result-box p {
+  margin: 0;
+  padding-bottom: 10px;
+}
+
+#result {
+  flex: 1;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
 </style>
 </head>
 <body>
@@ -146,8 +183,8 @@
 		<div class="tool-remote">
 			<h3>취업 Tool 리모콘</h3>
 			<ul>
-				<li onclick="location.href='/countText'">1. 글자수 세기</li>
-				<li onclick="location.href='/Spelling'">2. 맞춤법 검사기</li>
+				<li onclick="location.href='/count_text'">1. 글자수 세기</li>
+				<li onclick="location.href='/spelling'">2. 맞춤법 검사기</li>
 				<li class="active" onclick="location.href='/countyear'">3. 연차계산기</li>
 				<li onclick="location.href='/salarycalc'">4. 실수령액 계산기</li>
 			</ul>
@@ -169,7 +206,7 @@
 					<button type="button" onclick="calculateAnnuaILeave()">계산하기</button>
 				</form>
 
-				<div class="result-box">
+				
 					<p><strong>총 연차 휴가일수:</strong></p>
 					<div id="result">결과가 여기에 표시됩니다.</div> 
 				</div>

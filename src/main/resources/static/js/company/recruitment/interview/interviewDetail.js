@@ -27,10 +27,11 @@ const setData = (data) => {
   const recruitProcess = interview.recruitProcess;
   const applicantRecordList = recruitProcess.applicantRecordList;
   const recruitmentNotice = recruitProcess.recruitmentNotice;
+  const interviewScoreList = interview.interviewScoreList;
   console.log(recruitProcess);
   console.log(applicantRecordList);
   console.log(recruitmentNotice);
-
+    
   // 예시 데이터 (실제로는 axios 등으로 받아옴)
   const detail = {
     title: recruitmentNotice.recruitmentTitle,
@@ -51,12 +52,24 @@ const setData = (data) => {
         endTime: videoInterview.endDate,
       }
     : null, // 또는 {} 도 가능
-    applicants: applicantRecordList.map((item) => ({
-      name: item.applicantName,
-      resumeUrl: '#', // 필요시 item.resumeUrl 등으로 교체
-      time: item.evaluationStartTime ? item.evaluationStartTime : '', // null 처리
-      score: item.score ?? 0, // item.score가 없다면 0, 실제로는 적절히 매핑
-    })),
+    // applicants: applicantRecordList.map((item) => ({
+    //   name: item.applicantName,
+    //   resumeUrl: '#', // 필요시 item.resumeUrl 등으로 교체
+    //   time: item.evaluationStartTime ? item.evaluationStartTime : '', // null 처리
+    //   score: item.score ?? 0, // item.score가 없다면 0, 실제로는 적절히 매핑
+    // })),
+    applicants: applicantRecordList.map((item) => {
+    // item.applicantId와 동일한 interviewScoreList 객체 찾기
+      const scoreObj = interviewScoreList.find(
+        (score) => score.applicantId === item.applicantId
+      )
+      return {
+        name: item.applicantName,
+        resumeUrl: '#', // 필요시 item.resumeUrl 등으로 교체
+        time: item.evaluationStartTime ? item.evaluationStartTime : '',
+        score: scoreObj && scoreObj.applicantRating != null ? scoreObj.applicantRating : 0,
+      }
+    }),
   };
 
   // 뿌리기
@@ -158,6 +171,16 @@ document.getElementById('startInterviewBtn').onclick = async function() {
     const url = res.data;
     if (url) {
       interviewPopup = window.open(url, '_blank'); // 새 창으로 열기
+      setTimeout(() => {
+        openEvaluationPopup(); // localStorage 세팅 및 팝업창 오픈
+    
+        // 모달닫기
+        const modalEl = document.getElementById('joinInterviewModal'); // 닫을 모달의 id
+        if (modalEl) {
+          const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+          modalInstance.hide();
+        }
+      }, 500); // 1000ms = 1초
     } else {
       alert('화상면접 주소를 찾을 수 없습니다.');
     }
@@ -167,16 +190,6 @@ document.getElementById('startInterviewBtn').onclick = async function() {
   }
 
   // 2. 1초 뒤에 평가 팝업 띄우기
-  setTimeout(() => {
-    openEvaluationPopup(); // localStorage 세팅 및 팝업창 오픈
-
-    // 모달닫기
-    const modalEl = document.getElementById('joinInterviewModal'); // 닫을 모달의 id
-    if (modalEl) {
-      const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-      modalInstance.hide();
-    }
-  }, 500); // 1000ms = 1초
 };
 
 function openEvaluationPopup() {

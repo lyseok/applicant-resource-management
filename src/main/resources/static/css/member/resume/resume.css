@@ -125,7 +125,7 @@
   margin-top: 22px;
   padding: 34px 30px 22px 30px;
   position: relative;
-  display: none;
+  /* display: none; */
 }
 .section-form-wrap.active {
   display: flex;
@@ -343,4 +343,11 @@
 .resume_detail_wrap .prefer-content {
   color: #505d7a;
   font-size: 14px;
+}
+.material-symbols-outlined{	
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 40
 }

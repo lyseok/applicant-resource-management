@@ -24,7 +24,7 @@ import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequestMapping("/talentpool")
+@RequestMapping("/company/talentpool")
 @Controller
 public class CompanyTalentPoolController {
 
@@ -34,18 +34,19 @@ public class CompanyTalentPoolController {
 	@GetMapping("/list")
 	public String talentpoolList(Model model) {
 		List<ResumeVO> talentpoolList = CTservice.selectTalentPoolList();
+		List<CareerVO> careerList = CTservice.selectCareer();
 		List<TopJobVO> tjobList = CTservice.selectTopJob();
 		List<JobVO> jobList = CTservice.selectJob();
 		List<CityCodeVO> cityList = CTservice.selectlocation();
 		List<EducationVO> eduList = CTservice.selecteducation();
-		System.out.println("출력값 : " + talentpoolList);
-		log.info("list 를 했을때 로그 : {}", talentpoolList);
+		
 		model.addAttribute("talentpoolList", talentpoolList);
 		model.addAttribute("tjobList", tjobList);
 		model.addAttribute("jobList", jobList);
 		model.addAttribute("cityList", cityList);
 		model.addAttribute("eduList", eduList);
 		model.addAttribute("boardCss", true);
+		log.info("list 를 했을때 로그 : {}", model);
 
 		return "company/recruitment/talentpool/TalentPool";
 	}
@@ -69,12 +70,13 @@ public class CompanyTalentPoolController {
 
 	@PostMapping("/filter")
 	public String filterTalentPool(@RequestParam Map<String, Object> param, Model model) {
-	    List<ResumeVO> talentpoolList = CTservice.selectTalentPoolListByFilter(param);
+		List<ResumeVO> talentpoolList = CTservice.selectTalentPoolListByFilter(param);
 	    model.addAttribute("talentpoolList", talentpoolList);
+	    System.out.println("Filter로 받아온 값 :" + talentpoolList);
 	    return "company/recruitment/talentpool/TalentpoolListFragment"; 
 	}
 	
-	@PostMapping("/higtSearch")
+	@PostMapping("/higtsearch")
 	public String higtSearch(@RequestParam(required = false)
 								String license,
 							@RequestParam(required = false)

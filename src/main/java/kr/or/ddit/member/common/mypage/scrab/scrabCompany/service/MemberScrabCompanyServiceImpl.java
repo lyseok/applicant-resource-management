@@ -21,8 +21,8 @@ public class MemberScrabCompanyServiceImpl implements MemberScrabCompanyService 
 	}
 
 	@Override
-	public Optional<ScrabCompanyVO> searchScrabCompanyByPk(ScrabCompanyVO scompany) {
-		return Optional.ofNullable(mapper.selectScrabCompanyByPk(scompany));
+	public Optional<ScrabCompanyVO> searchScrabCompanyByComId(String companyId) {
+		return Optional.ofNullable(mapper.selectScrabCompanyByPk(companyId));
 	}
 
 	@Override

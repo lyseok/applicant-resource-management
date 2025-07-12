@@ -7,13 +7,9 @@ import kr.or.ddit.vo.common.ScrabCompanyVO;
 
 public interface MemberScrabCompanyService {
 
+	public Optional<ScrabCompanyVO> searchScrabCompanyByComId(String companyId);
 	public List<ScrabCompanyVO> readScrabCompanyList();
-	
-	public Optional<ScrabCompanyVO> searchScrabCompanyByPk(ScrabCompanyVO scompany);
-	
 	public void createScrabCompany(ScrabCompanyVO scompany);
-	
 	public void modifyScrabCompany(ScrabCompanyVO scompany);
-	
 	public void removeScrabCompany(ScrabCompanyVO scompany);
 }
