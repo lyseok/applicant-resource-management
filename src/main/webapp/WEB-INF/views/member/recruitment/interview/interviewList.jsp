@@ -3,7 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>면접 관리</title>
-    <script defer src="/js/member/recruitment/interview/interviewList.js" ></script>
+	<script defer src="/js/member/recruitment/interview/interviewList.js" ></script>
+	<style>
+		li[data-notice]:hover {
+			cursor: pointer;
+			transition: background 0.2s, box-shadow 0.2s;
+		}
+	</style>
 </head>
 
 <body>
@@ -23,9 +29,37 @@
 	</div>
 	
 	<!-- 리스트 렌더링 영역 -->
-	<div id="introductionListArea"></div>
+	<div id="interviewListArea"></div>
 
 	<!-- 페이지네이션 렌더링 영역 -->
 	<div id="pageBox" class="PageBox"></div>
+
+<!-- 화상채팅 접속 확인 모달 -->
+<div class="modal fade" id="joinInterviewModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title fs-5 fw-bold text-success" id="addModalLabel">
+                    <i class="bi bi-plus-circle-fill me-1"></i> 화상 면접 접속
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div style="font-size:2.4rem; color:#28a745; margin-bottom:10px;">🟢</div>
+                <p class="fs-5 mb-2 fw-semibold" style="color:#218838;">
+                    화상 면접 방에 <span style="color:#28a745;">입장</span>하시겠습니까?
+                </p>
+                <p class="text-secondary mb-0" style="font-size:1.08rem;">
+                    생성된 화상면접 방으로 이동합니다.<br>
+                    실행 전 정보를 확인해 주세요.
+                </p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-success px-4" id="startInterviewBtn">접속</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>

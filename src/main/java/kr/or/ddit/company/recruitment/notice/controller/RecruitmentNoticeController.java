@@ -11,7 +11,7 @@ import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/recruit_notice")
+@RequestMapping("/company/recruit_notice")
 @RequiredArgsConstructor
 public class RecruitmentNoticeController {
 	
@@ -25,6 +25,11 @@ public class RecruitmentNoticeController {
 		RecruitmentNoticeVO notice = service.readRecruitNotice(recruitmentNo);
 		model.addAttribute("recruitmentNotice", notice) ;
 		return "member/recruitment/recruitmentNotice";
+	}
+	
+	@GetMapping("/list")
+	public String selectMyRecruitment() {
+		return "company/recruitment/recruitList";
 	}
 	
 	@GetMapping("/notice_form")
