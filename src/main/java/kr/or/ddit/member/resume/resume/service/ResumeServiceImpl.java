@@ -1,6 +1,7 @@
 package kr.or.ddit.member.resume.resume.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +107,11 @@ public class ResumeServiceImpl implements ResumeService {
 		
 		// 경력
 		if(resumeVO.getCareerList() != null) {
-			for(CareerVO career:resumeVO.getCareerList()) {
+			List<CareerVO> filteredList = resumeVO.getCareerList().stream()
+			        .filter(career -> career.getJobCode() != null && !career.getJobCode().trim().isEmpty())
+			        .collect(Collectors.toList());
+			
+			for(CareerVO career:filteredList) {
 				career.setResumeNo(resumeVO.getResumeNo());		// 이력서번호(부모 pk) 세팅; 
 				log.info("");
 				careerMapper.insertCareer(career);

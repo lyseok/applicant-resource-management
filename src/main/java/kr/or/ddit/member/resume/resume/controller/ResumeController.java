@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.member.resume.resume.service.ResumeService;
 import kr.or.ddit.vo.resume.ResumeVO;
@@ -97,7 +99,11 @@ public class ResumeController {
 	// 등록 로직 구현
 	@ResponseBody
 	@PostMapping("create")
-	public String createResume(@RequestBody ResumeVO vo) {
+	public String createResume(
+		@RequestPart("resume") ResumeVO vo
+		, @RequestPart(value = "photo", required = false) MultipartFile photo
+		, @RequestPart(value = "comImage", required = false) MultipartFile comImage
+	) {
 		service.createResume(vo);
 		return "redirect:/mypage/resume/list";
 	}
