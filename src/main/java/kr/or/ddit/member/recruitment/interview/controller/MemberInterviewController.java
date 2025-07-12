@@ -11,4 +11,8 @@ public class MemberInterviewController {
 	public String memberMyInterviewListPage() {
 		return "member/recruitment/interview/interviewList";
 	}
+	@GetMapping("/detail")
+	public String memberInterviewDetailPage() {
+		return "member/recruitment/interview/interviewDetail";
+	}
 }

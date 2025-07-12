@@ -24,6 +24,12 @@
 	WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
 	</select>
 	
+	<select id="selectMemberVideoURL">
+		SELECT INTERVIEW_URL
+		FROM APPLICANT_RECORD
+		WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
+	</select>
+	
 	<insert id="insertApplicantRecord">
 		<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
 	    SELECT

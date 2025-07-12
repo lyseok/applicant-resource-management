@@ -49,19 +49,19 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">회원관리</span></li>
      
      <li class="menu-item">
-       <a href="/admin/common/users/list" class="menu-link">
+       <a href="/admin/common/users?userRole=ROLE_USER" class="menu-link">
          <i class="menu-icon tf-icons bx bx-user"></i>
          <div data-i18n="Basic">일반회원</div>
        </a>
      </li>
      <li class="menu-item">
-       <a href="/admin/common/users/list" class="menu-link">
+       <a href="/admin/common/users?userRole=ROLE_COMPANY" class="menu-link">
          <i class="menu-icon tf-icons bx bx-building"></i>
          <div data-i18n="Basic">기업회원</div>
        </a>
      </li>
      <li class="menu-item">
-       <a href="/admin/common/users/list" class="menu-link">
+       <a href="/admin/common/users?userRole=ROLE_ADMIN" class="menu-link">
          <i class="menu-icon tf-icons bx bx-lock-keyhole-open"></i>
          <div data-i18n="Basic">관리자</div>
        </a>
@@ -108,19 +108,19 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">게시판관리</span></li>
      
 	 <li class="menu-item">
-       <a href="/admin/community/adminBoard/aboardList/type?boardTypeCode=BRDD-003" class="menu-link">
+       <a href="/ajax/company/board/admin_board/BRDD-003" class="menu-link">
          <i class="menu-icon tf-icons bx bx-envelope-open"></i>
          <div data-i18n="Basic">공지사항</div>
        </a>
      </li>
 	 <li class="menu-item">
-       <a href="/admin/community/adminBoard/aboardList/type?boardTypeCode=BRDD-002" class="menu-link">
+       <a href="/ajax/company/board/admin_board/BRDD-002" class="menu-link">
          <i class="menu-icon tf-icons bx bx-clipboard-detail"></i>
          <div data-i18n="Basic">FAQ게시판</div>
        </a>
      </li>
 	 <li class="menu-item">
-       <a href="/admin/community/adminBoard/aboardList/type?boardTypeCode=BRDD-001" class="menu-link">
+       <a href="/ajax/company/board/admin_board/BRDD-001" class="menu-link">
          <i class="menu-icon tf-icons bx bx-message-question-mark"></i>
          <div data-i18n="Basic">문의게시판</div>
        </a>
