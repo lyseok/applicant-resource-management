@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/ajax/member/recruitment_exam")
+@RequestMapping("/ajax/mypage/recruitment_exam")
 public class RecruitmentExamAjaxController {
 	private final RecruitmentExamService recruitmentExamService;
 	
@@ -28,7 +28,7 @@ public class RecruitmentExamAjaxController {
 		return list;
 	}
 	
-	@GetMapping("exam-view/{recruitExamNo}")
+	@GetMapping("/questions/{recruitExamNo}")
 	public List<RecruitmentExamVO> recruitExamQuestionWithOption(@PathVariable("recruitExamNo") String recruitExamNo){
 		log.info("시험 번호 --------------{}",recruitExamNo);
 		List<RecruitmentExamVO> list = recruitmentExamService.readRecruitExamQuestionWithOptionByNo(recruitExamNo);

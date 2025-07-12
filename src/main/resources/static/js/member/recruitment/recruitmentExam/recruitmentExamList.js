@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const examListGroupEl = document.querySelectorAll;
 
   axios
-    .get('/ajax/member/recruitment_exam')
+    .get('/ajax/mypage/recruitment_exam')
     .then((resp) => {
       const exams = resp.data;
       console.log('가져온 시험들 체킁: ', exams);
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </small>
                             </div>
                             <div>
-                             <a href ="/member/recruitment_exam/form" class ="btn btn-sm btn-primary 
+                             <a href ="/mypage/recruitment_exam/form" class ="btn btn-sm btn-primary 
                               ${isExamAvailable ? '' : 'disabled'}" > 
                               ${isExamAvailable ? '응시하기' : '응시불가'}</a>
                               <a href ="javascript:void(0)" class ="btn btn-sm btn-primary" data-exam-no="${

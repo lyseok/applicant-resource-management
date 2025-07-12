@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/member/recruitment_exam")
+@RequestMapping("/mypage/recruitment_exam")
 public class RecruitmentExamController {
 
 	@GetMapping

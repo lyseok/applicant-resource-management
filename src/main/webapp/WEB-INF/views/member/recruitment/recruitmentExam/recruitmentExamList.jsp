@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
  <style>
-    
     .banner { background: #ebe8ff; }
     .btn-purple { background: #6f49fd; color: #fff; }
     .exam-item { cursor: pointer; transition: background .2s; }
