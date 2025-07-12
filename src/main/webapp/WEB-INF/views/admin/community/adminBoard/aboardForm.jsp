@@ -12,7 +12,15 @@
 	<form id="aboardForm">
 		<input type="text" name="boardNo" placeholder="게시글 번호">
 		<input type="text" name="userId" placeholder="사용자 ID">
+		
+		<select>		
+			<option>
+				
+			</option>
+		</select>
+		
 		<input type="text" name="boardTypeCode" placeholder="게시판 유형 코드">
+		
 		<input type="text" name="boardTitle" placeholder="제목">
 		<input type="text" name="boardWriteDate" placeholder="등록일시">
 		<input type="text" name="boardContent" placeholder="내용">
