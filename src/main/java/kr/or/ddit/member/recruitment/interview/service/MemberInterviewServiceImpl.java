@@ -24,9 +24,8 @@ public class MemberInterviewServiceImpl implements MemberInterviewService {
 	}
 
 	@Override
-	public InterviewVO readInterviewDetail() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, Object>> readInterviewDetail(String no) {
+		return mapper.selectMemberInterviewDetail(no);
 	}
 
 }

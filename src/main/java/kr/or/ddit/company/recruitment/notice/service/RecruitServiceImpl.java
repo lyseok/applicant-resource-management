@@ -1,6 +1,7 @@
 package kr.or.ddit.company.recruitment.notice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,13 +60,17 @@ public class RecruitServiceImpl implements RecruitService {
 	
 	private void setCodeName(RecruitmentNoticeVO notiVo) {
 		List<RecruitmentPositionVO> positionList = notiVo.getPositionList();
-		for(RecruitmentPositionVO position : positionList) {
-			String cmnCode = codeMapProvider.getCodeName(position.getCodeDetailNo()); 
-			position.setCodeDetailName(cmnCode);
+		if(notiVo.getPositionList() != null) {
+			for(RecruitmentPositionVO position : positionList) {
+				String cmnCode = codeMapProvider.getCodeName(position.getCodeDetailNo()); 
+				position.setCodeDetailName(cmnCode);
+			}			
 		}
 		RecruitmentEducationVO education = notiVo.getEducation();
-		String cmnCode = codeMapProvider.getCodeName(education.getCodeDetailNo());
-		education.setCodeDetailName(cmnCode);
+		if(notiVo.getEducation() != null) {			
+			String cmnCode = codeMapProvider.getCodeName(education.getCodeDetailNo());
+			education.setCodeDetailName(cmnCode);
+		}
 		
 		String district = codeMapProvider.getDistrictName(notiVo.getDistrictCode());
 		notiVo.setDistrictCodeName(district);
@@ -78,6 +83,19 @@ public class RecruitServiceImpl implements RecruitService {
 		
 		String year = codeMapProvider.getCodeName(notiVo.getYearCode());
 		notiVo.setYearCodeName(year);
+	}
+
+	@Override
+	public List<Map<String, Object>> readMyNotice(String userId) {
+		List<Map<String, Object>> notices = (List<Map<String, Object>>) noticeMapper.selectMyRecruitNotice(userId);
+		for(Map<String, Object> notice : notices) {			
+			notice.put("jobCodeName", codeMapProvider.getJobName((String) notice.get("jobCode")));
+			notice.put("cityCodeName", codeMapProvider.getCityName((String) notice.get("cityCode")));
+			notice.put("yearCodeName", codeMapProvider.getCodeName((String) notice.get("yearCode")));
+			notice.put("districtCodeName", codeMapProvider.getDistrictName((String) notice.get("districtCode")));
+		}
+		return notices;
+		
 	}
 
 }
