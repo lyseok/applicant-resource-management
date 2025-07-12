@@ -14,5 +14,5 @@ function confirmDelete() {
 document.querySelector('.searchBarBtn').addEventListener('click', function(e) {
     e.preventDefault();
     const keyword = document.getElementById('listKeyword').value;
-    window.location.href = '/mypage/intoruction/search?keyword=' + encodeURIComponent(keyword);
+    window.location.href = '/mypage/introduction/search?keyword=' + encodeURIComponent(keyword);
 });
