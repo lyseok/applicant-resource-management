@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -75,12 +76,21 @@ public class ResumeController {
 		return "member/resume/mypage/resume/resumeForm";
 	}
 	
+	/*
 	// 등록 로직 구현
 	@PostMapping("create")
 	public String createResume() {
 		return "";
 	}
-	
+	*/
+
+	// 등록 로직 구현
+	@ResponseBody
+	@PostMapping("create")
+	public String createResume(@RequestBody ResumeVO vo) {
+		service.createResume(vo);
+		return "redirect:/mypage/resume/list";
+	}
 
 	// 삭제 로직 구현
 	@GetMapping("delete/{no}")
