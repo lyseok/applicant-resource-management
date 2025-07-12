@@ -15,5 +15,5 @@ public interface PaymentMapper {
 
 	public int updatePayment(PaymentVO vo);
 
-	public int deletePayment(PaymentVO vo);
+	public int deletePayment(String paymentNo);
 }

@@ -23,11 +23,21 @@ import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/company/community/adminBoard")
+@RequestMapping("/company/board/admin_board")
 @RequiredArgsConstructor
 public class CompanyAdminBoardController {
 
 	private final CompanyAdminBoardAjaxService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "company/community/adminBoard/aboardForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -44,7 +54,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 게시글 단건조회
-	@GetMapping("/aboardDetail")
+	@GetMapping("/detail")
 	public String aboardDetail(String boardNo, Model model) {
 		AdminBoardVO aboard = service.readAdminBoardByPk(boardNo).get();  
 		//service가 널일 일은 없음, boardNo는 없으면 false 처리됨
@@ -57,7 +67,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 유형별 게시글 목록조회
-	@GetMapping("/aboardList/type")
+	@GetMapping("/list/type")
 	public String aboardType(String boardTypeCode, Model model) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(boardTypeCode);
 		model.addAttribute("aboardList", aboardList);
@@ -69,7 +79,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 게시글 목록조회
-	@GetMapping("/aboardList")
+	@GetMapping("/list")
 	public String aboardList(Model model) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardList();
 		model.addAttribute("aboardList", aboardList);
@@ -78,17 +88,9 @@ public class CompanyAdminBoardController {
 		model.addAttribute("searchBar", true);		
 		return "company/community/adminBoard/aboardList";
 	}
-		
-	// 등록 폼으로 이동
-	@GetMapping("/aboardForm")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "company/community/adminBoard/aboardForm";
-	}
 	
 	// 수정 폼으로 이동
-	@GetMapping("/aboardForm/edit")
+	@GetMapping("/form/edit")
 	public String editForm(String boardNo, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {  //모델에 aboard가 없으면, db에서 가져옴
 			AdminBoardVO aboard = service.readAdminBoardByPk(boardNo).get();
@@ -100,7 +102,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 폼 입력 데이터 처리
-	@PostMapping("/aboardForm/insert")
+	@PostMapping("/form/insert")
 	public String aboardForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) AdminBoardVO aboard
 		, BindingResult errors
@@ -123,7 +125,7 @@ public class CompanyAdminBoardController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/aboardForm/update")
+	@PostMapping("/form/edit")
 	public String aboardEdit(
 		String boardNo
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) AdminBoardVO aboard
@@ -144,14 +146,5 @@ public class CompanyAdminBoardController {
 		}
 		return lvn;
 	}
-	
-	// 게시글 단건 삭제
-	@DeleteMapping("/aboardDetail/remove")
-	public String aboardDelete(String boardNo, Model model) {
-		service.removeAdminBoard(boardNo);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "company/community/adminBoard/aboardList";
-	}
+	*/
 }
