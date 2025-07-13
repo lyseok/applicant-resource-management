@@ -2,106 +2,76 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <head>
-	<title>띹잡 고객센터 | 댓글 등록</title>
-	<script src="/js/admin/community/adminComment/acommentForm.js"></script>
+	<title>띹잡 고객센터 | 답변 등록</title>
 </head>
 
 <body>
 
 
-<p class="h4">문의사항 답글 입력 폼</p><br>
+<p class="h4">문의사항 답변 등록</p><br>
 
-	<!-- 등록 -->
-	<c:set var="actionPath" value="/admin/community/adminComment/acommentForm/insert" />
-	<!-- 수정 -->
-	<c:if test="${not empty acomment.boardCommentNo}">
-		<c:set var="actionPath" value="/admin/community/adminComment/acommentForm/update" />
-	</c:if>
-	<!-- 등록 수정 둘다 여기로 옴 -->
-	<form:form action="${actionPath}" method="post" modelAttribute="acomment">
-
-	<%-- 화면엔 없지만 값이 넘어올 부분 --%>
-	<input type="hidden" name="boardCommentNo" value="${acomment.boardCommentNo}">
-	<input type="hidden" name="boardNo" value="${acomment.boardNo}">
-	<input type="hidden" name="boardWriteDate" value="${acomment.boardWriteDate}">
-	<input type="hidden" name="boardDeleteDate" value="${acomment.boardDeleteDate}">
-	<input type="hidden" name="boardCommentStatus" value="${acomment.boardCommentStatus}">
-	
-		<ul>
-			<li>
-				<div>
-					<label>이메일</label>
-				</div>
-				<div>
-					<span value="${acomment.users.memEmail }" readonly="readonly"></span>
-					<!-- 기업회원이면 value가 다르게 -->
-					<span value="${acomment.users.comEmail }" readonly="readonly"></span>
-				</div>
-				<div>
-					<label>회원</label>
-				</div>
-				<div>
-					<span value="${acomment.userId }" readonly="readonly"></span>
-				</div>
-				<div>
-					<label>회원구분</label>
-				</div>
-				<div>
-					<input type="radio" name="member" value="${acomment.users.userRole }" readonly="readonly" checked>
-					개인
-					<input type="radio" name="member" value="${acomment.users.userRole }" readonly="readonly" disabled>
-					기업
-				</div>
-				<div>
-					<label>회원 문의종류</label>
-					<input type="text" value="${acomment.boardCommentContent }" readonly>
-					<label>회원 문의내용</label>
-					<span value="${acomment.boardCommentContent }" readonly></span>
-				</div>
-				<div>
-					<label>내 문의답글</label>
-					<textarea name="boardCommentContent" row="6" cols="60"></textarea>
-				</div>
-			</li>
-		</ul>
-
-	
+  <h1><sec:authentication property="principal.realUser.userId" var="userId"/></h1> <%-- 이건 로그인유저 --%>
+  <%-- 
+  답글 폼은 게시글 단건과 같이 넘어옴, 비동기 중 <AdminBoardVO> 조회부터 
+  거기서 List<AdminCommentVO> 조회하면서 폼 입력이 가능하게
+  --%>
+  	<div id="aboard"></div>
+	<form id="acommentForm">
+		<input type="hidden" name="userId" value="${userId}"><br> <%-- 이건 작성자 --%>
+		<input type="hidden" name="boardNo" value="${boardNo}"><br>
+		<input type="text" name="boardCommentContent" placeholder="내용">
+	  <button type="submit">등록</button>
+	</form>
+<script>
+fetch(`/ajax/admin/board/admin_comment/\${boardNo}`)
+.then(resp => {resp.json()
+	.then(rslt=> {
+		const aboard = document.querySelector("#aboard");
+		let html = "";
+		rslt.forEach(item => {
+			console.log("아이템 나오니? :", item);
+			html += `
+				<p class="h4">게시글 목록</p>
+				<li>작성자 : \${item.userId}</li>
+				<li>게시판 유형 코드: \${item.boardTypeCode}</li>
+				<li>제목: 
+					<a href="/admin/board/admin_board/detail?no=\${item.boardNo}">
+					\${item.boardTitle}
+					</a>
+				</li>
+				<li>등록일시: \${item.boardWriteDate}</li>
+				<li>내용: \${item.boardContent}</li>
+				<li>삭제일시: \${item.boardDeleteDate}</li>
+				<li>조회수: \${item.boardPostHit}</li>
+				<li>게시글 상태: \${item.boardStatus}</li><hr/>`;
+		});
+		aboard.innerHTML = html;
+	});
+});
 
 
-			<!-- 등록 확인 모달 -->
-			<div class='btn btn_gray_line' data-bs-toggle="modal" data-bs-target="#adacFM">등록</div>
-			<div class="modal fade" id="adacFM" tabindex="-1" aria-labelledby="exampleModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header border-0">
-							<h1 class="modal-title fs-5 fw-bold text-primary" id="exampleModalLabel">
-								<i class="bi bi-pencil-square me-1"></i>문의 등록
-							</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body text-center py-4">
-							<div style="font-size:2.4rem; color:#007bff; margin-bottom:10px;">📝</div>
-							<p class="fs-5 mb-2 fw-semibold" style="color:#333;">
-								문의를 <span style="color:#0d6efd;">등록</span>하시겠습니까?
-							</p>
-							<p class="text-secondary mb-0" style="font-size:1.1rem;">
-								등록한 내용은 즉시 반영되며,<br>실행 전 다시 한 번 확인해 주세요.
-							</p>
-						</div>
-						<div class="modal-footer border-0 justify-content-center">
-							<button type="button" class="btn btn-outline-secondary px-4"
-								data-bs-dismiss="modal">취소</button>
-							<!-- 등록 버튼 -->
-							<button type="button" class="btn btn-primary px-4" id="acommentSV">등록하기</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-	</form:form>
-
+const acommentForm = document.querySelector("#acommentForm");
+acommentForm.onsubmit = function(){
+	event.preventDefault();
+	let adminComment = {
+		userId : acommentForm.userId.value,
+		boardNo : acommentForm.boardNo.value,
+		boardCommentContent : acommentForm.boardCommentContent.value
+	}
+	fetch(`/ajax/admin/board/admin_comment/\${adminComment.boardNo}`, {
+		method : "post",
+		headers : {
+			"Content-Type" : "application/json"
+		},
+		body : JSON.stringify(adminComment)
+	}).then(resp => {
+		resp.json().then(rslt=> {
+			console.log("글자", rslt.ok);
+		});
+	});
+};
+</script>
 </body>

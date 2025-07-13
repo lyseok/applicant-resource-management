@@ -38,6 +38,14 @@ public class AdminAdminCommentController {
 		return "admin/community/adminComment/acommentForm";
 	}
 	
+	// 등록 폼으로 이동
+	@GetMapping("/form/no")  ///admin/board/admin_comment?no=boardNO
+	public String formUI(String no, Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/adminComment/acommentForm";
+	}
+	
 	// 관리자 답글 전체 조회
 	@GetMapping("/list")
 	public String acommentList(Model model) {
@@ -63,6 +71,8 @@ public class AdminAdminCommentController {
 		model.addAttribute("searchBar", true);
 		return "admin/community/adminComment/acommentList";
 	}
+	
+	//답변은 단건 조회 기능 불필요
 	
 	/*
 	private ErrorsUtils errorsUtils;
