@@ -30,7 +30,7 @@ fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 					<li>내용: \${item.boardContent}</li>
 					<li>삭제일시: \${item.boardDeleteDate}</li>
 					<li>조회수: \${item.boardPostHit}</li>
-					<li>게시글 상태: \${item.boardStatus}</li>`;
+					<li>게시글 상태: \${item.boardStatus}</li><hr/>`;
 			});
 			aboardList.innerHTML = html;
 		});
