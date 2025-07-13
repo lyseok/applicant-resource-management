@@ -62,4 +62,10 @@
     </div>
 </div>
 
+<div id="interviewAlert" class="alert alert-warning alert-dismissible fade show"
+    role="alert" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:20000; min-width:260px;">
+  <span id="interviewAlertMsg"></span>
+  <button type="button" class="btn-close" onclick="document.getElementById('interviewAlert').style.display='none'"></button>
+</div>
+
 </body>
