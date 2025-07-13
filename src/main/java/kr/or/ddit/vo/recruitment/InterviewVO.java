@@ -3,6 +3,7 @@ package kr.or.ddit.vo.recruitment;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import kr.or.ddit.validate.UpdateGroup;
 import lombok.Data;
@@ -22,7 +23,6 @@ public class InterviewVO implements Serializable{
 	private String interviewLocation;
 	@NotBlank
 	private String interviewType;
-	@NotBlank
 	private Integer interviewPassScore;
 	private String interviewDelDate;
 	
@@ -31,6 +31,7 @@ public class InterviewVO implements Serializable{
 	
 	// 자식
 	private VideoInterviewVO videoInterview;
+	@Valid
 	private List<InterviewQuestionVO> interviewQuestionList;
 	private List<InterviewScoreVO> interviewScoreList;
 }

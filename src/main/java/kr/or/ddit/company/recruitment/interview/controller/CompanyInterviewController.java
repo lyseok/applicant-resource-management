@@ -20,4 +20,9 @@ public class CompanyInterviewController {
 	public String companyVideoInterviewFormPage() {
 		return "company/recruitment/interview/videoInterviewFrom";
 	}
+	@GetMapping("/edit")
+	public String companyInterviewFormPage() {
+		return "company/recruitment/interview/interviewForm";
+	}
+	
 }

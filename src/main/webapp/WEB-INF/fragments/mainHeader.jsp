@@ -48,9 +48,9 @@
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="/mypage">
+			                    <a href="javascript:void(0)">
 			                        <span class="material-symbols-outlined">mail</span> 
-			                        <span class="txt">마이페이지</span>
+			                        <span class="txt">메일관리</span>
 			                    </a>
 			                </li>
 			                <li>
@@ -60,9 +60,9 @@
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="javascript:void(0)" target="_blank">
+			                    <a href="/mypage" target="_blank">
 			                        <span class="material-symbols-outlined">person</span> 
-			                        <span class="txt">로그인 관리</span>
+			                        <span class="txt">마이페이지</span>
 			                    </a>
 			                </li>
 			                <li>
