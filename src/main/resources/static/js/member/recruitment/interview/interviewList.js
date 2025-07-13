@@ -141,7 +141,17 @@ document.getElementById('startInterviewBtn').onclick = async function() {
       alert('화상면접 주소를 찾을 수 없습니다.');
     }
   } catch (e) {
-    alert('화상면접 접속 주소를 불러오는 데 실패했습니다.');
+     // 오류일 때 메시지 보여주기
+    const msg = e?.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+    document.getElementById('interviewAlertMsg').innerText = msg;
+    document.getElementById('interviewAlert').style.display = 'block';
+
+    // 모달 닫기 (부트스트랩 Modal 인스턴스 사용)
+    const modalEl = document.getElementById('joinInterviewModal');
+    if (modalEl) {
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      if (modal) modal.hide();
+    }
     return;
   }
 
