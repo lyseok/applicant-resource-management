@@ -13,4 +13,6 @@ public interface ApplicantAnswerMapper {
 	public int insertApplicantAnswer(ApplicantAnswerVO vo);
 	public int updateApplicantAnswer(ApplicantAnswerVO vo);
 	public int deleteApplicantAnswer(String applicantAnswerNo);
+	
+	public int countByUserAndExam(String applicantId, String recruitExamNo);
 }

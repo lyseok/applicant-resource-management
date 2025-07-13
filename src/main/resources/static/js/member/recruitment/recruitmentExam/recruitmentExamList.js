@@ -6,7 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const examCountEl = document.getElementById('exam-count');
   const examListEl = document.getElementById('exam-list');
   const examBtnEl = document.getElementById('exam-btn');
+  const confirmExamBtn = document.getElementById('confirmExamBtn');
   const examListGroupEl = document.querySelectorAll;
+  const examModal = new bootstrap.Modal(document.getElementById('recruitExamModal'));
+  const notAvailableModal = new bootstrap.Modal(document.getElementById('notAvailableModal'));
 
   axios
     .get('/ajax/mypage/recruitment_exam')
@@ -32,9 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
     exams.forEach((exam) => {
       const item = document.createElement('div');
       // 시작일시 비교
-      const examStartDate = new Date(exam.recruitExamStartDate);
-      const currentDate = new Date(); // 현재 시간
-      const isExamAvailable = currentDate >= examStartDate; // 현재 시간이 시작일시 이후면 응시 가능
+      const startDate = new Date(exam.recruitExamStartDate); //시작일시
+      const endDate   = new Date(startDate.getTime() + exam.recruitExamTime * 60 * 1000); //시작일시 + 시험시간
+      const nowDate = new Date(); // 현재 시간
+      // 시험 전 또는 시험 종료 후 모두 불가
+      const isExamAvailable = (nowDate >= startDate && nowDate <= endDate);
+      const isTaken         = exam.taken === 1 || exam.taken === true;
       item.className =
         'list-group-item exam-item d-flex justify-content-between align-items-center';
       item.innerHTML = `
@@ -48,34 +54,85 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </small>
                             </div>
                             <div>
-                             <a href ="/mypage/recruitment_exam/form" class ="btn btn-sm btn-primary 
-                              ${isExamAvailable ? '' : 'disabled'}" > 
-                              ${isExamAvailable ? '응시하기' : '응시불가'}</a>
-                              <a href ="javascript:void(0)" class ="btn btn-sm btn-primary" data-exam-no="${
-                                exam.recruitExamNo
-                              }"  id="exam-btn">응시</a>
-                            </div>
-                          </div>`;
+                            ${isTaken
+                              ? `<button type="button" class="btn btn-sm btn-secondary" disabled>응시완료</button>
+                                  <button type="button" 
+                                    class="btn btn-sm btn-info result-btn"
+                                    data-exam-no="${exam.recruitExamNo}"
+                                    data-applicant-id="${exam.applicantId}">
+                                    시험결과
+                                </button>`
+                              : `
+                                <button type="button" class="btn btn-sm btn-primary exam-btn"
+                                  data-exam-no="${exam.recruitExamNo}"
+                                  data-applicant-id="${exam.applicantId}"
+                                  data-exam-time="${exam.recruitExamTime}"
+                                  data-start-date="${exam.recruitExamStartDate}">
+                                  ${isExamAvailable ? '응시' : '응시불가'}
+                                </button>`}
+                          </div>
+                        `;
 
       examListEl.append(item);
     });
   }
 
-  examListEl.addEventListener('click', (event) => {
-    if (event.target && event.target.id === 'exam-btn') {
-      const recruitExamNo = event.target.dataset.examNo;
-      console.log('시험번호 체킁: ', recruitExamNo);
 
-      openRecruitExamPopup(recruitExamNo);
-    }
+  examListEl.addEventListener('click', event => {
+      const btn = event.target;
+	  
+	  //왜 이걸먼저 처리하지..
+	  if(btn.classList.contains('result-btn')){
+        const recruitExamNo = btn.dataset.examNo;
+        const applicantId = btn.dataset.applicantId;
+         const resultPopup = window.open(
+          `/popup/exam_result?recruitExamNo=${recruitExamNo}&applicantId=${applicantId}`,
+          'result_popup',
+          'width=600,height=400,scrollbars=yes'
+        );
+        if (resultPopup) resultPopup.focus();
+        return;
+      }
+  
+      if (!btn.classList.contains('exam-btn')) return;
+      const recruitExamNo = event.target.dataset.examNo;
+      const applicantId = event.target.dataset.applicantId;
+      const recruitExamTime = event.target.dataset.examTime;
+      console.log('시험번호 체킁: ', recruitExamNo);
+      console.log('지원자번호 체킁: ', applicantId);
+
+      // const available = btn.dataset.available === 'true';
+      // if (!available) {
+      //   // 기간 아닐 때
+      //   notAvailableModal.show();
+      //   return;
+      // }
+
+    
+
+      confirmExamBtn.dataset.examNo = recruitExamNo;
+      confirmExamBtn.dataset.applicantId = applicantId;
+      confirmExamBtn.dataset.examTime = recruitExamTime;
+
+      examModal.show();
+      //openRecruitExamPopup(recruitExamNo, applicantId,recruitExamTime);
+    
   });
 
-  function openRecruitExamPopup(recruitExamNo) {
-    const examPopup = window.open(
-      `/popup/exam_form?recruitExamNo=${recruitExamNo}`,
-      'exam_popup',
-      'width=600, height=760, scrollbars=yes'
-    );
-    examPopup.focus();
-  }
+
+  confirmExamBtn.addEventListener('click', () =>{
+      const recruitExamNo = confirmExamBtn.dataset.examNo;
+      const applicantId = confirmExamBtn.dataset.applicantId;
+
+      examModal.hide();
+
+      const examPopup = window.open(
+        `/popup/exam_form?recruitExamNo=${recruitExamNo}&applicantId=${applicantId}`,
+        'exam_popup',
+        'width=600,height=760,scrollbars=yes'
+      );
+      if (examPopup) examPopup.focus();
+  })
 });
+
+

@@ -18,6 +18,7 @@
 		, RECRUIT_EXAM_NO
 		, RECRUIT_QUESTIONS_NO
 		, APPLICANT_ID
+		, APPLICANT_OPTION_NO
 		, APPLICANT_SCORE 
 	FROM APPLICANT_ANSWER 
 	WHERE APPLICANT_ANSWER_NO = #{applicantAnswerNo}
@@ -35,12 +36,14 @@
 		, RECRUIT_EXAM_NO
 		, RECRUIT_QUESTIONS_NO
 		, APPLICANT_ID
+		, APPLICANT_OPTION_NO
 		, APPLICANT_SCORE
 	) VALUES (
 		#{applicantAnswerNo}
 		, #{recruitExamNo}
 		, #{recruitQuestionsNo}
 		, #{applicantId}
+		, #{applicantOptionNo}
 		, #{applicantScore}
 	)
 	</insert>
@@ -55,4 +58,14 @@
 	DELETE FROM APPLICANT_ANSWER 
 	WHERE APPLICANT_ANSWER_NO = #{applicantAnswerNo}
 	</delete>
+	
+	
+	
+	 <!-- 1) 제출 전, 응시 여부 체크용 count -->
+  <select id="countByUserAndExam" resultType="int" parameterType="map">
+    SELECT COUNT(*)
+      FROM APPLICANT_ANSWER
+     WHERE APPLICANT_ID    = #{applicantId}
+       AND RECRUIT_EXAM_NO = #{recruitExamNo}
+  </select>
 </mapper>

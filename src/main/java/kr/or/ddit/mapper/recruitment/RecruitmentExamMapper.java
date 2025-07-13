@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.ddit.dto.MyRecruitExamDTO;
 import kr.or.ddit.vo.recruitment.RecruitmentExamVO;
 
 @Mapper
@@ -14,6 +15,8 @@ public interface RecruitmentExamMapper {
 	public int updateRecruitExam(RecruitmentExamVO vo);
 	public int deleteRecruitExam(String recruitExamNo);
 	
-	public List<RecruitmentExamVO> selectMyRecruitExams(String userId);
-	public List<RecruitmentExamVO> selectRecruitExamQuestionWithOptionByNo(String recruitExamNo);
+	public List<MyRecruitExamDTO> selectMyRecruitExams(String userId);
+	public RecruitmentExamVO selectRecruitExamQuestionWithOptionByNo(String recruitExamNo);
+	public int selectCutlineByExamNo(String recruitExamNo);
+	
 }

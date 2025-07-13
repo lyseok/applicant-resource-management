@@ -2,47 +2,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
      console.log('[examForm.js] DOMContentLoaded');
      const recruitExamNo = new URLSearchParams(window.location.search).get('recruitExamNo');
+     const applicantId   = new URLSearchParams(window.location.search).get('applicantId');
      console.log('[examForm.js] recruitExamNo =', recruitExamNo);
-     console.log('넘어온 체킁', recruitExamNo);
+     console.log('넘어온 체킁1', recruitExamNo);
+     console.log('넘어온 체킁2', applicantId);
      console.log('인라인 로그, location.search=', window.location.search);
-    const qTitle   = document.getElementById('q-title');
-    const qOptions = document.getElementById('q-options');
-    const status   = document.getElementById('status');
-    const prevBtn  = document.getElementById('prevBtn');
-    const nextBtn  = document.getElementById('nextBtn');
-    const submitBtn= document.getElementById('submitBtn');
-    let questions = [], idx = 0;
-    const answers = {};// { questionNo: optionNo }
+     const examName = document.getElementById('exam-name')
+     const qTitle   = document.getElementById('q-title');
+     const qOptions = document.getElementById('q-options');
+     const status   = document.getElementById('status');
+     const prevBtn  = document.getElementById('prevBtn');
+     const nextBtn  = document.getElementById('nextBtn');
+     const submitBtn= document.getElementById('submitBtn');
+     const timer    = document.getElementById('timer');
+     let questions = [], idx = 0;
+     const answers = {};// { questionNo: optionNo }
 
     axios.get(`/ajax/mypage/recruitment_exam/questions/${recruitExamNo}`)
-         .then(resp =>{
-            questions = resp.data;
-            console.log(questions);
-            renderAll();
-         })
+      .then(({ data: exam })=> {
+         console.log('시험 전체:', exam);
+		 examName.textContent = exam.recruitExamName;  
+         questions = exam.questionList;
+         startTimer(exam.recruitExamTime * 1);
+         renderAll();
+      })
          .catch(err => {
              console.error('에러 체킁', err);
          });
 
          function renderAll(){
+            
             renderQuestion();
             renderStatus();
             renderButtons();
          }
 
          function renderQuestion(){
-            const q = questions[idx];
-            qTitle.textContent = `문제 ${idx + 1}. ${q.recruitExamQuestContent}`;
-            qOptions.innerHTML = q.optionList.map(opt =>
-                `<label class="option-label">
-                    <input type ="radio"
-                           name="opt"
-						   data-qno="${q.recruitExamQuestNo}" 
-                           value="${opt.recruitOptionNo}"
-                           ${answers[q.recruitExamQuestNo]===opt.recruitOptionNo?'checked':''}/>
-                    ${opt.recruitExamOptionContent}
-                </label>
-                `).join('');
+			
+			const q = questions[idx];
+			 qTitle.textContent = `문제 ${idx + 1}. ${q.recruitExamQuestContent}`;
+			 qOptions.innerHTML = q.optionList.map(opt => {
+			   const isSel = answers[q.recruitExamQuestNo] === opt.recruitOptionNo;
+			   return `
+			     <label class="option-card${isSel ? ' selected' : ''}">
+			       <input
+			         type="radio"
+			         name="opt"
+			         data-qno="${q.recruitExamQuestNo}"
+			         value="${opt.recruitOptionNo}"
+			         ${isSel ? 'checked' : ''}
+			       />
+			       <span>${opt.recruitExamOptionContent}</span>
+			     </label>
+			   `;
+			 }).join('');
          }
 
          function renderStatus(){
@@ -104,5 +117,80 @@ document.addEventListener('DOMContentLoaded', () => {
          })
 
 
+         function startTimer(totalSeconds){
+            let remaining = totalSeconds;
+            const tick = () =>{
+                const m = String(Math.floor(remaining/60)).padStart(2, '0');
+                const s = String(remaining%60).padStart(2, '0');
+                timer.textContent = `${m}:${s}`;
+                if(remaining <= 0){
+                    clearInterval(intervalId);
+                    timeUpHandler();
+                }
+                remaining--;
+            };
+            tick();
+            const intervalId = setInterval(tick, 1000);
+         }
+
+         function buildPayload(timeLimit = true){
+            return questions.map(q => ({
+                applicantId,
+                recruitExamNo: q.recruitExamNo,
+                recruitExamQuestNo : q.recruitExamQuestNo,
+                selectedOptionNo: timeLimit
+                    ? answers[q.recruitExamQuestNo] : 'x'
+            }));
+         }
            
+
+
+         function submitAnswer(payload){
+              axios.post('/ajax/mypage/recruitment_exam/submit', payload)
+                .then(resp => {
+                    const {examTotalScore, examPass} = resp.data;
+                    alert(`결과 : ${examTotalScore}점 (${examPass ? '합격' : '불합격'})`);
+		
+				     const iconEl = document.getElementById('resultIcon');
+				     const msgEl  = document.getElementById('resultMessage');
+				      if (examPass) {
+				        iconEl.textContent = '🟢';
+				        iconEl.style.color   = '#28a745';
+				        msgEl.innerHTML      = `${examTotalScore}점 <span style="color:#28a745;">(합격)</span>`;
+				      } else {
+				        iconEl.textContent = '🔴';
+				        iconEl.style.color   = '#dc3545';
+				        msgEl.innerHTML      = `${examTotalScore}점 <span style="color:#dc3545;">(불합격)</span>`;
+				      }
+			        const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+			        resultModal.show();
+
+					
+                    qOptions.querySelectorAll('input').forEach(i => i.disabled=true);
+                    prevBtn.disabled = nextBtn.disabled = submitBtn.disabled = true;
+
+                    if(window.opener && !window.opener.closed){
+                        window.opener.location.reload();
+                    }
+                })
+                .catch(err => {
+                   if(err.response && err.response.status == 409){
+                    alert(err.response.data);
+                    submitBtn.disabled = true;
+                   }else{
+                    console.error(err);
+                    alert('제출 중 오류가 발생했습니다.')
+                   }
+                })
+         }
+
+
+         submitBtn.addEventListener('click', ()=>{
+            submitAnswer(buildPayload(true));
+         })
+
+        function timeUpHandler(){
+	        alert('시험시간이 종료되었습니다.')
+	        submitAnswer(buildPayload(false));
+    	}
 });

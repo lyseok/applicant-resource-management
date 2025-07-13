@@ -12,4 +12,9 @@ public class RecruitmentExamFormController {
 	public String recruitExamPage() {
 		return "popup/recruitmentExamForm";
 	}
+	
+	@GetMapping("/exam_result")
+	public String recruitExamResult() {
+		return "popup/recruitmentExamResult";
+	}
 }
