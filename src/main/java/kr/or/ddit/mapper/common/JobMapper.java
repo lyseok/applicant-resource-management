@@ -11,6 +11,8 @@ public interface JobMapper {
 
 	public JobVO selectJobByPk(JobVO vo);
 	
+	public List<JobVO> selectJobByTopJob(String topJobCode);
+	
 	public int insertJob(JobVO vo);
 	
 	public int updateJob(JobVO vo);
