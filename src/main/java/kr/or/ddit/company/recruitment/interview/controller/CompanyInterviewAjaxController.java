@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import kr.or.ddit.company.recruitment.interview.service.CompanyInterviewService;
 import kr.or.ddit.dto.VideoInterviewSaveDTO;
+import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.recruitment.InterviewVO;
 import kr.or.ddit.vo.recruitment.VideoInterviewVO;
@@ -50,8 +53,19 @@ public class CompanyInterviewAjaxController {
 			return ResponseEntity.badRequest().body(errors);
 		}
 		
-		service.createInterviewLogic(dto);
+		service.createVideoInterviewLogic(dto);
 		
 	    return ResponseEntity.ok("ok");
+	}
+	
+	@PutMapping
+	public ResponseEntity<?> modifyInterview(@Validated(UpdateGroup.class) @RequestBody InterviewVO interviewData, BindingResult bindingResult){
+		if(bindingResult.hasErrors()) {
+			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
+			return ResponseEntity.badRequest().body(errors);
+		}
+		
+		service.createInterview(interviewData);
+		return ResponseEntity.ok("ok");
 	}
 }

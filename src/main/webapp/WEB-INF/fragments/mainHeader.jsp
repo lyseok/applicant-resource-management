@@ -42,27 +42,27 @@
 	                <div class="layer_member" id="displayMemBtn" style="display:none;">
 			            <ul>
 			                <li>
-			                    <a href="javascript:void(0)" target="_blank">
+			                    <a href="javascript:void(0)">
 			                        <span class="material-symbols-outlined">settings</span> 
 			                        <span class="txt">계정정보 설정</span>
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="/mypage">
+			                    <a href="javascript:void(0)">
 			                        <span class="material-symbols-outlined">mail</span> 
-			                        <span class="txt">마이페이지</span>
+			                        <span class="txt">메일관리</span>
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="javascript:void(0)" target="_blank">
+			                    <a href="javascript:void(0)">
 			                        <span class="material-symbols-outlined">lock</span> 
 			                        <span class="txt">비밀번호 변경</span>
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="javascript:void(0)" target="_blank">
+			                    <a href="/mypage">
 			                        <span class="material-symbols-outlined">person</span> 
-			                        <span class="txt">로그인 관리</span>
+			                        <span class="txt">마이페이지</span>
 			                    </a>
 			                </li>
 			                <li>
@@ -206,7 +206,7 @@
             </div>
             
             <div class="familysite">
-                <a class="item" href="javascript:void(0)" target="_blank" rel="noreferrer">
+                <a class="item" href="javascript:void(0)" rel="noreferrer">
                     <span class="txt">인기 직업순위 들어갈지도~?</span>
                 </a>
             </div>
