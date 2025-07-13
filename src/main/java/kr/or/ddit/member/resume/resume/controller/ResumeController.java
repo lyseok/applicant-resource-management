@@ -78,6 +78,7 @@ public class ResumeController {
 		return "member/resume/mypage/resume/resumeForm";
 	}
 	
+	/*
 	// 등록 로직 구현
 	@ResponseBody
 	@PostMapping("create")
@@ -91,7 +92,15 @@ public class ResumeController {
 		
 		return "";
 	}
-	
+	*/
+
+	// 등록 로직 구현
+	@ResponseBody
+	@PostMapping("create")
+	public String createResume(@RequestBody ResumeVO vo) {
+		service.createResume(vo);
+		return "redirect:/mypage/resume/list";
+	}
 
 	// 삭제 로직 구현
 	@GetMapping("delete/{no}")

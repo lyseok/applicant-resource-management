@@ -2,27 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.FileMapper">
 	<insert id="insertFile">
-		<selectKey resultType="string" keyProperty="fileNo"
-			order="BEFORE">
-			SELECT
-			'FILE'||
-			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(FILE_NO), LENGTH('FILE' ) + 1)), 0) + 1, 6, '0')
-			FROM FILES
-		</selectKey>
-		INSERT INTO FILES (
+		
+	INSERT INTO FILES (
 		FILE_NO
 		, REAL_FILE
 		, FILE_NAME
 		, FILE_SIZE
 		, FILE_TYPE
-		) VALUES (
-		#{fileNo}
+	) VALUES (
+		SEQ_FILE_NO.NEXTVAL,
 		, #{realFile}
 		, #{fileName}
 		, #{fileSize}
-		,
-		#{fileType}
-		)
+		, #{fileType}
+	)
 	</insert>
 
 	<select id="selectFileList">
