@@ -42,7 +42,7 @@
 	                <div class="layer_member" id="displayMemBtn" style="display:none;">
 			            <ul>
 			                <li>
-			                    <a href="javascript:void(0)" target="_blank">
+			                    <a href="javascript:void(0)">
 			                        <span class="material-symbols-outlined">settings</span> 
 			                        <span class="txt">계정정보 설정</span>
 			                    </a>
@@ -50,19 +50,19 @@
 			                <li>
 			                    <a href="javascript:void(0)">
 			                        <span class="material-symbols-outlined">mail</span> 
-			                        <span class="txt">메일 수신 설정</span>
+			                        <span class="txt">메일관리</span>
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="javascript:void(0)" target="_blank">
+			                    <a href="javascript:void(0)">
 			                        <span class="material-symbols-outlined">lock</span> 
 			                        <span class="txt">비밀번호 변경</span>
 			                    </a>
 			                </li>
 			                <li>
-			                    <a href="javascript:void(0)" target="_blank">
+			                    <a href="/mypage">
 			                        <span class="material-symbols-outlined">person</span> 
-			                        <span class="txt">로그인 관리</span>
+			                        <span class="txt">마이페이지</span>
 			                    </a>
 			                </li>
 			                <li>
@@ -172,13 +172,13 @@
                     </ul>
                 </div>
                 <div class="major">
-                    <a class="depth1" href="javascript:void(0)">
+                    <a class="depth1" href="/member/board/commu_board?type=CATE-003">
                         <span class="txt">커뮤니티</span>
                     </a>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">취업준비</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">회사문화</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">자유게시판</span></a></li>
+                        <li><a href="/member/board/commu_board?type=CATE-001"><span class="txt">취업준비</span></a></li>
+                        <li><a href="/member/board/commu_board?type=CATE-002"><span class="txt">회사문화</span></a></li>
+                        <li><a href="/member/board/commu_board?type=CATE-003"><span class="txt">자유게시판</span></a></li>
                     </ul>
                 </div>
                 <div class="major">
@@ -199,14 +199,14 @@
 	                    <span class="txt">고객센터</span>
 	                </a>
 	                <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">공지사항</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">문의게시판</span></a></li>
+                        <li><a href="/member/board/commu_board?type=BRDD-003"><span class="txt">공지사항</span></a></li>
+                        <li><a href="/member/board/commu_board?type=BRDD-001"><span class="txt">문의게시판</span></a></li>
 	                </ul>
 	            </div>
             </div>
             
             <div class="familysite">
-                <a class="item" href="javascript:void(0)" target="_blank" rel="noreferrer">
+                <a class="item" href="javascript:void(0)" rel="noreferrer">
                     <span class="txt">인기 직업순위 들어갈지도~?</span>
                 </a>
             </div>
@@ -250,16 +250,16 @@
                 <div class="major">
                     <span class="depth1"><span class="txt">커뮤니티</span></span>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)" class="new"><span class="txt">취업준비</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">회사문화</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">자유게시판</span></a></li>
+                        <li><a href="/member/board/commu_board?type=CATE-001" class="new"><span class="txt">취업준비</span></a></li>
+                        <li><a href="/member/board/commu_board?type=CATE-002"><span class="txt">회사문화</span></a></li>
+                        <li><a href="/member/board/commu_board?type=CATE-003"><span class="txt">자유게시판</span></a></li>
                     </ul>
                 </div>
                 <div class="minor">
                     <ul class="items">
-                        <li><a href="javascript:void(0)"><span class="material-symbols-outlined">headset_mic</span>고객센터</a></li>
-                        <li><a href="javascript:void(0)"><span class="material-symbols-outlined">campaign</span>공지사항</a></li>
-                        <li><a href="javascript:void(0)"><span class="material-symbols-outlined">celebration</span>이벤트</a></li>
+                        <li><a href="/member/board/admin_board?type=BRDD-002"><span class="material-symbols-outlined">headset_mic</span>고객센터</a></li>
+                        <li><a href="/member/board/admin_board?type=BRDD-003&tab=notice"><span class="material-symbols-outlined">campaign</span>공지사항</a></li>
+                        <li><a href="/member/board/admin_board?type=BRDD-003&tab=event"><span class="material-symbols-outlined">celebration</span>이벤트</a></li>
                     </ul>
                 </div>
                 <div class="major">
@@ -279,7 +279,7 @@
                         </svg></a>
                     <ul class="items">
 						<li><a href="/mypage/resume/list" data-nav-track="ga_lead|main-gnb|total_menu|resume-manage">이력서 관리</a></li>
-						<li><a href="/zf_user/persons/scrap-recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a></li>
+						<li><a href="/member/mypage/scrab_recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a></li>
 						<li><a href="/zf_user/persons/apply-status-list" data-nav-track="ga_lead|main-gnb|total_menu|apply_list">지원현황</a></li>
 						<li><a href="/zf_user/jobs/read-jobs" data-nav-track="ga_lead|main-gnb|total_menu|recent">최근본</a></li>
                     </ul>

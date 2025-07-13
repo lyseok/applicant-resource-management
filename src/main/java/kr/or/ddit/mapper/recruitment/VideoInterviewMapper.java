@@ -15,4 +15,5 @@ public interface VideoInterviewMapper {
 	public int updateVideoInterview(VideoInterviewVO vo);
 	public int deleteVideoInterview(String VideoInterviewNo);
 	public String getCompanyVideoURL(Map<String, String> data);
+	
 }

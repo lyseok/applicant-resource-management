@@ -98,15 +98,20 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 	
 	@Override
 	public List<ResumeVO> selectTalentPoolListByFilter(Map<String, Object> filter) {
-	    return TPMapper.selectTalentPoolListByFilter(filter);
+	   
+		return TPMapper.selectTalentPoolListByFilter(filter);
 	}
 
 	@Override
 	public List<ResumeVO> selectSearchSkillAndLicense(Map<String, String> paramMap) {
-		// TODO Auto-generated method stub
 		return TPMapper.selectSearchSkillAndLicense(paramMap);
 	}
 
+	@Override
+	public List<CareerVO> selectCareer() {
+		// TODO Auto-generated method stub
+		return TPMapper.selectCareer();
+	}
 
 	private void setCodeName(ResumeVO rvo) {
 		List<CareerVO> careerList = rvo.getCareerList();
@@ -120,7 +125,8 @@ public class CompanyTalentServiceImpl implements CompanyTalentService {
 			String cmnjCode = codeMapProvier.getJobName(job.getJobCode());
 			job.setJobName(cmnjCode);
 		}
-
+		
 	
 	}
+
 }

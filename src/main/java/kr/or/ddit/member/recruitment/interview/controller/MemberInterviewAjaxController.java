@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,4 +21,9 @@ public class MemberInterviewAjaxController {
 	public List<Map<String, Object>> getInterviewList(){
 		return service.readMyInterviewList();
 	}
+	
+	@GetMapping("/{no}")
+	public List<Map<String, Object>> getInterviewDetail(@PathVariable String no){
+		return service.readInterviewDetail(no);
+	} 
 }

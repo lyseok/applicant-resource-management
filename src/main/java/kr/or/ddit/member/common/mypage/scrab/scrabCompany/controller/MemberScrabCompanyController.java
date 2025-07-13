@@ -24,11 +24,21 @@ import kr.or.ddit.vo.common.ScrabCompanyVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/member/common/mypage/scrab/scrabCompany")
+@RequestMapping("/member/mypage/scrab_company")
 @RequiredArgsConstructor
 public class MemberScrabCompanyController {
 
 	private final MemberScrabCompanyService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "member/common/mypage/scrab/scrabCompany/scompanyForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -45,7 +55,7 @@ public class MemberScrabCompanyController {
 	}
 	
 	// 관심 기업 목록조회
-	@GetMapping("/scompanyList")
+	@GetMapping("/list")
 	public String scompanyList(Model model) {
 		List<ScrabCompanyVO> scompanyList = service.readScrabCompanyList();
 		model.addAttribute("scompanyList", scompanyList);
@@ -56,7 +66,7 @@ public class MemberScrabCompanyController {
 	}
 	
 	// 관심 기업 단건조회
-	@GetMapping("/scompanyDetail")
+	@GetMapping("/detail")
 	public String scompanyDetail(
 		@RequestParam(value = "companyId", required = false) String companyId
 		, Model model
@@ -74,16 +84,8 @@ public class MemberScrabCompanyController {
 		return "member/common/mypage/scrab/scrabCompany/scompanyDetail";
 	}
 	
-	// 등록 폼으로 이동
-	@GetMapping("/scompanyForm")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "member/common/mypage/scrab/scrabCompany/scompanyForm";
-	}
-	
 	// 수정 폼으로 이동
-	@GetMapping("/scompanyForm/edit")
+	@GetMapping("/form/edit")
 	public String editForm(String companyId, Model model) {
 		if(!model.containsAttribute(MODELNAME)) {  //모델에 scompany가 없으면, db에서 가져옴
 			ScrabCompanyVO scompany = service.searchScrabCompanyByComId(companyId).get();
@@ -95,7 +97,7 @@ public class MemberScrabCompanyController {
 	}
 
 	// 폼 입력 데이터 처리
-	@PostMapping("/scompanyForm/insert")
+	@PostMapping("/form/insert")
 	public String scompanyForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) ScrabCompanyVO scompany
 		, BindingResult errors
@@ -118,7 +120,7 @@ public class MemberScrabCompanyController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/scompanyForm/update")
+	@PutMapping("/form/edit")
 	public String scompanyEdit(
 		ScrabCompanyVO scompany
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) ScrabCompanyVO vo
@@ -141,7 +143,7 @@ public class MemberScrabCompanyController {
 	}
 	
 	// 관심 기업 단건 삭제
-	@DeleteMapping("scompanyDetail/remove")
+	@DeleteMapping("detail/remove")
 	public String scompanyDelete(ScrabCompanyVO scompany, Model model) {
 		service.removeScrabCompany(scompany);
 		
@@ -149,5 +151,5 @@ public class MemberScrabCompanyController {
 		model.addAttribute("searchBar", true);
 		return "member/common/mypage/scrab/scrabCompany/scompanyList";
 	}
-	
+	*/
 }

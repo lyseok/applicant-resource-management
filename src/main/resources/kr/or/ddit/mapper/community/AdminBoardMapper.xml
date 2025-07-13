@@ -36,19 +36,16 @@
         ON (ADMIN_BOARD_VIEW.BOARD_NO = ADMIN_COMMENT.BOARD_NO)
 	</select>
 
-	<select id="selectAdminBoardListByType" resultMap="adminBoardMap">
+	<select id="selectAdminBoardListByType">
 		SELECT 
-			   A.BOARD_NO
-			 , A.USER_ID
-			 , A.BOARD_TYPE_CODE
-			 , A.BOARD_TITLE
-			 , A.BOARD_CONTENT
-			 , A.BOARD_STATUS
-		FROM ADMIN_BOARD A
-		INNER JOIN USERS U 
-			ON A.USER_ID = U.USER_ID
-		WHERE A.USER_ID = #{userId}
-			AND A.BOARD_TYPE_CODE = #{boardTypeCode}
+		       BOARD_NO
+		     , USER_ID
+		     , BOARD_TYPE_CODE
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_STATUS
+		FROM ADMIN_BOARD
+		WHERE BOARD_TYPE_CODE = #{boardTypeCode}
 	</select>
 
 	<select id="selectAdminBoardList" resultMap="adminBoardMap">
@@ -88,8 +85,8 @@
 			, #{boardTitle}
 			, sysdate
 			, #{boardContent}
-			, #{boardPostHit}
-			, #{boardStatus}
+			, 0
+			, 'R'
 		)
 	</insert>
 

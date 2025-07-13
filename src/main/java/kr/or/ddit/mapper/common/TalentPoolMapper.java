@@ -49,7 +49,7 @@ public int insertMember(MemberVO member);
 	
 	public List<ResumeVO> selectSearchSkillAndLicense(Map<String, String> paramMap);
 	
-
+	public List<CareerVO> selectCareer();
 
 }
 
