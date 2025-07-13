@@ -52,6 +52,15 @@ public class RecruitmentExamAjaxController {
 		 return result;
 	}
 	
+	@GetMapping("/result/{recruitExamNo}/{applicantId}")
+	public ResponseEntity<RecruitmentExamScoreResultVO> result(
+			@PathVariable String recruitExamExamNo
+			,@PathVariable String applicantId
+	){
+		return null;
+		
+	}
+	
 	
 	@ExceptionHandler(AlreadyTakenExamException.class)
 	public ResponseEntity<String> examTaken(AlreadyTakenExamException ex){

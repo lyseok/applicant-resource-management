@@ -13,4 +13,6 @@ public interface RecruitmentExamService {
 	public RecruitmentExamVO readRecruitExamQuestionWithOptionByNo(String recruitExamNo);
 
 	public RecruitmentExamScoreResultVO gradeAndSave(String userId, List<RecruitmentExamAnswerDTO> answers);
+	
+	
 }

@@ -68,4 +68,23 @@
      WHERE APPLICANT_ID    = #{applicantId}
        AND RECRUIT_EXAM_NO = #{recruitExamNo}
   </select>
+  
+  
+  <select id="selectResultByExamAndUser" resultType="kr.or.ddit.vo.recruitment.RecruitmentExamScoreResultVO" parameterMap="map">
+  	 SELECT
+		    aa.APPLICANT_ID           AS applicantId,              
+		    SUM(aa.APPLICANT_SCORE)   AS totalScore,                
+		    e.RECRUIT_EXAM_CUTLINE    AS cutlineScore,              
+	    CASE 
+	      WHEN SUM(aa.APPLICANT_SCORE) >= e.RECRUIT_EXAM_CUTLINE 
+	      THEN 'Y' 
+	      ELSE 'N' 
+	    END                       AS passYn                    
+	  FROM APPLICANT_ANSWER aa                                    
+	  JOIN RECRUITMENT_EXAM  e                                    
+	    ON aa.RECRUIT_EXAM_NO = e.RECRUIT_EXAM_NO
+	  WHERE aa.RECRUIT_EXAM_NO = #{recruitExamNo}                 
+	    AND aa.APPLICANT_ID    = #{applicantId}                   
+	  GROUP BY aa.APPLICANT_ID, e.RECRUIT_EXAM_CUTLINE            
+  </select>
 </mapper>

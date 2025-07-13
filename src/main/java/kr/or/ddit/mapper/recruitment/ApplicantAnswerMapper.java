@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.or.ddit.vo.recruitment.ApplicantAnswerVO;
+import kr.or.ddit.vo.recruitment.RecruitmentExamScoreResultVO;
 
 @Mapper
 public interface ApplicantAnswerMapper {
@@ -15,4 +16,5 @@ public interface ApplicantAnswerMapper {
 	public int deleteApplicantAnswer(String applicantAnswerNo);
 	
 	public int countByUserAndExam(String applicantId, String recruitExamNo);
+	public RecruitmentExamScoreResultVO selectResultByExamAndUser(String applicantId, String recruitExamNo);
 }
