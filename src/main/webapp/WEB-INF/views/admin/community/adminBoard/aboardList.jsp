@@ -22,10 +22,14 @@ fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 			rslt.forEach(item => {
 				console.log("아이템 나오니? :", item);
 				html += `
-					<li>게시글 번호: \${item.boardNo}</li>
-					<li>사용자 ID: \${item.userId}</li>
+					<p class="h4">게시글 목록</p>
+					<li>작성자 : \${item.userId}</li>
 					<li>게시판 유형 코드: \${item.boardTypeCode}</li>
-					<li>제목: \${item.boardTitle}</li>
+					<li>제목: 
+						<a href="/admin/board/admin_board/detail?no=\${item.boardNo}"">
+						\${item.boardTitle}
+						</a>
+					</li>
 					<li>등록일시: \${item.boardWriteDate}</li>
 					<li>내용: \${item.boardContent}</li>
 					<li>삭제일시: \${item.boardDeleteDate}</li>

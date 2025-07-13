@@ -43,7 +43,7 @@ public class AdminAdminBoardAjaxController {
     }
 
     // 해당 유형의 해당 글의 게시글 단건조회
-	@GetMapping("/{boardTypeCode}/{boardNo}")
+	@GetMapping("/detail/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
 	    return service.readAdminBoardByPk(boardNo)
 	    		.map(ResponseEntity::ok)  //boardNo 있으면 ok 반환
@@ -68,7 +68,7 @@ public class AdminAdminBoardAjaxController {
 	}
 	
 	// 해당 유형의 해당 글의 게시글 수정, 삭제 상태 변경
-	@PostMapping("/{boardTypeCode}/{boardNo}")
+	@PostMapping("/detail/{boardNo}")
 	public Map<String, Object> editBoard(
 		@PathVariable String boardTypeCode
 		, @PathVariable String boardNo

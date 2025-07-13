@@ -7,44 +7,32 @@
 
 <body>
 
-	<h4>관리자 게시판 상세보기</h4>
+	<div id="aboardDetail"></div>
 	
-	<table class="table table-bordered">
-		<tr>
-			<td colspan="2">
-				<c:url value="/admin/aboardForm/edit" var="updateURL">
-					<c:param name="boardNo" value="${aboard.boardNo}"></c:param>
-				</c:url>
-				<a class="btn btn-primary" href="${updateURL}">수정</a>
-			</td>
-		</tr>
-	<tr><th>게시글 번호</th><td>${aboard.boardNo}</td></tr>
-	<tr><th>사용자 ID</th><td>${aboard.userId}</td></tr>
-	<tr><th>게시판 유형 코드</th><td>${aboard.boardTypeCode}</td></tr>
-	<tr><th>제목</th><td>${aboard.boardTitle}</td></tr>
-	<tr><th>등록일시</th><td>${aboard.boardWriteDate}</td></tr>
-	<tr><th>내용</th><td>${aboard.boardContent}</td></tr>
-	<tr><th>삭제일시</th><td>${aboard.boardDeleteDate}</td></tr>
-	<tr><th>조회수</th><td>${aboard.boardPostHit}</td></tr>
-	<tr><th>게시글 상태</th><td>${aboard.boardStatus}</td></tr>
-	<!-- 게시글 존재 여부에 따른 분기 -->
-	<c:if test="${not empty aboard.adminCommentList}">
-		<c:forEach items="${aboard.adminCommentList}" var="acomment">
-			<tr>
-				<td>${acomment.boardCommentNo}</td>
-				<td>${acomment.userId}</td>
-				<td>${acomment.boardNo}</td>
-				<td>${acomment.boardCommentContent}</td>
-				<td>${acomment.boardWriteDate}</td>
-				<td>${acomment.boardDeleteDate}</td>
-				<td>${acomment.boardCommentStatus}</td>
-			</tr>
-		</c:forEach>
-	</c:if>
-	<c:if test="${empty aboard.adminCommentList}">
-	    <tr>
-			<td colspan="7">댓글 없음</td>
-		</tr>
-	</c:if>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const boardNo = "${aboard.boardNo}";
+console.log("boardNo 나오니? : ", boardNo);
 
+const aboardDetail = document.querySelector("#aboardDetail");
+
+fetch(`/ajax/admin/board/admin_board/detail/\${boardNo}`)
+.then(resp => resp.json())
+.then(rslt => {
+	console.log("rslt 나오니? : ", rslt);
+	let html = "";
+	html += `
+			<p class="h4">\${rslt.boardTitle}</p>
+			<p>작성자 : \${rslt.userId}</p>
+			<p>게시판 유형 코드: \${rslt.boardTypeCode}</p>
+			<p>등록일시: \${rslt.boardWriteDate}</p>
+			<p>내용: \${rslt.boardContent}</p>
+			<p>삭제일시: \${rslt.boardDeleteDate}</p>
+			<p>조회수: \${rslt.boardPostHit}</p>
+			<p>게시글 상태: \${rslt.boardStatus}</p>`;
+			
+	aboardDetail.innerHTML = html;
+	});
+});
+</script>
 </body>
