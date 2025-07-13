@@ -19,7 +19,8 @@ const templateMap = {
     <div class="section-form-wrap" id="form-edu${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>최종 학력</label>
-        <select name="resumeVO.educationList[${idx}].highestEducationCode" required id="highestEducationCode${idx}">
+        <select name="resumeVO.educationList[${idx}].highestEducationCode" id="highestEducationCode${idx}" required>
+		  <option value="">선택</option>
           <!-- 코드에 맞게 추가 -->
         </select>
       </div>
@@ -29,7 +30,8 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label>졸업여부</label>
-		<select name="resumeVO.educationList[${idx}].graduateYn" id="graduateYn${idx}" data-idx="${idx}">
+		<select name="resumeVO.educationList[${idx}].graduateYn" id="graduateYn${idx}" data-idx="${idx}" required>
+		  <option value="">선택</option>
           <!-- 코드에 맞게 추가 -->
         </select>
       </div>
@@ -68,7 +70,8 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label>전공 구분</label>
-        <select name="resumeVO.educationList[${idx}].specialtyList[0].subMajorCode" id="majorTypeCode${idx}" data-idx="${idx}">
+        <select name="resumeVO.educationList[${idx}].specialtyList[0].subMajorCode" id="majorTypeCode${idx}" data-idx="${idx}" required>
+		  <option value="">선택</option>
           <!-- 코드에 맞게 추가 -->
         </select>
       </div>
@@ -93,7 +96,7 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label>직무</label>
-        <select name="resumeVO.careerList[${idx}].jobCode" required id="jobCode${idx}">
+        <select name="resumeVO.careerList[${idx}].jobCode" id="jobCode${idx}" required>
           <option value="">선택</option>
         </select>
       </div>
@@ -141,19 +144,19 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label>직급</label>
-        <select name="resumeVO.careerList[${idx}].jobGradeCode"id="jobGradeCode${idx}">
+        <select name="resumeVO.careerList[${idx}].jobGradeCode"id="jobGradeCode${idx}" required>
           <option value="">선택</option>
         </select>
       </div>
       <div class="section-form-row">
         <label>직책</label>
-        <select name="resumeVO.careerList[${idx}].positionCode" id="positionCode${idx}">
+        <select name="resumeVO.careerList[${idx}].positionCode" id="positionCode${idx}" required>
           <option value="">선택</option>
         </select>
       </div>
       <div class="section-form-row">
         <label>연차</label>
-        <select name="resumeVO.careerList[${idx}].careerYear" id="careerYear${idx}">
+        <select name="resumeVO.careerList[${idx}].careerYear" id="careerYear${idx}" required>
           <option value="">선택</option>
         </select>
       </div>
@@ -187,7 +190,7 @@ const templateMap = {
     <div class="section-form-wrap" id="form-exp${idx}" data-idx="${idx}">
       <div class="section-form-row">
         <label>경험구분</label>
-        <select name="resumeVO.myExperienceList[${idx}].expCode" required id="expCode${idx}">
+        <select name="resumeVO.myExperienceList[${idx}].expCode" id="expCode${idx}" required>
           <option value="">선택</option>
         </select>
       </div>
@@ -416,7 +419,7 @@ const listItemMap = {
 	      <button type="button" class="btn_edit">
 	      	<span class="material-symbols-outlined fs-3">stylus</span>
 	      </button>
-	      <button type="button" class="btn_del">
+	      <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="edu" data-idx="${idx}" >
 	      	<span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
 	     </button>
       </div>
@@ -433,7 +436,7 @@ const listItemMap = {
         <button type="button" class="btn_edit">
           <span class="material-symbols-outlined fs-3">stylus</span>
         </button>
-        <button type="button" class="btn_del">
+        <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="career" data-idx="${idx}" >
           <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
         </button>
       </div>
@@ -446,7 +449,7 @@ const listItemMap = {
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
           </button>
-          <button type="button" class="btn_del">
+          <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="skill" data-idx="${idx}" >
             <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
           </button>
         </div>
@@ -463,7 +466,7 @@ const listItemMap = {
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
           </button>
-          <button type="button" class="btn_del">
+          <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="exp" data-idx="${idx}" >
             <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
           </button>
         </div>
@@ -479,7 +482,7 @@ const listItemMap = {
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
           </button>
-          <button type="button" class="btn_del">
+          <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="license" data-idx="${idx}" >
             <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
           </button>
         </div>
@@ -492,7 +495,7 @@ const listItemMap = {
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
           </button>
-          <button type="button" class="btn_del">
+          <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="support" data-idx="${idx}" >
             <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
           </button>
         </div>
@@ -509,7 +512,7 @@ const listItemMap = {
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
           </button>
-          <button type="button" class="btn_del">
+          <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="award" data-idx="${idx}" >
             <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
           </button>
         </div>
@@ -526,7 +529,7 @@ const listItemMap = {
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
           </button>
-          <button type="button" class="btn_del">
+          <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="language" data-idx="${idx}" >
             <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
           </button>
         </div>
@@ -543,7 +546,7 @@ const listItemMap = {
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
           </button>
-          <button type="button" class="btn_del">
+          <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="portfolio" data-idx="${idx}" >
             <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
           </button>
         </div>
@@ -556,7 +559,7 @@ const listItemMap = {
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
           </button>
-          <button type="button" class="btn_del">
+          <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="military" data-idx="${idx}" >
             <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
           </button>
         </div>
@@ -581,218 +584,18 @@ const resume = {
   "updateDate": "",
   "resumeSubmitYn": "",
   "resumeDeleteDate": "",
-  "company": {
-    "userId": "",
-    "userPassword": "",
-    "userRole": "",
-    "userWithdrawDate": "",
-    "userStatus": false,
-    "userEnabled": "",
-    "comName": "",
-    "comInfo": "",
-    "comNum": "",
-    "comEmail": "",
-    "comUrl": "",
-    "comCreateYear": "",
-    "comMem": 0,
-    "comLogo": "",
-    "comPayment": "",
-    "industryType": ""
-  },
-  "careerList": [
-    {
-      "careerNo": "",
-      "resumeNo": "",
-      "jobCode": "",
-      "jobCodeName": "",
-      "startWorkDate": "",
-      "retireDate": "",
-      "tenure": "",
-      "department": "",
-      "responsibility": "",
-      "freelancer": "",
-      "jobGradeCode": "",
-      "jobGradeCodeName": "",
-      "positionCode": "",
-      "positionCodeName": "",
-      "careerYear": "",
-      "careerYearName": "",
-      "salary": "",
-      "location": "",
-      "deleteDate": "",
-      "comId": "",
-      /*"company": {
-        "userId": "",
-        "userPassword": "",
-        "userRole": "",
-        "userWithdrawDate": "",
-        "userStatus": false,
-        "userEnabled": "",
-        "comName": "",
-        "comInfo": "",
-        "comNum": "",
-        "comEmail": "",
-        "comUrl": "",
-        "comCreateYear": "",
-        "comMem": 0,
-        "comLogo": "",
-        "comImage": "",
-        "comPayment": "",
-        "industryType": ""
-      },*/
-    }
-  ],
-  "supportList": [
-    {
-      "supportNo": "",
-      "resumeNo": "",
-      "disabilityCode": "",
-      "disabilityCodeName": "",
-      "disabilityLevelCode": "",
-      "disabilityLevelCodeName": "",
-      "deleteDate": ""
-    }
-  ],
-  "awardList": [
-    {
-      "awardCode": "",
-      "resumeNo": "",
-      "awardName": "",
-      "awardDate": "",
-      "hosting": "",
-      "deleteDate": ""
-    }
-  ],
-  "myExperienceList": [
-    {
-      "myExpCode": "",
-      "resumeNo": "",
-      "expCode": "",
-      "expCodeName": "",
-      "expName": "",
-      "organizationName": "",
-      "expStartDate": "",
-      "expEndDate": "",
-      "deleteDate": ""
-    }
-  ],
-  "mySkillList": [
-    {
-      "mySkillCode": "",
-      "resumeNo": "",
-      "mySkillName": "",
-      "deleteDate": ""
-    }
-  ],
-  "myLicenseList": [
-    {
-      "myLicense": "",
-      "resumeNo": "",
-      "licenseCode": "",
-      "licenseCodeName": "",
-      "licensePassDate": "",
-      "deleteDate": ""
-    }
-  ],
-  "introduction": {
-    "introductionDeleteDate": "",
-    "introductionSubmitYn": "",
-    "introductionNo": "",
-    "userId": "",
-    "introductionName": "",
-    "introductionContent": "",
-    "introductionQuestion": "",
-    "introductionCreateDate": ""
-  },
-  "languageSkillList": [
-    {
-      "languageSkillNo": "",
-      "resumeNo": "",
-      "languageExamCode": "",
-      "languageExamCodeName": "",
-      "languageCode": "",
-      "languageCodeName": "",
-      "languageExamName": "",
-      "passDate": "",
-      "languageExamType": "",
-      "languageExamScore": "",
-      "languageExamLevelCode": "",
-      "languageExamLevelCodeName": "",
-      "deleteDate": ""
-    }
-  ],
-  "portfolioList": [
-    {
-      "porCode": "",
-      "resumeNo": "",
-      "porName": "",
-      "porStartDate": "",
-      "porEndDate": "",
-      "porInformation": "",
-      "deleteDate": "",
-      "porUrl": ""
-    }
-  ],
-  "militaryList": [
-    {
-      "militaryNo": "",
-      "resumeNo": "",
-      "serviceCategoryCode": "",
-      "militaryTypeCode": "",
-      "militaryRankCode": "",
-      "dischargeCode": "",
-      "militaryStartDate": "",
-      "militaryEndDate": "",
-      "militaryReason": "",
-      "deleteDate": ""
-    }
-  ],
-  "educationList": [
-    {
-      "educationNo": "",
-      "resumeNo": "",
-      "highestEducationCode": "",
-      "schoolName": "",
-      "graduateYn": "",
-      "transferYn": "",
-      "entranceDate": "",
-      "graduateDate": "",
-      "location": "",
-      "departmentCode": "",
-      "deleteDate": "",
-      "specialtyList": [
-        {
-          "educationNo": "",
-          "resumeNo": "",
-          "mainMajor": "",
-          "subMajor": "",
-          "subMajorCode": "",
-          "deleteDate": ""
-        }
-      ]
-    }
-  ],
-  "joblist": [
-    {
-      "jobCode": "",
-      "topJobCode": "",
-      "jobName": ""
-    }
-  ],
-  "topjoblist": [
-    {
-      "topJobCode": "",
-      "topJobName": "",
-      "jobVO": [
-        {
-          "jobCode": "",
-          "topJobCode": "",
-          "jobName": ""
-        }
-      ]
-    }
-  ],
-  "introductionNo": ""
+  "company": {},
+  "careerList": [],
+  "supportList": [],
+  "awardList": [],
+  "myExperienceList": [],
+  "mySkillList": [],
+  "myLicenseList": [],
+  "introduction": {},
+  "languageSkillList": [],
+  "portfolioList": [],
+  "militaryList": [],
+  "educationList": []
 }
 
 // 저장 버튼 클릭 시에 json에 추가해 줄 vo 세팅하기
@@ -822,15 +625,7 @@ function makeVO(type, data) {
           }
         ]
       };
-    case "license":
-      return {
-        myLicense: "",
-        resumeNo: "",
-        licenseCode: data.licenseCode,
-        licenseCodeName: "",
-        licensePassDate: data.licensePassDate,
-        deleteDate: ""
-      };
+
     case "career":
       return {
         careerNo: "",
@@ -860,11 +655,110 @@ function makeVO(type, data) {
         myskill: {},
         mySkillName: ""
       };
-    // ...필요한 유형 모두 추가 ★★★★★ 여기 추가해야됌
+
+    case "skill":
+      return {
+        mySkill: "",
+        resumeNo: "",
+        mySkillName: data.mySkillName,
+        deleteDate: ""
+      };
+
+    case "exp":
+      return {
+        myExperience: "",
+        resumeNo: "",
+        expCode: data.expCode,
+        expCodeName: "",
+        expName: data.expName,
+        expStartDate: data.expStartDate,
+        expEndDate: data.expEndDate,
+        organizationName: data.organizationName,
+        deleteDate: ""
+      };
+
+    case "support":
+      return {
+        supportNo: "",
+        resumeNo: "",
+        disabilityCode: data.disabilityCode,
+        disabilityCodeName: "",
+        disabilityLevelCode: data.disabilityLevelCode,
+        disabilityLevelCodeName: "",
+        deleteDate: ""
+      };
+
+    case "license":
+      return {
+        myLicense: "",
+        resumeNo: "",
+        licenseCode: data.licenseCode,
+        licenseCodeName: "",
+        licensePassDate: data.licensePassDate,
+        deleteDate: ""
+      };
+
+    case "language":
+      return {
+        languageSkillNo: "",
+        resumeNo: "",
+        languageCode: data.languageCode,
+        languageExamCode: data.languageExamCode,
+        languageExamName: data.languageExamName,
+        passDate: data.passDate,
+        languageExamType: data.languageExamType,
+        languageExamScore: data.languageExamScore,
+        languageExamLevelCode: data.languageExamLevelCode,
+        deleteDate: ""
+      };
+
+    case "award":
+      return {
+        awardNo: "",
+        resumeNo: "",
+        awardName: data.awardName,
+        awardDate: data.awardDate,
+        hosting: data.hosting,
+        deleteDate: ""
+      };
+
+    case "portfolio":
+      return {
+        portfolioNo: "",
+        resumeNo: "",
+        porName: data.porName,
+        porUrl: data.porUrl,
+        porStartDate: data.porStartDate,
+        porEndDate: data.porEndDate,
+        porInformation: data.porInformation,
+        deleteDate: ""
+      };
+
+    case "military":
+      return {
+        militaryNo: "",
+        resumeNo: "",
+        serviceCategoryCode: data.serviceCategoryCode,
+        militaryTypeCode: data.militaryTypeCode,
+        militaryRankCode: data.militaryRankCode,
+        dischargeCode: data.dischargeCode,
+        militaryStartDate: data.militaryStartDate,
+        militaryEndDate: data.militaryEndDate,
+        militaryReason: data.militaryReason,
+        deleteDate: ""
+      };
+
+    case "selfintro":
+      return {
+        introductionName: data.introductionName,
+        introductionContent: data.introductionContent
+      };
+
     default:
-      return data; // fallback, 커스텀 필요
+      return data;
   }
 }
+
 
 // makeVO랑 세트로 동작, 확인 버튼 클릭 시 vo를 위에서 만들고 > 여기서 어느위치에 추가할지 정해줌 
 const arrayKey = {
@@ -998,20 +892,20 @@ const selectLoadConfig = {
       valueKey: "codeDetailNo",
       labelKey: "codeName"
     },
-	{ 
-	  selector: el => el.querySelector("#militaryRankCode" + el.dataset.idx),
-	  url: "/ajax/code/cmncodegroup/MLRK",
-	  key: "cmnCodeList",  // 만약 배열이 data 전체라면 빈 문자열
-	  valueKey: "codeDetailNo",
-	  labelKey: "codeName"
-	},
-	{ 
-	  selector: el => el.querySelector("#dischargeCode" + el.dataset.idx),
-	  url: "/ajax/code/cmncodegroup/DSCH",
-	  key: "cmnCodeList",  // 만약 배열이 data 전체라면 빈 문자열
-	  valueKey: "codeDetailNo",
-	  labelKey: "codeName"
-	},
+		{ 
+		  selector: el => el.querySelector("#militaryRankCode" + el.dataset.idx),
+		  url: "/ajax/code/cmncodegroup/MLRK",
+		  key: "cmnCodeList",  // 만약 배열이 data 전체라면 빈 문자열
+		  valueKey: "codeDetailNo",
+		  labelKey: "codeName"
+		},
+		{ 
+		  selector: el => el.querySelector("#dischargeCode" + el.dataset.idx),
+		  url: "/ajax/code/cmncodegroup/DSCH",
+		  key: "cmnCodeList",  // 만약 배열이 data 전체라면 빈 문자열
+		  valueKey: "codeDetailNo",
+		  labelKey: "codeName"
+		},
   ],
   // ...type별 추가
 };
@@ -1040,9 +934,9 @@ async function setSelectOptionsByApi(selectElem, url, arrKey, valueKey, labelKey
     } else {
       list = resp.data[arrKey];
     }
-    selectElem.innerHTML = list.map(i =>
+    selectElem.insertAdjacentHTML('beforeend', list.map(i =>
       `<option value="${i[valueKey]}">${i[labelKey]}</option>`
-    ).join("");
+    ).join(""));
   } catch (err) {
     console.error("옵션 로드 실패:", err);
   }
@@ -1093,10 +987,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const formWrap = e.target.closest('.section-form-wrap');
             if (!formWrap) return;
             const thisType = formWrap.id.split('-')[1].replace(/\d+$/, '');
-            const idx = formWrap.dataset.idx;
             const section = formWrap.closest('.section');
             const addBtn = section.querySelector('.add-btn');
             const listContainer = section.querySelector('.listContainer');
+						
             // 입력값 추출
             let data = {};
             formWrap.querySelectorAll("input, select, textarea").forEach(input => {
@@ -1105,29 +999,30 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             
             // JS JSON 객체에 넘기기 위한 반복문 코드
-			formWrap.querySelectorAll("input, select, textarea").forEach(input => {
-				const fromDataName = input.name.split('.').pop().replace(/\[\d+\]/, '');
-				data[fromDataName] = input.value;
-			});
+						formWrap.querySelectorAll("input, select, textarea").forEach(input => {
+							const fromDataName = input.name.split('.').pop().replace(/\[\d+\]/, '');
+							data[fromDataName] = input.value;
+						});
 			
-			// 저장버튼 클릭 시 위에서 만든 json 객체 
-			const vo = makeVO(thisType, data);
-			const key = arrayKey[thisType];
-			if (key) resume[key].push(vo);
-			
-			
-			console.log(resume)
-			
+						// 위에서 만든 변수들을 vo 형태에 맞게 세팅할 수 있게 미리만들어둔 함수에 넘겨줌
+						const vo = makeVO(thisType, data);
+						const key = arrayKey[thisType];
+						const idx = resume[key].length;
+						if (key) resume[key].push(vo);
 			
             // 리스트 템플릿 추가
             const itemHtml = listItemMap[thisType](idx, data);
+						console.log(idx)
             listContainer.insertAdjacentHTML('beforeend', itemHtml);
+						typeCounters[thisType] = resume[key].length;
+						
             // 폼 제거, +버튼 복원
             formWrap.remove();
-            typeCounters[thisType] = Math.max((typeCounters[thisType] || 1) - 1, 0);
             if (addBtn) addBtn.style.display = '';
+						
             // 반드시 리스트 보여주기!
             listContainer.classList.remove('d-none');
+						
             // section-content는 계속 숨김
             const secCont = section.querySelector('.section-content');
             if (secCont) secCont.style.display = "none";
@@ -1139,13 +1034,13 @@ document.addEventListener("DOMContentLoaded", function () {
           if (e.target.classList.contains('btn_red_line')) {
             const formWrap = e.target.closest('.section-form-wrap');
             if (!formWrap) return;
-			const matches = formWrap.id.match(/^form-([a-z]+)\d*$/);
-			const thisType = matches?.[1];
-			console.log("추출된 type:", thisType);
-			if (!thisType) {
-			  console.warn("formWrap ID에서 type 추출 실패:", formWrap.id);
-			  return;
-			}
+						const matches = formWrap.id.match(/^form-([a-z]+)\d*$/);
+						const thisType = matches?.[1];
+						console.log("추출된 type:", thisType);
+						if (!thisType) {
+						  console.warn("formWrap ID에서 type 추출 실패:", formWrap.id);
+						  return;
+						}
 
             const section = document.querySelector(`#section-${thisType}`);
             const listContainer = section.querySelector('.listContainer');
@@ -1171,6 +1066,75 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+
+// ↓↓↓ listContainer 영역에서 버튼클릭 이벤트
+// 삭제버튼 클릭 영역
+// 모달 열릴 때 삭제할 타입/idx를 삭제 버튼에 세팅
+document.addEventListener("DOMContentLoaded", function () {
+
+  // 모달 내 삭제 버튼 클릭 시 진짜 삭제 실행
+  document.querySelector("#deleteResumeList .btn-danger").addEventListener("click", function () {
+    const modal = document.getElementById("deleteResumeList");
+    const type = modal.dataset.type;
+    const idx = parseInt(modal.dataset.idx);
+
+    const key = arrayKey[type];
+    if (!key || !Array.isArray(resume[key])) return;
+
+    // 실제 데이터 삭제
+    resume[key].splice(idx, 1);
+
+    // type에 해당하는 섹션 내 listContainer 찾아서 갱신
+    const section = document.querySelector(`#section-${type}`);
+    const listContainer = section.querySelector('.listContainer');
+
+    // 해당 list-item 제거
+    const itemToRemove = listContainer.querySelector(`.list-item[data-idx="${idx}"]`);
+    if (itemToRemove) itemToRemove.remove();
+
+    // 인덱스 재정렬
+    const items = listContainer.querySelectorAll(".list-item");
+    items.forEach((el, i) => {
+      el.dataset.idx = i;
+      // 여기서 버튼의 data-idx도 갱신해줘야 안전해
+      const btnDel = el.querySelector(".btn_del");
+      if (btnDel) btnDel.dataset.idx = i;
+    });
+
+    // 카운터 보정
+    typeCounters[type] = resume[key].length;
+
+    // 리스트가 0개면 listContainer 숨김 + section-content 노출
+    if (resume[key].length === 0) {
+      listContainer.classList.add("d-none");
+      const sectionContent = section.querySelector(".section-content");
+      if (sectionContent) sectionContent.style.display = "";
+    }
+
+    // 모달 닫기
+    const modalInstance = bootstrap.Modal.getInstance(modal);
+    if (modalInstance) modalInstance.hide();
+  });
+
+  // 삭제 버튼 클릭 시 모달에 타입과 인덱스 주입
+  document.addEventListener("click", function (e) {
+    const delBtn = e.target.closest(".btn_del");
+    if (delBtn) {
+      const modal = document.getElementById("deleteResumeList");
+      modal.dataset.type = delBtn.dataset.type;
+      modal.dataset.idx = delBtn.dataset.idx;
+    }
+  });
+
+});
+
+// end 삭제버튼 클릭 영역
+
+
+
+
+
 // 모든 빈 문자열 "" 제거
 function removeEmptyStrings(obj) {
   if (Array.isArray(obj)) {
@@ -1223,6 +1187,14 @@ function setBasicResumeInfo() {
 document.addEventListener("submit", function (e) {
   e.preventDefault(); // ✅ 기본 폼 제출 막기
   setBasicResumeInfo();	// 기존 이력서 hidden태그 가져와서 insert 하기
+  
+
+  // 학력 입력 여부 확인! 위에서 관리하는 resume 객체의 educationList가 없거나, 길이가 1보다 작으면 return
+  if (!resume.educationList || resume.educationList.length < 1) {
+    alert("[학력]은 필수 기입란 입니다.");
+    return; // ✅ 전송 중단
+  }
+
 
   const cleanedResume = removeEmptyStrings(resume);
   const form = e.target;
@@ -1246,10 +1218,23 @@ document.addEventListener("submit", function (e) {
 
 
     // axios 비동기 전송
-    return axios.post("/mypage/resume/create", formData, {
+    axios.post("/mypage/resume/create", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       }
-    });
+    })
+	.then(resp=>{
+		if(resp.data==="ok"){
+			alert("정상적으로 등록되었습니다.");
+			window.location.href = "/mypage/resume/list";
+		} else {
+			alert("이력서 등록에 실패했습니다. 다시 시도해주세요.");
+			console.error("서버로부터 받은 응답", response.data);
+		}
+	})
+	.catch(err=>{
+		alert("이력서 등록 중 오류가 발생했습니다.");
+	    console.error("Error creating resume:", err);
+	});
 
 });

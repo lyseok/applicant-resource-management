@@ -102,8 +102,8 @@ public class ResumeServiceImpl implements ResumeService {
 
 	@Override
 	@Transactional
-	public void createResume(ResumeVO resumeVO) {
-		resumeMapper.insertResume(resumeVO);
+	public int createResume(ResumeVO resumeVO) {
+		int resumeCnt = resumeMapper.insertResume(resumeVO);
 		
 		// 경력
 		if(resumeVO.getCareerList() != null) {
@@ -196,7 +196,7 @@ public class ResumeServiceImpl implements ResumeService {
 		if (resumeVO.getEducationList() != null) {
             for (EducationVO education : resumeVO.getEducationList()) {
                 education.setResumeNo(resumeVO.getResumeNo());
-                educationMapper.insertEducation(education); // educationNo 세팅
+                int cnt = educationMapper.insertEducation(education); // educationNo 세팅
 
                 // 3. 전공 insert (specialtyList)
                 if (education.getSpecialtyList() != null) {
@@ -208,16 +208,17 @@ public class ResumeServiceImpl implements ResumeService {
                 }
             }
         }
+		return resumeCnt;
 	}
 
 	@Override
-	public void editResume(ResumeVO vo) {
-		resumeMapper.updateResume(vo);
+	public int editResume(ResumeVO vo) {
+		return resumeMapper.updateResume(vo);
 	}
 
 	@Override
-	public void removeResume(String no) {
-		resumeMapper.deleteResume(no);
+	public int removeResume(String no) {
+		return resumeMapper.deleteResume(no);
 	}
 	
 	private void setCodeName(ResumeVO resumeVO) {
@@ -304,8 +305,9 @@ public class ResumeServiceImpl implements ResumeService {
 	}
 
 	@Override
-	public void editResumeRemove(ResumeVO vo) {
+	public int editResumeRemove(ResumeVO vo) {
 		// resumeMapper.deleteResume(null);
+		return 0;
 		
 	}
 	 

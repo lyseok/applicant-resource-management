@@ -358,7 +358,7 @@
 	padding: 20px 10px;
     background: #fff;
     right: 0;
-    padding-left: 16.25rem;
+    padding-left: 17.75rem;
     border-top:1px solid #eaeaea;
 }
 .resume_ft .inner{
@@ -385,8 +385,17 @@
 	width:auto;
 }
 
-
-
+/* 삭제 */
+.listContainer{
+	display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.list-item {
+    flex-basis: calc(50% - 20px);
+}
 
 /* 공통으로 옮길내용 */
 .form-check{

@@ -24,7 +24,3 @@ public class EducationVO implements Serializable{
 	
 	private List<SpecialtyVO> specialtyList;
 }
-/*
- * <c:forEach var="edu" items="${talent.educationList }" varStatus="status">
- * <option>${edu. }</option> </c:forEach>
- */

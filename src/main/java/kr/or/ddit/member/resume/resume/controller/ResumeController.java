@@ -105,7 +105,7 @@ public class ResumeController {
 		, @RequestPart(value = "comImage", required = false) MultipartFile comImage
 	) {
 		service.createResume(vo);
-		return "redirect:/mypage/resume/list";
+		return "ok";
 	}
 
 	// 삭제 로직 구현

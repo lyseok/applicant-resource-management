@@ -10,12 +10,12 @@ public interface ResumeService {
 	// 단건 조회
 	public ResumeVO readResumeDetail(ResumeVO vo);
 	// 등록
-	public void createResume(ResumeVO vo);
+	public int createResume(ResumeVO vo);
 	// 수정
-	public void editResume(ResumeVO vo);
+	public int editResume(ResumeVO vo);
 	// 논리 삭제
-	public void editResumeRemove(ResumeVO vo);
+	public int editResumeRemove(ResumeVO vo);
 	// 삭제
-	public void removeResume(String no);
+	public int removeResume(String no);
 	
 }
