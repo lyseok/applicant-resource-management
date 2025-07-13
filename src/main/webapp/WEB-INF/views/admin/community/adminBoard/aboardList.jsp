@@ -15,6 +15,14 @@
 document.addEventListener("DOMContentLoaded", () => {
 const boardTypeCode = "${type}";
 fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
+
+// 자주 묻는 질문이면
+if(boardTypeCode === 'BRDD-002'){
+	//기본값 일반회원 자주묻는 질문 먼저 보이게
+	fetch(`/ajax/admin/board/admin_board/cmncodegroup/UFAQ`)  
+	//탭 누르면 기업회원 자주묻는 질문도 보이게
+	fetch(`/ajax/admin/board/admin_board/cmncodegroup/CFAQ`) 
+}
 	.then(resp => {resp.json()
 		.then(rslt=> {
 			const aboardList = document.querySelector("#aboardList");
@@ -26,7 +34,7 @@ fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 					<li>작성자 : \${item.userId}</li>
 					<li>게시판 유형 코드: \${item.boardTypeCode}</li>
 					<li>제목: 
-						<a href="/admin/board/admin_board/detail?no=\${item.boardNo}"">
+						<a href="/admin/board/admin_board/detail?no=\${item.boardNo}">
 						\${item.boardTitle}
 						</a>
 					</li>
