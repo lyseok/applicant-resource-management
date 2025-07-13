@@ -99,7 +99,7 @@
 			, BOARD_CONTENT = #{boardContent}
 			, BOARD_DELETE_DATE = #{boardDeleteDate}
 			, BOARD_POST_HIT = #{boardPostHit}
-			, BOARD_STATUS = #{boardStatus} 
+			, BOARD_STATUS = 'U'
 		WHERE 
 			BOARD_NO = #{boardNo}
 	</update>

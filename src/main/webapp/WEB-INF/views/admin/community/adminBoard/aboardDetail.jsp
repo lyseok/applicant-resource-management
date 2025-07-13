@@ -31,7 +31,23 @@ fetch(`/ajax/admin/board/admin_board/detail/\${boardNo}`)
 			<p>조회수: \${rslt.boardPostHit}</p>
 			<p>게시글 상태: \${rslt.boardStatus}</p>`;
 			
-	aboardDetail.innerHTML = html;
+			console.log("댓글 상태가 나온다고? : ", rslt.adminCommentList.boardCommentStatus);
+			
+			rslt.adminCommentList.forEach(item => {
+				console.log("아이템 나오니? :", item);
+				
+				let status = item.boardCommentStatus;
+				
+				if (status === 'R' || status === 'U' ) {
+			        html += `
+			          <hr/>
+			          <p>답변 내용: \${item.boardCommentContent}</p>`;
+			          
+			          console.log("답변 내용이 비었다고? : ", item.boardCommentContent);
+			    }
+			});
+
+			aboardDetail.innerHTML = html;
 	});
 });
 </script>
