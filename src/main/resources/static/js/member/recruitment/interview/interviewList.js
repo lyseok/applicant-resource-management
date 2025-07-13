@@ -14,10 +14,11 @@ async function loadIntroductionList(page = 1, keyword = '') {
   try {
     const { data } = await axios.get('/ajax/member/mypage/interview/list');
     console.log(data);
+    
 
-    // const totalCount = data.totalCount || 0;
+    const totalCount = data.length || 0;
     // const totalPages = data.totalPages || 1;
-    // document.getElementById('list-count').textContent = totalCount;
+    document.getElementById('list-count').textContent = totalCount;
     renderIntroductionList(data);
     // renderPagination(page, totalPages, keyword);
 
@@ -57,16 +58,33 @@ function renderIntroductionList(list) {
         <div>
           <p class="d-block h4 fw-bold">${data.RENO_RECRUITMENT_TITLE}</p>
           <p class="text-truncate w800">${data.RENO_REC_CONTENT}</p>
-          <p class="text-truncate w800">${data.INTR_INTERVIEW_TYPE === 'Y' ? '화상면접' : '대면면접'}</p>
-          <p class="text-truncate w800">면접일시 : ${formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)}</p>
+          <p class="text-truncate w800">면접 방식 : ${data.INTR_INTERVIEW_TYPE === 'Y' ? '화상면접' : '대면면접'}</p>
+          <p class="text-truncate w800">면접 일시 : ${formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)}</p>
           ${data.INTR_INTERVIEW_TYPE === 'Y'
-            ? `<p class="text-truncate w800">화상면접일시 : ${formatIsoDateToDatetime(data.APRE_EVALUATION_START_TIME)}</p>`
+            ? `<p class="text-truncate w800">화상면접일시 : 
+                ${
+                  data.APRE_EVALUATION_START_TIME 
+                    ? formatIsoDateToDatetime(data.APRE_EVALUATION_START_TIME) 
+                    : '- 미정 -'
+                }</p>`
             : ''
           }
         </div>
-        <div class="d-flex gap-1">
+        <div class="d-flex flex-column align-items-center gap-2 " >
+          <a class="btn btn_violet_line fw-normal review-btn w-review"
+            href="${data.APRE_STEP_APPLICATION_YN === 'Y' 
+                    ? '/mypage/interview/review/write/' + data.INTR_INTERVIEW_NO 
+                    : 'javascript:void(0);'}"
+            data-record-no="${data.APRE_APPLICANT_RECORD_NO}">
+            면접 리뷰작성
+          </a>
           ${data.INTR_INTERVIEW_TYPE === 'Y'
-            ? `<a class="btn btn_violet_line fw-normal" href="/mypage/introduction/edit/${data.INTR_INTERVIEW_NO}" data-record-no="${data.APRE_APPLICANT_RECORD_NO}" data-bs-toggle="modal" data-bs-target="#joinInterviewModal">면접 접속</a>`
+            ? `<a class="btn btn_violet_line fw-normal w-review" 
+                  href="/mypage/introduction/edit/${data.INTR_INTERVIEW_NO}" 
+                  data-record-no="${data.APRE_APPLICANT_RECORD_NO}" 
+                  data-bs-toggle="modal" data-bs-target="#joinInterviewModal">
+                면접 접속
+              </a>`
             : ''
           }
         </div>
@@ -74,19 +92,23 @@ function renderIntroductionList(list) {
     </ul>
   `).join('');
 
-  // li 클릭시 상세 페이지 이동 (면접 상세)
-  area.querySelectorAll('li[data-interview]').forEach(li => {
-    li.addEventListener('click', function() {
-      const interviewNo = this.dataset.interview;
-      location.href = `/mypage/interview/detail?interviewNo=${interviewNo}`;
-    });
+  // 리뷰작성 버튼 클릭 제어
+  document.querySelectorAll('.review-btn').forEach(btn => {
+    btn.onclick = function (e) {
+      if (btn.classList.contains('disabled')) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+      // (활성화 상태에서만) 필요시 추가 이벤트 처리
+    };
   });
 
-  document.querySelectorAll('.btn_violet_line[data-record-no]').forEach(btn => {
+  document.querySelectorAll('.btn_violet_line[data-record-no][data-bs-target="#joinInterviewModal"]').forEach(btn => {
     btn.onclick = function (e) {
-      e.stopPropagation(); // li 클릭 이벤트와 분리
-      selectedApplicantRecordNo = this.dataset.recordNo; // 전역변수에 저장
-      console.log(selectedApplicantRecordNo);
+      e.stopPropagation();
+      selectedApplicantRecordNo = this.dataset.recordNo;
+      // (필요시 추가 이벤트)
     };
   });
 }
@@ -154,7 +176,5 @@ document.getElementById('startInterviewBtn').onclick = async function() {
     }
     return;
   }
-
-  // 2. 1초 뒤에 평가 팝업 띄우기
 };
 
