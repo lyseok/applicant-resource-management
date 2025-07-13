@@ -2,44 +2,53 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.InterviewQuestionMapper">
 	<select id="selectInterviewQuestionList" resultType="InterviewQuestionVO">
-	SELECT 
-		INTERVIEW_QUESTION_NO
-		, INTERVIEW_NO
-		, INTERVIEW_QUESTION_CONTENT 
-	FROM INTERVIEW_QUESTION
+		SELECT 
+			INTERVIEW_QUESTION_NO
+			, INTERVIEW_NO
+			, INTERVIEW_QUESTION_CONTENT
+			, INTERVIEW_QUESTION_DEL_DATE
+			, INTERVIEW_QUESTION_SCORE
+		FROM INTERVIEW_QUESTION
 	</select>
 	
-	<select id="selectInterviewQuestion" resultType="InterviewQuestionVO">
-	SELECT 
-		INTERVIEW_QUESTION_NO
-		, INTERVIEW_NO
-		, INTERVIEW_QUESTION_CONTENT
-	FROM INTERVIEW_QUESTION 
-	WHERE INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
+	<select id="selectInterviewQuestionByNo" resultType="InterviewQuestionVO">
+		SELECT 
+			INTERVIEW_QUESTION_NO
+			, INTERVIEW_NO
+			, INTERVIEW_QUESTION_CONTENT
+			, INTERVIEW_QUESTION_DEL_DATE
+			, INTERVIEW_QUESTION_SCORE
+		FROM INTERVIEW_QUESTION
+		WHERE INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
 	</select>
 	
 	<insert id="insertInterviewQuestion">
 	<selectKey resultType="string" keyProperty="interviewQuestionNo" order="BEFORE">
-    SELECT
-        'INQE'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INTERVIEW_QUESTION_NO), LENGTH('INQE' ) + 1)), 0) + 1, 6, '0')
-    FROM INTERVIEW_QUESTION
+	    SELECT
+	        'INQE'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(INTERVIEW_QUESTION_NO), LENGTH('INQE' ) + 1)), 0) + 1, 6, '0')
+	    FROM INTERVIEW_QUESTION
 	</selectKey>
-	INSERT INTO INTERVIEW_QUESTION (
-		INTERVIEW_QUESTION_NO
-		, INTERVIEW_NO
-		, INTERVIEW_QUESTION_CONTENT
-	) VALUES (
-		#{interviewQuestionNo}
-		, #{interviewNo}
-		, #{interviewQuestionContent}
-	)
+		INSERT INTO INTERVIEW_QUESTION (
+			INTERVIEW_QUESTION_NO
+			, INTERVIEW_NO
+			, INTERVIEW_QUESTION_CONTENT
+			, INTERVIEW_QUESTION_SCORE
+		) VALUES (
+			#{interviewQuestionNo}
+			, #{interviewNo}
+			, #{interviewQuestionContent}
+			, #{interviewQuestionScore}
+		)
 	</insert>
 	
 	<update id="updateInterviewQuestion">
-	UPDATE INTERVIEW_QUESTION SET 
-		, INTERVIEW_QUESTION_CONTENT = #{interviewQuestionContent} 
-	WHERE INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
+		UPDATE INTERVIEW_QUESTION
+		SET 
+			INTERVIEW_NO = #{interviewNo}
+			, INTERVIEW_QUESTION_CONTENT = #{interviewQuestionContent}
+			, INTERVIEW_QUESTION_SCORE = #{interviewQuestionScore}
+		WHERE INTERVIEW_QUESTION_NO = #{interviewQuestionNo}
 	</update>
 	
 	<delete id="deleteInterviewQuestion">

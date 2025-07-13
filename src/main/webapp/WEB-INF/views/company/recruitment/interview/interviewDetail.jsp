@@ -78,13 +78,13 @@
       <div>
         <span class="fw-bold fs-4 text-secondary mb-1">지원자 리스트</span>
         <div class="table-responsive gy-2 mt-2">
-          <table class="table align-middle table-bordered table-hover">
-            <thead class="table-light">
+          <table class="table align-middle table-bordered table-hover text-center">
+            <thead class="table-light text-center">
               <tr>
-                <th class="fw-bold fs-6 text-secondary mb-1">지원자 이름</th>
-                <th class="fw-bold fs-6 text-secondary mb-1">이력서</th>
-                <th class="fw-bold fs-6 text-secondary mb-1">면접 시간</th>
-                <th class="fw-bold fs-6 text-secondary mb-1">면접 점수</th>
+                <th class="fw-bold fs-6 text-secondary mb-1 text-center">지원자 이름</th>
+                <th class="fw-bold fs-6 text-secondary mb-1 text-center">이력서</th>
+                <th class="fw-bold fs-6 text-secondary mb-1 text-center">면접 시간</th>
+                <th class="fw-bold fs-6 text-secondary mb-1 text-center">면접 점수</th>
               </tr>
             </thead>
             <tbody id="applicantList">

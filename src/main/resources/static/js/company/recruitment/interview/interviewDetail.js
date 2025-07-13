@@ -59,10 +59,9 @@ const setData = (data) => {
     //   score: item.score ?? 0, // item.score가 없다면 0, 실제로는 적절히 매핑
     // })),
     applicants: applicantRecordList.map((item) => {
-    // item.applicantId와 동일한 interviewScoreList 객체 찾기
-      const scoreObj = interviewScoreList.find(
+      const scoreObj = (interviewScoreList || []).find(
         (score) => score.applicantId === item.applicantId
-      )
+      );
       return {
         name: item.applicantName,
         resumeUrl: '#', // 필요시 item.resumeUrl 등으로 교체
@@ -125,7 +124,7 @@ const setData = (data) => {
       <tr>
         <td>${a.name}</td>
         <td><a href="${a.resumeUrl}" target="_blank">이력서 보기</a></td>
-        <td>${a.time}</td>
+        <td>${a.time && a.time.trim() ? a.time : '-'}</td>
         <td>${a.score}점</td>
       </tr>
     `
@@ -196,3 +195,7 @@ function openEvaluationPopup() {
   // 팝업 오픈 (url/이름/옵션)
   window.open('/popup/evaluate', 'evaluate_popup', 'width=600,height=760,scrollbars=yes');
 }
+
+document.getElementById('edit-interview-confirm-btn').onclick = function() {
+  location.href = "/company/interview/edit";
+};
