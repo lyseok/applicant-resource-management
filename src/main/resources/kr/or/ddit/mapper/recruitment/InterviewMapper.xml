@@ -97,7 +97,18 @@
                 resultMap="interviewQuestionMap"/>
 	</resultMap>
 	
-
+	<select id="selectInterviewByNo">
+		SELECT 
+			INTERVIEW_NO
+			, PROCESS_NO
+			, INTERVIEW_DATE
+			, INTERVIEW_LOCATION
+			, INTERVIEW_TYPE
+			, INTERVIEW_PASS_SCORE
+			, INTERVIEW_DEL_DATE
+		FROM INTERVIEW
+		WHERE INTERVIEW_NO = #{interviewNo}
+	</select>
 	
 	<select id="selectMyInterviewList" resultType="java.util.HashMap">
 		SELECT 
@@ -109,6 +120,7 @@
 			APRE.STEP_APPLICATION_YN        AS APRE_STEP_APPLICATION_YN,
 			APRE.EVALUATION_START_TIME      AS APRE_EVALUATION_START_TIME,
 			APRE.APPLICANT_NAME     		AS APRE_APPLICANT_NAME,
+			APRE.STEP_APPLICATION_YN     	AS APRE_STEP_APPLICATION_YN,
 
 			APP.USER_ID                     AS APP_USER_ID,
 			REPR.RECRUIT_PROCESS_NO         AS REPR_RECRUIT_PROCESS_NO,
@@ -140,6 +152,7 @@
 
 		WHERE APP.USER_ID = #{userId}
 		ORDER BY RENO.RECRUITMENT_STARTDATE DESC
+		-- ORDER BY INTR.INTERVIEW_DATE ASC
 	</select>
 	
 <!-- 	기업      -->
@@ -348,7 +361,7 @@
 	
 	<update id="updateInterview">
 		UPDATE INTERVIEW SET
-			INTERVIEW_DATE = #{interviewDate}
+			INTERVIEW_DATE = TO_DATE(#{interviewDate}, 'YYYY-MM-DD"T"HH24:MI')
 			, INTERVIEW_LOCATION = #{interviewLocation}
 			, INTERVIEW_TYPE = #{interviewType}
 			, INTERVIEW_PASS_SCORE = #{interviewPassScore}

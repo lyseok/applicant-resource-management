@@ -9,6 +9,25 @@
 			cursor: pointer;
 			transition: background 0.2s, box-shadow 0.2s;
 		}
+
+        /* 부모 박스의 너비 지정(최대 버튼 길이만큼) */
+        .btn-box {
+        width: 230px;  /* 필요에 따라 200~250px 조절 */
+        }
+
+        .w-review {
+            width: 100%;
+            min-width: 120px;
+            max-width: 230px;
+            text-align: center;
+            margin: 0;
+            box-sizing: border-box;
+            /* ↓↓↓ 이 두 줄 추가! */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* ↓↓↓ 이 줄로 버튼 세로높이 고정시 부드럽게 가운데 정렬됨 */
+        }
 	</style>
 </head>
 

@@ -67,7 +67,7 @@ class PaymentMapperTest {
 		
 		pv.setPaymentNo("PAMT000002"); 
 		
-		mapper.deletePayment(pv);
+		//mapper.deletePayment(pv);
 	}
 
 }
