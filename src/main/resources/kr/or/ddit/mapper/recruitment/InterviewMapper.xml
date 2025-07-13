@@ -97,7 +97,18 @@
                 resultMap="interviewQuestionMap"/>
 	</resultMap>
 	
-
+	<select id="selectInterviewByNo">
+		SELECT 
+			INTERVIEW_NO
+			, PROCESS_NO
+			, INTERVIEW_DATE
+			, INTERVIEW_LOCATION
+			, INTERVIEW_TYPE
+			, INTERVIEW_PASS_SCORE
+			, INTERVIEW_DEL_DATE
+		FROM INTERVIEW
+		WHERE INTERVIEW_NO = #{interviewNo}
+	</select>
 	
 	<select id="selectMyInterviewList" resultType="java.util.HashMap">
 		SELECT 
@@ -348,7 +359,7 @@
 	
 	<update id="updateInterview">
 		UPDATE INTERVIEW SET
-			INTERVIEW_DATE = #{interviewDate}
+			INTERVIEW_DATE = TO_DATE(#{interviewDate}, 'YYYY-MM-DD"T"HH24:MI')
 			, INTERVIEW_LOCATION = #{interviewLocation}
 			, INTERVIEW_TYPE = #{interviewType}
 			, INTERVIEW_PASS_SCORE = #{interviewPassScore}

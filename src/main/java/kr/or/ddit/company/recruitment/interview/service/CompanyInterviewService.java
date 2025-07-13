@@ -8,7 +8,8 @@ import kr.or.ddit.vo.recruitment.InterviewVO;
 public interface CompanyInterviewService {
 	public List<InterviewVO> readInterviewList();
 	public InterviewVO readInterview(String interviewNo);
-	public void createInterviewLogic(VideoInterviewSaveDTO dto);
+	public void createVideoInterviewLogic(VideoInterviewSaveDTO dto);
+	public void createInterview(InterviewVO vo);
 	public int modifyInterview(VideoInterviewSaveDTO dto);
 	public int removeInterview(String inteviewNo);
 }

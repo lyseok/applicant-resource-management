@@ -38,7 +38,7 @@
   axios.get('/ajax/userinfo')
     .then(res => {
       const data = res.data;
-      let name = '일반유저';
+      let name = '비회원';
       if (data.userType === 'company') name = data.userName;
       else if (data.userType === 'admin') name = '관리자';
       else if (data.userType === 'member') name = data.userName;

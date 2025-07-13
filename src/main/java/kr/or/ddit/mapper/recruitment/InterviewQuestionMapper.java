@@ -9,7 +9,7 @@ import kr.or.ddit.vo.recruitment.InterviewQuestionVO;
 @Mapper
 public interface InterviewQuestionMapper {
 	public List<InterviewQuestionVO> selectInterviewQuestionList();
-	public InterviewQuestionVO selectInterviewQuestion(String InterviewQuestionNo);
+	public InterviewQuestionVO selectInterviewQuestionByNo(String InterviewQuestionNo);
 	public int insertInterviewQuestion(InterviewQuestionVO vo);
 	public int updateInterviewQuestion(InterviewQuestionVO vo);
 	public int deleteInterviewQuestion(String InterviewQuestionNo);
