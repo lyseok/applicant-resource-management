@@ -6,6 +6,14 @@
 <head>
   <meta charset="UTF-8">
   <title>회사 시험 ${empty examNo ? '등록' : '수정'}</title>
+  <style>
+  	.text-danger {
+	    display: block;   /* 블록 형태로 만들어 에러 메시지를 아래로 표시 */
+	    font-size: 12px;  /* 작은 크기로 설정 */
+	    color: red;       /* 빨간색으로 표시 */
+	    margin-top: 5px;  /* input과 메시지 사이에 여백 추가 */
+	}
+  </style>
   <script defer src="/js/company/recruitment/companyExam/createCompanyExam.js"></script>
 </head>
 <body>
