@@ -24,7 +24,10 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-const boardTypeCode = "${type}";
+
+if("${type}" === 'BRDD-001' || "${type}" === 'BRDD-003'){
+	const boardTypeCode = "${type}";
+
 fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 	.then(resp => {resp.json()
 		.then(rslt=> {
@@ -54,6 +57,18 @@ fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 			aboardList.innerHTML = html;
 		});
 	});
+}else{
+	//faq일 때는...
+	const codeDetailNo = "${type}";  //에서 codeGroupNo(기업/회원)나 upperCodeNo(BRDD-002)를 불러와야
+	//링크만 BRDD-002로 하고 데이터는 UFAQ-U6이나 UFAQ로 할 건지,
+	//링크는 UFAQ-U6으로 하고 데이터는 UFAQ로 할 건지
+	//adminSideMenu도 통일해버리기
+	console.log("codeDetailNo를 보여줘! : ", codeDetailNo);
+	console.log("upperCodeNo를 보여줘! : ", codeDetailNo.cmnCodeList.upperCodeNo);  //cmnCodeVO와 innerJoin 해야 하나?
+	fetch(`/ajax/admin/board/admin_board/\${codeDetailNo.upperCodeNo}`)
+	
+}
 });
+
 </script>
 </body>

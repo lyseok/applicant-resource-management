@@ -35,6 +35,47 @@ fetch(`/ajax/admin/board/admin_board/detail/\${boardNo}`)
 			<p>조회수: \${rslt.boardPostHit}</p>
 			<p>게시글 상태: \${rslt.boardStatus}</p>`;
 			
+			rslt.boardTypeCode
+			if(rslt.boardTypeCode === 'BRDD-001'){
+				//답변 등록 폼이 비슷한 시기에 나오도록 DOMContentLoaded
+				//답변 등록 폼은 문의사항(BRDD-001)일 때만 나옴
+				
+				document.addEventListener("DOMContentLoaded", () => {
+					const acommentFormContainer = document.querySelector("#acommentFormContainer");
+					
+					let acommentFormHtml = `
+						<h1><sec:authentication property="principal.realUser.userId" var="userId"/></h1>
+						<form id="acommentForm">
+							<input type="hidden" name="userId" value="${userId}"><br>
+							<input type="hidden" name="boardNo" value="${boardNo}"><br>
+							<textarea cols="60" rows="6" name="boardCommentContent" placeholder="내용"></textarea>
+						<button type="submit">등록</button>
+						</form>`;
+					
+					acommentFormContainer.innerHTML = acommentFormHtml;
+					
+					const acommentForm = document.querySelector("#acommentForm");
+					acommentForm.onsubmit = function(){
+						event.preventDefault();
+						let adminComment = {
+							userId : acommentForm.userId.value,
+							boardNo : acommentForm.boardNo.value,
+							boardCommentContent : acommentForm.boardCommentContent.value
+						}
+						fetch(`/ajax/admin/board/admin_comment/\${adminComment.boardNo}`, {
+							method : "post",
+							headers : {
+								"Content-Type" : "application/json"
+							},
+							body : JSON.stringify(adminComment)
+						}).then(resp => {
+							resp.json().then(rslt=> {
+								console.log("글자", rslt.ok);
+							});
+						});
+					};						
+				})
+			} //'BRDD-001' if문 종료
 			rslt.adminCommentList.forEach(item => {
 				console.log("아이템 나오니? : ", item);
 				
@@ -52,41 +93,5 @@ fetch(`/ajax/admin/board/admin_board/detail/\${boardNo}`)
 	aboardDetail.innerHTML = html;
 });
 
-//답변 등록 폼이 비슷한 시기에 나오도록
-document.addEventListener("DOMContentLoaded", () => {
-	const acommentFormContainer = document.querySelector("#acommentFormContainer");
-	
-	let acommentFormHtml = `
-		<h1><sec:authentication property="principal.realUser.userId" var="userId"/></h1>
-		<form id="acommentForm">
-			<input type="hidden" name="userId" value="${userId}"><br>
-			<input type="hidden" name="boardNo" value="${boardNo}"><br>
-			<textarea cols="60" rows="6" name="boardCommentContent" placeholder="내용"></textarea>
-		  <button type="submit">등록</button>
-		</form>`;
-	
-	acommentFormContainer.innerHTML = acommentFormHtml;
-	
-	const acommentForm = document.querySelector("#acommentForm");
-	acommentForm.onsubmit = function(){
-		event.preventDefault();
-		let adminComment = {
-			userId : acommentForm.userId.value,
-			boardNo : acommentForm.boardNo.value,
-			boardCommentContent : acommentForm.boardCommentContent.value
-		}
-		fetch(`/ajax/admin/board/admin_comment/\${adminComment.boardNo}`, {
-			method : "post",
-			headers : {
-				"Content-Type" : "application/json"
-			},
-			body : JSON.stringify(adminComment)
-		}).then(resp => {
-			resp.json().then(rslt=> {
-				console.log("글자", rslt.ok);
-			});
-		});
-	};
-});
 </script>
 </body>
