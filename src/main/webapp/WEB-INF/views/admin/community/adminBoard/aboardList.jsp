@@ -9,7 +9,9 @@
 </head>
 <body>
 
-	<ul id="aboardList"></ul>
+	<ul id="aboardList">
+		<p class="h4">게시글 목록</p>
+	</ul>
 	<input type="hidden" value="boardTypeCode" name="boardTypeCode">
 	
 	<%--구상을 위한 예시 --%>
@@ -30,8 +32,12 @@ fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 			let html = "";
 			rslt.forEach(item => {
 				console.log("아이템 나오니? :", item);
+
+				let li = document.createElement("li");  //이거로 리팩토링 안되나?
+
+
 				html += `
-					<p class="h4">게시글 목록</p>
+					
 					<li>작성자 : \${item.userId}</li>
 					<li>게시판 유형 코드: \${item.boardTypeCode}</li>
 					<li>제목: 

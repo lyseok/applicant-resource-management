@@ -16,39 +16,15 @@
 	<form id="aboardForm">
 		<input type="hidden" name="userId" value="${userId}"><br>
 		<label>게시판 유형 코드</label>
-		<select name="boardTypeCode">
-			<option value="-1">--선택--</option>
-			<%--
-			<option value="BRDD-003">공지사항</option>
-			<option value="UFAQ-U1">개인회원-이력서등록/관리</option>
-			<option value="UFAQ-U2">개인회원-회원정보/아이디/비밀번호</option>
-			<option value="UFAQ-U3">개인회원-입사지원/관리</option>
-			<option value="UFAQ-U4">개인회원-채용정보 검색/관리</option>
-			<option value="UFAQ-U5">개인회원-회원가입/탈퇴</option>
-			<option value="UFAQ-U6">개인회원-추천/나의검색</option>
-			<option value="UFAQ-U7">개인회원-계정 통합</option>
-			<option value="UFAQ-U8">개인회원-기타회원 서비스</option>
-			<option value="UFAQ-U9">개인회원-KoMate</option>
-			<option value="CFAQ-C1">기업회원-기업채용정보 등록/관리</option>
-			<option value="CFAQ-C2">기업회원-개인유료서비스/결제</option>
-			<option value="CFAQ-C3">기업회원-개인인재풀</option>
-			<option value="CFAQ-C4">기업회원-회원,기업정보/아이디/비밀번호</option>
-			<option value="CFAQ-C5">기업회원-회원가입/탈퇴</option>
-			<option value="CFAQ-C6">기업회원-지원자 관리/면접관리</option>
-			<option value="CFAQ-C7">기업회원-인적성검사</option>
-			<option value="CFAQ-C8">기업회원-채용홈페이지</option>
-			<option value="CFAQ-C9">기업회원-계정통합</option>
-			<option value="CFAQ-C10">기업회원-기타회원서비스</option>
-			<option value="CFAQ-C11">기업회원-KoMate</option>
-			 --%>
-		</select>
-		<select name="codeGroupNo">
+		<select id="boardTypeCode">
 			<option value="-1">--선택--</option>
 		</select>
-		<select name="memType">
+		<select id="codeGroupNo" disabled>
 			<option value="-1">--선택--</option>
+			<option value="UFAQ">일반회원</option>
+			<option value="CFAQ">기업회원</option>
 		</select>
-		<select name="comType">
+		<select id="memType" disabled>
 			<option value="-1">--선택--</option>
 		</select>
 		<br>
@@ -58,6 +34,10 @@
 	</form>
 <script>
 const aboardForm = document.querySelector("#aboardForm");
+const boardTypeCode = document.querySelector("#boardTypeCode");
+const codeGroupNo = document.querySelector("#codeGroupNo");
+const memType = document.querySelector("#memType");
+
 aboardForm.onsubmit = function(){
 	event.preventDefault();
 	let adminBoard = {
@@ -90,62 +70,53 @@ fetch(`/ajax/code/cmncodegroup/BRDD`)
 			option.value = vo.codeDetailNo;
 			option.innerHTML = vo.codeName;
 			
-			aboardForm.boardTypeCode.appendChild(option);
+			boardTypeCode.appendChild(option);
 		})
 		
 	})
 })
 
-fetch(`/ajax/admin/cmncodegroup/UFAQ`)
-.then(resp => {
-	resp.json()
-	.then(rslt =>{
-		console.log("그룹명이 뜨나? : ", rslt);
-		/*
-		rslt.cmnCodeList.forEach(vo => { 
-			let option = document.createElement("option");
-			option.value = vo.codeDetailNo;
-			option.innerHTML = vo.codeName;
-			
-			aboardForm.codeGroupNo.appendChild(option);
-		})*/
+boardTypeCode.onchange = function(){
+if(boardTypeCode.value === 'BRDD-002'){
+	codeGroupNo.disabled = false;
+	codeGroupNo.onchange = function(){
+	if(codeGroupNo.value === '-1'){
+		memType.disabled = true;
+	}else{
+		memType.disabled = false;
 
-	})
-})
+		if(memType.length != 0){
+			memType.innerHTML = "";
+			memType.value = "-1";
+		} 
 
-fetch(`/ajax/code/cmncodegroup/UFAQ`)
-.then(resp => {
-	resp.json()
-	.then(rslt =>{
-		console.log("UFAQ 반복문 : ", rslt);
-		
-		rslt.cmnCodeList.forEach(vo => { 
-			let option = document.createElement("option");
-			option.value = vo.codeDetailNo;
-			option.innerHTML = vo.codeName;
-			
-			aboardForm.memType.appendChild(option);
+		console.log("url 확인해~ : ", `/ajax/code/cmncodegroup/\${codeGroupNo.value}`);
+		fetch(`/ajax/code/cmncodegroup/\${codeGroupNo.value}`)
+			.then(resp => {
+				resp.json()
+				.then(rslt =>{
+					console.log(" select 값? : ", rslt);
+
+					rslt.cmnCodeList.forEach(vo => { 
+					let option = document.createElement("option");
+					option.value = vo.codeDetailNo;
+					option.innerHTML = vo.codeName;
+					
+					memType.appendChild(option);
+				})
+
 		})
+	})  
 
-	})
-})
+	}
+}
+}else{
+	codeGroupNo.disabled = true;
+	codeGroupNo.value = "-1";
+	memType.disabled = true;
+}
+	
 
-fetch(`/ajax/code/cmncodegroup/CFAQ`)
-.then(resp => {
-	resp.json()
-	.then(rslt =>{
-		console.log("CFAQ 반복문 : ", rslt);
-		
-		rslt.cmnCodeList.forEach(vo => { 
-			let option = document.createElement("option");
-			option.value = vo.codeDetailNo;
-			option.innerHTML = vo.codeName;
-			
-			aboardForm.comType.appendChild(option);
-		})
-
-	})
-})
-
+}
 </script>
 </body>
