@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-  <!-- Menu -->
-  <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-    <div class="app-brand demo">
-      <a href="/mypage" class="app-brand-link">
-        <span class="app-brand-logo demo">
-          <img src="/dist/assets/images/logo.png" alt="logo">
-        </span>
-      </a>
+ <!-- Menu -->
+ <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+   <div class="app-brand demo">
+     <a href="/" class="app-brand-link">
+       <span class="app-brand-logo demo">
+         <img src="/dist/assets/images/logo.png" alt="logo">
+       </span>
+     </a>
 
       <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
         <i class="bx bx-chevron-left bx-sm align-middle"></i>
@@ -18,51 +18,50 @@
 
     <ul class="menu-inner py-1">
 
-      <!-- 여기부터 사이드바 작업하는 곳 -->
-      <li class="menu-item">
-        <a href="/mypage" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-garage"></i>
-          <div data-i18n="Basic">마이 홈</div>
-        </a>
-      </li>
-
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">이력서</span></li>
-      <li class="menu-item">
-        <a href="/mypage/resume/list" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-file"></i>
-          <div>이력서 관리</div>
-        </a>
-        <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="/mypage/resume/list" class="menu-link">
-              <div>이력서 목록</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/mypage/resume/create" class="menu-link">이력서 등록</a>
-          </li>
-        </ul>
-      </li>
-      <li class="menu-item">
-        <a href="/mypage/resume/list" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-face"></i>
-          <div data-i18n="Account">자소서 관리</div>
-        </a>
-        <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="/mypage/introduction/list" class="menu-link">
-              <div data-i18n="Account">자소서 목록</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/mypage/introduction/create" class="menu-link">
-              <div data-i18n="Notifications">자소서 등록</div>
-            </a>
-          </li>
-        </ul>
-      </li>
-
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">프로젝트</span></li>
+   <!-- 여기부터 사이드바 작업하는 곳 -->	
+	<li class="menu-item">
+       <a href="/mypage" class="menu-link">
+         <i class="menu-icon tf-icons bx bx-garage"></i>
+         <div data-i18n="Basic">마이 홈</div>
+       </a>
+     </li>
+     
+     <li class="menu-header small text-uppercase"><span class="menu-header-text">이력서</span></li>
+     <li class="menu-item">
+       <a href="/mypage/intoruction/list" class="menu-link menu-toggle">
+       	 <i class="menu-icon tf-icons bx bx-file"></i>
+         <div>이력서 관리</div>
+       </a>
+       <ul class="menu-sub">
+         <li class="menu-item">
+           <a href="/mypage/resume/list" class="menu-link">
+             <div>이력서 목록</div>
+           </a>
+         </li>
+         <li class="menu-item">
+           <a href="/mypage/resume/create" class="menu-link">이력서 등록</a>
+         </li>
+      </ul>
+     </li>
+     <li class="menu-item">
+       <a href="/mypage/resume/list" class="menu-link menu-toggle">
+       	 <i class="menu-icon tf-icons bx bx-face"></i>
+         <div data-i18n="Account">자소서 관리</div>
+       </a>   
+       <ul class="menu-sub">
+         <li class="menu-item">
+           <a href="/company" class="menu-link">
+             <div data-i18n="Account">자소서 목록</div>
+           </a>
+         </li>
+         <li class="menu-item">
+           <a href="/company" class="menu-link">
+             <div data-i18n="Notifications">자소서 등록</div>
+           </a>
+         </li>
+      </ul>
+     </li>
+	  <li class="menu-header small text-uppercase"><span class="menu-header-text">프로젝트</span></li>
       <li class="menu-item">
         <a href="/mypage/resume/list" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-chart-bar-big-columns"></i>
@@ -84,13 +83,13 @@
 
       <li class="menu-header small text-uppercase"><span class="menu-header-text">맞춤 공고함</span></li>
       <li class="menu-item">
-        <a href="/mypage" class="menu-link">
+        <a href="/member/mypage/scrab_company" class="menu-link">
           <i class="menu-icon tf-icons bx bx-bookmark"></i>
           <div data-i18n="Basic">스크랩</div>
         </a>
       </li>
       <li class="menu-item">
-        <a href="/mypage" class="menu-link">
+        <a href="/member/mypage/scrab_recruit" class="menu-link">
           <i class="menu-icon tf-icons bx bx-heart"></i>
           <div data-i18n="Basic">관심공고</div>
         </a>

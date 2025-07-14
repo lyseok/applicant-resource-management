@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/ajax/company/community/adminBoard")
+@RequestMapping("/ajax/company/board/admin_board")
 @RequiredArgsConstructor
 public class CompanyAdminBoardAjaxController {
 	
@@ -32,8 +32,7 @@ public class CompanyAdminBoardAjaxController {
 	@GetMapping("/{boardTypeCode}/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
 	    return service.readAdminBoardByPk(boardNo)
-//	    		.map(ResponseEntity::ok)
-	    		.map(ab->ResponseEntity.ok(ab))  //boardNo 있으면 ok 반환
+	    		.map(ResponseEntity::ok)
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	

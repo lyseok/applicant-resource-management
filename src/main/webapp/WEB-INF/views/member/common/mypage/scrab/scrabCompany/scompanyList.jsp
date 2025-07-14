@@ -39,7 +39,7 @@
 					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
 							<a class="d-block h4 fw-bold" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/${scompany.companyId}"/>">${scompany.companyId.comName}</a>
-							<p class="text-truncate w800">${introduction.introductionContent}</p>
+							<p class="text-truncate w800">${scompany.companyId.comInfo}</p>
 						</div>
 						<div class="d-flex gap-1">
 							<a class="btn btn_violet_line fw-normal" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/edit/${scompany.companyId}"/>">수정</a>

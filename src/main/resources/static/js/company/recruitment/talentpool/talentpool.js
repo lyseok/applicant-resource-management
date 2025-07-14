@@ -44,7 +44,7 @@ function bindUserCardClick() {
     card.addEventListener('click', () => {
       const userId = card.dataset.userId;
       if (userId) {
-        location.href = `/talentpool/detail/${userId}`;
+        location.href = `/company/talentpool/detail/${userId}`;
       } else {
         console.warn("❗ userId 값이 없습니다. card:", card);
       }
@@ -83,7 +83,7 @@ function bindResetButton() {
   resetBtn.addEventListener("click", () => {
     form.reset();
 
-    fetch("/talentpool/filter", {
+    fetch("/company/talentpool/filter", {
       method: "POST",
       body: new FormData(form)
     })
@@ -109,7 +109,7 @@ function handleFilterSubmit() {
     e.preventDefault();
     const formData = new FormData(form);
 
-    fetch("/talentpool/filter", {
+    fetch("/company/talentpool/filter", {
       method: "POST",
       body: formData
     })
@@ -125,9 +125,32 @@ function handleFilterSubmit() {
   });
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+	const form = document.getElementById("filterForm");
+	const talentListWrapper = document.getElementById("talent-list-wrapper");
+
+	form.addEventListener("submit", function (e) {
+		e.preventDefault();
+		const formData = new FormData(form);
+
+		fetch("/company/talentpool/filter", {
+			method: "POST",
+			body: formData
+		})
+			.then(res => res.text())
+			.then(html => {
+				talentListWrapper.innerHTML = html;
+			})
+			.catch(err => {
+				console.error("오류 발생:", err);
+				talentListWrapper.innerHTML = "<p style='color:red;'>검색 실패</p>";
+			});
+	});
+});
+
 // 상단필터 검색
 function bindAdvancedSearch() {
-  const searchBtn = document.querySelector(".search-filter-bar button");
+  const searchBtn = document.querySelector("#btn btn_violet");
   const talentListWrapper = document.getElementById("talent-list-wrapper");
 
   if (!searchBtn || !talentListWrapper) return;
@@ -142,7 +165,7 @@ function bindAdvancedSearch() {
     formData.append("license", license);
     formData.append("skillName", skillName);
 
-    fetch("/talentpool/higtSearch", {
+    fetch("company/talentpool/higtSearch", {
       method: "POST",
       body: formData
     })
@@ -168,3 +191,74 @@ document.addEventListener("DOMContentLoaded", () => {
   bindTopJobToJobSelect();   // 직군 → 직무 연결
   bindAdvancedSearch();      // 고급 검색 버튼
 });
+
+
+axios.get('/ajax/code/cmncodegroup/YEXP')  // 데이터 요청 URL을 실제로 변경
+  .then(function (response) {
+    // 서버로부터 받은 응답 데이터가 'cmnCodeList' 내에 있다는 가정
+    populateCareerSelect(response.data.cmnCodeList);
+  })
+  .catch(function (error) {
+    console.error('Error fetching data: ', error);
+  });
+
+// 받은 데이터로 <select> 태그에 <option> 추가하기
+function populateCareerSelect(data) {
+  const yearSelect = document.getElementById('yearSel');
+  
+  // 데이터 배열을 순회하며 <option> 추가
+  data.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.codeDetailNo;  // value는 codeDetailNo
+    option.textContent = item.codeName;  // 화면에 표시될 텍스트는 codeName
+
+    yearSelect.appendChild(option);  // <select> 태그에 <option> 추가
+  });
+}
+
+axios.get('/ajax/code/cmncodegroup/EDUC')  // 데이터 요청 URL을 실제로 변경
+  .then(function (response) {
+    // 서버로부터 받은 응답 데이터가 'cmnCodeList' 내에 있다는 가정
+    populateEducationSelect(response.data.cmnCodeList);
+  })
+  .catch(function (error) {
+    console.error('Error fetching data: ', error);
+  });
+
+// 받은 데이터로 <select> 태그에 <option> 추가하기
+function populateEducationSelect(data) {
+  const educationSelect = document.getElementById('finedu');
+  
+  // 데이터 배열을 순회하며 <option> 추가
+  data.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.codeDetailNo;  // value는 codeDetailNo
+    option.textContent = item.codeName;  // 화면에 표시될 텍스트는 codeName
+
+    educationSelect.appendChild(option);  // <select> 태그에 <option> 추가
+  });
+}
+
+// Axios로 데이터 요청
+axios.get('/ajax/code/cmncodegroup/GRAD')  // 데이터 요청 URL을 실제로 변경
+  .then(function (response) {
+    // 서버로부터 받은 응답 데이터가 'cmnCodeList' 내에 있다는 가정
+    populateGraduationSelect(response.data.cmnCodeList);
+  })
+  .catch(function (error) {
+    console.error('Error fetching data: ', error);
+  });
+
+// 받은 데이터로 <select> 태그에 <option> 추가하기
+function populateGraduationSelect(data) {
+  const graduationSelect = document.getElementById('edustatus');
+  
+  // 데이터 배열을 순회하며 <option> 추가
+  data.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.codeDetailNo;  // value는 codeDetailNo
+    option.textContent = item.codeName;  // 화면에 표시될 텍스트는 codeName
+
+    graduationSelect.appendChild(option);  // <select> 태그에 <option> 추가
+  });
+}

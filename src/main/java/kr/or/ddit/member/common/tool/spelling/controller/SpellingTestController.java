@@ -15,7 +15,7 @@ public class SpellingTestController {
 	
 	private final SpellingTest spellingService;
 
-	@GetMapping("/Spelling")
+	@GetMapping("/spelling")
 	public String showPage() {
 		return "member/tool/spelling/SpellingCheck"; // JSP 경로
 	}

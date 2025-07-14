@@ -1,31 +1,26 @@
 package kr.or.ddit.company.recruitment.interview.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
+import kr.or.ddit.common.exception.DataInsertException;
+import kr.or.ddit.common.exception.DataUpdateException;
 import kr.or.ddit.common.exception.VideoInterviewCreateException;
+import kr.or.ddit.company.recruitment.interviewquestion.service.InterviewQuestionService;
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.dto.VideoInterviewSaveDTO;
 import kr.or.ddit.mapper.recruitment.ApplicantRecordMapper;
 import kr.or.ddit.mapper.recruitment.InterviewMapper;
 import kr.or.ddit.mapper.recruitment.VideoInterviewMapper;
 import kr.or.ddit.vo.recruitment.ApplicantRecordVO;
+import kr.or.ddit.vo.recruitment.InterviewQuestionVO;
 import kr.or.ddit.vo.recruitment.InterviewVO;
 import kr.or.ddit.vo.recruitment.RecruitProcessVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import kr.or.ddit.vo.recruitment.VideoInterviewVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 @Slf4j
 @Service
@@ -36,7 +31,8 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 	private final ApplicantRecordMapper applicantRecordMapper;
 	
 	private final CodeMapProvider codeMapProvider;
-	private Gson gson = new Gson();
+	
+	private final InterviewQuestionService interviewQuestionService;
 	
 	@Override
 	public List<InterviewVO> readInterviewList() {
@@ -56,7 +52,7 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 	}
 
 	@Override
-	public void createInterviewLogic(VideoInterviewSaveDTO dto) {
+	public void createVideoInterviewLogic(VideoInterviewSaveDTO dto) {
 		VideoInterviewVO videoInterviewVO = new VideoInterviewVO();
 		videoInterviewVO.setInterviewNo(dto.getInterviewNo());
 		videoInterviewVO.setRoomTitle(dto.getRoomTitle());
@@ -97,6 +93,30 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 			throw new VideoInterviewCreateException("면접자 등록 실패");
 		}
 	}
+	
+	@Override
+	public void createInterview(InterviewVO vo) {
+	    // 1. PK로 select해서 존재여부 확인
+	    InterviewVO dbInterview = interviewMapper.selectInterviewByNo(vo.getInterviewNo());
+
+	    if (dbInterview != null) {
+	        // 이미 있으면 update
+	        int cnt = interviewMapper.updateInterview(vo);
+	        if (cnt == 0) {
+	            throw new DataUpdateException("면접 정보 수정에 실패했습니다.");
+	        }
+	        for(InterviewQuestionVO iQVo : vo.getInterviewQuestionList()) {
+	        	log.info("{}", iQVo);
+	        	interviewQuestionService.createInterviewQuestion(iQVo);	        	
+	        }
+	    } else {
+	        // 없으면 insert
+	        int cnt = interviewMapper.insertInterview(vo);
+	        if (cnt == 0) {
+	            throw new DataInsertException("면접 정보 등록에 실패했습니다.");
+	        }
+	    }
+	}	
 
 	@Override
 	public int modifyInterview(VideoInterviewSaveDTO dto) {
@@ -131,5 +151,7 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 		String year = codeMapProvider.getCodeName(notiVo.getYearCode());
 		notiVo.setYearCodeName(year);
 	}
+
+
 	
 }

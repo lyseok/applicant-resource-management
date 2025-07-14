@@ -82,7 +82,6 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	public ResumeVO readResumeDetail(ResumeVO vo) {
 		ResumeVO resume = resumeMapper.selectResumeDetail(vo);
-		log.info("♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥ {}", resume.getIntroduction());
 		if(resume==null) {
 			throw new ResumeNotFoundException("이력서를 찾을 수 없습니다. (ID: " + vo.getResumeNo() + ")"); 
 		}
@@ -108,7 +107,8 @@ public class ResumeServiceImpl implements ResumeService {
 		// 경력
 		if(resumeVO.getCareerList() != null) {
 			for(CareerVO career:resumeVO.getCareerList()) {
-				career.setCareerNo(resumeVO.getResumeNo());		// 이력서번호(부모 pk) 세팅; 
+				career.setResumeNo(resumeVO.getResumeNo());		// 이력서번호(부모 pk) 세팅; 
+				log.info("");
 				careerMapper.insertCareer(career);
 			}
 		}
@@ -116,7 +116,7 @@ public class ResumeServiceImpl implements ResumeService {
 		// 고용지원
 		if(resumeVO.getSupportList() != null) {
 			for(SupportVO support:resumeVO.getSupportList()) {
-				support.setSupportNo(resumeVO.getResumeNo());	// 이력서번호(부모 pk) 세팅; 
+				support.setResumeNo(resumeVO.getResumeNo());	// 이력서번호(부모 pk) 세팅; 
 				supportMapper.insertSupport(support);
 			}
 		}

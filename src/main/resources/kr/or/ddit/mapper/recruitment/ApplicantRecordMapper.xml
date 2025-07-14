@@ -17,11 +17,19 @@
 		APPLICANT_RECORD_NO
 		, RECRUITMENT_NO
 		, APPLICANT_ID
-		, RECRUIT_PROCESS_STEP
 		, STEP_PASS_YN
-		, STEP_APPLICATION_YN 
+		, STEP_APPLICATION_YN
+		, INTERVIEW_URL
+		, EVALUATION_START_TIME
+		, APPLICANT_NAME
 	FROM APPLICANT_RECORD 
 	WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
+	</select>
+	
+	<select id="selectMemberVideoURL">
+		SELECT INTERVIEW_URL
+		FROM APPLICANT_RECORD
+		WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
 	</select>
 	
 	<insert id="insertApplicantRecord">
@@ -52,7 +60,15 @@
 		UPDATE APPLICANT_RECORD 
 		SET 
 			INTERVIEW_URL = #{interviewUrl}
+			, EVALUATION_START_TIME = TO_TIMESTAMP(#{evaluationStartTime}, 'YYYY-MM-DD"T"HH24:MI')
 		WHERE APPLICANT_RECORD_NO =	#{applicantRecordNo}
+	</update>
+	
+	<update id="updateApplication">
+		UPDATE APPLICANT_RECORD 
+		SET 
+			STEP_APPLICATION_YN = 'Y'
+		WHERE APPLICANT_ID = #{applicantId}
 	</update>
 	
 	<update id="updateApplicantRecord">
@@ -62,6 +78,8 @@
 		, STEP_APPLICATION_YN = #{stepApplicationYn} 
 	WHERE APPLICANT_RECORD_NO =	#{applicantRecordNo}
 	</update>
+	
+	
 	
 	<delete id="deleteApplicantRecord">
 	DELETE FROM APPLICANT_RECORD 

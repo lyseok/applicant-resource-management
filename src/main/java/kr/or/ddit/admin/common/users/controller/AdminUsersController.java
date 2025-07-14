@@ -29,6 +29,16 @@ import lombok.RequiredArgsConstructor;
 public class AdminUsersController {
 
 	private final AdminUsersService service;
+	
+	// 등록 폼으로 이동
+	@GetMapping("/form")
+	public String formUI(Model model) {
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/common/users/userForm";
+	}
+	
+	/*
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -45,7 +55,7 @@ public class AdminUsersController {
 	}
 	
 	// 회원 목록조회
-	@GetMapping("/userList")
+	@GetMapping("/list")
 	public String usersList(Model model) {
 		List<UsersVO> userList = service.readUsersList();
 		model.addAttribute("userList", userList);
@@ -56,7 +66,7 @@ public class AdminUsersController {
 	}
 	
 	// 회원 아이디로 단건조회
-	@GetMapping("/userDetail")
+	@GetMapping("/detail")
 	public String userDetail(
 		@RequestParam(value = "userId", required = false) String userId
 		, Model model
@@ -74,16 +84,8 @@ public class AdminUsersController {
 		return "admin/common/users/userDetail";
 	}
 	
-	// 등록 폼으로 이동
-	@GetMapping("/userForm")
-	public String formUI(Model model) {
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/common/users/userForm";
-	}
-	
 	// 수정 폼으로 이동
-	@GetMapping("/userForm/edit")
+	@GetMapping("/form/edit")
 	public String editForm(String userId, Model model) {  
 		if(!model.containsAttribute(MODELNAME)) {  //모델에 user가 없으면, db에서 가져옴
 			UsersVO user = service.searchUserById(userId).get();
@@ -95,7 +97,7 @@ public class AdminUsersController {
 	}
 	
 	// 폼 입력 데이터 처리
-	@PostMapping("/userForm/insert")
+	@PostMapping("/form/insert")
 	public String userForm(
 		@Validated(InsertGroup.class) @ModelAttribute(MODELNAME) UsersVO user
 		, BindingResult errors
@@ -118,7 +120,7 @@ public class AdminUsersController {
 	}
 	
 	// 폼 수정 데이터 처리
-	@PutMapping("/userForm/update")
+	@PostMapping("/form/edit")
 	public String userEdit(
 		String userId
 		, @Validated(UpdateGroup.class) @ModelAttribute(MODELNAME) UsersVO user
@@ -140,18 +142,8 @@ public class AdminUsersController {
 		return lvn;
 	}
 	
-	// 회원 단건 삭제
-	@DeleteMapping("userDetail/remove")
-	public String userDelete(String userId, Model model) {
-		service.removeUser(userId);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/common/users/userList";
-	}
-	
 	// 회원 중복체크
-	@DeleteMapping("userDetail/check")
+	@GetMapping("detail/check")
 	public String userCheck(String userId, Model model) {
 		service.existsById(userId);
 		
@@ -161,7 +153,7 @@ public class AdminUsersController {
 	}
 	
 	// 회원 이메일로 단건조회
-	@GetMapping("/userDetail/social")
+	@GetMapping("/detail/social")
 	public String socialUserDetail(
 		@RequestParam(value = "email", required = false) String email
 		, Model model
@@ -178,4 +170,5 @@ public class AdminUsersController {
 		model.addAttribute("searchBar", true);
 		return "admin/common/users/userDetail";
 	}
+	*/
 }
