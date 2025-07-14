@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () =>{
 							 html = `
 						         	 <div class="exam-card d-flex align-items-center mb-3 p-3 border rounded" data-exam-id="${exam.comExamNo}">
 								            <div class="exam-name">${idx + 1}. ${exam.comExamName}</div>
-											
+											<div class="exam-date">등록일시-${exam.comExamCreateDate}</div>
+					
 											<button
 											     type="button"
 											     class="btn btn-danger btn-sm ms-2 btn-open-delete-modal"

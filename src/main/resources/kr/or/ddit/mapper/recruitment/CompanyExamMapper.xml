@@ -6,6 +6,7 @@
 		   <id     property="comExamNo"      column="com_exam_no" />
 		    <result property="userId"         column="user_id" />
 		    <result property="comExamName"    column="com_exam_name" />
+		    <result property="comExamCreateDate" column="com_exam_create_date"/>
 		    <result property="comExamDelDate" column="com_exam_del_date" />
 		
 		
@@ -29,9 +30,10 @@
 
 	<select id="selectCompanyExamList" resultType="CompanyExamVO">
 	SELECT 
-		COM_EXAM_NO
-		, USER_ID
-		, COM_EXAM_NAME 
+	    COM_EXAM_NO,
+	    USER_ID,
+	    COM_EXAM_NAME,
+	    TO_CHAR(COM_EXAM_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS COM_EXAM_CREATE_DATE
 	FROM COMPANY_EXAM
 	</select>
 	
@@ -48,8 +50,10 @@
 		COM_EXAM_NO
 		, USER_ID
 		, COM_EXAM_NAME 
+		, TO_CHAR(COM_EXAM_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS COM_EXAM_CREATE_DATE
 	FROM COMPANY_EXAM WHERE USER_ID = #{userId}
 		AND COM_EXAM_DEL_DATE IS NULL
+		ORDER BY COM_EXAM_CREATE_DATE ASC
 	</select>
 	
 	
@@ -93,10 +97,12 @@
 		COM_EXAM_NO
 		, USER_ID
 		, COM_EXAM_NAME
+		, COM_EXAM_CREATE_DATE 
 	) VALUES (
 		#{comExamNo}
 		, #{userId}
 		, #{comExamName}
+		, SYSDATE
 	)
 	</insert>
 	
