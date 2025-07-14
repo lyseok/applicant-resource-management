@@ -101,9 +101,6 @@
 					<when test='boardTypeCode=="BRDD-002"'>
 						, #{cmnCodeGroupVOList[0].cmnCodeList[0].codeDetailNo}
 					</when>
-					<when test='boardTypeCode=="BRDD-003"'>
-						, #{cmnCodeGroupVOList[0].codeGroupNo}
-					</when>
 					<otherwise>
 						, #{boardTypeCode}
 					</otherwise>

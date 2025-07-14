@@ -107,14 +107,12 @@ fetch(`/ajax/code/cmncodegroup/BRDD`)
 })
 
 boardTypeCode.onchange = function(){
-if(boardTypeCode.value != '-1'){
+if(boardTypeCode.value === 'BRDD-002'){
 	codeGroupNo.disabled = false;
 	codeGroupNo.onchange = function(){
 		if(codeGroupNo.value === '-1'){
 			//첫번째 option 엘리먼트 선택
 			memType.selectedIndex = 0;
-			memType.disabled = true;
-		}else if(boardTypeCode.value === 'BRDD-003'){
 			memType.disabled = true;
 		}else{	
 			memType.disabled = false;
