@@ -152,12 +152,34 @@ async function bringEdu() {
 }
 bringEdu();
 
-const editor = new toastui.Editor({
-   el: document.querySelector('#editor'),
-   height: '400px',
-   initialEditType: 'wysiwyg',  // wysiwyg or markdown
-   previewStyle: 'vertical',
-   placeholder: '공고 내용을 입력하세요...'
+const uploadImages = new Set();
+ const editor = new toastui.Editor({
+      el: document.querySelector('#editor'),
+      height: '400px',
+      initialEditType: 'wysiwyg',
+      previewStyle: 'vertical',
+      hooks: {
+        async addImageBlobHook(blob, callback) {
+          const formData = new FormData();
+          formData.append('file', blob);
+          try {
+            const res = await axios.post('/upload/editor', formData, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            
+            const imageUrl = res.data.url;
+            uploadImages.add(imageUrl);
+            callback(res.data.url, '이미지');
+          } catch (err) {
+            alert('이미지 업로드 실패');
+            console.error(err);
+          }
+        }
+      }
+    });
+    
+document.getElementById('recruitForm').addEventListener('submit', (e) => {
+	document.getElementById('recContent').value = editor.getHTML();
 });
 
 let processIndex = 0;
@@ -191,9 +213,9 @@ function addProcess() {
     <div class="mb-2">
       <label class="form-label">전형 유형</label>
       <select class="form-select processTypeSelect">
-	  	<option value="">서류</option>
-        <option value="interview">면접</option>
-        <option value="exam">시험</option>
+	  	<option value="RERP-003">서류</option>
+        <option value="RERP-002">면접</option>
+        <option value="RERP-001">시험</option>
       </select>
     </div>
 
@@ -211,10 +233,10 @@ function initProcessTypeSelect(container) {
   const select = container.querySelector('.processTypeSelect');
   const detailContainer = container.querySelector('.process-detail');
 
-  select.addEventListener('change', () => {
+  select.addEventListener('change', async () => {
     const type = select.value;
 
-    if (type === 'interview') {
+    if (type === 'RERP-002') {
       detailContainer.innerHTML = `
         <div>
           <label class="form-label">면접 일시</label>
@@ -226,19 +248,46 @@ function initProcessTypeSelect(container) {
         </div>
         <div class="mt-2">
           <label class="form-label">면접 방식</label>
-          <input type="text" name="recruitProcessList[${processIndex}].interviewList[0].interviewType" class="form-control">
+          <select name="recruitProcessList[${processIndex}].interviewList[0].interviewType" class="form-select">
+		    <option value="Y">화상</option>
+		    <option value="N">대면</option>
+		  </select>
+        </div>
+        <div class="mt-2">
+          <label class="form-label">합격 점수</label>
+          <input type="text" name="recruitProcessList[${processIndex}].interviewList[0].interviewPassScore" class="form-control">
         </div>
       `;
-    } else if (type === 'exam') {
+    } else if (type === 'RERP-001') {
       detailContainer.innerHTML = `
+      	<div>
+      		<label class="form-label">합격 점수</label>
+      		<input type="text" name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamCutline" class="form-control">
+      	</div>
+      	<div>
+      		<label class="form-label">시험 일시</label>
+      		<input type="datetime-local" name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamStartDate" class="form-control">
+      	</div>
+      	<div>
+      		<label class="form-label">시험 시간(분)</label>
+      		<input type="text" name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamTime" class="form-control">
+      	</div>
         <div>
           <label class="form-label">시험 선택</label>
-          <select name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamNo" class="form-select">
+          <select name="recruitProcessList[${processIndex}].recruitmentExamList[0].comExamNo" class="form-select exam-select">
             <option value="">시험을 선택하세요</option>
             <!-- 시험 목록 동적 로딩 필요 시 여기에 처리 -->
           </select>
         </div>
       `;
+      const examSelect = detailContainer.querySelector('.exam-select');
+      const resp = await axios.get('/ajax/company/company_exam/list');
+      console.log(resp);
+      const list = resp.data;
+      examSelect.innerHTML += list.map(
+		({comExamNo, comExamName})=>
+		`<option value="${comExamNo}">${comExamName}</option>`
+	  ).join('');
     } else {
       detailContainer.innerHTML = '';
     }
@@ -246,4 +295,81 @@ function initProcessTypeSelect(container) {
 
   select.dispatchEvent(new Event('change'));
 }
+
+document.getElementById('recruitForm').addEventListener('submit', async(e)=>{
+	e.preventDefault();
+	
+	document.getElementById('recContent').value = editor.getHTML();
+	
+	const contentHTML = editor.getHTML();
+	const usedImages = Array.from(contentHTML.matchAll(/<img[^>]*src="([^"]+)"[^>]*>/g)).map(m => m[1]);
+	
+	const unusedImages = Array.from(uploadImages).filter(img=> !usedImages.includes(img));
+	
+	for(const url of unusedImages){
+		
+	}
+	
+	const form = e.target;
+	
+	const notice ={
+		recruitmentTitle : form.recruitmentTitle.value,
+		yearCode : form.yearCode.value,
+		jobCode : form.jobCode.value,
+		recruitmentChargerTel : form.recruitmentChargerTel.value,
+		cityCode : form.cityCode.value,
+		districtCode : form.districtCode.value,
+		recruitmentSalary : form.recruitmentSalary.value,
+		recruitmentReceiptStart : form.recruitmentReceiptStart.value,
+		recruitmentFinishDate : form.recruitmentFinishDate.value,
+		recContent : form.recContent.value,
+		education : {
+			codeDetailNo : form['education.codeDetailNo'].value
+		}
+	};
+	
+	notice.positionList = [...document.querySelectorAll('#positionWrapper select')].map(sel =>({
+		codeDetailNo : sel.value
+	}));
+	
+	notice.skillList = [...document.querySelectorAll('#skillWrapper input')].map(input =>({
+		recruitSkillName : input.value
+	}));
+	
+	notice.recruitProcessList = [...document.querySelectorAll('#processSection > .border')].map((el, idx)=>{
+		const step = el.querySelector('[name^="recruitProcessList"][name*="recruitPrecessStep"]').value;
+		const isFinal = el.querySelector('[name^="recruitProcessList"][name*="recruitProcessFinal"]').value;
+		const type = el.querySelector('.processTypeSelect').value;
+		
+		const process ={
+			recruitProcessStep : step,
+			recruitProcessFinal : isFinal,
+			recruitProcessType : type
+		};
+		
+		if(type === 'interview'){
+			process.interviewList = [{
+				interviewDate : el.querySelector('[name=*"interviewDate"]').value,
+				interviewLocation : el.querySelector('[name*="interviewLocation"]').value,
+				interviewType : el.querySelector('[name*="interviewType"]').value
+			}];
+		}
+		
+		if(type === 'exam'){
+			process.recruitmentExamList = [{
+				recruitExamNo : el.querySelector('[name*="recruitExamNo"]').value,
+				recruitExamCutline : el.querySelector('[name*="recruitExamCutline"]').value,
+				recruitExamStartDate : el.querySelector('[name*="recruitExamStartDate"]').value
+			}];
+		}
+		
+		return process;
+	});
+	
+	const resp = await axios.get('/ajax/notice', notice);
+	const recruitmentNo = resp.data;
+	
+	alert('등록에 성공하였습니다.');
+	location.href = `/company/recruit_notice/${recruitmentNo}`;
+})
 

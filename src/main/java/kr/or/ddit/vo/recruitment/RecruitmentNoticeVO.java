@@ -3,6 +3,7 @@ package kr.or.ddit.vo.recruitment;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.vo.common.CompanyVO;
@@ -51,9 +52,15 @@ public class RecruitmentNoticeVO implements Serializable{
 	private String recruitmentFinishDate;
 	private String recruitmentDelDate;
 	
+	private String comExamNo;
+	
+	@Valid
 	private List<RecruitmentPositionVO> positionList;
+	@Valid
 	private RecruitmentEducationVO education;
+	@Valid
 	private List<RecruitmentSkillVO> skillList;
+	@Valid
 	private List<RecruitProcessVO> processList;
 	private CompanyVO company;
 }

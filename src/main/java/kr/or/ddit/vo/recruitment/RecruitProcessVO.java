@@ -3,6 +3,7 @@ package kr.or.ddit.vo.recruitment;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import kr.or.ddit.validate.UpdateGroup;
 import lombok.Data;
@@ -32,7 +33,9 @@ public class RecruitProcessVO implements Serializable{
 	private RecruitmentNoticeVO recruitmentNotice;
 	
 	// 자식
+	@Valid
 	private List<InterviewVO> interviewList;
+	@Valid
 	private List<RecruitmentExamVO> recruitmentExamList;
 	private List<ApplicantRecordVO> applicantRecordList;
 }
