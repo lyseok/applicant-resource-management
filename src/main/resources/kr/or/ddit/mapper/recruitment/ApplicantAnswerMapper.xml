@@ -61,7 +61,7 @@
 	
 	
 	
-	 <!-- 1) 제출 전, 응시 여부 체크용 count -->
+	
   <select id="countByUserAndExam" resultType="int" parameterType="map">
     SELECT COUNT(*)
       FROM APPLICANT_ANSWER
@@ -70,21 +70,18 @@
   </select>
   
   
-  <select id="selectResultByExamAndUser" resultType="kr.or.ddit.vo.recruitment.RecruitmentExamScoreResultVO" parameterMap="map">
-  	 SELECT
-		    aa.APPLICANT_ID           AS applicantId,              
-		    SUM(aa.APPLICANT_SCORE)   AS totalScore,                
-		    e.RECRUIT_EXAM_CUTLINE    AS cutlineScore,              
-	    CASE 
-	      WHEN SUM(aa.APPLICANT_SCORE) >= e.RECRUIT_EXAM_CUTLINE 
-	      THEN 'Y' 
-	      ELSE 'N' 
-	    END                       AS passYn                    
-	  FROM APPLICANT_ANSWER aa                                    
-	  JOIN RECRUITMENT_EXAM  e                                    
-	    ON aa.RECRUIT_EXAM_NO = e.RECRUIT_EXAM_NO
-	  WHERE aa.RECRUIT_EXAM_NO = #{recruitExamNo}                 
-	    AND aa.APPLICANT_ID    = #{applicantId}                   
-	  GROUP BY aa.APPLICANT_ID, e.RECRUIT_EXAM_CUTLINE            
+  <select id="selectResultByExamAndUser" resultType="kr.or.ddit.vo.recruitment.RecruitmentExamScoreResultVO">
+  	  SELECT
+      aa.APPLICANT_ID           AS applicantId,
+      SUM(aa.APPLICANT_SCORE)   AS examTotalScore,
+      e.RECRUIT_EXAM_CUTLINE    AS examcutlineScore,
+      CASE WHEN SUM(aa.APPLICANT_SCORE) >= e.RECRUIT_EXAM_CUTLINE THEN 1 ELSE 0 END
+                                AS examPass
+    FROM APPLICANT_ANSWER aa
+    JOIN RECRUITMENT_EXAM  e
+      ON aa.RECRUIT_EXAM_NO = e.RECRUIT_EXAM_NO
+    WHERE aa.RECRUIT_EXAM_NO = #{recruitExamNo}
+      AND aa.APPLICANT_ID    = #{applicantId}
+    GROUP BY aa.APPLICANT_ID, e.RECRUIT_EXAM_CUTLINE            
   </select>
 </mapper>

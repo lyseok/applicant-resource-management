@@ -1,8 +1,11 @@
 package kr.or.ddit.member.recruitment.recruitmentExam.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import kr.or.ddit.common.exception.AlreadyTakenExamException;
@@ -33,12 +36,13 @@ public class RecruitmentExamServiceImpl implements RecruitmentExamService {
 		return recruitmentExamMapper.selectRecruitExamQuestionWithOptionByNo(recruitExamNo);
 	}
 
+
+	@Transactional
 	@Override
 	public RecruitmentExamScoreResultVO gradeAndSave(String userId,@RequestBody List<RecruitmentExamAnswerDTO> answers) {
 		String applicantId    = answers.get(0).getApplicantId();
 		String recruitExamNo = answers.get(0).getRecruitExamNo();
 		int cutline = recruitmentExamMapper.selectCutlineByExamNo(recruitExamNo);
-		RecruitmentExamScoreResultVO result = new RecruitmentExamScoreResultVO();
 		int taken = applicantAnswerMapper.countByUserAndExam(applicantId, recruitExamNo);
 		
 		
@@ -46,18 +50,20 @@ public class RecruitmentExamServiceImpl implements RecruitmentExamService {
 			throw new AlreadyTakenExamException("이미 응시를 완료했습니다.");
 		}
 		
-		int total = 0;
+		int questionCount = answers.size();
+		int scorePerQuestion = 100 / questionCount;
+		int totalScore = 0;
+		
 		for(RecruitmentExamAnswerDTO dto : answers) {
-			String selectOption = dto.getSelectedOptionNo();
+			String selectedOption = dto.getSelectedOptionNo();
 			int score = 0;
-			if(!"X".equals(selectOption)) {
+			if(!"X".equals(selectedOption)) {
 				boolean correct = "Y".equals(
-					recruitmentExamOptionMapper.selectOptionCorrectYn(selectOption)
+					recruitmentExamOptionMapper.selectOptionCorrectYn(selectedOption)
 				);
-				score = correct ? 10 : 0;
+				score = correct ? scorePerQuestion : 0;
 			}
-			total += score;
-			
+			totalScore += score;
 			ApplicantAnswerVO vo = new ApplicantAnswerVO();
 			vo.setApplicantId(dto.getApplicantId());
 			vo.setRecruitExamNo( dto.getRecruitExamNo() ); 
@@ -67,10 +73,33 @@ public class RecruitmentExamServiceImpl implements RecruitmentExamService {
 			applicantAnswerMapper.insertApplicantAnswer(vo);
 			
 		}
-		result.setExamTotalScore(total);
+		
+		editStepApplicationYN(recruitExamNo, applicantId);
+		
+		RecruitmentExamScoreResultVO result = new RecruitmentExamScoreResultVO();
+		result.setExamTotalScore(totalScore);
 		result.setExamcutlineScore(cutline);
-		result.setExamPass( total >= cutline);
+		result.setExamPass( totalScore >= cutline);
 		return result;
 	}
+
+	@Override
+	public RecruitmentExamScoreResultVO readResultByExamAndUser(String applicantId, String recruitExamNo) {
+		return applicantAnswerMapper.selectResultByExamAndUser(applicantId, recruitExamNo);
+	}
+
+	@Override
+	public boolean editStepApplicationYN(String recruitExamNo, String applicantId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("recruitExamNo", recruitExamNo);
+		params.put("applicantId", applicantId);
+		
+		int result = recruitmentExamMapper.updateStepApplicationYN(params);
+		return result > 0;
+		
+	}
+	
+	
+	
 
 }

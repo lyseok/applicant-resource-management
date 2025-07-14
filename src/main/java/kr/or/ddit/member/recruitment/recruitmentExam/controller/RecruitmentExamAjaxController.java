@@ -52,14 +52,19 @@ public class RecruitmentExamAjaxController {
 		 return result;
 	}
 	
+	
 	@GetMapping("/result/{recruitExamNo}/{applicantId}")
 	public ResponseEntity<RecruitmentExamScoreResultVO> result(
-			@PathVariable String recruitExamExamNo
-			,@PathVariable String applicantId
+			@PathVariable("recruitExamNo") String recruitExamExamNo
+			,@PathVariable("applicantId") String applicantId
 	){
-		return null;
+		RecruitmentExamScoreResultVO result = 
+		recruitmentExamService.readResultByExamAndUser(applicantId, recruitExamExamNo);
+		return ResponseEntity.ok(result);
 		
 	}
+	
+
 	
 	
 	@ExceptionHandler(AlreadyTakenExamException.class)
@@ -77,4 +82,19 @@ public class RecruitmentExamAjaxController {
 	}
 }
 
+
+
+//@GetMapping("/step/{recruitExamNo}/{applicantId}")
+//public ResponseEntity<?> updateStep(
+//		@PathVariable("recruitExamNo") String recruitExamExamNo
+//		,@PathVariable("applicantId") String applicantId
+//){
+//	boolean stepUpdated = recruitmentExamService.editStepApplicationYN(recruitExamExamNo, applicantId);
+//
+//	if (stepUpdated) {
+//		return ResponseEntity.ok("응시여부 업데이트 성공");
+//	}else {
+//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("응시 여부 업데이트 실패");
+//	}
+//}
 

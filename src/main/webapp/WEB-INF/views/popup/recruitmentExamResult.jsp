@@ -9,6 +9,7 @@
 	body { background: #f8f9fa; }
     .result-card { max-width: 500px; margin: 2rem auto; }
 </style>
+<script src ="/js/member/recruitment/recruitmentExam/recruitmentExamResult.js"></script>
 </head>
 <body>
 	<div class="card result-card">

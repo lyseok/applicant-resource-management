@@ -14,5 +14,8 @@ public interface RecruitmentExamService {
 
 	public RecruitmentExamScoreResultVO gradeAndSave(String userId, List<RecruitmentExamAnswerDTO> answers);
 	
+	public RecruitmentExamScoreResultVO readResultByExamAndUser(String applicantId, String recruitExamNo);
+	
+	public boolean editStepApplicationYN(String recruitExamNo, String applicantId);
 	
 }
