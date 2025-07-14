@@ -158,7 +158,7 @@
     <li class="menu-header small text-uppercase"><span class="menu-header-text">상품관리</span></li>
 
     <li class="menu-item">
-      <a href="/company" class="menu-link">
+      <a href="/company/payment" class="menu-link">
         <i class="menu-icon tf-icons bx bx-shopping-bag-alt"></i>
         <div data-i18n="Basic">상품이용관리</div>
       </a>
