@@ -4,24 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kr.or.ddit.admin.common.codegroup.service.AdminCmnCodeGroupAjaxService;
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
-import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminAdminBoardAjaxController {
 	
 	private final AdminAdminBoardAjaxService service;
-	private final AdminCmnCodeGroupAjaxService cservice;
-	
-    // codeGroupNo 파라미터(BRDD, UFAQ, CFAQ)를 받아 
-	// codeDetailNo 목록(BRDD-001, BRDD-002, BRDD-003...)과 codeName("문의사항", "FAQ", "공지사항"...) 조회
-    @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/admin_board/cmncodegroup/BRDD
-    public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
-        return cservice.readCmnCodeGroupByPk(no);
-    }
 
     // 해당 유형의 해당 글의 게시글 단건조회
 	@GetMapping("/detail/{boardNo}")

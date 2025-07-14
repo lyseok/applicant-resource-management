@@ -12,20 +12,22 @@
 
 
 <p class="h4">문의사항 답변 등록</p><br>
-
-  <h1><sec:authentication property="principal.realUser.userId" var="userId"/></h1> <%-- 이건 로그인유저 --%>
-  <%-- 
+<%--
+  <h1><sec:authentication property="principal.realUser.userId" var="userId"/></h1> <!-- 이건 로그인유저 -->
+  <!-- 
   답글 폼은 게시글 단건과 같이 넘어옴, 비동기 중 <AdminBoardVO> 조회부터 
   거기서 List<AdminCommentVO> 조회하면서 폼 입력이 가능하게
-  --%>
+  -->
   	<div id="aboard"></div>
 	<form id="acommentForm">
-		<input type="hidden" name="userId" value="${userId}"><br> <%-- 이건 작성자 --%>
+		<input type="hidden" name="userId" value="${userId}"><br> <!-- 이건 작성자 -->
 		<input type="hidden" name="boardNo" value="${boardNo}"><br>
 		<input type="text" name="boardCommentContent" placeholder="내용">
 	  <button type="submit">등록</button>
 	</form>
+--%>
 <script>
+/*
 fetch(`/ajax/admin/board/admin_comment/\${boardNo}`)
 .then(resp => {resp.json()
 	.then(rslt=> {
@@ -73,5 +75,6 @@ acommentForm.onsubmit = function(){
 		});
 	});
 };
+*/
 </script>
 </body>

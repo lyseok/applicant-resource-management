@@ -20,6 +20,7 @@ import kr.or.ddit.admin.community.adminComment.service.AdminAdminCommentAjaxServ
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.utils.ErrorsUtils;
+import kr.or.ddit.vo.community.AdminBoardVO;
 import kr.or.ddit.vo.community.AdminCommentVO;
 import lombok.RequiredArgsConstructor;
 
@@ -38,9 +39,10 @@ public class AdminAdminCommentController {
 		return "admin/community/adminComment/acommentForm";
 	}
 	
-	// 등록 폼으로 이동
-	@GetMapping("/form/no")  ///admin/board/admin_comment?no=boardNO
+	// 등록 폼으로 이동 - 답변 등록 폼은 곧 게시글 단건조회
+	@GetMapping("/form/no")  //http://localhost/admin/admin_board/detail?no=ABNO000002
 	public String formUI(String no, Model model) {
+		
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "admin/community/adminComment/acommentForm";
