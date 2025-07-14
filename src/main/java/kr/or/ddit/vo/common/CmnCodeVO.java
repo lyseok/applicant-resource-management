@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(of="codeDetailNo")
 public class CmnCodeVO implements Serializable {
-	private String codeDetailNo;
+	private String codeDetailNo;//=memType
 	private String codeGroupNo;
 	private String upperCodeNo;
 	private String codeName;

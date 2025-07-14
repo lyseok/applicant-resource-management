@@ -43,13 +43,32 @@ public class AdminAdminBoardAjaxController {
 	}
 	
 	// 해당 유형의 등록
+	//boardForm.jsp에서 [등록]버튼 클릭 시 수행
+	/*
+	1.할아버지 [AdminBoardVO] : userId, boardTypeCode, boardTitle, boardContent
+	2.첫째 아빠 [AdminBoardVO.cmnCodeGroupVOList[0]] : codeGroupNo
+	3.첫째 딸 [AdminBoardVO.cmnCodeGroupVOList[0].cmnCodeList[0]] : codeDetailNo(=memType)
+	*/
 	@PostMapping("/{boardTypeCode}")
 	public Map<String, Object> inBoard(
 		@PathVariable String boardTypeCode
 		, @RequestBody AdminBoardVO board
 	) {
+		/*
+		할아버지AdminBoardVO(boardNo=null, userId=testAdmin, boardTypeCode=BRDD-002, boardTitle=제목 연습, boardWriteDate=null, boardContent=내용 연습, boardDeleteDate=null, boardPostHit=null, boardStatus=null, codeName=null, users=null, adminCommentList=null, 
+		cmnCodeGroupVOList=[
+			첫째아빠CmnCodeGroupVO(codeGroupNo=UFAQ, codeGroupName=null, description=null, useYn=null, crateDate=null, updateDate=null, 
+				cmnCodeList=[
+					첫째딸CmnCodeVO(codeDetailNo=UFAQ-U1, codeGroupNo=null, upperCodeNo=null, codeName=null, sortOrder=null, useYn=null, crateDate=null, updateDate=null)
+				])
+		])
+		 */
 		log.info("찍힘 확인 : {}", board);
+		
 		service.createAdminBoard(board);
+		//boardNo를 확인해보자 : 
+		log.info("board : {}", board);
+		
 	    return Map.of("ok", true);
 	}
 	
