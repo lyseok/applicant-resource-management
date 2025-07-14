@@ -8,6 +8,8 @@ import kr.or.ddit.vo.common.TopJobVO;
 @Mapper
 public interface TopJobMapper {
 	public List<TopJobVO> selectTopJobList();
+	
+	public List<TopJobVO> selectRealTopJobList();
 
 	public TopJobVO selectTopJobByPk(TopJobVO vo);
 	
@@ -16,6 +18,6 @@ public interface TopJobMapper {
 	public int updateTopJob(TopJobVO vo);
 	
 	public int deleteTopJob(TopJobVO vo);
-}
+} 
 
 

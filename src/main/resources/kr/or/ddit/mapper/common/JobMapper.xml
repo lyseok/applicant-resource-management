@@ -38,6 +38,15 @@
 		WHERE
 		JOB_CODE = #{jobCode}
 	</select>
+	
+	<select id="selectJobByTopJob">
+		SELECT
+		JOB_CODE
+		, TOP_JOB_CODE
+		, JOB_NAME
+		FROM JOB
+		WHERE TOP_JOB_CODE = #{topJobCode}
+	</select>
 
 	<update id="updateJob">
 		UPDATE JOB

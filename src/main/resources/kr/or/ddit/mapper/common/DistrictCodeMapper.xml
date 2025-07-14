@@ -27,6 +27,15 @@
 		,DISTRICT_NAME
 		FROM DISTRICT_CODE
 	</select>
+	
+	<select id="selectDistrictCodeListByCity">
+		SELECT
+		DISTRICT_CODE_NO
+		,CITY_CODE_NO
+		,DISTRICT_NAME
+		FROM DISTRICT_CODE
+		WHERE CITY_CODE_NO = #{cityCodeNo}
+	</select>
 
 	<select id="selectDistrictCodeByPk">
 		SELECT
