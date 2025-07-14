@@ -385,6 +385,7 @@
 	width:auto;
 }
 
+/* 등록 폼 */
 /* 삭제 */
 .listContainer{
 	display: flex;
@@ -397,16 +398,6 @@
     flex-basis: calc(50% - 20px);
 }
 
+
+
 /* 공통으로 옮길내용 */
-.form-check{
-	display:flex;
-	align-items:center;
-	gap:7px;
-}
-.form-check .form-check-input{
-	width:24px;
-	height:24px;
-}
-.form-check-input:checked[type=checkbox]{
-	background-color:var(--violet30);
-}
