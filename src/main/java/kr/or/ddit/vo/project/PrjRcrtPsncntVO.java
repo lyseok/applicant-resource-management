@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.project;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,4 +13,7 @@ public class PrjRcrtPsncntVO implements Serializable {
 	private String prjAnncNo;
 	private String jobCode;
 	private Integer rcrtPsncnt;
+	private String jobCodeName;
+	
+	private List<PrjAplcntVO> aplcntList;
 }

@@ -18,6 +18,13 @@
 		)
 
 	</insert>
+	
+	<select id="selectTagNo">
+		SELECT 
+		    TAG_NO
+		FROM TAG
+		WHERE TAG_NAME = #{tagName}
+	</select>
 
 	<select id="selectTagList">
 		SELECT

@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.project;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,4 +20,7 @@ public class PrjAnncBbsVO implements Serializable {
 	private String prjAnncContent;
 	private String anncEndPlanDate;
 	private String anncEndYn;
+	
+	private List<PrjAnncBoardTagVO> prjAnncBoardTagList;
+	private List<PrjRcrtPsncntVO> prjRcrtPsncntList;
 }
