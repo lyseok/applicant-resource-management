@@ -287,10 +287,10 @@ public class ResumeServiceImpl implements ResumeService {
 //		log.info(" ");
 		
 		for(MilitaryVO mil : militaryList) {
-			mil.setServiceCategoryCode(provider.getCodeName(mil.getServiceCategoryCode()));
-			mil.setMilitaryTypeCode(provider.getCodeName(mil.getMilitaryTypeCode()));
-			mil.setMilitaryRankCode(provider.getCodeName(mil.getMilitaryRankCode()));
-			mil.setDischargeCode(provider.getCodeName(mil.getDischargeCode()));
+			mil.setServiceCategoryCodeName(provider.getCodeName(mil.getServiceCategoryCode()));
+			mil.setMilitaryTypeCodeName(provider.getCodeName(mil.getMilitaryTypeCode()));
+			mil.setMilitaryRankCodeName(provider.getCodeName(mil.getMilitaryRankCode()));
+			mil.setDischargeCodeName(provider.getCodeName(mil.getDischargeCode()));
 //			log.info("ServiceCategory ------->>> {}", mil.getServiceCategoryCode());
 //			log.info("MilitaryType ------->>> {}", mil.getMilitaryTypeCode());
 //			log.info("MilitaryRank ------->>> {}", mil.getMilitaryTypeCode());
