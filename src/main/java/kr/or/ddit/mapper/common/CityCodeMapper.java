@@ -9,6 +9,8 @@ import kr.or.ddit.vo.common.CityCodeVO;
 @Mapper
 public interface CityCodeMapper {
 	public List<CityCodeVO> selectCityCodeList();
+	
+	public List<CityCodeVO> selectRealCityCodeList();
 
 	public CityCodeVO selectCityCodeByPk(CityCodeVO vo);
 	

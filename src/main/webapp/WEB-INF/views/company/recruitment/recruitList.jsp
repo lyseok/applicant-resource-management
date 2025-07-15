@@ -14,15 +14,12 @@
 </head>
 <body>
 <div class="container py-5">
-     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold mb-0">채용공고 목록</h2>
-        <a href="/company/recruit_notice/notice_form" class="btn btn_violet">+ 공고 등록</a>
-    </div>
-    <div id="recruitment-count" class="mb-3 text-muted"></div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold">채용공고 목록</h2>
+    <a href="/company/recruit_notice/notice_form" class="btn btn_violet">+ 등록</a>
+  </div>
 
-    <div id="recruitment-list" class="row g-4">
-        <!-- 채용공고 카드가 여기에 비동기로 들어감 -->
-    </div>
+  <div id="recruitment-list" class="list-group"></div>
 </div>
 </body>
 </html>

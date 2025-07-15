@@ -10,6 +10,8 @@ import kr.or.ddit.vo.common.DistrictCodeVO;
 public interface DistrictCodeMapper {
 
 	public List<DistrictCodeVO> selectDistrictCodeList();
+	
+	public List<DistrictCodeVO> selectDistrictCodeListByCity(String cityCode);
 
 	public DistrictCodeVO selectDistrictCodeByPk(DistrictCodeVO vo);
 
