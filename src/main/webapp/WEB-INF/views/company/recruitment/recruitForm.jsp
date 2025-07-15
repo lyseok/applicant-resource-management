@@ -16,7 +16,7 @@
 <div class="container my-5">
     <h2 class="mb-4 fw-bold">채용 공고 등록</h2>
 
-    <form action="/company/recruitment/insert" method="post">
+    <form method="post" id="recruitForm">
 
         <!-- 🔹 공고 제목 -->
         <div class="mb-4">
@@ -55,9 +55,14 @@
                 <div class="mb-3">
                     <label class="form-label text-primary fw-semibold">직급/직책</label>
                     <div id="positionWrapper">
-                        <select name="positionList[0].codeDetailName" class="form-select mb-2 rank"></select>
+                        <select name="positionList[0].codeDetailNo" class="form-select mb-2 rank"></select>
                     </div>
                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPosition()">+ 추가</button>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-primary fw-semibold">담당자연락처</label>
+                    <input type="text" name="recruitmentChargerTel" class="form-control"/>
                 </div>
 
                 <div class="mb-3">
@@ -66,6 +71,11 @@
                         <select id="cityCode" name="cityCode" class="form-select"></select>
                         <select id="districtCode" name="districtCode" class="form-select"></select>
                     </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-primary fw-semibold">접수방법</label>
+                    <input type="text" name="recruitmentDesk" class="form-control"/>
                 </div>
             </div>
 
@@ -77,10 +87,11 @@
                     <input type="text" name="recruitmentSalary" class="form-control"/>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-5">
                     <label class="form-label fw-semibold">학력</label>
-                    <select id="eduCode" name="education.codeDetailName" class="form-select"></select>
+                    <select id="eduCode" name="education.codeDetailNo" class="form-select"></select>
                 </div>
+                
                 
                 <div class="mb-3">
                     <label class="form-label text-primary fw-semibold">기술</label>
@@ -88,6 +99,16 @@
                         <input type="text" name="skillList[0].recruitSkillName" class="form-control mb-2 skill"/>
                     </div>
                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addSkill()">+ 추가</button>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-primary fw-semibold">접수시작일</label>
+                    <input type="date" name="recruitmentReceiptStart" class="form-control"/>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-primary fw-semibold">접수마감일</label>
+                    <input type="date" name="recruitmentFinishDate" class="form-control"/>
                 </div>
 
             </div>
@@ -97,9 +118,10 @@
 
         <!-- 🔹 공고 내용 -->
       	<div id="editor"></div>
+      	<textarea id="recContent" name="recContent" style="display:none;"></textarea>
 
 		<div class="mb-4">
-			<label class="form-label fw-semibold">전형</label>
+			<label class="form-label fw-semibold"></label>
 			<div id="processSection" class="d-flex flex-wrap gap-4">
 				<!-- 전형 폼이 여기에 동적으로 들어감 -->
 			</div>

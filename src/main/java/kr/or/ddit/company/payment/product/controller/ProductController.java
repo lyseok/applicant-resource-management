@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/payment")
-public class PaymentListController {
+@RequestMapping("/payment/product")
+public class ProductController {
 
-	@GetMapping("/product_list")
+	@GetMapping("/list")
 	String productForm() {
 		return "company/payment/product/PaymentList";
 	}

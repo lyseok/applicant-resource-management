@@ -13,6 +13,7 @@ import kr.or.ddit.mapper.recruitment.RecruitmentExamOptionMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentExamQuestionsMapper;
 import kr.or.ddit.vo.recruitment.ComExamOptionVO;
 import kr.or.ddit.vo.recruitment.ComExamQuestionsVO;
+import kr.or.ddit.vo.recruitment.CompanyExamVO;
 import kr.or.ddit.vo.recruitment.RecruitmentExamOptionVO;
 import kr.or.ddit.vo.recruitment.RecruitmentExamQuestionsVO;
 import kr.or.ddit.vo.recruitment.RecruitmentExamVO;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RecruitExamServiceImpl implements RecruitExamService {
 	
+	private final CompanyExamMapper comExamMapper;
 	private final ComExamQuestionsMapper comExamQuestMapper;
 	private final ComExamOptionMapper comExamOptionMapper;
 	
@@ -31,14 +33,21 @@ public class RecruitExamServiceImpl implements RecruitExamService {
 
 	@Override
 	@Transactional
-	public void copyCompanyExamToRecruit(String processNo, String companyExamNo, RecruitmentExamVO exam) {
+	public void copyCompanyExamToRecruit(String processNo, RecruitmentExamVO exam) {
 		
+		CompanyExamVO comExam = comExamMapper.selectCompanyExam(exam.getComExamNo());
 		exam.setProcessNo(processNo);
+		exam.setRecruitExamName(comExam.getComExamName());
+		
+		String time = exam.getRecruitExamStartDate();
+		String formatted = time.replace("T", " ");
+		exam.setRecruitExamStartDate(formatted);
+		
 		recruitExamMapper.insertRecruitExam(exam);
 		
 		String rercruitExamNo = exam.getRecruitExamNo();
 		
-		List<ComExamQuestionsVO> questions = comExamQuestMapper.selectByQuestionExamNo(companyExamNo);
+		List<ComExamQuestionsVO> questions = comExamQuestMapper.selectByQuestionExamNo(exam.getComExamNo());
 		for(ComExamQuestionsVO quest : questions) {
 			RecruitmentExamQuestionsVO recruitQuest = new RecruitmentExamQuestionsVO();
 			recruitQuest.setRecruitExamNo(rercruitExamNo);
