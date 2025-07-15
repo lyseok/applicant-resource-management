@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import kr.or.ddit.mapper.common.BusinessTypeCodeMapper;
 import kr.or.ddit.mapper.common.CityCodeMapper;
 import kr.or.ddit.mapper.common.CmnCodeGroupMapper;
+import kr.or.ddit.mapper.common.CmnCodeMapper;
 import kr.or.ddit.mapper.common.DistrictCodeMapper;
 import kr.or.ddit.mapper.common.InduClassCodeMapper;
 import kr.or.ddit.mapper.common.InduCodeMapper;
@@ -15,6 +16,7 @@ import kr.or.ddit.mapper.common.TopJobMapper;
 import kr.or.ddit.vo.common.BusinessTypeCodeVO;
 import kr.or.ddit.vo.common.CityCodeVO;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.DistrictCodeVO;
 import kr.or.ddit.vo.common.InduClassCodeVO;
 import kr.or.ddit.vo.common.InduCodeVO;
@@ -33,6 +35,7 @@ public class CodeServiceImpl implements CodeService {
 	public final CityCodeMapper cityCodeMapper;
 	public final DistrictCodeMapper districtCodeMapper;
 	public final CmnCodeGroupMapper cmnCodeGroupMapper;
+	public final CmnCodeMapper cmnCodeMapper;
 
 	@Override
 	public List<TopJobVO> readTopJobList() {
@@ -73,6 +76,13 @@ public class CodeServiceImpl implements CodeService {
 	public CmnCodeGroupVO readCmnCodeGroupByPk(String codeGroupNo) {
 		return cmnCodeGroupMapper.selectCmnCodeGroupByPk(codeGroupNo);
 	}
+
+	@Override
+	public List<CmnCodeVO> readCmnCodeListByUc(String upperCodeNo) {
+		return cmnCodeMapper.selectCmnCodeListByUc(upperCodeNo);
+	}
+
+	
 
 
 }

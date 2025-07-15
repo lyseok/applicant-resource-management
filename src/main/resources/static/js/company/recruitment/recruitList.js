@@ -2,14 +2,13 @@
  * 
  */
  document.addEventListener('DOMContentLoaded', function () {
-    const userId = '기업아이디값'; // 동적으로 넣거나 서버에서 넘기세요
     const listContainer = document.getElementById('recruitment-list');
     const countEl = document.getElementById('recruitment-count');
 
-    fetch(`/ajax/recruit/list/corp03`)
+    fetch(`/ajax/recruit/list`)
         .then(response => response.json())
         .then(data => {
-            countEl.textContent = `총 ${data.length}건`;
+            /*countEl.textContent = `총 ${data.length}건`;*/
             listContainer.innerHTML = '';
 
             data.forEach(item => {
@@ -23,6 +22,7 @@
                             <p class="text-muted mb-1">${item.RECCONTENT || '공고 내용 없음'}</p>
 
                             <ul class="list-unstyled small text-muted mb-3">
+                                <li><strong>경력:</strong> ${item.yearCodeName || '-'}</li>
                                 <li><strong>직무:</strong> ${item.jobCodeName || '-'}</li>
                                 <li><strong>지역:</strong> ${item.cityCodeName} ${item.districtCodeName}</li>
                                 <li><strong>급여:</strong> ${item.SALARY || '-'}</li>

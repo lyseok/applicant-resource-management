@@ -10,6 +10,7 @@ import kr.or.ddit.vo.common.CmnCodeVO;
 public interface CmnCodeMapper {
 	public List<CmnCodeVO> selectAll();
 	public CmnCodeVO selectCmnCodeByPk(String codeDetailNo);
+	public List<CmnCodeVO> selectCmnCodeListByUc(String upperCodeNo);
 	public int insertCmnCode(CmnCodeVO cmnCod);
 	public int updateCmnCode(CmnCodeVO cmnCod);
 	public int deleteCmnCode(String CODE_GRcodeDetailNoOUP_NO);

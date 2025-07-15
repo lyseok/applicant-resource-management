@@ -69,7 +69,7 @@
 			, #{boardNo}
 			, #{boardCommentContent}
 			, sysdate
-			, #{boardCommentStatus}
+			, 'R'
 		)
 	</insert>
 	
@@ -82,7 +82,7 @@
 			, BOARD_COMMENT_CONTENT = #{boardCommentContent}
 			, BOARD_WRITE_DATE = #{boardWriteDate}
 			, BOARD_DELETE_DATE = #{boardDeleteDate}
-			, BOARD_COMMENT_STATUS = #{boardCommentStatus} 
+			, BOARD_COMMENT_STATUS = 'U'
 		WHERE 
 			BOARD_COMMENT_NO = #{boardCommentNo}
 	</update>

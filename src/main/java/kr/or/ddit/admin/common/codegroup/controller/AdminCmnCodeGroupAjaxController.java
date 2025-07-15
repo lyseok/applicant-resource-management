@@ -24,6 +24,7 @@ import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,6 +49,14 @@ public class AdminCmnCodeGroupAjaxController {
 	@GetMapping("/{no}")
 	public CmnCodeGroupVO getCmnCodeGroup(@PathVariable String no) {
 		return service.readCmnCodeGroupByPk(no);
+	}
+	
+	@GetMapping("/code/{no}")
+	public List<CmnCodeVO> getCmnCodeList(@PathVariable String no) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName(); // 아이디
+	    log.info("🔐 요청자: {}", username);
+		return service.readCmnCodeListByUc(no);
 	}
 	
 	@PostMapping
