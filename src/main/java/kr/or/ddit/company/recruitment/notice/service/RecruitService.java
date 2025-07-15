@@ -7,7 +7,7 @@ import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 
 public interface RecruitService {
 	public List<RecruitmentNoticeVO> readRecruitList();
-	public List<Map<String, Object>> readMyNotice(String userId);
+	public List<Map<String, Object>> readMyNotice();
 	public RecruitmentNoticeVO readRecruitNotice(String recruitNo);
 	public void createRecruitment(RecruitmentNoticeVO recruit);
 	public void modifyRecruitment(RecruitmentNoticeVO recruit);
