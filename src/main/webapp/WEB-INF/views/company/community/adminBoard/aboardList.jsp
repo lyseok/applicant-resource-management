@@ -5,7 +5,7 @@
 
 <body>
 
-	<h4>관리자 게시판 목록</h4>
+	<p class="h1">공지사항 단건조회</p>
 	
 <table class="table">
 	<thead>

@@ -38,6 +38,17 @@ public class AdminUsersController {
 		return "admin/common/users/userForm";
 	}
 	
+	// 회원 목록조회
+	@GetMapping("/list")
+	public String usersList(Model model) {
+		List<UsersVO> userList = service.readUsersList();
+		model.addAttribute("userList", userList);
+		
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);		
+		return "admin/common/users/userList";
+	}
+
 	/*
 	private ErrorsUtils errorsUtils;
 	
@@ -52,17 +63,6 @@ public class AdminUsersController {
 	@ModelAttribute(MODELNAME)
 	public UsersVO user() {
 		return new UsersVO();
-	}
-	
-	// 회원 목록조회
-	@GetMapping("/list")
-	public String usersList(Model model) {
-		List<UsersVO> userList = service.readUsersList();
-		model.addAttribute("userList", userList);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);		
-		return "admin/common/users/userList";
 	}
 	
 	// 회원 아이디로 단건조회

@@ -37,13 +37,13 @@
 	) VALUES (
 		#{tagNo}
 		, #{prjAnncNo}
-		, #{tagDate}
+		, REPLACE(SYSDATE, '-', '')
 	)
 </insert>
 
 <delete id="deletePrjAnncBoardTag">
 	DELETE FROM PRJ_ANNC_BOARD_TAG
-	WHERE TAG_NO = #{tagNo}
+	WHERE  TAG_NO = #{tagNo}
 	AND PRJ_ANNC_NO = #{prjAnncNo}
 </delete>
 

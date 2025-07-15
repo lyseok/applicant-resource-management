@@ -24,8 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberInCommentAjaxController {
 
-	private MemberInCommentService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final MemberInCommentService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{commentNo}/{avatarId}")
 	public ResponseEntity<InCommentVO> getOneInComment(

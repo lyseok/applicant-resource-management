@@ -26,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CompanyAdminBoardAjaxController {
 	
-	private CompanyAdminBoardAjaxService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final CompanyAdminBoardAjaxService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{boardTypeCode}/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
