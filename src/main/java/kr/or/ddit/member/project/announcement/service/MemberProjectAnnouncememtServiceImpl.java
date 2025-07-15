@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.common.exception.DataInsertException;
 import kr.or.ddit.common.exception.DataUpdateException;
+import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.project.PrjAnncBbsMapper;
 import kr.or.ddit.member.project.prjpcrtpsncnt.service.PrjRcrtPsncntService;
 import kr.or.ddit.member.project.tag.service.PrjAnncBoardTagService;
@@ -23,11 +24,23 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 	private final PrjAnncBbsMapper prjAnncBbsMapper;
 	private final PrjRcrtPsncntService prjRcrtPsncntService;
 	private final PrjAnncBoardTagService anncBoardTagService;
+	private final CodeMapProvider codeMapProvider;
 	
 	@Override
 	public List<PrjAnncBbsVO> prjAnncBbsList() {
 		return prjAnncBbsMapper.selectPrjAnncBbsList();
 	}
+	
+	@Override
+	public PrjAnncBbsVO readPrjAnncBbs(String prjAnncNo) {
+		PrjAnncBbsVO prjAnncBbs = prjAnncBbsMapper.selectPrjAnncBbsByPk(prjAnncNo);
+		for(PrjRcrtPsncntVO prscnt: prjAnncBbs.getPrjRcrtPsncntList()) {
+			prscnt.setJobCodeName(codeMapProvider.getJobName(prscnt.getJobCode()));
+		}
+		return prjAnncBbs;
+	}
+	
+	
 	@Transactional
 	@Override
 	public void createPrjAnncBbs(PrjAnncBbsVO vo) {

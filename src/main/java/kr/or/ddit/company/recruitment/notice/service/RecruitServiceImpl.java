@@ -146,8 +146,8 @@ public class RecruitServiceImpl implements RecruitService {
 	}
 
 	@Override
-	public List<Map<String, Object>> readMyNotice(String userId) {
-		List<Map<String, Object>> notices = (List<Map<String, Object>>) noticeMapper.selectMyRecruitNotice(userId);
+	public List<Map<String, Object>> readMyNotice() {
+		List<Map<String, Object>> notices = (List<Map<String, Object>>) noticeMapper.selectMyRecruitNotice(getUserId());
 		for(Map<String, Object> notice : notices) {			
 			notice.put("jobCodeName", codeMapProvider.getJobName((String) notice.get("JOBCODE")));
 			notice.put("cityCodeName", codeMapProvider.getCityName((String) notice.get("CITYCODE")));

@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 public class PrjAnncBbsVO implements Serializable {
 	private String prjAnncNo;
 	private String userId;
+	private String memName;
 	@NotBlank
 	private String prjEmpTitle;
 	@NotBlank
