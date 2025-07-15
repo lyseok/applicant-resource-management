@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                     </div>
                     <div>
-                        <a href="/company/companyTest" class="btn btn btn_gray_line btn-sm">지원현황</a>
+                        <a href="/company/applicant_record" class="btn btn btn_gray_line btn-sm">지원현황</a>
                         <a href="/company/recruit_notice/${item.RECRUITMENTNO}" class="btn btn btn_violet_line btn-sm">합격현황</a>
                     </div>
                     <div>

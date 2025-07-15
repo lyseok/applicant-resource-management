@@ -5,7 +5,7 @@
 <head>
 <title>채용 상세 정보</title>
 <link rel="stylesheet" href="/css/member/recruiment/recruitmentNotices.css">
-<script defer src="/js/member/common/joinForm.js"></script>
+<script defer src="/js/member/recruitment/recruitmentNotice.js"></script>
 <!-- Bootstrap CSS CDN -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -28,8 +28,9 @@
                 <i class="bi bi-star" style="font-size: 18px;"></i>
                 <span style="font-size: 14px;"></span>
             </button>
-            <button class="btn btn_violet" style="height:48px;">
-                D-14<br>입사지원
+            <button class="btn btn_violet" style="height:48px;" id="applyBtn"
+            	data-finish="${recruitmentNotice.recruitmentFinishDate}">
+                <span id="dDayCounter"></span><br>입사지원
             </button>
         </div>
     </div>
