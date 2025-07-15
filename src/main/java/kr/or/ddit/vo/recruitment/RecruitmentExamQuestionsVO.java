@@ -16,13 +16,9 @@ public class RecruitmentExamQuestionsVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
 	private String recruitExamQuestNo;
-	@NotBlank
 	private String recruitExamNo;
-	@NotBlank
 	private String recruitExamQuestContent;
 	private String recruitExamQuestDelDate;
 	
-	@Valid
-	@NotNull
 	private List<RecruitmentExamOptionVO> optionList;
 }

@@ -46,7 +46,7 @@ public class RecruitProcessServiceImpl implements RecruitProcessService {
 				case "3" ->{
 					String companyExamNo = entry.getCompanyExamNo();
 					RecruitmentExamVO exam = entry.getExam();
-					service.copyCompanyExamToRecruit(processNo, companyExamNo, exam);
+					service.copyCompanyExamToRecruit(processNo, exam);
 				}
 				default -> throw new IllegalArgumentException();
 			}

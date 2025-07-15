@@ -53,7 +53,7 @@
         <div>
         	<span class="text-primary fw-semibold">기술 :</span>
         	<c:forEach var="skill" items="${recruitmentNotice.skillList}">
-        	 	${skill.codeDetailName}
+        	 	${skill.recruitSkillName}
         	</c:forEach>
         </div>
 
