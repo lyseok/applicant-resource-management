@@ -116,15 +116,15 @@
 /* 라디오버튼 커스텀 */
 .required{
 	position:relative;
-	padding-left:12px;
 }
 .required:after{
 	content:'*';
 	position:absolute;
 	top:20%;
-	left:0;
+	right:auto;
 	transform:translateY(-50%);
 	color:red;
+	margin-left:5px;
 }
 
 

@@ -293,7 +293,7 @@ public class ResumeServiceImpl implements ResumeService {
 		for(EducationVO edu : educationList) {
 			edu.setDepartmentCode(provider.getCodeName(edu.getDepartmentCode()));
 			edu.setHighestEducationCode(provider.getCodeName(edu.getHighestEducationCode()));
-			edu.setGraduateYn(provider.getCodeName(edu.getGraduateYn()));
+			edu.setGraduateYnName(provider.getCodeName(edu.getGraduateYn()));
 			log.info("MilitaryRank ------->>> {}", edu.getDepartmentCode());
 			log.info("Discharge ------->>> {}", edu.getHighestEducationCode());
 			log.info("Discharge ------->>> {}", edu.getGraduateYn());

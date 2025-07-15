@@ -77,7 +77,8 @@ public class ResumeController {
 	// 등록 폼 이동
 	@GetMapping("create")
 	public String getCreateResumeForm() {
-		String userId = getUserId();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
 		log.info("{}", userId);
 		return "member/resume/mypage/resume/resumeForm";
 	}
@@ -106,7 +107,8 @@ public class ResumeController {
 	// 삭제 로직 구현
 	@GetMapping("delete/{no}")
 	public String createResume(@PathVariable String no) {
-		String userId = getUserId();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
 		ResumeVO vo = new ResumeVO();
 		vo.setUserId(userId);
 		vo.setResumeNo(no);
@@ -121,11 +123,5 @@ public class ResumeController {
 	 * @PostMapping("create") public String createResume() { return ""; }
 	 */
 
-	// 어센티케이션을 받아서 로그인한 사용자인지 체크, 익명 유저인 경우 로그인페이지로 이동 / 회원인경우 userId 리턴
-	public String getUserId() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String userId = authentication.getName(); // 현재 로그인된 사용자의 id값 가져오기
-		return userId;
-	}
 
 }

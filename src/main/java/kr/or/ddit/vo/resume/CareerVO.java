@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import kr.or.ddit.common.annotation.PastString;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import lombok.Data;
@@ -22,10 +23,10 @@ public class CareerVO implements Serializable {
     private String jobCode;
     private String jobCodeName;
 
-    @Past(message = "입사일은 과거 날짜여야 합니다.")
+    @PastString(message = "입사일은 과거 날짜여야 합니다.")
     private String startWorkDate;
 
-    @Past(message = "퇴사일은 과거 날짜여야 합니다.")
+    @PastString(message = "퇴사일은 과거 날짜여야 합니다.")
     private String retireDate;
 
     @Pattern(regexp = "Y|N", message = "재직 여부는 Y 또는 N으로 입력해야 합니다.")
@@ -57,7 +58,7 @@ public class CareerVO implements Serializable {
     @Size(max = 85, message = "근무지는 최대 85자까지 입력 가능합니다.")
     private String location;
 
-    @Past(message = "삭제일은 과거 날짜여야 합니다.")
+    @PastString(message = "삭제일은 과거 날짜여야 합니다.")
     private String deleteDate;
 
     private String comId;
