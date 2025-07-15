@@ -87,6 +87,24 @@ public class AdminAdminBoardController { // 동기 컨트롤러는 페이지 이
 	}
 	
 	/*
+	
+	// 수정 폼으로 이동
+	@GetMapping("/form")  ///admin/board/admin_board/form?no=ABNO000002
+	public String editForm(
+		String no
+		, Model model
+	) {
+		AdminBoardVO aboard = null;
+	    if (no != null) {
+	        aboard = service.readAdminBoardByPk(no).orElse(null);
+	    }
+		model.addAttribute("aboard", aboard);
+		
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/adminBoard/aboardForm";
+	}
+	
 	private ErrorsUtils errorsUtils;
 	
 	//에러 있을 시만 주입
@@ -100,21 +118,6 @@ public class AdminAdminBoardController { // 동기 컨트롤러는 페이지 이
 	@ModelAttribute(MODELNAME)
 	public AdminBoardVO aboard() {
 		return new AdminBoardVO();
-	}
-		
-	// 수정 폼으로 이동
-	@GetMapping("/form/edit")
-	public String editForm(
-		@RequestParam(value = "no", required = false) String boardNo
-		, Model model
-	) {
-		if(!model.containsAttribute(MODELNAME)) {  //모델에 aboard가 없으면, db에서 가져옴
-			AdminBoardVO aboard = service.readAdminBoardByPk(boardNo).get();
-			model.addAttribute(MODELNAME, aboard);
-		}
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "admin/community/adminBoard/aboardForm";
 	}
 	
 	// 폼 입력 데이터 처리

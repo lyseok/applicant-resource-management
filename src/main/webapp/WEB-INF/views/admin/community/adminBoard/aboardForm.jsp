@@ -10,6 +10,7 @@
 
 <p class="h4">관리자 게시판</p><br>
 
+	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
   	<sec:authentication property="principal.realUser.userId" var="userId"/>
 	<form id="aboardForm">
 		<input type="hidden" name="userId" value="${userId}"><br>
