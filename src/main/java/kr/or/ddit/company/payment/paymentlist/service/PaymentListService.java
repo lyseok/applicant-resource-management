@@ -11,9 +11,12 @@ public interface PaymentListService {
 
 	public PaymentVO selectPaymentByPk(PaymentListVO vo);
 
-	public int insertPayment(PaymentListVO plv);
+	public int insertPayment(PaymentListVO vo);
 
 	public int updatePayment(PaymentListVO vo);
 
 	public int deletePayment(PaymentListVO vo);
+	
+	public List<PaymentVO> selectPaymentCompany(String userId);
+	
 }
