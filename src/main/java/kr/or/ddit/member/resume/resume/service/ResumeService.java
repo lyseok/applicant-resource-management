@@ -2,6 +2,7 @@ package kr.or.ddit.member.resume.resume.service;
 
 import java.util.List;
 
+import kr.or.ddit.vo.project.PrjAplcntVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 
 public interface ResumeService {
@@ -17,5 +18,8 @@ public interface ResumeService {
 	public int editResumeRemove(ResumeVO vo);
 	// 삭제
 	public int removeResume(String no);
+	
+	// 지원 (이력서 복사)
+	public void applicantCopyLogic(PrjAplcntVO prjAplcnt);
 	
 }

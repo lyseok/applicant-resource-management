@@ -4,7 +4,7 @@ function convertServerPosts(serverPosts) {
     postId: item.prjAnncNo,
     title: item.prjEmpTitle,
     content: item.prjAnncContent || '',
-    nickname: item.userId,
+    nickname: item.memName,
     job: item.prjTopic || '',
     date: item.anncCreateDate || '',
     like: 0,
@@ -108,7 +108,7 @@ function renderPostList() {
       )
     );
   }
-  area.innerHTML = posts.map(post => `
+  area.innerHTML = posts.map(post => /* html */`
     <li li class="board-list-item" data-id="${post.postId}" style="cursor:pointer;">
       <div class="card card-post mb-4 border-0" >
         <div class="card-body py-4 px-4">
