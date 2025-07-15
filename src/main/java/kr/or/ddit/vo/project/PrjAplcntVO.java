@@ -2,6 +2,7 @@ package kr.or.ddit.vo.project;
 
 import java.io.Serializable;
 
+import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,4 +19,5 @@ public class PrjAplcntVO implements Serializable {
 	private String prjAnncNo;
 	
 	private ResumeVO resume;
+	private MemberVO member;
 }
