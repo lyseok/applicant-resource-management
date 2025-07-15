@@ -27,6 +27,13 @@
 	WHERE PRJ_APLCNT_NO = #{prjAplcntNo}
 </select>
 
+<select id="duplicationPrjRcrtPsncnt">
+  SELECT PRJ_APLCNT_NO
+  FROM PRJ_APLCNT
+  WHERE USER_ID = #{userId}
+    AND PRJ_ANNC_NO = #{prjAnncNo}
+</select>
+
 <insert id="insertPrjRcrtPsncnt">
 	<selectKey resultType="string" keyProperty="prjAplcntNo" order="BEFORE">
 	    SELECT
