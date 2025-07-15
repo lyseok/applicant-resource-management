@@ -30,7 +30,7 @@
             </button>
             <button class="btn btn_violet" style="height:48px;" id="applyBtn"
             	data-finish="${recruitmentNotice.recruitmentFinishDate}">
-                <span id="dDayCounter"></span><br>입사지원
+                <span id="dDayCounter">Loading...</span><br>입사지원
             </button>
         </div>
     </div>
