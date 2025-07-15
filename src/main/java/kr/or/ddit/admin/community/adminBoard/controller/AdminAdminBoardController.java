@@ -24,7 +24,9 @@ import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin/board/admin_board")
 @RequiredArgsConstructor
@@ -60,6 +62,7 @@ public class AdminAdminBoardController { // 동기 컨트롤러는 페이지 이
 		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(type);
 		model.addAttribute("aboardList", aboardList);
 		model.addAttribute("type", type);
+		log.info("🔥 넘어온 type: {}", type);
 
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);

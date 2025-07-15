@@ -8,8 +8,6 @@
 
 <body>
 
-	<!-- 안 들어가지는 거 같아서 일단 시큐리티 넣음 -->
-	<sec:authentication property="principal.realUser.userId" var="userId"/>
 	<p class="h4">회원 목록</p>
 	<div id="auserList"></div>
 	<!-- 여기서 상태 변경도 클릭으로 조정, 상세보기 들어가도 조정 가능 -->
@@ -44,7 +42,11 @@ fetch(`/ajax/admin/common/users`)
 
 			user.forEach((value, index) => {
 				let p = document.createElement("p");
-				p.textContent = `${labels[index]}: ${value ?? '값 없음'}`;
+				
+				let displayValue = (value !== null && value !== undefined) ? value : '값 없음';
+				p.textContent = labels[index] + ": " + displayValue;
+				//jsp에선 js와 달리 ${}를 무조건 el로 해석, ??도 el 연산자로 해석하므로 파싱 피하려면 js로 파일을 빼거나 역슬래시로 이스케이프 시켜야!
+				
 				userContainer.appendChild(p);
 			});
 
