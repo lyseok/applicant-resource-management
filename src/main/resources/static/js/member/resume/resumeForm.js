@@ -345,22 +345,25 @@ const templateMap = {
     </div>
   `,
 	introduction: idx => `
-    <div class="section-form-wrap" id="form-introduction${idx}" data-idx="${idx}">
-      <div class="section-form-row">
-        <label class="required">자기소개서 제목</label>
-        <input type="text" name="resumeVO.introduction.introductionName" maxlength="85" placeholder="예: 성장하는 개발자" >
-      </div>
-      <div class="section-form-row w-100">
-        <label class="mb-3">자기소개서 내용</label>
-        <div class="d-flex direction-column w-100">
-          <textarea name="resumeVO.introduction.introductionContent" maxlength="2000" placeholder="자기소개서 본문을 입력하세요. (최대 2000자)" ></textarea>
-        </div>
-      </div>
-      <div class="section-form-btns">
-        <button type="button" class="btn btn_red_line">취소</button>
-        <button type="button" class="btn save_btn btn_violet_line">확인</button>
-      </div>
-    </div>
+	<div class="modal fade" id="introductionModal" tabindex="-1">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">자기소개서 선택</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	      <div class="modal-body">
+	        <select id="introductionSelect" class="form-select">
+	          <option value="">자기소개서를 선택하세요</option>
+	        </select>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="btn btn-primary" id="confirmIntroduction">확인</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
   `,
 	militaryList: idx => `
     <div class="section-form-wrap" id="form-militaryList${idx}" data-idx="${idx}">
@@ -594,6 +597,7 @@ const resume = {
 	"updateDate": "",
 	"resumeSubmitYn": "",
 	"resumeDeleteDate": "",
+	"introductionNo": "",
 	"company": {},
 	"careerList": [],
 	"supportList": [],
@@ -1139,43 +1143,55 @@ document.addEventListener("DOMContentLoaded", function() {
 	document.querySelectorAll(".listContainer").forEach(container => {
 		container.addEventListener("click", async function(e) {
 			if (e.target.closest(".btn_edit")) {
-				// ✨ edit 버튼 클릭 처리 로직
-				const itemWrap = e.target.closest('.list-item'); // 각 리스트 item의 wrap 요소
+				const itemWrap = e.target.closest('.list-item');
 				const idx = itemWrap.dataset.idx;
-				const type = itemWrap.dataset.type; // 예: "educationList"
+				const type = itemWrap.dataset.type;
 				const section = document.querySelector(`#section-${type}`);
 				const formContainer = section.querySelector('.formContainer');
+				const formId = `form-${type}${idx}`;
+				let formEl = document.getElementById(formId);
+
 				const data = resume[type][idx];
 
-				// 기존 리스트 숨기고 form 열기
+				// 기존 리스트 숨기기
 				itemWrap.style.display = "none";
 
-				// 템플릿 생성 + 데이터 바인딩
-				const formHtml = templateMap[type](idx); // 기존 idx로 생성
-				formContainer.insertAdjacentHTML('beforeend', formHtml);
-				const formEl = formContainer.lastElementChild;
-				formEl.dataset.idx = idx;
-				formEl.dataset.edit = "true";
+				if (formEl) {
+					// 👉 이미 폼이 존재한다면 display만 변경
+					formEl.style.display = "flex";
+					formEl.dataset.edit = "true";
+				} else {
+					// 👉 폼이 없다면 새로 생성
+					const formHtml = templateMap[type](idx);
+					formContainer.insertAdjacentHTML('beforeend', formHtml);
+					formEl = formContainer.lastElementChild;
+					formEl.dataset.idx = idx;
+					formEl.dataset.edit = "true";
 
-				// select 재세팅
-				await setDynamicSelects(type, formEl);
-				// 데이터 바인딩
-				for (const [key, val] of Object.entries(data)) {
-					const input = formEl.querySelector(`[name$='.${key}']`);
-					if (input) {
-						input.value = val;
+					// select 세팅
+					await setDynamicSelects(type, formEl);
 
-						// ⭐ select 값 반영 후 change 이벤트 강제 발생 >> change 됐을 때 클래스 d-none 같은거 발생시킴
-						// ✅ select 값이 제대로 들어갔을 때에만 change 이벤트 발생
-						if (input.tagName === "SELECT" && input.querySelector(`option[value="${val}"]`)) {
-							
-							input.dispatchEvent(new Event('change'));
+					// 값 바인딩
+					setTimeout(() => {
+						for (const [key, val] of Object.entries(data)) {
+							const input = formEl.querySelector(`[name$='.${key}']`);
+							if (input) {
+								if (input.tagName === "SELECT") {
+									const hasOption = input.querySelector(`option[value="${val}"]`);
+									if (hasOption) {
+										input.value = val;
+										input.dispatchEvent(new Event("change"));
+									}
+								} else {
+									input.value = val;
+								}
+							}
 						}
-					}
+					}, 50);
 				}
-
 				return;
 			}
+
 		});
 	});
 	document.querySelectorAll(".add-btn").forEach(btn => {
@@ -1261,23 +1277,25 @@ document.addEventListener("DOMContentLoaded", function() {
 						const vo = makeVO(thisType, data);
 						const key = arrayKey[thisType];
 						const isEdit = formWrap.dataset.edit === "true";
-						const idx = isEdit ? formWrap.dataset.idx : resume[key].length;
+						const idx = parseInt(formWrap.dataset.idx || 0, 10);
 
-
+						// resume 객체 갱신
 						if (isEdit) {
-							// 수정모드일 떄 - ✅ 기존 값 수정
 							resume[key][idx] = vo;
-							// 리스트 아이템 다시 렌더링
-							const newItemHtml = listItemMap[thisType](idx, data, thisType);// 리스트 템플릿 가져오기
-							const oldItem = listContainer.querySelector(`[data-idx="${idx}"]`);
-							if (oldItem) oldItem.outerHTML = newItemHtml;
 						} else {
-							// 등록모드 일 때 ✅ 새로 추가
-							const newIdx = resume[key].length;
 							resume[key].push(vo);
-							const newItemHtml = listItemMap[thisType](newIdx, data);
-							listContainer.insertAdjacentHTML('beforeend', newItemHtml);// 리스트 템플릿 추가
 							typeCounters[thisType] = resume[key].length;
+							console.log(resume)
+						}
+
+						// 리스트 아이템 갱신
+						const listItemHtml = listItemMap[thisType](idx, data, thisType);
+						const listItem = listContainer.querySelector(`[data-idx="${idx}"]`);
+
+						if (isEdit && listItem) {
+							listItem.outerHTML = listItemHtml;
+						} else {
+							listContainer.insertAdjacentHTML('beforeend', listItemHtml);
 						}
 
 						// 폼 제거, +버튼 복원
@@ -1343,6 +1361,25 @@ document.addEventListener("DOMContentLoaded", function() {
 		const type = modal.dataset.type;
 		const idx = parseInt(modal.dataset.idx);
 
+		// 🔁 introduction은 단일 객체니까 따로 분기
+		if (type === "introduction") {
+		  resume.introduction = {};
+
+		  const section = document.querySelector("#section-introduction");
+		  const listContainer = section.querySelector(".listContainer");
+		  listContainer.innerHTML = '';
+		  listContainer.classList.add("d-none");
+
+		  const sectionContent = section.querySelector(".section-content");
+		  if (sectionContent) sectionContent.classList.remove("d-none");
+
+		  const addBtn = section.querySelector(".btn-introduction");
+		  if (addBtn) addBtn.classList.remove("d-none");
+
+		  bootstrap.Modal.getInstance(modal)?.hide();
+		  return;
+		}
+
 		const key = arrayKey[type];
 		if (!key || !Array.isArray(resume[key])) return;
 
@@ -1395,6 +1432,147 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // end 삭제버튼 클릭 영역
 
+// 자소서 선택 로직 ====================================================================================================================
+document.addEventListener("DOMContentLoaded", function() {
+	const modalEl = document.getElementById("introductionModal");
+
+	// 1. 모달 열릴 때 셀렉트 옵션 비동기 로딩
+	modalEl.addEventListener("show.bs.modal", async () => {
+		const selectEl = document.getElementById("introductionSelect");
+		selectEl.innerHTML = `<option value="">자기소개서를 선택하세요</option>`;
+
+		try {
+			const resp = await axios.get("/ajax/introduction/list");
+			const introList = resp.data || [];
+
+			introList.forEach(item => {
+				const opt = document.createElement("option");
+				opt.value = item.introductionNo;
+				opt.textContent = item.introductionName;
+				selectEl.appendChild(opt);
+			});
+		} catch (err) {
+			console.error("자기소개서 목록 불러오기 실패", err);
+			alert("자기소개서를 불러오는 데 실패했습니다.");
+		}
+	});
+
+	// 2. 확인 버튼 클릭 → 선택한 값만 resume.introduction에 저장
+	const confirmBtn = document.getElementById("confirmIntroduction");
+
+	if (confirmBtn) {
+		confirmBtn.addEventListener("click", function() {
+			const selectEl = document.getElementById("introductionSelect");
+			const selectedNo = selectEl.value;
+			const selectedText = selectEl.options[selectEl.selectedIndex]?.textContent;
+
+			if (!selectedNo) {
+				alert("자기소개서를 선택해주세요.");
+				return;
+			}
+
+			// ✅ VO에 introductionNo만 저장
+			resume.introductionNo = selectedNo;
+
+			// ✅ UI 리스트에 표시
+			const section = document.querySelector("#section-introduction");
+			const listContainer = section.querySelector(".listContainer");
+
+			const html = `
+        <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2 w-100">
+          <div>
+            <strong>${selectedText}</strong>
+            <div class="text-secondary fs-14">자기소개서 선택 완료</div>
+          </div>
+					<div class="d-flex gap-2">
+			      <button type="button" class="btn_edit" data-type="introduction">
+			        <span class="material-symbols-outlined fs-3">stylus</span>
+			      </button>
+			      <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="introduction" data-idx="0">
+			        <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
+			      </button>
+			    </div>
+        </div>
+      `;
+			listContainer.innerHTML = html;
+			listContainer.classList.remove("d-none");
+
+			section.querySelector(".section-content")?.classList.add("d-none");
+			section.querySelector(".btn-introduction")?.classList.add("d-none");
+
+			// ✅ 모달 닫기
+			bootstrap.Modal.getInstance(modalEl)?.hide();
+		});
+	}
+
+	// 수정
+	document.addEventListener("click", function(e) {
+		const editBtn = e.target.closest(".btn_edit");
+		if (!editBtn) return;
+
+		const type = editBtn.dataset.type;
+		if (type !== "introduction") return;
+
+		const modalEl = document.getElementById("introductionModal");
+		const selectEl = document.getElementById("introductionSelect");
+
+		// 모달 객체 안전하게 가져오기
+		let modal = bootstrap.Modal.getInstance(modalEl);
+		if (!modal) {
+			modal = new bootstrap.Modal(modalEl);
+		}
+		modal.show();
+
+		// ✅ option 비동기로 로드 + 선택된 값 세팅
+		axios.get("/ajax/introduction/list").then(resp => {
+			const introList = resp.data || [];
+
+			// select 초기화
+			selectEl.innerHTML = `<option value="">자기소개서를 선택하세요</option>`;
+
+			// option 채우기
+			introList.forEach(item => {
+				const opt = document.createElement("option");
+				opt.value = item.introductionNo;
+				opt.textContent = item.introductionName;
+				selectEl.appendChild(opt);
+			});
+
+			// ✅ 기존 선택값 세팅
+			if (resume.introductionNo) {
+			  selectEl.value = String(resume.introductionNo);
+			}
+
+		}).catch(err => {
+			console.error("자기소개서 리스트 로딩 실패", err);
+			alert("자기소개서 목록을 불러오지 못했습니다.");
+		});
+	});
+
+	// 삭제
+	document.querySelector(".btn_red_line").addEventListener("click", function() {
+		// 1. resume 객체에서 introduction 제거
+		resume.introductionNo = "";
+
+		// 2. 리스트 UI 초기화
+		const section = document.querySelector("#section-introduction");
+		const listContainer = section.querySelector(".listContainer");
+		const addBtn = section.querySelector(".btn-introduction");
+		const sectionContent = section.querySelector(".section-content");
+
+		listContainer.innerHTML = '';
+		listContainer.classList.add("d-none");
+
+		sectionContent?.classList.remove("d-none");
+		addBtn?.classList.remove("d-none");
+
+		// 3. 삭제 확인 모달 닫기 (선택)
+		const modalEl = document.getElementById("deleteResumeList");
+		bootstrap.Modal.getInstance(modalEl)?.hide();
+	});
+
+
+});
 
 
 
