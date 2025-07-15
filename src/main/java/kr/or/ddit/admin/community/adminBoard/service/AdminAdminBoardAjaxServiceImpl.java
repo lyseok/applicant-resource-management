@@ -1,6 +1,8 @@
 package kr.or.ddit.admin.community.adminBoard.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -32,6 +34,21 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	@Override
 	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode) {
 		List<AdminBoardVO> aboardList = mapper.selectAdminBoardListByType(boardTypeCode);
+		for(AdminBoardVO aboard : aboardList) {
+			setCodeName(aboard);
+		}
+		return aboardList;
+	}
+	
+	public List<AdminBoardVO> readAFaqListByCgn(String groupPrefix) {
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("boardTypeCode", groupPrefix + "%"); // 예: "CFAQ%" 또는 "UFAQ%"
+	    return mapper.selectAFaqListByCgn(paramMap);
+	}	
+
+	@Override
+	public List<AdminBoardVO> readAFaqListByUcn(String upperCodeNo) {
+		List<AdminBoardVO> aboardList = mapper.selectAFaqListByUcn(upperCodeNo);  //'BRDD-002'
 		for(AdminBoardVO aboard : aboardList) {
 			setCodeName(aboard);
 		}

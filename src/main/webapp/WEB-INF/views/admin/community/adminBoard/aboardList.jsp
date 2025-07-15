@@ -9,17 +9,10 @@
 </head>
 <body>
 
+	<div id="memTypeBtn"></div><br>
 	<ul id="aboardList">
-		<p class="h4">게시글 목록</p>
 		<input type="hidden" id="typeHidden" value="${type}">
 	</ul>
-	
-	<%--구상을 위한 예시 --%>
-	<div id="faqno">
-		<h3>자주 묻는 질문 탭 선택</h3>
-		<button type="button" id="ufaq">일반회원</button>
-		<button type="button" id="cfaq">기업회원</button>
-	</div>
 
 <script src="/js/admin/community/adminBoard/aboardList.js"></script>
 </body>

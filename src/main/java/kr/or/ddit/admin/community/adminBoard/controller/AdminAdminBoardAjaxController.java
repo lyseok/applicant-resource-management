@@ -3,6 +3,7 @@ package kr.or.ddit.admin.community.adminBoard.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,18 @@ public class AdminAdminBoardAjaxController {
 	@GetMapping("/{boardTypeCode}")  
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
 		return service.readAdminBoardListByType(boardTypeCode);
+	}
+	
+	// 기업/일반회원 자주묻는질문 목록조회
+	@GetMapping("/faq/{groupPrefix}")
+	public List<AdminBoardVO> getMemberFaq(@PathVariable String groupPrefix) {
+	    return service.readAFaqListByCgn(groupPrefix);
+	}
+
+	// 전체 자주묻는질문 목록조회
+	@GetMapping("/faqlist/{upperCodeNo}")
+	public List<AdminBoardVO> getAllFaq(@PathVariable String upperCodeNo) {
+		return service.readAFaqListByUcn(upperCodeNo);
 	}
 	
 	// 해당 유형의 등록

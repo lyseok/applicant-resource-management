@@ -1,25 +1,19 @@
 /**
- * 
+ *
  */
-document.addEventListener("DOMContentLoaded", () => {
-
 const type = document.querySelector("#typeHidden").value;
+const aboardList = document.querySelector("#aboardList");
+const memTypeBtn = document.querySelector("#memTypeBtn");
 
 console.log("넘어온 type 확인:", type);
 
-	if (type === 'BRDD-001' || type === 'BRDD-003') {
-
-		fetch(`/ajax/admin/board/admin_board/${type}`)
-			.then(resp => {
-				resp.json()
-				.then(rslt => {
-					const aboardList = document.querySelector("#aboardList");
-					let html = "";
-					rslt.forEach(item => {
-						console.log("아이템 나오니? :", item);
-
-						html += `
-					
+if (type === "BRDD-001" || type === "BRDD-003") {
+  fetch(`/ajax/admin/board/admin_board/${type}`).then((resp) => {
+    resp.json().then((rslt) => {
+      let html = "";
+	  html += `<p class="h4">게시글 목록</p>`;
+      rslt.forEach((item) => {
+        html += `
 						<li>작성자 : ${item.userId}</li>
 						<li>게시판 유형 코드: ${item.boardTypeCode}</li>
 						<li>제목: 
@@ -32,21 +26,101 @@ console.log("넘어온 type 확인:", type);
 						<li>삭제일시: ${item.boardDeleteDate}</li>
 						<li>조회수: ${item.boardPostHit}</li>
 						<li>게시글 상태: ${item.boardStatus}</li><hr/>`;
-					});
-					aboardList.innerHTML = html;
-				});
-			});
-	/*		
-	} else {
-		
-		//faq일 때는...
-		const codeDetailNo = "${type}";  //에서 codeGroupNo(기업/회원)나 upperCodeNo(BRDD-002)를 불러와야
-		//링크만 BRDD-002로 하고 데이터는 UFAQ-U6이나 UFAQ로 할 건지,
-		//링크는 UFAQ-U6으로 하고 데이터는 UFAQ로 할 건지
-		//adminSideMenu도 통일해버리기
-		console.log("codeDetailNo를 보여줘! : ", codeDetailNo);
-		console.log("upperCodeNo를 보여줘! : ", codeDetailNo.cmnCodeList.upperCodeNo);  //cmnCodeVO와 innerJoin 해야 하나?
-		fetch(`/ajax/admin/board/admin_board/${codeDetailNo.upperCodeNo}`)
-	*/	
-	}
-});
+      });
+      aboardList.innerHTML = html;
+    });
+  });
+} else {
+//처음 전체 조회 및 전체 탭 클릭 시
+  function afaq() {
+    fetch(`/ajax/admin/board/admin_board/faqlist/${type}`).then((resp) => {
+      resp.json().then((rslt) => {
+        let html = "";
+		html += `<p class="h4">게시글 목록</p>`;
+        rslt.forEach((item) => {
+          html += `
+				<li>작성자 : ${item.userId}</li>
+				<li>게시판 유형 코드: ${item.boardTypeCode}</li>
+				<li>제목: 
+					<a href="/admin/board/admin_board/detail?no=${item.boardNo}">
+					${item.boardTitle}
+					</a>
+				</li>
+				<li>등록일시: ${item.boardWriteDate}</li>
+				<li>내용: ${item.boardContent}</li>
+				<li>삭제일시: ${item.boardDeleteDate}</li>
+				<li>조회수: ${item.boardPostHit}</li>
+				<li>게시글 상태: ${item.boardStatus}</li><hr/>`;
+        });
+
+        aboardList.innerHTML = html;
+      });
+    });
+  }
+
+  //시작시 일단 전체 호출
+  document.addEventListener("DOMContentLoaded", () => {
+    afaq(); // 페이지 로드시 전체 FAQ 자동 조회
+  });
+
+  //일반회원 탭 클릭 시
+  function ufaq() {
+    //함수 먼저->dom 나중->등록 가능
+    fetch(`/ajax/admin/board/admin_board/faq/UFAQ`).then((resp) => {
+      resp.json().then((rslt) => {
+        let html = "";
+		html += `<p class="h4">게시글 목록</p>`;
+        rslt.forEach((item) => {
+          html += `
+					<li>작성자 : ${item.userId}</li>
+					<li>게시판 유형 코드: ${item.boardTypeCode}</li>
+					<li>제목: 
+						<a href="/admin/board/admin_board/detail?no=${item.boardNo}">
+						${item.boardTitle}
+						</a>
+					</li>
+					<li>등록일시: ${item.boardWriteDate}</li>
+					<li>내용: ${item.boardContent}</li>
+					<li>삭제일시: ${item.boardDeleteDate}</li>
+					<li>조회수: ${item.boardPostHit}</li>
+					<li>게시글 상태: ${item.boardStatus}</li><hr/>`;
+        });
+        aboardList.innerHTML = html;
+      });
+    });
+  }
+  //기업회원 탭 클릭 시
+  function cfaq() {
+    fetch(`/ajax/admin/board/admin_board/faq/CFAQ`).then((resp) => {
+      resp.json().then((rslt) => {
+        let html = "";
+		html += `<p class="h4">게시글 목록</p>`;
+        rslt.forEach((item) => {
+          html += `
+					<li>작성자 : ${item.userId}</li>
+					<li>게시판 유형 코드: ${item.boardTypeCode}</li>
+					<li>제목: 
+						<a href="/admin/board/admin_board/detail?no=${item.boardNo}">
+						${item.boardTitle}
+						</a>
+					</li>
+					<li>등록일시: ${item.boardWriteDate}</li>
+					<li>내용: ${item.boardContent}</li>
+					<li>삭제일시: ${item.boardDeleteDate}</li>
+					<li>조회수: ${item.boardPostHit}</li>
+					<li>게시글 상태: ${item.boardStatus}</li><hr/>`;
+        });
+        aboardList.innerHTML = html;
+      });
+    });
+  }
+
+  // 함수 생성된 뒤에 onclick 들어가게
+  let html = "";
+  html += `<p class="h4">자주 묻는 질문 탭 선택</p>
+		   <button id="ufaq" onclick="ufaq()">일반회원</button>
+		   <button id="cfaq" onclick="cfaq()">기업회원</button>
+		   <button id="afaq" onclick="afaq()">전체</button>`;
+
+  memTypeBtn.innerHTML = html;
+} //BRDD-002 else 구문 끝...

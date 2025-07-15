@@ -69,7 +69,6 @@ public class AdminAdminBoardController { // 동기 컨트롤러는 페이지 이
 		return "admin/community/adminBoard/aboardList";
 	}
 	
-	
 	// 게시글 단건조회
 	@GetMapping("/detail")  //http://localhost/admin/board/admin_board/detail?no=ABNO000002
 	public String aboardDetail(

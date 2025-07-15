@@ -55,7 +55,41 @@
 		     , BOARD_CONTENT
 		     , BOARD_STATUS
 		FROM ADMIN_BOARD
-		WHERE BOARD_TYPE_CODE = #{boardTypeCode}
+		<where>
+			<if test="boardTypeCode!=null and boardTypeCode!='' and boardTypeCode!='BRDD-002'">
+				BOARD_TYPE_CODE = #{boardTypeCode}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectAFaqListByCgn">
+		SELECT 
+		       BOARD_NO
+		     , USER_ID
+		     , BOARD_TYPE_CODE
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_STATUS
+		FROM ADMIN_BOARD
+		<where>
+		  <if test="boardTypeCode != null and boardTypeCode != ''">
+			AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+		  </if>
+		</where>
+	</select>
+	
+	<select id="selectAFaqListByUcn">
+		SELECT 
+		  	   A.BOARD_NO
+		     , A.USER_ID
+		     , A.BOARD_TYPE_CODE
+		     , A.BOARD_TITLE
+		     , A.BOARD_CONTENT
+		     , A.BOARD_STATUS
+		FROM ADMIN_BOARD A
+			JOIN CMN_CODE C 
+			ON A.BOARD_TYPE_CODE = C.CODE_DETAIL_NO
+		WHERE C.UPPER_CODE_NO = #{upperCodeNo}
 	</select>
 
 	<select id="selectAdminBoardList" resultMap="adminBoardMap">
