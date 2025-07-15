@@ -37,7 +37,7 @@ fetch(`/ajax/admin/board/admin_board/\${boardTypeCode}`)
 				console.log("아이템 나오니? :", item);
 
 				let li = document.createElement("li");  //이거로 리팩토링 안되나?
-
+				//appenChild
 
 				html += `
 					

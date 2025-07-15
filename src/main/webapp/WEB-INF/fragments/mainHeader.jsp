@@ -37,7 +37,7 @@
 	            <sec:authorize access="isAuthenticated()">
 	            	<%-- 로그인이 되어 있을때 --%>
 	                <span class="btn_sign signin member_btn" >
-						<sec:authentication property="principal.realUser.memName" />
+						<sec:authentication property="principal.realUser" />
 	                </span>
 	                <div class="layer_member" id="displayMemBtn" style="display:none;">
 			            <ul>
