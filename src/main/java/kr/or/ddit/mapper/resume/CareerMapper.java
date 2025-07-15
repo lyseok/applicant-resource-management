@@ -14,11 +14,11 @@ public interface CareerMapper {
 	// 단건 조회
 	public CareerVO selectCareerDetail(CareerVO vo);
 	// 등록
-	public void insertCareer(CareerVO vo);
+	public int insertCareer(CareerVO vo);
 	// 수정
-	public void updateCareer(CareerVO vo);
+	public int updateCareer(CareerVO vo);
 	// 삭제
-	public void deleteCareer(String no);
+	public int deleteCareer(String no);
 	
 	//추가
 	public CareerVO selectCareerDetail(String careerNo);
