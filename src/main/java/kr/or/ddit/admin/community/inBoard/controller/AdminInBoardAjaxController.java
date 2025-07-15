@@ -27,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AdminInBoardAjaxController {
 
-	private AdminInBoardService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final AdminInBoardService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{commuPostNo}/{avatarId}")
 	public ResponseEntity<InBoardVO> getOneInboard(

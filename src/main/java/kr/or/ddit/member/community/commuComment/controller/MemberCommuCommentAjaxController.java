@@ -26,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberCommuCommentAjaxController {
 
-	private MemberCommuCommentService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final MemberCommuCommentService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{commuPostNo}/{commuCommentNo}")
 	public ResponseEntity<CommuCommentVO> getOneComment(@PathVariable String commuCommentNo) {

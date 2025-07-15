@@ -3,16 +3,19 @@
 <mapper namespace="kr.or.ddit.mapper.common.PaymentListMapper">
 
 	<insert id="insertPayment">
-	<selectKey resultType="string" keyProperty="paymentReceipt" order="BEFORE">
-    SELECT
-        'PAML'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_RECEIPT), LENGTH('PAML' ) + 1)), 0) + 1, 6, '0')
-    FROM PAYMENT_LIST
-</selectKey>
+		<selectKey resultType="string" keyProperty="paymentReceipt"
+			order="BEFORE">
+			SELECT
+			'PAML'||
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_RECEIPT),
+			LENGTH('PAML' ) + 1)), 0) + 1, 6, '0')
+			FROM PAYMENT_LIST
+		</selectKey>
 		INSERT INTO PAYMENT_LIST (
 		PAYMENT_RECEIPT
 		, PAYMENT_NO
-		, PAYMENT_START_DAY
+		,
+		PAYMENT_START_DAY
 		, PAYMENT_AMOUNT
 		, PAYMENT_STATUS
 		, PAYMENT_APPROVALNUM
@@ -20,7 +23,8 @@
 		#{paymentReceipt}
 		, #{paymentNo}
 		, #{paymentStartDay}
-		, #{paymentAmount}
+		,
+		#{paymentAmount}
 		, #{paymentStatus}
 		, #{paymentApprovalnum}
 		)
@@ -37,6 +41,48 @@
 		FROM PAYMENT_LIST
 	</select>
 
+	<resultMap id="paymentListMap" type="kr.or.ddit.vo.common.PaymentListVO">
+    <result property="paymentReceipt" column="PAYMENT_RECEIPT"/>
+    <result property="paymentNo" column="A_PAYMENT_NO"/>
+    <result property="paymentStartDay" column="PAYMENT_START_DAY"/>
+    <result property="paymentAmount" column="PAYMENT_AMOUNT"/>
+    <result property="paymentStatus" column="PAYMENT_STATUS"/>
+    <result property="paymentApprovalnum" column="PAYMENT_APPROVALNUM"/>
+
+    <!-- 1:N 관계 설정 -->
+    <collection property="payment" ofType="kr.or.ddit.vo.common.PaymentVO">
+        <result property="paymentNo" column="B_PAYMENT_NO"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="productNo" column="PRODUCT_NO"/>
+        <result property="paymentMethod" column="PAYMENT_METHOD"/>
+        <result property="paymentDate" column="PAYMENT_DATE"/>
+        <result property="paymentPay" column="PAYMENT_PAY"/>
+        <result property="paymentContract" column="PAYMENT_CONTRACT"/>
+    </collection>
+</resultMap>
+
+
+	<select id="selectPaymentCompany" resultMap="paymentListMap">
+		SELECT
+		A.PAYMENT_RECEIPT,
+		A.PAYMENT_NO AS A_PAYMENT_NO,
+		A.PAYMENT_START_DAY,
+		A.PAYMENT_AMOUNT,
+		A.PAYMENT_STATUS,
+		A.PAYMENT_APPROVALNUM,
+
+		B.PAYMENT_NO AS B_PAYMENT_NO,
+		B.USER_ID,
+		B.PRODUCT_NO,
+		B.PAYMENT_METHOD,
+		B.PAYMENT_DATE,
+		B.PAYMENT_PAY,
+		B.PAYMENT_CONTRACT
+
+		FROM PAYMENT_LIST A
+		INNER JOIN PAYMENT B ON A.PAYMENT_NO = B.PAYMENT_NO
+		WHERE B.USER_ID = #{userId}
+	</select>
 
 	<select id="selectPaymentByPk">
 		SELECT
@@ -54,16 +100,21 @@
 		UPDATE PAYMENT_LIST
 		SET
 		PAYMENT_NO = #{paymentNo}
-		, PAYMENT_START_DAY = #{paymentStartDay}
-		, PAYMENT_AMOUNT = #{paymentAmount}
+		,
+		PAYMENT_START_DAY = #{paymentStartDay}
+		, PAYMENT_AMOUNT =
+		#{paymentAmount}
 		, PAYMENT_STATUS = #{paymentStatus}
-		, PAYMENT_APPROVALNUM = #{paymentApprovalnum}
-		WHERE PAYMENT_RECEIPT = #{paymentReceipt}
+		,
+		PAYMENT_APPROVALNUM = #{paymentApprovalnum}
+		WHERE PAYMENT_RECEIPT =
+		#{paymentReceipt}
 	</update>
 
 	<delete id="deletePayment">
 		DELETE FROM PAYMENT_LIST
-		WHERE PAYMENT_RECEIPT = #{paymentReceipt}
+		WHERE PAYMENT_RECEIPT =
+		#{paymentReceipt}
 	</delete>
 
 </mapper>

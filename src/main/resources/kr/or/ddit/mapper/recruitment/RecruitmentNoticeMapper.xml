@@ -80,6 +80,7 @@
 		R.RECRUITMENT_NO AS recruitmentNo,
 		R.RECRUITMENT_TITLE AS recruitmentTitle,
 		R.JOB_CODE AS jobCode,
+		R.YEAR_CODE as yearCode,
 		R.RECRUITMENT_STARTDATE AS startDate,
 		R.RECRUITMENT_FINISH_DATE AS finishDate,
 		R.RECRUITMENT_SALARY AS salary,
@@ -96,6 +97,7 @@
 		R.RECRUITMENT_NO,
 		R.RECRUITMENT_TITLE,
 		R.JOB_CODE,
+		R.YEAR_CODE,
 		R.RECRUITMENT_STARTDATE,
 		R.RECRUITMENT_FINISH_DATE,
 		R.RECRUITMENT_SALARY,
@@ -216,14 +218,12 @@
 		INSERT INTO RECRUITMENT_NOTICE (
 		RECRUITMENT_NO
 		, USER_ID
-		,
-		RECRUITMENT_TITLE
+		, RECRUITMENT_TITLE
 		, JOB_CODE
 		, YEAR_CODE
 		, REC_CONTENT
 		, PREFERENTIAL
-		,
-		CITY_CODE
+		, CITY_CODE
 		, DISTRICT_CODE
 		, REC_POSITION_NUMBER
 		, RECRUITMENT_CHARGER_TEL
@@ -231,34 +231,27 @@
 		, WELFARE
 		, RECRUITMENT_DESK
 		, RECRUITMENT_IMG
-		,
-		RECRUITMENT_STARTDATE
+		, RECRUITMENT_STARTDATE
 		, RECRUITMENT_RECEIPT_START
-		,
-		RECRUITMENT_FINISH_DATE
+		, RECRUITMENT_FINISH_DATE
 		)VALUES (
 		#{recruitmentNo}
 		, #{userId}
-		,
-		#{recruitmentTitle}
+		, #{recruitmentTitle}
 		, #{jobCode}
 		, #{yearCode}
 		, #{recContent}
-		,
-		#{preferential}
+		, #{preferential}
 		, #{cityCode}
 		, #{districtCode}
 		, #{recPositionNumber}
-		,
-		#{recruitmentChargerTel}
+		, #{recruitmentChargerTel}
 		, #{recruitmentSalary}
 		, #{welfare}
-		,
-		#{recruitmentDesk}
+		, #{recruitmentDesk}
 		, #{recruitmentImg}
 		, SYSDATE
-		,
-		#{recruitmentReceiptStart}
+		, #{recruitmentReceiptStart}
 		, #{recruitmentFinishDate}
 		)
 	</insert>

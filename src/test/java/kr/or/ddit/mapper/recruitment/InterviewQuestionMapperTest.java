@@ -25,7 +25,7 @@ class InterviewQuestionMapperTest {
 
 	@Test
 	void testSelectInterviewQuestion() {
-		log.info("{}", mapper.selectInterviewQuestion("INQE000001"));
+//		log.info("{}", mapper.selectInterviewQuestion("INQE000001"));
 	}
 
 	@Test

@@ -36,8 +36,8 @@
             
 	            <sec:authorize access="isAuthenticated()">
 	            	<%-- 로그인이 되어 있을때 --%>
-	                <span class="btn_sign signin member_btn" >
-						<sec:authentication property="principal.realUser.memName" />
+	                <span class="btn_sign signin member_btn" id="user_name">
+                        <!-- 회원명 들어가는곳 -->
 	                </span>
 	                <div class="layer_member" id="displayMemBtn" style="display:none;">
 			            <ul>
@@ -69,7 +69,7 @@
 			                    <div class="logoutBtn">
 			                        <a href="javascript:void(0)">
 			                            <span class="material-symbols-outlined">logout</span> 
-			                            <span class="txt">로그아웃</span>
+			                            <span class="txt logoutBtn">로그아웃</span>
 			                        </a>
 			                    </div>
 			                </li>
@@ -309,8 +309,28 @@
                 memberLayer.style.display = 'none';
             }
         });
-        
+        axios.get('/ajax/userinfo')
+            .then(res => {
+            const data = res.data;
+            let name = '비회원';
+            if (data.userType === 'company') name = data.userName;
+            else if (data.userType === 'admin') name = '관리자';
+            else if (data.userType === 'member') name = data.userName;
+            document.getElementById('user_name').textContent = name;
+        });
     });
+
+    const logoutBtnEls = document.querySelectorAll('.logoutBtn');
+
+    logoutBtnEls.forEach(btn => {
+        btn.addEventListener('click', () => {
+            console.log('test');
+            axios.post("/common/auth/revoke", {}, {
+                withCredentials: true
+            }).then(resp => location.href = "/");
+        });
+    });
+
     </script>
 </header>
 

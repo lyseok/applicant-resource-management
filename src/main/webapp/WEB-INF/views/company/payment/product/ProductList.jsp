@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script src="https://js.tosspayments.com/v1"></script>
+<script src="/js/company/payment/TossPayment.js"></script>
   <meta charset="UTF-8">
   <title>결제할 상품을 선택하세요</title>
   <style>

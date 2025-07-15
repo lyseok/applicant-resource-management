@@ -30,6 +30,9 @@ public class AdminUsersAjaxController {
 	
 	@GetMapping
 	public List<UsersVO> getAll(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName(); // 아이디
+	    log.info("🔐 요청자: {}", username);
 		return service.readUsersList();
 	}
 	
@@ -40,6 +43,7 @@ public class AdminUsersAjaxController {
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	
+	// 관리자가 회원을 이렇게 새로 만드는 건 안될걸?
 	@PostMapping
 	public Map<String, Object> newUser(@RequestBody UsersVO user) {
 		service.createUser(user);
@@ -65,7 +69,7 @@ public class AdminUsersAjaxController {
 		return Map.of("ok", true);
 	}
 	/*
-	@GetMapping("/{email}")
+	@GetMapping("/who/{email}")
 	public ResponseEntity<UsersVO> getOneSMember(@PathVariable String email) {
 	    return service.searchMemberByMail(email)
 	    		.map(ResponseEntity::ok)  //email 있으면 ok 반환
