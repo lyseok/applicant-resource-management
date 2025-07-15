@@ -12,4 +12,5 @@ public interface PrjAplcntMapper {
 	public PrjAplcntVO selectPrjRcrtPsncntByPk(String prjAplcntNo);
 	public String duplicationPrjRcrtPsncnt(PrjAplcntVO vo);
 	public int insertPrjRcrtPsncnt(PrjAplcntVO prjAplcnt);
+	public int updateStatusCode(PrjAplcntVO prjAplcnt);
 }

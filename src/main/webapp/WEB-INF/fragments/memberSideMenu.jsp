@@ -69,12 +69,12 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="/company" class="menu-link">
+            <a href="/mypage/project/announcement" class="menu-link">
               <div data-i18n="Account">프로젝트 공고관리</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="/company" class="menu-link">
+            <a href="/mypage/project/applicant" class="menu-link">
               <div data-i18n="Notifications">프로젝트 지원자 관리</div>
             </a>
           </li>
