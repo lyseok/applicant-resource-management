@@ -47,12 +47,7 @@ public class RecruitNoticeAjaxController {
 	
 	@GetMapping("/list") // 로그인 정보 안쓰고 일단 pathvariable
 	public List<Map<String, Object>> myNotice(){
-		List<Map<String, Object>> data = service.readMyNotice(getUserId());
+		List<Map<String, Object>> data = service.readMyNotice();
 		return data;
-	}
-	
-	public String getUserId() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    	return authentication.getName();
 	}
 }
