@@ -4,57 +4,76 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <head>
-	<title>띹잡 고객센터 | 게시글 상세 입력</title>
+	<title>띹잡 고객센터 | 게시글 등록</title>
 	<script src="/js/admin/community/adminBoard/aboardForm.js"></script>
 </head>
 
 <body>
+
+<p class="h4">관리자 게시판</p><br>
+
   <h1><sec:authentication property="principal.realUser.userId" var="userId"/></h1>
 	<form id="aboardForm">
-		<input type="text" name="boardNo" placeholder="게시글 번호">
-		<input type="text" name="userId" placeholder="사용자 ID">
-		<input type="text" name="boardTypeCode" placeholder="게시판 유형 코드">
-		<input type="hidden" name="userId" value="${userId}" placeholder="사용자 ID"><br>
+		<input type="hidden" name="userId" value="${userId}"><br>
 		<label>게시판 유형 코드</label>
-		<select name="boardTypeCode">
+		<select id="boardTypeCode">
 			<option value="-1">--선택--</option>
-			<option value="BRDD-003">공지사항</option>
-			<option value="UFAQ-U1">개인회원-이력서등록/관리</option>
-			<option value="UFAQ-U2">개인회원-회원정보/아이디/비밀번호</option>
-			<option value="UFAQ-U3">개인회원-입사지원/관리</option>
-			<option value="UFAQ-U4">개인회원-채용정보 검색/관리</option>
-			<option value="UFAQ-U5">개인회원-회원가입/탈퇴</option>
-			<option value="UFAQ-U6">개인회원-추천/나의검색</option>
-			<option value="UFAQ-U7">개인회원-계정 통합</option>
-			<option value="UFAQ-U8">개인회원-기타회원 서비스</option>
-			<option value="UFAQ-U9">개인회원-KoMate</option>
-			<option value="CFAQ-C1">기업회원-기업채용정보 등록/관리</option>
-			<option value="CFAQ-C2">기업회원-개인유료서비스/결제</option>
-			<option value="CFAQ-C3">기업회원-개인인재풀</option>
-			<option value="CFAQ-C4">기업회원-회원,기업정보/아이디/비밀번호</option>
-			<option value="CFAQ-C5">기업회원-회원가입/탈퇴</option>
-			<option value="CFAQ-C6">기업회원-지원자 관리/면접관리</option>
-			<option value="CFAQ-C7">기업회원-인적성검사</option>
-			<option value="CFAQ-C8">기업회원-채용홈페이지</option>
-			<option value="CFAQ-C9">기업회원-계정통합</option>
-			<option value="CFAQ-C10">기업회원-기타회원서비스</option>
-			<option value="CFAQ-C11">기업회원-KoMate</option>
+		</select>
+		<select id="codeGroupNo" disabled>
+			<option value="-1">--선택--</option>
+			<option value="UFAQ">일반회원</option>
+			<option value="CFAQ">기업회원</option>
+		</select>
+		<select id="memType" disabled>
+			<option value="-1">--선택--</option>
 		</select>
 		<br>
 		<input type="text" name="boardTitle" placeholder="제목">
 		<input type="text" name="boardContent" placeholder="내용">
-	  <button type="submit">전송</button>
+	  <button type="submit">등록</button>
 	</form>
 <script>
 const aboardForm = document.querySelector("#aboardForm");
+//<select id="boardTypeCode">..</select>
+//엘리먼트(object)     <body>다큐먼트</body> 그 안에 들어있는 id속성의 값이 boardTypeCode인 엘리먼트
+const boardTypeCode = document.querySelector("#boardTypeCode");
+const codeGroupNo = document.querySelector("#codeGroupNo");
+const memType = document.querySelector("#memType");
+
 aboardForm.onsubmit = function(){
 	event.preventDefault();
+	//JSON Object
+	//JavaScript Object Notation => {"키":값}
+	/*
+	1.할아버지 [AdminBoardVO] : userId, boardTypeCode, boardTitle, boardContent
+	2.첫째 아빠 [AdminBoardVO.cmnCodeGroupVOList[0]] : codeGroupNo
+	3.첫째 딸 [AdminBoardVO.cmnCodeGroupVOList[0].cmnCodeList[0]] : codeDetailNo(=memType)
+	*/
 	let adminBoard = {
-		userId : aboardForm.userId.value,
-		boardTypeCode : aboardForm.boardTypeCode.value,
-		boardTitle : aboardForm.boardTitle.value,
-		boardContent : aboardForm.boardContent.value
+		"userId":aboardForm.userId.value,
+		"boardTypeCode":boardTypeCode.value,
+		"cmnCodeGroupVOList":[
+			{
+				"codeGroupNo":codeGroupNo.value,
+				"cmnCodeList":[{"codeDetailNo":memType.value}]
+			}
+		],
+		"boardTitle":aboardForm.boardTitle.value,
+		"boardContent":aboardForm.boardContent.value
 	}
+	console.log("boardTypeCode가 2인지 1인지 : ", boardTypeCode);
+	/*
+	{
+		"userId": "testAdmin",
+		"boardTypeCode": "BRDD-002",
+		"codeGroupNo": "UFAQ",
+		"memType": "UFAQ-U2",
+		"boardTitle":"제목 연습",
+		"boardContent": "내용 연습"
+	}
+	*/
+	console.log("adminBoard(JSON Object) : ", adminBoard);
+
 	fetch(`/ajax/admin/board/admin_board/\${adminBoard.boardTypeCode}`, {
 		method : "post",
 		headers : {
@@ -66,6 +85,77 @@ aboardForm.onsubmit = function(){
 			console.log("글자", rslt.ok);
 		})
 	})
+}
+
+fetch(`/ajax/code/cmncodegroup/BRDD`)
+.then(resp => {
+	resp.json()
+	.then(rslt =>{
+		console.log("BRDD 반복문 : ", rslt);
+		
+		rslt.cmnCodeList.map((v,i) => {  //vo[1], vo[2] 만 넣어야 함
+			if(i > 0){
+				let option = document.createElement("option");
+				option.value = v.codeDetailNo;
+				option.innerHTML = v.codeName;
+				
+				boardTypeCode.appendChild(option);
+			}
+		})
+		
+	})
+})
+
+boardTypeCode.onchange = function(){
+if(boardTypeCode.value === 'BRDD-002'){
+	codeGroupNo.disabled = false;
+	codeGroupNo.onchange = function(){
+		if(codeGroupNo.value === '-1'){
+			//첫번째 option 엘리먼트 선택
+			memType.selectedIndex = 0;
+			memType.disabled = true;
+		}else{	
+			memType.disabled = false;
+
+			if(memType.length != 0 || codeGroupNo == -1){
+				memType.innerHTML = "";
+				
+				memOpt = document.createElement("option");
+				memOpt.value = "-1";
+				memOpt.textContent = "--선택--";
+				memType.appendChild(memOpt);
+
+				memType.value = "-1";
+			} 
+
+			console.log("url 확인해~ : ", `/ajax/code/cmncodegroup/\${codeGroupNo.value}`);
+			fetch(`/ajax/code/cmncodegroup/\${codeGroupNo.value}`)
+				.then(resp => {
+					resp.json()
+					.then(rslt =>{
+						console.log(" select 값? : ", rslt);
+
+						rslt.cmnCodeList.forEach(vo => { 
+						let option = document.createElement("option");
+						option.value = vo.codeDetailNo;
+						option.innerHTML = vo.codeName;
+						
+						memType.appendChild(option);
+					})
+
+				})
+			})  
+
+		}
+	}//end codeGroupNo.onchange
+}else{
+	codeGroupNo.disabled = true;
+	codeGroupNo.value = "-1";
+	memType.disabled = true;
+	memType.value = "-1";
+}
+	
+
 }
 </script>
 </body>

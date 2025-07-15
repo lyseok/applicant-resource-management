@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.or.ddit.member.common.codegroup.service.MemberCmnCodeGroupAjaxService;
 import kr.or.ddit.member.community.adminBoard.service.MemberAdminBoardAjaxService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
+import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberAdminBoardAjaxController {
 	
-	private MemberAdminBoardAjaxService service;
+	private final MemberAdminBoardAjaxService service;
+	private final MemberCmnCodeGroupAjaxService mservice;
+	
+    @GetMapping("/cmncodegroup/{no}")
+    public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
+        return mservice.readCmnCodeGroupByPk(no);
+    }
+	
 	private ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{boardTypeCode}/{boardNo}")
@@ -55,7 +63,7 @@ public class MemberAdminBoardAjaxController {
 	    return Map.of("ok", true);
 	}
 	
-	@PutMapping("/{boardTypeCode}/{boardNo}")
+	@PostMapping("/{boardTypeCode}/{boardNo}")
 	public Map<String, Object> editBoard(
 		@PathVariable String boardTypeCode
 		, @PathVariable String boardNo
@@ -64,14 +72,5 @@ public class MemberAdminBoardAjaxController {
 		board.setBoardNo(boardNo);
 	    service.modifyAdminBoard(board);
 	    return Map.of("ok", true);	// 수정 후 Detail 이동
-	}
-	
-	@DeleteMapping("/{boardTypeCode}/{boardNo}")
-	public Map<String, Object> deleteBoard(
-		@PathVariable String boardTypeCode
-		, @PathVariable String boardNo	
-	) {
-		service.removeAdminBoard(boardNo);
-		return Map.of("ok", true);
 	}
 }

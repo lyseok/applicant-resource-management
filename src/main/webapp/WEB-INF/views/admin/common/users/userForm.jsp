@@ -7,15 +7,6 @@
 
 <body>
 
-	<h4>관리자 회원정보 입력 폼</h4>
-
-<form:form action="/admin/users/form/insert" modelAttribute="user" method="post">
-
-    <!-- 등록 버튼 -->
-    <div>
-        <button type="submit">등록</button>
-    </div>
-
-</form:form>
+	<p class="h4">회원 상태 변경</p>
 	
 </body>

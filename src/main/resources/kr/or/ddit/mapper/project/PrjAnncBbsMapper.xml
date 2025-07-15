@@ -2,20 +2,68 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.project.PrjAnncBbsMapper">
 
-<select id="selectPrjAnncBbsList">
-	SELECT 
-		PRJ_ANNC_NO
-		, USER_ID
-		, PRJ_EMP_TITLE
-		, PRJ_TOPIC
-		, ANNC_CREATE_DATE
-		, PRJ_START_PLAN_DATE
-		, PRJ_END_PLAN_DATE
-		, PRJ_ANNC_HIT
-		, PRJ_ANNC_CONTENT
-		, ANNC_END_PLAN_DATE
-		, ANNC_END_YN
-	FROM PRJ_ANNC_BBS
+<!-- TagVO -->
+<resultMap id="TagVOMap" type="kr.or.ddit.vo.common.TagVO">
+    <id     property="tagNo"   column="TAG_NO"/>
+    <result property="tagName" column="TAG_NAME"/>
+</resultMap>
+
+<!-- PrjAnncBoardTagVO -->
+<resultMap id="PrjAnncBoardTagVOMap" type="kr.or.ddit.vo.project.PrjAnncBoardTagVO">
+    <id     property="tagNo"     column="TAG_NO"/>
+    <id     property="prjAnncNo" column="PRJ_ANNC_NO"/>
+    <result property="tagDate"   column="TAG_DATE"/>
+    <!-- TagVO 연관객체 -->
+    <association property="tag" javaType="kr.or.ddit.vo.common.TagVO" resultMap="TagVOMap"/>
+</resultMap>
+
+<!-- PrjAnncBbsVO -->
+<resultMap id="PrjAnncBbsVOMap" type="kr.or.ddit.vo.project.PrjAnncBbsVO">
+    <id     property="prjAnncNo"        column="PRJ_ANNC_NO"/>
+    <result property="userId"           column="USER_ID"/>
+    <result property="prjEmpTitle"      column="PRJ_EMP_TITLE"/>
+    <result property="prjTopic"         column="PRJ_TOPIC"/>
+    <result property="anncCreateDate"   column="ANNC_CREATE_DATE"/>
+    <result property="prjStartPlanDate" column="PRJ_START_PLAN_DATE"/>
+    <result property="prjEndPlanDate"   column="PRJ_END_PLAN_DATE"/>
+    <result property="prjAnncHit"       column="PRJ_ANNC_HIT"/>
+    <result property="prjAnncContent"   column="PRJ_ANNC_CONTENT"/>
+    <result property="anncEndPlanDate"  column="ANNC_END_PLAN_DATE"/>
+    <result property="anncEndYn"        column="ANNC_END_YN"/>
+    <!-- 태그 리스트 -->
+    <collection property="prjAnncBoardTagList"
+                ofType="kr.or.ddit.vo.project.PrjAnncBoardTagVO"
+                resultMap="PrjAnncBoardTagVOMap"/>
+</resultMap>
+
+<select id="selectPrjAnncBbsList" resultMap="PrjAnncBbsVOMap">
+	SELECT
+	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
+	    B.USER_ID,             -- 사용자 ID
+	    B.PRJ_EMP_TITLE,       -- 게시글 제목
+	    B.PRJ_TOPIC,           -- 프로젝트 주제
+	    B.ANNC_CREATE_DATE,    -- 작성일시
+	    B.PRJ_START_PLAN_DATE, -- 프로젝트 시작 예정일
+	    B.PRJ_END_PLAN_DATE,   -- 프로젝트 마감 예정일
+	    B.PRJ_ANNC_HIT,        -- 조회수
+	    B.PRJ_ANNC_CONTENT,    -- 내용
+	    B.ANNC_END_PLAN_DATE,  -- 모집 마감 예정일
+	    B.ANNC_END_YN,         -- 모집 마감 여부
+	    B.DELETE_DATE,         -- 삭제일시
+	    T.TAG_NO,              -- 태그번호
+	    T.TAG_DATE,            -- 태그 일자
+	    C.TAG_NAME             -- 태그명 ← 추가
+	FROM
+	    PRJ_ANNC_BBS B
+	LEFT OUTER JOIN
+	    PRJ_ANNC_BOARD_TAG T
+	ON
+	    B.PRJ_ANNC_NO = T.PRJ_ANNC_NO
+	LEFT OUTER JOIN
+	    TAG C
+	ON
+	    T.TAG_NO = C.TAG_NO
+    ORDER BY B.ANNC_CREATE_DATE DESC
 </select>
 
 <select id="selectPrjAnncBbsByPk">
@@ -33,6 +81,7 @@
 		, ANNC_END_YN
 	FROM PRJ_ANNC_BBS
 	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+	ORDER BY B.ANNC_CREATE_DATE DESC
 </select>
 
 <insert id="insertPrjAnncBbs">
@@ -60,8 +109,8 @@
 		, #{prjEmpTitle}
 		, #{prjTopic}
 		, SYSDATE
-		, #{prjStartPlanDate}
-		, #{prjEndPlanDate}
+		, REPLACE(#{prjStartPlanDate}, '-', '')
+		, REPLACE(#{prjEndPlanDate}, '-', '')
 		, 0
 		, #{prjAnncContent}
 		, #{anncEndPlanDate}
@@ -74,8 +123,8 @@
 	SET 
 		PRJ_EMP_TITLE = #{prjEmpTitle}
 		, PRJ_TOPIC = #{prjTopic}
-		, PRJ_START_PLAN_DATE = #{prjStartPlanDate}
-		, PRJ_END_PLAN_DATE = #{prjEndPlanDate}
+		, PRJ_START_PLAN_DATE = REPLACE(#{prjStartPlanDate}, '-', '')
+		, PRJ_END_PLAN_DATE = REPLACE(#{prjEndPlanDate}, '-', '')
 		, PRJ_ANNC_CONTENT = #{prjAnncContent}
 		, ANNC_END_PLAN_DATE = #{anncEndPlanDate}
 		, ANNC_END_YN = #{anncEndYn}

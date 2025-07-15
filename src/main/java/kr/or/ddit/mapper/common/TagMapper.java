@@ -13,6 +13,8 @@ public interface TagMapper {
 
 	public TagVO selectTagByPk(TagVO vo);
 	
+	public String selectTagNo(String tagName);
+	
 	public int insertTag(TagVO vo);
 	
 	public int updateTag(TagVO vo);
