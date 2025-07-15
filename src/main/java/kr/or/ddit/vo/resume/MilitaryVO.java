@@ -5,6 +5,7 @@ import java.io.Serializable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import kr.or.ddit.common.annotation.PastString;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,20 +19,24 @@ public class MilitaryVO implements Serializable {
 	@NotNull(message="복무 구분은 필수 입력 항목 입니다.")
     @Size(max = 10, message = "복무 구분 항목은 최대 10자까지 입력 가능합니다.")
 	private String serviceCategoryCode;
+	private String serviceCategoryCodeName;
 
     @Size(max = 10, message = "군별은 최대 10자까지 입력 가능합니다.")
 	private String militaryTypeCode;
+    private String militaryTypeCodeName;
 
     @Size(max = 10, message = "계급은 최대 10자까지 입력 가능합니다.")
 	private String militaryRankCode;
+    private String militaryRankCodeName;
 
     @Size(max = 10, message = "전역사유는 최대 10자까지 입력 가능합니다.")
 	private String dischargeCode;
+    private String dischargeCodeName;
 
-    @Past(message = "복무 시작일자는 과거 날짜여야 합니다.")
+    @PastString(message = "복무 시작일자는 과거 날짜여야 합니다.")
 	private String militaryStartDate;
 
-    @Past(message = "복무 종료일자는 과거 날짜여야 합니다.")
+    @PastString(message = "복무 종료일자는 과거 날짜여야 합니다.")
 	private String militaryEndDate;
 
 	@Size(max = 1000)
