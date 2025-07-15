@@ -60,9 +60,27 @@ document.getElementById('projectForm').onsubmit = function(e){
       location.href = "/board/project";
     })
     .catch(err => {
-      alert('등록/수정 실패!');
-      console.error(err);
+      if (err.response && err.response.data) {
+        showValidationErrors(err.response.data);
+      }
     });
+}
+
+function showValidationErrors(errors) {
+  // 기존 에러 메시지 제거
+  document.querySelectorAll('.input-error-msg').forEach(e => e.remove());
+
+  Object.entries(errors).forEach(([field, messages]) => {
+    // input name과 field명이 같다고 가정
+    const input = document.querySelector(`[name="${field}"]`);
+    if (input) {
+      const errorSpan = document.createElement('span');
+      errorSpan.className = 'input-error-msg text-danger mt-1';
+      errorSpan.style.fontSize = '0.98em';
+      errorSpan.textContent = messages[0]; // 여러 메시지일 경우 첫번째만 표시
+      input.parentNode.appendChild(errorSpan); // input 바로 아래에 추가
+    }
+  });
 }
 
 // =============================== 화면구성 ===============================
@@ -97,13 +115,23 @@ function renderTags() {
 window.removeTag = removeTag;
 
 /** ---- 모집 팀원 역할/인원 관리 ---- **/
-const jobData = [
-    { jobCode: "2248", jobName: "프론트엔드 개발자" },
-    { jobCode: "2249", jobName: "백엔드 개발자" },
-    { jobCode: "2250", jobName: "기획" },
-    { jobCode: "2251", jobName: "디자인" }
-    // 실제로는 서버에서 받아오면 됨!
-];
+let jobData = []; // 전역에서 쓸 수 있도록 let으로 선언
+
+// 페이지 로드 시 한 번만 호출
+(function fetchJobData() {
+  axios.get('/ajax/code/job')
+    .then(res => {
+      if (Array.isArray(res.data)) {
+        jobData = res.data.map(j => ({
+          jobCode: j.jobCode,
+          jobName: j.jobName
+        }));
+      }
+    })
+    .catch(err => {
+      console.error('직무 코드 목록을 불러오지 못했습니다.', err);
+    });
+})();
 
 const jobInput = document.getElementById('jobSearchInput');
 const jobResult = document.getElementById('jobSearchResult');
@@ -118,7 +146,10 @@ jobInput.addEventListener('input', function() {
     if (!val) return jobResult.style.display = 'none';
     const filtered = jobData.filter(j => j.jobName.toLowerCase().includes(val));
     if (filtered.length === 0) return jobResult.style.display = 'none';
-    jobResult.innerHTML = filtered.map(j => `<li class="list-group-item list-group-item-action" data-code="${j.jobCode}">${j.jobName}</li>`).join('');
+    // 상위 5개만 표시
+    jobResult.innerHTML = filtered.slice(0, 5).map(j => 
+        `<li class="list-group-item list-group-item-action" data-code="${j.jobCode}">${j.jobName}</li>`
+    ).join('');
     jobResult.style.display = '';
     jobResult.style.left = jobInput.getBoundingClientRect().left + "px";
 });

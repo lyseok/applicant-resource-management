@@ -74,7 +74,7 @@
 				<div class="mb-3">
 					<label class="form-label fw-bold">제목</label>
 					<input type="text" class="form-control" name="prjEmpTitle" placeholder="프로젝트 제목을 입력하세요" maxlength="60"
-						required>
+						>
 				</div>
 
 				<!-- 태그 입력 -->
@@ -109,7 +109,7 @@
 				<!-- 프로젝트 주제 -->
 				<div class="mb-3">
 					<label class="form-label fw-bold">프로젝트 주제</label>
-					<input type="text" class="form-control" name="prjTopic" placeholder="주제를 입력하세요" maxlength="100" required>
+					<input type="text" class="form-control" name="prjTopic" placeholder="주제를 입력하세요" maxlength="100">
 				</div>
 
 				<!-- 기간 -->
