@@ -5,6 +5,7 @@ import java.io.Serializable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import kr.or.ddit.common.annotation.PastString;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,8 +21,8 @@ public class LanguageSkillVO implements Serializable {
 	private String languageExamCode;
 	private String languageExamCodeName;
 
-	@NotNull(message = "어학명은 필수 입력 항목입니다.")
-	@Size(max = 20, message = "어학명은 최대 20자까지 입력 가능합니다.")
+	@NotNull(message = "어학구분은 필수 입력 항목입니다.")
+	@Size(max = 20, message = "어학구분은 최대 20자까지 입력 가능합니다.")
 	private String languageCode;
 	private String languageCodeName;
 
@@ -30,7 +31,7 @@ public class LanguageSkillVO implements Serializable {
 	private String languageExamName;
 
 	@NotNull(message = "취득일자는 필수 입력 항목입니다.")
-    @Past(message = "취득일자는 과거 날짜여야 합니다.")
+    @PastString(message = "취득일자는 과거 날짜여야 합니다.")
 	private String passDate;
 
 	@NotNull(message = "시험 유형은 필수 입력 항목입니다.")
@@ -45,6 +46,4 @@ public class LanguageSkillVO implements Serializable {
 	private String languageExamLevelCodeName;
 
 	private String deleteDate;
-
-
 }
