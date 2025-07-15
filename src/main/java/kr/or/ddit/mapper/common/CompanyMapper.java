@@ -16,4 +16,6 @@ public interface CompanyMapper {
 	public int deleteCompany(String userId);
 	
 	public int insertCompany(CompanyVO company);
+	
+	public CompanyVO selectCompanyManagementById(String userId);
 }

@@ -1,5 +1,6 @@
 package kr.or.ddit.company.common.companyManagement.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.or.ddit.company.common.companyManagement.service.CompanyManagementService;
 import kr.or.ddit.vo.common.CompanyVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/ajax/company/company_management")
@@ -17,10 +20,14 @@ public class CompanyManagementAjaxController {
 	private final CompanyManagementService companyManagementService;
 	
 	@GetMapping
-	public CompanyVO companyDetail() {
-		CompanyVO company = companyManagementService.readCompanyById(getUserId());
-		return company;
+	public ResponseEntity<CompanyVO> companyDetail() {
+		CompanyVO company = companyManagementService.readCompanyManagementById(getUserId());
+		log.info("com : {}======", company);
+		return ResponseEntity.ok(company);
+		
 	}
+	
+	
 	
 
 	public String getUserId() {

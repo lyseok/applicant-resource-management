@@ -14,4 +14,6 @@ public class CompanyManagementController {
 	public String managementView() {
 		return "company/common/companyManagement/companyManagementDetail";
 	}
+	
+	
 }

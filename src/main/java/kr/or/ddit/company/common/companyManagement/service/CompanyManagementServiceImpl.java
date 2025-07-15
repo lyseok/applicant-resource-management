@@ -11,10 +11,12 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
     
 	@Autowired
 	CompanyMapper companyMapper;
-	
+
 	@Override
-	public CompanyVO readCompanyById(String userId) {
-		return companyMapper.selectCompanyById(userId);
+	public CompanyVO readCompanyManagementById(String userId) {
+		return companyMapper.selectCompanyManagementById(userId);
 	}
+	
+
 	
 }
