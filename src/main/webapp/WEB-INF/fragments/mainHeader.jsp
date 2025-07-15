@@ -36,8 +36,8 @@
             
 	            <sec:authorize access="isAuthenticated()">
 	            	<%-- 로그인이 되어 있을때 --%>
-	                <span class="btn_sign signin member_btn" >
-						<sec:authentication property="principal.realUser.memName" />
+	                <span class="btn_sign signin member_btn" id="user-name">
+                        <!-- 회원명 들어가는곳 -->
 	                </span>
 	                <div class="layer_member" id="displayMemBtn" style="display:none;">
 			            <ul>
@@ -309,8 +309,17 @@
                 memberLayer.style.display = 'none';
             }
         });
-        
+        axios.get('/ajax/userinfo')
+            .then(res => {
+            const data = res.data;
+            let name = '비회원';
+            if (data.userType === 'company') name = data.userName;
+            else if (data.userType === 'admin') name = '관리자';
+            else if (data.userType === 'member') name = data.userName;
+            document.getElementById('user_name').textContent = name;
+        });
     });
+
     </script>
 </header>
 
