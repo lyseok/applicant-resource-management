@@ -22,9 +22,23 @@ fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 			<p>내용: ${rslt.boardContent}</p>
 			<p>삭제일시: ${rslt.boardDeleteDate}</p>
 			<p>조회수: ${rslt.boardPostHit}</p>
-			<p>게시글 상태: ${rslt.boardStatus}</p>`;
+			<p>게시글 상태: ${rslt.boardStatus}</p>
+			<hr>`;
 			
-			rslt.boardTypeCode
+			console.log("admin코멘트야 : ", rslt.adminCommentList);
+
+			rslt.adminCommentList.forEach(comment =>{
+				html += `
+					<p>답변 번호: ${comment.boardCommentNo}</p>
+					<p>답변 작성자: ${comment.userId}</p>
+					<p>답변 내용: ${comment.boardCommentContent}</p>
+					<p>답변 등록일자: ${comment.boardWriteDate}</p>
+					<p>답변 삭제일자: ${comment.boardDeleteDate}</p>
+					<p>답변 상태: ${comment.boardCommentStatus}</p>
+					<hr/>
+					`;
+			})
+
 			if(rslt.boardTypeCode === 'BRDD-001'){
 				//답변 등록 폼이 비슷한 시기에 나오도록 DOMContentLoaded
 				//답변 등록 폼은 문의사항(BRDD-001)일 때만 나옴
@@ -34,7 +48,6 @@ fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 				const acommentFormContainer = document.querySelector("#acommentFormContainer");
 				
 				let acommentFormHtml = `
-					<br>
 					<form id="acommentForm">
 						<label>작성자 아이디: </label>
 						<input type="text" name="userId" value="${userId}" disabled>
@@ -46,15 +59,15 @@ fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 				acommentFormContainer.innerHTML = acommentFormHtml;
 				
 				const acommentForm = document.querySelector("#acommentForm");
-				acommentForm.onsubmit = function(){
-					event.preventDefault();
+				acommentForm.onsubmit = function(e){
+					e.preventDefault();
 					let adminComment = {
 						userId : acommentForm.userId.value,
 						boardNo : acommentForm.boardNo.value,
 						boardCommentContent : acommentForm.boardCommentContent.value
 					}
 					
-					console.log("userId가 이상해! : ", acommentForm.userId.value);
+					console.log("userId가 이상해! : ", adminComment.userId);  //등록 클릭 시 작성자 id 나옴
 					
 					fetch(`/ajax/admin/board/admin_comment/${adminComment.boardNo}`, {
 						method : "post",
@@ -68,21 +81,6 @@ fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 						});
 					});
 				};						
-			} //'BRDD-001' if문 종료
-			rslt.adminCommentList.forEach(item => {
-				console.log("아이템 나오니? : ", item);
-				
-				console.log("댓글 상태가 나온다고? : ", item.boardCommentStatus);
-				console.log("답변 내용이 비었다고? : ", item.boardCommentContent);
-				
-				let status = item.boardCommentStatus;
-				
-				if (status === 'R' || status === 'U' ) {
-			        html += `
-			          <hr/>
-			          <p>답변 작성자: ${item.userId}</p>
-			          <p>답변 내용: ${item.boardCommentContent}</p>`;
-			    }
-			});
+			}//'BRDD-001' if문 종료
 	aboardDetail.innerHTML = html;
 });

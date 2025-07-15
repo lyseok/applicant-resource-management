@@ -77,7 +77,7 @@ public class AdminAdminBoardAjaxController {
 	public Map<String, Object> editBoard(
 		@PathVariable String boardTypeCode
 		, @PathVariable String boardNo
-		,  @RequestBody AdminBoardVO board
+		, @RequestBody AdminBoardVO board
 	) {
 		board.setBoardNo(boardNo);
 	    service.modifyAdminBoard(board);
