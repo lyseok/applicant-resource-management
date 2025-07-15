@@ -5,6 +5,7 @@ import java.io.Serializable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import kr.or.ddit.common.annotation.PastString;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,9 +20,9 @@ public class MyLicenseVO implements Serializable {
     @Size(max = 20, message = "자격증 코드는 최대 20자까지 입력 가능합니다.")
 	private String licenseCode;
 
-	@Past(message = "자격증 취득일은 과거 날짜여야 합니다.")
+	@PastString(message = "자격증 취득일은 과거 날짜여야 합니다.")
 	private String licensePassDate;
 
-	@Past
+	@PastString
 	private String deleteDate;
 }

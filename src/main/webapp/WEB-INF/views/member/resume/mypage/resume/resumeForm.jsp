@@ -177,7 +177,7 @@
 		<div class="section" id="section-militaryList">
 		  <div class="section-title">
 		    <h6>병역</h6>
-		    <button class="add-btn" type="button" id="btn-military">+ 추가</button>
+		    <button class="add-btn" type="button" id="btn-militaryList">+ 추가</button>
 		  </div>
 		  <div class="section-content" style="color: #b8bfc9;">
 		    병역 정보를 입력해주세요.
