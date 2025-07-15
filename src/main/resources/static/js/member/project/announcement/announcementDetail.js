@@ -359,7 +359,7 @@ btnSaveApplication.onclick = async function () {
       const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('applicationModal'));
       modal.hide();
     } else {
-      alert('지원에 실패했습니다. 다시 시도해 주세요.');
+      alert(res.data.msg || '지원에 실패했습니다. 다시 시도해 주세요.');
     }
   } catch (err) {
     alert('서버 오류가 발생했습니다.\n' + (err.response?.data?.message || ''));

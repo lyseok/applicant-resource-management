@@ -21,6 +21,7 @@ public class SpecialtyVO implements Serializable {
 
 	@Size(max = 10)
 	private String subMajorCode; // 부전공 구분 코드
+	private String subMajorCodeName; // 부전공 구분 코드
 
 	private String deleteDate; // 삭제일시
 }

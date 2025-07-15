@@ -23,6 +23,7 @@ public class EducationVO implements Serializable {
 	@NotBlank(message = "최종학력은 필수입력 항목입니다.")
 	@Size(max = 20)
 	private String highestEducationCode;
+	private String highestEducationCodeName;
 
 	@NotBlank(message = "졸업여부는 필수입력 항목입니다.")
 	private String graduateYn;
@@ -41,6 +42,7 @@ public class EducationVO implements Serializable {
 	@NotBlank(message = "지역은 필수 입력 항목입니다.")
 	@Size(max = 10)
 	private String location;
+	private String locationName;
 
 	@Size(max = 30)
 	private String departmentCode;

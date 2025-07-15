@@ -241,7 +241,7 @@ public class ResumeServiceImpl implements ResumeService {
 		educationList.forEach(i ->{
 			List<SpecialtyVO> list = i.getSpecialtyList();
 			list.forEach(ii->{
-				ii.setSubMajorCode(provider.getCodeName(ii.getSubMajorCode()));
+				ii.setSubMajorCodeName(provider.getCodeName(ii.getSubMajorCode()));
 //				log.info("{}", ii.getSubMajorCode());
 			});
 		});
@@ -300,9 +300,10 @@ public class ResumeServiceImpl implements ResumeService {
 //		log.info(" ");
 		
 		for(EducationVO edu : educationList) {
-			edu.setDepartmentCode(provider.getCodeName(edu.getDepartmentCode()));
-			edu.setHighestEducationCode(provider.getCodeName(edu.getHighestEducationCode()));
+//			edu.setDepartmentCode(provider.getCodeName(edu.getDepartmentCode()));
+			edu.setHighestEducationCodeName(provider.getCodeName(edu.getHighestEducationCode()));
 			edu.setGraduateYnName(provider.getCodeName(edu.getGraduateYn()));
+			edu.setLocationName(provider.getDistrictName(edu.getLocation()));
 //			log.info("MilitaryRank ------->>> {}", edu.getDepartmentCode());
 //			log.info("Discharge ------->>> {}", edu.getHighestEducationCode());
 //			log.info("Discharge ------->>> {}", edu.getGraduateYn());
@@ -328,6 +329,11 @@ public class ResumeServiceImpl implements ResumeService {
 		prjAplcnt.setUserId(username);
 		log.info("================>>>>>>>>>> {}", prjAplcnt);
 		
+		String aplcntNo = prjAplcntMapper.duplicationPrjRcrtPsncnt(prjAplcnt);
+	    if (aplcntNo != null && !aplcntNo.isBlank()) {
+	        throw new DataInsertException("이미 해당 프로젝트에 지원하셨습니다.");
+	    }
+	    
 		ResumeVO beforeVo = new ResumeVO();
 		beforeVo.setUserId(username);
 		beforeVo.setResumeNo(prjAplcnt.getResumeNo());
