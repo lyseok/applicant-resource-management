@@ -16,4 +16,10 @@ public class CompanyManagementController {
 	}
 	
 	
+	@GetMapping("/edit")
+	public String managementForm() {
+		return "company/common/companyManagement/companyManagementForm";
+	}
+	
+	
 }

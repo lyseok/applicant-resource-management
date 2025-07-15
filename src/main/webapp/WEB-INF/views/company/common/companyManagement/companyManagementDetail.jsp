@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <title>기업 정보 관리</title>
   <link rel="stylesheet" href="/css/member/resume/resume.css" >
+  <link rel = "stylesheet" href="/css/company/common/companyManagement.css">
   <script src = "/js/company/common/companyManagement/companyManagementDetail.js"></script>
-  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-  <link href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" rel="stylesheet">
+ 
 
  
 </head>
@@ -60,73 +60,7 @@
     </div>
 </div>
 
-<!-- form 태그로 전체 폼을 감싸기 -->
-<form id="companyForm" style="display: none;">
-    <div class="company-info-wrap">
-        <!-- 기업 기본 정보 (Basic Information) -->
-        <div class="section" id="section-company-basic">
-            <div class="section-title">
-                <h6>기업 기본 정보</h6>
-            </div>
-            <div class="section-content" style="color: #b8bfc9;">기업에 대한 기본 정보를 입력해주세요.</div>
-            <div class="section-form-wrap">
-                <!-- 기업명 -->
-                <div class="section-form-row vertical">
-                    <label class="required">기업명</label>
-                    <input type="text" name="com_name" id="company_name" required disabled>
-                </div>
 
-                <!-- 기업설명 -->
-                <div class="section-form-row vertical">
-                    <label class="required">기업설명</label>
-                    <textarea name="com_info" id="company_info" required disabled></textarea>
-                </div>
-
-                <!-- 대표번호 -->
-                <div class="section-form-row">
-                    <label class="required">대표번호</label>
-                    <input type="text" name="com_num" id="company_phone" required disabled>
-                </div>
-
-                <!-- 이메일 -->
-                <div class="section-form-row">
-                    <label class="required">이메일</label>
-                    <input type="email" name="com_email" id="company_email" required disabled>
-                </div>
-
-                <!-- 홈페이지 URL -->
-                <div class="section-form-row">
-                    <label class="required">홈페이지 URL</label>
-                    <input type="url" name="com_url" id="company_url" disabled>
-                </div>
-
-                <!-- 설립년도 -->
-                <div class="section-form-row">
-                    <label class="required">설립년도</label>
-                    <input type="date" name="com_create_year" id="company_year" required disabled>
-                </div>
-
-                <!-- 직원수 -->
-                <div class="section-form-row">
-                    <label class="required">직원수</label>
-                    <input type="number" name="com_mem" id="company_employee_count" required disabled>
-                </div>
-
-                <!-- 업종 코드 -->
-                <div class="section-form-row">
-                    <label class="required">업종 코드</label>
-                    <input type="text" name="industry_type" id="industry_code" required disabled>
-                </div>
-            </div>
-        </div>
-
-        <!-- 버튼들 -->
-        <div class="section-form-btns">
-            <button type="button" class="btn btn_red_line" id="cancelBtn" style="display: none;">취소</button>
-            <button type="submit" class="btn btn_violet" id="saveBtn" style="display: none;">저장</button>
-        </div>
-    </div>
-</form>
 
 
 </body>
