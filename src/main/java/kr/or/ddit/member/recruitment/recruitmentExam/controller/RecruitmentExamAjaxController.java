@@ -61,7 +61,6 @@ public class RecruitmentExamAjaxController {
 		RecruitmentExamScoreResultVO result = 
 		recruitmentExamService.readResultByExamAndUser(applicantId, recruitExamExamNo);
 		return ResponseEntity.ok(result);
-		
 	}
 	
 

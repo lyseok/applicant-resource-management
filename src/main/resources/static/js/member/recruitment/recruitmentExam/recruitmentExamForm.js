@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('시험 전체:', exam);
       examName.textContent = exam.recruitExamName;
       questions = exam.questionList;
-      startTimer(exam.recruitExamTime * 1);
+      startTimer(exam.recruitExamTime * 100);
       renderAll();
     })
     .catch((err) => {

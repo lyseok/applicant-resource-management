@@ -78,8 +78,6 @@ public class RecruitmentExamServiceImpl implements RecruitmentExamService {
 		
 		RecruitmentExamScoreResultVO result = new RecruitmentExamScoreResultVO();
 		result.setExamTotalScore(totalScore);
-		result.setExamcutlineScore(cutline);
-		result.setExamPass( totalScore >= cutline);
 		return result;
 	}
 

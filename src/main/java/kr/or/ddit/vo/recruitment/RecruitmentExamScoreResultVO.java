@@ -8,7 +8,5 @@ public class RecruitmentExamScoreResultVO {
 	private String applicantName;
 	private String recruitExamName;
 	private int examTotalScore;
-	private int examcutlineScore; 
-	private boolean examPass;
-	//private String passYn;
+
 }

@@ -55,20 +55,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div>
                             ${isTaken
-                              ? `<button type="button" class="btn btn-sm btn-secondary" disabled>응시완료</button>
+                              ? `<button type="button" class="btn btn_gray_line btn-secondary" disabled>응시완료</button>
                                   <button type="button" 
-                                    class="btn btn-sm btn-info result-btn"
+                                    class="btn btn_violet_line btn-info result-btn"
                                     data-exam-no="${exam.recruitExamNo}"
                                     data-applicant-id="${exam.applicantId}">
                                     시험결과
                                 </button>`
                               : `
-                                <button type="button" class="btn btn-sm btn-primary exam-btn"
+                                <button type="button" class="btn btn_violet btn-primary exam-btn"
                                   data-exam-no="${exam.recruitExamNo}"
                                   data-applicant-id="${exam.applicantId}"
                                   data-exam-time="${exam.recruitExamTime}"
                                   data-start-date="${exam.recruitExamStartDate}">
-                                  ${isExamAvailable ? '응시' : '응시불가'}
+                                  응시
                                 </button>`}
                           </div>
                         `;
@@ -101,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('시험번호 체킁: ', recruitExamNo);
       console.log('지원자번호 체킁: ', applicantId);
 
-      // const available = btn.dataset.available === 'true';
-      // if (!available) {
-      //   // 기간 아닐 때
-      //   notAvailableModal.show();
-      //   return;
-      // }
+     /*  const available = btn.dataset.available === 'true';
+       if (!available) {
+         // 기간 아닐 때
+         notAvailableModal.show();
+         return;
+       }*/
 
     
 

@@ -6,8 +6,27 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-	body { background: #f8f9fa; }
-    .result-card { max-width: 500px; margin: 2rem auto; }
+	body {
+		background: #f8f9fa;
+	}
+	
+	.result-card {
+		max-width: 500px;
+		margin: 2rem auto;
+	}
+	
+	.score-display {
+		font-size: 3rem;
+		font-weight: bold;
+		text-align: center;
+		margin-top: 20px;
+	}
+	
+	.score-value {
+		color: #28a745;
+		font-size: 3rem;
+		font-weight: bold;
+	}
 </style>
 <script src ="/js/member/recruitment/recruitmentExam/recruitmentExamResult.js"></script>
 </head>
@@ -17,7 +36,7 @@
       📝 시험 결과
     </div>
     <div class="card-body" id="result-container">
-      <p class="text-center text-muted">로딩 중...</p>
+     	 
     </div>
     <div class="card-footer text-center">
       <button class="btn btn-secondary" onclick="window.close()">닫기</button>
