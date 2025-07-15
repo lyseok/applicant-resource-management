@@ -72,19 +72,6 @@ selectField.onchange = function() {
 //   resumeList.style.display = resumeList.style.display === 'none' ? 'block' : 'none';
 // };
 
-// 임시저장 버튼
-btnSaveApplication.onclick = function() {
-  if (!selectedField) {
-    alert("지원 부문을 선택해주세요!");
-    selectField.focus();
-    return;
-  }
-  alert(`[임시저장]\n지원부문: ${selectedField}\n이력서: ${selectedResume.title}`);
-  // 모달 닫기 (부트스트랩 모달 제어)
-  const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('applicationModal'));
-  modal.hide();
-};
-
 // 모달 열기용 예시 (프로젝트 제목 넘기기)
 function openApplicationModal(title) {
   modalProjectTitle.textContent = title;
@@ -330,3 +317,51 @@ function renderSelectedResumeCard() {
     </div>
   `;
 }
+
+// ================================= 지원 로직 ==================================
+btnSaveApplication.onclick = async function () {
+  if (!selectedField) {
+    alert("지원 부문을 선택해주세요!");
+    selectField.focus();
+    return;
+  }
+  if (!selectedResume) {
+    alert("이력서를 선택해주세요!");
+    return;
+  }
+
+  // prjAnncNo (현재 공고 번호)
+  const prjAnncNo = renderData.prjAnncNo;
+  // 모집인원 번호: 지원부문 select의 value (jobCode)로 모집인원 목록에서 찾기
+  const rcrt = (renderData.prjRcrtPsncntList || []).find(r => r.jobCode === selectedField);
+  const rcrtPsncntNo = rcrt ? rcrt.rcrtPsncntNo : null;
+  if (!rcrtPsncntNo) {
+    alert("모집 인원 정보가 없습니다. 새로고침 후 다시 시도해주세요.");
+    return;
+  }
+
+  // 이력서 번호
+  const resumeNo = selectedResume.resumeNo;
+
+  // 서버로 전송할 객체
+  const applyData = {
+    prjAnncNo,      // 게시글 번호
+    rcrtPsncntNo,   // 모집인원 번호
+    resumeNo        // 이력서 번호
+  };
+
+  try {
+    // POST로 전송 (엔드포인트는 실제 경로에 맞게!)
+    const res = await axios.post('/ajax/resume', applyData);
+    if (res.data === 'ok') {
+      alert('지원이 완료되었습니다!');
+      // 모달 닫기
+      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('applicationModal'));
+      modal.hide();
+    } else {
+      alert('지원에 실패했습니다. 다시 시도해 주세요.');
+    }
+  } catch (err) {
+    alert('서버 오류가 발생했습니다.\n' + (err.response?.data?.message || ''));
+  }
+};
