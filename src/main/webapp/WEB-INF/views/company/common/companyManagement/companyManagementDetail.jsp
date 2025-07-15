@@ -126,8 +126,8 @@
 
       <!-- 버튼들 -->
       <div class="section-form-btns">
-        <button type="button" class="btn btn_red_line" id="cancelBtn" style="display: none;">취소</button>
-        <button type="submit" class="btn btn_violet" id="saveBtn" style="display: none;">저장</button>
+        <button type="button" class="btn btn_red_line" id="cancel-btn" style="display: none;">취소</button>
+        <button type="submit" class="btn btn_violet" id="save-btn" style="display: none;">저장</button>
       </div>
     </div>
   </form> <!-- form 태그 닫기 -->
