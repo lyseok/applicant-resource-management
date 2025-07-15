@@ -167,8 +167,8 @@
                         <span class="txt">프로젝트</span>
                     </a>
                     <ul class="depth2">
-                        <li><a href="javascript:void(0)"><span class="txt">주제별</span></a></li>
-                        <li><a href="javascript:void(0)"><span class="txt">태그별</span></a></li>                    
+                        <li><a href="/board/project"><span class="txt">주제별</span></a></li>
+                        <li><a href="/board/project"><span class="txt">태그별</span></a></li>                    
                     </ul>
                 </div>
                 <div class="major">
