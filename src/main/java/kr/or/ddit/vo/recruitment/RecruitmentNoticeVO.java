@@ -16,7 +16,6 @@ public class RecruitmentNoticeVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
 	private String recruitmentNo;
-	@NotBlank
 	private String userId;
 	@NotBlank
 	private String recruitmentTitle;
@@ -44,7 +43,6 @@ public class RecruitmentNoticeVO implements Serializable{
 	@NotBlank
 	private String recruitmentDesk;
 	private String recruitmentImg;
-	@NotBlank
 	private String recruitmentStartdate;
 	@NotBlank
 	private String recruitmentReceiptStart;
@@ -52,7 +50,6 @@ public class RecruitmentNoticeVO implements Serializable{
 	private String recruitmentFinishDate;
 	private String recruitmentDelDate;
 	
-	private String comExamNo;
 	
 	@Valid
 	private List<RecruitmentPositionVO> positionList;

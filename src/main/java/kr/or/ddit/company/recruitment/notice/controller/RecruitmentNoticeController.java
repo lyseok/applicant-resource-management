@@ -18,7 +18,7 @@ public class RecruitmentNoticeController {
 	
 	private final RecruitService service;
 	
-	@GetMapping("{recruitmentNo}")
+	@GetMapping("/{recruitmentNo}")
 	public String selectRecruitDetail(
 		@PathVariable String recruitmentNo
 		, Model model

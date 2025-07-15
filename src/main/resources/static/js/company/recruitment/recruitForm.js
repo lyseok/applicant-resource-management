@@ -54,7 +54,7 @@ cityCode.addEventListener('change', async(e)=>{
 	const resp = await axios.get(`/ajax/admin/cityCode/${selectedCityCode}`)
 	const districtList = resp.data;
 	
-	districtCode.innerHTML += districtList.map(
+	districtCode.innerHTML = districtList.map(
 		({districtCodeNo, districtName}) =>
 			`<option value="${districtCodeNo}">${districtName}</option>`
 		).join('');
@@ -205,8 +205,8 @@ function addProcess() {
     <div class="mb-2">
       <label class="form-label">최종 전형 여부</label>
       <select name="recruitProcessList[${processIndex}].recruitProcessFinal" class="form-select">
-        <option value="Y">예</option>
         <option value="N">아니오</option>
+        <option value="Y">예</option>
       </select>
     </div>
 
@@ -307,7 +307,11 @@ document.getElementById('recruitForm').addEventListener('submit', async(e)=>{
 	const unusedImages = Array.from(uploadImages).filter(img=> !usedImages.includes(img));
 	
 	for(const url of unusedImages){
-		
+		try{
+			await axios.delete(`/upload/editor`, {url});
+		} catch (err){
+			console.warn('이미지 삭제 실패 :', url, err);
+		}
 	}
 	
 	const form = e.target;
@@ -319,6 +323,7 @@ document.getElementById('recruitForm').addEventListener('submit', async(e)=>{
 		recruitmentChargerTel : form.recruitmentChargerTel.value,
 		cityCode : form.cityCode.value,
 		districtCode : form.districtCode.value,
+		recruitmentDesk : form.recruitmentDesk.value,
 		recruitmentSalary : form.recruitmentSalary.value,
 		recruitmentReceiptStart : form.recruitmentReceiptStart.value,
 		recruitmentFinishDate : form.recruitmentFinishDate.value,
@@ -336,9 +341,9 @@ document.getElementById('recruitForm').addEventListener('submit', async(e)=>{
 		recruitSkillName : input.value
 	}));
 	
-	notice.recruitProcessList = [...document.querySelectorAll('#processSection > .border')].map((el, idx)=>{
-		const step = el.querySelector('[name^="recruitProcessList"][name*="recruitPrecessStep"]').value;
-		const isFinal = el.querySelector('[name^="recruitProcessList"][name*="recruitProcessFinal"]').value;
+	notice.processList = [...document.querySelectorAll('#processSection > .border')].map((el, idx)=>{
+		const step = el.querySelector('[name*="recruitProcessStep"]').value;
+		const isFinal = el.querySelector('[name*="recruitProcessFinal"]').value;
 		const type = el.querySelector('.processTypeSelect').value;
 		
 		const process ={
@@ -347,29 +352,48 @@ document.getElementById('recruitForm').addEventListener('submit', async(e)=>{
 			recruitProcessType : type
 		};
 		
-		if(type === 'interview'){
+		if(type === 'RERP-002'){
 			process.interviewList = [{
-				interviewDate : el.querySelector('[name=*"interviewDate"]').value,
+				interviewDate : el.querySelector('[name*="interviewDate"]').value,
 				interviewLocation : el.querySelector('[name*="interviewLocation"]').value,
-				interviewType : el.querySelector('[name*="interviewType"]').value
+				interviewType : el.querySelector('[name*="interviewType"]').value,
+				interviewPassScore: el.querySelector('[name*="interviewPassScore"]').value
 			}];
 		}
-		
-		if(type === 'exam'){
+		if(type ==='RERP-001'){
 			process.recruitmentExamList = [{
-				recruitExamNo : el.querySelector('[name*="recruitExamNo"]').value,
 				recruitExamCutline : el.querySelector('[name*="recruitExamCutline"]').value,
-				recruitExamStartDate : el.querySelector('[name*="recruitExamStartDate"]').value
+				recruitExamStartDate : el.querySelector('[name*="recruitExamStartDate"]').value,
+				recruitExamTime : el.querySelector('[name*="recruitExamTime"]').value,
+				comExamNo : el.querySelector('[name*="comExamNo"]').value
 			}];
 		}
-		
 		return process;
-	});
+});
 	
-	const resp = await axios.get('/ajax/notice', notice);
-	const recruitmentNo = resp.data;
+	await axios.post('/ajax/recruit/notice', notice)
+		.then(res => {
+	        alert('저장 성공!');
+	        location.href = `/company/recruit_notice/${res.data.recruitmentNo}`;
+	    })
+	    .catch(err => {
+	        if (err.response && err.response.data) {
+	            const errors = err.response.data;
+	            Object.entries(errors).forEach(([field, messages]) => {
+	                const el = document.querySelector(`[name="${field}"]`);
+	                if (el) {
+	                    const next = el.nextElementSibling;
+	                    if (next && next.classList.contains('text-danger')) next.remove();
 	
-	alert('등록에 성공하였습니다.');
-	location.href = `/company/recruit_notice/${recruitmentNo}`;
-})
+	                    const span = document.createElement('span');
+	                    span.className = 'text-danger small';
+	                    span.textContent = messages.join(', ');
+	                    el.insertAdjacentElement('afterend', span);
+	                }
+	            });
+	        } else {
+	            alert('저장 중 에러 발생');
+	        }
+	    });
 
+});

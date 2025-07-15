@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.company.recruitment.exam.service.RecruitExamService;
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.recruitment.InterviewMapper;
 import kr.or.ddit.mapper.recruitment.RecruitProcessMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentEducationMapper;
@@ -36,12 +37,14 @@ public class RecruitServiceImpl implements RecruitService {
 	private final RecruitProcessMapper processMapper;
 	private final InterviewMapper interviewMapper;
 	private final RecruitExamService examService;
+	private final CompanyMapper comMapper;
 	private final CodeMapProvider codeMapProvider;
 
 	@Override
 	@Transactional
 	public void createRecruitment(RecruitmentNoticeVO recruit) {
 		recruit.setUserId(getUserId());
+		recruit.setCompany(comMapper.selectCompanyById(getUserId()));
 		noticeMapper.insertRecruitmentNotice(recruit);
 		
 		if(recruit.getPositionList() != null) {
@@ -66,6 +69,7 @@ public class RecruitServiceImpl implements RecruitService {
 		if(recruit.getProcessList() != null) {
 			for(RecruitProcessVO process : recruit.getProcessList()) {
 				process.setRecruitmentNo(recruit.getRecruitmentNo());
+				process.setCompanyName(recruit.getCompany().getComName());
 				processMapper.insertRecruitProcess(process);
 				String processNo = process.getRecruitProcessNo();
 				
@@ -77,7 +81,7 @@ public class RecruitServiceImpl implements RecruitService {
 				}
 				if(process.getRecruitmentExamList() != null) {
 					for(RecruitmentExamVO exam : process.getRecruitmentExamList()) {
-						examService.copyCompanyExamToRecruit(processNo, recruit.getComExamNo(), exam);
+						examService.copyCompanyExamToRecruit(processNo, exam);
 					}
 				}
 				

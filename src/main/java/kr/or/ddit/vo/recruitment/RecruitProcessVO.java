@@ -15,9 +15,7 @@ public class RecruitProcessVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
 	private String recruitProcessNo;
-	@NotBlank
 	private String recruitmentNo;
-	@NotBlank
 	private String companyName;
 	@NotBlank
 	private String recruitProcessStep;
@@ -25,7 +23,6 @@ public class RecruitProcessVO implements Serializable{
 	private String recruitProcessFinal;
 	@NotBlank
 	private String recruitProcessType;
-	@NotBlank
 	private String recruitProcessTypeName;
 	private String recruitProcessDelDate;
 	
@@ -35,7 +32,6 @@ public class RecruitProcessVO implements Serializable{
 	// 자식
 	@Valid
 	private List<InterviewVO> interviewList;
-	@Valid
 	private List<RecruitmentExamVO> recruitmentExamList;
 	private List<ApplicantRecordVO> applicantRecordList;
 }

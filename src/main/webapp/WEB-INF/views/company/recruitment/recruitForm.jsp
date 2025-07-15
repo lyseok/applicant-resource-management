@@ -72,6 +72,11 @@
                         <select id="districtCode" name="districtCode" class="form-select"></select>
                     </div>
                 </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-primary fw-semibold">접수방법</label>
+                    <input type="text" name="recruitmentDesk" class="form-control"/>
+                </div>
             </div>
 
             <!-- 우측 -->
