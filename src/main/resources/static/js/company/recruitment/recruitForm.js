@@ -374,7 +374,7 @@ document.getElementById('recruitForm').addEventListener('submit', async(e)=>{
 	await axios.post('/ajax/recruit/notice', notice)
 		.then(res => {
 	        alert('저장 성공!');
-	        location.href = `/company/recruit_notice/${res.data.recruitmentNo}`;
+	        location.href = `/company/recruit_notice/${res.data}`;
 	    })
 	    .catch(err => {
 	        if (err.response && err.response.data) {
