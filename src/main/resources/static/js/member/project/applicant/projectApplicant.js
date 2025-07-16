@@ -32,15 +32,38 @@ function renderTabsAndContent() {
   tabNav.innerHTML = '';
   tabContent.innerHTML = '';
 
+  // -------- 전체 탭/테이블 --------
+  const allApplicants = tabs.flatMap(sec => sec.aplcntList || []);
+  tabNav.innerHTML += /* html */`<li class="nav-item">
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#recruitTabAll" type="button">전체</button>
+  </li>`;
+  tabContent.innerHTML += `
+    <div class="tab-pane fade show active" id="recruitTabAll" role="tabpanel">
+      <table class="table table-sm table-bordered align-middle text-center" id="mainTableAll">
+        <thead>
+          <tr>
+            <th class="text-center">선택</th>
+            <th class="text-center">이름</th>
+            <th class="text-center">이력서</th>
+            <th class="text-center">기술</th>
+            <th class="text-center">상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${renderApplicants(allApplicants, 'all')}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  // -------- 기존 탭/테이블 --------
   tabs.forEach((section, idx) => {
-    // 탭 버튼
     const tabId = `recruitTab${idx}`;
     tabNav.innerHTML += `<li class="nav-item">
-      <button class="nav-link${idx === 0 ? ' active' : ''}" data-bs-toggle="tab" data-bs-target="#${tabId}" type="button">${section.jobCodeName}</button>
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#${tabId}" type="button">${section.jobCodeName}</button>
     </li>`;
-    // 탭 내용 (테이블)
     tabContent.innerHTML += `
-      <div class="tab-pane fade${idx === 0 ? ' show active' : ''}" id="${tabId}" role="tabpanel">
+      <div class="tab-pane fade" id="${tabId}" role="tabpanel">
         <table class="table table-sm table-bordered align-middle text-center" id="mainTable${idx}">
           <thead>
             <tr>
@@ -61,12 +84,11 @@ function renderTabsAndContent() {
   // 탭 활성화 이벤트
   tabNav.querySelectorAll('.nav-link').forEach((btn, idx) => {
     btn.addEventListener('click', function () {
-      activeTabIdx = idx;
-      setTimeout(applyFilters, 0); // 탭 변경 후 필터 적용
+      activeTabIdx = idx; // 0 = 전체
+      setTimeout(applyFilters, 0);
     });
   });
 
-  // 필터 초기화 옵션 채우기
   fillFilterOptions();
   applyFilters();
 }
@@ -217,6 +239,40 @@ document.getElementById('btnRequestParticipation').addEventListener('click', asy
       });
     } else {
       alert('변경에 실패했습니다. 다시 시도해주세요.');
+    }
+  } catch (err) {
+    alert('서버 오류가 발생했습니다.');
+  }
+});
+
+
+
+
+// ============================ 프로젝트 생성 ============================
+document.getElementById('createProjectBtn').addEventListener('click', async function () {
+  // 모든 모집부문 지원자 리스트 취합
+  const allApplicants = (projectData.prjRcrtPsncntList || []).flatMap(sec => sec.aplcntList || []);
+  // 상태코드가 'PRST-003'인 지원자만 추출
+  const completedUsers = allApplicants
+    .filter(app => app.aplcntStatusCode === 'PRST-003')
+    .map(app => app.userId);
+
+  if (completedUsers.length === 0) {
+    alert('참여 완료된 사용자가 없습니다.');
+    return;
+  }
+
+  // 서버로 전송
+  try {
+    const res = await axios.post('/ajax/project/create', {
+      userIdList: completedUsers,
+      prjAnncNo: projectData.prjAnncNo // 필요 시 프로젝트 번호도 함께
+    });
+    if (res.data === 'ok') {
+      alert('프로젝트가 성공적으로 생성되었습니다!');
+      // 필요하면 페이지 이동 또는 새로고침 등
+    } else {
+      alert('프로젝트 생성에 실패했습니다. 다시 시도해 주세요.');
     }
   } catch (err) {
     alert('서버 오류가 발생했습니다.');
