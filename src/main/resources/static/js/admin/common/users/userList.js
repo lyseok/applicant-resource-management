@@ -1,9 +1,11 @@
 /**
  *
  */
-const auserList = document.querySelector("#auserList");
+const userTable = document.querySelector("#userTable");
+const userTableBody = document.querySelector("#userTableBody");
 
-//리스트가 먼저 나옴
+//전체 리스트가 먼저 나옴
+function auserList(){
 fetch(`/ajax/admin/common/users`).then((resp) => {
   resp.json().then((rslt) => {
     console.log("회원 나오니? :", rslt);
@@ -11,91 +13,110 @@ fetch(`/ajax/admin/common/users`).then((resp) => {
 
     rslt.forEach((user) => {
       console.log("유저 거기 있지? : ", user);
+      
+      const users = [
+		  { 
+		 	  userId: "userId"
+		    , userPassword: "userPassword"
+		    , userRole: "userRole"
+		    , userWithdrawDate: "userWithdrawDate"
+		    , userStatus: "userStatus"
+		    , userEnabled: "userEnabled"
+		  }
+		 ];
+		
+		users.forEach((user, index) => {
+		  const tr = document.createElement("tr");
+		
+		  // ✅ 체크박스 cell
+		  const tdCheck = document.createElement("td");
+		  const checkbox = document.createElement("input");
+		  checkbox.type = "checkbox";
+		  checkbox.className = "form-check-input";
+		  checkbox.id = user.userId;
+		  checkbox.value = user.userId;
+		
+		  const label = document.createElement("label");
+		  label.htmlFor = user.userId;
+		
+		  // label 내부에 시각적으로 내용이 없으면 label 의미 없어지므로 optional
+		  label.appendChild(checkbox);
+		  tdCheck.appendChild(label);
+		  tr.appendChild(tdCheck);
+		
+		  // ✅ 나머지 정보 cell들
+		  const fields = [
+		    user.userId,
+		    user.userPassword,
+		    user.userRole,
+		    user.userWithdrawDate || "-",
+		    user.userStatus,
+		    user.userEnabled ? "Y" : "N"
+		  ];
+		
+		  fields.forEach(text => {
+		    const td = document.createElement("td");
+		    td.textContent = text;
+		    tr.appendChild(td);
+		  });
+		
+		  userTableBody.appendChild(tr);
+		});
 
-      const labels = [
-        "userId",
-        "userPassword",
-        "userRole",
-        "userWithdrawDate",
-        "userStatus",
-        "userEnabled",
-      ];
-
-      user.forEach((value, index) => {
-        let p = document.createElement("p");
-
-        let displayValue =
-          value !== null && value !== undefined ? value : "값 없음";
-        p.textContent = labels[index] + ": " + displayValue;
-        auserList.appendChild(p);
       });
     });
   });
-});
+}  //auserList 함수 끝
+
 
 //옵션이 선택되고 클릭되면
 function userbar() {
-  if (userRole != "-1") {
-    auserList.innerHTML = ""; //기존 회원 리스트 지우고
-    fetch(`/ajax/admin/common/users?userRole=${userRole}`).then((resp) => {
-      resp.json().then((rslt) => {
-        console.log("유저 역할은? :", rslt);
-        console.log("검색한 역할", rslt[0]);
+  const userRole = document.querySelector("#userRole").value;
+  const userId = document.querySelector("#userId").value.trim();
 
-        rslt.forEach((user) => {
-          console.log("유저 거기 있지? : ", user);
+  const params = new URLSearchParams();
 
-          const labels = [
-            "userId",
-            "userPassword",
-            "userRole",
-            "userWithdrawDate",
-            "userStatus",
-            "userEnabled",
-          ];
+  if (userRole !== "-1") params.append("userRole", userRole);
+  if (userId) params.append("userId", userId);
 
-          user.forEach((value, index) => {
-            let p = document.createElement("p");
+  fetch(`/ajax/admin/common/users?${params.toString()}`) //userId=corp03&userRole=ROLE_COMPANY
+    .then((resp) => resp.json())
+    .then((rslt) => {
+      console.log("유저들아 나와! :", rslt);
 
-            let displayValue =
-              value !== null && value !== undefined ? value : "값 없음";
-            p.textContent = labels[index] + ": " + displayValue;
-            auserList.appendChild(p);
-          });
-        });
-      });
-    });
-  }
+      rslt.forEach((user) => {
+        console.log("유저 거기 있지? : ", user);
 
-  //입력이 있으면, 입력 없어도 회원 역할만 넘어가면 위 fetch만 탐
-  if (userId != null || userId != "") {
-    fetch(`/ajax/admin/common/users/{userId}`).then((resp) => {
-      resp.json().then((rslt) => {
-        console.log("유저 아이디는 하나! :", rslt);
-		console.log("검색한 역할", rslt[0]);
+		userTable.innerHTML = '';  //싹 지우고
+		userTable.innerHTML = `
+				<thead>
+				    <tr>
+				      <th>선택</th>
+				      <th>아이디</th>
+				      <th>비밀번호</th>
+				      <th>회원구분</th>
+				      <th>탈퇴일자</th>
+				      <th>상태</th>
+				      <th>활성여부</th>
+				    </tr>
+				  </thead>
+				  <tbody id="userTableBody">
+				    <!-- JS에서 동적으로 행 추가 -->
+				  </tbody>`;
+				  
+		const userTableBody = document.querySelector("#userTableBody");
+		
+		auserList(params.toString());
 
-        rslt.forEach((user) => {
-          console.log("유저 거기 있지? : ", user);
+         //검색 데이터로 채우기
+		});
+	});
+};
+//userbar 함수 끝
 
-          const labels = [
-            "userId",
-            "userPassword",
-            "userRole",
-            "userWithdrawDate",
-            "userStatus",
-            "userEnabled",
-          ];
-
-          user.forEach((value, index) => {
-            let p = document.createElement("p");
-
-            let displayValue =
-              value !== null && value !== undefined ? value : "값 없음";
-            p.textContent = labels[index] + ": " + displayValue;
-            auserList.appendChild(p);
-          });
-        });
-      });
-    });
-  }
-}  //userbar 함수 끝
+//<button id="userbar" onclick="userbar()">검색</button>로 함수 추가
+const button = document.querySelector("#userbar");
+if (button) {
+  button.addEventListener("click", userbar);
+}
+//domcontentloaded 안해도 스크립트 순서대로 작동하니까 되지 않을까?

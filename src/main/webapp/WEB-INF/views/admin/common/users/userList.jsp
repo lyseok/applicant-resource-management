@@ -13,16 +13,31 @@
 	<div id="uSearchbar">
 		<label>회원 구분</label>
 		<select id="userRole">
-			<option value="-1">전체</option>
+			<option value="-1" selected>전체</option>
 			<option value="ROLE_USER">일반회원</option>
 			<option value="ROLE_COMPANY">기업회원</option>
 		</select>
 		<label>아이디 검색</label>
 		<input type="text" placeholder="회원 아이디를 입력" id="userId">
-		<button id="userbar" onclick="userbar()">검색</button>
+		<button id="userbar">검색</button>
 	</div>
 	<!-- 유저 리스트(상태 변경도 클릭으로 조정, 상세보기 들어가도 조정 가능)-->
-	<div id="auserList"></div>
-	
+	<table id="userTable" class="table">
+	  <thead>
+	    <tr>
+	      <th>선택</th>
+	      <th>아이디</th>
+	      <th>비밀번호</th>
+	      <th>회원구분</th>
+	      <th>탈퇴일자</th>
+	      <th>상태</th>
+	      <th>활성여부</th>
+	    </tr>
+	  </thead>
+	  <tbody id="userTableBody">
+	    <!-- JS에서 동적으로 행 추가 -->
+	  </tbody>
+	</table>
+		
 <script src="/js/admin/common/users/userList.js"></script>	
 </body>
