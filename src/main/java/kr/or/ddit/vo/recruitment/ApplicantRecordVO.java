@@ -18,4 +18,5 @@ public class ApplicantRecordVO implements Serializable{
 	private String applicantName;
 	
 	private ApplicantVO applicant;
+	
 }

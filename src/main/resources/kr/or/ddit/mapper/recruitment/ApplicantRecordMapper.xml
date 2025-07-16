@@ -32,6 +32,31 @@
 		WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
 	</select>
 	
+	<select id="getApplicantByRecruitment" resultType="map">
+	SELECT
+	rp.RECRUITMENT_NO AS recruitment_no, -- 공고 PK
+	rp.RECRUIT_PROCESS_NO AS process_no,
+	rp.RECRUIT_PROCESS_STEP AS step,
+	rp.RECRUIT_PROCESS_TYPE AS step_type,
+	ar.APPLICANT_ID AS applicant_id,
+	ar.APPLICANT_NAME AS applicant_name,
+	ar.STEP_APPLICATION_YN AS attend,
+	ar.STEP_PASS_YN AS pass,
+	ans.APPLICANT_SCORE AS exam_score,
+	iscore.APPLICANT_RATING AS interview_score
+	FROM RECRUIT_PROCESS rp
+	LEFT JOIN APPLICANT_RECORD ar
+	ON rp.RECRUIT_PROCESS_NO = ar.RECRUIT_PROCESS_NO
+	LEFT JOIN APPLICANT_ANSWER ans
+	ON ans.APPLICANT_ID = ar.APPLICANT_ID
+	AND ans.RECRUIT_EXAM_NO = rp.RECRUIT_PROCESS_NO
+	LEFT JOIN INTERVIEW_SCORE iscore
+	ON iscore.APPLICANT_ID = ar.APPLICANT_ID
+	AND iscore.INTERVIEW_NO = rp.RECRUIT_PROCESS_NO
+	WHERE rp.RECRUITMENT_NO = #{recruitmentNo}
+	ORDER BY step, applicant_id
+	</select>
+	
 	<insert id="insertApplicantRecord">
 		<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
 	    SELECT
