@@ -24,7 +24,7 @@ function iniBtn(no, type) {
           const aboardForm = document.querySelector("#aboardForm");
           if (aboardForm) aboardForm.style.display = "block";
 
-          aform(no); // 수정 폼 불러오기
+          aform(no, type); // 수정 폼 불러오기
         };
       }
 
@@ -64,7 +64,7 @@ fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 					`;
     });
 
-    if (rslt.boardTypeCode === "BRDD-001") {
+    if (type === "BRDD-001") {
       //답변 등록 폼이 비슷한 시기에 나오도록 DOMContentLoaded
       //답변 등록 폼은 문의사항(BRDD-001)일 때만 나옴
 
