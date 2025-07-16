@@ -103,7 +103,9 @@ const templateMap = {
       <div class="section-form-row">
         <label class="required">회사명</label>
         <div class="d-flex gap-2 w-100">
-          <input type="text" name="resumeVO.careerList[${idx}].comId" placeholder="예: NAVER" maxlength="100" >
+          <input type="text" name="resumeVO.careerList[${idx}].comId" placeholder="예: NAVER" maxlength="100" id="comId">
+          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="max-width: 240px; z-index: 2000;">
+					</ul>
           <button class="btn search_com_btn btn_violet_line" type="button">검색</button>
         </div>
       </div>
@@ -353,9 +355,12 @@ const templateMap = {
 	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 	      </div>
 	      <div class="modal-body">
-	        <select id="introductionSelect" class="form-select">
-	          <option value="">자기소개서를 선택하세요</option>
-	        </select>
+	      	<div class="section-form-row">
+	      		<label class="required">자기소개서</label>
+		        <select id="introductionSelect" class="form-select">
+		          <option value="">자기소개서를 선택하세요</option>
+		        </select>
+	        </div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -1140,6 +1145,17 @@ document.addEventListener("change", function(e) {
 
 // ---- JS 추가 바인딩 부분 ----
 document.addEventListener("DOMContentLoaded", function() {
+	// DOM 로드 되자마자 Company 정보 불러오기
+	axios.get("/ajax/career/company/list")
+		.then(resp => {
+			console.log(resp.data);
+			companyList = resp.data;
+		})
+		.catch(err => {
+			console.error(err)
+		})
+
+
 	document.querySelectorAll(".listContainer").forEach(container => {
 		container.addEventListener("click", async function(e) {
 			if (e.target.closest(".btn_edit")) {
@@ -1219,6 +1235,41 @@ document.addEventListener("DOMContentLoaded", function() {
 			typeCounters[type] = idx + 1;
 
 
+			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
+			document.querySelector("#comId").addEventListener("input", function() {
+				const inputVal = this.value.trim();
+				const suggestionBox = document.querySelector("#comSuggestions");
+				suggestionBox.innerHTML = ""; // 초기화
+
+				if (!inputVal) return;
+
+				const matches = companyList
+					.filter(c => c.comName.includes(inputVal))
+					.slice(0, 5); // 최대 5개
+
+				matches.forEach(c => {
+					const li = document.createElement("li");
+					li.innerText = c.comName;
+					li.dataset.userid = c.userId;
+					li.classList.add("list-group-item", "list-group-item-action")
+
+					li.addEventListener("click", () => {
+						document.querySelector("#comId").value = c.comName;
+						suggestionBox.innerHTML = "";
+					});
+
+					suggestionBox.appendChild(li);
+				});
+			});
+
+			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
+			const searchButton = document.querySelector("#section-careerList .search_com_btn");
+			searchButton.addEventListener("click", function(e) {
+				const comName = e.target.previousElementSibling.value;
+				// axios.get("/ajax/career/company/list")
+			})
+
+
 			// section-content, +버튼 숨김
 			secCont.style.display = "none";
 			if (addBtn) addBtn.style.display = 'none';
@@ -1253,6 +1304,7 @@ document.addEventListener("DOMContentLoaded", function() {
 								return; // ⛔ 값이 없으면 아래 로직 실행 안 됨
 							}
 						}
+
 
 						// 입력값 추출
 						let data = {};
@@ -1349,9 +1401,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 });
 
-
-// ↓↓↓ listContainer 영역에서 버튼클릭 이벤트
-// 삭제버튼 클릭 영역
+// ↓↓↓ listContainer 영역에서 삭제 버튼클릭 이벤트
 // 모달 열릴 때 삭제할 타입/idx를 삭제 버튼에 세팅
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -1363,21 +1413,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		// 🔁 introduction은 단일 객체니까 따로 분기
 		if (type === "introduction") {
-		  resume.introduction = {};
+			resume.introduction = {};
 
-		  const section = document.querySelector("#section-introduction");
-		  const listContainer = section.querySelector(".listContainer");
-		  listContainer.innerHTML = '';
-		  listContainer.classList.add("d-none");
+			const section = document.querySelector("#section-introduction");
+			const listContainer = section.querySelector(".listContainer");
+			listContainer.innerHTML = '';
+			listContainer.classList.add("d-none");
 
-		  const sectionContent = section.querySelector(".section-content");
-		  if (sectionContent) sectionContent.classList.remove("d-none");
+			const sectionContent = section.querySelector(".section-content");
+			if (sectionContent) sectionContent.classList.remove("d-none");
 
-		  const addBtn = section.querySelector(".btn-introduction");
-		  if (addBtn) addBtn.classList.remove("d-none");
+			const addBtn = section.querySelector(".btn-introduction");
+			if (addBtn) addBtn.classList.remove("d-none");
 
-		  bootstrap.Modal.getInstance(modal)?.hide();
-		  return;
+			bootstrap.Modal.getInstance(modal)?.hide();
+			return;
 		}
 
 		const key = arrayKey[type];
@@ -1540,7 +1590,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			// ✅ 기존 선택값 세팅
 			if (resume.introductionNo) {
-			  selectEl.value = String(resume.introductionNo);
+				selectEl.value = String(resume.introductionNo);
 			}
 
 		}).catch(err => {
@@ -1636,6 +1686,11 @@ document.addEventListener("submit", function(e) {
 	// 학력 입력 여부 확인! 위에서 관리하는 resume 객체의 educationList가 없거나, 길이가 1보다 작으면 return
 	if (!resume.educationList || resume.educationList.length < 1) {
 		alert("[학력]은 필수 기입란 입니다.");
+		return; // ✅ 전송 중단
+	}
+
+	if (!form.querySelector("#section-introduction .listContainer > div")) {
+		alert("[자기소개서]은 필수 기입란 입니다.");
 		return; // ✅ 전송 중단
 	}
 

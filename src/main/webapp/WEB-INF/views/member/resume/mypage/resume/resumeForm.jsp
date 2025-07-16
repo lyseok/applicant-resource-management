@@ -169,7 +169,7 @@
 			<!-- 자기소개서 (INTRODUCTION) 입력폼 -->
 			<div class="section" id="section-introduction">
 				<div class="section-title">
-					<h6>자기소개서</h6>
+					<h6>자기소개서<span class="must">필수</span></h6>
 					<button class="btn-introduction" type="button"
 						id="btn-introduction" data-bs-toggle="modal"
 						data-bs-target="#introductionModal">+ 자소서 리스트 불러오기</button>
@@ -178,8 +178,7 @@
 					작성해주세요.</div>
 				<div class="formContainer">
 
-					<div class="modal fade modal-dialog modal-dialog-centered"
-						id="introductionModal" tabindex="-1">
+					<div class="modal fade modal-dialog modal-dialog-centered" id="introductionModal" tabindex="-1" style="display: none;">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -187,9 +186,12 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 								</div>
 								<div class="modal-body">
-									<select id="introductionSelect" class="form-select">
-										<option value="">자기소개서를 선택하세요</option>
-									</select>
+					      	<div class="section-form-row w-100">
+					      		<label class="required">자기소개서</label>
+										<select id="introductionSelect" class="form-select">
+											<option value="">자기소개서를 선택하세요</option>
+										</select>
+									</div>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn_red_line"
