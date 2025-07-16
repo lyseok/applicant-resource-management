@@ -57,7 +57,6 @@
         <result property="paymentMethod" column="PAYMENT_METHOD"/>
         <result property="paymentDate" column="PAYMENT_DATE"/>
         <result property="paymentPay" column="PAYMENT_PAY"/>
-        <result property="paymentContract" column="PAYMENT_CONTRACT"/>
     </collection>
 </resultMap>
 
