@@ -69,8 +69,10 @@
 <div class="container">
     <!-- Global 등급 카드 -->
     <div class="card" onclick="requestPayment()">
-        <div class="title" id="">Global 등급 <span class="badge">Top</span></div>
+        <div class="title" id="Global">Global 등급 <span class="badge">Top</span></div>
         <ul>
+        	<li id="orderName">Global 등급</li>
+        	<li id="amount">10</li>
             <li>화상회의 가능</li>
             <li>채용공고 맨위에 노출</li>
             <li>공고 검색 시 맨위에 노출</li>
@@ -81,8 +83,10 @@
 
     <!-- Platinum 등급 카드 -->
     <div class="card" onclick="requestPayment()">
-        <div class="title">Platinum 등급 <span class="badge platinum">Premium</span></div>
+        <div class="title" id="Platinum">Platinum 등급 <span class="badge platinum">Premium</span></div>
         <ul>
+       	   <li id="orderName">Platinum</li>
+        	<li id="amount">5000000</li>
             <li>화상회의 가능</li>
             <li>채용공고 두 번째 노출</li>
             <li>공고 검색 시 두 번째 노출</li>
