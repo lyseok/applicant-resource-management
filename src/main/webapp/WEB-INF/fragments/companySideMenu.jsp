@@ -33,17 +33,17 @@
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="/company" class="menu-link">
+          <a href="/company/company_management" class="menu-link">
             <div data-i18n="Account">기본정보관리</div>
           </a>
         </li>
         <li class="menu-item">
-          <a href="/company" class="menu-link">
+          <a href="/company/business_registration" class="menu-link">
             <div data-i18n="Notifications">사업자등록증</div>
           </a>
         </li>
         <li class="menu-item">
-          <a href="/company" class="menu-link">
+          <a href="/company/salary_management" class="menu-link">
             <div data-i18n="Notifications">연봉관리</div>
           </a>
         </li>

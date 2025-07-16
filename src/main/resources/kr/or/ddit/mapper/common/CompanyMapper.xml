@@ -103,6 +103,47 @@
 	</delete>
 	
 	
+	<select id="selectCompanyManagementById" resultType="CompanyVO">
+		SELECT
+			USER_ID           
+			, COM_NAME           
+			, COM_INFO           
+			, COM_NUM            
+			, COM_EMAIL          
+			, COM_URL            
+			, COM_CREATE_YEAR    
+			, COM_MEM            
+			, COM_LOGO           
+			, COM_PAYMENT        
+			, INDUSTRY_TYPE      
+	    FROM COMPANY
+	    WHERE USER_ID = #{userId}
+	</select>
+	
+	
+	<update id="updateCompanyInfoById">
+		UPDATE COMPANY
+		SET 
+			COM_INFO = #{comInfo}
+		  , COM_NUM = #{comNum}
+		  , COM_EMAIL = #{comEmail}
+		  , COM_URL = #{comUrl}
+		  , COM_MEM = #{comMem}
+		  , INDUSTRY_TYPE = #{industryType}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	
+	<select id="selectCompanyWithResumeCareer" resultType="CompanyVO">
+		SELECT
+		    U.USER_ID            
+		   ,C.COM_NAME           
+		FROM COMPANY C
+		JOIN USERS U
+		  ON C.USER_ID = U.USER_ID
+	</select>
+	
+	
 	
 	
 	
