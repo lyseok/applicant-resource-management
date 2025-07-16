@@ -44,18 +44,18 @@
       </ul>
      </li>
      <li class="menu-item">
-       <a href="/mypage/resume/list" class="menu-link menu-toggle">
+       <a href="/mypage/introduction/list" class="menu-link menu-toggle">
        	 <i class="menu-icon tf-icons bx bx-face"></i>
          <div data-i18n="Account">자소서 관리</div>
        </a>   
        <ul class="menu-sub">
          <li class="menu-item">
-           <a href="/company" class="menu-link">
+           <a href="/mypage/introduction/list" class="menu-link">
              <div data-i18n="Account">자소서 목록</div>
            </a>
          </li>
          <li class="menu-item">
-           <a href="/company" class="menu-link">
+           <a href="/mypage/introduction/create" class="menu-link">
              <div data-i18n="Notifications">자소서 등록</div>
            </a>
          </li>
