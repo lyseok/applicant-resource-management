@@ -40,7 +40,7 @@ class CareerMapperTest {
 		vo.setJobCode("1");
 		vo.setStartWorkDate("2020-12-28");
 		vo.setTenure("Y");
-		vo.setFreelancer("N");
+//		vo.setFreelancer("N");
 		
 		mapper.insertCareer(vo);
 		log.info("{}", mapper.selectCareerDetail(vo));
@@ -54,7 +54,7 @@ class CareerMapperTest {
 		vo.setJobCode("80");
 		vo.setStartWorkDate("2020-12-28");
 		vo.setTenure("Y");
-		vo.setFreelancer("N");
+//		vo.setFreelancer("N");
 		
 		mapper.updateCareer(vo);
 		log.info("{}", mapper.selectCareerDetail(vo));

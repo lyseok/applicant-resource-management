@@ -37,6 +37,11 @@ public class MemberProjectAnnouncementAjaxController {
 		return service.readPrjAnncBbs(no);
 	}
 	
+	@GetMapping("/{no}/applicant")
+	public PrjAnncBbsVO getProjectApplicant(@PathVariable String no) {
+		return service.readPrjAnncBbsApplicant(no);
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> createProjectBoard(@Valid @RequestBody PrjAnncBbsVO prjAnncBbs, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {

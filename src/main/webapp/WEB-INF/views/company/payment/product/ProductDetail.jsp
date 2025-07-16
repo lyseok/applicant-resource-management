@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h2>🎉 결제가 성공했습니다!</h2>
-${paymentResult}
+
 </body>
 </html>

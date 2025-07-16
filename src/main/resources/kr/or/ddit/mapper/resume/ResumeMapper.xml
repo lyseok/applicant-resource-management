@@ -137,6 +137,7 @@
 			, UPDATE_DATE
 			, RESUME_SUBMIT_YN
 			, RESUME_DELETE_DATE
+			, INTRODUCTION_NO
 		) VALUES (
 			#{resumeNo}
 			, #{resumeName}
@@ -151,6 +152,7 @@
 			, TO_CHAR(SYSDATE, 'YYYYMMDD')
 			, #{resumeSubmitYn}
 			, #{resumeDeleteDate}
+			, #{introductionNo}
 		)
 	</insert>
 	<update id="updateResume">
