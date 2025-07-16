@@ -32,6 +32,11 @@ public class MemberProjectAnnouncementAjaxController {
 		return service.prjAnncBbsList();
 	}
 	
+	@GetMapping("/my")
+	public List<PrjAnncBbsVO> getMyProjectBoardList() {
+		return service.myPrjAnncBbsList();
+	}
+	
 	@GetMapping("/{no}")
 	public PrjAnncBbsVO getProjectBoard(@PathVariable String no) {
 		return service.readPrjAnncBbs(no);
