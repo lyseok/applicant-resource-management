@@ -1,6 +1,5 @@
 package kr.or.ddit.company.payment.toss;
 
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -23,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Controller
 @RequestMapping("/Toss")
@@ -33,99 +36,135 @@ public class BillingPaymentController {
 	String BillingFormUI() {
 		return "company/payment/payment/BillingPayment";
 	}
-	
-	@GetMapping("/success")			// 결제 빌씨링발키 ㅋㅋ 부르긴 했는데 안나오네 집가서 하자
-	String Success(
-		@RequestParam String authKey,
-		@RequestParam String customerKey,
-		Model model
-			) {
-		log.info("customerKey : {}",customerKey);
-		log.info("authKey : {}",authKey);
-		
+
+	@GetMapping("/success") // 결제 빌씨링발키 ㅋㅋ 부르긴 했는데 안나오네 집가서 하자
+	String Success(@RequestParam String authKey, @RequestParam String customerKey, Model model) {
+		log.info("customerKey : {}", customerKey);
+		log.info("authKey : {}", authKey);
+
+		// JSOn 본문 생성
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, String> requestBody = new HashMap<>();
+
+		requestBody.put("customerKey", customerKey);
+		requestBody.put("authKey", authKey);
+
+		String jsonBody = "";
+
+		try {
+			jsonBody = objectMapper.writeValueAsString(requestBody);
+		} catch (IOException e) {
+			log.error("JSOn변환 실패 ", e);
+			model.addAttribute("error", "요청 본문 생성 실패");
+			return "company/payment/payment/billingResult";
+		}
+
+		// Toss Api 요청 생성
+
 		HttpRequest request = HttpRequest.newBuilder()
-			.uri(URI.create("https://api.tosspayments.com/v1/billing/authorizations/issue"))
-			.header("Authorization", "Basic dGVzdF9za192Wm5qRUplUVZ4RzJqQldldjQ1RDNQbU9vQk4wOg==")
-			.header("Content-Type", "application/json")
-			.method("POST", HttpRequest.BodyPublishers.ofString("{\"authKey\":\"LPBPxzkmek6flXrr5oOfh\",\"customerKey\":\"skHcEFrq-91RMhWAiB1tQ\"}"))
-			.build();
+				.uri(URI.create("https://api.tosspayments.com/v1/billing/authorizations/issue"))
+				.header("Authorization", "Basic dGVzdF9za192Wm5qRUplUVZ4RzJqQldldjQ1RDNQbU9vQk4wOg==") // Base64 인코딩된																					// secretKey:
+				.header("Content-Type", "application/json")
+				.POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+				.build();
+		
+		
+		// 요청 실행
+		
 		HttpResponse<String> response = null;
+		
 		try {
 			response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("HTTP 요청 실패", e);
+			model.addAttribute("error", "결제 요청 실패");
 		}
-		log.info("responseBody : {}" , response.body());
+		
+		
+		if (response != null && response.body() != null) {
+			log.info("결제응답 : " + response.body());
+
+			try {
+				JsonNode jsonNode = objectMapper.readTree(response.body());
+				String billingKey = jsonNode.get("billingKey").asText();
+				
+				// billingKey를 저장
+				model.addAttribute("billingKey",billingKey);
+				model.addAttribute("result",jsonNode.toPrettyString());
+				
+			} catch (IOException e) {
+				log.error("JSON파싱 실패 ", e);
+				model.addAttribute("error", "응답처리 실패");
+			}
+			
+
+		} else {
+			log.warn("응답 실패 !! ");
+			model.addAttribute("error", "응답 없음");
+		}
+
+		log.info("responseBody : {}", response.body());
 		return "company/payment/payment/BillingResult";
 	}
-	
+
 	@PostMapping("/api/toss/billing/issue")
-	public ResponseEntity<String> inssueBillingKey(
-			@RequestBody Map<String, String> requestMap){
+	public ResponseEntity<String> inssueBillingKey(@RequestBody Map<String, String> requestMap) {
 		String authKey = requestMap.get("authKey");
 		String customerKey = requestMap.get("customerKey");
-		
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setBasicAuth("test_sk_xxxxx");
-		
+
 		Map<String, String> body = new HashMap<>();
 		body.put("authKey", authKey);
 		body.put("customerKey", customerKey);
-		
+
 		HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
 		RestTemplate restTemplate = new RestTemplate();
-		
-		String url = "https://api.tosspayments.com/v1/billing/authorizations/issue";	
-	
-		try {
-			ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
-			return ResponseEntity.ok(response.getBody());
-		} catch (HttpClientErrorException e) {
-			return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString()); 
-		}
-		
-	}
-	
-	@PostMapping("/api/toss/billing/execute")
-	public ResponseEntity<String> executeBilling(
-			@RequestBody Map<String, Object> payload
-			){
-		String billingKey = (String) payload.get("billingKey");
-		String customerKey = (String) payload.get("customerKey");
-		int amount = (int) payload.get("amount");
-		String orderId = "ORDER_" + System.currentTimeMillis();
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setBasicAuth("");		//Secret Key
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		
-		Map<String, Object> body = new HashMap<>();
-		body.put("amount", amount);
-		body.put("orderId",orderId);
-		body.put("customerKey", customerKey);
-		body.put("orderName","정기구독요금제");
-		body.put("customerEmail","test");
-		body.put("customerName","김철민");
-		
-		HttpEntity<Map<String, Object>> request = new HttpEntity<>(body,headers);
-		String url = "https://api.tosspayments.com/v1/billing/" + billingKey;
-		
-		RestTemplate restTemplate = new RestTemplate();
-		
+
+		String url = "https://api.tosspayments.com/v1/billing/authorizations/issue";
+
 		try {
 			ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 			return ResponseEntity.ok(response.getBody());
 		} catch (HttpClientErrorException e) {
 			return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
 		}
-		
+
 	}
-	
-	
-	
-	
-	
-	
+
+	@PostMapping("/api/toss/billing/execute")
+	public ResponseEntity<String> executeBilling(@RequestBody Map<String, Object> payload) {
+		String billingKey = (String) payload.get("billingKey");
+		String customerKey = (String) payload.get("customerKey");
+		int amount = (int) payload.get("amount");
+		String orderId = "ORDER_" + System.currentTimeMillis();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setBasicAuth(""); // Secret Key
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		Map<String, Object> body = new HashMap<>();
+		body.put("amount", amount);
+		body.put("orderId", orderId);
+		body.put("customerKey", customerKey);
+		body.put("orderName", "정기구독요금제");
+		body.put("customerEmail", "test");
+		body.put("customerName", "김철민");
+
+		HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+		String url = "https://api.tosspayments.com/v1/billing/" + billingKey;
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		try {
+			ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+			return ResponseEntity.ok(response.getBody());
+		} catch (HttpClientErrorException e) {
+			return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
+		}
+
+	}
+
 }

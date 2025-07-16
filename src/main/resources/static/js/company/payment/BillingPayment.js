@@ -38,3 +38,55 @@
 	  .catch(err=> {
 		consoler.error("결제 실패 !", err);
 	  })
+	  
+	  
+	  /*
+	  
+	  @PostMapping("/execute-billing")
+public String executeBilling(
+        @RequestParam String billingKey,
+        @RequestParam String customerKey,
+        @RequestParam int amount,
+        Model model) {
+
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, Object> body = new HashMap<>();
+    body.put("customerKey", customerKey);
+    body.put("amount", amount);
+    body.put("orderId", "ORDER_" + System.currentTimeMillis());
+    body.put("orderName", "정기 구독");
+    body.put("customerEmail", "customer@email.com");
+    body.put("customerName", "홍길동");
+    body.put("taxFreeAmount", 0);
+
+    String requestBody = "";
+    try {
+        requestBody = mapper.writeValueAsString(body);
+    } catch (JsonProcessingException e) {
+        e.printStackTrace();
+        model.addAttribute("error", "요청 바디 생성 실패");
+        return "billing/fail";
+    }
+
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create("https://api.tosspayments.com/v1/billing/" + billingKey))
+        .header("Authorization", "Basic dGVzdF9za192Wm5qRUplUVZ4RzJqQldldjQ1RDNQbU9vQk4wOg==")
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+        .build();
+
+    HttpResponse<String> response = null;
+    try {
+        response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        model.addAttribute("result", response.body());
+    } catch (Exception e) {
+        e.printStackTrace();
+        model.addAttribute("error", "결제 실패");
+    }
+
+    return "billing/success";
+}
+
+	  
+	  
+	  */
