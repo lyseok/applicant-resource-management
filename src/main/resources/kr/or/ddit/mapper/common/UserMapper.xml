@@ -81,4 +81,10 @@
 		WHERE USER_ID = #{userId}
 	</select>
 	
+	<select id="selectUserRoleById" resultType="String">
+		SELECT USER_ROLE
+		FROM USERS
+		WHERE USER_ID = #{userId}
+	</select>
+	
 </mapper>

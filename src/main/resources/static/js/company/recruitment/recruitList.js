@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                     </div>
                     <div>
-                        <a href="/company/recruit_notice/${item.RECRUITMENTNO}" class="btn btn-outline-primary btn-sm">상세보기</a>
+                        <a href="/recruit_notice/${item.RECRUITMENTNO}" class="btn btn-outline-primary btn-sm">상세보기</a>
                     </div>
                 `;
                 listContainer.appendChild(row);

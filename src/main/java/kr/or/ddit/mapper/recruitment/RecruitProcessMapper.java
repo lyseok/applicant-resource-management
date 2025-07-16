@@ -12,6 +12,8 @@ public interface RecruitProcessMapper {
 	public List<RecruitProcessVO> selectRecruitprocessList();
 	// 단건 조회
 	public RecruitProcessVO selectRecruitprocess(String recruitProcessNo);
+	// 채용 공고 no로 찾기
+	public RecruitProcessVO selectProcessByRecruit(String recruitmentNo);
 	// 삽입
 	public int insertRecruitProcess(RecruitProcessVO processVO);
 	// 업데이트

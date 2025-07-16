@@ -1,5 +1,6 @@
 package kr.or.ddit.company.recruitment.notice.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,15 +9,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.ddit.common.exception.DataUpdateException;
 import kr.or.ddit.company.recruitment.exam.service.RecruitExamService;
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.common.CompanyMapper;
+import kr.or.ddit.mapper.common.MemberMapper;
+import kr.or.ddit.mapper.common.UserMapper;
+import kr.or.ddit.mapper.recruitment.ApplicantMapper;
+import kr.or.ddit.mapper.recruitment.ApplicantRecordMapper;
 import kr.or.ddit.mapper.recruitment.InterviewMapper;
 import kr.or.ddit.mapper.recruitment.RecruitProcessMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentEducationMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentPositionMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentSkillmapper;
+import kr.or.ddit.vo.common.MemberVO;
+import kr.or.ddit.vo.common.UsersVO;
+import kr.or.ddit.vo.recruitment.ApplicantRecordVO;
+import kr.or.ddit.vo.recruitment.ApplicantVO;
 import kr.or.ddit.vo.recruitment.InterviewVO;
 import kr.or.ddit.vo.recruitment.RecruitProcessVO;
 import kr.or.ddit.vo.recruitment.RecruitmentEducationVO;
@@ -39,6 +49,11 @@ public class RecruitServiceImpl implements RecruitService {
 	private final RecruitExamService examService;
 	private final CompanyMapper comMapper;
 	private final CodeMapProvider codeMapProvider;
+	
+	private final UserMapper userMapper;
+	private final MemberMapper memMapper;
+	private final ApplicantMapper applMapper;
+	private final ApplicantRecordMapper applRecordMapper;
 
 	@Override
 	@Transactional
@@ -158,9 +173,36 @@ public class RecruitServiceImpl implements RecruitService {
 		
 	}
 	
+	@Override
+	public UsersVO searchUser() {
+		return userMapper.selectUserById(getUserId());
+	}
+
+	@Transactional
+	@Override
+	public void setDeadLine(String recruitmentNo) {
+		int cnt = noticeMapper.updateRecruitDeadLine(recruitmentNo);
+		if(cnt == 0) {
+			throw new DataUpdateException("마감 업데이트에 실패했습니다.");
+		}else {
+			List<ApplicantVO> list = applMapper.selectApplicantListByNo(recruitmentNo);
+			RecruitProcessVO process= processMapper.selectProcessByRecruit(recruitmentNo);
+			
+			for(ApplicantVO appl : list) {
+				MemberVO member = memMapper.selectMemberById(appl.getUserId());
+				ApplicantRecordVO rec = new ApplicantRecordVO();
+				rec.setApplicantId(appl.getApplicantId());
+				rec.setRecruitmentNo(process.getRecruitProcessNo());
+				rec.setApplicantName(member.getMemName());
+				applRecordMapper.insertApplicantRecord(rec);
+			}
+		}
+	}
+	
 	public String getUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    	return authentication.getName();
+		return authentication.getName();
 	}
+
 
 }

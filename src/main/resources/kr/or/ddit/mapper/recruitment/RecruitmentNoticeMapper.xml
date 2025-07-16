@@ -320,5 +320,11 @@
 		SYSDATE
 		WHERE RECRUITMENT_NO = #{recruitmentNo}
 	</update>
+	
+	<update id="updateRecruitDeadLine">
+		UPDATE RECRUITMENT_NOTICE SET
+		RECRUIT_FINISH_YN = 'Y'
+		WHERE RECRUITMENT_NO = #{recruitmentNo}
+	</update>
 
 </mapper>

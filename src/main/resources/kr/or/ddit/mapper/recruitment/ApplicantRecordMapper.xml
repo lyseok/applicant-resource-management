@@ -43,14 +43,14 @@
 			APPLICANT_RECORD_NO
 			, RECRUITMENT_NO
 			, APPLICANT_ID
-			, RECRUIT_PROCESS_STEP
+			, APPLICANT_NAME
 			, STEP_PASS_YN
 			, STEP_APPLICATION_YN
 		) VALUES (
 			#{applicantRecordNo}
 			, #{recruitmentNo}
 			, #{applicantId}
-			, #{recruitProcessStep}
+			, #{applicantName}
 			, 'N'
 			, 'N'
 		)
