@@ -3,17 +3,19 @@
  */
  const tossPayments = TossPayments("test_ck_Gv6LjeKD8a9wXO9o7lLw8wYxAdXy");
 
-  function requestPayment() {
+  function requestPayment(card) {
 
+ const productNo = card.dataset.productNo;
  const orderName = document.getElementById("orderName").innerText.trim();
  const amountText = document.getElementById("amount").innerText.trim();
  const amount = parseInt(amountText.replace(/[^0-9]/g,""));
  const orderId = "ORDER" + new Date().getTime();
  const customerName = "홍길동";
  const method = '카드';
- const successUrl = "http://localhost/company/payment/success";
- const failUrl = "http://localhost:8080/payment/fail"
-
+ const successUrl = "http://localhost/company/payment/success"
+ 						+ `?productNo=${productNo}`;
+ const failUrl = "http://localhost:8080/payment/fail";
+ 
     tossPayments.requestPayment(method, {
       amount,
       orderId, /*"ORDER-20250714-0001",*/ /*"ORDER-" + new Date().getTime(),*/

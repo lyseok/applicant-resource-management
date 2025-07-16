@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.common.exception.DataInsertException;
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.mapper.common.MemberMapper;
 import kr.or.ddit.mapper.project.PrjAplcntMapper;
+import kr.or.ddit.mapper.recruitment.ApplicantMapper;
 import kr.or.ddit.mapper.resume.AwardMapper;
 import kr.or.ddit.mapper.resume.CareerMapper;
 import kr.or.ddit.mapper.resume.EducationMapper;
@@ -25,7 +27,9 @@ import kr.or.ddit.mapper.resume.SpecialtyMapper;
 import kr.or.ddit.mapper.resume.IntroductionMapper;
 import kr.or.ddit.mapper.resume.SupportMapper;
 import kr.or.ddit.member.resume.exception.ResumeNotFoundException;
+import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.project.PrjAplcntVO;
+import kr.or.ddit.vo.recruitment.ApplicantVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import kr.or.ddit.vo.resume.AwardVO;
 import kr.or.ddit.vo.resume.CareerVO;
@@ -65,6 +69,10 @@ public class ResumeServiceImpl implements ResumeService {
 
 	// 프로젝트 지원
 	private final PrjAplcntMapper prjAplcntMapper;
+	
+	// 입사 지원
+	private final MemberMapper memberMapper;
+	private final ApplicantMapper applicantMapper;
 
 	// 리스트 조회
 	@Override
@@ -113,14 +121,6 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	@Transactional
 	public int createResume(ResumeVO resumeVO) {
-
-		/*
-		 * // 자소서 - 여기 어떻게 할건지 아직 미정 if (resumeVO.getIntroductionNo() != null) {
-		 * IntroductionVO introduction = new IntroductionVO();
-		 * resumeVO.setIntroduction(introductionMapper.selectIntroductionDetail(resumeVO
-		 * .getIntroductionNo())); }
-		 */
-		
 		int resumeCnt = resumeMapper.insertResume(resumeVO);
 
 		// 경력
@@ -352,5 +352,38 @@ public class ResumeServiceImpl implements ResumeService {
 		}
 
 	}
+
+	@Transactional
+	@Override
+	public void recruitApplicate(ApplicantVO applicant){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		MemberVO memVo= memberMapper.selectMemberById(username);
+		applicant.setUserId(username);
+		log.info("================>>>>>>>>>> {}", applicant);
+
+		String applicantNo = applicantMapper.duplicationApplicant(applicant);
+		if (applicantNo != null && !applicantNo.isBlank()) {
+			throw new DataInsertException("이미 해당 채용공고에 지원하셨습니다.");
+		}
+
+		ResumeVO beforeVo = new ResumeVO();
+		beforeVo.setUserId(username);
+		beforeVo.setResumeNo(applicant.getResumeNo());
+		
+		ResumeVO copyVo = readResumeDetail(beforeVo);
+		copyVo.setResumeSubmitYn("Y");
+		int res = createResume(copyVo);
+		if (res == 0) {
+			throw new DataInsertException("이력서 복사 실패");
+		}
+		applicant.setResumeNo(copyVo.getResumeNo());
+
+		res = applicantMapper.insertApplicant(applicant);
+		if (res == 0) {
+			throw new DataInsertException("채용공고 지원 실패");
+		}
+	}
+
 
 }

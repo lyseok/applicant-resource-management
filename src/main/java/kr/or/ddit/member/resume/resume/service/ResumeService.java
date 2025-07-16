@@ -3,6 +3,7 @@ package kr.or.ddit.member.resume.resume.service;
 import java.util.List;
 
 import kr.or.ddit.vo.project.PrjAplcntVO;
+import kr.or.ddit.vo.recruitment.ApplicantVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 
 public interface ResumeService {
@@ -21,5 +22,8 @@ public interface ResumeService {
 	
 	// 지원 (이력서 복사)
 	public void applicantCopyLogic(PrjAplcntVO prjAplcnt);
+	
+	// 입사 지원(이력서 복사)
+	public void recruitApplicate(ApplicantVO applicant);
 	
 }

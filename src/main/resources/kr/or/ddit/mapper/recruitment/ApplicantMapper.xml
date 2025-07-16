@@ -44,14 +44,12 @@
 		, RESUME_NO
 		, RESUME_VIEW_YN
 		, USER_ID
-		, APPLICANT_NAME
 	) VALUES (
 		#{applicantId}
 		, #{recruitmentNo}
 		, #{resumeNo}
 		, 'N'
 		, #{userId}
-		, #{applicantName}
 	)
 	</insert>
 	
