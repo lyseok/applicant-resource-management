@@ -10,7 +10,9 @@ import kr.or.ddit.vo.project.PrjRcrtPsncntVO;
 public interface PrjRcrtPsncntMapper {
 	public List<PrjRcrtPsncntVO> selectPrjRcrtPsncntList();
 	public PrjRcrtPsncntVO selectPrjRcrtPsncntByPk(PrjRcrtPsncntVO prjRcrtPsncnt);
+	public PrjRcrtPsncntVO selectByAnncNoAndJobCode(PrjRcrtPsncntVO prjRcrtPsncnt);
 	public int insertPrjRcrtPsncnt(PrjRcrtPsncntVO prjRcrtPsncnt);
 	public int updatePrjRcrtPsncnt(PrjRcrtPsncntVO prjRcrtPsncnt);
+	public int updateRcrtPsncnt(PrjRcrtPsncntVO prjRcrtPsncnt);
 	public int deletePrjRcrtPsncnt(PrjRcrtPsncntVO prjRcrtPsncnt);
 }

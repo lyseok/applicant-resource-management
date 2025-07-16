@@ -18,7 +18,7 @@ let allPosts = [];
 let filterStatus = "all"; // "all" | "open" | "closed"
 
 // ================ 데이터 요청 및 초기 렌더 =================
-axios.get('/ajax/board/project')
+axios.get('/ajax/board/project/my')
   .then(res => {
     allPosts = convertServerPosts(res.data);
     renderPostList();

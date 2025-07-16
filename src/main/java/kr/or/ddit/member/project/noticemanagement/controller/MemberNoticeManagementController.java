@@ -11,4 +11,12 @@ public class MemberNoticeManagementController {
 	public String noticeManagementPage() {
 		return "member/project/noticeManagement/noticeList";
 	}
+	@GetMapping("/detail")
+	public String noticeDetailPage() {
+		return "member/project/noticeManagement/noticeDetail"; 
+	}
+	@GetMapping("/form")
+	public String noticeFormPage() {
+		return "member/project/announcement/announcementForm";
+	}
 }
