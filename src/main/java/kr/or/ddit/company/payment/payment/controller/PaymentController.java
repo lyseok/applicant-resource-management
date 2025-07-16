@@ -30,18 +30,13 @@ public class PaymentController {
 	private TossPaymentService tossPaymentSerice;
 	private PaymentService service;
 	
-	@GetMapping
-	public String productlist() {
-		
-		return "company/payment/payment/TestView";
-	}
-	
-	
-//	@GetMapping("/success")
-//	public String paymentSuccess() {
-//		return "successUrl";
+//	@GetMapping
+//	public String productlist() {
+//		
+//		return "company/payment/payment/TestView";
 //	}
 //	
+
 	
 	
 	@GetMapping("/success")
@@ -66,8 +61,7 @@ public class PaymentController {
 		
 			HttpResponse<String> response = null;
 			
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String username = authentication.getName();
+			
 			
 			PaymentVO vo = new PaymentVO();
 			// 결제상품 번호를 등록하려면 먼저 샘플을 만들어야 하기에 insert대기
@@ -80,17 +74,17 @@ public class PaymentController {
 				
 			}
 			if(response != null) {				
-				log.info("결 제 응답 : " + response.body());
+				log.info("결제 응답 : " + response.body());
 				model.addAttribute("paymentResult",response.body());
 								
-				service.insertPayment(null);
+//				service.insertPayment();
 			}
 			else {
 				log.info("겔제응답이 없ㅇ름");
 			}
 			
 			ObjectMapper objectMapper = new ObjectMapper();
-//			JsonNode jsonNode = objectMapper.readTree(response.body());
+//		 	JsonNode jsonNode = objectMapper.readTree(response.body());
 			
 //			String paymentNo= jonNode.get("")asText();
 //			String productNo= jonNode.get("")asText();

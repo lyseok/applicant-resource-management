@@ -3,6 +3,8 @@ package kr.or.ddit.company.payment.payment.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import kr.or.ddit.mapper.common.PaymentMapper;
 import kr.or.ddit.vo.common.PaymentVO;
@@ -26,7 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public int insertPayment(PaymentVO vo) {
-		// TODO Auto-generated method stub
+		vo.setUserId(getUserId());
 		return mapper.insertPayment(vo);
 	}
 
@@ -40,6 +42,11 @@ public class PaymentServiceImpl implements PaymentService {
 	public int deletePayment(String paymentNo) {
 		// TODO Auto-generated method stub
 		return mapper.deletePayment(paymentNo);
+	}
+	
+	public String getUserId() {
+	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	return authentication.getName();		// 기업 ID 
 	}
 	
 }
