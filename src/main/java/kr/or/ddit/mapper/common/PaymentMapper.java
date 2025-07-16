@@ -1,3 +1,4 @@
+
 package kr.or.ddit.mapper.common;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface PaymentMapper {
 	public int deletePayment(String paymentNo);
 	
 	public PaymentListVO selectPaymentCompany(String userId);
+	
+	public List<PaymentVO> selectMyPaymentList(String userId);
 }

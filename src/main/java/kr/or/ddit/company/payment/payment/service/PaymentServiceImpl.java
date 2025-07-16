@@ -5,10 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.common.PaymentMapper;
 import kr.or.ddit.vo.common.PaymentVO;
-
+@Service
 public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
@@ -44,9 +45,16 @@ public class PaymentServiceImpl implements PaymentService {
 		return mapper.deletePayment(paymentNo);
 	}
 	
+	@Override
+	public List<PaymentVO> selectMyPaymentList(String userId) {
+		
+		return mapper.selectMyPaymentList(userId);
+	}
+
 	public String getUserId() {
 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	return authentication.getName();		// 기업 ID 
 	}
+
 	
 }

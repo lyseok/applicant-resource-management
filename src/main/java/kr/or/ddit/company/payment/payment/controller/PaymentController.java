@@ -5,19 +5,20 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.or.ddit.company.payment.payment.service.PaymentService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.payment.payment.service.TossPaymentService;
 import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,9 @@ public class PaymentController {
 
 	@Autowired
 	private TossPaymentService tossPaymentSerice;
-	private PaymentService service;
+	
+	@Autowired
+	private PaymentServiceImpl service;
 	
 //	@GetMapping
 //	public String productlist() {
@@ -36,7 +39,15 @@ public class PaymentController {
 //		return "company/payment/payment/TestView";
 //	}
 //	
-
+	@GetMapping("/main")
+	String mainForm(
+			Model model , Authentication auth
+			) {
+		
+		List<PaymentVO> purchaseList = service.selectMyPaymentList(service.getUserId());
+		model.addAttribute("purchaseList",purchaseList);
+		return "company/payment/payment/PaymentMain";
+		}
 	
 	
 	@GetMapping("/success")
@@ -44,6 +55,7 @@ public class PaymentController {
 			@RequestParam String paymentKey,
 			@RequestParam String orderId,
 			@RequestParam int amount,
+			@RequestParam String productNo,
 			Model model
 			) {
 		String bodyJson = String.format(
@@ -51,6 +63,7 @@ public class PaymentController {
 				paymentKey, orderId, amount
 				);
 		
+		String pamount = (amount + "");
 		
 		HttpRequest request = HttpRequest.newBuilder()
 			    .uri(URI.create("https://api.tosspayments.com/v1/payments/confirm"))
@@ -60,12 +73,10 @@ public class PaymentController {
 			    .build();
 		
 			HttpResponse<String> response = null;
-			
-			
-			
+			JsonNode jsonNode = null;
 			PaymentVO vo = new PaymentVO();
 			// 결제상품 번호를 등록하려면 먼저 샘플을 만들어야 하기에 insert대기
-			
+			int totalAmount =0;
 			try {
 				response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 			} catch (IOException | InterruptedException e) {
@@ -75,26 +86,40 @@ public class PaymentController {
 			}
 			if(response != null) {				
 				log.info("결제 응답 : " + response.body());
-				model.addAttribute("paymentResult",response.body());
-								
-//				service.insertPayment();
+				model.addAttribute("paymentResult",response.body());			
+			
+			try {
+				ObjectMapper objectMapper = new ObjectMapper();
+				jsonNode = objectMapper.readTree(response.body());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+			
+			if(jsonNode != null) {
+				String orderName = jsonNode.get("orderName").asText();
+				String method = jsonNode.get("method").asText();
+				int RtotalAmount = amount;
+				
+				model.addAttribute("orderName",orderName);
+				model.addAttribute("method",method);
+				model.addAttribute("RtotalAmount",RtotalAmount);
+				log.info("model 의 값들 : {}" ,model);
+				String paymentMethod = jsonNode.get("method").asText();
+				vo.setProductNo(productNo);	
+				vo.setPaymentPay(pamount);
+				vo.setPaymentMethod(paymentMethod);
+				vo.setTossPaymentKey(paymentKey);
+				service.insertPayment(vo);
+				log.info("insert에 들어갈 값 : {}", vo);
+			}
 			}
 			else {
 				log.info("겔제응답이 없ㅇ름");
 			}
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-//		 	JsonNode jsonNode = objectMapper.readTree(response.body());
-			
-//			String paymentNo= jonNode.get("")asText();
-//			String productNo= jonNode.get("")asText();
-//			String paymentMethod= jonNode.get("간편결제")asText();
-//			String paymentDate= jonNode.get("")asText();
-//			String paymentPay= jonNode.get("")asText();
-//			String payment= jonNode.get("")asText();
-			
+
 		
 		return "company/payment/payment/SuccessPayment";
 	}
+	
 	
 }
