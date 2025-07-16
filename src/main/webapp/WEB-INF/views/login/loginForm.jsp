@@ -57,7 +57,7 @@
 							<section class="login-join">
 								<a href="https://www.jobkorea.co.kr/Login/Search/search_id.asp" target="_new">아이디 찾기</a>
 								<a href="https://www.jobkorea.co.kr/Login/Search/search_pwd.asp" target="_new">비밀번호 찾기</a>
-								<a id="link_regist" href="https://www.jobkorea.co.kr/Join/M_Regist" target="_new"
+								<a id="link_regist" href="/member_signup" target="_new"
 									data-co="https://www.jobkorea.co.kr/Join/GI_Regist"
 									data-gg="https://www.jobkorea.co.kr/Join/M_Regist">회원가입
 								</a>
