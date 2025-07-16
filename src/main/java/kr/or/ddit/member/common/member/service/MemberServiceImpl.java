@@ -50,6 +50,9 @@ public class MemberServiceImpl implements MemberService {
 		log.info("{}", member);
 		String encoded = passwordEncoder.encode(member.getUserPassword());
 		member.setUserPassword(encoded);
+		String originalDate = member.getMemBir();
+		String formatDate = originalDate.replaceAll("-", "");
+		member.setMemBir(formatDate);
 		
 		userMapper.insertUser(member);
 		log.info("바뀐 후 {}", member);
