@@ -10,7 +10,7 @@
     FROM PAYMENT_PRODUCT
 </selectKey>
 INSERT INTO PAYMENT_PRODUCT (
-PRODUCT_NO
+	PRODUCT_NO
 	, PRODUCT_NAME
 	, PRODUCT_TYPE
 	, PRODUCT_DETAIL
@@ -18,7 +18,7 @@ PRODUCT_NO
 	, PRODUCT_IMG
 	, PRODUCT_PERIOD
 ) VALUES (
-#{productNo}
+	#{productNo}
 	, #{productName}
 	, #{productType}
 	, #{productDetail}

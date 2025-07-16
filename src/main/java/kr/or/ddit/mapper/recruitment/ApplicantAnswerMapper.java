@@ -1,10 +1,12 @@
 package kr.or.ddit.mapper.recruitment;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.or.ddit.vo.recruitment.ApplicantAnswerVO;
+import kr.or.ddit.vo.recruitment.RecruitmentExamScoreResultVO;
 
 @Mapper
 public interface ApplicantAnswerMapper {
@@ -13,4 +15,7 @@ public interface ApplicantAnswerMapper {
 	public int insertApplicantAnswer(ApplicantAnswerVO vo);
 	public int updateApplicantAnswer(ApplicantAnswerVO vo);
 	public int deleteApplicantAnswer(String applicantAnswerNo);
+	
+	public int countByUserAndExam(String applicantId, String recruitExamNo);
+	public RecruitmentExamScoreResultVO selectResultByExamAndUser(String applicantId, String recruitExamNo);
 }

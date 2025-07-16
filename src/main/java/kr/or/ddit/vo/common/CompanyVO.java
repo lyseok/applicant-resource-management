@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import kr.or.ddit.validate.constraints.MimeTypeCheck;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +25,7 @@ public class CompanyVO extends UsersVO implements Serializable{
 	private String comUrl;
 	@NotBlank
 	private String comCreateYear;
-	@NotBlank
+	@NotNull
 	private Integer comMem;
 	private String comLogo;
 	@MimeTypeCheck(mainType = "image/")

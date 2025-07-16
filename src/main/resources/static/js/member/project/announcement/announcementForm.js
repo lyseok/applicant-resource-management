@@ -14,6 +14,69 @@ let announcementData = {
   anncEndYn: 'N'               // 'N' or 'Y'
 };
 
+
+// 데이터 받아오고, announcementData 세팅 + input들에 값 세팅
+function fetchAndFillForm(prjAnncNo) {
+  axios.get('/ajax/board/project/' + prjAnncNo)
+    .then(res => {
+      const data = res.data;
+      if (!data) return;
+
+      // announcementData 객체에 데이터 복사
+      Object.assign(announcementData, data);
+
+      // 제목
+      document.querySelector('[name="prjEmpTitle"]').value = data.prjEmpTitle || '';
+      // 주제
+      document.querySelector('[name="prjTopic"]').value = data.prjTopic || '';
+      // 시작일
+      document.querySelector('[name="prjStartPlanDate"]').value = formatDateForInput(data.prjStartPlanDate);
+      // 마감일
+      document.querySelector('[name="prjEndPlanDate"]').value = formatDateForInput(data.prjEndPlanDate);
+
+      // 태그
+      tags = (data.prjAnncBoardTagList || []).map(tagObj => tagObj.tag.tagName);
+      renderTags();
+
+      // 모집팀원
+      roleListArr = (data.prjRcrtPsncntList || []).map(role => ({
+        jobCode: role.jobCode,
+        jobCodeName: role.jobCodeName,
+        rcrtPsncnt: role.rcrtPsncnt,
+        name: role.jobCodeName
+      }));
+      renderRoleList();
+
+      // 에디터
+      editor.setMarkdown(data.prjAnncContent || '');
+    })
+    .catch(err => {
+      alert('데이터를 불러올 수 없습니다.');
+      console.error(err);
+    });
+}
+
+// 'YYYYMMDD' → 'YYYY-MM-DD' 변환 함수 (input type="date"용)
+function formatDateForInput(val) {
+  if (!val) return '';
+  if (val.length === 8)
+    return `${val.slice(0,4)}-${val.slice(4,6)}-${val.slice(6,8)}`;
+  return val;
+}
+
+// 사용 예시 (페이지 진입 시 호출)
+const urlParams = new URLSearchParams(window.location.search);
+const prjAnncNo = urlParams.get('prjAnncNo');
+if (prjAnncNo) {
+  fetchAndFillForm(prjAnncNo);
+}
+
+
+
+
+
+
+
 // 제목 입력시
 document.querySelector('[name="prjEmpTitle"]').addEventListener('input', e => {
   announcementData.prjEmpTitle = e.target.value;
@@ -57,7 +120,12 @@ document.getElementById('projectForm').onsubmit = function(e){
   axios.post('/ajax/board/project', announcementData)
     .then(res => {
       alert('등록/수정 성공!');
-      location.href = "/board/project";
+      if (announcementData.prjAnncNo) {
+        // 수정 완료 → 프로젝트 공고 목록으로
+        location.href = `/mypage/notice_management/detail?prjAnncNo=${announcementData.prjAnncNo}`;
+      } else {
+        location.href = "/board/project";
+      }
     })
     .catch(err => {
       if (err.response && err.response.data) {
@@ -190,11 +258,22 @@ function renderRoleList() {
                 <input type="hidden" name="teamRoles[${i}].jobName" value="${role.name}">
                 <input type="hidden" name="teamRoles[${i}].jobCode" value="${role.code || ''}">
             </span>
-            <select name="teamRoles[${i}].count" class="form-select ms-3" style="max-width:100px;display:inline-block;">
-                ${[1,2,3,4,5].map(n => `<option value="${n}"${n==role.count?' selected':''}>${n}명</option>`).join('')}
+            <select name="teamRoles[${i}].count" class="form-select ms-3" 
+              style="max-width:100px;display:inline-block;" 
+              data-idx="${i}">
+                ${[1,2,3,4,5].map(n => `<option value="${n}"${n==role.rcrtPsncnt?' selected':''}>${n}명</option>`).join('')}
             </select>
         `;
         roleList.appendChild(li);
+    });
+
+    // ★ 변경 이벤트 바인딩 ★
+    roleList.querySelectorAll('select[data-idx]').forEach(select => {
+      select.addEventListener('change', function() {
+        const idx = this.getAttribute('data-idx');
+        roleListArr[idx].rcrtPsncnt = this.value;
+        // 필요시 아래 한줄도: announcementData.prjRcrtPsncntList = roleListArr;
+      });
     });
 }
 window.removeRole = function(idx) {

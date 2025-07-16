@@ -23,6 +23,20 @@
     <result property="prjAnncNo"    column="PRJ_ANNC_NO"/>
     <result property="jobCode"      column="JOB_CODE"/>
     <result property="rcrtPsncnt"   column="RCRT_PSNCNT"/>
+    <!-- 지원자 리스트 -->
+	<collection property="aplcntList"
+	            ofType="kr.or.ddit.vo.project.PrjAplcntVO"
+	            resultMap="PrjAplcntVOMap"/>
+</resultMap>
+
+<resultMap id="PrjAplcntVOMap" type="kr.or.ddit.vo.project.PrjAplcntVO">
+  <id     property="prjAplcntNo"         column="PRJ_APLCNT_NO"/>
+  <result property="resumeNo"            column="RESUME_NO"/>
+  <result property="userId"              column="APL_USER_ID"/>
+  <result property="aplcntStatusCode"    column="APLCNT_STATUS_CODE"/>
+  <result property="aplcntDate"          column="APLCNT_DATE"/>
+  <result property="rcrtPsncntNo"        column="APL_RCRT_PSNCNT_NO"/>
+  <result property="prjAnncNo"           column="APL_PRJ_ANNC_NO"/>
 </resultMap>
 
 <!-- PrjAnncBbsVO -->
@@ -84,6 +98,42 @@
     ORDER BY B.ANNC_CREATE_DATE DESC
 </select>
 
+<select id="selectMyPrjAnncBbsList" resultMap="PrjAnncBbsVOMap">
+	SELECT
+	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
+	    B.USER_ID,             -- 사용자 ID
+	    M.MEM_NAME,            -- 사용자명 
+	    B.PRJ_EMP_TITLE,       -- 게시글 제목
+	    B.PRJ_TOPIC,           -- 프로젝트 주제
+	    B.ANNC_CREATE_DATE,    -- 작성일시
+	    B.PRJ_START_PLAN_DATE, -- 프로젝트 시작 예정일
+	    B.PRJ_END_PLAN_DATE,   -- 프로젝트 마감 예정일
+	    B.PRJ_ANNC_HIT,        -- 조회수
+	    B.PRJ_ANNC_CONTENT,    -- 내용
+	    B.ANNC_END_PLAN_DATE,  -- 모집 마감 예정일
+	    B.ANNC_END_YN,         -- 모집 마감 여부
+	    B.DELETE_DATE,         -- 삭제일시
+	    T.TAG_NO,              -- 태그번호
+	    T.TAG_DATE,            -- 태그 일자
+	    C.TAG_NAME             -- 태그명 ← 추가
+	FROM
+	    PRJ_ANNC_BBS B
+	LEFT OUTER JOIN
+	    PRJ_ANNC_BOARD_TAG T
+	ON
+	    B.PRJ_ANNC_NO = T.PRJ_ANNC_NO
+	LEFT OUTER JOIN
+	    TAG C
+	ON
+	    T.TAG_NO = C.TAG_NO
+   	LEFT OUTER JOIN 
+   		MEMBER M 
+   	ON 
+   		B.USER_ID = M.USER_ID
+   	WHERE B.USER_ID = #{userId}
+    ORDER BY B.ANNC_CREATE_DATE DESC
+</select>
+
 <select id="selectPrjAnncBbsByPk" resultMap="PrjAnncBbsVOMap">
 	SELECT
 	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
@@ -108,7 +158,16 @@
 	    -- 모집 인원 관련
 	    P.RCRT_PSNCNT_NO,
 	    P.JOB_CODE,
-	    P.RCRT_PSNCNT
+	    P.RCRT_PSNCNT,
+	    
+	    -- 지원자(프로젝트 지원자) 관련 (RCRT_PSNCNT_NO를 기준)
+	    A.PRJ_APLCNT_NO,
+	    A.RESUME_NO,
+	    A.USER_ID      AS APL_USER_ID,
+	    A.APLCNT_STATUS_CODE,
+	    A.APLCNT_DATE,
+	    A.RCRT_PSNCNT_NO AS APL_RCRT_PSNCNT_NO,
+	    A.PRJ_ANNC_NO  AS APL_PRJ_ANNC_NO
 	
 	FROM
 	    PRJ_ANNC_BBS B
@@ -120,6 +179,10 @@
 	    PRJ_RCRT_PSNCNT P ON B.PRJ_ANNC_NO = P.PRJ_ANNC_NO
 	LEFT OUTER JOIN
 	    MEMBER M ON B.USER_ID = M.USER_ID
+    LEFT OUTER JOIN
+    	PRJ_APLCNT A 
+    		ON P.RCRT_PSNCNT_NO = A.RCRT_PSNCNT_NO
+    		AND B.PRJ_ANNC_NO    = A.PRJ_ANNC_NO
 	WHERE
 	    B.PRJ_ANNC_NO = #{prjAnncNo}
 </select>

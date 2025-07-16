@@ -10,6 +10,7 @@ import kr.or.ddit.vo.recruitment.ApplicantVO;
 public interface ApplicantMapper {
 	public List<ApplicantVO> selectApplicantList();
 	public ApplicantVO selectApplicant(String applicantId);
+	public String duplicationApplicant(ApplicantVO vo); 
 	public int insertApplicant(ApplicantVO vo);
 	public int updateApplicant(ApplicantVO vo);
 	public int deleteApplicant(String applicantId);

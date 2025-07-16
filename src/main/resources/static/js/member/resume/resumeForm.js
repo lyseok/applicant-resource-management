@@ -39,12 +39,12 @@ const templateMap = {
         <label class="required">편입여부</label>
         <div class="form-check-wrap d-flex">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="resumeVO.educationList[${idx}].transferYn" value="Y" checked>
-            <label class="form-check-label">편입</label>
+            <input class="form-check-input" type="radio" name="resumeVO.educationList[${idx}].transferYn" value="N" checked>
+            <label class="form-check-label">비편입</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="resumeVO.educationList[${idx}].transferYn" value="N">
-            <label class="form-check-label">비편입</label>
+            <input class="form-check-input" type="radio" name="resumeVO.educationList[${idx}].transferYn" value="Y" >
+            <label class="form-check-label">편입</label>
           </div>
         </div>
       </div>
@@ -71,11 +71,11 @@ const templateMap = {
       <div class="section-form-row selectViews d-none">
         <label class="">전공 구분</label>
         <select name="resumeVO.educationList[${idx}].specialtyList[0].subMajorCode" id="majorTypeCode${idx}" data-idx="${idx}" >
-		  <option value="">선택</option>
+		    	<option value="">선택</option>
           <!-- 코드에 맞게 추가 -->
         </select>
       </div>
-      <div class="section-form-row selectViews d-none">
+      <div class="section-form-row selectView d-none">
         <label class="">부전공</label>
         <input type="text" name="resumeVO.educationList[${idx}].specialtyList[0].subMajor" placeholder="부전공 학과를 입력해주세요.">
       </div>
@@ -103,8 +103,10 @@ const templateMap = {
       <div class="section-form-row">
         <label class="required">회사명</label>
         <div class="d-flex gap-2 w-100">
-          <input type="text" name="resumeVO.careerList[${idx}].comId" placeholder="예: NAVER" maxlength="100" >
-          <button class="btn save_btn btn_violet_line">확인</button>
+          <input type="text" name="resumeVO.careerList[${idx}].comId" placeholder="예: NAVER" maxlength="100" id="comId">
+          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="max-width: 240px; z-index: 2000;">
+					</ul>
+          <button class="btn search_com_btn btn_violet_line" type="button">검색</button>
         </div>
       </div>
       <div class="section-form-row">
@@ -224,8 +226,8 @@ const templateMap = {
           <option value="">선택</option>
         </select>
       </div>
-      <div class="section-form-row">
-        <label class="required">장애등급</label>
+      <div class="section-form-row selectView d-none">
+        <label class="">장애등급</label>
         <select name="resumeVO.supportList[${idx}].disabilityLevelCode" id="disabilityLevelCode${idx}" >
           <option value="">선택</option>
         </select>
@@ -255,7 +257,7 @@ const templateMap = {
 	languageSkillList: idx => `
     <div class="section-form-wrap" id="form-languageSkillList${idx}" data-idx="${idx}">
 	  <div class="section-form-row">
-	    <label class="required">어학명</label>
+	    <label class="required">어학 구분</label>
 	    <select name="resumeVO.languageSkillList[${idx}].languageCode" id="languageCode${idx}" >
 	      <option value="">선택</option>
 	    </select>
@@ -281,6 +283,14 @@ const templateMap = {
           <option value="1">점수제</option>
           <option value="2">급수제</option>
         </select>
+      </div>
+      <div class="section-form-row selectView d-none">
+        <label>시험점수</label>
+        <input type="text" name="resumeVO.languageSkillList[${idx}].languageExamScore" placeholder="예: 900" maxlength="10">
+      </div>
+      <div class="section-form-row languageView d-none">
+        <label>급수(레벨)</label>
+        <input type="text" name="resumeVO.languageSkillList[${idx}].languageExamLevelCode" placeholder="레벨을 입력해주세요. 예) N5">
       </div>
       <div class="section-form-btns">
         <button type="button" class="btn btn_red_line">취소</button>
@@ -337,22 +347,28 @@ const templateMap = {
     </div>
   `,
 	introduction: idx => `
-    <div class="section-form-wrap" id="form-introduction${idx}" data-idx="${idx}">
-      <div class="section-form-row">
-        <label class="required">자기소개서 제목</label>
-        <input type="text" name="resumeVO.introduction.introductionName" maxlength="85" placeholder="예: 성장하는 개발자" >
-      </div>
-      <div class="section-form-row w-100">
-        <label class="mb-3">자기소개서 내용</label>
-        <div class="d-flex direction-column w-100">
-          <textarea name="resumeVO.introduction.introductionContent" maxlength="2000" placeholder="자기소개서 본문을 입력하세요. (최대 2000자)" ></textarea>
-        </div>
-      </div>
-      <div class="section-form-btns">
-        <button type="button" class="btn btn_red_line">취소</button>
-        <button type="button" class="btn save_btn btn_violet_line">확인</button>
-      </div>
-    </div>
+	<div class="modal fade" id="introductionModal" tabindex="-1">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">자기소개서 선택</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="section-form-row">
+	      		<label class="required">자기소개서</label>
+		        <select id="introductionSelect" class="form-select">
+		          <option value="">자기소개서를 선택하세요</option>
+		        </select>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="btn btn-primary" id="confirmIntroduction">확인</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
   `,
 	militaryList: idx => `
     <div class="section-form-wrap" id="form-militaryList${idx}" data-idx="${idx}">
@@ -362,34 +378,34 @@ const templateMap = {
           <option value="">선택</option>
         </select>
       </div>
-      <div class="section-form-row">
-        <label class="required">군별</label>
+      <div class="section-form-row selectViews d-none">
+        <label class="">군별</label>
         <select name="resumeVO.militaryList[${idx}].militaryTypeCode" id="militaryTypeCode${idx}" >
           <option value="">선택</option>
         </select>
       </div>
-      <div class="section-form-row">
-        <label class="required">계급</label>
+      <div class="section-form-row selectViews d-none">
+        <label class="">계급</label>
         <select name="resumeVO.militaryList[${idx}].militaryRankCode" id="militaryRankCode${idx}" >
           <option value="">선택</option>
         </select>
       </div>
-      <div class="section-form-row">
-        <label class="required">전역사유</label>
+      <div class="section-form-row selectViews d-none">
+        <label class="">전역사유</label>
         <select name="resumeVO.militaryList[${idx}].dischargeCode" id="dischargeCode${idx}">
           <option value="">선택</option>
         </select>
       </div>
-      <div class="section-form-row">
-        <label class="required">복무 시작일자</label>
+      <div class="section-form-row selectViews d-none">
+        <label class="">복무 시작일자</label>
         <input type="date" name="resumeVO.militaryList[${idx}].militaryStartDate" >
       </div>
-      <div class="section-form-row">
-        <label class="required">복무 종료일자</label>
+      <div class="section-form-row endDate d-none">
+        <label class="">복무 종료일자</label>
         <input type="date" name="resumeVO.militaryList[${idx}].militaryEndDate">
       </div>
-      <div class="section-form-row">
-        <label class="required">면제/미필 사유</label>
+      <div class="section-form-row cateCodeB d-none">
+        <label class="">면제/미필 사유</label>
         <input type="text" name="resumeVO.militaryList[${idx}].militaryReason" maxlength="2000" placeholder="사유를 입력하세요">
       </div>
       <div class="section-form-btns">
@@ -405,8 +421,8 @@ const templateMap = {
 // 저장버튼 클릭 시 list 형태로 띄워주기.
 // ♥♥♥♥ 여기 작업해야됌 ~~
 const listItemMap = {
-	educationList: (idx, data) => `
-    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	educationList: (idx, data, type = "educationList") => `
+    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}"  data-type="${type}">
       <div class="d-flex">
 	      <div>
 	      	<strong>${data.schoolName}</strong>
@@ -489,7 +505,7 @@ const listItemMap = {
     `,
 	supportList: (idx, data) => `
       <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
-        <strong>${data.disabilityCodeName || '장애유형'} / ${data.disabilityLevelCodeName || '등급'}</strong>
+        <p><strong>${codeLabelMap.VULN[data.disabilityCode] || ''}</strong> (${codeLabelMap.DSBL[data.disabilityLevelCode] || ''})</p>
         <div class="d-flex gap-2">
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
@@ -522,7 +538,7 @@ const listItemMap = {
         <div class="d-flex flex-column">
           <strong>${data.languageExamName || '시험명 없음'}</strong>
           <span>${data.passDate || ''}</span>
-          <small>${data.languageCode || ''} / ${data.languageExamScore || '점수 없음'}</small>
+          <small>${codeLabelMap.LANG[data.languageCode] || ''} / ${data.languageExamScore || '점수 없음'}</small>
         </div>
         <div class="d-flex gap-2">
           <button type="button" class="btn_edit">
@@ -553,7 +569,10 @@ const listItemMap = {
     `,
 	militaryList: (idx, data) => `
       <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
-        <strong>${data.serviceCategoryCode || '복무구분'} / ${data.militaryTypeCode || '군별'}</strong>
+        <div>
+        	<strong>${codeLabelMap.SRVC[data.serviceCategoryCode] || ''} / ${codeLabelMap.MILT[data.militaryTypeCode] || ''}</strong>
+        	<small>${data.militaryReason || ''}</small>
+        </div>
         <div class="d-flex gap-2">
           <button type="button" class="btn_edit">
             <span class="material-symbols-outlined fs-3">stylus</span>
@@ -583,6 +602,7 @@ const resume = {
 	"updateDate": "",
 	"resumeSubmitYn": "",
 	"resumeDeleteDate": "",
+	"introductionNo": "",
 	"company": {},
 	"careerList": [],
 	"supportList": [],
@@ -810,6 +830,13 @@ const selectLoadConfig = {
 			key: "cmnCodeList",
 			valueKey: "codeDetailNo",
 			labelKey: "codeName"
+		},
+		{
+			selector: el => el.querySelector("#location" + el.dataset.idx),  // 지역
+			url: "/ajax/code/city",
+			key: "",
+			valueKey: "cityCodeNo",
+			labelKey: "cityName"
 		}
 	],
 	careerList: [
@@ -957,20 +984,22 @@ async function setSelectOptionsByApi(selectElem, url, arrKey, valueKey, labelKey
 /* =============================== selct 비동기 요청 코드 =============================== */
 
 // select에서 선택된 값에 따라 다음 필드 보여주기
-document.addEventListener("change", function (e) {
+document.addEventListener("change", function(e) {
 	const isSelect = e.target.tagName === "SELECT";
 	const isRadio = e.target.tagName === "INPUT" && e.target.type === "radio";
 
 	if (!isSelect && !isRadio) return;
 
 	const { name, value } = e.target;
+	console.log(value); // ← 이게 바로 현재 선택된 값!
 
 	// 처리할 대상 필드들 (name 속성 기준)
 	const targetFields = [
 		"resumeVO.educationList",         // highestEducationCode / graduateYn
-		"resumeVO.careerList",            // freelancer
-		"resumeVO.militaryList",           // militaryRankCode 등
-		"resumeVO.careerList[${idx}].tenure"
+		"resumeVO.careerList",            // 경력
+		"resumeVO.militaryList",          // 병역
+		"resumeVO.supportList",           // 
+		"resumeVO.languageSkillList"      // 어학
 	];
 
 	const matchedField = targetFields.find(field => name.startsWith(field));
@@ -984,14 +1013,20 @@ document.addEventListener("change", function (e) {
 	if (!formEl) return;
 
 	const targetRows = formEl.querySelectorAll(".selectViews");
-	const targetRow = formEl.querySelectorAll(".selectView");
+	console.log("찾은 selectViews 개수:", targetRows.length); // ← 0이면 안 됨!
+
+	const targetRow = formEl.querySelector(".selectView");
 	const graduateView = formEl.querySelector(".graduateView");
+	const languageView = formEl.querySelector(".languageView");
+	const cateCodeB = formEl.querySelector(".cateCodeB");
 
 	// 값에 따라 분기
 	if (name.includes("highestEducationCode")) {
 		if (["EDUC-003", "EDUC-004", "EDUC-005"].includes(value)) {
+			console.log(">>> 보여줄 예정");
 			targetRows.forEach(row => row.classList.remove("d-none"));
 		} else {
+			console.log(">>> 숨길 예정");
 			targetRows.forEach(row => row.classList.add("d-none"));
 		}
 	}
@@ -1004,6 +1039,14 @@ document.addEventListener("change", function (e) {
 		}
 	}
 
+	if (name.includes("subMajorCode")) {
+		if (value === "SPEC-001" || value === "SPEC-002" || value === "SPEC-003") {
+			targetRow.classList.remove("d-none");
+		} else {
+			targetRow.classList.add("d-none");
+		}
+	}
+
 	/* 경력 */
 	if (name.includes("freelancer")) {
 		if (value === "Y") {
@@ -1012,14 +1055,88 @@ document.addEventListener("change", function (e) {
 			targetRows.forEach(row => row.classList.remove("d-none"));
 		}
 	}
-	
+
 	if (name.includes("tenure")) {
 		if (value === "N") {
-			targetRow.forEach(row => row.classList.remove("d-none"));
+			targetRow.classList.remove("d-none");
 		} else {
-			targetRow.forEach(row => row.classList.add("d-none"));
+			targetRow.classList.add("d-none");
 		}
 	}
+
+	/* 고용지원정보 */
+	if (name.includes("disabilityCode")) {
+		if (value === "VULN-002" || value === "VULN-008") {
+			targetRow.classList.remove("d-none")
+		} else {
+			targetRow.classList.add("d-none");
+		}
+	}
+
+	/* 어학 - 어학구분 변경 시 시험구분 옵션 로딩 */
+	if (name.includes("languageCode")) {
+		const langCode = value;
+		const examSelect = formEl.querySelector(`[name="resumeVO.languageSkillList[${idx}].languageExamCode"]`);
+		console.log(examSelect)
+		if (!examSelect) return;
+
+		// 기존 옵션 초기화
+		examSelect.innerHTML = `<option value="">선택</option>`;
+
+		// 비동기 요청
+		axios.get(`/ajax/code/cmncode/${langCode}`)
+			.then(resp => {
+				console.log(resp.data)
+				const list = resp.data || []; // 응답 형식에 따라 조정
+				list.forEach(item => {
+					const opt = document.createElement("option");
+					opt.value = item.codeDetailNo;
+					opt.textContent = item.codeName;
+					examSelect.appendChild(opt);
+				});
+			})
+			.catch(err => {
+				console.error("어학 시험 구분 코드 로드 실패", err);
+			});
+	}
+
+
+	/* 어학 - 시험유형 */
+	if (name.includes("languageExamType")) {
+		if (value === "1") {
+			targetRow.classList.remove("d-none")
+			languageView.classList.add("d-none")
+		} else if (value === "2") {
+			languageView.classList.remove("d-none")
+			targetRow.classList.add("d-none");
+		} else {
+		}
+	}
+
+	/* 병역 - 복무구분 */
+	if (name.includes("serviceCategoryCode")) {
+		if (value === "SRVC-A" || value === "SRVC-D") {
+			targetRows.forEach(item => { item.classList.remove("d-none") })
+			cateCodeB.classList.add("d-none")
+		} else if (value === "SRVC-B" || value === "SRVC-C") {
+			targetRows.forEach(item => { item.classList.add("d-none") })
+			cateCodeB.classList.remove("d-none")
+		} else {
+		}
+	}
+
+	if (name.includes("dischargeCode")) {
+		const endDateRow = formEl.querySelector(".endDate");
+		if (!endDateRow) return;
+
+		if (value && value.trim() !== "") {
+			endDateRow.classList.remove("d-none");
+		} else {
+			endDateRow.classList.add("d-none");
+		}
+	}
+
+
 });
 
 
@@ -1028,6 +1145,71 @@ document.addEventListener("change", function (e) {
 
 // ---- JS 추가 바인딩 부분 ----
 document.addEventListener("DOMContentLoaded", function() {
+	// DOM 로드 되자마자 Company 정보 불러오기
+	axios.get("/ajax/career/company/list")
+		.then(resp => {
+			console.log(resp.data);
+			companyList = resp.data;
+		})
+		.catch(err => {
+			console.error(err)
+		})
+
+
+	document.querySelectorAll(".listContainer").forEach(container => {
+		container.addEventListener("click", async function(e) {
+			if (e.target.closest(".btn_edit")) {
+				const itemWrap = e.target.closest('.list-item');
+				const idx = itemWrap.dataset.idx;
+				const type = itemWrap.dataset.type;
+				const section = document.querySelector(`#section-${type}`);
+				const formContainer = section.querySelector('.formContainer');
+				const formId = `form-${type}${idx}`;
+				let formEl = document.getElementById(formId);
+
+				const data = resume[type][idx];
+
+				// 기존 리스트 숨기기
+				itemWrap.style.display = "none";
+
+				if (formEl) {
+					// 👉 이미 폼이 존재한다면 display만 변경
+					formEl.style.display = "flex";
+					formEl.dataset.edit = "true";
+				} else {
+					// 👉 폼이 없다면 새로 생성
+					const formHtml = templateMap[type](idx);
+					formContainer.insertAdjacentHTML('beforeend', formHtml);
+					formEl = formContainer.lastElementChild;
+					formEl.dataset.idx = idx;
+					formEl.dataset.edit = "true";
+
+					// select 세팅
+					await setDynamicSelects(type, formEl);
+
+					// 값 바인딩
+					setTimeout(() => {
+						for (const [key, val] of Object.entries(data)) {
+							const input = formEl.querySelector(`[name$='.${key}']`);
+							if (input) {
+								if (input.tagName === "SELECT") {
+									const hasOption = input.querySelector(`option[value="${val}"]`);
+									if (hasOption) {
+										input.value = val;
+										input.dispatchEvent(new Event("change"));
+									}
+								} else {
+									input.value = val;
+								}
+							}
+						}
+					}, 50);
+				}
+				return;
+			}
+
+		});
+	});
 	document.querySelectorAll(".add-btn").forEach(btn => {
 		btn.addEventListener("click", async function() {
 			// 1. section, type 등 기본 변수 셋업
@@ -1053,6 +1235,41 @@ document.addEventListener("DOMContentLoaded", function() {
 			typeCounters[type] = idx + 1;
 
 
+			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
+			document.querySelector("#comId").addEventListener("input", function() {
+				const inputVal = this.value.trim();
+				const suggestionBox = document.querySelector("#comSuggestions");
+				suggestionBox.innerHTML = ""; // 초기화
+
+				if (!inputVal) return;
+
+				const matches = companyList
+					.filter(c => c.comName.includes(inputVal))
+					.slice(0, 5); // 최대 5개
+
+				matches.forEach(c => {
+					const li = document.createElement("li");
+					li.innerText = c.comName;
+					li.dataset.userid = c.userId;
+					li.classList.add("list-group-item", "list-group-item-action")
+
+					li.addEventListener("click", () => {
+						document.querySelector("#comId").value = c.comName;
+						suggestionBox.innerHTML = "";
+					});
+
+					suggestionBox.appendChild(li);
+				});
+			});
+
+			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
+			const searchButton = document.querySelector("#section-careerList .search_com_btn");
+			searchButton.addEventListener("click", function(e) {
+				const comName = e.target.previousElementSibling.value;
+				// axios.get("/ajax/career/company/list")
+			})
+
+
 			// section-content, +버튼 숨김
 			secCont.style.display = "none";
 			if (addBtn) addBtn.style.display = 'none';
@@ -1065,8 +1282,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				formContainer.addEventListener("click", function(e) {
 
 
-					// 저장 버튼 클릭
-					if (e.target.classList.contains('btn_violet_line')) {
+					// 확인 버튼 클릭
+					if (e.target.classList.contains('save_btn')) {
 						const formWrap = e.target.closest('.section-form-wrap');
 						if (!formWrap) return;
 						const thisType = formWrap.id.split('-')[1].replace(/\d+$/, '');
@@ -1074,11 +1291,32 @@ document.addEventListener("DOMContentLoaded", function() {
 						const addBtn = section.querySelector('.add-btn');
 						const listContainer = section.querySelector('.listContainer');
 
+						// ✅ 필수 입력값 검사
+						const requiredLabels = formWrap.querySelectorAll("label.required");
+						for (const label of requiredLabels) {
+							const row = label.closest(".section-form-row");
+							if (!row) continue;
+
+							const inputEl = row.querySelector("input, select, textarea");
+							if (inputEl && !inputEl.value.trim()) {
+								alert(`"${label.innerText}" 항목은 필수 입력 항목입니다. 값을 입력해주세요.`);
+								inputEl.focus();
+								return; // ⛔ 값이 없으면 아래 로직 실행 안 됨
+							}
+						}
+
+
 						// 입력값 추출
 						let data = {};
-						formWrap.querySelectorAll("input, select, textarea").forEach(input => {
-							const name = input.name.split('.').pop().replace(/\[\d+\]/, '');
-							data[name] = input.value;
+						formWrap.querySelectorAll("input, select, textarea").forEach(el => {
+							const fullName = el.name;
+							if (!fullName) return;
+
+							// key 파싱 (ex: resumeVO.educationList[0].graduateYn -> graduateYn)
+							const nameParts = fullName.split('.');
+							const key = nameParts[nameParts.length - 1].replace(/\[\d+\]/g, '');
+							data[key] = el.value;
+							console.log("디버깅용 ▶ name:", el.name, "▶ value:", el.value);
 						});
 
 						// JS JSON 객체에 넘기기 위한 반복문 코드
@@ -1090,14 +1328,27 @@ document.addEventListener("DOMContentLoaded", function() {
 						// 위에서 만든 변수들을 vo 형태에 맞게 세팅할 수 있게 미리만들어둔 함수에 넘겨줌
 						const vo = makeVO(thisType, data);
 						const key = arrayKey[thisType];
-						const idx = resume[key].length;
-						if (key) resume[key].push(vo);
+						const isEdit = formWrap.dataset.edit === "true";
+						const idx = parseInt(formWrap.dataset.idx || 0, 10);
 
-						// 리스트 템플릿 추가
-						const itemHtml = listItemMap[thisType](idx, data);
-						console.log(idx)
-						listContainer.insertAdjacentHTML('beforeend', itemHtml);
-						typeCounters[thisType] = resume[key].length;
+						// resume 객체 갱신
+						if (isEdit) {
+							resume[key][idx] = vo;
+						} else {
+							resume[key].push(vo);
+							typeCounters[thisType] = resume[key].length;
+							console.log(resume)
+						}
+
+						// 리스트 아이템 갱신
+						const listItemHtml = listItemMap[thisType](idx, data, thisType);
+						const listItem = listContainer.querySelector(`[data-idx="${idx}"]`);
+
+						if (isEdit && listItem) {
+							listItem.outerHTML = listItemHtml;
+						} else {
+							listContainer.insertAdjacentHTML('beforeend', listItemHtml);
+						}
 
 						// 폼 제거, +버튼 복원
 						formWrap.style.display = 'none';
@@ -1150,9 +1401,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 });
 
-
-// ↓↓↓ listContainer 영역에서 버튼클릭 이벤트
-// 삭제버튼 클릭 영역
+// ↓↓↓ listContainer 영역에서 삭제 버튼클릭 이벤트
 // 모달 열릴 때 삭제할 타입/idx를 삭제 버튼에 세팅
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -1161,6 +1410,25 @@ document.addEventListener("DOMContentLoaded", function() {
 		const modal = document.getElementById("deleteResumeList");
 		const type = modal.dataset.type;
 		const idx = parseInt(modal.dataset.idx);
+
+		// 🔁 introduction은 단일 객체니까 따로 분기
+		if (type === "introduction") {
+			resume.introduction = {};
+
+			const section = document.querySelector("#section-introduction");
+			const listContainer = section.querySelector(".listContainer");
+			listContainer.innerHTML = '';
+			listContainer.classList.add("d-none");
+
+			const sectionContent = section.querySelector(".section-content");
+			if (sectionContent) sectionContent.classList.remove("d-none");
+
+			const addBtn = section.querySelector(".btn-introduction");
+			if (addBtn) addBtn.classList.remove("d-none");
+
+			bootstrap.Modal.getInstance(modal)?.hide();
+			return;
+		}
 
 		const key = arrayKey[type];
 		if (!key || !Array.isArray(resume[key])) return;
@@ -1214,6 +1482,147 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // end 삭제버튼 클릭 영역
 
+// 자소서 선택 로직 ====================================================================================================================
+document.addEventListener("DOMContentLoaded", function() {
+	const modalEl = document.getElementById("introductionModal");
+
+	// 1. 모달 열릴 때 셀렉트 옵션 비동기 로딩
+	modalEl.addEventListener("show.bs.modal", async () => {
+		const selectEl = document.getElementById("introductionSelect");
+		selectEl.innerHTML = `<option value="">자기소개서를 선택하세요</option>`;
+
+		try {
+			const resp = await axios.get("/ajax/introduction/list");
+			const introList = resp.data || [];
+
+			introList.forEach(item => {
+				const opt = document.createElement("option");
+				opt.value = item.introductionNo;
+				opt.textContent = item.introductionName;
+				selectEl.appendChild(opt);
+			});
+		} catch (err) {
+			console.error("자기소개서 목록 불러오기 실패", err);
+			alert("자기소개서를 불러오는 데 실패했습니다.");
+		}
+	});
+
+	// 2. 확인 버튼 클릭 → 선택한 값만 resume.introduction에 저장
+	const confirmBtn = document.getElementById("confirmIntroduction");
+
+	if (confirmBtn) {
+		confirmBtn.addEventListener("click", function() {
+			const selectEl = document.getElementById("introductionSelect");
+			const selectedNo = selectEl.value;
+			const selectedText = selectEl.options[selectEl.selectedIndex]?.textContent;
+
+			if (!selectedNo) {
+				alert("자기소개서를 선택해주세요.");
+				return;
+			}
+
+			// ✅ VO에 introductionNo만 저장
+			resume.introductionNo = selectedNo;
+
+			// ✅ UI 리스트에 표시
+			const section = document.querySelector("#section-introduction");
+			const listContainer = section.querySelector(".listContainer");
+
+			const html = `
+        <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2 w-100">
+          <div>
+            <strong>${selectedText}</strong>
+            <div class="text-secondary fs-14">자기소개서 선택 완료</div>
+          </div>
+					<div class="d-flex gap-2">
+			      <button type="button" class="btn_edit" data-type="introduction">
+			        <span class="material-symbols-outlined fs-3">stylus</span>
+			      </button>
+			      <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="introduction" data-idx="0">
+			        <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
+			      </button>
+			    </div>
+        </div>
+      `;
+			listContainer.innerHTML = html;
+			listContainer.classList.remove("d-none");
+
+			section.querySelector(".section-content")?.classList.add("d-none");
+			section.querySelector(".btn-introduction")?.classList.add("d-none");
+
+			// ✅ 모달 닫기
+			bootstrap.Modal.getInstance(modalEl)?.hide();
+		});
+	}
+
+	// 수정
+	document.addEventListener("click", function(e) {
+		const editBtn = e.target.closest(".btn_edit");
+		if (!editBtn) return;
+
+		const type = editBtn.dataset.type;
+		if (type !== "introduction") return;
+
+		const modalEl = document.getElementById("introductionModal");
+		const selectEl = document.getElementById("introductionSelect");
+
+		// 모달 객체 안전하게 가져오기
+		let modal = bootstrap.Modal.getInstance(modalEl);
+		if (!modal) {
+			modal = new bootstrap.Modal(modalEl);
+		}
+		modal.show();
+
+		// ✅ option 비동기로 로드 + 선택된 값 세팅
+		axios.get("/ajax/introduction/list").then(resp => {
+			const introList = resp.data || [];
+
+			// select 초기화
+			selectEl.innerHTML = `<option value="">자기소개서를 선택하세요</option>`;
+
+			// option 채우기
+			introList.forEach(item => {
+				const opt = document.createElement("option");
+				opt.value = item.introductionNo;
+				opt.textContent = item.introductionName;
+				selectEl.appendChild(opt);
+			});
+
+			// ✅ 기존 선택값 세팅
+			if (resume.introductionNo) {
+				selectEl.value = String(resume.introductionNo);
+			}
+
+		}).catch(err => {
+			console.error("자기소개서 리스트 로딩 실패", err);
+			alert("자기소개서 목록을 불러오지 못했습니다.");
+		});
+	});
+
+	// 삭제
+	document.querySelector(".btn_red_line").addEventListener("click", function() {
+		// 1. resume 객체에서 introduction 제거
+		resume.introductionNo = "";
+
+		// 2. 리스트 UI 초기화
+		const section = document.querySelector("#section-introduction");
+		const listContainer = section.querySelector(".listContainer");
+		const addBtn = section.querySelector(".btn-introduction");
+		const sectionContent = section.querySelector(".section-content");
+
+		listContainer.innerHTML = '';
+		listContainer.classList.add("d-none");
+
+		sectionContent?.classList.remove("d-none");
+		addBtn?.classList.remove("d-none");
+
+		// 3. 삭제 확인 모달 닫기 (선택)
+		const modalEl = document.getElementById("deleteResumeList");
+		bootstrap.Modal.getInstance(modalEl)?.hide();
+	});
+
+
+});
 
 
 
@@ -1277,6 +1686,11 @@ document.addEventListener("submit", function(e) {
 	// 학력 입력 여부 확인! 위에서 관리하는 resume 객체의 educationList가 없거나, 길이가 1보다 작으면 return
 	if (!resume.educationList || resume.educationList.length < 1) {
 		alert("[학력]은 필수 기입란 입니다.");
+		return; // ✅ 전송 중단
+	}
+
+	if (!form.querySelector("#section-introduction .listContainer > div")) {
+		alert("[자기소개서]은 필수 기입란 입니다.");
 		return; // ✅ 전송 중단
 	}
 
@@ -1362,14 +1776,27 @@ document.addEventListener("submit", function(e) {
 					if (formEl) {
 						const inputEl = formEl.querySelector(`[name$='.${fieldName}']`);
 						if (inputEl) {
-							const existingError = inputEl.parentElement.querySelector(`.${fieldName}-error`);
+							// ✅ inputEl 감싸는 새로운 div 생성
+							const wrapper = document.createElement('div');
+							wrapper.classList.add('input-wrapper', 'w-100'); // 필요한 class 있으면 추가
+
+							// ✅ inputEl을 div (wrapper)로 감싸기
+							inputEl.parentElement.insertBefore(wrapper, inputEl);
+							wrapper.appendChild(inputEl);
+							inputEl.classList.add("w-100")
+
+							// 기존 에러 제거
+							const existingError = wrapper.querySelector(`.${fieldName}-error`);
 							if (existingError) existingError.remove();
 
+							// 새 에러 span 추가
 							const errorSpan = document.createElement('span');
-							errorSpan.className = `${fieldName}-error text-danger d-block`;
+							errorSpan.className = `${fieldName}-error text-danger d-block mt-1 fs-14`;
 							errorSpan.innerText = message;
-							inputEl.insertAdjacentElement('afterend', errorSpan);
+
+							wrapper.appendChild(errorSpan);
 						}
+
 
 						// 폼 보이게 처리
 						formEl.style.display = "flex";
