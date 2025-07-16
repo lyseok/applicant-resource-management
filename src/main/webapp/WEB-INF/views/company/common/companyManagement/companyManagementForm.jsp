@@ -177,7 +177,7 @@ body {
 
 					<!-- 업종 코드 -->
 					<div class="section-form-row">
-						<label class="required">업종 코드</label> <select id="industryType"
+						<label class="required">업종</label> <select id="industryType"
 							name="industryType" class="form-control">
 							<option value="">--선택하세요--</option>
 						</select>
