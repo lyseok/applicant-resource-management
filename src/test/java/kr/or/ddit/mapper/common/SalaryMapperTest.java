@@ -57,7 +57,7 @@ class SalaryMapperTest {
 		   SalaryVO vo = new SalaryVO();
 	        vo.setSalaryId("TEST_UPD");
 	        vo.setUserId("corp02");
-	        vo.setJobCode("100");
+	        //vo.setJobCode("100");
 	        vo.setSalaryMin("3501");
 	        vo.setSalaryMax("6509");
 	        
@@ -71,7 +71,7 @@ class SalaryMapperTest {
 		  SalaryVO vo = new SalaryVO();
 	        vo.setSalaryId("TEST_UPD");
 	        vo.setUserId("corp01");
-	        vo.setJobCode("20");
+	        //vo.setJobCode("20");
 	        vo.setSalaryMin("3500");
 	        vo.setSalaryMax("6500");
 	        int result= mapper.insertSalary(vo);
