@@ -147,7 +147,7 @@ body {
 
 					<!-- 기업설명 -->
 					<div class="section-form-row vertical">
-						<label class="required">기업설명</label>
+						<label>기업설명</label>
 						<textarea id="comInfo" name="comInfo" class="form-control"></textarea>
 					</div>
 
