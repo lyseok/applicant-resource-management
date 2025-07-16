@@ -8,52 +8,21 @@
 
 <body>
 
-	<p class="h4">회원 목록</p>
+	<p class="h4">회원 목록</p><br>
+	<!-- 검색 바-->
+	<div id="uSearchbar">
+		<label>회원 구분</label>
+		<select id="userRole">
+			<option value="-1">전체</option>
+			<option value="ROLE_USER">일반회원</option>
+			<option value="ROLE_COMPANY">기업회원</option>
+		</select>
+		<label>아이디 검색</label>
+		<input type="text" placeholder="회원 아이디를 입력" id="userId">
+		<button id="userbar" onclick="userbar()">검색</button>
+	</div>
+	<!-- 유저 리스트(상태 변경도 클릭으로 조정, 상세보기 들어가도 조정 가능)-->
 	<div id="auserList"></div>
-	<!-- 여기서 상태 변경도 클릭으로 조정, 상세보기 들어가도 조정 가능 -->
-	<!-- 회원 검색 가능 -->
 	
-<script>
-fetch(`/ajax/admin/common/users`)
-.then(resp => {resp.json()
-	.then(rslt => {
-		console.log("회원 나오니? :", rslt);
-		const auserList = document.querySelector("#auserList");
-
-		console.log("rslt 구조", rslt);
-		console.log("첫 번째 user", rslt[0]);
-
-
-		rslt.forEach(user =>{
-
-			console.log("유저 거기 있지? : ", user);
-
-			// 사용자 정보 하나당 div 컨테이너 생성
-			let userContainer = document.createElement("div");
-
-			const labels = [
-				"userId",
-				"userPassword",
-				"userRole",
-				"userWithdrawDate",
-				"userStatus",
-				"userEnabled"
-			];
-
-			user.forEach((value, index) => {
-				let p = document.createElement("p");
-				
-				let displayValue = (value !== null && value !== undefined) ? value : '값 없음';
-				p.textContent = labels[index] + ": " + displayValue;
-				//jsp에선 js와 달리 ${}를 무조건 el로 해석, ??도 el 연산자로 해석하므로 파싱 피하려면 js로 파일을 빼거나 역슬래시로 이스케이프 시켜야!
-				
-				userContainer.appendChild(p);
-			});
-
-			// 완성된 userContainer를 auserList에 추가
-			auserList.appendChild(userContainer);
-		});
-	});
-});
-</script>	
+<script src="/js/admin/common/users/userList.js"></script>	
 </body>
