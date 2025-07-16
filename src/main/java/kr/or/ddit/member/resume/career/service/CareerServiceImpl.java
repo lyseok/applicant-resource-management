@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.resume.CareerMapper;
+import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CareerServiceImpl implements CareerService {
 	private final CareerMapper mapper;
+	private final CompanyMapper Companymapper;
 	
 	@Override
 	public List<CareerVO> readCareerList(String no) {
@@ -37,6 +40,11 @@ public class CareerServiceImpl implements CareerService {
 	@Override
 	public void removeCareer(String no) {
 		mapper.deleteCareer(no);
+	}
+
+	@Override
+	public List<CompanyVO> readCompanyInfoWithCareer() {
+		return Companymapper.selectCompanyWithResumeCareer();
 	}
 
 }

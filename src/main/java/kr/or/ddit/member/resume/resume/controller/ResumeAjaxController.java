@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.ddit.member.resume.resume.service.ResumeService;
 import kr.or.ddit.vo.project.PrjAplcntVO;
+import kr.or.ddit.vo.recruitment.ApplicantVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +35,15 @@ public class ResumeAjaxController {
 		service.applicantCopyLogic(prjAplcnt);
 		
 		
+		return ResponseEntity.ok("ok");
+	}
+	
+	
+	@PostMapping("/recruit")
+	public ResponseEntity<?> recruitApplicate(@RequestBody ApplicantVO applicant) {
+		service.recruitApplicate(applicant);
+			
+			
 		return ResponseEntity.ok("ok");
 	}
 }
