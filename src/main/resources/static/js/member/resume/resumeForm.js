@@ -15,6 +15,39 @@ const typeCounters = {
 
 /* + 추가 버튼 클릭 시 등록 form 추가 List */
 const templateMap = {
+	basicInfo: idx => `
+	    <div id="form-basicInfo" class="section-form-wrap">
+	      <div class="section-form-row">
+	        <label for="inputUserName" class="form-label required">이름</label>
+	        <input type="text" class="form-control" id="inputUserName" name="userName" placeholder="이름">
+	      </div>
+
+	      <div class="section-form-row">
+	        <label for="inputBirth" class="form-label required">생년월일</label>
+	        <input type="date" class="form-control" id="inputBirth" name="birth">
+	      </div>
+
+	      <div class="section-form-row">
+	        <label for="inputEmail" class="form-label required">이메일</label>
+	        <input type="email" class="form-control" id="inputEmail" name="email" placeholder="이메일">
+	      </div>
+
+	      <div class="section-form-row">
+	        <label for="inputTel" class="form-label required">연락처</label>
+	        <input type="text" class="form-control" id="inputTel" name="tel" placeholder="010-1234-5678">
+	      </div>
+
+	      <div class="section-form-row">
+	        <label for="inputAddress" class="form-label required">주소</label>
+	        <input type="text" class="form-control" id="inputAddress" name="address" placeholder="주소 전체">
+	      </div>
+
+	      <div class="section-form-row d-flex justify-content-end gap-2 mt-3">
+	        <button type="button" class="btn btn_red_line" id="cancelBasicBtn">취소</button>
+	        <button type="button" class="btn btn_violet" id="saveBasicBtn">확인</button>
+	      </div>
+	    </div>
+	  `,
 	educationList: idx => `
     <div class="section-form-wrap" id="form-educationList${idx}" data-idx="${idx}">
       <div class="section-form-row">
@@ -1262,7 +1295,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						li.innerText = c.comName;
 						li.dataset.userid = c.userId;
 						li.classList.add("list-group-item", "list-group-item-action");
-						li.style.maxWidth="301px"
+						li.style.maxWidth = "301px"
 
 						// 클릭 시 input 값과 data 설정
 						li.addEventListener("click", () => {
@@ -1289,9 +1322,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 
 			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			document.addEventListener("DOMContentLoaded", function () {
-			  const searchButton = document.querySelector(".search_com_btn");
-			  if (searchButton) {
+			document.addEventListener("DOMContentLoaded", function() {
+				const searchButton = document.querySelector(".search_com_btn");
+				if (searchButton) {
 					const searchButton = document.querySelector(".search_com_btn");
 					searchButton.addEventListener("click", function(e) {
 						const comId = document.querySelector("#comId");
@@ -1300,27 +1333,27 @@ document.addEventListener("DOMContentLoaded", function() {
 						console.log(userId)
 						console.log(userName)
 						axios.get(`/ajax/career/company/${userId}`)
-						.then(resp => {
-							const comSearchMsg = document.querySelector("#comSearchMsg");
-							console.log(resp.data)
-							if(resp.data.success == true){
-								comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
-								comSearchMsg.classList.remove("text-danger")
-								comSearchMsg.classList.add("text-primary", "fs-14")
-							} else{
-								comId.value ="";
-								comSearchMsg.innerHTML = `${resp.data.message}`;
-								comSearchMsg.classList.remove("text-primary")
-								comSearchMsg.classList.add("text-danger")						
-							}
-						})
-						.catch(err =>{
-							console.error(err);
-						})
+							.then(resp => {
+								const comSearchMsg = document.querySelector("#comSearchMsg");
+								console.log(resp.data)
+								if (resp.data.success == true) {
+									comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
+									comSearchMsg.classList.remove("text-danger")
+									comSearchMsg.classList.add("text-primary", "fs-14")
+								} else {
+									comId.value = "";
+									comSearchMsg.innerHTML = `${resp.data.message}`;
+									comSearchMsg.classList.remove("text-primary")
+									comSearchMsg.classList.add("text-danger")
+								}
+							})
+							.catch(err => {
+								console.error(err);
+							})
 					})
 				} else {
-			    console.warn("search_com_btn 버튼을 찾을 수 없습니다.");
-			  }
+					console.warn("search_com_btn 버튼을 찾을 수 없습니다.");
+				}
 			})
 
 			// section-content, +버튼 숨김
@@ -1536,75 +1569,89 @@ document.addEventListener("DOMContentLoaded", function() {
 // 이력서 기본정보 수정로직 ====================================================================================================================
 // 공통 필드 배열
 const basicFields = [
-  { key: "userName", inputId: "inputUserName", hiddenId: "hiddenUserName", viewId: "viewName" },
-  { key: "birth", inputId: "inputBirth", hiddenId: "hiddenBirth", viewId: "viewBirth" },
-  { key: "email", inputId: "inputEmail", hiddenId: "hiddenEmail", viewId: "viewEmail" },
-  { key: "tel", inputId: "inputTel", hiddenId: "hiddenTel", viewId: "viewTel" },
-  {
-    key: "address",
-    inputId: ["inputAddress1", "inputAddress2"],
-    hiddenId: "hiddenAddress",
-    viewId: "viewAddress"
-  }
+	{ key: "userName", inputId: "inputUserName", hiddenId: "hiddenUserName", viewId: "viewName" },
+	{ key: "birth", inputId: "inputBirth", hiddenId: "hiddenBirth", viewId: "viewBirth" },
+	{ key: "email", inputId: "inputEmail", hiddenId: "hiddenEmail", viewId: "viewEmail" },
+	{ key: "tel", inputId: "inputTel", hiddenId: "hiddenTel", viewId: "viewTel" },
+	{
+		key: "address",
+		inputId: "inputAddress",
+		hiddenId: "hiddenAddress",
+		viewId: "viewAddress"
+	}
 ];
 
-// ✅ 1. 초기 바인딩 (memberInfo → resume → input.value)
+// ✅ 초기 바인딩
 window.addEventListener("DOMContentLoaded", () => {
-  resume.userId = '${memberInfo.userId}';
-  resume.resumeSubmitYn = 'N';
-  resume.userName = '${memberInfo.memName}';
-  resume.birth = '${memberInfo.memBir}';
-  resume.email = '${memberInfo.memEmail}';
-  resume.tel = '${memberInfo.memTel}';
-  resume.address = '${memberInfo.memAdd1} ${memberInfo.memAdd2}';
+	const resumeEl = document.getElementById("resumeData");
+	if (resumeEl) {
+		resume.userId = resumeEl.dataset.userId;
+		resume.userName = resumeEl.dataset.userName;
+		resume.birth = resumeEl.dataset.birth;
+		resume.email = resumeEl.dataset.email;
+		resume.tel = resumeEl.dataset.tel;
 
-  // 필드별 input 초기 세팅
-  basicFields.forEach(field => {
-    const value = resume[field.key] || "";
-    if (Array.isArray(field.inputId)) {
-      const parts = value.split(" ");
-      field.inputId.forEach((id, idx) => {
-        document.getElementById(id).value = parts[idx] || "";
-      });
-    } else {
-      document.getElementById(field.inputId).value = value;
-    }
-  });
+		// 주소는 구분자로 나눈 뒤 합쳐서 1개로 resume에 저장
+		const addressParts = resumeEl.dataset.address.split("||");
+		const address1 = addressParts[0] || "";
+		const address2 = addressParts[1] || "";
+		resume.address = `${address1} ${address2}`.trim();
+	}
+
+	// input 요소에 resume 값 세팅
+	basicFields.forEach(field => {
+		const value = resume[field.key] || "";
+		if (Array.isArray(field.inputId)) {
+			const parts = value.split(" ");
+			field.inputId.forEach((id, idx) => {
+				document.getElementById(id).value = parts[idx] || "";
+				console.log(id)
+				console.log(parts[idx])
+
+			});
+		} else {
+			document.getElementById(field.inputId).value = value;
+		}
+	});
+	// 버튼 이벤트 등록
+	const editBtn = document.getElementById("resumeEditBtn");
+
+
+	editBtn.addEventListener("click", () => {
+		document.getElementById("resumeInfoView").classList.add("d-none");
+
+		const container = document.getElementById("resumebasicInfoWrap");
+		container.innerHTML = templateMap["basicInfo"](); 
+		container.classList.remove("d-none");
+
+		// 기본정보 바인딩
+		basicFields.forEach(field => {
+		  const value = resume[field.key] || "";
+		  const input = document.getElementById(field.inputId);
+		  if (input) input.value = value;
+		});
+
+
+		// 저장, 취소 버튼 이벤트 등록
+		document.getElementById("cancelBasicBtn").addEventListener("click", () => {
+			container.classList.add("d-none");
+			document.getElementById("resumeInfoView").classList.remove("d-none");
+		});
+
+		document.getElementById("saveBasicBtn").addEventListener("click", () => {
+			basicFields.forEach(field => {
+				const value = document.getElementById(field.inputId)?.value.trim() || "";
+				resume[field.key] = value;
+				document.getElementById(field.hiddenId).value = value;
+				document.getElementById(field.viewId).textContent = value;
+			});
+
+			container.classList.add("d-none");
+			document.getElementById("resumeInfoView").classList.remove("d-none");
+		});
+	});
 });
-/*
-// ✅ 2. 수정폼 열기
-document.getElementById("editBasicBtn").addEventListener("click", () => {
-  document.getElementById("basicInfoView").classList.add("d-none");
-  document.getElementById("basicInfoForm").classList.remove("d-none");
-});*/
 
-// ✅ 3. 수정 취소
-document.getElementById("cancelBasicBtn").addEventListener("click", () => {
-  document.getElementById("basicInfoForm").classList.add("d-none");
-  document.getElementById("basicInfoView").classList.remove("d-none");
-});
-
-// ✅ 4. 저장 (입력값 → resume, hidden input, 보기 영역)
-document.getElementById("saveBasicBtn").addEventListener("click", () => {
-  basicFields.forEach(field => {
-    let value;
-    if (Array.isArray(field.inputId)) {
-      value = field.inputId.map(id => document.getElementById(id).value.trim()).join(" ");
-    } else {
-      value = document.getElementById(field.inputId).value.trim();
-    }
-
-    resume[field.key] = value;
-    document.getElementById(field.hiddenId).value = value;
-
-    if (field.viewId && document.getElementById(field.viewId)) {
-      document.getElementById(field.viewId).textContent = value;
-    }
-  });
-
-  document.getElementById("basicInfoForm").classList.add("d-none");
-  document.getElementById("basicInfoView").classList.remove("d-none");
-});
 
 
 
@@ -1894,6 +1941,8 @@ document.addEventListener("submit", function(e) {
 				const message = e.message;
 
 				const match = field.match(/^(\w+)\[(\d+)]\.(\w+)$/);
+				console.log("에러로그 찍기 >>> " + listName)
+				
 				if (match) {
 					const listName = match[1];
 					const index = parseInt(match[2]);
@@ -1939,7 +1988,7 @@ document.addEventListener("submit", function(e) {
 
 				} else {
 					// 단일 필드 처리 (userId 등)
-					const inputEl = document.querySelector(`[name='${field}']`);
+					const inputEl = document.querySelector(`[name='${field}']:not([type="hidden"])`);
 					if (inputEl) {
 						const existingError = inputEl.parentElement.querySelector(`.${field}-error`);
 						if (existingError) existingError.remove();
@@ -1952,5 +2001,4 @@ document.addEventListener("submit", function(e) {
 				}
 			});
 		});
-
 });

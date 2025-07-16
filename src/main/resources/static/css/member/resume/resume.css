@@ -8,16 +8,21 @@
 	padding: 30px;
 }
 
+.resume-header-wrap{
+	display: flex;
+	gap:12px;
+	flex-direction: column;	
+}
 .resume-header {
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	gap: 32px;
 	margin-bottom: 32px;
 }
 
 .profile-img {
-	width: 72px;
-	height: 72px;
+	width: 120px;
+	height: 150px;
 	border-radius: 16px;
 	background: #f3f5fa;
 	display: flex;
@@ -452,6 +457,8 @@
 	flex-basis: calc(50% - 20px);
 	flex-grow:1;
 }
+
+
 
 /* 자소서 모달 */
 #section-introduction .modal-dialog {

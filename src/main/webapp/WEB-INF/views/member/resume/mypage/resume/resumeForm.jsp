@@ -10,71 +10,82 @@
 	defer></script>
 </head>
 <body>
-	<div class="resume-wrap">
+	<div class="resume-wrap resume_form_wrap">
 
 		<!-- Header -->
-		<div class="resume-header">
-			<div class="profile-img">${memberInfo.memImg }</div>
-			<div class="header-info">
-				<div class="d-flex align-items-center">
-					<span class="name lh1">${memberInfo.memName }</span> <span
-						class="age lh1">${memberInfo.memBir }</span>
+		<div class="resume-header-wrap" id="resumeInfoView">
+			<div class="resume-header">
+				<div class="profile-img">${memberInfo.memImg }</div>
+				<div class="header-info">
+					<div class="d-flex align-items-end">
+						<span class="name lh1" id="viewName">${memberInfo.memName }</span>
+						<span class="age lh1" id="viewBirth">${memberInfo.memBir }</span>
+					</div>
+					<div class="contact d-flex gap-4">
+						<span class="d-flex align-items-center gap-1">
+							<i class='bx  bx-envelope-alt'></i>
+							<span id="viewEmail">${memberInfo.memEmail }</span>
+						</span>
+						<span class="d-flex align-items-center gap-1">
+							<i class='bx  bx-mobile'></i> 
+							<span id="viewTel">${memberInfo.memTel }</span>
+						</span>
+					</div>
+					<div class="address d-flex align-items-center gap-1" >
+						<i class='bx  bx-home-alt'></i> 
+						<span id="viewAddress">${memberInfo.memAdd1 }	${memberInfo.memAdd2 }</span>
+					</div>
+					<button type="button" id="resumeEditBtn" class="btn btn_violet_line mt-2">수정</button>
 				</div>
-				<div class="contact d-flex gap-4">
-					<span class="d-flex align-items-center gap-1"><i
-						class='bx  bx-envelope-alt'></i> ${memberInfo.memEmail }</span> <span
-						class="d-flex align-items-center gap-1"><i
-						class='bx  bx-mobile'></i> ${memberInfo.memTel }</span>
-				</div>
-				<div class="address d-flex align-items-center gap-1">
-					<i class='bx  bx-home-alt'></i> ${memberInfo.memAdd1 }
-					${memberInfo.memAdd2 }
-				</div>
-				<spa class="resumeEditBtn">수정</span>
 			</div>
 		</div>
 
 		<!-- 수정 영역 -->
-		<div id="basicInfoForm" class="section-form-wrap d-none">
-
-		  <div class="section-form-row">
-		    <label class="form-label required">이력서 제목</label>
-		    <input type="text" class="form-control" id="inputResumeName">
-		  </div>
-		
-		  <div class="section-form-row">
-		    <label class="form-label required">이름</label>
-		    <input type="text" class="form-control" id="inputUserName">
-		  </div>
-		
-		  <div class="section-form-row">
-		    <label class="form-label required">생년월일</label>
-		    <input type="date" class="form-control" id="inputBirth">
-		  </div>
-		
-		  <div class="section-form-row">
-		    <label class="form-label required">이메일</label>
-		    <input type="email" class="form-control" id="inputEmail">
-		  </div>
-		
-		  <div class="section-form-row">
-		    <label class="form-label required">연락처</label>
-		    <input type="text" class="form-control" id="inputTel" placeholder="예: 010-1234-5678">
-		  </div>
-		
-		  <div class="section-form-row">
-		    <label class="form-label required">주소</label>
-		    <input type="text" class="form-control mb-2" id="inputAddress1" placeholder="기본주소">
-		    <input type="text" class="form-control" id="inputAddress2" placeholder="상세주소">
-		  </div>
-		
-		  <div class="section-form-row d-flex justify-content-end gap-2 mt-3">
-		    <button type="button" class="btn btn_red_line" id="cancelBasicBtn">취소</button>
-		    <button type="button" class="btn btn_violet" id="saveBasicBtn">확인</button>
-		  </div>
+		<div id="resumebasicInfoWrap" class="d-none section">
+			<div class="section-title">
+				<h6>이력서 기본정보<span class="must">필수</span></h6>
+			</div>
+			<div id="form-resumeInfo" class="section-form-wrap">
+			  <div class="section-form-row">
+			    <label class="form-label required">이름</label>
+			    <input type="text" class="form-control" id="inputUserName" disabled>
+			  </div>
+			
+			  <div class="section-form-row">
+			    <label class="form-label required">생년월일</label>
+			    <input type="date" class="form-control" id="inputBirth">
+			  </div>
+			
+			  <div class="section-form-row">
+			    <label class="form-label required">이메일</label>
+			    <input type="email" class="form-control" id="inputEmail">
+			  </div>
+			
+			  <div class="section-form-row">
+			    <label class="form-label required">연락처</label>
+			    <input type="text" class="form-control" id="inputTel" placeholder="예: 010-1234-5678">
+			  </div>
+			
+			  <div class="section-form-row">
+			    <label class="form-label required">주소</label>
+			    <input type="text" class="form-control mb-2" id="inputAddress" placeholder="기본주소">
+			  </div>
+			
+			  <div class="section-form-btns">
+			    <button type="button" class="btn btn_red_line" id="cancelBasicBtn">취소</button>
+			    <button type="button" class="btn btn_violet_line" id="saveBasicBtn">확인</button>
+			  </div>
+			</div>
 		</div>
 
-
+	<div id="resumeData"
+	  data-user-id="${memberInfo.userId}"
+	  data-user-name="${memberInfo.memName}"
+	  data-birth="${memberInfo.memBir}"
+	  data-email="${memberInfo.memEmail}"
+	  data-tel="${memberInfo.memTel}"
+	  data-address="${memberInfo.memAdd1}||${memberInfo.memAdd2}">
+	</div>
 		<form action="post" id="resume_form">
 
 			<!-- 학력 -->
