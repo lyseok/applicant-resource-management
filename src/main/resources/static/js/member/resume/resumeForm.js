@@ -1234,41 +1234,42 @@ document.addEventListener("DOMContentLoaded", function() {
 			formContainer.insertAdjacentHTML('beforeend', templateFunc(idx));
 			typeCounters[type] = idx + 1;
 
-
-			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			document.querySelector("#comId").addEventListener("input", function() {
-				const inputVal = this.value.trim();
-				const suggestionBox = document.querySelector("#comSuggestions");
-				suggestionBox.innerHTML = ""; // 초기화
-
-				if (!inputVal) return;
-
-				const matches = companyList
-					.filter(c => c.comName.includes(inputVal))
-					.slice(0, 5); // 최대 5개
-
-				matches.forEach(c => {
-					const li = document.createElement("li");
-					li.innerText = c.comName;
-					li.dataset.userid = c.userId;
-					li.classList.add("list-group-item", "list-group-item-action")
-
-					li.addEventListener("click", () => {
-						document.querySelector("#comId").value = c.comName;
-						suggestionBox.innerHTML = "";
+			if(addBtn.closest("#section-careerList")){
+				// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
+				document.querySelector("#comId").addEventListener("input", function() {
+					const inputVal = this.value.trim();
+					const suggestionBox = document.querySelector("#comSuggestions");
+					suggestionBox.innerHTML = ""; // 초기화
+	
+					if (!inputVal) return;
+	
+					const matches = companyList
+						.filter(c => c.comName.includes(inputVal))
+						.slice(0, 5); // 최대 5개
+	
+					matches.forEach(c => {
+						const li = document.createElement("li");
+						li.innerText = c.comName;
+						li.dataset.userid = c.userId;
+						li.classList.add("list-group-item", "list-group-item-action")
+	
+						li.addEventListener("click", () => {
+							document.querySelector("#comId").value = c.comName;
+							suggestionBox.innerHTML = "";
+						});
+	
+						suggestionBox.appendChild(li);
 					});
-
-					suggestionBox.appendChild(li);
 				});
-			});
-
+			}
+/*
 			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
 			const searchButton = document.querySelector("#section-careerList .search_com_btn");
 			searchButton.addEventListener("click", function(e) {
 				const comName = e.target.previousElementSibling.value;
 				// axios.get("/ajax/career/company/list")
 			})
-
+*/
 
 			// section-content, +버튼 숨김
 			secCont.style.display = "none";
