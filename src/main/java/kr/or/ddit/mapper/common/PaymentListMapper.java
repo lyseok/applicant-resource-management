@@ -17,4 +17,6 @@ public interface PaymentListMapper {
 	public int updatePayment(PaymentListVO vo);
 
 	public int deletePayment(PaymentListVO vo);
+
+	public List<PaymentVO> selectPaymentCompany(String userId);
 }

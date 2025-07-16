@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import kr.or.ddit.validate.UpdateGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,19 +16,16 @@ public class RecruitmentExamVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
 	private String recruitExamNo;
-	@NotBlank
 	private String processNo;
-	@NotBlank
 	private String recruitExamName;
-	@NotBlank
+	@NotNull
 	private Integer recruitExamCutline;
-	@NotBlank
 	private String recruitExamStartDate;
-	@NotBlank
+	@NotNull
 	private Integer recruitExamTime;
 	private String recruitExamDelDate;
 	
-	@Valid
-	private List<RecruitmentExamQuestionsVO> questionList;
+	private String comExamNo;
 	
+	private List<RecruitmentExamQuestionsVO> questionList;
 }

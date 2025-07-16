@@ -40,6 +40,13 @@
 	        job j ON t.top_job_code = j.top_job_code
 	    ORDER BY t.top_job_code, j.job_code
 	</select>
+	
+	<select id="selectRealTopJobList">
+		SELECT
+		TOP_JOB_CODE
+		, TOP_JOB_NAME
+		FROM TOP_JOB
+	</select>
 
 	<select id="selectTopJobByPk">
 		SELECT

@@ -33,17 +33,17 @@
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="/company" class="menu-link">
+          <a href="/company/company_management" class="menu-link">
             <div data-i18n="Account">기본정보관리</div>
           </a>
         </li>
         <li class="menu-item">
-          <a href="/company" class="menu-link">
+          <a href="/company/business_registration" class="menu-link">
             <div data-i18n="Notifications">사업자등록증</div>
           </a>
         </li>
         <li class="menu-item">
-          <a href="/company" class="menu-link">
+          <a href="/company/salary_management" class="menu-link">
             <div data-i18n="Notifications">연봉관리</div>
           </a>
         </li>
@@ -64,22 +64,10 @@
       </a>
     </li>
     <li class="menu-item">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-list-ul-square"></i>
-        <div data-i18n="Account Settings">지원관리</div>
+      <a href="/company/recruit_applicant/list" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-file-detail"></i>
+        <div data-i18n="Basic">채용관리</div>
       </a>
-      <ul class="menu-sub">
-        <li class="menu-item">
-          <a href="/company/applicant_record" class="menu-link">
-            <div data-i18n="Account">지원자관리</div>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="/company" class="menu-link">
-            <div data-i18n="Notifications">합격자관리</div>
-          </a>
-        </li>
-      </ul>
     </li>
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -158,7 +146,7 @@
     <li class="menu-header small text-uppercase"><span class="menu-header-text">상품관리</span></li>
 
     <li class="menu-item">
-      <a href="/company" class="menu-link">
+      <a href="/company/payment/product/list" class="menu-link">
         <i class="menu-icon tf-icons bx bx-shopping-bag-alt"></i>
         <div data-i18n="Basic">상품이용관리</div>
       </a>

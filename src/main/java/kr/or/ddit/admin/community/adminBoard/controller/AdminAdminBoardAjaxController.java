@@ -4,24 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import kr.or.ddit.admin.common.codegroup.service.AdminCmnCodeGroupAjaxService;
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
-import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,17 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminAdminBoardAjaxController {
 	
 	private final AdminAdminBoardAjaxService service;
-	private final AdminCmnCodeGroupAjaxService cservice;
-	
-    // codeGroupNo 파라미터(BRDD, UFAQ, CFAQ)를 받아 
-	// codeDetailNo 목록(BRDD-001, BRDD-002, BRDD-003...)과 codeName("문의사항", "FAQ", "공지사항"...) 조회
-    @GetMapping("/cmncodegroup/{no}")  //http://localhost/ajax/admin/admin_board/cmncodegroup/BRDD
-    public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
-        return cservice.readCmnCodeGroupByPk(no);
-    }
 
     // 해당 유형의 해당 글의 게시글 단건조회
-	@GetMapping("/{boardTypeCode}/{boardNo}")
+	@GetMapping("/detail/{boardNo}")
 	public ResponseEntity<AdminBoardVO> getOneBoard(@PathVariable String boardNo) {
 	    return service.readAdminBoardByPk(boardNo)
 	    		.map(ResponseEntity::ok)  //boardNo 있으면 ok 반환
@@ -57,18 +43,37 @@ public class AdminAdminBoardAjaxController {
 	}
 	
 	// 해당 유형의 등록
+	//boardForm.jsp에서 [등록]버튼 클릭 시 수행
+	/*
+	1.할아버지 [AdminBoardVO] : userId, boardTypeCode, boardTitle, boardContent
+	2.첫째 아빠 [AdminBoardVO.cmnCodeGroupVOList[0]] : codeGroupNo
+	3.첫째 딸 [AdminBoardVO.cmnCodeGroupVOList[0].cmnCodeList[0]] : codeDetailNo(=memType)
+	*/
 	@PostMapping("/{boardTypeCode}")
 	public Map<String, Object> inBoard(
 		@PathVariable String boardTypeCode
 		, @RequestBody AdminBoardVO board
 	) {
+		/*
+		할아버지AdminBoardVO(boardNo=null, userId=testAdmin, boardTypeCode=BRDD-002, boardTitle=제목 연습, boardWriteDate=null, boardContent=내용 연습, boardDeleteDate=null, boardPostHit=null, boardStatus=null, codeName=null, users=null, adminCommentList=null, 
+		cmnCodeGroupVOList=[
+			첫째아빠CmnCodeGroupVO(codeGroupNo=UFAQ, codeGroupName=null, description=null, useYn=null, crateDate=null, updateDate=null, 
+				cmnCodeList=[
+					첫째딸CmnCodeVO(codeDetailNo=UFAQ-U1, codeGroupNo=null, upperCodeNo=null, codeName=null, sortOrder=null, useYn=null, crateDate=null, updateDate=null)
+				])
+		])
+		 */
 		log.info("찍힘 확인 : {}", board);
+		
 		service.createAdminBoard(board);
+		//boardNo를 확인해보자 : 
+		log.info("board : {}", board);
+		
 	    return Map.of("ok", true);
 	}
 	
 	// 해당 유형의 해당 글의 게시글 수정, 삭제 상태 변경
-	@PostMapping("/{boardTypeCode}/{boardNo}")
+	@PostMapping("/detail/{boardNo}")
 	public Map<String, Object> editBoard(
 		@PathVariable String boardTypeCode
 		, @PathVariable String boardNo

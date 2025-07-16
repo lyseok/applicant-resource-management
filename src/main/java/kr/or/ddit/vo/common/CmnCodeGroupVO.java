@@ -22,6 +22,6 @@ public class CmnCodeGroupVO implements Serializable {
 	private String useYn;
 	private String crateDate;
 	private String updateDate;
-	
+
 	private List<CmnCodeVO> cmnCodeList;
 }

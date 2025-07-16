@@ -40,6 +40,13 @@
 	        district_code d ON c.city_code_no = d.city_code_no
 	    ORDER BY c.city_code_no, d.district_code_no
 	</select>
+	
+	<select id="selectRealCityCodeList">
+		SELECT
+		CITY_CODE_NO
+		,CITY_NAME
+		FROM CITY_CODE
+	</select>
 
 	<select id="selectCityCodeByPk">
 		SELECT

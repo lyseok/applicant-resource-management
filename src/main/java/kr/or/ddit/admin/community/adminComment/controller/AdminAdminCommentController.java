@@ -20,6 +20,7 @@ import kr.or.ddit.admin.community.adminComment.service.AdminAdminCommentAjaxServ
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.utils.ErrorsUtils;
+import kr.or.ddit.vo.community.AdminBoardVO;
 import kr.or.ddit.vo.community.AdminCommentVO;
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +39,26 @@ public class AdminAdminCommentController {
 		return "admin/community/adminComment/acommentForm";
 	}
 	
+	// 등록 폼으로 이동 - 답변 등록 폼은 곧 게시글 단건조회
+	@GetMapping("/form/no")  //http://localhost/admin/admin_board/detail?no=ABNO000002
+	public String formUI(String no, Model model) {
+		
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "admin/community/adminComment/acommentForm";
+	}
+	
+	// 관리자 답글 전체 조회
+	@GetMapping("/list")
+	public String acommentList(Model model) {
+		List<AdminCommentVO> acommentList = service.searchAdminCommentList();
+		model.addAttribute("acommentList", acommentList);
+		
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);		
+		return "admin/community/adminComment/acommentList";
+	}
+	
 	// 문의사항별 관리자 답글 목록조회
 	@GetMapping  //"/admin/board/admin_comment?no=ABNO000001"
 	public String acommentType(
@@ -52,6 +73,8 @@ public class AdminAdminCommentController {
 		model.addAttribute("searchBar", true);
 		return "admin/community/adminComment/acommentList";
 	}
+	
+	//답변은 단건 조회 기능 불필요
 	
 	/*
 	private ErrorsUtils errorsUtils;
@@ -83,17 +106,6 @@ public class AdminAdminCommentController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "admin/community/adminComment/acommentDetail";
-	}
-	
-	// 댓글 목록조회
-	@GetMapping("/list")
-	public String acommentList(Model model) {
-		List<AdminCommentVO> acommentList = service.searchAdminCommentList();
-		model.addAttribute("acommentList", acommentList);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);		
-		return "admin/community/adminComment/acommentList";
 	}
 	
 	// 수정 폼으로 이동

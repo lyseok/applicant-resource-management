@@ -15,7 +15,6 @@ public class InterviewVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
 	private String interviewNo;
-	@NotBlank
 	private String processNo;
 	@NotBlank
 	private String interviewDate;

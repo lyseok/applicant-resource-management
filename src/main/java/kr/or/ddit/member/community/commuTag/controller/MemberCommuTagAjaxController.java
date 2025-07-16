@@ -25,8 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberCommuTagAjaxController {
 
-	private MemberCommuTagService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final MemberCommuTagService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{tagNo}/{boardNo}")
 	@ResponseBody

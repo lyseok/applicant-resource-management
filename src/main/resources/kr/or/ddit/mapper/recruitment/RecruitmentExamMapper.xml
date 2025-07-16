@@ -71,14 +71,14 @@
 		, RECRUIT_EXAM_NAME
 		, RECRUIT_EXAM_CUTLINE
 		, RECRUIT_EXAM_START_DATE
-		, RECRUIT_EXAM_END_DATE
+		, RECRUIT_EXAM_TIME
 	) VALUES (
 		#{recruitExamNo}
 		, #{processNo}
 		, #{recruitExamName}
 		, #{recruitExamCutline}
 		, TO_DATE(#{recruitExamStartDate}, 'YYYY-MM-DD HH24:MI')
-		, TO_DATE(#{recruitExamEndDate}, 'YYYY-MM-DD HH24:MI')
+		, #{recruitExamTime}
 	)
 	</insert>
 	

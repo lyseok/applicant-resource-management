@@ -13,7 +13,6 @@ public class RecruitmentSkillVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
 	private String recruitSkillCode;
-	@NotBlank
 	private String recruitmentNo;
 	@NotBlank
 	private String recruitSkillName;
