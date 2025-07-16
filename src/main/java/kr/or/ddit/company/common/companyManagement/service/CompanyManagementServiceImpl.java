@@ -5,19 +5,29 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.dto.CompanyInfoDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
+import kr.or.ddit.mapper.common.InduCodeMapper;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.InduCodeVO;
 
 @Service
 public class CompanyManagementServiceImpl implements CompanyManagementService {
     
 	@Autowired
 	CompanyMapper companyMapper;
+	@Autowired
+	private CodeMapProvider provider;
+	
 
 	@Override
 	public CompanyVO readCompanyManagementById(String userId) {
-		return companyMapper.selectCompanyManagementById(userId);
+		CompanyVO company = companyMapper.selectCompanyManagementById(userId);
+		String no = company.getIndustryType();
+		String name = provider.getInduName(no);
+		company.setIndustryType(name);
+		return company;
 	}
 
 	@Override

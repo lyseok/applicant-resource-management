@@ -13,6 +13,7 @@
             const o = document.createElement('option');
             o.value = c.induNo;
             o.textContent = c.induName;
+            console.log(c.induName);
             industrySelect.appendChild(o);
           });
         })
