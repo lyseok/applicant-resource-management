@@ -124,7 +124,7 @@
           <ul class="nav nav-tabs mb-2" id="recruitTabNav"></ul>
         </div>
         <div class="col-auto ms-auto d-flex gap-2">
-          <button class="btn btn-outline-primary btn-sm" id="btnRequestParticipation">참여 요청</button>
+          <button class="btn btn-outline-primary" id="btnRequestParticipation">참여 요청</button>
         </div>
       </div>
 
