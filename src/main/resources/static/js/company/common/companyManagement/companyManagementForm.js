@@ -10,26 +10,43 @@
     axios.get('/ajax/code/indu')
            .then(({ data }) => {
           data.forEach(c => {
+
             const o = document.createElement('option');
             o.value = c.induNo;
             o.textContent = c.induName;
-            console.log(c.induName);
             industrySelect.appendChild(o);
           });
+          
+          
+              // 업종 코드가 잘 삽입되었는지 확인
+            console.log('업종 select 태그:', industrySelect.innerHTML);
         })
         .catch(console.error);
 
 
    axios.get('/ajax/company/company_management')
         .then(({ data: c }) => {
+        
           ['comName','comCreateYear','comInfo','comNum','comEmail',
            'comUrl','comMem','industryType','comPayment']
           .forEach(key => {
             const el = document.getElementById(key);
             if(el) el.value = c[key];
           });
-        })
-        .catch(console.error);
+
+
+      const industrySelect = document.getElementById('industryType');
+      const selectedOption = industrySelect.querySelector(`option[value='${c.industryType}']`);
+         
+            
+
+              if (selectedOption) {
+                  selectedOption.selected = true;
+              } else {
+                    console.error('업종 코드에 맞는 옵션을 찾을 수 없습니다.', c.industryType);
+                }
+          
+        }).catch(console.error);
 
    cancelBtnEl.addEventListener('click', () =>{history.back()});
 
