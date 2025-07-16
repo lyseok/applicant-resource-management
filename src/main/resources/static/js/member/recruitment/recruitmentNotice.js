@@ -129,14 +129,14 @@ btnSaveApplication.onclick = async function () {
   }
 
   // prjAnncNo (현재 공고 번호)
-  const recruitNo = document.getElementById('recruitNo').dataset.no;
+  const recruitmentNo = document.getElementById('recruitNo').dataset.no;
 
   // 이력서 번호
   const resumeNo = selectedResume.resumeNo;
 
   // 서버로 전송할 객체
   const applyData = {
-    recruitNo,      // 채용공고 번호
+    recruitmentNo,      // 채용공고 번호
     resumeNo        // 이력서 번호
   };
 

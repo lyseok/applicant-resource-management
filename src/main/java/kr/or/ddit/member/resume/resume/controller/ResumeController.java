@@ -89,7 +89,7 @@ public class ResumeController {
 	public ResponseEntity<?> createResume(@Valid @RequestPart("resume") ResumeVO vo, BindingResult bindingResult,
 			@RequestPart(value = "photo", required = false) MultipartFile photo,
 			@RequestPart(value = "comImage", required = false) MultipartFile comImage) {
-    log.info("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ introductionNo = {}",vo.getIntroductionNo());
+		log.info("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ introductionNo = {}", vo.getIntroductionNo());
 
 		if (!bindingResult.hasErrors()) {
 			service.createResume(vo);
@@ -124,6 +124,5 @@ public class ResumeController {
 	 * 
 	 * @PostMapping("create") public String createResume() { return ""; }
 	 */
-
 
 }

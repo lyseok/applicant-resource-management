@@ -58,6 +58,7 @@
         <result property="paymentDate" column="PAYMENT_DATE"/>
         <result property="paymentPay" column="PAYMENT_PAY"/>
         <result property="tossPaymentKey" column="TOSS_PAYMENT_KEY"/>
+
     </collection>
 </resultMap>
 
