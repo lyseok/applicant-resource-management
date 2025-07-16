@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.or.ddit.company.payment.product.service.paymentProductService;
+import kr.or.ddit.company.payment.product.service.PaymentProductService;
 import kr.or.ddit.member.common.mypage.scrab.scrabCompany.service.MemberScrabCompanyService;
 import kr.or.ddit.vo.common.PaymentProductVO;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductController {
 
 	@Autowired
-	paymentProductService service;
+	PaymentProductService service;
 
 //	@Value("${file.upload-dir}")
 //	private String RealuploadPath;
