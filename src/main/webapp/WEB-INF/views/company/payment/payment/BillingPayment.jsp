@@ -1,4 +1,17 @@
-// ------  SDK 초기화 ------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <!-- SDK 추가 -->
+    <script src="https://js.tosspayments.com/v2/standard"></script>
+  </head>
+  <body>
+    <!-- 카드 등록하기 버튼 -->
+    <button class="button" style="margin-top: 30px" onclick="requestBillingAuth()">카드 등록하기</button>
+    <script>
+      // ------  SDK 초기화 ------
       // @docs https://docs.tosspayments.com/sdk/v2/js#토스페이먼츠-초기화
       const clientKey = "test_ck_Gv6LjeKD8a9wXO9o7lLw8wYxAdXy";
       const customerKey = "h5hXSJ-WPK8sZQpXQUJUB";
@@ -16,7 +29,10 @@
           method: "CARD", // 자동결제(빌링)는 카드만 지원합니다
           successUrl , // 요청이 성공하면 리다이렉트되는 URL
           failUrl: window.location.origin + "/fail", // 요청이 실패하면 리다이렉트되는 URL
-          customerEmail: "customer123@gmail.com",
-          customerName: "김토스",
+          customerEmail: "dhfjdhfj@naver.com",
+          customerName: "김철민",
         });
       }
+    </script>
+  </body>
+</html>

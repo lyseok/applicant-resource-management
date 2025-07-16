@@ -57,7 +57,7 @@
         <result property="paymentMethod" column="PAYMENT_METHOD"/>
         <result property="paymentDate" column="PAYMENT_DATE"/>
         <result property="paymentPay" column="PAYMENT_PAY"/>
-        <result property="paymentContract" column="PAYMENT_CONTRACT"/>
+        <result property="tossPaymentKey" column="TOSS_PAYMENT_KEY"/>
     </collection>
 </resultMap>
 
@@ -77,7 +77,7 @@
 		B.PAYMENT_METHOD,
 		B.PAYMENT_DATE,
 		B.PAYMENT_PAY,
-		B.PAYMENT_CONTRACT
+		B.TOSS_PAYMENT_KEY
 
 		FROM PAYMENT_LIST A
 		INNER JOIN PAYMENT B ON A.PAYMENT_NO = B.PAYMENT_NO

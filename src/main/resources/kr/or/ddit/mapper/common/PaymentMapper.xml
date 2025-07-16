@@ -54,7 +54,7 @@
 		, PAYMENT_METHOD
 		, PAYMENT_DATE
 		, PAYMENT_PAY
-		, PAYMENT_CONTRACT
+		, TOSS_PAYMENT_KEY
 		FROM PAYMENT
 	</select>
 
@@ -67,7 +67,7 @@
 		, PAYMENT_METHOD
 		, PAYMENT_DATE
 		, PAYMENT_PAY
-		, PAYMENT_CONTRACT
+		, TOSS_PAYMENT_KEY
 		FROM PAYMENT
 		WHERE
 		PAYMENT_NO = #{paymentNo}
@@ -83,8 +83,8 @@
 		, PAYMENT_DATE =
 		#{paymentDate}
 		, PAYMENT_PAY = #{paymentPay}
-		, PAYMENT_CONTRACT =
-		#{paymentContract}
+		, TOSS_PAYMENT_KEY =
+		#{tossPaymentKey}
 		WHERE PAYMENT_NO = #{paymentNo}
 	</update>
 
