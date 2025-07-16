@@ -111,8 +111,8 @@
           <input type="text" class="form-control" id="searchInput" placeholder="지원자 이름 검색" style="width:200px;">
         </div>
         <div class="col-auto ms-auto d-flex align-items-center gap-2">
-          <button class="btn btn-primary" id="searchBtn" type="button">검색</button>
-          <button class="btn btn-secondary" id="resetFilters" type="button">초기화</button>
+          <button class="btn btn_violet_line" id="searchBtn" type="button">검색</button>
+          <button class="btn btn_gray_line" style="width:100px; justify-content:center;" id="resetFilters" type="button">초기화</button>
         </div>
       </div>
 
@@ -124,14 +124,18 @@
           <ul class="nav nav-tabs mb-2" id="recruitTabNav"></ul>
         </div>
         <div class="col-auto ms-auto d-flex gap-2">
-          <button class="btn btn-outline-primary" id="btnRequestParticipation">참여 요청</button>
+          <button class="btn btn_gray_line" style="width:100px" id="btnRequestParticipation">참여 요청</button>
         </div>
       </div>
-
+      
     </div>
-
-    <!-- (상단 필터/검색/정렬/슬라이더 등은 그대로 둠) -->
-
+      
     <!-- 탭 내용(지원자 테이블) -->
     <div class="tab-content" id="recruitTabContent"></div>
+    
+    <!-- 단계별 탭 & 버튼 한 줄에 배치 -->
+    <div class="col-auto ms-auto gap-2 mt-3 container">
+      <button class="btn btn_violet_line" id="createProjectBtn">프로젝트 생성</button>
+    </div>
+      
   </body>

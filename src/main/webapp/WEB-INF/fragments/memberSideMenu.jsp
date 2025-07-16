@@ -69,7 +69,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="/mypage/project/announcement" class="menu-link">
+            <a href="/mypage/notice_management" class="menu-link">
               <div data-i18n="Account">프로젝트 공고관리</div>
             </a>
           </li>
