@@ -13,9 +13,12 @@ import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.project.PrjAnncBbsMapper;
 import kr.or.ddit.member.project.prjpcrtpsncnt.service.PrjRcrtPsncntService;
 import kr.or.ddit.member.project.tag.service.PrjAnncBoardTagService;
+import kr.or.ddit.member.resume.resume.service.ResumeService;
 import kr.or.ddit.vo.project.PrjAnncBbsVO;
 import kr.or.ddit.vo.project.PrjAnncBoardTagVO;
+import kr.or.ddit.vo.project.PrjAplcntVO;
 import kr.or.ddit.vo.project.PrjRcrtPsncntVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,6 +28,7 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 	private final PrjRcrtPsncntService prjRcrtPsncntService;
 	private final PrjAnncBoardTagService anncBoardTagService;
 	private final CodeMapProvider codeMapProvider;
+	private final ResumeService resumeService;
 	
 	@Override
 	public List<PrjAnncBbsVO> prjAnncBbsList() {
@@ -36,6 +40,22 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 		PrjAnncBbsVO prjAnncBbs = prjAnncBbsMapper.selectPrjAnncBbsByPk(prjAnncNo);
 		for(PrjRcrtPsncntVO prscnt: prjAnncBbs.getPrjRcrtPsncntList()) {
 			prscnt.setJobCodeName(codeMapProvider.getJobName(prscnt.getJobCode()));
+		}
+		return prjAnncBbs;
+	}
+	
+	@Override
+	public PrjAnncBbsVO readPrjAnncBbsApplicant(String prjAnncNo) {
+		PrjAnncBbsVO prjAnncBbs = prjAnncBbsMapper.selectPrjAnncBbsByPk(prjAnncNo);
+		for(PrjRcrtPsncntVO prscnt: prjAnncBbs.getPrjRcrtPsncntList()) {
+			prscnt.setJobCodeName(codeMapProvider.getJobName(prscnt.getJobCode()));
+			for(PrjAplcntVO prjAplcnt : prscnt.getAplcntList()) {
+				ResumeVO resume = new ResumeVO();
+				resume.setResumeNo(prjAplcnt.getResumeNo());
+				resume.setUserId(prjAplcnt.getUserId());
+				ResumeVO resumeData = resumeService.readResumeDetail(resume);
+				prjAplcnt.setResume(resumeData);
+			}
 		}
 		return prjAnncBbs;
 	}
