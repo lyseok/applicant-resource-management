@@ -84,7 +84,8 @@
   color: #434b62;
   min-height: 22px;
 }
-.add-btn {
+.add-btn,
+.btn-introduction {
   color: var(--violet70);
   font-size: 15px;
   font-weight: 500;

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import kr.or.ddit.common.annotation.PastString;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,11 +21,11 @@ public class PortfolioVO implements Serializable{
     private String porName;          // 포트폴리오 명 (POR_NAME)
 
     @NotNull(message = "작업 시작일자는 필수입력 항목입니다.")
-    @Past(message = "작업 시작일자는 과거 날짜여야 합니다.")
+    @PastString(message = "작업 시작일자는 과거 날짜여야 합니다.")
     private String porStartDate;     // 작업 시작일자 (POR_START_DATE)
 
     @NotNull(message = "작업 종료일자는 필수입력 항목입니다.")
-    @Past(message = "작업 종료일자는 과거 날짜여야 합니다.")
+    @PastString(message = "작업 종료일자는 과거 날짜여야 합니다.")
     private String porEndDate;       // 작업 종료일자 (POR_END_DATE)
 
     @NotNull(message = "작업 설명은 필수입력 항목입니다.")
