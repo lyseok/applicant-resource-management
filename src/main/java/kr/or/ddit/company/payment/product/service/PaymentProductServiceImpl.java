@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.common.PaymentProductMapper;
 import kr.or.ddit.vo.common.PaymentProductVO;
+
 @Service
-public class PaymentProductServiceImpl implements paymentProductService {
+public class PaymentProductServiceImpl implements PaymentProductService {
 
 	@Autowired
 	PaymentProductMapper mapper;

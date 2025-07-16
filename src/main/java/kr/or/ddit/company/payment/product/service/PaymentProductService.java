@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.ddit.vo.common.PaymentProductVO;
 
-public interface paymentProductService {
+public interface PaymentProductService {
 	public List<PaymentProductVO> selectPaymentProductList();
 
 	public PaymentProductVO selectPaymentProductByPk(PaymentProductVO vo);

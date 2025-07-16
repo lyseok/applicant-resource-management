@@ -17,10 +17,10 @@
     <!-- 🔍 필터 + 검색 버튼 -->
     <form class="d-flex" method="get" action="">
         <select class="form-select me-2" name="filterType">
-            <option value="" ${empty param.filterType ? "selected" : ""}>전체</option>
-            <option value="S" ${param.filterType == 'S' ? "selected" : ""}>단건</option>
-            <option value="L" ${param.filterType == 'L' ? "selected" : ""}>정기권</option>
-        </select>
+    <option value="" ${empty param.filterType ? "selected" : ""}>전체</option>
+    <option value="S" ${param.filterType == 'S' ? "selected" : ""}>단건</option>
+    <option value="L" ${param.filterType == 'L' ? "selected" : ""}>정기권</option>
+</select>
         <button type="submit" class="btn btn-primary">검색</button>
     </form>
 </div>
@@ -29,7 +29,8 @@
 <div class="row gy-4">
     <c:forEach var="product" items="${productList}">
         <div class="col-12">
-            <div class="card flex-row shadow-sm" onclick="requestPayment()" >
+            <div class="card flex-row shadow-sm" data-product-no="${product.productNo }"
+            		 onclick="requestPayment(this)" >
                 <img src="/upload/${product.productImg}" class="img-fluid rounded-start" style="width: 200px; height: 200px; object-fit: cover;" alt="상품 이미지">
                 <div class="card-body">
                     <h5 class="card-title" id="orderName">${product.productName}</h5>
