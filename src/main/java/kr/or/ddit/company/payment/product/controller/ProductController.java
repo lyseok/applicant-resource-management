@@ -36,8 +36,8 @@ public class ProductController {
 	@Autowired
 	paymentProductService service;
 
-	@Value("${file.upload-dir")
-	private String RealuploadPath;
+//	@Value("${file.upload-dir}")
+//	private String RealuploadPath;
 
 	@PostMapping
 	public String insertProduct(@ModelAttribute PaymentProductVO productVO, Model model) {
@@ -65,19 +65,19 @@ public class ProductController {
 
 		}
 
-		MultipartFile file = productVO.getProductImgFile();
-		if (file != null && !file.isEmpty()) {
-			try {
-				String uploadPath = RealuploadPath;
-				String saveName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-				Path path = Paths.get(uploadPath, saveName);
-				Files.copy(file.getInputStream(), path, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-				productVO.setProductImg(saveName);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return "fail";
-			}
-		}
+//		MultipartFile file = productVO.getProductImgFile();
+//		if (file != null && !file.isEmpty()) {
+//			try {
+//				String uploadPath = RealuploadPath;
+//				String saveName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+//				Path path = Paths.get(uploadPath, saveName);
+//				Files.copy(file.getInputStream(), path, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+//				productVO.setProductImg(saveName);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				return "fail";
+//			}
+//		}
 
 		log.info("등록된 상품 {} ", productVO);
 		model.addAttribute("productVO", productVO);

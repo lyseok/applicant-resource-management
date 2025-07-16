@@ -68,7 +68,7 @@
 
 <div class="container">
     <!-- Global 등급 카드 -->
-    <div class="card" onclick="requestPayment()">
+    <div class="card" onclick="requestPayment(this)" data-order-name="Global 등급" >
         <div class="title" id="Global">Global 등급 <span class="badge">Top</span></div>
         <ul>
         	<li id="orderName">Global 등급</li>
