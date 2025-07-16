@@ -2,41 +2,45 @@ package kr.or.ddit.company.payment.product.service;
 
 import java.util.List;
 
-import kr.or.ddit.company.payment.paymentlist.service.PaymentListService;
-import kr.or.ddit.vo.common.PaymentListVO;
-import kr.or.ddit.vo.common.PaymentProductVO;
-import kr.or.ddit.vo.common.PaymentVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import kr.or.ddit.mapper.common.PaymentProductMapper;
+import kr.or.ddit.vo.common.PaymentProductVO;
+@Service
 public class PaymentProductServiceImpl implements paymentProductService {
 
+	@Autowired
+	PaymentProductMapper mapper;
+	
 	@Override
 	public List<PaymentProductVO> selectPaymentProductList() {
 		// TODO Auto-generated method stub
-		return null;
+		return mapper.selectPaymentProductList();
 	}
 
 	@Override
 	public PaymentProductVO selectPaymentProductByPk(PaymentProductVO vo) {
 		// TODO Auto-generated method stub
-		return null;
+		return mapper.selectPaymentProductByPk(vo);
 	}
 
 	@Override
 	public int insertPaymentProduct(PaymentProductVO vo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.insertPaymentProduct(vo);
 	}
 
 	@Override
 	public int updatePaymentProduct(PaymentProductVO vo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.updatePaymentProduct(vo);
 	}
 
 	@Override
-	public int deletePaymentProduct(PaymentProductVO vo) {
+	public int deletePaymentProduct(String productNo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.deletePaymentProduct(productNo);
 	}
 
 
