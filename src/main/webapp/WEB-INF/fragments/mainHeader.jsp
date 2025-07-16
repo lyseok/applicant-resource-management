@@ -83,7 +83,7 @@
 	            	<%-- 로그인이 되어 있지 않을때 --%>
 	                <a href="/login" class="btn_sign signin">로그인</a>
 	                <hr>
-	                <a href="/membersignup" class="btn_sign signup">회원가입</a>
+	                <a href="/member_signup" class="btn_sign signup">회원가입</a>
 		            <div class="wrap_service">
 		                <button class="btn_service" type="button" aria-expanded="false">
 		                    기업서비스

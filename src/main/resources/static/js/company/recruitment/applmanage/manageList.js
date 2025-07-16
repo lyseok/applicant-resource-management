@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', function () {
                             <span><strong>직무:</strong> ${item.jobCodeName || '-'}</span> |
                             <span><strong>지역:</strong> ${item.cityCodeName} ${item.districtCodeName}</span> |
                             <span><strong>급여:</strong> ${item.SALARY || '-'}</span> |
-                            <span><strong>등록일:</strong> ${item.STARTDATE?.substring(0, 10) || '-'}</span> |
-                            <span><strong>마감일:</strong> ${item.FINISHDATE?.substring(0, 10) || '-'}</span> |
+                            <span><strong>등록일:</strong> ${item.RECRUITMENTRECEIPTSTART?.substring(0, 10) || '-'}</span> |
+                            <span><strong>마감일:</strong> ${item.RECRUITMENTFINISHDATE?.substring(0, 10) || '-'}</span> |
                             <span><strong>지원자 수:</strong> ${item.APPLICANTCOUNT}</span>
                         </div>
                     </div>
                     <div>
-                        <a href="/company/companyTest" class="btn btn btn_gray_line btn-sm">지원현황</a>
+                        <a href="/company/applicant_record" class="btn btn btn_gray_line btn-sm">지원현황</a>
                         <a href="/company/recruit_notice/${item.RECRUITMENTNO}" class="btn btn btn_violet_line btn-sm">합격현황</a>
                     </div>
                     <div>
