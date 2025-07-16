@@ -56,7 +56,7 @@ public class CareerVO implements Serializable {
     private String positionCodeName;
 
 	@NotBlank(message = "연차는 필수 입력 항목입니다.")
-    @Size(max = 4, message = "연차는 최대 4자까지 입력 가능합니다.")
+    @Size(max = 10, message = "연차는 최대 10자까지 입력 가능합니다.")
     private String careerYear;
     private String careerYearName;
 

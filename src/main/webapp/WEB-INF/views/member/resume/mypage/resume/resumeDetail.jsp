@@ -262,17 +262,21 @@
 				<ul class="section-list">
 					<c:forEach items="${resumeList.militaryList }" var="mil">
 						<li>
+							
 							<div class="list-content">
-								<b>${mil.serviceCategoryCodeName }</b>
-								<!-- 복무 -->
-								<div>${mil.militaryTypeCodeName }/
-									${mil.militaryRankCodeName }</div>
-								<!-- 군별 / 계급 -->
-								<div>${mil.dischargeCodeName }
-									<span class="text-secondary fs-14">(${mil.militaryStartDate }
-										~ ${mil.militaryEndDate })</span>
+								<b>${mil.serviceCategoryCodeName }</b>	<!-- 복무구분 (군필/미필) -->
+								<div><span class="text-secondary fs-14"><c:out value="${mil.militaryReason}" default=""/></span></div>	<!-- 미필사유 -->
+								<c:if test="${not empty mil.militaryEndDate || not empty mil.militaryStartDate}">
+									<div>${mil.militaryTypeCodeName} / ${mil.militaryRankCodeName}</div>
+								</c:if>
+								<div>
+									${mil.dischargeCodeName }
+									<c:if test="${not empty mil.militaryEndDate || not empty mil.militaryStartDate}">
+										<span class="text-secondary fs-14">
+											(${mil.militaryStartDate } ~ ${mil.militaryEndDate })
+										</span>
+									</c:if>
 								</div>
-								<!-- 전역사유 / 복무기간 -->
 							</div>
 						</li>
 					</c:forEach>
