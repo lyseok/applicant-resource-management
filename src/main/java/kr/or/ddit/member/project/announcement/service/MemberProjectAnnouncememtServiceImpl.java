@@ -93,4 +93,12 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 		
 	}
 
+	@Override
+	public List<PrjAnncBbsVO> myPrjAnncBbsList() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		return prjAnncBbsMapper.selectMyPrjAnncBbsList(username);
+	}
+
 }

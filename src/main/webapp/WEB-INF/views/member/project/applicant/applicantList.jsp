@@ -2,7 +2,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>프로젝트 게시판</title>
+  <title>프로젝트 지원자 관리</title>
   <script defer src="/js/member/project/applicant/applicantList.js" ></script>
   <style>
     .tab-btn {

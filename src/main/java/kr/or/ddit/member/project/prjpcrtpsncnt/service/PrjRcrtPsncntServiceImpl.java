@@ -22,11 +22,21 @@ public class PrjRcrtPsncntServiceImpl implements PrjRcrtPsncntService {
 	            throw new DataUpdateException("프로젝트 모집 인원 수정에 실패했습니다.");
 	        }
 	    } else {
-	        // insert
-	        int result = prjRcrtPsncntMapper.insertPrjRcrtPsncnt(vo);
-	        if (result == 0) {
-	            throw new DataInsertException("프로젝트 모집 인원 등록에 실패했습니다.");
+	    	PrjRcrtPsncntVO exist = prjRcrtPsncntMapper.selectByAnncNoAndJobCode(vo);
+	    	int result;
+	        if (exist != null) {
+	            // 이미 있다면 모집 인원만 업데이트
+	            result = prjRcrtPsncntMapper.updateRcrtPsncnt(vo);
+	            if (result == 0) {
+	            	throw new DataInsertException("프로젝트 모집 인원 수정에 실패했습니다.");
+	            }
+	        } else {
+	            result = prjRcrtPsncntMapper.insertPrjRcrtPsncnt(vo);
+	            if (result == 0) {
+	            	throw new DataInsertException("프로젝트 모집 인원 등록에 실패했습니다.");
+	            }
 	        }
+	    	
 	    }
 		
 	}
