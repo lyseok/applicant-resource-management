@@ -18,4 +18,8 @@ public interface CompanyMapper {
 	public int insertCompany(CompanyVO company);
 	
 	public CompanyVO selectCompanyManagementById(String userId);
+	
+	public int updateCompanyInfoById(CompanyVO company);
+	
+	public CompanyVO selectCompanyWithResumeCareer();
 }

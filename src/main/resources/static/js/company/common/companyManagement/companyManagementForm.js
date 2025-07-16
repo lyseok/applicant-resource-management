@@ -48,18 +48,25 @@
         document.querySelectorAll('.text-danger').forEach(s=>s.textContent='');
 
         const payload = formToJSON(form);
-        axios.post('/ajax/company/company_management', payload)
-          .then(() => {
-            window.location.href = '/company/company_management';
-          })
-          .catch(err => {
-            if(err.response?.status === 400) {
-              const errors = err.response.data;
-              Object.entries(errors).forEach(([f, msg]) => {
-                const span = document.querySelector(`span[data-field="${f}"]`);
-                if(span) span.textContent = Array.isArray(msg) ? msg.join(', ') : msg;
-              });
-            }
+        console.log(payload);
+        alert('수정');
+       axios.put('/ajax/company/company_management/edit', payload)
+      .then(() => window.location.href = '/company/company_management')
+      .catch(err => {
+        if(err.response?.status===400 && err.response.data) {
+          Object.entries(err.response.data).forEach(([field, messages]) => {
+            const el = document.getElementById(field);
+            if(!el) return;
+            // 기존 span 제거
+            const nxt = el.nextElementSibling;
+            if(nxt && nxt.classList.contains('text-danger')) nxt.remove();
+            // 새 span 삽입
+            const span = document.createElement('span');
+            span.className = 'text-danger small';
+            span.textContent = Array.isArray(messages) ? messages.join(', ') : messages;
+            el.insertAdjacentElement('afterend', span);
           });
+        }
       });
- });
+  });
+});

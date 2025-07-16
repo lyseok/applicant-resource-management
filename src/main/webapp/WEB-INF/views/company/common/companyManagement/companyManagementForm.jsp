@@ -165,7 +165,7 @@ body {
 
 					<!-- 홈페이지 URL -->
 					<div class="section-form-row">
-						<label>홈페이지 URL</label> <input type="url" id="comUrl"
+						<label>홈페이지 URL</label> <input type="text" id="comUrl"
 							name="comUrl" class="form-control">
 					</div>
 
@@ -197,6 +197,7 @@ body {
 					<button type="submit" class="btn btn_violet" id="saveBtn">저장</button>
 				</div>
 			</div>
+		</div>
 	</form>
 	<!-- form 태그 닫기 -->
 

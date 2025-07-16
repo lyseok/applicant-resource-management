@@ -121,6 +121,30 @@
 	</select>
 	
 	
+	<update id="updateCompanyInfoById">
+		UPDATE COMPANY
+		SET 
+			COM_INFO = #{comInfo}
+		  , COM_NUM = #{comNum}
+		  , COM_EMAIL = #{comEmail}
+		  , COM_URL = #{comUrl}
+		  , COM_MEM = #{comMem}
+		  , INDUSTRY_TYPE = #{industryType}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	
+	<select id="selectCompanyWithResumeCareer" resultType="CompanyVO">
+		SELECT
+		    U.USER_ID            
+		   ,C.COM_NAME           
+		FROM COMPANY C
+		JOIN USERS U
+		  ON C.USER_ID = U.USER_ID
+	</select>
+	
+	
+	
 	
 	
 </mapper>
