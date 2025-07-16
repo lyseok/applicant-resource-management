@@ -9,27 +9,41 @@
 
     axios.get('/ajax/code/indu')
            .then(({ data }) => {
-          data.forEach(c => {
-            const o = document.createElement('option');
-            o.value = c.induNo;
-            o.textContent = c.induName;
-            console.log(c.induName);
-            industrySelect.appendChild(o);
+          data.forEach(item => {
+
+            const option = document.createElement('option');
+            option.value = item.induNo;
+            console.log("v", item.induNo);
+            option.textContent = item.induName;
+             console.log("v", item.induName);
+            industrySelect.appendChild(option);
           });
+          
+          
+              // 업종 코드가 잘 삽입되었는지 확인
+            console.log('업종 select 태그:', industrySelect.innerHTML);
         })
         .catch(console.error);
 
 
-   axios.get('/ajax/company/company_management')
-        .then(({ data: c }) => {
-          ['comName','comCreateYear','comInfo','comNum','comEmail',
-           'comUrl','comMem','industryType','comPayment']
-          .forEach(key => {
-            const el = document.getElementById(key);
-            if(el) el.value = c[key];
-          });
-        })
-        .catch(console.error);
+    axios.get('/ajax/company/company_management')
+      .then(({ data: company }) => {
+        // 회사의 각 정보 로드
+        ['comName', 'comCreateYear', 'comInfo', 'comNum', 'comEmail', 'comUrl', 'comMem', 'comPayment'].forEach(key => {
+          const el = document.getElementById(key);
+          if (el) el.value = company[key];
+        });
+
+        // 업종 코드 세팅
+        const industrySelect = document.getElementById('industryType');
+        const selectedOption = industrySelect.querySelector(`option[textContent='${company.industryType}']`);
+        if (selectedOption) {
+          selectedOption.selected = true; // 해당 업종을 선택
+        } else {
+          console.error('업종 코드에 맞는 옵션을 찾을 수 없습니다.', company.industryType);
+        }
+      })
+      .catch(console.error);
 
    cancelBtnEl.addEventListener('click', () =>{history.back()});
 

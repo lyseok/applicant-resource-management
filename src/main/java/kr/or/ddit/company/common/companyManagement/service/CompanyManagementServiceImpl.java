@@ -41,7 +41,6 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 	    companyVO.setComUrl(companyInfoDTO.getComUrl());
 	    companyVO.setComMem(companyInfoDTO.getComMem());
 	    companyVO.setIndustryType(companyInfoDTO.getIndustryType());
-
 	    return companyMapper.updateCompanyInfoById(companyVO);
 	}
 	
