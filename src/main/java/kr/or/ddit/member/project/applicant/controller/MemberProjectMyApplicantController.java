@@ -5,15 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/mypage/project/applicant")
-public class MemberProjectApplicantController {
+@RequestMapping("/mypage/project/my_applicant")
+public class MemberProjectMyApplicantController {
 	@GetMapping
-	public String applicantListPage() {
+	public String myApplicantListPage() {
 		return "member/project/applicant/applicantList";
 	}
-	@GetMapping("/detail")
-	public String projectApplicantPage() {
-		return "member/project/applicant/projectApplicant";
-	}
-	
 }
