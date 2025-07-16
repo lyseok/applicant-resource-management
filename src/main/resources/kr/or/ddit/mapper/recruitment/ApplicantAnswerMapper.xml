@@ -18,6 +18,7 @@
 		, RECRUIT_EXAM_NO
 		, RECRUIT_QUESTIONS_NO
 		, APPLICANT_ID
+		, APPLICANT_OPTION_NO
 		, APPLICANT_SCORE 
 	FROM APPLICANT_ANSWER 
 	WHERE APPLICANT_ANSWER_NO = #{applicantAnswerNo}
@@ -35,12 +36,14 @@
 		, RECRUIT_EXAM_NO
 		, RECRUIT_QUESTIONS_NO
 		, APPLICANT_ID
+		, APPLICANT_OPTION_NO
 		, APPLICANT_SCORE
 	) VALUES (
 		#{applicantAnswerNo}
 		, #{recruitExamNo}
 		, #{recruitQuestionsNo}
 		, #{applicantId}
+		, #{applicantOptionNo}
 		, #{applicantScore}
 	)
 	</insert>
@@ -55,4 +58,30 @@
 	DELETE FROM APPLICANT_ANSWER 
 	WHERE APPLICANT_ANSWER_NO = #{applicantAnswerNo}
 	</delete>
+	
+	
+	
+	
+  <select id="countByUserAndExam" resultType="int" parameterType="map">
+    SELECT COUNT(*)
+      FROM APPLICANT_ANSWER
+     WHERE APPLICANT_ID    = #{applicantId}
+       AND RECRUIT_EXAM_NO = #{recruitExamNo}
+  </select>
+  
+  
+  <select id="selectResultByExamAndUser" resultType="kr.or.ddit.vo.recruitment.RecruitmentExamScoreResultVO">
+  	  SELECT
+      aa.APPLICANT_ID           AS applicantId,
+      SUM(aa.APPLICANT_SCORE)   AS examTotalScore,
+      e.RECRUIT_EXAM_CUTLINE    AS examcutlineScore,
+      CASE WHEN SUM(aa.APPLICANT_SCORE) >= e.RECRUIT_EXAM_CUTLINE THEN 1 ELSE 0 END
+                                AS examPass
+    FROM APPLICANT_ANSWER aa
+    JOIN RECRUITMENT_EXAM  e
+      ON aa.RECRUIT_EXAM_NO = e.RECRUIT_EXAM_NO
+    WHERE aa.RECRUIT_EXAM_NO = #{recruitExamNo}
+      AND aa.APPLICANT_ID    = #{applicantId}
+    GROUP BY aa.APPLICANT_ID, e.RECRUIT_EXAM_CUTLINE            
+  </select>
 </mapper>

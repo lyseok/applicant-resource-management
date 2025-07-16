@@ -127,7 +127,7 @@
         </a>
       </li>
       <li class="menu-item">
-        <a href="/mypage" class="menu-link">
+        <a href="/mypage/recruitment_exam" class="menu-link">
           <i class="menu-icon tf-icons bx bx-list-ul-square"></i>
           <div data-i18n="Basic">시험 목록</div>
         </a>
