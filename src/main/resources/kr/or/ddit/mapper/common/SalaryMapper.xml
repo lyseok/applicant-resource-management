@@ -10,7 +10,7 @@
 			, CODE_DETAIL_NO
 			, SALARY_MIN
 			, SALARY_MAX
-			, CREATE_DATE
+			, TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		FROM SALARY
 		WHERE SALARY_ID = #{salaryId}
 	
@@ -24,7 +24,7 @@
 			, CODE_DETAIL_NO
 			, SALARY_MIN
 			, SALARY_MAX
-			, CREATE_DATE
+			,  TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		FROM SALARY
 	</select>
 	
@@ -34,10 +34,10 @@
 		 SELECT
 	        SALARY_ID,
 	        USER_ID,
-	        JOB_CODE,
+	        CODE_DETAIL_NO,
 	        SALARY_MIN,
 	        SALARY_MAX,
-	        CREATE_DATE
+	        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 	    FROM SALARY
 	    WHERE USER_ID = #{userId}
 	</select>
@@ -47,10 +47,10 @@
 		 SELECT 
 		 	SALARY_ID,
 	        USER_ID,
-	        JOB_CODE,
+	        CODE_DETAIL_NO,
 	        SALARY_MIN,
 	        SALARY_MAX,
-	        CREATE_DATE
+	        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		  FROM SALARY
 		  WHERE TO_NUMBER(SALARY_MIN) >= #{salaryMin}
 		    AND TO_NUMBER(SALARY_MAX) <= #{salaryMax}
@@ -62,10 +62,10 @@
 		SELECT
 		    s.SALARY_ID,
 		    s.USER_ID,
-		    s.JOB_CODE,
+		    s.CODE_DETAIL_NO,
 		    s.SALARY_MIN,
 		    s.SALARY_MAX,
-		    s.CREATE_DATE
+		    TO_CHAR(s.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		  FROM SALARY s
 		  JOIN COMPANY c
 		    ON s.USER_ID = c.USER_ID
@@ -93,7 +93,7 @@
 				, #{codeDetailNo}
 				, #{salaryMin}
 				, #{salaryMax}
-				, TO_CHAR(SYSDATE, 'YYYYMMDD')
+				, SYSDATE
 		)
 	</insert>
 
@@ -101,9 +101,10 @@
 		UPDATE SALARY
 		    SET
 		      SALARY_ID   = #{salaryId},
-		      JOB_CODE    = #{jobCode},
+		      CODE_DETAIL_NO = #{comDetailNo},
 		      SALARY_MIN  = #{salaryMin},
-		      SALARY_MAX  = #{salaryMax}
+		      SALARY_MAX  = #{salaryMax},
+		      CREATE_DATE = SYSDATE
 		WHERE  USER_ID    = #{userId}
 	</update>
 	

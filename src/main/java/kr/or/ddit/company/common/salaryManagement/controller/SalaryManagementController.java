@@ -15,4 +15,10 @@ public class SalaryManagementController {
 	public String salaryView() {
 		return "company/common/salaryManagement/salaryManagementDetail";
 	}
+	
+	@GetMapping("/edit")
+	public String salaryEdit() {
+		return "company/common/salaryManagement/salaryManagementForm";
+				
+	}
 }
