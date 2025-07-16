@@ -48,6 +48,7 @@ public class RecruitmentNoticeVO implements Serializable{
 	private String recruitmentReceiptStart;
 	@NotBlank
 	private String recruitmentFinishDate;
+	private String recruitFinishYn;
 	private String recruitmentDelDate;
 	
 	

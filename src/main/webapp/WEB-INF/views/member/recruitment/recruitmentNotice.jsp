@@ -90,16 +90,27 @@
             <h1 class="fw-bold">${recruitmentNotice.recruitmentTitle}</h1>
         </div>
         <div class="d-flex align-items-center gap-2 mt-2">
+            <c:if test="${userInfo.userRole eq 'ROLE_USER' }">
             <button class="btn border text-center d-flex flex-column align-items-center justify-content-center"
-                    style="width:60px; height:48px;">
+                    style="width:60px; height:60px;">
                 <i class="bi bi-star" style="font-size: 18px;"></i>
                 <span style="font-size: 14px;"></span>
             </button>
-            <button class="btn btn_violet" style="height:48px;" id="applyBtn"
+            <button class="btn btn_violet" style="height:60px; width:200px;" id="applyBtn"
             	data-finish="${recruitmentNotice.recruitmentFinishDate}"
             	data-title="${recruitmentNotice.recruitmentTitle}">
                 <span id="dDayCounter">Loading...</span><br>입사지원
             </button>
+            </c:if>
+            
+            <c:if test="${userInfo.userId eq recruitmentNotice.userId }">
+            <button class="btn btn_violet" style="height:48px;" id="applyBtn"
+            	data-finish="${recruitmentNotice.recruitmentFinishDate}"
+            	data-title="${recruitmentNotice.recruitmentTitle}">
+                <span id="dDayCounter">Loading...</span><br>마감
+            </button>
+            </c:if>
+            
         </div>
     </div>
 
