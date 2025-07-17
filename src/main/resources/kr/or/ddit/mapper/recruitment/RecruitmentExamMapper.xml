@@ -153,12 +153,14 @@
   
 <update id="updateStepApplicationYN">
 
-UPDATE TEAM1_202501F.APPLICANT_RECORD
+
+UPDATE APPLICANT_RECORD
 SET STEP_APPLICATION_YN = 'Y'
-WHERE RECRUITMENT_NO = (SELECT RECRUITMENT_NO 
-                        FROM RECRUITMENT_EXAM
-                        WHERE RECRUIT_EXAM_NO = #{recruitExamNo}) 
-  AND APPLICANT_ID = #{applicantId}
+	WHERE RECRUIT_PROCESS_NO = (SELECT PROCESS_NO
+	                        FROM RECRUITMENT_EXAM
+	                        WHERE RECRUIT_EXAM_NO = #{recruitExamNo})
+ AND APPLICANT_ID = #{applicantId}
+
 </update>
 	
 	
