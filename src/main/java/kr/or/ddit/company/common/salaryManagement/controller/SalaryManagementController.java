@@ -16,7 +16,7 @@ public class SalaryManagementController {
 		return "company/common/salaryManagement/salaryManagementDetail";
 	}
 	
-	@GetMapping("/edit")
+	@GetMapping("/form")
 	public String salaryEdit() {
 		return "company/common/salaryManagement/salaryManagementForm";
 				

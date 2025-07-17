@@ -6,28 +6,30 @@
   <meta charset="UTF-8">
   <title>직책별 연봉 등록/수정</title>
   <script src = "/js/company/common/salaryManagement/salaryManagementForm.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <style>
+   
+  </style>
 </head>
 
 <body class="bg-light">
   <div class="container mt-5">
-    <h2 id="formTitle" class="text-center mb-4">직책별 연봉 등록</h2>
+    
+   <p id = "formTitle" class = "h2">연봉등록</p>
 
     <form id="salaryForm" class="card p-4 shadow-sm bg-white">
-      <table class="table table-bordered align-middle text-center">
+      <table class="table table-hover table-bordered align-middle text-center">
         <thead class="table-light">
           <tr>
             <th>직책</th>
             <th>최소 연봉 (원)</th>
-            <th>최대 연봉 (원)</th>
+            <th>최고 연봉 (원)</th>
           </tr>
         </thead>
         <tbody id="salaryTableBody"></tbody>
       </table>
-
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button type="submit" class="btn btn_violet">저장</button>
-        <button type="button" class="btn btn_violet_line">초기화</button>
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="submit" class="btn btn_violet px-4"> 저장</button>
+        <button type="reset" class="btn btn_violet_line px-4"> 초기화</button>
       </div>
     </form>
   </div>

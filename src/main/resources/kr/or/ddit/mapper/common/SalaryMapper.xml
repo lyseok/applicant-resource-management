@@ -101,7 +101,7 @@
 		UPDATE SALARY
 		    SET
 		      SALARY_ID   = #{salaryId},
-		      CODE_DETAIL_NO = #{comDetailNo},
+		      CODE_DETAIL_NO = #{codeDetailNo},
 		      SALARY_MIN  = #{salaryMin},
 		      SALARY_MAX  = #{salaryMax},
 		      CREATE_DATE = SYSDATE
@@ -113,4 +113,29 @@
 		DELETE FROM SALARY
     		WHERE SALARY_ID = #{salaryId}
 	</delete>
+	
+	
+	<select id="selectSalaryListbyId" resultType="kr.or.ddit.vo.common.SalaryVO">
+		SELECT 
+			SALARY_ID
+			, USER_ID
+			, CODE_DETAIL_NO
+			, SALARY_MIN
+			, SALARY_MAX
+			,  TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
+		FROM SALARY
+		WHERE  USER_ID = #{userId}
+	</select>
+	
+	<select id="selectSalaryByUserAndRank" resultType="kr.or.ddit.vo.common.SalaryVO">
+		SELECT 
+			SALARY_ID
+			, USER_ID
+			, CODE_DETAIL_NO
+			, SALARY_MIN
+			, SALARY_MAX
+			,  TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
+		FROM SALARY
+		WHERE  USER_ID = #{userId} AND CODE_DETAIL_NO = #{codeDetailNo}
+	</select>
 </mapper>
