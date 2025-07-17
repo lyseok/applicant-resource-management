@@ -15,6 +15,7 @@ function doBilling() {
             amount: Number(amount),
             orderName: orderName
         })
+        
     })
     .then(res => res.json())
     .then(data => {

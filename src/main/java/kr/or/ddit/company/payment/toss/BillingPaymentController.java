@@ -57,12 +57,13 @@ public class BillingPaymentController {
 		,HttpSession session
 		,Model model
 			) {
+		log.info("productNo가 씨이이이 이게 뭔데 로고 이렇게쓰면 잘 보이겠지 : {}", productNo);
 		String billingKey = (String) session.getAttribute("billingKey");
 		
 		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
 		model.addAttribute("product",product);
 		model.addAttribute("billingKey",billingKey);
-		
+		model.addAttribute("productNo",productNo);
 		
 //		return "/company/payment/payment/buyproduct?productNo=" + productNo;
 		return "company/payment/payment/BuyProduct";
@@ -74,7 +75,7 @@ public class BillingPaymentController {
 			, Model model
 			) {
 		model.addAttribute("productNo", productNo);
-		return "/company/payment/payment/buyproduct?productNo=" + productNo;
+		return "company/payment/payment/BillingPayment";
 	}
 
 	@GetMapping("/success") // 결제 빌씨링발키 ㅋㅋ 부르긴 했는데 안나오네 집가서 하자

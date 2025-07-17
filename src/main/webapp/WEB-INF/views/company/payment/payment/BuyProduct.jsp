@@ -7,11 +7,14 @@
     <meta charset="UTF-8">
     <title>결제하기</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-    <script src="/js/company/payment/BuyProduct.js"></script>
+    
+    <script>
+    	const productNo = "${product.productNo }"
+    </script>
 </head>
 <body class="container my-5"
       data-billing-key="${billingKey}"
-     <%--  data-customer-key="${customerKey}" --%>
+   	 data-customer-key="${customerKey}" 
       data-amount="${product.productPrice}"
       data-order-name="${product.productName}">
 
@@ -26,5 +29,6 @@
             <button class="btn btn-success" onclick="doBilling()">결제하기</button>
         </div>
     </div>
+    <script src="/js/company/payment/BuyProductBilling.js"></script>
 </body>
 </html>
