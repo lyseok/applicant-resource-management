@@ -81,7 +81,7 @@
 							</div>
 							<div class="modal-footer border-0 justify-content-center">
 								<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-								<a class="btn btn-danger px-4" href="<c:url value="/mypage/introduction/delete/${introduction.introductionNo}"/>" >삭제하기</a>
+								<a class="btn btn-danger px-4" href="<c:url value="/mypage/introduction/delete/${introduction.introductionNo}"/>" >삭제</a>
 							</div>
 						</div>
 					</div>
