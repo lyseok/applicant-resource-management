@@ -20,7 +20,7 @@
    <link rel="stylesheet" href="/css/member/resume/resume.css" >
    <script type="text/javascript" src="/js/member/resume/resumeList.js" defer></script>
 </head>
-<body>
+<body onbeforeunload="showLoading()">
 	<p class="h1 mb-3 fw-bold">이력서 관리</p>
 	<div class="p-3 pt-4 pb-4 bg-violet03 rounded d-flex justify-content-between align-items-center mb-5">
 		<p class="fw-bold">✍ 빠르게 이력서를 등록하고 싶다면?</p>

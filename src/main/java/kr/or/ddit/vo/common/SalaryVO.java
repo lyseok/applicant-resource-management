@@ -14,4 +14,6 @@ public class SalaryVO implements Serializable{
 	private String salaryMin;
 	private String salaryMax;
 	private String createDate;
+	
+	private String codeName;
 }
