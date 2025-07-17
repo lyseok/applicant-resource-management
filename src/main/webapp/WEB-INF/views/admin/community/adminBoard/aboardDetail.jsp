@@ -13,6 +13,7 @@
 
 	<sec:authentication property="principal.realUser.userId" var="userId"/>
 
+	<button><a href="/admin/board/admin_board/form">새로 등록</a></button>
 	<div id="aboardDetail"></div>
 	<!-- 게시글 상세 -->
 

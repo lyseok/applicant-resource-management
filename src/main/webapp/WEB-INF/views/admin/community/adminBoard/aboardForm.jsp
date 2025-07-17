@@ -18,10 +18,8 @@
 		<select id="boardTypeCode">
 			<option value="-1">--선택--</option>
 		</select>
-		<select id="codeGroupNo" disabled>
+		<select id="codeGroup" disabled>
 			<option value="-1">--선택--</option>
-			<option value="UFAQ">일반회원</option>
-			<option value="CFAQ">기업회원</option>
 		</select>
 		<select id="memType" disabled>
 			<option value="-1">--선택--</option>

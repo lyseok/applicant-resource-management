@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.community.AdminBoardMapper;
+import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 
@@ -78,6 +80,21 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	@Override
 	public void removeAdminBoard(String boardNo) {
 		mapper.deleteAdminBoard(boardNo);
+	}
+
+	@Override
+	public void hiddenAdminBoard(AdminBoardVO board) {
+		mapper.upDeleteAdminBoard(board);
+	}
+
+	@Override
+	public List<CmnCodeGroupVO> readCmnGroupList(String upperCodeNo) {
+		return mapper.selectCmnGroupList(upperCodeNo);
+	}
+
+	@Override
+	public List<CmnCodeVO> readCmnList(String codeGroupNo) {
+		return mapper.selectCmnList(codeGroupNo);
 	}
 
 }

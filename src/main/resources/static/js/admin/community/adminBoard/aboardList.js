@@ -9,7 +9,7 @@ console.log("넘어온 type 확인:", type);
 
 //처음 전체 조회 및 전체 탭 클릭 시
 function afaq() {
-  fetch(`/ajax/admin/board/admin_board/faqlist/${type}`).then((resp) => {
+  fetch(`/ajax/admin/board/admin_board/list/${type}`).then((resp) => {
     resp.json().then((rslt) => {
       let html = "";
       html += `<p class="h4">게시글 목록</p>`;
@@ -45,7 +45,7 @@ function afaq() {
 //일반회원 탭 클릭 시
 function ufaq() {
   //함수 먼저->dom 나중->등록 가능
-  fetch(`/ajax/admin/board/admin_board/faq/UFAQ`).then((resp) => {
+  fetch(`/ajax/admin/board/admin_board/pre/UFAQ`).then((resp) => {
     resp.json().then((rslt) => {
       let html = "";
       html += `<p class="h4">게시글 목록</p>`;
@@ -70,7 +70,7 @@ function ufaq() {
 }
 //기업회원 탭 클릭 시
 function cfaq() {
-  fetch(`/ajax/admin/board/admin_board/faq/CFAQ`).then((resp) => {
+  fetch(`/ajax/admin/board/admin_board/pre/CFAQ`).then((resp) => {
     resp.json().then((rslt) => {
       let html = "";
       html += `<p class="h4">게시글 목록</p>`;

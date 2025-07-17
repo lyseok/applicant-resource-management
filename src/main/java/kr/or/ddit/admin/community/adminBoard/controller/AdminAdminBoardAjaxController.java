@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import kr.or.ddit.admin.community.adminBoard.service.AdminAdminBoardAjaxService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
+import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,16 +45,28 @@ public class AdminAdminBoardAjaxController {
 		return service.readAdminBoardListByType(boardTypeCode);
 	}
 	
-	// 기업/일반회원 자주묻는질문 목록조회
-	@GetMapping("/faq/{groupPrefix}")
-	public List<AdminBoardVO> getMemberFaq(@PathVariable String groupPrefix) {
+	// 일반/기업/전체/이벤트 앞부분 글자대로 목록조회
+	@GetMapping("/pre/{groupPrefix}")
+	public List<AdminBoardVO> getPre(@PathVariable String groupPrefix) {
 	    return service.readAFaqListByCgn(groupPrefix);
 	}
 
-	// 전체 자주묻는질문 목록조회
-	@GetMapping("/faqlist/{upperCodeNo}")
-	public List<AdminBoardVO> getAllFaq(@PathVariable String upperCodeNo) {
+	// 해당 상위코드 전체 목록조회
+	@GetMapping("/list/{upperCodeNo}")
+	public List<AdminBoardVO> getUpper(@PathVariable String upperCodeNo) {
 		return service.readAFaqListByUcn(upperCodeNo);
+	}
+
+	// 해당 상위코드 기준 세 테이블 조회
+	@GetMapping("/group/{upperCodeNo}")
+	public List<CmnCodeGroupVO> getCmnGroup(@PathVariable String upperCodeNo) {
+		return service.readCmnGroupList(upperCodeNo);
+	}
+
+	// 공통코드(not그룹) 리스트 가져오는 건 없어서 만듦
+	@GetMapping("/cmn/{codeGroupNo}")
+	public List<CmnCodeVO> getCmn(@PathVariable String codeGroupNo) {
+		return service.readCmnList(codeGroupNo);
 	}
 	
 	// 해당 유형의 등록
@@ -85,7 +99,7 @@ public class AdminAdminBoardAjaxController {
 	    return Map.of("ok", true);
 	}
 	
-	// 해당 유형의 해당 글의 게시글 수정, 삭제 상태 변경
+	// 해당 유형의 해당 글의 게시글 수정
 	@PostMapping("/detail/{boardNo}")
 	public Map<String, Object> editBoard(
 		@PathVariable String boardTypeCode
@@ -95,6 +109,17 @@ public class AdminAdminBoardAjaxController {
 		board.setBoardNo(boardNo);
 	    service.modifyAdminBoard(board);
 	    return Map.of("ok", true);	// 수정 후 Detail 이동
+	}
+	// 해당 유형의 해당 글의 삭제 상태 변경
+	@PostMapping("/hidden/{boardNo}")
+	public Map<String, Object> hiddenBoard(
+		@PathVariable String boardTypeCode
+		, @PathVariable String boardNo
+		, @RequestBody AdminBoardVO board
+	) {
+		board.setBoardNo(boardNo);
+		service.hiddenAdminBoard(board);
+		return Map.of("ok", true);	// 수정 후 Detail 이동
 	}
 	
 	//에러 검증

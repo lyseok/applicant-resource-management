@@ -13,7 +13,8 @@
 	<ul id="aboardList">
 		<input type="hidden" id="typeHidden" value="${type}">
 	</ul>
-	<button>등록</button>
+	
+	<button><a href="/admin/board/admin_board/form">새로 등록</a></button>
 
 <script src="/js/admin/community/adminBoard/aboardList.js"></script>
 </body>
