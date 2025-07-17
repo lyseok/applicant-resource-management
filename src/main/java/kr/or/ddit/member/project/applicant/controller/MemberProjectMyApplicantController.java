@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberProjectMyApplicantController {
 	@GetMapping
 	public String myApplicantListPage() {
-		return "member/project/applicant/applicantList";
+		return "member/project/applicant/myApplicantList";
 	}
 }

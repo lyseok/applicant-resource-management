@@ -1,3 +1,10 @@
+const STATUS_MAP = {
+  "PRST-000": "참여 거절",
+  "PRST-001": "지원 완료",
+  "PRST-002": "참여 요청",
+  "PRST-003": "참여 완료"
+};
+
 // ===================== 데이터 가공 함수 =====================
 function convertServerPosts(serverPosts) {
   return serverPosts.map(item => ({
@@ -11,7 +18,10 @@ function convertServerPosts(serverPosts) {
     comment: 0,
     view: item.prjAnncHit || 0,
     tags: (item.prjAnncBoardTagList || []).map(t => t?.tag?.tagName).filter(Boolean),
-    anncEndYn: item.anncEndYn // 모집마감여부(N/Y)
+    anncEndYn: item.anncEndYn, // 모집마감여부(N/Y)
+    // 본인 신청 현황!
+    myStatus: (item.prjRcrtPsncntList?.[0]?.aplcntList?.[0]?.aplcntStatusCode) || '',
+    prjAplcntNo: (item.prjRcrtPsncntList?.[0]?.aplcntList?.[0]?.prjAplcntNo) || '',
   }));
 }
 
@@ -21,7 +31,7 @@ let sortType = "latest"; // latest | like | view
 let searchTitle = "";
 
 // ================ 데이터 요청 및 초기 렌더 =================
-axios.get('/ajax/board/project')
+axios.get('/ajax/board/project/applicantList')
   .then(res => {
     allPosts = convertServerPosts(res.data);
     renderTags();
@@ -32,42 +42,8 @@ axios.get('/ajax/board/project')
     renderPostList();
   });
 
-// ================ 렌더 함수 ================
-let pendingTag = "";  // 입력 중인 태그
-
-// --- 태그 입력창: 엔터 시 태그 추가만!
-const tagInput = document.getElementById('tagInput');
-if (tagInput) {
-  tagInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && this.value.trim() !== '') {
-      const newTag = this.value.trim();
-      if (!searchTags.includes(newTag)) {
-        searchTags.push(newTag);
-        renderTags();
-      }
-      this.value = '';
-      e.preventDefault();
-    }
-  });
-}
-
-// --- 태그 카드 그리기
+  // --- 태그 카드 그리기
 let searchTags = [];
-
-// 태그 입력: 엔터 시 추가
-if (tagInput) {
-  tagInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && this.value.trim() !== '') {
-      const newTag = this.value.trim();
-      if (!searchTags.includes(newTag)) {
-        searchTags.push(newTag);
-        renderTags();
-      }
-      this.value = '';
-      e.preventDefault();
-    }
-  });
-}
 
 // 태그 카드 UI
 function renderTags() {
@@ -82,12 +58,6 @@ function renderTags() {
 window.removeTag = function(idx) {
   searchTags.splice(idx, 1);
   renderTags();
-};
-
-// 검색 버튼 클릭시 태그 AND 필터링 적용!
-document.getElementById('searchBtn').onclick = () => {
-  searchTitle = titleInput.value.trim();
-  renderPostList();
 };
 
 // renderPostList 내부
@@ -108,9 +78,9 @@ function renderPostList() {
       )
     );
   }
-  area.innerHTML = posts.map(post => /* html */`
-    <li li class="board-list-item" data-id="${post.postId}" style="cursor:pointer;">
-      <div class="card card-post mb-4 border-0" >
+  area.innerHTML = posts.map(post => `
+    <li class="board-list-item" data-id="${post.postId}" style="cursor:pointer;">
+      <div class="card card-post mb-4 border-0">
         <div class="card-body py-4 px-4">
           <div class="d-flex align-items-center gap-3 mb-2">
             <span class="badge badge-recruit">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
@@ -134,19 +104,39 @@ function renderPostList() {
             <div class="d-flex align-items-center gap-3 text-secondary" style="font-size:1.07em;">
               <span><i class="bi bi-heart"></i>좋아요 ${post.like}</span>
               <span><i class="bi bi-eye"></i>조회수 ${post.view}</span>
-              
             </div>
+          </div>
+          <div class="mt-3 d-flex align-items-center gap-2">
+            <span class="btn btn_gray_line ${post.myStatus === 'PRST-002' ? 'bg-warning' : 'bg-light'}">
+              ${STATUS_MAP[post.myStatus] || '상태없음'}
+            </span>
+            ${post.myStatus === 'PRST-002' ? `
+              <div class="btn btn_violet_line btn-accept"
+                data-aplcnt-no="${post.prjAplcntNo}">
+                참여수락
+              </div>
+            ` : ''}
           </div>
         </div>
       </div>
     </li>
   `).join('');
-  // 게시글 클릭시 상세페이지로 이동
-  document.querySelectorAll('.board-list-item').forEach(item => {
-    item.addEventListener('click', function() {
-      const prjAnncNo = this.getAttribute('data-id');
-      if (prjAnncNo) {
-        window.location.href = '/board/project/detail?prjAnncNo=' + encodeURIComponent(prjAnncNo);
+
+  // "참여수락" 버튼 이벤트
+  document.querySelectorAll('.btn-accept').forEach(btn => {
+    btn.addEventListener('click', async function(e) {
+      e.stopPropagation();
+      const prjAplcntNo = this.dataset.aplcntNo;
+      try {
+        await axios.put('/ajax/project/applicant/agree', {
+          prjAplcntNo,
+          status: 'PRST-003'
+        });
+        alert('참여완료로 처리되었습니다!');
+        // 리스트 다시 불러오기
+        location.reload(); // 또는 allPosts를 새로 갱신 후 renderPostList();
+      } catch (err) {
+        alert('참여 처리 실패!\n' + (err.response?.data?.message || ''));
       }
     });
   });
@@ -164,43 +154,3 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// 정렬
-document.querySelectorAll('.sort-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    sortType = btn.getAttribute('data-sort');
-    renderPostList();
-  });
-});
-
-// 제목 검색
-const titleInput = document.getElementById('titleInput');
-if (titleInput) {
-  titleInput.addEventListener('keydown', function(e){
-    if (e.key === 'Enter') {
-      searchTitle = this.value.trim();
-      renderPostList();
-    }
-  });
-}
-document.getElementById('searchBtn').onclick = () => {
-  searchTitle = titleInput.value.trim();
-  renderPostList();
-};
-
-
-// 초기화 버튼
-document.getElementById('resetBtn').onclick = () => {
-  titleInput.value = '';
-  tagInput.value = '';
-  searchTitle = '';
-  searchTags = [];
-  renderTags();
-  renderPostList();
-};
-
-// 글쓰기 버튼
-document.getElementById('writeBtn').onclick = () => {
-  location.href = '/board/project/form';
-};

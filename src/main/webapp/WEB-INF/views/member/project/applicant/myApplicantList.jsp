@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>프로젝트 게시판</title>
-  <script defer src="/js/member/project/announcement/myAnnouncementList.js" ></script>
+  <script defer src="/js/member/project/applicant/myApplicantList.js" ></script>
   <style>
     .tab-btn {
       border: none;
@@ -71,39 +71,6 @@
       <button class="tab-btn active" type="button" data-tab="all">전체</button>
       <button class="tab-btn" type="button" data-tab="open">모집중</button>
       <button class="tab-btn" type="button" data-tab="closed">모집완료</button>
-    </div>
-
-    <!-- 검색 영역 -->
-    <div class="row align-items-center mb-4 g-2">
-      <div class="col-12 col-md-9">
-        <div class="input-group mb-2 search-mainbox">
-          <span class="input-group-text bg-white border-end-0">
-            <i class="bi bi-search" style="font-size:1.2em; color:#ae8be1;"></i>
-          </span>
-          <input type="text" class="form-control border-start-0" placeholder="팀 프로젝트, 사이드프로젝트를 검색해보세요!" id="titleInput">
-          <button class="btn btn-purple" id="searchBtn" type="button" style="background:#ae8be1;color:#fff;">검색</button>
-        </div>
-        <div class="input-group">
-          <span class="input-group-text bg-white border-end-0">
-            <i class="bi bi-hash" style="font-size:1.17em; color:#ae8be1;"></i>
-          </span>
-          <input type="text" class="form-control border-start-0" placeholder="태그로 검색해보세요!" id="tagInput" autocomplete="off">
-          <button class="btn btn-outline-secondary ms-2" id="resetBtn" type="button"><i class="bi bi-arrow-clockwise"></i> 초기화</button>
-        </div>
-				<div id="tagList" class="d-flex flex-wrap gap-1 my-2"></div>
-      </div>
-      <div class="col-12 col-md-3 text-end">
-        <button class="btn btn-write mt-2 mt-md-0" id="writeBtn" type="button">
-          <i class="bi bi-pencil-square me-1"></i> 글쓰기
-        </button>
-      </div>
-    </div>
-
-    <!-- 정렬 -->
-    <div class="d-flex align-items-center gap-2 mb-4">
-      <button class="sort-btn active" data-sort="latest" type="button">최신순</button>
-      <button class="sort-btn" data-sort="like" type="button">좋아요순</button>
-      <button class="sort-btn" data-sort="view" type="button">조회수순</button>
     </div>
 
     <div class="Post_post">
