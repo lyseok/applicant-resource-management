@@ -36,9 +36,13 @@
             
 	            <sec:authorize access="isAuthenticated()">
 	            	<%-- 로그인이 되어 있을때 --%>
-	                <span class="btn_sign signin member_btn" id="user_name">
-                        <!-- 회원명 들어가는곳 -->
-	                </span>
+	                <button type="button" class="btn_sign signin member_btn">
+									    <span class="user_photo">
+									      <span id="gnb_personnal_photo_area_span" class="img"></span>
+									    </span>
+							        <span class="user_name" id="user_name"><!-- 회원이름 들어가는 곳 --></span>
+									    <span class="material-symbols-outlined">arrow_drop_down</span>
+									</button>
 	                <div class="layer_member" id="displayMemBtn" style="display:none;">
 			            <ul>
 			                <li>
