@@ -1,3 +1,8 @@
+/*  */
+.layout-demo-wrapper{
+	box-shadow:1px 1px 20px 0px rgba(0, 0, 0, 0.05);
+}
+
 /* 리스트 */
 .icon_box .bx {
 	color: var(--violet50);
@@ -6,6 +11,7 @@
 /* 등록 */
 .resume-wrap {
 	padding: 30px;
+	width:100%;
 }
 
 .resume-header-wrap{
@@ -172,7 +178,7 @@
 }
 
 .section-form-row label {
-	min-width: 130px;
+	min-width: 100px;
 	font-size: 15px;
 	color: #395081;
 	font-weight: bold;
@@ -414,6 +420,7 @@
 	padding-left: 17.75rem;
 	padding-right:1.625rem;
 	border-top: 1px solid #eaeaea;
+	box-shadow:1px 1px 60px 0px rgba(0, 0, 0, 0.1);
 }
 
 .resume_ft .inner {
@@ -424,20 +431,34 @@
 	justify-content: space-between;
 	gap: 30px;
 	align-items: center;
+	padding:0 40px;
+}
+.resume_ft .inner .section-form-row{
+	width:calc(100% - 142px);
 }
 
 .resume_ft .inner input {
 	flex: 1;
-	border: 1px solid #dbdbdb;
-	border-radius: 7px;
+	border:0;
+	border-bottom:2px solid #333;
+	border-radius:0;
+	background:none;
 	padding: 7px 11px;
 	font-size: 15px;
-	background: #fff;
 	margin-bottom: 0;
 	outline: none;
 	transition: border 0.2s;
+	max-width:450px;
+}
+.resume_ft .inner input::placeholder{
+	color:#999;
 }
 
+.resume_ft .inner input:-webkit-autofill{
+	background:none;
+	box-shadow:none;
+	-webkit-box-shadow:none;
+}
 .resume_ft .inner .section-form-btns {
 	margin-top: 0;
 	width: auto;
@@ -456,6 +477,29 @@
 .list-item {
 	flex-basis: calc(50% - 20px);
 	flex-grow:1;
+}
+#quick_menu{
+  position: sticky;
+  transform: translateY(8%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  top: 100px;
+  width:calc(100% - 1024px);
+}
+#quick_menu ~ .resume-wrap{
+  max-width: 1024px;
+}
+
+#quick_menu a{
+	color:#666;
+}
+#quick_menu a.on{
+		color:var(--violet80);
+		font-weight:bold;
+}
+.section, .resume-header-wrap{
+	scroll-margin-top: 100px;
 }
 
 

@@ -1,3 +1,18 @@
+const quickMenuList = document.querySelectorAll("#quick_menu a");
+quickMenuList.forEach(a =>{
+	a.addEventListener("click", function(e){
+		quickMenuList.forEach(link => link.classList.remove("on"));
+		e.target.classList.add("on")
+	})
+})
+// 로딩 show/hide 함수
+function showLoading() {
+  document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
+}
+function hideLoading() {
+  document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
+}
+
 // 각 form 몇개 추가 됐는지 카운트
 const typeCounters = {
 	educationList: 0,
@@ -16,6 +31,9 @@ const typeCounters = {
 /* + 추가 버튼 클릭 시 등록 form 추가 List */
 const templateMap = {
 	basicInfo: idx => `
+			<div class="section-title">
+				<h6>이력서 기본정보<span class="must">필수</span></h6>
+			</div>
 	    <div id="form-basicInfo" class="section-form-wrap">
 	      <div class="section-form-row">
 	        <label for="inputUserName" class="form-label required">이름</label>
@@ -1590,6 +1608,8 @@ window.addEventListener("DOMContentLoaded", () => {
 		resume.birth = resumeEl.dataset.birth;
 		resume.email = resumeEl.dataset.email;
 		resume.tel = resumeEl.dataset.tel;
+		console.log("유저네임 잘 가져오는지 확인 !!!" + resumeEl.dataset.userName);
+		console.log(resume.userName);
 
 		// 주소는 구분자로 나눈 뒤 합쳐서 1개로 resume에 저장
 		const addressParts = resumeEl.dataset.address.split("||");
@@ -1621,14 +1641,14 @@ window.addEventListener("DOMContentLoaded", () => {
 		document.getElementById("resumeInfoView").classList.add("d-none");
 
 		const container = document.getElementById("resumebasicInfoWrap");
-		container.innerHTML = templateMap["basicInfo"](); 
+		container.innerHTML = templateMap["basicInfo"]();
 		container.classList.remove("d-none");
 
 		// 기본정보 바인딩
 		basicFields.forEach(field => {
-		  const value = resume[field.key] || "";
-		  const input = document.getElementById(field.inputId);
-		  if (input) input.value = value;
+			const value = resume[field.key] || "";
+			const input = document.getElementById(field.inputId);
+			if (input) input.value = value;
 		});
 
 
@@ -1707,7 +1727,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2 w-100">
           <div>
             <strong>${selectedText}</strong>
-            <div class="text-secondary fs-14">자기소개서 선택 완료</div>
+            <div class="text-secondary fs-14"></div>
           </div>
 					<div class="d-flex gap-2">
 			      <button type="button" class="btn_edit" data-type="introduction">
@@ -1833,22 +1853,21 @@ function removeEmptyStrings(obj) {
 
 // resume 기본정보로 insert 하기!
 function setBasicResumeInfo() {
-	const resumeForm = document.querySelector("#form-resume");
-	if (!resumeForm) return;
+  const resumeForm = document.querySelector("#form-resume");
+  if (!resumeForm) return;
 
-	const resumeInputs = resumeForm.querySelectorAll("input");
-	resumeInputs.forEach(input => {
-		const resumeName = input.name;
-		const resumeValue = input.value;
-		console.log(resumeName, resumeValue)
+  const resumeInputs = resumeForm.querySelectorAll("input");
+  resumeInputs.forEach(input => {
+    const resumeName = input.name;
+    const resumeValue = input.value;
 
-		if (resumeName && resumeValue) {
-			resume[resumeName] = resumeValue; // resume 객체에 바로 세팅
-		}
-		resume[resumeName] = resumeValue; // resume 객체에 바로 세팅
-		console.log(resume)
-	});
+    // 값이 ""인 경우는 무시하고 덮어쓰지 않도록!
+    if (resumeName && resumeValue !== "") {
+      resume[resumeName] = resumeValue;
+    }
+  });
 }
+
 
 // 전송하기 버튼 눌렀을 떄 insert 진행 로직 !
 document.addEventListener("submit", function(e) {
@@ -1888,6 +1907,7 @@ document.addEventListener("submit", function(e) {
 		formData.append("comImage", resume.company.comImage);
 	}
 
+console.log(resume)
 
 	// axios 비동기 전송
 	axios.post("/mypage/resume/create", formData, {
@@ -1941,12 +1961,12 @@ document.addEventListener("submit", function(e) {
 				const message = e.message;
 
 				const match = field.match(/^(\w+)\[(\d+)]\.(\w+)$/);
-				console.log("에러로그 찍기 >>> " + listName)
-				
+
 				if (match) {
 					const listName = match[1];
 					const index = parseInt(match[2]);
 					const fieldName = match[3];
+					// console.log("에러로그 찍기 >>> " + listName)
 
 					// 폼 요소 찾기
 					const formEl = document.querySelector(`#form-${listName}${index}`);
@@ -1986,17 +2006,44 @@ document.addEventListener("submit", function(e) {
 						if (item) item.remove();
 					}
 
+
 				} else {
 					// 단일 필드 처리 (userId 등)
 					const inputEl = document.querySelector(`[name='${field}']:not([type="hidden"])`);
 					if (inputEl) {
+						// ✅ inputEl 감싸는 새로운 div 생성
+						const wrapper = document.createElement('div');
+						wrapper.classList.add('input-wrapper', 'w-100'); // 필요한 class 있으면 추가
+
+						// ✅ inputEl을 div (wrapper)로 감싸기
+						inputEl.parentElement.insertBefore(wrapper, inputEl);
+						wrapper.appendChild(inputEl);
+						inputEl.classList.add("w-100")
+
+						// 기존 에러 제거
 						const existingError = inputEl.parentElement.querySelector(`.${field}-error`);
 						if (existingError) existingError.remove();
 
 						const errorSpan = document.createElement('span');
-						errorSpan.className = `${field}-error text-danger d-block`;
+						errorSpan.className = `${field}-error text-danger d-block mt-1 fs-14`;
 						errorSpan.innerText = message;
-						inputEl.insertAdjacentElement('afterend', errorSpan);
+						wrapper.appendChild(errorSpan);
+					}
+
+					const basicInfoSection = document.querySelector("#resumebasicInfoWrap");
+					// 기존 이력서 view 제거
+					const resumeInfoView = document.querySelector("#resumeInfoView");
+
+					console.log(basicInfoSection);
+					console.log(field)
+					// 에러로 올 수 필드명 관리
+					const basicInfoFields = ["userId", "resumeName", "resumeMainYn", "userName", "photo", "birth", "email", "tel", "address", "veteranReason", "updateDate"];
+					// 이력서 기본정보 - basicInfo 관련 필드 에러가 있으면 섹션 보이게 하기
+					if (basicInfoFields.includes(field)) {
+						if (basicInfoSection?.classList.contains("d-none")) {
+							basicInfoSection.classList.remove("d-none");
+							resumeInfoView.classList.add("d-none")
+						}
 					}
 				}
 			});
