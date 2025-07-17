@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.recruitment.ApplicantRecordMapper;
+import kr.or.ddit.vo.recruitment.ApplicantRecordVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -18,6 +19,11 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 	public List<Map<String, Object>> getApplicantsByRecruitment(String recruitmentNo) {
 		
 		return applMapper.getApplicantByRecruitment(recruitmentNo);
+	}
+
+	@Override
+	public void updateNextStep(ApplicantRecordVO vo) {
+		
 	}
 
 }

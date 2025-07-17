@@ -7,19 +7,19 @@ function generateColumns(step, type) {
   const baseCols = [
     { key: 'bir', label: '생년월일' },
     { key: 'name', label: '이름' },
-    { key: 'resumeUrl', label: '이력서' },
+    { key: 'resumeNo', label: '이력서' },
     { key: 'career', label: '경력' },
     { key: 'language', label: '어학' },
     { key: 'major', label: '전공' },
     { key: 'cert', label: '자격증' },
     { key: 'skill', label: '기술' },
-    { key: 'attend', label: '응시' },
-    { key: 'pass', label: '합격' }
+    { key: 'attend', label: '응시여부' },
+    { key: 'pass', label: '합격여부' }
   ];
 
   // 점수 항목 이름 다르게 처리
-  const scoreLabel = type === '시험' ? '시험점수'
-                  : type === '면접' ? '면접점수'
+  const scoreLabel = type === 'RERP-001' ? '시험점수'
+                  : type === 'RERP-002' ? '면접점수'
                   : '점수';
 
   baseCols.push({ key: 'score', label: scoreLabel });
@@ -28,9 +28,13 @@ function generateColumns(step, type) {
   columns["step" + step] = baseCols;
 }
 
-function formatCellValue(key, value) {
-  if (key === 'resumeUrl') {
-    return `<a href="${value || '#'}" target="_blank" class="btn btn-outline-primary btn-sm">상세</a>`;
+function formatCellValue(key, value, applicant) {
+  if (key === 'resumeNo' ) {
+    return `<button class="btn btn-outline-primary btn-sm resume-link" data-resume-no="${value}" data-user-id="${applicant._userId}">상세</button>`;
+  }
+  if (key === 'passSelect') {
+    const checked = applicant.pass === 'Y' ? 'checked' : '';
+    return `<input type="checkbox" class="form-check-input passCheck" ${checked} />`;
   }
   if (Array.isArray(value)) {
     return value.join(', ');
@@ -48,12 +52,16 @@ function generateRowDataAttributes(applicant) {
     data-major="${applicant.major}"
     data-cert="${(applicant.cert || []).join(',')}"
     data-skill="${(applicant.skill || []).join(',')}"
+    data-applicant-id="${applicant.APPLICANT_ID}"
+    data-applicant-name="${applicant.APPLICANT_NAME}"
+    data-recruitment-no="${applicant.RECRUITMENT_NO}"
+    data-process-no="${applicant.PROCESS_NO}"
+    data-step="${applicant.STEP}"
+    data-final="${applicant.FINAL}"
   `;
 }
 
 let applicantData = {};
-
-
 
 // ======================= 테이블랜더 ========================
 
@@ -65,21 +73,32 @@ function renderApplicantTable() {
   const columnSet = columns[currentStep];
   const dataList = applicantData[currentStep];
   
+  // 컬럼 정의 안 된 경우 안전 처리
+  if (!columnSet) {
+    tableHead.innerHTML = '<th colspan="100%" class="text-center text-danger">이 단계에 대한 컬럼 정보가 없습니다</th>';
+    tableBody.innerHTML = '<tr><td colspan="100%">해당 단계에 대한 컬럼 설정이 필요합니다</td></tr>';
+    return;
+  }
+  
   // 헤더 렌더링
   tableHead.innerHTML = columnSet.map(col => `<th class="text-center">${col.label}</th>`).join('');
   
-  // 데이터가 없는 경우 메시지만 출력
-    if (!Array.isArray(dataList) || dataList.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="100%">해당 단계에 지원자 데이터가 없습니다</td></tr>';
-      return;
-    }
+  // "지원자 ID"가 없는 행 제외
+  const validDataList = Array.isArray(dataList)
+    ? dataList.filter(row => row.name)
+    : [];
+
+  if (validDataList.length === 0) {
+    tableBody.innerHTML = ''; // 아무 행도 안 만듦
+    return;
+  }
   
   // 바디 렌더링
-  tableBody.innerHTML = dataList.map(applicant => {
+  tableBody.innerHTML = validDataList.map(applicant => {
 	return `<tr ${generateRowDataAttributes(applicant)}>
 	      ${columnSet.map(col => {
-	        const value = formatCellValue(col.key, applicant[col.key]);
-	        return `<td>${value}</td>`;
+	        const value = applicant[col.key];
+	        return `<td>${formatCellValue(col.key, value, applicant)}</td>`;
 	      }).join('')}
 	    </tr>`;
 	  }).join('');
@@ -128,17 +147,39 @@ function savePassStatus(){
 // 단계 마감(합격자 일괄적용)
 function closeStep(){
     const activeTable = document.querySelector('.tab-pane.active table');
-    let cnt=0;
+    let selectedApplicants = [];
     activeTable.querySelectorAll('tbody tr').forEach(tr => {
       const check = tr.querySelector('.passCheck');
       if(check && check.checked){
+		const applicantId = tr.dataset.applicantId;
+      	const applicantName = tr.dataset.applicantName;
+      	const recruitmentNo = tr.dataset.recruitmentNo;
+      	const recruitProcessNo = tr.dataset.processNo;
+      	const recruitProcessFinal = tr.dataset.final;
+      	const recruitProcessStep = tr.dataset.step;
+      	
+      	selectedApplicants.push({
+			applicantId,
+			applicantName,
+			recruitmentNo,
+			recruitProcessNo,
+			recruitProcessStep,
+			recruitProcessFinal
+		});
+		
         tr.children[9].innerText = 'Y';
-        cnt++;
       }else{
         tr.children[9].innerText = 'N';
       }
     });
-    alert('마감 완료, 합격자 '+cnt+'명 반영(프론트)');
+    
+    if(selectedApplicants.length === 0){
+		alert('선택된 지원자가 없습니다.');
+		return;
+	}
+	
+	axios.post()
+   	
   }
   
   renderApplicantTable();
@@ -272,18 +313,27 @@ async function fetchApplicantData(recruitmentNo) {
     const response = await axios.get(`/applicant/record/${recruitmentNo}`);
     const result = response.data;
 	
-	result.forEach(stepInfo => {
-	  generateColumns(stepInfo.STEP, stepInfo.STEP_TYPE);
-	});
+	const stepMetaList = result.map(r => ({
+      step: r.STEP,
+      step_type: r.STEP_TYPE
+    })).filter((v, i, arr) =>
+      v.step && arr.findIndex(d => d.step === v.step) === i
+    );
+    
+    stepMetaList.forEach(info => generateColumns(info.step, info.step_type));
 
     const applicantDataTemp = {};
     result.forEach(row => {
       const stepKey = "step" + row.STEP;
       if (!applicantDataTemp[stepKey]) applicantDataTemp[stepKey] = [];
+      
+      const resumeNo = row.RESUMEURL
+      const userId = row.USERID
+      
         applicantDataTemp[stepKey].push({
         bir: row.bir,
         name: row.APPLICANT_NAME,
-        resumeUrl: row.interview_url || "#",
+        resumeNo: resumeNo || "#",
         career: row.career ?? 0,
         language: row.language ?? 0,
         major: row.major ?? "",
@@ -291,7 +341,8 @@ async function fetchApplicantData(recruitmentNo) {
         skill: row.skill ?? [],
         attend: row.attend ?? "-",
         pass: row.PASS ?? "-",
-        score: row.exam_score ?? row.interview_score ?? null
+        score: row.exam_score ?? row.interview_score ?? null,
+        _userId:userId
       });
     });
 

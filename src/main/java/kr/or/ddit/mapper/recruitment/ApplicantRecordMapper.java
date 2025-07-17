@@ -19,4 +19,5 @@ public interface ApplicantRecordMapper {
 	public List<Map<String, Object>> getApplicantByRecruitment(String recruitmentNo);
 	public int updateInterviewURL(ApplicantRecordVO vo);
 	public int updateApplication(String ApplicantRecordNo);
+	public int updateApplicantPass(ApplicantRecordVO vo);
 }
