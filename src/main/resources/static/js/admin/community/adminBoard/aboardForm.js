@@ -7,15 +7,12 @@ const memType = document.querySelector("#memType");
 //1차 옵션 추가
 fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
   resp.json().then((rslt) => {
-    console.log("1차 옵션 선택 : ", rslt);
-
     rslt.cmnCodeList.map((v, i) => {
       //vo[1], vo[2] 만 넣어야 함
       if (i > 0) {
         let option = document.createElement("option");
         option.value = v.codeDetailNo;
         option.innerHTML = v.codeName;
-
         boardTypeCode.appendChild(option);
       }
     });
@@ -72,8 +69,8 @@ aboardForm.onsubmit = function (e) {
 
 //1차 옵션 선택
 boardTypeCode.onchange = function () {
-	first();
-	alert("1차 옵션 선택됨!");
+	console.log("1차 옵션 선택됨!");
+	every();
 let code = boardTypeCode.value;
     //2차 옵션 추가
     fetch(`/ajax/admin/board/admin_board/group/${code}`).then(resp=>{
@@ -82,6 +79,7 @@ let code = boardTypeCode.value;
 			let option = document.createElement("option");
 			option.value = item.codeGroupNo;
 	    	option.innerHTML = (item.description).split(" ")[0];
+			
 	    	codeGroup.appendChild(option);
 		})
     });
@@ -89,7 +87,8 @@ let code = boardTypeCode.value;
 };
 
 codeGroup.onchange = function(){
-	alert("2차 옵션 선택됨!");
+	console.log("2차 옵션 선택됨!");
+//	every();
 let type = codeGroup.value;
 	fetch(`/ajax/admin/board/admin_board/cmn/${type}`).then(resp=>{
 		resp.json().then(rslt=>{
@@ -101,65 +100,57 @@ let type = codeGroup.value;
 			})
 		})
 	})
-	mdis();
 }
 
 
-cdis = function(){
-	alert("2차가 풀림!");
+const cdis = function(){
+	console.log("2차가 풀림!");
 	codeGroup.disabled = false;		
 	codeGroup.innerHTML = "";
-	copt = document.createElement("option");
+	let copt = document.createElement("option");
 	copt.value = "-1";
 	copt.textContent = "--선택--";
 	codeGroup.appendChild(copt);
 	codeGroup.value = "-1";		
 }
 
-mdis = function(){
-	alert("3차가 풀림!");
+const mdis = function(){
+	console.log("3차가 풀림!");
 	memType.disabled = false;		
 	memType.innerHTML = "";
-	mopt = document.createElement("option");
+	let mopt = document.createElement("option");
 	mopt.value = "-1";
 	mopt.textContent = "--선택--";
 	memType.appendChild(mopt);
 	memType.value = "-1";		
 }
 
-defa = function(){
-	alert("기본값!");
+const defa = function(){
+	console.log("기본값!");
 	codeGroup.disabled = true;
 	codeGroup.value = "-1";
 	memType.disabled = true;
 	memType.value = "-1";
 }
 
-first = function(){
-	if(boardTypeCode !== '-1'){
-		cdis();
-	}
-	alert("조건문 첫째!");
-}
+const every = function() {
+  const code = boardTypeCode.value;
 
-second = function(){
-	if(boardTypeCode === 'BRDD-003'){
-		mdis();
-		memType.disabled = true;
-	}
-	alert("조건문 둘째!");
-}
+  if (code === '-1') {
+    defa();
+    console.log("조건문 막내!");
+    return; // 아래 실행 안 함
+  }
 
-third = function(){
-	if(boardTypeCode === 'BRDD-002'){
-		cdis();
-	}
-	alert("조건문 셋째!");
-}
+  console.log("조건문 첫째!");
+  cdis();
 
-every = function(){
-	if(boardTypeCode === '-1'){
-		defa();		
-	}
-	alert("조건문!");
+  if (code === 'BRDD-002') {
+    console.log("조건문 셋째!");
+    cdis();
+  } else if (code === 'BRDD-003') {
+    mdis();
+    memType.disabled = true;
+    console.log("조건문 둘째!");
+  }
 }
