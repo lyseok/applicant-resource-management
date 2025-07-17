@@ -2,6 +2,9 @@
 
   <head>
     <title>채용 단계별 지원자 관리</title>
+    <script>
+  		const recruitmentNo = "${recruitmentNo}";
+	</script>
     <script defer src="/js/company/recruitment/applicantRecord/applicantRecordList.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css">
     <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>

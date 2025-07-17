@@ -90,26 +90,34 @@
             <h1 class="fw-bold">${recruitmentNotice.recruitmentTitle}</h1>
         </div>
         <div class="d-flex align-items-center gap-2 mt-2">
-            <c:if test="${userInfo.userRole eq 'ROLE_USER' }">
-            <button class="btn border text-center d-flex flex-column align-items-center justify-content-center"
-                    style="width:60px; height:60px;">
-                <i class="bi bi-star" style="font-size: 18px;"></i>
-                <span style="font-size: 14px;"></span>
-            </button>
-            <button class="btn btn_violet" style="height:60px; width:200px;" id="applyBtn"
-            	data-finish="${recruitmentNotice.recruitmentFinishDate}"
-            	data-title="${recruitmentNotice.recruitmentTitle}">
-                <span id="dDayCounter">Loading...</span><br>입사지원
-            </button>
-            </c:if>
-            
-            <c:if test="${userInfo.userId eq recruitmentNotice.userId }">
-            <button class="btn btn_violet" style="height:48px;" id="applyBtn"
-            	data-finish="${recruitmentNotice.recruitmentFinishDate}"
-            	data-title="${recruitmentNotice.recruitmentTitle}">
-                <span id="dDayCounter">Loading...</span><br>마감
-            </button>
-            </c:if>
+            <c:choose>
+			  <c:when test="${recruitmentNotice.recruitFinishYn eq Y}">
+			    <!-- 마감 완료 -->
+			    <button class="btn btn-secondary" style="height:48px;" id="deadBtn" disabled>
+			      <span id="dDayCounter">-</span><br>마감 완료
+			    </button>
+			  </c:when>
+			  <c:when test="${userInfo.userId eq recruitmentNotice.userId}">
+			    <!-- 관리자: 마감 버튼 -->
+			    <button class="btn btn_violet" style="height:48px;" id="deadLineBtn"
+			            data-no="${recruitmentNotice.recruitmentNo}">
+			      <span id="dDayCounter">Loading...</span><br>마감
+			    </button>
+			  </c:when>
+			  <c:when test="${userInfo.userRole eq 'ROLE_USER'}">
+			    <!-- 일반 사용자: 입사지원 -->
+			    <button class="btn border text-center d-flex flex-column align-items-center justify-content-center"
+			            style="width:60px; height:60px;">
+			      <i class="bi bi-star" style="font-size: 18px;"></i>
+			      <span style="font-size: 14px;"></span>
+			    </button>
+			    <button class="btn btn_violet" style="height:60px; width:200px;" id="applyBtn"
+			            data-finish="${recruitmentNotice.recruitmentFinishDate}"
+			            data-title="${recruitmentNotice.recruitmentTitle}">
+			      <span id="dDayCounter">Loading...</span><br>입사지원
+			    </button>
+			  </c:when>
+			</c:choose>
             
         </div>
     </div>
@@ -161,12 +169,6 @@
         </ul>
     </div>
 
-    <!-- 🔹 복리후생 -->
-    <div class="mb-4">
-        <h4 class="fw-bold mb-2">복리후생</h4>
-        <p>${recruitmentNotice.welfare}</p>
-    </div>
-
     <!-- 🔹 문의 -->
     <div class="mb-5">
         <h4 class="fw-bold mb-2">문의</h4>
@@ -180,7 +182,7 @@
       <div class="modal-content">
         <!-- 헤더 -->
         <div class="modal-header bg-white">
-          <h5 class="modal-title text-purple fw-semibold" id="recruitTitle">프로젝트 제목</h5>
+          <h5 class="modal-title text-purple fw-semibold" id="recruitTitle">채용공고 제목</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 

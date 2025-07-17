@@ -50,4 +50,10 @@ public class RecruitNoticeAjaxController {
 		List<Map<String, Object>> data = service.readMyNotice();
 		return data;
 	}
+	
+	@PostMapping("/{recruitmentNo}")
+	public ResponseEntity<?> updateDeadLine(@PathVariable String recruitmentNo){
+		service.setDeadLine(recruitmentNo);
+		return ResponseEntity.ok("ok");
+	}
 }
