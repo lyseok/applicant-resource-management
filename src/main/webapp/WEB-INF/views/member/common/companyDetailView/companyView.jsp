@@ -194,7 +194,7 @@
 	                        <th class="field-label">산업</th>
 	                        <td class="field-value">
 	                            <div class="value-container">
-	                                <div class="value">기타 공학 연구개발업</div>
+	                                <div id="industryType" class="value"></div>
 	                            </div>
 	                        </td>
 	
@@ -202,8 +202,8 @@
 	                        <td class="field-value">
 	                            <div class="value-container">
 	                                <div class="values">
-	                                    <div class="value">853명</div>
-	                                    <div class="reference">(2016.06.30)</div>
+	                                    <div id="comMem" class="value"></div>
+	                                    <div class="reference"></div>
 	                                </div>
 	                            </div>
 	                        </td>
@@ -213,7 +213,7 @@
 	                        <th class="field-label">기업구분</th>
 	                        <td class="field-value">
 	                            <div class="value-container">
-	                                <div class="value">비영리법인</div>
+	                                <div id="comType" class="value"></div>
 	                            </div>
 	                        </td>
 	
@@ -221,8 +221,8 @@
 	                        <td class="field-value">
 	                            <div class="value-container">
 	                                <div class="values">
-	                                    <div class="value">1989.10.10</div>
-	                                    <div class="reference">(37년차)</div>
+	                                    <div id="comCreateYear" class="value"></div>
+	                                    <div class="reference"></div>
 	                                </div>
 	                            </div>
 	                        </td>
@@ -234,8 +234,8 @@
 	                            <div class="value-container">
 	                                <div class="values">
 	
-	                                    <div class="value">100만원</div>
-	                                    <div class="reference">(2022.12.31)</div>
+	                                    <div id="comCapital" class="value"></div>
+	                                    <div class="reference"></div>
 	                                </div>
 	                            </div>
 	                        </td>
@@ -244,9 +244,8 @@
 	                        <td class="field-value">
 	                            <div class="value-container">
 	                                <div class="values">
-	
-	                                    <div class="value">5,611억 4천만원</div>
-	                                    <div class="reference">(2022.12.31)</div>
+	                                    <div class="value"></div>
+	                                    <div class="reference"></div>
 	                                </div>
 	                            </div>
 	                        </td>
@@ -256,18 +255,18 @@
 	                        <th class="field-label">대표자</th>
 	                        <td class="field-value">
 	                            <div class="value-container">
-	                                <div class="value">이상률</div>
+	                                <div id="ceoName" class="value"></div>
 	                            </div>
 	                        </td>
 	
-	                        <th class="field-label">대졸초임</th>
+	                        <th class="field-label">평균연봉</th>
 	                        <td class="field-value">
 	                            <div class="value-container">
 	                                <div class="values">
 	                                    <div class="salary-average">
-	                                        <div class="salary-average-item">3,627만원</div>
+	                                        <div class="salary-average-item"></div>
 	                                    </div>
-	                                    <a href="/company/1899862/salary" class="button button-view dev_new_pop">상세보기</a>
+	                                    <a href="/company/1899862/salary" class="button button-view dev_new_pop"></a>
 	                                </div>
 	                            </div>
 	                        </td>
@@ -277,17 +276,14 @@
 	                        <th class="field-label">주요사업</th>
 	                        <td class="field-value">
 	                            <div class="value-container">
-	                                <div class="value">
-	
-	                                    항공기(스마트무인기,헬리콥터),인공위성,우주발사체 개발,연구,항공기,우주기기 품질인증업무
-	                                </div>
+	                                <div id = "comMainBiz" class="value"></div>
 	                            </div>
 	                        </td>
 	
 	                        <th class="field-label">4대보험</th>
 	                        <td class="field-value">
 	                            <div class="value-container">
-	                                <div class="value">국민연금, 건강보험, 고용보험, 산재보험</div>
+	                                <div id="insuranceYn" class="value"></div>
 	                            </div>
 	                        </td>
 	                    </tr>
@@ -296,14 +292,14 @@
 	                        <th class="field-label">홈페이지</th>
 	                        <td class="field-value">
 	                            <div class="value-container">
-	                                <div class="value"><a href="http://www.kari.re.kr" target="_blank">http://www.kari.re.kr</a></div>
+	                                <div id = "comUrl" class="value"></div>
 	                            </div>
 	                        </td>
 	
 	                        <th class="field-label">주소 </th>
 	                        <td class="field-value" colspan="3">
 	                            <div class="value-container">
-	                                <div class="value">대전 유성구 어은동 45번지 3층</div>
+	                                <div id="comAddr" class="value"></div>
 	                            </div>
 	                        </td>
 	                    </tr>

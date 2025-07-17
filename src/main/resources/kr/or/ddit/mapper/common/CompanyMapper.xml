@@ -24,7 +24,10 @@
 			, C.COM_TYPE
 			, C.COM_SIZE
 			, C.INSURANCE_YN
-			, C.CEO_NAME      
+			, C.CEO_NAME
+			, C.COM_ADDR
+			, C.COM_CAPITAL
+			, C.COM_MAIN_BIZ      
 	    FROM COMPANY C
 	    JOIN USERS U
 	      ON C.USER_ID = U.USER_ID
@@ -52,7 +55,10 @@
 			, C.COM_TYPE
 			, C.COM_SIZE
 			, C.INSURANCE_YN
-			, C.CEO_NAME      
+			, C.CEO_NAME
+			, C.COM_ADDR
+			, C.COM_CAPITAL
+			, C.COM_MAIN_BIZ      
 	    FROM COMPANY C
 	    JOIN USERS U
 	    ON C.USER_ID = U.USER_ID
@@ -75,6 +81,9 @@
 			, COM_SIZE
 			, INSURANCE_YN
 			, CEO_NAME
+			, C.COM_ADDR
+			, C.COM_CAPITAL
+			, C.COM_MAIN_BIZ
 		) VALUES (
 			#{userId}
 			, #{comName}
@@ -91,6 +100,9 @@
 			, #{comSize}
 			, #{insuranceYn}
 			, #{ceoName}
+			, #{comAddr}
+			, #{comCapital}
+			, #{comMainBiz}
 		)
 	</insert>
 	
@@ -112,6 +124,9 @@
 			, COM_SIZE = #{comSize}
 			, INSURANCE_YN = #{insuranceYn}
 			, CEO_NAME = #{ceoName}
+			, COM_ADDR = #{comAddr}
+			, COM_CAPITAL = #{comCapital}
+			, COM_MAIN_BIZ = #{comMainBiz}
 		WHERE USER_ID = #{userId}
 	</update>
 	
@@ -123,7 +138,7 @@
 	</delete>
 	
 	
-	<select id="selectCompanyManagementById" resultType="CompanyVO">
+	<select id="selectCompanyInfoById" resultType="CompanyVO">
 		SELECT
 			USER_ID           
 			, COM_NAME           
@@ -139,7 +154,10 @@
 			, COM_TYPE
 			, COM_SIZE
 			, INSURANCE_YN
-			, CEO_NAME      
+			, CEO_NAME
+			, COM_ADDR
+			, COM_CAPITAL
+			, COM_MAIN_BIZ      
 	    FROM COMPANY
 	    WHERE USER_ID = #{userId}
 	</select>
@@ -158,6 +176,9 @@
 		  , COM_SIZE = #{comSize}
 		  , INSURANCE_YN = #{insuranceYn}
 		  , CEO_NAME = #{ceoName}
+		  , COM_ADDR = #{comAddr}
+		  , COM_CAPITAL = #{comCapital}
+		  , COM_MAIN_BIZ = #{comMainBiz}
 		WHERE USER_ID = #{userId}
 	</update>
 	
