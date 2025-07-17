@@ -38,6 +38,19 @@
 	WHERE RECRUITMENT_NO = #{recruitmentNo}
 	AND RECRUIT_PROCESS_STEP = '1'
 	</select>
+	
+	<select id="selectNextStep">
+	SELECT 
+		RECRUIT_PROCESS_NO
+		, RECRUITMENT_NO
+		, COMPANY_NAME
+		, RECRUIT_PROCESS_STEP
+		, RECRUIT_PROCESS_FINAL
+		, RECRUIT_PROCESS_TYPE 
+	FROM RECRUIT_PROCESS 
+	WHERE RECRUITMENT_NO = #{recruitmentNo}
+	AND RECRUIT_PROCESS_STEP = #{recruitProcessStep}
+	</select>
 
 	<insert id="insertRecruitProcess">
 	 	<selectKey resultType="string" keyProperty="recruitProcessNo" order="BEFORE">

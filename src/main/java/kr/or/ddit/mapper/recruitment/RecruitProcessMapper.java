@@ -20,4 +20,6 @@ public interface RecruitProcessMapper {
 	public int updateRecruitProcess(RecruitProcessVO processVO);
 	// 삭제(없음)
 	public int deleteRecruitProcess(String recruitProcessNo);
+	// 다음 단계 찾기
+	public RecruitProcessVO selectNextStep(RecruitProcessVO vo);
 }

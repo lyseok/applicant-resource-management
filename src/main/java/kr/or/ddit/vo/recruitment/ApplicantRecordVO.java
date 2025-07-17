@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "applicantRecordNo")
 public class ApplicantRecordVO implements Serializable{
 	private String applicantRecordNo;
+	private String recruitProcessNo;
 	private String recruitmentNo;
 	private String applicantId;
 	private String interviewUrl;
@@ -17,6 +18,8 @@ public class ApplicantRecordVO implements Serializable{
 	private String evaluationStartTime;
 	private String applicantName;
 	
+	private String recruitProcessFinal;
+	private String recruitProcessStep;
 	private ApplicantVO applicant;
 	
 }
