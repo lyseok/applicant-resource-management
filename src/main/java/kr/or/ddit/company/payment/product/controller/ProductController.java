@@ -39,6 +39,21 @@ public class ProductController {
 //	@Value("${file.upload-dir}")
 //	private String RealuploadPath;
 
+	@GetMapping("/detail")
+	public String detailForm(
+		@RequestParam String productNo,
+		Model model,
+		@ModelAttribute("billingKey")String billingKey
+			) {
+		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
+		model.addAttribute("product",product);
+		model.addAttribute("billingKey",billingKey);
+		
+		return "company/payment/product/ProductDetail";
+	}
+	
+	
+
 	@PostMapping
 	public String insertProduct(@ModelAttribute PaymentProductVO productVO, Model model) {
 

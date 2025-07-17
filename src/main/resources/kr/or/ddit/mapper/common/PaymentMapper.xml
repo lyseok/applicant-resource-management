@@ -16,10 +16,10 @@
 		, USER_ID
 		, PRODUCT_NO
 		, PAYMENT_METHOD
-		,
-		PAYMENT_DATE
+		, PAYMENT_DATE
 		, PAYMENT_PAY
 		, TOSS_PAYMENT_KEY
+		, PAYMENT_BILLING_KEY
 		) VALUES (
 		#{paymentNo}
 		,
@@ -28,8 +28,8 @@
 		, #{paymentMethod}
 		, SYSDATE
 		, #{paymentPay}
-		,
-		#{tossPaymentKey}
+		, #{tossPaymentKey}
+		, #{paymentBillingKey}
 		)
 	</insert>
 
@@ -55,6 +55,7 @@
 		, PAYMENT_DATE
 		, PAYMENT_PAY
 		, TOSS_PAYMENT_KEY
+		, PAYMENT_BILLING_KEY
 		FROM PAYMENT
 	</select>
 
@@ -68,6 +69,7 @@
 		, PAYMENT_DATE
 		, PAYMENT_PAY
 		, TOSS_PAYMENT_KEY
+		, PAYMENT_BILLING_KEY
 		FROM PAYMENT
 		WHERE
 		PAYMENT_NO = #{paymentNo}
@@ -85,6 +87,8 @@
 		, PAYMENT_PAY = #{paymentPay}
 		, TOSS_PAYMENT_KEY =
 		#{tossPaymentKey}
+		, PAYMENT_BILLING_KEY =
+		#{paymentBillingKey}
 		WHERE PAYMENT_NO = #{paymentNo}
 	</update>
 

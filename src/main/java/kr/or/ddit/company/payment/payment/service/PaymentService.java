@@ -17,4 +17,5 @@ public interface PaymentService {
 	
 	public List<PaymentVO> selectMyPaymentList(String userId);
 	
+	public PaymentVO checkbilling(String userId);
 }

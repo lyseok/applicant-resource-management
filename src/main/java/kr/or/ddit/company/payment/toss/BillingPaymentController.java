@@ -8,6 +8,8 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,26 +21,69 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpSession;
+import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
+import kr.or.ddit.vo.common.PaymentProductVO;
+import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/Toss")
+@RequestMapping("/company/toss")
 public class BillingPaymentController {
+	
+	@Autowired
+	PaymentProductServiceImpl service;
 
+	@GetMapping("/check/billing")
+	@ResponseBody
+	public Map<String, Object> checkBillingKey(HttpSession session){
+		Map<String, Object> map = new HashMap<>();
+		String billingKey = (String) session.getAttribute("billingKey");
+		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
+		return map;
+	}
+	
+	@GetMapping("/buyproduct")
+	String productFormUi(
+		@RequestParam String productNo
+		,HttpSession session
+		,Model model
+			) {
+		String billingKey = (String) session.getAttribute("billingKey");
+		
+		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
+		model.addAttribute("product",product);
+		model.addAttribute("billingKey",billingKey);
+		
+		
+//		return "/company/payment/payment/buyproduct?productNo=" + productNo;
+		return "company/payment/payment/BuyProduct";
+	}
+	
 	@GetMapping("/billing")
-	String BillingFormUI() {
-		return "company/payment/payment/BillingPayment";
+	String BillingFormUI(
+			@RequestParam String productNo			
+			, Model model
+			) {
+		model.addAttribute("productNo", productNo);
+		return "/company/payment/payment/buyproduct?productNo=" + productNo;
 	}
 
 	@GetMapping("/success") // 결제 빌씨링발키 ㅋㅋ 부르긴 했는데 안나오네 집가서 하자
-	String Success(@RequestParam String authKey, @RequestParam String customerKey, Model model) {
+	String Success(@RequestParam String authKey
+				, @RequestParam String customerKey
+				, @RequestParam String productNo
+				, HttpSession session
+				, Model model) {
+			
 		log.info("customerKey : {}", customerKey);
 		log.info("authKey : {}", authKey);
 
@@ -82,6 +127,7 @@ public class BillingPaymentController {
 		
 		
 		if (response != null && response.body() != null) {
+			
 			log.info("결제응답 : " + response.body());
 
 			try {
@@ -91,6 +137,11 @@ public class BillingPaymentController {
 				// billingKey를 저장
 				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("result",jsonNode.toPrettyString());
+				session.setAttribute("billingKey", billingKey);
+				log.info("billingKey : {}", billingKey);
+				
+				return "redirect:/company/payment/product/detail?productNo=" + productNo;
+				
 				
 			} catch (IOException e) {
 				log.error("JSON파싱 실패 ", e);

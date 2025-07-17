@@ -52,6 +52,15 @@ public class PaymentController {
 		return "company/payment/payment/PaymentMain";
 		}
 	
+	@GetMapping("/check/billing")
+	@ResponseBody
+	public Map<String, Object> billingCheck() {
+	    PaymentVO vo = service.checkbilling(service.getUserId());
+	    boolean hasBillingKey = (vo != null && vo.getPaymentBillingKey() != null);
+
+	    return Map.of("hasBillingKey", hasBillingKey);
+	}
+	
 	
 	@GetMapping("/success")
 	String Test(
