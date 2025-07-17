@@ -26,4 +26,7 @@ public interface ResumeService {
 	// 입사 지원(이력서 복사)
 	public void recruitApplicate(ApplicantVO applicant);
 	
+	// 이력서 등록 갯수 조회
+	public int readUserResumeNoCount(String userId);
+	
 }

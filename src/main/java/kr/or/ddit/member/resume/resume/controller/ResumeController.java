@@ -23,11 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import kr.or.ddit.dto.ResumeSaveValidError;
 import kr.or.ddit.dto.ResumeSaveValidationErrorResponse;
+import kr.or.ddit.member.common.mypage.introduction.service.introductionService;
 import kr.or.ddit.member.resume.resume.service.ResumeService;
+import kr.or.ddit.vo.resume.IntroductionVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ResumeController {
 	private final ResumeService service;
+	private final introductionService introductionService;
 
 	static final String MODELNAME = "resumeList";
 
@@ -76,9 +80,18 @@ public class ResumeController {
 
 	// 등록 폼 이동
 	@GetMapping("create")
-	public String getCreateResumeForm() {
+	public String getCreateResumeForm(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
+		// user가 등록한 이력서 갯수 구해오기
+		int resumeCnt =service.readUserResumeNoCount(userId);
+		// 자소서 썼는지 확인
+		List<IntroductionVO> introdList = introductionService.readIntroductionList(userId);
+		if(introdList.isEmpty()) {
+			model.addAttribute("hasIntrod", "자소서 작성 이후 등록할 수 있습니다.");
+		}
+		
+		model.addAttribute("resumeCnt", resumeCnt);
 		log.info("{}", userId);
 		return "member/resume/mypage/resume/resumeForm";
 	}
@@ -108,13 +121,19 @@ public class ResumeController {
 
 	// 삭제 로직 구현
 	@GetMapping("delete/{no}")
-	public String createResume(@PathVariable String no) {
+	public String createResume(
+		@PathVariable String no
+		, RedirectAttributes redirectAttributes
+	) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 		ResumeVO vo = new ResumeVO();
 		vo.setUserId(userId);
 		vo.setResumeNo(no);
-		service.removeResume(no); // >> 논리적 삭제작업 해줘야함, 매퍼, 서비스 작업 아직 안해줬음
+		int result = service.editResumeRemove(vo); // >> 논리적 삭제작업 해줘야함, 매퍼, 서비스 작업 아직 안해줬음
+		if(result < 1) {
+			redirectAttributes.addFlashAttribute("error", "자소서 삭제 중 오류가 발생했습니다.");
+		}
 
 		return "";
 	}
