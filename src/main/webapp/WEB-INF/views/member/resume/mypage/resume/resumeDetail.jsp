@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>이력서 상세페이지</title>
 <link rel="stylesheet" href="/css/member/resume/resume.css">
+<script type="text/javascript" src="/js/member/resume/resumeList.js" defer></script>
 </head>
 <body>
 	<div class="resume-main-wrap resume_detail_wrap">
@@ -56,7 +57,7 @@
 								<b>${education.schoolName }</b> <span>(${education.graduateYnName })</span>
 								<c:if test="${not empty education.specialtyList}">
 									<c:forEach items="${education.specialtyList }" var="specialty">
-										<div class="list-content">${specialty.mainMajor }/${specialty.subMajorCode }</div>
+										<div class="list-content">${specialty.mainMajor }/${specialty.subMajorCodeName }</div>
 									</c:forEach>
 								</c:if>
 								<div class="text-secondary fs-14">${education.entranceDate}	~ ${education.graduateDate}</div>
@@ -285,7 +286,7 @@
 		</c:if>
 	</div>
 	<div class="d-flex justify-content-between">
-		<a href="/mypage/resume/list" class="btn btn_gray_line">목록</a>
+		<a href="/mypage/resume/list" class="btn btn_gray_line" onclick="showLoading()">목록</a>
 		<div class="d-flex gap-1">
 			<a href="" class="btn btn_red_line">삭제</a> <a href=""
 				class="btn btn_violet_line">수정</a>

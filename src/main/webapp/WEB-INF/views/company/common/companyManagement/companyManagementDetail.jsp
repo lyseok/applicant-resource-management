@@ -34,6 +34,12 @@
     </div>
 
     <!-- 기업 정보 섹션들 -->
+    
+     <div class="section">
+        <div class="section-title">대표자 이름</div>
+        <div class="section-content" id="ceo_name"></div>
+    </div>
+    
     <div class="section">
         <div class="section-title">기업설명</div>
         <div class="section-content" id="com_info">기업설명 데이터</div>
@@ -42,6 +48,11 @@
     <div class="section">
         <div class="section-title">직원수</div>
         <div class="section-content" id="com_mem" >직원수 데이터</div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">4대보험</div>
+        <div class="section-content" id="insurance_Yn"></div>
     </div>
 
     <div class="section">
@@ -53,7 +64,28 @@
         <div class="section-title">업종</div>
         <div class="section-content" id="industry_type">업종 코드 데이터</div>
     </div>
-
+    
+	<div class="section">
+        <div class="section-title">기업 형태</div>
+        <div class="section-content" id="com_type"></div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">기업 규모</div>
+        <div class="section-content" id="com_size"></div>
+    </div>
+    <div class="section">
+        <div class="section-title">기업 주소</div>
+        <div class="section-content" id="com_addr"></div>
+    </div>
+    <div class="section">
+        <div class="section-title">기업 자본금</div>
+        <div class="section-content" id="com_capital"></div>
+    </div>
+    <div class="section">
+        <div class="section-title">기업 주요 사업</div>
+        <div class="section-content" id="com_main_biz"></div>
+    </div>
     <!-- 수정 버튼 -->
     <div class="d-flex gap-1">
         <button type="button" class="btn btn_violet_line" id="edit-btn">수정</button>

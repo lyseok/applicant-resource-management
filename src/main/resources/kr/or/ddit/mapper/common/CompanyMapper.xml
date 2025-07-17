@@ -20,7 +20,14 @@
 			, C.COM_MEM            
 			, C.COM_LOGO           
 			, C.COM_PAYMENT        
-			, C.INDUSTRY_TYPE      
+			, C.INDUSTRY_TYPE
+			, C.COM_TYPE
+			, C.COM_SIZE
+			, C.INSURANCE_YN
+			, C.CEO_NAME
+			, C.COM_ADDR
+			, C.COM_CAPITAL
+			, C.COM_MAIN_BIZ      
 	    FROM COMPANY C
 	    JOIN USERS U
 	      ON C.USER_ID = U.USER_ID
@@ -44,7 +51,14 @@
 			, C.COM_MEM            
 			, C.COM_LOGO           
 			, C.COM_PAYMENT        
-			, C.INDUSTRY_TYPE      
+			, C.INDUSTRY_TYPE
+			, C.COM_TYPE
+			, C.COM_SIZE
+			, C.INSURANCE_YN
+			, C.CEO_NAME
+			, C.COM_ADDR
+			, C.COM_CAPITAL
+			, C.COM_MAIN_BIZ      
 	    FROM COMPANY C
 	    JOIN USERS U
 	    ON C.USER_ID = U.USER_ID
@@ -63,6 +77,13 @@
 			, COM_LOGO
 			, COM_PAYMENT
 			, INDUSTRY_TYPE
+			, COM_TYPE
+			, COM_SIZE
+			, INSURANCE_YN
+			, CEO_NAME
+			, C.COM_ADDR
+			, C.COM_CAPITAL
+			, C.COM_MAIN_BIZ
 		) VALUES (
 			#{userId}
 			, #{comName}
@@ -75,6 +96,13 @@
 			, #{comLogo}
 			, #{comPayment}
 			, #{industryType}
+			, #{comType}
+			, #{comSize}
+			, #{insuranceYn}
+			, #{ceoName}
+			, #{comAddr}
+			, #{comCapital}
+			, #{comMainBiz}
 		)
 	</insert>
 	
@@ -92,6 +120,13 @@
 			, COM_LOGO = #{comLogo}
 			, COM_PAYMENT = #{comPayment}
 			, INDUSTRY_TYPE = #{industryType}
+			, COM_TYPE = #{comType}
+			, COM_SIZE = #{comSize}
+			, INSURANCE_YN = #{insuranceYn}
+			, CEO_NAME = #{ceoName}
+			, COM_ADDR = #{comAddr}
+			, COM_CAPITAL = #{comCapital}
+			, COM_MAIN_BIZ = #{comMainBiz}
 		WHERE USER_ID = #{userId}
 	</update>
 	
@@ -103,7 +138,7 @@
 	</delete>
 	
 	
-	<select id="selectCompanyManagementById" resultType="CompanyVO">
+	<select id="selectCompanyInfoById" resultType="CompanyVO">
 		SELECT
 			USER_ID           
 			, COM_NAME           
@@ -115,7 +150,14 @@
 			, COM_MEM            
 			, COM_LOGO           
 			, COM_PAYMENT        
-			, INDUSTRY_TYPE      
+			, INDUSTRY_TYPE
+			, COM_TYPE
+			, COM_SIZE
+			, INSURANCE_YN
+			, CEO_NAME
+			, COM_ADDR
+			, COM_CAPITAL
+			, COM_MAIN_BIZ      
 	    FROM COMPANY
 	    WHERE USER_ID = #{userId}
 	</select>
@@ -130,6 +172,13 @@
 		  , COM_URL = #{comUrl}
 		  , COM_MEM = #{comMem}
 		  , INDUSTRY_TYPE = #{industryType}
+	  	  , COM_TYPE = #{comType}
+		  , COM_SIZE = #{comSize}
+		  , INSURANCE_YN = #{insuranceYn}
+		  , CEO_NAME = #{ceoName}
+		  , COM_ADDR = #{comAddr}
+		  , COM_CAPITAL = #{comCapital}
+		  , COM_MAIN_BIZ = #{comMainBiz}
 		WHERE USER_ID = #{userId}
 	</update>
 	

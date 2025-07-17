@@ -209,5 +209,11 @@
 		    ORDER BY
 		      r.UPDATE_DATE DESC
   </select>
-  <select id=""></select>
+  
+  <select id="selectUserResumeNoCount">
+  	SELECT count(RESUME_NO)
+	  FROM RESUME
+		WHERE USER_ID = #{userId}
+  </select>
+  
 </mapper>
