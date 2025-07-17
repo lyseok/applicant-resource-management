@@ -30,7 +30,48 @@
 					<i class='bx  bx-home-alt'></i> ${memberInfo.memAdd1 }
 					${memberInfo.memAdd2 }
 				</div>
+				<spa class="resumeEditBtn">수정</span>
 			</div>
+		</div>
+
+		<!-- 수정 영역 -->
+		<div id="basicInfoForm" class="section-form-wrap d-none">
+
+		  <div class="section-form-row">
+		    <label class="form-label required">이력서 제목</label>
+		    <input type="text" class="form-control" id="inputResumeName">
+		  </div>
+		
+		  <div class="section-form-row">
+		    <label class="form-label required">이름</label>
+		    <input type="text" class="form-control" id="inputUserName">
+		  </div>
+		
+		  <div class="section-form-row">
+		    <label class="form-label required">생년월일</label>
+		    <input type="date" class="form-control" id="inputBirth">
+		  </div>
+		
+		  <div class="section-form-row">
+		    <label class="form-label required">이메일</label>
+		    <input type="email" class="form-control" id="inputEmail">
+		  </div>
+		
+		  <div class="section-form-row">
+		    <label class="form-label required">연락처</label>
+		    <input type="text" class="form-control" id="inputTel" placeholder="예: 010-1234-5678">
+		  </div>
+		
+		  <div class="section-form-row">
+		    <label class="form-label required">주소</label>
+		    <input type="text" class="form-control mb-2" id="inputAddress1" placeholder="기본주소">
+		    <input type="text" class="form-control" id="inputAddress2" placeholder="상세주소">
+		  </div>
+		
+		  <div class="section-form-row d-flex justify-content-end gap-2 mt-3">
+		    <button type="button" class="btn btn_red_line" id="cancelBasicBtn">취소</button>
+		    <button type="button" class="btn btn_violet" id="saveBasicBtn">확인</button>
+		  </div>
 		</div>
 
 
@@ -85,11 +126,9 @@
 			<div class="section" id="section-myExperienceList">
 				<div class="section-title">
 					<h6>보유경험</h6>
-					<button class="add-btn" type="button" id="btn-myExperienceList">+
-						추가</button>
+					<button class="add-btn" type="button" id="btn-myExperienceList">+추가</button>
 				</div>
-				<div class="section-content" style="color: #b8bfc9;">대외활동, 인턴,
-					교육 등 주요 경험을 입력해주세요.</div>
+				<div class="section-content" style="color: #b8bfc9;">대외활동, 인턴,교육 등 주요 경험을 입력해주세요.</div>
 				<div class="formContainer"></div>
 				<div class="listContainer"></div>
 			</div>
@@ -169,7 +208,9 @@
 			<!-- 자기소개서 (INTRODUCTION) 입력폼 -->
 			<div class="section" id="section-introduction">
 				<div class="section-title">
-					<h6>자기소개서<span class="must">필수</span></h6>
+					<h6>
+						자기소개서<span class="must">필수</span>
+					</h6>
 					<button class="btn-introduction" type="button"
 						id="btn-introduction" data-bs-toggle="modal"
 						data-bs-target="#introductionModal">+ 자소서 리스트 불러오기</button>
@@ -178,7 +219,8 @@
 					작성해주세요.</div>
 				<div class="formContainer">
 
-					<div class="modal fade modal-dialog modal-dialog-centered" id="introductionModal" tabindex="-1" style="display: none;">
+					<div class="modal fade modal-dialog modal-dialog-centered"
+						id="introductionModal" tabindex="-1" style="display: none;">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -186,9 +228,9 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 								</div>
 								<div class="modal-body">
-					      	<div class="section-form-row w-100">
-					      		<label class="required">자기소개서</label>
-										<select id="introductionSelect" class="form-select">
+									<div class="section-form-row w-100">
+										<label class="required">자기소개서</label> <select
+											id="introductionSelect" class="form-select">
 											<option value="">자기소개서를 선택하세요</option>
 										</select>
 									</div>
@@ -222,19 +264,19 @@
 			</div>
 
 			<div class="" id="form-resume">
-				<input type="hidden" name="userId" value="${memberInfo.userId }">
-				<input type="hidden" name="userName" value="${memberInfo.memName }">
-				<input type="hidden" name="birth" value="${memberInfo.memBir }">
-				<input type="hidden" name="email" value="${memberInfo.memEmail }">
-				<input type="hidden" name="tel" value="${memberInfo.memTel }">
-				<input type="hidden" name="address" value="${memberInfo.memAdd1 }">
-				<input type="hidden" name="address" value="${memberInfo.memAdd2 }">
+				<input type="hidden" name="resumeName" id="hiddenResumeName">
+				<input type="hidden" name="userName" id="hiddenUserName">
+				<input type="hidden" name="birth" id="hiddenBirth">
+				<input type="hidden" name="email" id="hiddenEmail">
+				<input type="hidden" name="tel" id="hiddenTel">
+				<input type="hidden" name="address" id="hiddenAddress">
+				<input type="hidden" name="userId" value="${memberInfo.userId}">
 				<input type="hidden" name="resumeSubmitYn" value="N">
 				<div class="resume_ft">
 					<div class="inner">
 						<div class="section-form-row">
-							<label>자기소개서 제목</label> 
-							<input type="text" name="resumeName" value="${memberInfo.memName }님의 이력서" class="h50">
+							<label>자기소개서 제목</label> <input type="text" name="resumeName"
+								value="${memberInfo.memName }님의 이력서" class="h50">
 						</div>
 
 						<div class="section-form-btns">
@@ -273,8 +315,8 @@
 					</p>
 				</div>
 				<div class="modal-footer border-0 justify-content-center">
-					<button type="button" class="btn btn-outline-secondary px-4" data-type="introduction"
-						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-outline-secondary px-4"
+						data-type="introduction" data-bs-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-danger px-4">삭제하기</button>
 				</div>
 			</div>

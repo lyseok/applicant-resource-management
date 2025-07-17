@@ -5,9 +5,9 @@ import java.util.List;
 import kr.or.ddit.vo.common.SalaryVO;
 
 public interface SalaryManagementService {
-	public int createSalary(SalaryVO salary);
+	public int createSalary(List<SalaryVO> salary, String userId);
 	public int editSalary(SalaryVO salary);
 	
-	public List<SalaryVO> readSalaryById(String userId);
+	public List<SalaryVO> readSalaryListById(String userId);
 	
 }

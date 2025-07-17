@@ -102,11 +102,16 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label class="required">회사명</label>
-        <div class="d-flex gap-2 w-100">
-          <input type="text" name="resumeVO.careerList[${idx}].comId" placeholder="예: NAVER" maxlength="100" id="comId">
-          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="max-width: 240px; z-index: 2000;">
-					</ul>
-          <button class="btn search_com_btn btn_violet_line" type="button">검색</button>
+        <div class="d-flex w-100 flex-column">
+  				<div class="d-flex position-relative gap-2">
+  					<div class="flex-fill">
+		          <input type="text" name="resumeVO.careerList[${idx}].comId" class="w-100 h-100" placeholder="예: NAVER" maxlength="100" id="comId" >
+		          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="z-index: 2000; max-width:301px">
+							</ul>
+						</div>
+          	<button class="btn search_com_btn btn_violet_line" type="button">검색</button>          
+          </div>          
+					<div><span id="comSearchMsg" class="mt-2 fs-14"></span></div>
         </div>
       </div>
       <div class="section-form-row">
@@ -1234,42 +1239,89 @@ document.addEventListener("DOMContentLoaded", function() {
 			formContainer.insertAdjacentHTML('beforeend', templateFunc(idx));
 			typeCounters[type] = idx + 1;
 
-			if(addBtn.closest("#section-careerList")){
+			if (addBtn.closest("#section-careerList")) {
 				// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
 				document.querySelector("#comId").addEventListener("input", function() {
 					const inputVal = this.value.trim();
 					const suggestionBox = document.querySelector("#comSuggestions");
 					suggestionBox.innerHTML = ""; // 초기화
-	
-					if (!inputVal) return;
-	
+
+					if (!inputVal) {
+						this.removeAttribute("data-userid"); // 입력값 없을 때 속성 제거
+						return;
+					}
+
 					const matches = companyList
 						.filter(c => c.comName.includes(inputVal))
 						.slice(0, 5); // 최대 5개
-	
+
+					let exactMatchFound = false;
+
 					matches.forEach(c => {
 						const li = document.createElement("li");
 						li.innerText = c.comName;
 						li.dataset.userid = c.userId;
-						li.classList.add("list-group-item", "list-group-item-action")
-	
+						li.classList.add("list-group-item", "list-group-item-action");
+						li.style.maxWidth="301px"
+
+						// 클릭 시 input 값과 data 설정
 						li.addEventListener("click", () => {
-							document.querySelector("#comId").value = c.comName;
+							const inputEl = document.querySelector("#comId");
+							inputEl.value = c.comName;
+							inputEl.dataset.userid = c.userId; // userId 설정
 							suggestionBox.innerHTML = "";
 						});
-	
+
 						suggestionBox.appendChild(li);
+
+						// 입력값이 정확히 일치하는 항목 확인
+						if (c.comName === inputVal) {
+							this.dataset.userid = c.userId;
+							exactMatchFound = true;
+						}
 					});
+
+					// 정확히 일치하는 항목이 없는 경우 userId 속성 제거
+					if (!exactMatchFound) {
+						this.removeAttribute("data-userid");
+					}
 				});
 			}
-/*
+
 			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			const searchButton = document.querySelector("#section-careerList .search_com_btn");
-			searchButton.addEventListener("click", function(e) {
-				const comName = e.target.previousElementSibling.value;
-				// axios.get("/ajax/career/company/list")
+			document.addEventListener("DOMContentLoaded", function () {
+			  const searchButton = document.querySelector(".search_com_btn");
+			  if (searchButton) {
+					const searchButton = document.querySelector(".search_com_btn");
+					searchButton.addEventListener("click", function(e) {
+						const comId = document.querySelector("#comId");
+						const userId = comId.dataset.userid;
+						const userName = comId.value;
+						console.log(userId)
+						console.log(userName)
+						axios.get(`/ajax/career/company/${userId}`)
+						.then(resp => {
+							const comSearchMsg = document.querySelector("#comSearchMsg");
+							console.log(resp.data)
+							if(resp.data.success == true){
+								comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
+								comSearchMsg.classList.remove("text-danger")
+								comSearchMsg.classList.add("text-primary", "fs-14")
+							} else{
+								comId.value ="";
+								comSearchMsg.innerHTML = `${resp.data.message}`;
+								comSearchMsg.classList.remove("text-primary")
+								comSearchMsg.classList.add("text-danger")						
+							}
+						})
+						.catch(err =>{
+							console.error(err);
+						})
+					})
+				} else {
+			    console.warn("search_com_btn 버튼을 찾을 수 없습니다.");
+			  }
 			})
-*/
 
 			// section-content, +버튼 숨김
 			secCont.style.display = "none";
@@ -1478,10 +1530,85 @@ document.addEventListener("DOMContentLoaded", function() {
 			modal.dataset.idx = delBtn.dataset.idx;
 		}
 	});
+});
+// end 삭제버튼 클릭 영역
 
+// 이력서 기본정보 수정로직 ====================================================================================================================
+// 공통 필드 배열
+const basicFields = [
+  { key: "userName", inputId: "inputUserName", hiddenId: "hiddenUserName", viewId: "viewName" },
+  { key: "birth", inputId: "inputBirth", hiddenId: "hiddenBirth", viewId: "viewBirth" },
+  { key: "email", inputId: "inputEmail", hiddenId: "hiddenEmail", viewId: "viewEmail" },
+  { key: "tel", inputId: "inputTel", hiddenId: "hiddenTel", viewId: "viewTel" },
+  {
+    key: "address",
+    inputId: ["inputAddress1", "inputAddress2"],
+    hiddenId: "hiddenAddress",
+    viewId: "viewAddress"
+  }
+];
+
+// ✅ 1. 초기 바인딩 (memberInfo → resume → input.value)
+window.addEventListener("DOMContentLoaded", () => {
+  resume.userId = '${memberInfo.userId}';
+  resume.resumeSubmitYn = 'N';
+  resume.userName = '${memberInfo.memName}';
+  resume.birth = '${memberInfo.memBir}';
+  resume.email = '${memberInfo.memEmail}';
+  resume.tel = '${memberInfo.memTel}';
+  resume.address = '${memberInfo.memAdd1} ${memberInfo.memAdd2}';
+
+  // 필드별 input 초기 세팅
+  basicFields.forEach(field => {
+    const value = resume[field.key] || "";
+    if (Array.isArray(field.inputId)) {
+      const parts = value.split(" ");
+      field.inputId.forEach((id, idx) => {
+        document.getElementById(id).value = parts[idx] || "";
+      });
+    } else {
+      document.getElementById(field.inputId).value = value;
+    }
+  });
+});
+/*
+// ✅ 2. 수정폼 열기
+document.getElementById("editBasicBtn").addEventListener("click", () => {
+  document.getElementById("basicInfoView").classList.add("d-none");
+  document.getElementById("basicInfoForm").classList.remove("d-none");
+});*/
+
+// ✅ 3. 수정 취소
+document.getElementById("cancelBasicBtn").addEventListener("click", () => {
+  document.getElementById("basicInfoForm").classList.add("d-none");
+  document.getElementById("basicInfoView").classList.remove("d-none");
 });
 
-// end 삭제버튼 클릭 영역
+// ✅ 4. 저장 (입력값 → resume, hidden input, 보기 영역)
+document.getElementById("saveBasicBtn").addEventListener("click", () => {
+  basicFields.forEach(field => {
+    let value;
+    if (Array.isArray(field.inputId)) {
+      value = field.inputId.map(id => document.getElementById(id).value.trim()).join(" ");
+    } else {
+      value = document.getElementById(field.inputId).value.trim();
+    }
+
+    resume[field.key] = value;
+    document.getElementById(field.hiddenId).value = value;
+
+    if (field.viewId && document.getElementById(field.viewId)) {
+      document.getElementById(field.viewId).textContent = value;
+    }
+  });
+
+  document.getElementById("basicInfoForm").classList.add("d-none");
+  document.getElementById("basicInfoView").classList.remove("d-none");
+});
+
+
+
+
 
 // 자소서 선택 로직 ====================================================================================================================
 document.addEventListener("DOMContentLoaded", function() {
