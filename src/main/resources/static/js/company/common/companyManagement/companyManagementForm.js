@@ -6,6 +6,11 @@
     const form = document.getElementById('companyForm');
     const industrySelect = document.getElementById('industryType');
     const cancelBtnEl = document.getElementById('cancelBtn');
+    const comTypeSelect = document.getElementById ('comType');
+    const comSizeSelect = document.getElementById('comSize');
+    const insuranceSelect = document.getElementById('insuranceYn');
+    
+
 
     axios.get('/ajax/code/indu')
            .then(({ data }) => {
@@ -20,29 +25,61 @@
           });
           
           
-              // 업종 코드가 잘 삽입되었는지 확인
-            console.log('업종 select 태그:', industrySelect.innerHTML);
+          
         })
         .catch(console.error);
 
 
+
+        axios.get('/ajax/code/cmncodegroup/COMT')
+            .then(resp =>{
+              const typeList = resp.data.cmnCodeList;
+              console.log(typeList);
+
+              typeList.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.codeDetailNo;
+                option.textContent = type.codeName;
+                comTypeSelect.appendChild(option);
+              })
+            }).catch(err =>{
+              console.error(err);
+        })
+
+    
+
+       axios.get('/ajax/code/cmncodegroup/SIZE')
+            .then(resp =>{
+              const sizeList = resp.data.cmnCodeList;
+              console.log(sizeList);
+
+               sizeList.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size.codeDetailNo;
+                option.textContent = size.codeName;
+                comSizeSelect.appendChild(option);
+              })
+            }).catch(err =>{
+              console.error(err);
+        })
+
+
     axios.get('/ajax/company/company_management')
       .then(({ data: company }) => {
-        // 회사의 각 정보 로드
-        ['comName', 'comCreateYear', 'comInfo', 'comNum', 'comEmail', 'comUrl', 'comMem', 'comPayment'].forEach(key => {
+      
+        ['comName', 'comCreateYear', 'comInfo', 'comNum', 'comEmail', 'comUrl', 'comMem', 'comPayment', 'comName', 'ceoName','comAddr', 'comCapital', 'comMainBiz'].forEach(key => {
           const el = document.getElementById(key);
-          if (el) el.value = company[key];
+           if (el) el.value = company[key] || '';
         });
 
-        // 업종 코드 세팅
-        const industrySelect = document.getElementById('industryType');
-        const selectedOption = industrySelect.querySelector(`option[textContent='${company.industryType}']`);
-        if (selectedOption) {
-          selectedOption.selected = true; // 해당 업종을 선택
-        } else {
-          console.error('업종 코드에 맞는 옵션을 찾을 수 없습니다.', company.industryType);
-        }
-      })
+       
+        setTimeout(() => {
+        if (company.industryType) industrySelect.value = company.industryType;
+        if (company.comType) comTypeSelect.value = company.comType;
+        if (company.comSize) comSizeSelect.value = company.comSize;
+        if (company.insuranceYn) insuranceSelect.value = company.insuranceYn;
+      }, 200); // 약간의 지연을 줘야 option 추가 후 value를 선택할 수 있음
+    })
       .catch(console.error);
 
    cancelBtnEl.addEventListener('click', () =>{history.back()});
@@ -50,8 +87,8 @@
    function formToJSON(form) {
         return Array.from(new FormData(form).entries())
           .reduce((o,[k,v]) => {
-            o[k] = (k==='comMem') 
-              ? (v ? parseInt(v,10) : null) 
+           o[k] = (['comMem', 'comCapital'].includes(k))
+              ? (v ? parseInt(v, 10) : null)
               : v;
             return o;
           }, {});

@@ -14,7 +14,6 @@ import kr.or.ddit.vo.common.InduCodeVO;
 
 @Service
 public class CompanyManagementServiceImpl implements CompanyManagementService {
-    
 	@Autowired
 	CompanyMapper companyMapper;
 	@Autowired
@@ -23,10 +22,15 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 
 	@Override
 	public CompanyVO readCompanyManagementById(String userId) {
-		CompanyVO company = companyMapper.selectCompanyManagementById(userId);
+		CompanyVO company = companyMapper.selectCompanyInfoById(userId);
 		String no = company.getIndustryType();
 		String name = provider.getInduName(no);
 		company.setIndustryType(name);
+	
+		String typeName = provider.getCodeName(company.getComType());
+		String sizeName = provider.getCodeName(company.getComSize());
+		company.setComType(typeName);
+		company.setComSize(sizeName);
 		return company;
 	}
 
@@ -41,6 +45,12 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 	    companyVO.setComUrl(companyInfoDTO.getComUrl());
 	    companyVO.setComMem(companyInfoDTO.getComMem());
 	    companyVO.setIndustryType(companyInfoDTO.getIndustryType());
+	    companyVO.setComType(companyInfoDTO.getComType());
+	    companyVO.setComSize(companyInfoDTO.getComSize());
+	    companyVO.setCeoName(companyInfoDTO.getCeoName());
+	    companyVO.setComAddr(companyInfoDTO.getComAddr());
+	    companyVO.setComMainBiz(companyInfoDTO.getComMainBiz());
+	    companyVO.setComCapital(companyInfoDTO.getComCapital());
 	    return companyMapper.updateCompanyInfoById(companyVO);
 	}
 	
