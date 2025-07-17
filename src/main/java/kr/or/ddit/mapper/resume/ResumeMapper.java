@@ -25,4 +25,8 @@ public interface ResumeMapper {
 	//추가
 	public List<ResumeVO> selectResumeWithCareers(String userId);
 	
+	// 해당회원이 작성한 이력서 갯수 구해옴 -> name님의 이력서 n 으로 사용
+	public int selectUserResumeNoCount(String userId);
+	
+	
 }

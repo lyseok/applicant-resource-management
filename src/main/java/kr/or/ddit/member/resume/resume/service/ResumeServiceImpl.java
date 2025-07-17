@@ -219,6 +219,18 @@ public class ResumeServiceImpl implements ResumeService {
 		return resumeCnt;
 	}
 
+	// 논리적 삭제
+	@Override
+	public int editResumeRemove(ResumeVO resumeVO) {
+		String resumeNo = resumeVO.getResumeNo();
+		
+		
+		
+		// resumeMapper.deleteResume(null);
+		return 0;
+
+	}
+
 	@Override
 	public int editResume(ResumeVO vo) {
 		return resumeMapper.updateResume(vo);
@@ -311,12 +323,6 @@ public class ResumeServiceImpl implements ResumeService {
 
 	}
 
-	@Override
-	public int editResumeRemove(ResumeVO vo) {
-		// resumeMapper.deleteResume(null);
-		return 0;
-
-	}
 
 	@Transactional
 	@Override
@@ -383,6 +389,11 @@ public class ResumeServiceImpl implements ResumeService {
 		if (res == 0) {
 			throw new DataInsertException("채용공고 지원 실패");
 		}
+	}
+
+	@Override
+	public int readUserResumeNoCount(String userId) {
+		return resumeMapper.selectUserResumeNoCount(userId);
 	}
 
 
