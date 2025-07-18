@@ -13,7 +13,7 @@
  const customerName = "홍길동";
  const method = '카드';
  const successUrl = "http://localhost/company/payment/success"
- 						+ `?productNo=${productNo}`;
+                   + `?productNo=${productNo}`;
  const failUrl = "http://localhost:8080/payment/fail";
  
     tossPayments.requestPayment(method, {
@@ -33,3 +33,9 @@
     
     
   }
+  
+   function goToDetail(card) {
+        const productNo = card.dataset.productNo;
+        // 상세 페이지로 이동 (GET 방식, productNo만 넘김)
+        window.location.href = "/company/payment/product/detail?productNo=" + encodeURIComponent(productNo);
+    }

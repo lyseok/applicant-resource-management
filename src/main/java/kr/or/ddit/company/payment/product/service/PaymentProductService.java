@@ -9,7 +9,7 @@ import kr.or.ddit.vo.common.PaymentProductVO;
 public interface PaymentProductService {
 	public List<PaymentProductVO> selectPaymentProductList();
 
-	public PaymentProductVO selectPaymentProductByPk(PaymentProductVO vo);
+	public PaymentProductVO selectPaymentProductByPk(String productNo);
 
 	public int insertPaymentProduct(PaymentProductVO vo);
 

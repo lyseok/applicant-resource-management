@@ -173,6 +173,15 @@
          </li>
        </ul>
      </li>
+     
+     <li class="menu-item">
+       <a href="/company/payment/product/list" class="menu-link">
+         <i class="menu-icon tf-icons bx bx-collection"></i>
+         <div data-i18n="Basic">구독상품 관리</div>
+       </a>
+     </li>
+     
+     
 	<!-- 여기까지 사이드바 작업하는 곳 -->
      <span id="logoutBtn">로그아웃</span>
      
