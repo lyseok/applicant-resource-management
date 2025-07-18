@@ -149,7 +149,7 @@ public class ResumeController {
 	}
 
 	  // 수정 로직 구현	  
-	  @GetMapping("update/{no}")
+	  @GetMapping("edit/{no}")
 	  public String createResume(
 		@PathVariable String no
 		, Model model

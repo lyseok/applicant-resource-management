@@ -9,9 +9,6 @@
 </head>
 <body>
 	<div class="resume-main-wrap resume_detail_wrap">
-	${resumeList}
-	
-	${resumeList.resumeNo}
 		<!-- Header -->
 		<div class="resume-header">
 			<div class="profile-img">🙍‍♂️</div>
@@ -291,7 +288,7 @@
 		<a href="/mypage/resume/list" class="btn btn_gray_line" onclick="showLoading()">목록</a>
 		<div class="d-flex gap-1">
 			<button type="button" class="btn btn_red_line" data-bs-toggle="modal" data-bs-target="#deleteResumeModal">삭제</button>
-			<a href="" class="btn btn_violet_line">수정</a>
+			<a href="/mypage/resume/edit/${resumeList.resumeNo }" class="btn btn_violet_line">수정</a>
 		</div>
 	</div>
 	

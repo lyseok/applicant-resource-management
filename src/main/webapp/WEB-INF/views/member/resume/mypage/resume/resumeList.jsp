@@ -88,14 +88,14 @@
 						</div>
 						<div class="d-flex gap-1">
 							<a class="btn btn_gray_line fw-normal" href="/mypage/resume/edit/${resume.resumeNo}">수정</a>
-							<a class="btn btn_red_line fw-normal" href="" data-bs-toggle="modal" data-bs-target="#deleteResumeModal">삭제</a>
+							<a class="btn btn_red_line fw-normal" href="" data-bs-toggle="modal" data-bs-target="#deleteResumeModal${resume.resumeNo}">삭제</a>
 						</div>
 					</li>
 				</ul>
 				
 				
 				<!-- 삭제 확인 모달 -->
-				<div class="modal fade" id="deleteResumeModal" tabindex="-1" aria-labelledby="deleteResumeModalLabel" aria-hidden="true">
+				<div class="modal fade" id="deleteResumeModal${resume.resumeNo}" tabindex="-1" aria-labelledby="deleteResumeModal${resume.resumeNo}Label" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header border-0">

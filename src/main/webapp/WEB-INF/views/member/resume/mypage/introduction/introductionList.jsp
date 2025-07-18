@@ -54,25 +54,25 @@
 						</div>
 						<div class="d-flex gap-1">
 							<a class="btn btn_violet_line fw-normal" href="<c:url value="/mypage/introduction/edit/${introduction.introductionNo}"/>">수정</a>
-							<a class="btn btn_red_line fw-normal" data-bs-toggle="modal" data-bs-target="#deleteIntroductionModal">삭제</a> <!-- onclick="return confirmDelete();" -->
+							<a class="btn btn_red_line fw-normal" data-bs-toggle="modal" data-bs-target="#deleteIntroductionModal${introduction.introductionNo}">삭제</a> <!-- onclick="return confirmDelete();" -->
 						</div>
 					</li>
 				</ul>
 				
 				<!-- 삭제 확인 모달 -->
-				<div class="modal fade" id="deleteIntroductionModal" tabindex="-1" aria-labelledby="deleteIntroductionModalLabel" aria-hidden="true">
+				<div class="modal fade" id="deleteIntroductionModal${introduction.introductionNo}" tabindex="-1" aria-labelledby="deleteIntroductionModalLabel${introduction.introductionNo}" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header border-0">
 								<h1 class="modal-title fs-5 fw-bold text-danger" id="deleteModalLabel">
-									<i class="bi bi-exclamation-triangle-fill me-1"></i> 면접 정보 삭제
+									<i class="bi bi-exclamation-triangle-fill me-1"></i> 자소서 정보 삭제
 								</h1>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body text-center py-4">
 								<div style="font-size:2.4rem; color:#dc3545; margin-bottom:10px;">❗</div>
 								<p class="fs-5 mb-2 fw-semibold" style="color:#c82333;">
-									해당 면접 정보를 <span style="color:#dc3545;">정말 삭제</span>하시겠습니까?
+									자소서를 <span style="color:#dc3545;">정말 삭제</span>하시겠습니까?
 								</p>
 								<p class="text-secondary mb-0" style="font-size:1.08rem;">
 									삭제된 데이터는 복구할 수 없습니다.<br>
