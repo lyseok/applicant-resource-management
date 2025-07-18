@@ -27,9 +27,9 @@
 			"Content-Type" : "application/json"
 		},
 		body : JSON.stringify({
-			billingKey : "빌링키",
-			customerKey : "user_123",
-			amount : 10000
+			billingKey : "${sessionScope.billingKey}",
+			customerKey : customerKey,
+			amount : "${product.productPrice}"
 		})
 	  })
 	  .then(res => res.json())

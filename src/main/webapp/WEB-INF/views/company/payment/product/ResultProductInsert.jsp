@@ -55,8 +55,8 @@
     </table>
 
     <div class="text-center mt-4">
-        <a href="/company/payment/product/add" class="btn btn-primary">다시 등록하기</a>
-        <a href="/company/payment/product/list" class="btn btn-secondary">목록으로</a>
+        <a href="/admin/add" class="btn btn-primary">다시 등록하기</a>
+        <a href="/admin/product/list" class="btn btn-secondary">목록으로</a>
     </div>
 </div>
 </body>
