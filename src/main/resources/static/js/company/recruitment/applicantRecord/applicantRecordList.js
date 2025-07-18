@@ -52,12 +52,12 @@ function generateRowDataAttributes(applicant) {
     data-major="${applicant.major}"
     data-cert="${(applicant.cert || []).join(',')}"
     data-skill="${(applicant.skill || []).join(',')}"
-    data-applicant-id="${applicant.APPLICANT_ID}"
-    data-applicant-name="${applicant.APPLICANT_NAME}"
-    data-recruitment-no="${applicant.RECRUITMENT_NO}"
-    data-process-no="${applicant.PROCESS_NO}"
-    data-step="${applicant.STEP}"
-    data-final="${applicant.FINAL}"
+    data-applicant-id="${applicant._applicantId}"
+    data-recruitment-no="${applicant._recruitmentNo}"
+    data-applicant-name="${applicant.name}"
+    data-process-no="${applicant._processNo}"
+    data-step="${applicant._step}"
+    data-final="${applicant._final}"
   `;
 }
 
@@ -178,7 +178,15 @@ function closeStep(){
 		return;
 	}
 	
-	axios.post()
+	axios.post(`/applicant/record/pass`, selectedApplicants)
+		.then(res=>{
+			alert(`마감 완료, ${selectedApplicants.length}명 반영됨`);
+			fetchApplicantData(recruitmentNo);
+		})
+		.catch(err=>{
+			console.error('단계 마감 실패', err);
+			alert('단계 마감 중 오류가 발생했습니다.');
+		});
    	
   }
   
@@ -342,7 +350,13 @@ async function fetchApplicantData(recruitmentNo) {
         attend: row.attend ?? "-",
         pass: row.PASS ?? "-",
         score: row.exam_score ?? row.interview_score ?? null,
-        _userId:userId
+        
+        _userId:userId,
+        _recruitmentNo : row.RECRUITMENT_NO,
+        _applicantId : row.APPLICANT_ID,
+        _processNo : row.PROCESS_NO,
+        _step : row.STEP,
+        _final : row.FINAL,
       });
     });
 

@@ -64,6 +64,21 @@
 	ORDER BY step, applicant_id
 	</select>
 	
+	<select id="selectDuplicateRecord">
+	SELECT 
+		APPLICANT_RECORD_NO
+		, RECRUIT_PROCESS_NO
+		, APPLICANT_ID
+		, STEP_PASS_YN
+		, STEP_APPLICATION_YN
+		, INTERVIEW_URL
+		, EVALUATION_START_TIME
+		, APPLICANT_NAME
+	FROM APPLICANT_RECORD 
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
+	</select>
+	
 	<insert id="insertApplicantRecord">
 		<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
 	    SELECT
@@ -73,14 +88,14 @@
 	 	</selectKey>
 		INSERT INTO APPLICANT_RECORD (
 			APPLICANT_RECORD_NO
-			, RECRUITMENT_NO
+			, RECRUIT_PROCESS_NO
 			, APPLICANT_ID
 			, APPLICANT_NAME
 			, STEP_PASS_YN
 			, STEP_APPLICATION_YN
 		) VALUES (
 			#{applicantRecordNo}
-			, #{recruitmentNo}
+			, #{recruitProcessNo}
 			, #{applicantId}
 			, #{applicantName}
 			, 'N'

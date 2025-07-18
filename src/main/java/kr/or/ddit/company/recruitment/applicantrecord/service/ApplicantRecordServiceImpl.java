@@ -39,7 +39,9 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 		}else {
 			RecruitProcessVO processVo = new RecruitProcessVO();
 			processVo.setRecruitmentNo(vo.getRecruitmentNo());
-			processVo.setRecruitProcessStep(vo.getRecruitProcessStep()+1);
+			int step = Integer.parseInt(vo.getRecruitProcessStep())+1;
+			String formatStep = Integer.toString(step);
+			processVo.setRecruitProcessStep(formatStep);
 			processVo = processMapper.selectNextStep(processVo);
 			
 			if(vo.getRecruitProcessFinal().equals("N")) {				
@@ -47,10 +49,20 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 				applVo.setRecruitProcessNo(processVo.getRecruitProcessNo());
 				applVo.setApplicantId(vo.getApplicantId());
 				applVo.setApplicantName(vo.getApplicantName());
+				if(applMapper.selectDuplicateRecord(applVo)==null) {					
+					applMapper.insertApplicantRecord(applVo);
+				}else {
+					return;
+				}
 			}else {
 				PasserVO pass = new PasserVO();
 				pass.setApplicantId(vo.getApplicantId());
-				passMapper.insertPasser(pass);
+				pass.setRecruitmentNo(vo.getRecruitmentNo());
+				if(passMapper.selectDuplicatePasser(pass)==null) {					
+					passMapper.insertPasser(pass);
+				}else {
+					return;
+				}
 			}
 			
 		}

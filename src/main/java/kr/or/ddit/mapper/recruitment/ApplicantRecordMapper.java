@@ -17,6 +17,7 @@ public interface ApplicantRecordMapper {
 	public String selectMemberVideoURL(String ApplicantRecordNo);
 	
 	public List<Map<String, Object>> getApplicantByRecruitment(String recruitmentNo);
+	public ApplicantRecordVO selectDuplicateRecord(ApplicantRecordVO vo);
 	public int updateInterviewURL(ApplicantRecordVO vo);
 	public int updateApplication(String ApplicantRecordNo);
 	public int updateApplicantPass(ApplicantRecordVO vo);
