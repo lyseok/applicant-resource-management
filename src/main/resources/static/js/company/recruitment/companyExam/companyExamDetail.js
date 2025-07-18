@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 							<br>
 				            <ul class="list-group">
 				              ${q.optionList.map((opt, oi) =>
-			
-								` <li class="list-group-item">
+
+					` <li class="list-group-item">
 							               보기 ${oi + 1}: ${opt.comOptionContent}
 							                ${opt.comOptionCorrectYn === 'Y' ? '<strong>(정답)</strong>' : ''}
 							      </li>`).join('')}
@@ -43,9 +43,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	})
 
 
-	exitBtnEl.addEventListener('click', () =>{
+	exitBtnEl.addEventListener('click', () => {
 		location.href = '/company/company_exam'
 	})
 
+
+
+	document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+		axios.get(`/ajax/company/company_exam/delete/${examNo}`)
+			.then(resp => {
+				bootstrap.Modal.getOrCreateInstance(document.getElementById('deleteExamModal')).hide();
+				alert('시험이 삭제되었습니다.');
+				location.href = '/company/company_exam';
+			})
+			.catch(err => {
+				console.error('삭제 오류:', err);
+				alert('삭제 중 오류가 발생했습니다.');
+			});
+	});
 
 })
