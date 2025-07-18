@@ -12,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
-	private CompanyMapper companyMapper;
-	private CodeMapProvider codeMapProvider;
-	private CompanySalesMapper companySalesMapper;
-	private CompanyOpProfitMapper companyOpProfitMapper;
+	private final CompanyMapper companyMapper;
+	private final CodeMapProvider codeMapProvider;
+	private final CompanySalesMapper companySalesMapper;
+	private final CompanyOpProfitMapper companyOpProfitMapper;
 	
 
 	@Override

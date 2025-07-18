@@ -4,6 +4,7 @@
 <head>
 	<title>회사 상세</title>
 	<link rel="stylesheet" href="/dist/assets/css/company/companyView.css" >
+	<script src="/js/member/common/companyDetailView/companyDetailView.js"></script>
 </head>
 <body>
 	<div class="company-header n_inner">
