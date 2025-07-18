@@ -1,193 +1,67 @@
 let currentStep = 'step1'; // 초기 단계
 
 // 컬럼 정보(스텝별로 다르면 이렇게 관리)
-const columns = {
-  step1: [
-    { key: 'id', label: '지원자ID' },
+const columns = {};
+
+function generateColumns(step, type) {
+  const baseCols = [
+    { key: 'bir', label: '생년월일' },
     { key: 'name', label: '이름' },
-    { key: 'resumeUrl', label: '이력서' },
+    { key: 'resumeNo', label: '이력서' },
     { key: 'career', label: '경력' },
     { key: 'language', label: '어학' },
     { key: 'major', label: '전공' },
     { key: 'cert', label: '자격증' },
     { key: 'skill', label: '기술' },
-    { key: 'attend', label: '응시' },
-    { key: 'pass', label: '합격' },
-    { key: 'score', label: '점수' },
-    { key: 'passSelect', label: '합격선택' }
-  ],
-  step2: [
-    // 시험점수 등 step2 컬럼 맞게
-    { key: 'id', label: '지원자ID' },
-    { key: 'name', label: '이름' },
-    { key: 'resumeUrl', label: '이력서' },
-    { key: 'career', label: '경력' },
-    { key: 'language', label: '어학' },
-    { key: 'major', label: '전공' },
-    { key: 'cert', label: '자격증' },
-    { key: 'skill', label: '기술' },
-    { key: 'attend', label: '응시' },
-    { key: 'pass', label: '합격' },
-    { key: 'score', label: '시험점수' },
-    { key: 'passSelect', label: '합격선택' }
-  ],
-  step3: [
-    // 면접점수 등 step3 컬럼 맞게
-    { key: 'id', label: '지원자ID' },
-    { key: 'name', label: '이름' },
-    { key: 'resumeUrl', label: '이력서' },
-    { key: 'career', label: '경력' },
-    { key: 'language', label: '어학' },
-    { key: 'major', label: '전공' },
-    { key: 'cert', label: '자격증' },
-    { key: 'skill', label: '기술' },
-    { key: 'attend', label: '응시' },
-    { key: 'pass', label: '합격' },
-    { key: 'score', label: '면접점수' },
-    { key: 'passSelect', label: '합격선택' }
-  ]
-};
+    { key: 'attend', label: '응시여부' },
+    { key: 'pass', label: '합격여부' }
+  ];
 
-let applicantData = {
-  step1: [
-    {
-      id: "APPL1001",
-      name: "김지원",
-      resumeUrl: "resume/1001.pdf",
-      career: 5,
-      language: 900,
-      major: "컴퓨터공학",
-      cert: ["정보처리기사", "산업안전기사"],
-      skill: ["Java", "Python", "React"],
-      attend: "Y",
-      pass: "Y",
-      score: null
-    },
-    {
-      id: "APPL1002",
-      name: "이서류",
-      resumeUrl: "resume/1002.pdf",
-      career: 2,
-      language: 800,
-      major: "산업공학",
-      cert: ["정보처리기사"],
-      skill: ["Python"],
-      attend: "Y",
-      pass: "N",
-      score: null
-    },
-    {
-      id: "APPL1003",
-      name: "박기계",
-      resumeUrl: "resume/1003.pdf",
-      career: 4,
-      language: 700,
-      major: "기계공학",
-      cert: ["정보처리기능사"],
-      skill: ["Java"],
-      attend: "Y",
-      pass: "Y",
-      score: null
-    },
-    {
-      id: "APPL1004",
-      name: "최경력",
-      resumeUrl: "resume/1004.pdf",
-      career: 8,
-      language: 850,
-      major: "산업공학",
-      cert: ["정보처리기사"],
-      skill: ["Java", "React"],
-      attend: "Y",
-      pass: "Y",
-      score: null
-    },
-    {
-      id: "APPL1005",
-      name: "유신입",
-      resumeUrl: "resume/1005.pdf",
-      career: 1,
-      language: 750,
-      major: "컴퓨터공학",
-      cert: [],
-      skill: ["Python", "HTML"],
-      attend: "Y",
-      pass: "N",
-      score: null
-    }
-  ],
-  step2: [
-    {
-      id: "APPL1001",
-      name: "김지원",
-      resumeUrl: "resume/1001.pdf",
-      career: 5,
-      language: 900,
-      major: "컴퓨터공학",
-      cert: ["정보처리기사", "산업안전기사"],
-      skill: ["Java", "Python", "React"],
-      attend: "Y",
-      pass: "Y",
-      score: 88
-    },
-    {
-      id: "APPL1003",
-      name: "박기계",
-      resumeUrl: "resume/1003.pdf",
-      career: 4,
-      language: 700,
-      major: "기계공학",
-      cert: ["정보처리기능사"],
-      skill: ["Java"],
-      attend: "Y",
-      pass: "N",
-      score: 74
-    },
-    {
-      id: "APPL1004",
-      name: "최경력",
-      resumeUrl: "resume/1004.pdf",
-      career: 8,
-      language: 850,
-      major: "산업공학",
-      cert: ["정보처리기사"],
-      skill: ["Java", "React"],
-      attend: "Y",
-      pass: "Y",
-      score: 93
-    }
-  ],
-  step3: [
-    {
-      id: "APPL1001",
-      name: "김지원",
-      resumeUrl: "resume/1001.pdf",
-      career: 5,
-      language: 900,
-      major: "컴퓨터공학",
-      cert: ["정보처리기사", "산업안전기사"],
-      skill: ["Java", "Python", "React"],
-      attend: "Y",
-      pass: "",
-      score: 92
-    },
-    {
-      id: "APPL1004",
-      name: "최경력",
-      resumeUrl: "resume/1004.pdf",
-      career: 8,
-      language: 850,
-      major: "산업공학",
-      cert: ["정보처리기사"],
-      skill: ["Java", "React"],
-      attend: "Y",
-      pass: "",
-      score: 85
-    }
-  ]
-};
+  // 점수 항목 이름 다르게 처리
+  const scoreLabel = type === 'RERP-001' ? '시험점수'
+                  : type === 'RERP-002' ? '면접점수'
+                  : '점수';
 
+  baseCols.push({ key: 'score', label: scoreLabel });
+  baseCols.push({ key: 'passSelect', label: '합격선택' });
 
+  columns["step" + step] = baseCols;
+}
+
+function formatCellValue(key, value, applicant) {
+  if (key === 'resumeNo' ) {
+    return `<button class="btn btn-outline-primary btn-sm resume-link" data-resume-no="${value}" data-user-id="${applicant._userId}">상세</button>`;
+  }
+  if (key === 'passSelect') {
+    const checked = applicant.pass === 'Y' ? 'checked' : '';
+    return `<input type="checkbox" class="form-check-input passCheck" ${checked} />`;
+  }
+  if (Array.isArray(value)) {
+    return value.join(', ');
+  }
+  if (value === null || value === undefined || value === '') {
+    return '-';
+  }
+  return key === 'career' ? `${value}년` : value;
+}
+
+function generateRowDataAttributes(applicant) {
+  return `
+    data-career="${applicant.career}"
+    data-language="${applicant.language}"
+    data-major="${applicant.major}"
+    data-cert="${(applicant.cert || []).join(',')}"
+    data-skill="${(applicant.skill || []).join(',')}"
+    data-applicant-id="${applicant._applicantId}"
+    data-recruitment-no="${applicant._recruitmentNo}"
+    data-applicant-name="${applicant.name}"
+    data-process-no="${applicant._processNo}"
+    data-step="${applicant._step}"
+    data-final="${applicant._final}"
+  `;
+}
+
+let applicantData = {};
 
 // ======================= 테이블랜더 ========================
 
@@ -195,31 +69,41 @@ let applicantData = {
 function renderApplicantTable() {
   const tableHead = document.querySelector('#mainTable thead tr');
   const tableBody = document.querySelector('#mainTable tbody');
+  
+  const columnSet = columns[currentStep];
+  const dataList = applicantData[currentStep];
+  
+  // 컬럼 정의 안 된 경우 안전 처리
+  if (!columnSet) {
+    tableHead.innerHTML = '<th colspan="100%" class="text-center text-danger">이 단계에 대한 컬럼 정보가 없습니다</th>';
+    tableBody.innerHTML = '<tr><td colspan="100%">해당 단계에 대한 컬럼 설정이 필요합니다</td></tr>';
+    return;
+  }
+  
   // 헤더 렌더링
-  tableHead.innerHTML = columns[currentStep].map(col => `<th class="text-center">${col.label}</th>`).join('');
+  tableHead.innerHTML = columnSet.map(col => `<th class="text-center">${col.label}</th>`).join('');
+  
+  // "지원자 ID"가 없는 행 제외
+  const validDataList = Array.isArray(dataList)
+    ? dataList.filter(row => row.name)
+    : [];
+
+  if (validDataList.length === 0) {
+    tableBody.innerHTML = ''; // 아무 행도 안 만듦
+    return;
+  }
+  
   // 바디 렌더링
-  tableBody.innerHTML = applicantData[currentStep].map(a => {
-    return `<tr data-career="${a.career}" data-language="${a.language}" data-major="${a.major}"
-          data-cert="${a.cert.join(',')}" data-skill="${a.skill.join(',')}">
-        <td>${a.id}</td>
-        <td>${a.name}</td>
-        <td><a href="${a.resumeUrl}" target="_blank" class="btn btn-outline-primary btn-sm">상세</a></td>
-        <td>${a.career}년</td>
-        <td>${a.language}</td>
-        <td>${a.major}</td>
-        <td>${a.cert.join(', ')}</td>
-        <td>${a.skill.join(', ')}</td>
-        <td>${a.attend && a.attend.trim() ? a.attend : '-'}</td>
-        <td>${a.pass && a.pass.trim() ? a.pass : '-'}</td>
-        <td>${a.score !== null ? a.score : '-'}</td>
-        <td>
-          <input type="checkbox" class="form-check-input passCheck"
-            ${a.pass === 'Y' ? 'checked' : ''}
-            ${(a.pass === 'Y' || a.pass === 'N') ? 'disabled' : ''}>
-        </td>
-      </tr>`;
-  }).join('');
-  applyFilters();
+  tableBody.innerHTML = validDataList.map(applicant => {
+	return `<tr ${generateRowDataAttributes(applicant)}>
+	      ${columnSet.map(col => {
+	        const value = applicant[col.key];
+	        return `<td>${formatCellValue(col.key, value, applicant)}</td>`;
+	      }).join('')}
+	    </tr>`;
+	  }).join('');
+
+	  applyFilters();
 }
 
 // 탭 버튼 클릭시 active 변경 및 스텝 변경
@@ -263,17 +147,47 @@ function savePassStatus(){
 // 단계 마감(합격자 일괄적용)
 function closeStep(){
     const activeTable = document.querySelector('.tab-pane.active table');
-    let cnt=0;
+    let selectedApplicants = [];
     activeTable.querySelectorAll('tbody tr').forEach(tr => {
       const check = tr.querySelector('.passCheck');
       if(check && check.checked){
+		const applicantId = tr.dataset.applicantId;
+      	const applicantName = tr.dataset.applicantName;
+      	const recruitmentNo = tr.dataset.recruitmentNo;
+      	const recruitProcessNo = tr.dataset.processNo;
+      	const recruitProcessFinal = tr.dataset.final;
+      	const recruitProcessStep = tr.dataset.step;
+      	
+      	selectedApplicants.push({
+			applicantId,
+			applicantName,
+			recruitmentNo,
+			recruitProcessNo,
+			recruitProcessStep,
+			recruitProcessFinal
+		});
+		
         tr.children[9].innerText = 'Y';
-        cnt++;
       }else{
         tr.children[9].innerText = 'N';
       }
     });
-    alert('마감 완료, 합격자 '+cnt+'명 반영(프론트)');
+    
+    if(selectedApplicants.length === 0){
+		alert('선택된 지원자가 없습니다.');
+		return;
+	}
+	
+	axios.post(`/applicant/record/pass`, selectedApplicants)
+		.then(res=>{
+			alert(`마감 완료, ${selectedApplicants.length}명 반영됨`);
+			fetchApplicantData(recruitmentNo);
+		})
+		.catch(err=>{
+			console.error('단계 마감 실패', err);
+			alert('단계 마감 중 오류가 발생했습니다.');
+		});
+   	
   }
   
   renderApplicantTable();
@@ -401,3 +315,58 @@ window.addEventListener('DOMContentLoaded', function() {
     applyFilters();
   });
 });
+
+async function fetchApplicantData(recruitmentNo) {
+  try {
+    const response = await axios.get(`/applicant/record/${recruitmentNo}`);
+    const result = response.data;
+	
+	const stepMetaList = result.map(r => ({
+      step: r.STEP,
+      step_type: r.STEP_TYPE
+    })).filter((v, i, arr) =>
+      v.step && arr.findIndex(d => d.step === v.step) === i
+    );
+    
+    stepMetaList.forEach(info => generateColumns(info.step, info.step_type));
+
+    const applicantDataTemp = {};
+    result.forEach(row => {
+      const stepKey = "step" + row.STEP;
+      if (!applicantDataTemp[stepKey]) applicantDataTemp[stepKey] = [];
+      
+      const resumeNo = row.RESUMEURL
+      const userId = row.USERID
+      
+        applicantDataTemp[stepKey].push({
+        bir: row.bir,
+        name: row.APPLICANT_NAME,
+        resumeNo: resumeNo || "#",
+        career: row.career ?? 0,
+        language: row.language ?? 0,
+        major: row.major ?? "",
+        cert: row.cert ?? [],
+        skill: row.skill ?? [],
+        attend: row.attend ?? "-",
+        pass: row.PASS ?? "-",
+        score: row.exam_score ?? row.interview_score ?? null,
+        
+        _userId:userId,
+        _recruitmentNo : row.RECRUITMENT_NO,
+        _applicantId : row.APPLICANT_ID,
+        _processNo : row.PROCESS_NO,
+        _step : row.STEP,
+        _final : row.FINAL,
+      });
+    });
+
+    applicantData = applicantDataTemp;
+    renderApplicantTable();
+    fillFilterOptions();
+  } catch (error) {
+    console.error('지원자 데이터 가져오기 실패:', error);
+  }
+}
+
+fetchApplicantData(recruitmentNo);
+console.log(applicantData);

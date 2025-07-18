@@ -12,6 +12,18 @@
 	FROM APPLICANT
 	</select>
 	
+	<select id="selectApplicantListByNo">
+	SELECT
+		APPLICANT_ID
+		, RECRUITMENT_NO
+		, RESUME_NO
+		, RESUME_VIEW_YN
+		, USER_ID
+	FROM APPLICANT
+	WHERE RECRUITMENT_NO = #{recruitmentNo}
+	AND APPLICANT_DEL_DATE IS NULL
+	</select>
+	
 	<select id="selectApplicant" resultType="ApplicantVO">
 	SELECT 
 		APPLICANT_ID

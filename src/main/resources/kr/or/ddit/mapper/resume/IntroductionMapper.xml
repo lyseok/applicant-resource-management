@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="selectIntroductionDetail">
-		SELECT INTRODUCTION_NO, USER_ID, INTRODUCTION_NAME, INTRODUCTION_CONTENT, INTRODUCTION_QUESTION 
+		SELECT INTRODUCTION_NO, USER_ID, INTRODUCTION_NAME, INTRODUCTION_QUESTION, INTRODUCTION_CONTENT 
 		  FROM INTRODUCTION
 		 WHERE INTRODUCTION_NO = #{introductionNo}
 	</select>
@@ -27,11 +27,13 @@
 			, USER_ID
 			, INTRODUCTION_NAME
 			, INTRODUCTION_CONTENT
+			, INTRODUCTION_QUESTION
 			, INTRODUCTION_CREATE_DATE
 		) VALUES (
 			#{introductionNo}
 			, #{userId}
 			, #{introductionName}
+			, #{introductionQuestion}
 			, #{introductionContent}
 			, TO_CHAR(SYSDATE, 'YYYYMMDD')
 		)
@@ -40,6 +42,7 @@
 	<update id="updateIntroduction">
 		UPDATE INTRODUCTION 
 		   SET INTRODUCTION_NAME = #{introductionName}
+		       , INTRODUCTION_QUESTION = #{introductionQuestion}
 		       , INTRODUCTION_CONTENT = #{introductionContent}
 		 WHERE INTRODUCTION_NO = #{introductionNo}
 		   AND USER_ID = #{userId}
