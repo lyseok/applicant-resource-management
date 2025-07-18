@@ -3,32 +3,24 @@
  */
 const userTable = document.querySelector("#userTable");
 const userTableBody = document.querySelector("#userTableBody");
+const users = [
+  { 
+ 	  userId: "userId"
+    , userPassword: "userPassword"
+    , userRole: "userRole"
+    , userWithdrawDate: "userWithdrawDate"
+    , userStatus: "userStatus"
+    , userEnabled: "userEnabled"
+  }
+ ];
 
 //전체 리스트가 먼저 나옴
 function auserList(){
 fetch(`/ajax/admin/common/users`).then((resp) => {
   resp.json().then((rslt) => {
-    console.log("회원 나오니? :", rslt);
-    console.log("첫 번째 user", rslt[0]);
-
     rslt.forEach((user) => {
-      console.log("유저 거기 있지? : ", user);
-      
-      const users = [
-		  { 
-		 	  userId: "userId"
-		    , userPassword: "userPassword"
-		    , userRole: "userRole"
-		    , userWithdrawDate: "userWithdrawDate"
-		    , userStatus: "userStatus"
-		    , userEnabled: "userEnabled"
-		  }
-		 ];
-		
-		users.forEach((user, index) => {
+		users.forEach((user, idx) => {
 		  const tr = document.createElement("tr");
-		
-		  // ✅ 체크박스 cell
 		  const tdCheck = document.createElement("td");
 		  const checkbox = document.createElement("input");
 		  checkbox.type = "checkbox";
@@ -104,8 +96,6 @@ function userbar() {
 				    <!-- JS에서 동적으로 행 추가 -->
 				  </tbody>`;
 				  
-		const userTableBody = document.querySelector("#userTableBody");
-		
 		auserList(params.toString());
 
          //검색 데이터로 채우기

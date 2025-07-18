@@ -35,7 +35,11 @@
 	    </tr>
 	  </thead>
 	  <tbody id="userTableBody">
-	    <!-- JS에서 동적으로 행 추가 -->
+	  	<tr>
+	  		<input class="form-check-input" type="checkbox" value="" id="">
+			  <label class="form-check-label" id="userId"></label>
+			<td></td>
+	  	</tr>
 	  </tbody>
 	</table>
 		
