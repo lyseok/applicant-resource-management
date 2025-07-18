@@ -1586,18 +1586,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // 이력서 기본정보 수정로직 ====================================================================================================================
 // 공통 필드 배열
-const basicFields = [
-	{ key: "userName", inputId: "inputUserName", hiddenId: "hiddenUserName", viewId: "viewName" },
-	{ key: "birth", inputId: "inputBirth", hiddenId: "hiddenBirth", viewId: "viewBirth" },
-	{ key: "email", inputId: "inputEmail", hiddenId: "hiddenEmail", viewId: "viewEmail" },
-	{ key: "tel", inputId: "inputTel", hiddenId: "hiddenTel", viewId: "viewTel" },
-	{
-		key: "address",
-		inputId: "inputAddress",
-		hiddenId: "hiddenAddress",
-		viewId: "viewAddress"
-	}
-];
+const basicFields = mode === "update"
+  ? [
+      { key: "userName", inputId: "inputUserName", viewId: "viewName" },
+      { key: "birth", inputId: "inputBirth", viewId: "viewBirth" },
+      { key: "email", inputId: "inputEmail", viewId: "viewEmail" },
+      { key: "tel", inputId: "inputTel", viewId: "viewTel" },
+      { key: "address", inputId: "inputAddress", viewId: "viewAddress" }
+    ]
+  : [
+      { key: "memName", inputId: "inputUserName", viewId: "viewName" },
+      { key: "memBir", inputId: "inputBirth", viewId: "viewBirth" },
+      { key: "memEmail", inputId: "inputEmail", viewId: "viewEmail" },
+      { key: "memTel", inputId: "inputTel", viewId: "viewTel" },
+      { key: "memAddress", inputId: "inputAddress", viewId: "viewAddress" }
+    ];
+
 
 // ✅ 초기 바인딩
 window.addEventListener("DOMContentLoaded", () => {
@@ -2048,4 +2052,105 @@ console.log(resume)
 				}
 			});
 		});
+});
+
+
+// 수정모드일 때 사용할 공통코드들!
+async function preloadCodeGroups(groups = []) {
+  await Promise.all(groups.map(async group => {
+    const url = `/ajax/code/cmncodegroup/${group}`;
+    try {
+      const resp = await axios.get(url);
+      const list = resp.data.cmnCodeList || [];
+      codeLabelMap[group] = {};
+      list.forEach(i => {
+        codeLabelMap[group][i.codeDetailNo] = i.codeName;
+      });
+    } catch (err) {
+      console.warn(`[${group}] 코드 로딩 실패`, err);
+    }
+  }));
+}
+
+
+
+window.addEventListener("DOMContentLoaded", async () => {
+  if (typeof mode !== "undefined" && mode === "update" && typeof resumeFromServer !== "undefined") {
+    
+    // ✅ 여기서 먼저 코드 그룹 로딩이 끝날 때까지 기다리기
+    await preloadCodeGroups(["GRAD", "EDUC", "SPEC", "VULN", "DSBL", "LANG", "MILT", "SRVC"]);
+		
+    Object.assign(resume, resumeFromServer);
+
+    // ✅ 자기소개서 존재 여부 체크
+    if (resume.introductionNo && !resume.introduction) {
+      alert("연결된 자기소개서가 삭제되었습니다. 다시 선택해 주세요.");
+      // 예: 자소서 영역 리셋 or 비우기
+      const introContainer = document.querySelector("#section-introduction .listContainer");
+      if (introContainer) {
+        introContainer.innerHTML = "";
+        introContainer.classList.add("d-none");
+      }
+      const introSection = document.querySelector("#section-introduction");
+      introSection.querySelector(".section-content")?.classList.remove("d-none");
+      introSection.querySelector(".btn-introduction")?.classList.remove("d-none");
+      // → 사용자에게 다시 선택하게 하기
+    } else if (resume.introductionNo && resume.introduction) {
+      // ✅ 자소서가 존재하면 렌더링
+      const introContainer = document.querySelector("#section-introduction .listContainer");
+      introContainer.classList.remove("d-none");
+      introContainer.innerHTML = `
+        <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2 w-100">
+          <div>
+            <strong>${resume.introduction?.introductionName || '자기소개서'}</strong>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn_edit" data-type="introduction">
+              <span class="material-symbols-outlined fs-3">stylus</span>
+            </button>
+            <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="introduction" data-idx="0">
+              <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
+            </button>
+          </div>
+        </div>
+      `;
+      const introSection = document.querySelector("#section-introduction");
+      if (introSection) {
+	      introSection.querySelector(".section-content")?.classList.add("d-none");
+	      introSection.querySelector(".btn-introduction")?.classList.add("d-none");
+      }
+    }
+    
+    // 기본정보 바인딩
+    basicFields.forEach(field => {
+      const value = resume[field.key] || "";
+      const input = document.getElementById(field.inputId);
+      const view = document.getElementById(field.viewId);
+      if (input) input.value = value;
+      if (view) view.textContent = value;
+    });
+
+    // 리스트 타입 항목들 렌더링
+    for (const [key, arr] of Object.entries(resume)) {
+      if (!Array.isArray(arr)) continue;
+      const listType = key;
+      const container = document.querySelector(`#section-${listType} .listContainer`);
+      if (!container) continue;
+      container.innerHTML = '';
+      container.classList.remove("d-none");
+
+      arr.forEach((item, idx) => {
+        const html = listItemMap[listType]?.(idx, item, listType);
+        if (html) container.insertAdjacentHTML("beforeend", html);
+      });
+
+      typeCounters[listType] = arr.length;
+
+      const secCont = document.querySelector(`#section-${listType} .section-content`);
+      const addBtn = document.querySelector(`#section-${listType} .add-btn`);
+      if (secCont) secCont.style.display = 'none';
+      if (addBtn) addBtn.style.display = '';
+    }
+
+  }
 });
