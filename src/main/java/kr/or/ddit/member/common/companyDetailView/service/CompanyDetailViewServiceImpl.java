@@ -25,7 +25,6 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 		company.setComType(typeName);
 		company.setComSize(sizeName);
 		return company;
-		
 	}
 	
 	

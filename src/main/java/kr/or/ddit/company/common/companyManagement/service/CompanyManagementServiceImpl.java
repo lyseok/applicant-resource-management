@@ -44,6 +44,7 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 	    companyVO.setComEmail(companyInfoDTO.getComEmail());
 	    companyVO.setComUrl(companyInfoDTO.getComUrl());
 	    companyVO.setComMem(companyInfoDTO.getComMem());
+	    companyVO.setInsuranceYn(companyInfoDTO.getInsuranceYn());
 	    companyVO.setIndustryType(companyInfoDTO.getIndustryType());
 	    companyVO.setComType(companyInfoDTO.getComType());
 	    companyVO.setComSize(companyInfoDTO.getComSize());
