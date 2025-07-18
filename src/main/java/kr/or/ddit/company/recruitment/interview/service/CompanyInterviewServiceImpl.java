@@ -2,6 +2,8 @@ package kr.or.ddit.company.recruitment.interview.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.common.exception.DataInsertException;
@@ -36,7 +38,9 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 	
 	@Override
 	public List<InterviewVO> readInterviewList() {
-		List<InterviewVO> interviewList = interviewMapper.selectInterviewList();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		List<InterviewVO> interviewList = interviewMapper.selectInterviewListByCompany(username);
 		for(InterviewVO inteVo : interviewList) {
 			setCodeName(inteVo);
 		}
