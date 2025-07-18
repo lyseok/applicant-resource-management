@@ -19,5 +19,8 @@ public interface CareerService {
 	public void removeCareer(String no);
 	
 	// 컴퍼니 id, name 조회
-	public List<CompanyVO> readCompanyInfoWithCareer();
+	public List<CompanyVO> readCompanyInfoWithCareerList();
+	
+	// 컴퍼니 단건 조회
+	public CompanyVO readCompanyInfoWithCareer(String id);
 }

@@ -15,11 +15,26 @@
 	SELECT 
 		PASSER_NO
 		, APPLICANT_ID
+		, RECRUITMENT_NO
 		, PASS_ALARM_YN
 		, RECRUIT_ACCEPT_YN
 		, HIRE_DATE 
 	FROM PASSER 
 	WHERE PASSER_NO = #{passerNo}
+	</select>
+	
+	<select id="selectDuplicatePasser">
+	SELECT 
+		PASSER_NO
+		, APPLICANT_ID
+		, RECRUITMENT_NO
+		, PASS_ALARM_YN
+		, RECRUIT_ACCEPT_YN
+		, HIRE_DATE 
+	FROM PASSER 
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUITMENT_NO = #{recruitmentNo}
+		
 	</select>
 	
 	<insert id="insertPasser">
@@ -32,12 +47,14 @@
 	INSERT INTO PASSER (
 		PASSER_NO
 		, APPLICANT_ID
+		, RECRUITMENT_NO
 		, PASS_ALARM_YN
 		, RECRUIT_ACCEPT_YN
 		, HIRE_DATE
 	) VALUES (
 	#{passerNo}
 	, #{applicantId}
+	, #{recruitmentNo}
 	, 'N'
 	, 'N'
 	, #{hireDate}

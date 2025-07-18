@@ -43,8 +43,13 @@ public class CareerServiceImpl implements CareerService {
 	}
 
 	@Override
-	public List<CompanyVO> readCompanyInfoWithCareer() {
+	public List<CompanyVO> readCompanyInfoWithCareerList() {
 		return Companymapper.selectCompanyWithResumeCareer();
+	}
+
+	@Override
+	public CompanyVO readCompanyInfoWithCareer(String id) {
+		return Companymapper.selectCompanyById(id);
 	}
 
 }

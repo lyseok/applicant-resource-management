@@ -147,8 +147,13 @@ body {
 
 					<!-- 기업설명 -->
 					<div class="section-form-row vertical">
-						<label class="required">기업설명</label>
+						<label>기업설명</label>
 						<textarea id="comInfo" name="comInfo" class="form-control"></textarea>
+					</div>
+					
+					<div class="section-form-row">
+					  <label>대표자 이름</label>
+					  <input type="text" id="ceoName" name="ceoName" class="form-control">
 					</div>
 
 					<!-- 대표번호 -->
@@ -174,14 +179,59 @@ body {
 						<label class="required">직원수</label> <input type="number"
 							id="comMem" name="comMem" class="form-control" min="1">
 					</div>
+					
+					<!-- 주소 -->
+					<div class="section-form-row">
+						<label class="required">주소</label> <input type="text"
+							id="comAddr" name="comAddr" class="form-control">
+					</div>
+					
+					<!-- 자본금 -->
+					<div class="section-form-row">
+						<label class="required">자본금</label> <input type="number"
+							id="comCapital" name="comCapital" class="form-control">
+					</div>
+					<!--주요 사업 -->
+					<div class="section-form-row">
+						<label class="required">주요 사업</label> <input type="text"
+							id="comMainBiz" name="comMainBiz" class="form-control">
+					</div>
+					
+					
+					<!-- 4대보험 여부 -->
+					<div class="section-form-row">
+					  <label class="required">4대보험 가입 여부</label>
+						  <select id="insuranceYn" name="insuranceYn" class="form-control">
+						    <option value="">--선택--</option>
+						    <option value="Y">가입</option>
+						    <option value="N">미가입</option>
+						  </select>
+					</div>
+					
+					
+					
 
 					<!-- 업종 코드 -->
 					<div class="section-form-row">
-						<label class="required">업종</label> <select id="industryType"
-							name="industryType" class="form-control">
+						<label class="required">업종</label> 
+						<select id="industryType" name="industryType" class="form-control">
 							<option value="">--선택하세요--</option>
 						</select>
 					</div>
+					
+					<div class="section-form-row">
+					  <label class="required">기업 형태</label>
+					  <select id="comType" name="comType" class="form-control">
+					    <option value="">--선택--</option>
+					  </select>
+					</div>
+					
+					<div class="section-form-row">
+					  <label class="required">기업 규모</label>
+					  <select id="comSize" name="comSize" class="form-control">
+					    <option value="">--선택--</option>
+					  </select>
+				</div>
 
 					<!-- 기업 로고 -->
 					<div class="section-form-row">

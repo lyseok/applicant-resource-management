@@ -1,3 +1,18 @@
+const quickMenuList = document.querySelectorAll("#quick_menu a");
+quickMenuList.forEach(a =>{
+	a.addEventListener("click", function(e){
+		quickMenuList.forEach(link => link.classList.remove("on"));
+		e.target.classList.add("on")
+	})
+})
+// 로딩 show/hide 함수
+function showLoading() {
+  document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
+}
+function hideLoading() {
+  document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
+}
+
 // 각 form 몇개 추가 됐는지 카운트
 const typeCounters = {
 	educationList: 0,
@@ -15,6 +30,42 @@ const typeCounters = {
 
 /* + 추가 버튼 클릭 시 등록 form 추가 List */
 const templateMap = {
+	basicInfo: idx => `
+			<div class="section-title">
+				<h6>이력서 기본정보<span class="must">필수</span></h6>
+			</div>
+	    <div id="form-basicInfo" class="section-form-wrap">
+	      <div class="section-form-row">
+	        <label for="inputUserName" class="form-label required">이름</label>
+	        <input type="text" class="form-control" id="inputUserName" name="userName" placeholder="이름">
+	      </div>
+
+	      <div class="section-form-row">
+	        <label for="inputBirth" class="form-label required">생년월일</label>
+	        <input type="date" class="form-control" id="inputBirth" name="birth">
+	      </div>
+
+	      <div class="section-form-row">
+	        <label for="inputEmail" class="form-label required">이메일</label>
+	        <input type="email" class="form-control" id="inputEmail" name="email" placeholder="이메일">
+	      </div>
+
+	      <div class="section-form-row">
+	        <label for="inputTel" class="form-label required">연락처</label>
+	        <input type="text" class="form-control" id="inputTel" name="tel" placeholder="010-1234-5678">
+	      </div>
+
+	      <div class="section-form-row">
+	        <label for="inputAddress" class="form-label required">주소</label>
+	        <input type="text" class="form-control" id="inputAddress" name="address" placeholder="주소 전체">
+	      </div>
+
+	      <div class="section-form-row d-flex justify-content-end gap-2 mt-3">
+	        <button type="button" class="btn btn_red_line" id="cancelBasicBtn">취소</button>
+	        <button type="button" class="btn btn_violet" id="saveBasicBtn">확인</button>
+	      </div>
+	    </div>
+	  `,
 	educationList: idx => `
     <div class="section-form-wrap" id="form-educationList${idx}" data-idx="${idx}">
       <div class="section-form-row">
@@ -102,11 +153,16 @@ const templateMap = {
       </div>
       <div class="section-form-row">
         <label class="required">회사명</label>
-        <div class="d-flex gap-2 w-100">
-          <input type="text" name="resumeVO.careerList[${idx}].comId" placeholder="예: NAVER" maxlength="100" id="comId">
-          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="max-width: 240px; z-index: 2000;">
-					</ul>
-          <button class="btn search_com_btn btn_violet_line" type="button">검색</button>
+        <div class="d-flex w-100 flex-column">
+  				<div class="d-flex position-relative gap-2">
+  					<div class="flex-fill">
+		          <input type="text" name="resumeVO.careerList[${idx}].comId" class="w-100 h-100" placeholder="예: NAVER" maxlength="100" id="comId" >
+		          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="z-index: 2000; max-width:301px">
+							</ul>
+						</div>
+          	<button class="btn search_com_btn btn_violet_line" type="button">검색</button>          
+          </div>          
+					<div><span id="comSearchMsg" class="mt-2 fs-14"></span></div>
         </div>
       </div>
       <div class="section-form-row">
@@ -1234,41 +1290,89 @@ document.addEventListener("DOMContentLoaded", function() {
 			formContainer.insertAdjacentHTML('beforeend', templateFunc(idx));
 			typeCounters[type] = idx + 1;
 
+			if (addBtn.closest("#section-careerList")) {
+				// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
+				document.querySelector("#comId").addEventListener("input", function() {
+					const inputVal = this.value.trim();
+					const suggestionBox = document.querySelector("#comSuggestions");
+					suggestionBox.innerHTML = ""; // 초기화
 
-			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			document.querySelector("#comId").addEventListener("input", function() {
-				const inputVal = this.value.trim();
-				const suggestionBox = document.querySelector("#comSuggestions");
-				suggestionBox.innerHTML = ""; // 초기화
+					if (!inputVal) {
+						this.removeAttribute("data-userid"); // 입력값 없을 때 속성 제거
+						return;
+					}
 
-				if (!inputVal) return;
+					const matches = companyList
+						.filter(c => c.comName.includes(inputVal))
+						.slice(0, 5); // 최대 5개
 
-				const matches = companyList
-					.filter(c => c.comName.includes(inputVal))
-					.slice(0, 5); // 최대 5개
+					let exactMatchFound = false;
 
-				matches.forEach(c => {
-					const li = document.createElement("li");
-					li.innerText = c.comName;
-					li.dataset.userid = c.userId;
-					li.classList.add("list-group-item", "list-group-item-action")
+					matches.forEach(c => {
+						const li = document.createElement("li");
+						li.innerText = c.comName;
+						li.dataset.userid = c.userId;
+						li.classList.add("list-group-item", "list-group-item-action");
+						li.style.maxWidth = "301px"
 
-					li.addEventListener("click", () => {
-						document.querySelector("#comId").value = c.comName;
-						suggestionBox.innerHTML = "";
+						// 클릭 시 input 값과 data 설정
+						li.addEventListener("click", () => {
+							const inputEl = document.querySelector("#comId");
+							inputEl.value = c.comName;
+							inputEl.dataset.userid = c.userId; // userId 설정
+							suggestionBox.innerHTML = "";
+						});
+
+						suggestionBox.appendChild(li);
+
+						// 입력값이 정확히 일치하는 항목 확인
+						if (c.comName === inputVal) {
+							this.dataset.userid = c.userId;
+							exactMatchFound = true;
+						}
 					});
 
-					suggestionBox.appendChild(li);
+					// 정확히 일치하는 항목이 없는 경우 userId 속성 제거
+					if (!exactMatchFound) {
+						this.removeAttribute("data-userid");
+					}
 				});
-			});
+			}
 
 			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			const searchButton = document.querySelector("#section-careerList .search_com_btn");
-			searchButton.addEventListener("click", function(e) {
-				const comName = e.target.previousElementSibling.value;
-				// axios.get("/ajax/career/company/list")
+			document.addEventListener("DOMContentLoaded", function() {
+				const searchButton = document.querySelector(".search_com_btn");
+				if (searchButton) {
+					const searchButton = document.querySelector(".search_com_btn");
+					searchButton.addEventListener("click", function(e) {
+						const comId = document.querySelector("#comId");
+						const userId = comId.dataset.userid;
+						const userName = comId.value;
+						console.log(userId)
+						console.log(userName)
+						axios.get(`/ajax/career/company/${userId}`)
+							.then(resp => {
+								const comSearchMsg = document.querySelector("#comSearchMsg");
+								console.log(resp.data)
+								if (resp.data.success == true) {
+									comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
+									comSearchMsg.classList.remove("text-danger")
+									comSearchMsg.classList.add("text-primary", "fs-14")
+								} else {
+									comId.value = "";
+									comSearchMsg.innerHTML = `${resp.data.message}`;
+									comSearchMsg.classList.remove("text-primary")
+									comSearchMsg.classList.add("text-danger")
+								}
+							})
+							.catch(err => {
+								console.error(err);
+							})
+					})
+				} else {
+					console.warn("search_com_btn 버튼을 찾을 수 없습니다.");
+				}
 			})
-
 
 			// section-content, +버튼 숨김
 			secCont.style.display = "none";
@@ -1477,10 +1581,101 @@ document.addEventListener("DOMContentLoaded", function() {
 			modal.dataset.idx = delBtn.dataset.idx;
 		}
 	});
+});
+// end 삭제버튼 클릭 영역
 
+// 이력서 기본정보 수정로직 ====================================================================================================================
+// 공통 필드 배열
+const basicFields = [
+	{ key: "userName", inputId: "inputUserName", hiddenId: "hiddenUserName", viewId: "viewName" },
+	{ key: "birth", inputId: "inputBirth", hiddenId: "hiddenBirth", viewId: "viewBirth" },
+	{ key: "email", inputId: "inputEmail", hiddenId: "hiddenEmail", viewId: "viewEmail" },
+	{ key: "tel", inputId: "inputTel", hiddenId: "hiddenTel", viewId: "viewTel" },
+	{
+		key: "address",
+		inputId: "inputAddress",
+		hiddenId: "hiddenAddress",
+		viewId: "viewAddress"
+	}
+];
+
+// ✅ 초기 바인딩
+window.addEventListener("DOMContentLoaded", () => {
+	const resumeEl = document.getElementById("resumeData");
+	if (resumeEl) {
+		resume.userId = resumeEl.dataset.userId;
+		resume.userName = resumeEl.dataset.userName;
+		resume.birth = resumeEl.dataset.birth;
+		resume.email = resumeEl.dataset.email;
+		resume.tel = resumeEl.dataset.tel;
+		console.log("유저네임 잘 가져오는지 확인 !!!" + resumeEl.dataset.userName);
+		console.log(resume.userName);
+
+		// 주소는 구분자로 나눈 뒤 합쳐서 1개로 resume에 저장
+		const addressParts = resumeEl.dataset.address.split("||");
+		const address1 = addressParts[0] || "";
+		const address2 = addressParts[1] || "";
+		resume.address = `${address1} ${address2}`.trim();
+	}
+
+	// input 요소에 resume 값 세팅
+	basicFields.forEach(field => {
+		const value = resume[field.key] || "";
+		if (Array.isArray(field.inputId)) {
+			const parts = value.split(" ");
+			field.inputId.forEach((id, idx) => {
+				document.getElementById(id).value = parts[idx] || "";
+				console.log(id)
+				console.log(parts[idx])
+
+			});
+		} else {
+			document.getElementById(field.inputId).value = value;
+		}
+	});
+	// 버튼 이벤트 등록
+	const editBtn = document.getElementById("resumeEditBtn");
+
+
+	editBtn.addEventListener("click", () => {
+		document.getElementById("resumeInfoView").classList.add("d-none");
+
+		const container = document.getElementById("resumebasicInfoWrap");
+		container.innerHTML = templateMap["basicInfo"]();
+		container.classList.remove("d-none");
+
+		// 기본정보 바인딩
+		basicFields.forEach(field => {
+			const value = resume[field.key] || "";
+			const input = document.getElementById(field.inputId);
+			if (input) input.value = value;
+		});
+
+
+		// 저장, 취소 버튼 이벤트 등록
+		document.getElementById("cancelBasicBtn").addEventListener("click", () => {
+			container.classList.add("d-none");
+			document.getElementById("resumeInfoView").classList.remove("d-none");
+		});
+
+		document.getElementById("saveBasicBtn").addEventListener("click", () => {
+			basicFields.forEach(field => {
+				const value = document.getElementById(field.inputId)?.value.trim() || "";
+				resume[field.key] = value;
+				document.getElementById(field.hiddenId).value = value;
+				document.getElementById(field.viewId).textContent = value;
+			});
+
+			container.classList.add("d-none");
+			document.getElementById("resumeInfoView").classList.remove("d-none");
+		});
+	});
 });
 
-// end 삭제버튼 클릭 영역
+
+
+
+
 
 // 자소서 선택 로직 ====================================================================================================================
 document.addEventListener("DOMContentLoaded", function() {
@@ -1532,7 +1727,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2 w-100">
           <div>
             <strong>${selectedText}</strong>
-            <div class="text-secondary fs-14">자기소개서 선택 완료</div>
+            <div class="text-secondary fs-14"></div>
           </div>
 					<div class="d-flex gap-2">
 			      <button type="button" class="btn_edit" data-type="introduction">
@@ -1658,22 +1853,21 @@ function removeEmptyStrings(obj) {
 
 // resume 기본정보로 insert 하기!
 function setBasicResumeInfo() {
-	const resumeForm = document.querySelector("#form-resume");
-	if (!resumeForm) return;
+  const resumeForm = document.querySelector("#form-resume");
+  if (!resumeForm) return;
 
-	const resumeInputs = resumeForm.querySelectorAll("input");
-	resumeInputs.forEach(input => {
-		const resumeName = input.name;
-		const resumeValue = input.value;
-		console.log(resumeName, resumeValue)
+  const resumeInputs = resumeForm.querySelectorAll("input");
+  resumeInputs.forEach(input => {
+    const resumeName = input.name;
+    const resumeValue = input.value;
 
-		if (resumeName && resumeValue) {
-			resume[resumeName] = resumeValue; // resume 객체에 바로 세팅
-		}
-		resume[resumeName] = resumeValue; // resume 객체에 바로 세팅
-		console.log(resume)
-	});
+    // 값이 ""인 경우는 무시하고 덮어쓰지 않도록!
+    if (resumeName && resumeValue !== "") {
+      resume[resumeName] = resumeValue;
+    }
+  });
 }
+
 
 // 전송하기 버튼 눌렀을 떄 insert 진행 로직 !
 document.addEventListener("submit", function(e) {
@@ -1713,6 +1907,7 @@ document.addEventListener("submit", function(e) {
 		formData.append("comImage", resume.company.comImage);
 	}
 
+console.log(resume)
 
 	// axios 비동기 전송
 	axios.post("/mypage/resume/create", formData, {
@@ -1766,10 +1961,12 @@ document.addEventListener("submit", function(e) {
 				const message = e.message;
 
 				const match = field.match(/^(\w+)\[(\d+)]\.(\w+)$/);
+
 				if (match) {
 					const listName = match[1];
 					const index = parseInt(match[2]);
 					const fieldName = match[3];
+					// console.log("에러로그 찍기 >>> " + listName)
 
 					// 폼 요소 찾기
 					const formEl = document.querySelector(`#form-${listName}${index}`);
@@ -1809,20 +2006,46 @@ document.addEventListener("submit", function(e) {
 						if (item) item.remove();
 					}
 
+
 				} else {
 					// 단일 필드 처리 (userId 등)
-					const inputEl = document.querySelector(`[name='${field}']`);
+					const inputEl = document.querySelector(`[name='${field}']:not([type="hidden"])`);
 					if (inputEl) {
+						// ✅ inputEl 감싸는 새로운 div 생성
+						const wrapper = document.createElement('div');
+						wrapper.classList.add('input-wrapper', 'w-100'); // 필요한 class 있으면 추가
+
+						// ✅ inputEl을 div (wrapper)로 감싸기
+						inputEl.parentElement.insertBefore(wrapper, inputEl);
+						wrapper.appendChild(inputEl);
+						inputEl.classList.add("w-100")
+
+						// 기존 에러 제거
 						const existingError = inputEl.parentElement.querySelector(`.${field}-error`);
 						if (existingError) existingError.remove();
 
 						const errorSpan = document.createElement('span');
-						errorSpan.className = `${field}-error text-danger d-block`;
+						errorSpan.className = `${field}-error text-danger d-block mt-1 fs-14`;
 						errorSpan.innerText = message;
-						inputEl.insertAdjacentElement('afterend', errorSpan);
+						wrapper.appendChild(errorSpan);
+					}
+
+					const basicInfoSection = document.querySelector("#resumebasicInfoWrap");
+					// 기존 이력서 view 제거
+					const resumeInfoView = document.querySelector("#resumeInfoView");
+
+					console.log(basicInfoSection);
+					console.log(field)
+					// 에러로 올 수 필드명 관리
+					const basicInfoFields = ["userId", "resumeName", "resumeMainYn", "userName", "photo", "birth", "email", "tel", "address", "veteranReason", "updateDate"];
+					// 이력서 기본정보 - basicInfo 관련 필드 에러가 있으면 섹션 보이게 하기
+					if (basicInfoFields.includes(field)) {
+						if (basicInfoSection?.classList.contains("d-none")) {
+							basicInfoSection.classList.remove("d-none");
+							resumeInfoView.classList.add("d-none")
+						}
 					}
 				}
 			});
 		});
-
 });
