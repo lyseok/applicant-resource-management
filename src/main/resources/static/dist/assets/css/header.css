@@ -1601,8 +1601,23 @@ body::-webkit-scrollbar-thumb:hover {
 
 /* 250712 - 멤버 로그인 토글 추가 */
 .wrap_header .member_btn{
+	gap: 8px;
+	display: flex;
+	align-items: center;
 	cursor:pointer;
 }
+.wrap_header .member_btn .user_photo{
+	display: block;
+  overflow: hidden;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ccc;
+}
+.wrap_header .member_btn .material-symbols-outlined{
+	width:18px;
+}
+
 .wrap_header .layer_member {
     position: absolute;
     top: 28px;
