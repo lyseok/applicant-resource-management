@@ -42,6 +42,7 @@ public class CompanyVO extends UsersVO implements Serializable{
 	private String comCapital;//기업 자본금
 	private String comMainBiz;//기업주요사업
 	
+	
 	public String getMemName() {
 		return comName;
 	}

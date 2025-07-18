@@ -8,4 +8,5 @@ public class CompanySalesDTO {
 	private Long comSalesAmount;           // 매출액
 	private Double growthRatePercent;      // 작년 대비 증가율 (%)
 	private Double avgSalesAmount;         // 평균 매출액
+	
 }

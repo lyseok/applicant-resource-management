@@ -97,9 +97,5 @@
         <button type="button" class="btn btn_violet" id="edit-btn">수정</button>
     </div>
 </div>
-
-
-
-
 </body>
 </html>

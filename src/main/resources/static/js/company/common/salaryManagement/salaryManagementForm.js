@@ -70,4 +70,5 @@ document.addEventListener('DOMContentLoaded', () => {
 				console.error(err);
 			})
 	})
+	
 });

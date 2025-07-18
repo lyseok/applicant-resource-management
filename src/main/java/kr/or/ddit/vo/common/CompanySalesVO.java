@@ -11,4 +11,5 @@ public class CompanySalesVO implements Serializable{
 	private String comSalesYear;
 	private long comSalesAmount;
 	private String createDate;
+	
 }

@@ -49,5 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (조 === 0 && 억 === 0) result += `${만.toLocaleString()}만원`;
 
   return result.trim();
+  
 }
 });

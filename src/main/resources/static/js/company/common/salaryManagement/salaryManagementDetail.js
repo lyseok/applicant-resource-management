@@ -56,4 +56,5 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (eok > 0) return `${eok}억 원`;
 		return `${man.toLocaleString()}만 원`;
 	}
+	
 });
