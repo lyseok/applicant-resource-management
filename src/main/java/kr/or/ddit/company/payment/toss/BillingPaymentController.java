@@ -51,6 +51,7 @@ public class BillingPaymentController {
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
 		map.put("billingKey", billingKey);
 		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
+		log.info("map 반환값 : {}", map);
 		return map;
 	}
 	
@@ -65,9 +66,9 @@ public class BillingPaymentController {
 		
 		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
 		model.addAttribute("product",product);
-		model.addAttribute("billingKey",billingKey);
+//		model.addAttribute("billingKey",billingKey);
 		model.addAttribute("productNo",productNo);
-		
+		session.setAttribute("billingKey",billingKey);
 //		return "/company/payment/payment/buyproduct?productNo=" + productNo;
 		return "company/payment/payment/BuyProduct";
 	}
@@ -139,13 +140,13 @@ public class BillingPaymentController {
 				String billingKey = jsonNode.get("billingKey").asText();
 				
 				// billingKey를 저장
-				model.addAttribute("billingKey",billingKey);
+//				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("result",jsonNode.toPrettyString());
 				
 				session.setAttribute("billingKey", billingKey);
 				log.info("빌링빌링빌링키 = billingKey : {}", billingKey);
 				log.info("session id: {}", session.getId());
-				return "/company/payment/product/detail?productNo=" + productNo;
+				return "company/payment/product/detail?productNo=" + productNo;
 				
 				
 			} catch (IOException e) {
