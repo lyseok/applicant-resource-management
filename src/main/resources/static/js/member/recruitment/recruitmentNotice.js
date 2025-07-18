@@ -13,6 +13,7 @@ const btnShowResumeList = document.getElementById('btnShowResumeList');
 const btnSaveApplication = document.getElementById('btnSaveApplication');
 
 const btn = document.getElementById('applyBtn');
+const deadLineBtn = document.getElementById('deadLineBtn');
   if (btn) {
     btn.onclick = function() {
 	  const title = btn.dataset.title || '입사 지원';
@@ -155,3 +156,23 @@ btnSaveApplication.onclick = async function () {
     alert('서버 오류가 발생했습니다.\n' + (err.response?.data?.message || ''));
   }
 };
+
+//================================= 공고 마감 ===========================================
+deadLineBtn.onclick = async function(){	
+	
+	const recruitmentNo = document.getElementById('recruitNo').dataset.no;
+	try{
+		const res = await axios.post(`/ajax/recruit/${recruitmentNo}`);
+		if(res.data === 'ok'){
+			// 버튼 disabled로 만들기 회색 만들기
+			alert("공고가 마감되었습니다.");
+			deadLineBtn.disabled = true;
+	        deadLineBtn.classList.remove('btn_violet');
+	        deadLineBtn.classList.add('btn-secondary');
+	        deadLineBtn.innerHTML = `<span id="dDayCounter">-</span><br>마감 완료`;
+		}
+		
+	}catch(err){
+		alert('서버 오류가 발생했습니다.\n' + (err.response?.data?.message || ''));
+	}
+}
