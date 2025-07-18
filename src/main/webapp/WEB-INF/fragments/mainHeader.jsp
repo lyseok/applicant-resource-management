@@ -79,8 +79,6 @@
 			                </li>
 			            </ul>
 			        </div>
-	                <hr>
-	                <span class="btn_sign signin logoutBtn">로그아웃</span>
 				</sec:authorize>
 				
 				<sec:authorize access="!isAuthenticated()">
