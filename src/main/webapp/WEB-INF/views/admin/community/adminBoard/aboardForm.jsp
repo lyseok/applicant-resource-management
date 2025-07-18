@@ -13,7 +13,6 @@
 	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
   	<sec:authentication property="principal.realUser.userId" var="userId"/>
 	<form id="aboardForm">
-		<input type="hidden" name="userId" value="${userId}"><br>
 		<label>게시판 유형 코드</label>
 		<select id="boardTypeCode">
 			<option value="-1">--선택--</option>
@@ -26,7 +25,9 @@
 		</select>
 		<br>
 		<input type="text" name="boardTitle" placeholder="제목">
-		<input type="text" name="boardContent" placeholder="내용">
+		<label>작성자 아이디: </label>
+		<input type="text" name="userId" value="${userId}" disabled><br>
+		<textarea name="boardContent" placeholder="내용" rows="6" cols="60"></textarea>
 	  <button type="submit">등록</button>
 	</form>
 
