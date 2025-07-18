@@ -20,11 +20,13 @@
 		<input type="hidden" id="typeHidden" value="${type}">
 	</ul>
 
+	<!-- 답글 리스트 -->
+	<div id="acommentListContainer"></div>
+
 	<!-- 답글 폼 -->
   	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
   	<input type="hidden" id="userIdHidden" value="${userId}">
-  	
-	<div id="acommentFormContainer"></div>
+	<div id="acommentFormContainer"></div>	
 	
 	<!-- 등록 폼 미리 숨겨놓기 -->
 	  <form id="aboardForm" style="display: none;">
@@ -51,7 +53,6 @@
 	    <button type="submit">등록</button>
 	  </form>
 	  
-	  <button><a href="/admin/board/admin_board/form">새로 등록</a></button>
 	
 <script src="/js/admin/community/adminBoard/aboardList.js"></script>
 <script src="/js/admin/community/adminBoard/aboardForm.js"></script>

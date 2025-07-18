@@ -44,15 +44,21 @@ public class AdminAdminBoardAjaxController {
 	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
 		return service.readAdminBoardListByType(boardTypeCode);
 	}
+
+	// 삭제된 게시글 목록조회
+	@GetMapping("/hidden")  
+	public List<AdminBoardVO> gethiddenBoards(){
+		return service.readDelAboardList();
+	}
 	
 	// 일반/기업/전체/이벤트 앞부분 글자대로 목록조회
-	@GetMapping("/pre/{groupPrefix}")
+	@GetMapping("/pre/{groupPrefix}")  //UFAQ
 	public List<AdminBoardVO> getPre(@PathVariable String groupPrefix) {
 	    return service.readAFaqListByCgn(groupPrefix);
 	}
 
 	// 해당 상위코드 전체 목록조회
-	@GetMapping("/list/{upperCodeNo}")
+	@GetMapping("/list/{upperCodeNo}")  //BRDD-002
 	public List<AdminBoardVO> getUpper(@PathVariable String upperCodeNo) {
 		return service.readAFaqListByUcn(upperCodeNo);
 	}

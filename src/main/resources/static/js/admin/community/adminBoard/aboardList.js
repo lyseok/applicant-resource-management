@@ -1,27 +1,9 @@
-const type = document.querySelector("#typeHidden").value;
+let type = document.querySelector("#typeHidden").value;
 const aboardList = document.querySelector("#aboardList");
 const memTypeBtn = document.querySelector("#memTypeBtn");
 
-const flist = function () {
-	let html = `
-		<p class="h4">자주 묻는 질문 탭 선택</p>
-		<button id="ufaq" onclick="faqUser()">일반회원</button>
-		<button id="cfaq" onclick="faqCorp()">기업회원</button>
-		<button id="afaq" onclick="faqAll()">전체</button>`;
-	memTypeBtn.innerHTML = html;
-};
-
-const nlist = function () {
-	let html = `
-		<p class="h4">공지사항 탭 선택</p>
-		<button id="untc" onclick="noticeUser()">일반회원</button>
-		<button id="cntc" onclick="noticeCorp()">기업회원</button>
-		<button id="antc" onclick="noticeEvent()">이벤트</button>`;
-	memTypeBtn.innerHTML = html;
-};
-
 const bhtml = function (rslt) {
-	let html = `<p class="h4">게시글 목록</p>`;
+	let html = '';
 	rslt.forEach((item) => {
 		html += `
 			<li>작성자 : ${item.userId}</li>
@@ -42,12 +24,12 @@ const bhtml = function (rslt) {
 };
 
 // FAQ 전체
-const faqAll = function() {
-	fetch(`/ajax/admin/board/admin_board/list/${type}`)
+const faqAll = function(type) {
+	fetch(`/ajax/admin/board/admin_board/list/BRDD-002`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
 			bhtml(rslt);
-			flist();
+			flist(type);
 		});
 }
 
@@ -101,6 +83,40 @@ const noticeEvent = function() {
 		});
 }
 
+const flist = function () {
+	let html = `
+		<p class="h4">자주 묻는 질문 탭 선택</p>
+		<button id="ufaq" onclick="faqUser()">일반회원</button>
+		<button id="cfaq" onclick="faqCorp()">기업회원</button>
+		<button id="afaq" onclick="faqAll()">전체</button>`;
+	memTypeBtn.innerHTML = html;
+};
+
+const nlist = function () {
+	let html = `
+		<p class="h4">공지사항 탭 선택</p>
+		<button id="untc" onclick="noticeUser()">일반회원</button>
+		<button id="cntc" onclick="noticeCorp()">기업회원</button>
+		<button id="antc" onclick="noticeEvent()">이벤트</button>`;
+	memTypeBtn.innerHTML = html;
+};
+
+
+// 초기 로딩(메뉴바 고정)
+const alist = function(type) {
+	if (type === "BRDD-001") {
+		fetch(`/ajax/admin/board/admin_board/${type}`)
+			.then((resp) => resp.json())
+			.then((rslt) => {
+				bhtml(rslt);
+			});
+	} else if (type === "BRDD-003") {
+		noticeUser();  // 공지사항 일반(고정)
+	} else if (type === "BRDD-002") {
+		faqAll();  // FAQ 전체
+	}
+}
+
 const pre = function(type){
 	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
 		.then((resp) => resp.json())
@@ -110,36 +126,24 @@ const pre = function(type){
 		});
 }
 
-// 초기 로딩
-const alist = function(type) {
-	console.log("디테일에서 넘어온 리스트", type);
+// 상세 이후 로딩
+const alist2 = function(type){
+	console.log("alist2 type? ", type);
 	if (type === "BRDD-001") {
 		fetch(`/ajax/admin/board/admin_board/${type}`)
 			.then((resp) => resp.json())
 			.then((rslt) => {
 				bhtml(rslt);
 			});
-	} else if (type === "BRDD-003") {
-		noticeUser();  // 공지사항 일반
-		nlist();
-	} else if (type === "BRDD-002") {
-		faqAll();  // FAQ 전체
-		flist();
+	}else if (type.startsWith('UFAQ') || type.startsWith('CFAQ')) {
+		faqAll();
+	}else{
+		pre(type);
 	}
 }
 
-//초기 이후 로딩
-const alist2 = function(type) {
-	console.log("디테일에서 넘어온 리스트", type);
-	if (type === "BRDD-001") {
-		fetch(`/ajax/admin/board/admin_board/${type}`)
-			.then((resp) => resp.json())
-			.then((rslt) => {
-				bhtml(rslt);
-			});
-	} else{
-		pre();
-	}
-}
 
 alist(type);
+
+
+

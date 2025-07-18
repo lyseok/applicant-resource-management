@@ -9,6 +9,8 @@
 </head>
 <body>
 
+	<p class="h4">게시글 목록</p>
+	
 	<div id="memTypeBtn"></div><br>
 	<ul id="aboardList">
 		<input type="hidden" id="typeHidden" value="${type}">

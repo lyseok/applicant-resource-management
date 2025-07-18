@@ -45,6 +45,18 @@
 		LEFT OUTER JOIN ADMIN_COMMENT B 
 		  ON A.BOARD_NO = B.BOARD_NO
 	</select>
+	
+	<select id="selectDelAboardList">
+		SELECT 
+		       BOARD_NO
+		     , USER_ID
+		     , BOARD_TYPE_CODE
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_STATUS
+		FROM ADMIN_BOARD
+		WHERE BOARD_STATUS = 'D'
+	</select>
 
 	<select id="selectCmnGroupList">
 		WITH UPPER_CODE_VIEW AS (    

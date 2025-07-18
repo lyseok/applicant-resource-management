@@ -11,6 +11,7 @@ import kr.or.ddit.vo.community.AdminBoardVO;
 public interface AdminAdminBoardAjaxService {
 
 	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo);
+	public List<AdminBoardVO> readDelAboardList();
 	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode);
 	public List<CmnCodeVO> readCmnList(String codeGroupNo);
 	public List<CmnCodeGroupVO> readCmnGroupList(String upperCodeNo);

@@ -97,4 +97,9 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 		return mapper.selectCmnList(codeGroupNo);
 	}
 
+	@Override
+	public List<AdminBoardVO> readDelAboardList() {
+		return mapper.selectDelAboardList();
+	}
+
 }

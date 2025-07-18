@@ -60,6 +60,15 @@ class AdminBoardMapperTest {
 			log.info(" BRDD-002 제외한 모든 타입 리스트 : {}", board);
 		});
 	}
+	@Test
+	void testSelectDelAboardList() {
+		assertDoesNotThrow(()->mapper.selectDelAboardList());
+		
+		List<AdminBoardVO> list = mapper.selectDelAboardList();
+		list.forEach(board->{
+			log.info(" 삭제된 게시글만 : {}", board);
+		});
+	}
 
 	@Test
 	void testSelectAdminBoardList() {
