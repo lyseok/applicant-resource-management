@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	const tbodyEl = document.getElementById('salaryTableBody')
 	const noDataText = document.getElementById('noDataText');
 	const actionBtnBox = document.getElementById('actionBtnBox');
-
 	axios.get('/ajax/company/salary_management')
 		.then(resp => {
 			const salaryList = resp.data;
@@ -56,4 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (eok > 0) return `${eok}억 원`;
 		return `${man.toLocaleString()}만 원`;
 	}
+	
+	
+	
 });

@@ -7,22 +7,20 @@
 
 <body>
 
-	<h4>회원정보 상세보기</h4>
-	
-	<!-- 회원 존재 여부에 따른 분기 -->
-	<c:if test="${not empty user}">
-	<ul>
-		<li>${user.userId}</li>
-		<li>${user.userPassword}</li>
-		<li>${user.userRole}</li>
-		<li>${user.userWithdrawDate}</li>
-		<li>${user.userStatus}</li>
-		<li>${user.userEnabled}</li>
-	</ul>
-	</c:if>
-	
-	<c:if test="${empty user}">
-	    <p>존재하지 않는 회원입니다.</p>
-	</c:if>
+	<p class="h4">회원정보 상세보기</p>
+    <div id="auserDetail"></div>
 
+<script>
+const userId = "${users.userId}";
+console.log("유저 아이디 나오나? : ", userId);
+
+const auserDetail = document.querySelector("#auserDetail");
+
+fetch(`/ajax/admin/common/users/\${userId}`)
+.then(resp => {resp.json()
+	.then(rslt => {
+
+    });
+});
+</script>
 </body>

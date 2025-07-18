@@ -1,19 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <head>
 <meta charset="UTF-8">
 <title>이력서 등록</title>
 <link rel="stylesheet" href="/css/member/resume/resume.css">
-<script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
-<c:if test="${not empty hasIntrod }">
-		<script>
-			alert("${hasIntrod}");
-			location.href="/mypage/introduction/create";
-		</script>
+<c:if test="${mode eq 'update'}">
+	<script>
+	  const mode = '${mode}'; // "update"로 들어옴
+	  console.log(mode);
+	  const resumeFromServer = ${resumeJson};
+	</script>
 </c:if>
+<c:if test="${mode eq 'create'}">
+	<script>
+	  const mode = '${mode}'; // "update"로 들어옴
+	  console.log(mode);
+	</script>
+</c:if>
+<script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
 </head>
 <body>
 	<div class="d-flex align-items-start">

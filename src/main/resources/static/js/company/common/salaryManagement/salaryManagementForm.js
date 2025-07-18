@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 document.addEventListener('DOMContentLoaded', () => {
 	const formEl = document.getElementById('salaryForm');
 	const tbodyEl = document.getElementById('salaryTableBody');
@@ -61,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 
+
+
 		axios.post('/ajax/company/salary_management', payload)
 			.then(resp => {
 				alert('연봉 정보가 저장되었습니다.');
@@ -70,4 +73,5 @@ document.addEventListener('DOMContentLoaded', () => {
 				console.error(err);
 			})
 	})
+	
 });

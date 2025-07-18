@@ -4,7 +4,7 @@
 	<select id="selectApplicantRecordList" resultType="ApplicantRecordVO">
 	SELECT 
 		APPLICANT_RECORD_NO
-		, RECRUITMENT_NO
+		, RECRUIT_PROCESS_NO
 		, APPLICANT_ID
 		, RECRUIT_PROCESS_STEP
 		, STEP_PASS_YN
@@ -15,7 +15,7 @@
 	<select id="selectApplicantRecord" resultType="ApplicantRecordVO">
 	SELECT 
 		APPLICANT_RECORD_NO
-		, RECRUITMENT_NO
+		, RECRUIT_PROCESS_NO
 		, APPLICANT_ID
 		, STEP_PASS_YN
 		, STEP_APPLICATION_YN
@@ -32,6 +32,69 @@
 		WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
 	</select>
 	
+	<select id="getApplicantByRecruitment" resultType="map">
+	WITH exam_cte (ex_applicant_id, ex_score, ex_rn) AS (
+	SELECT
+	APPLICANT_ID,
+	APPLICANT_SCORE,
+	ROW_NUMBER() OVER (PARTITION BY APPLICANT_ID ORDER BY APPLICANT_ID)
+	FROM
+	APPLICANT_ANSWER
+	),
+	interview_cte (int_applicant_id, int_score, int_rn) AS (
+	SELECT
+	iscore.APPLICANT_ID,
+	iscore.APPLICANT_RATING,
+	ROW_NUMBER() OVER (PARTITION BY iscore.APPLICANT_ID ORDER BY iscore.APPLICANT_ID)
+	FROM INTERVIEW_SCORE iscore
+	JOIN INTERVIEW i ON iscore.INTERVIEW_NO =
+	i.INTERVIEW_NO
+	)
+	SELECT
+	rp.RECRUITMENT_NO AS recruitment_no,
+	rp.RECRUIT_PROCESS_NO AS
+	process_no,
+	rp.RECRUIT_PROCESS_STEP AS step,
+	rp.RECRUIT_PROCESS_TYPE AS
+	step_type,
+	rp.RECRUIT_PROCESS_FINAL as final,
+	ar.APPLICANT_ID AS
+	applicant_id,
+	ar.APPLICANT_NAME AS applicant_name,
+	ar.STEP_APPLICATION_YN AS attend,
+	ar.STEP_PASS_YN AS pass,
+	ap.USER_ID as
+	userid,
+	exam_cte.ex_score AS exam_score,
+	interview_cte.int_score AS
+	interview_score
+	FROM RECRUIT_PROCESS rp
+	LEFT JOIN APPLICANT_RECORD ar ON rp.RECRUIT_PROCESS_NO =
+	ar.RECRUIT_PROCESS_NO
+	LEFT JOIN APPLICANT ap ON ap.APPLICANT_ID = ar.APPLICANT_ID
+	LEFT JOIN exam_cte ON ar.APPLICANT_ID = exam_cte.ex_applicant_id AND
+	exam_cte.ex_rn = 1
+	LEFT JOIN interview_cte ON ar.APPLICANT_ID = interview_cte.int_applicant_id
+	AND interview_cte.int_rn = 1
+	WHERE rp.RECRUITMENT_NO = #{recruitmentNo}
+	ORDER BY step, applicant_id
+	</select>
+	
+	<select id="selectDuplicateRecord">
+	SELECT 
+		APPLICANT_RECORD_NO
+		, RECRUIT_PROCESS_NO
+		, APPLICANT_ID
+		, STEP_PASS_YN
+		, STEP_APPLICATION_YN
+		, INTERVIEW_URL
+		, EVALUATION_START_TIME
+		, APPLICANT_NAME
+	FROM APPLICANT_RECORD 
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
+	</select>
+	
 	<insert id="insertApplicantRecord">
 		<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
 	    SELECT
@@ -41,16 +104,16 @@
 	 	</selectKey>
 		INSERT INTO APPLICANT_RECORD (
 			APPLICANT_RECORD_NO
-			, RECRUITMENT_NO
+			, RECRUIT_PROCESS_NO
 			, APPLICANT_ID
-			, RECRUIT_PROCESS_STEP
+			, APPLICANT_NAME
 			, STEP_PASS_YN
 			, STEP_APPLICATION_YN
 		) VALUES (
 			#{applicantRecordNo}
-			, #{recruitmentNo}
+			, #{recruitProcessNo}
 			, #{applicantId}
-			, #{recruitProcessStep}
+			, #{applicantName}
 			, 'N'
 			, 'N'
 		)
@@ -68,7 +131,8 @@
 		UPDATE APPLICANT_RECORD 
 		SET 
 			STEP_APPLICATION_YN = 'Y'
-		WHERE APPLICANT_ID = #{applicantId}
+		WHERE RECRUIT_PROCESS_NO = #{processNo}
+		AND APPLICANT_ID = #{applicantId}
 	</update>
 	
 	<update id="updateApplicantRecord">
@@ -79,7 +143,12 @@
 	WHERE APPLICANT_RECORD_NO =	#{applicantRecordNo}
 	</update>
 	
-	
+	<update id="updateApplicantPass">
+	UPDATE APPLICANT_RECORD SET
+		STEP_PASS_YN = 'Y'
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
+	</update>
 	
 	<delete id="deleteApplicantRecord">
 	DELETE FROM APPLICANT_RECORD 

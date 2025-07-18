@@ -126,21 +126,21 @@ body {
 					정보를 입력해주세요.</div>
 				<div class="section-form-wrap">
 					<div class="section-form-row vertical">
-						<label class="required">기업명</label>
+						<!-- <label class="required">기업명</label> -->
 						<div id="comNameDisplay" class="form-control-plaintext"></div>
 						<input type="hidden" id="comName" name="comName">
 					</div>
 
 					<!-- 설립년도 (텍스트) -->
 					<div class="section-form-row">
-						<label class="required">설립년도</label>
+						<!-- <label class="required">설립년도</label> -->
 						<div id="comCreateYearDisplay" class="form-control-plaintext"></div>
 						<input type="hidden" id="comCreateYear" name="comCreateYear">
 					</div>
 
 					<!-- 구독여부 (텍스트) -->
 					<div class="section-form-row">
-						<label class="required">구독여부</label>
+					<!-- 	<label class="required">구독여부</label> -->
 						<div id="comPaymentDisplay" class="form-control-plaintext"></div>
 						<input type="hidden" id="comPayment" name="comPayment">
 					</div>
@@ -249,8 +249,6 @@ body {
 			</div>
 		</div>
 	</form>
-	<!-- form 태그 닫기 -->
-
-
+	
 </body>
 </html>

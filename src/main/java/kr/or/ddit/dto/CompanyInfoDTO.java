@@ -40,10 +40,11 @@ public class CompanyInfoDTO {
 	private String comSize;
 	private String ceoName;
 	private String comAddr;
-	private Integer comCapital;
+	private String comCapital;
 	private String comMainBiz;
 	
 
+	
 	
 	
 }

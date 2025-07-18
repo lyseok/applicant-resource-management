@@ -15,4 +15,5 @@ public class MemberProjectApplicantController {
 	public String projectApplicantPage() {
 		return "member/project/applicant/projectApplicant";
 	}
+	
 }

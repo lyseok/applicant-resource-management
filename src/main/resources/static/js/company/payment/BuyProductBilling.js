@@ -1,9 +1,15 @@
 function doBilling() {
-    const billingKey = document.body.dataset.billingKey;
-    const customerKey = document.body.dataset.customerKey;
-    const amount = document.body.dataset.amount;
-    const orderName = document.body.dataset.orderName;
+ 
+    const billingKey = body.dataset.billingKey;
+    const customerKey = body.dataset.customerKey;
+    const amount = body.dataset.amount;
+    const orderName = body.dataset.orderName;
+    const productNo = body.dataset.productNo;
 
+    console.log("billingKey", billingKey);
+    console.log("customerKey", customerKey);
+    console.log("amount", amount);
+    console.log("orderName", orderName);
     fetch("/company/toss/api/billing/execute", {
         method: "POST",
         headers: {
@@ -22,6 +28,7 @@ function doBilling() {
         alert("결제 성공!");
         console.log(data);
         // 성공 후 리디렉션 등 처리 가능
+        window.location.href="/company/payment/success/executebilling";
     })
     .catch(err => {
         alert("결제 실패!");

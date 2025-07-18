@@ -9,18 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.or.ddit.company.payment.paymentlist.service.PaymentListService;
+import kr.or.ddit.company.payment.product.service.PaymentProductService;
 import kr.or.ddit.vo.common.PaymentListVO;
+import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
-@RequestMapping("/company/paymentList")
+@RequestMapping
 public class PaymentListController {
 
 	@Autowired
 	PaymentListService service;
 	
-	@GetMapping
+	
+	@GetMapping("/company/paymentList")
 	String ListForm(Model model) {
 		
 		List<PaymentVO> comPayList = service.selectPaymentCompany("corp03");
@@ -34,4 +37,5 @@ public class PaymentListController {
 	String detail() {
 		return "company/payment/paymentlist/PaymentDetail";
 	}
+
 }
