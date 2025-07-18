@@ -21,9 +21,9 @@ public class PaymentProductServiceImpl implements PaymentProductService {
 	}
 
 	@Override
-	public PaymentProductVO selectPaymentProductByPk(PaymentProductVO vo) {
+	public PaymentProductVO selectPaymentProductByPk(String productNo) {
 		// TODO Auto-generated method stub
-		return mapper.selectPaymentProductByPk(vo);
+		return mapper.selectPaymentProductByPk(productNo);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ public class PaymentVO implements Serializable{
 	private String paymentDate;		// 결제일시	sysdate
 	private String paymentPay;		// 결제 금액 amount
 	private String tossPaymentKey;	// 결제 키값 (조회 및 취소) 
+	private String paymentBillingKey; // 정기구독 빌링키
 	
 	private List<PaymentProductVO> paymentProductList;
 	private List<CompanyVO> CompanyList;
