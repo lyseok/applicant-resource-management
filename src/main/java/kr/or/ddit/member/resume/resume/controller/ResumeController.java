@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -108,6 +109,7 @@ public class ResumeController {
 			@RequestPart(value = "photo", required = false) MultipartFile photo,
 			@RequestPart(value = "comImage", required = false) MultipartFile comImage) {
 		log.info("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ introductionNo = {}", vo.getIntroductionNo());
+		log.info("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ 이력서 제목 = {}", vo.getResumeName());
 
 		if (!bindingResult.hasErrors()) {
 			service.createResume(vo);
@@ -126,7 +128,7 @@ public class ResumeController {
 
 	// 삭제 로직 구현
 	@GetMapping("delete/{no}")
-	public String createResume(
+	public String deleteResume(
 		@PathVariable String no
 		, RedirectAttributes redirectAttributes
 	) {
@@ -152,9 +154,9 @@ public class ResumeController {
 		
 	}
 
-	  // 수정 로직 구현	  
+	  // 수정 폼 이둉	  
 	  @GetMapping("edit/{no}")
-	  public String createResume(
+	  public String editResume(
 		@PathVariable String no
 		, Model model
 	  ) throws JsonProcessingException{
@@ -171,6 +173,18 @@ public class ResumeController {
 	    model.addAttribute("resumeJson", resumeJson); // ✅ resumeFromServer로 바인딩됨
 		return "member/resume/mypage/resume/resumeForm";
 	  }
+	  
+
+		
+		// 검색 로직 수행 >> 이거 userId 도 받아서 셀렉트 해야함!!!
+		@GetMapping("search")
+		public String getintroductionSearch(
+			Model model
+			, @RequestParam String keyword
+		) {
+			model.addAttribute(MODELNAME, service.readResumeSearch(keyword));
+			return "member/resume/mypage/resume/resumeList";
+		}
 	 
 
 }

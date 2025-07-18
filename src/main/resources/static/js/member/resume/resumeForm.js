@@ -478,7 +478,7 @@ const templateMap = {
 // ♥♥♥♥ 여기 작업해야됌 ~~
 const listItemMap = {
 	educationList: (idx, data, type = "educationList") => `
-    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}"  data-type="${type}">
+    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
       <div class="d-flex">
 	      <div>
 	      	<strong>${data.schoolName}</strong>
@@ -490,14 +490,14 @@ const listItemMap = {
 	      <button type="button" class="btn_edit">
 	      	<span class="material-symbols-outlined fs-3">stylus</span>
 	      </button>
-	      <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="educationList" data-idx="${idx}" >
+	      <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="educationList" data-idx="${idx}"  data-type="${type}" >
 	      	<span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
 	     </button>
       </div>
     </div>
   `,
-	careerList: (idx, data) => `
-    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	careerList: (idx, data, type = "careerList") => `
+    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}"  data-type="${type}">
       <div class="d-flex flex-column">
         <strong>${data.comId || '회사명 미입력'}</strong>
         <span>${data.startWorkDate || '입사일 없음'} ~ ${data.retireDate || '재직중'}</span>
@@ -513,8 +513,8 @@ const listItemMap = {
       </div>
     </div>
   `,
-	mySkillList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	mySkillList: (idx, data, type = "mySkillList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <strong>${data.mySkillName || '기술명 없음'}</strong>
         <div class="d-flex gap-2">
           <button type="button" class="btn_edit">
@@ -526,8 +526,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	myExperienceList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	myExperienceList: (idx, data, type = "myExperienceList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.expName || '경험명 없음'}</strong>
           <span>${data.expStartDate || ''} ~ ${data.expEndDate || '진행중'}</span>
@@ -543,8 +543,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	myLicenseList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	myLicenseList: (idx, data, type = "myLicenseList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.licenseCode || '자격증명 없음'}</strong>
           <span>${data.licensePassDate || ''}</span>
@@ -559,8 +559,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	supportList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	supportList: (idx, data, type = "supportList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <p><strong>${codeLabelMap.VULN[data.disabilityCode] || ''}</strong> (${codeLabelMap.DSBL[data.disabilityLevelCode] || ''})</p>
         <div class="d-flex gap-2">
           <button type="button" class="btn_edit">
@@ -572,8 +572,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	awardList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	awardList: (idx, data, type = "awardList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.awardName || '수상명 없음'}</strong>
           <span>${data.awardDate || ''}</span>
@@ -589,8 +589,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	languageSkillList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	languageSkillList: (idx, data, type = "languageSkillList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.languageExamName || '시험명 없음'}</strong>
           <span>${data.passDate || ''}</span>
@@ -606,8 +606,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	portfolioList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	portfolioList: (idx, data, type = "portfolioList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.porName || '포트폴리오 제목'}</strong>
           <span>${data.porStartDate || ''} ~ ${data.porEndDate || '진행중'}</span>
@@ -623,8 +623,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	militaryList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	militaryList: (idx, data, type = "militaryList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div>
         	<strong>${codeLabelMap.SRVC[data.serviceCategoryCode] || ''} / ${codeLabelMap.MILT[data.militaryTypeCode] || ''}</strong>
         	<small>${data.militaryReason || ''}</small>
@@ -1219,10 +1219,22 @@ document.addEventListener("DOMContentLoaded", function() {
 				const idx = itemWrap.dataset.idx;
 				const type = itemWrap.dataset.type;
 				const section = document.querySelector(`#section-${type}`);
-				const formContainer = section.querySelector('.formContainer');
+				if (section) {
+					const formContainer = section.querySelector('.formContainer');
+					// formContainer도 null일 수 있으므로 안전하게:
+					if (formContainer) {
+						// 여기서 로직 처리
+					}
+				} else {
+					console.warn("⚠️ section-introduction DOM 요소를 찾을 수 없습니다.");
+				}
 				const formId = `form-${type}${idx}`;
 				let formEl = document.getElementById(formId);
-
+				
+				console.log("listContainer 객체 반복문 돌릴 떄 resume 객체 확인!! ", resume)
+				console.log("listContainer 객체 반복문 돌릴 떄 formId 확인!! ", formId)
+				console.log("listContainer 객체 반복문 돌릴 떄 list-item 확인!! ", itemWrap)
+				console.log("listContainer 객체 반복문 돌릴 떄 resume[type][idx] 확인!! ", resume[type])
 				const data = resume[type][idx];
 
 				// 기존 리스트 숨기기
@@ -1622,17 +1634,17 @@ window.addEventListener("DOMContentLoaded", () => {
 		const address2 = addressParts[1] || "";
 		resume.address = `${address1} ${address2}`.trim();
 	}
-if (mode === "create") {
-  const resumeData = document.getElementById("resumeData")?.dataset;
-  if (resumeData) {
-    resume.userName = resumeData.userName;
-    resume.birth = resumeData.birth;
-    resume.email = resumeData.email;
-    resume.tel = resumeData.tel;
-    const [addr1, addr2] = resumeData.address.split("||");
-    resume.address = `${addr1 || ""} ${addr2 || ""}`.trim();
-  }
-}
+	if (mode === "create") {
+		const resumeData = document.getElementById("resumeData")?.dataset;
+		if (resumeData) {
+			resume.memName = resumeData.userName;   // 🔁 이름을 memName 으로
+			resume.memBir = resumeData.birth;
+			resume.memEmail = resumeData.email;
+			resume.memTel = resumeData.tel;
+			const [addr1, addr2] = resumeData.address.split("||");
+			resume.memAddress = `${addr1 || ""} ${addr2 || ""}`.trim();
+		}
+	}
 
 	// input 요소에 resume 값 세팅
 	basicFields.forEach(field => {
@@ -1649,8 +1661,8 @@ if (mode === "create") {
 			document.getElementById(field.inputId).value = value;
 		}
 	});
-	
-	
+
+
 	// 버튼 이벤트 등록
 	const editBtn = document.getElementById("resumeEditBtn");
 
@@ -1935,9 +1947,12 @@ document.addEventListener("submit", function(e) {
 	})
 		.then(resp => {
 			console.log(resp.data);
-			if (resp.data === "ok") {
+			if (mode== "create" && resp.data === "ok") {
 				alert("정상적으로 등록되었습니다.");
 				window.location.href = "/mypage/resume/list";
+			} if (mode== "update" && resp.data === "ok") {
+				alert("정상적으로 수정되었습니다.");
+				window.location.href = "/mypage/resume/" + resume.resumeNo;
 			} else {
 				alert("이력서 등록에 실패했습니다. 다시 시도해주세요.");
 				console.error("서버로부터 받은 응답", resp.data);
@@ -1991,18 +2006,19 @@ document.addEventListener("submit", function(e) {
 					if (formEl) {
 						const inputEl = formEl.querySelector(`[name$='.${fieldName}']`);
 						if (inputEl) {
-							// ✅ inputEl 감싸는 새로운 div 생성
-							const wrapper = document.createElement('div');
-							wrapper.classList.add('input-wrapper', 'w-100'); // 필요한 class 있으면 추가
 
-							// ✅ inputEl을 div (wrapper)로 감싸기
-							inputEl.parentElement.insertBefore(wrapper, inputEl);
-							wrapper.appendChild(inputEl);
-							inputEl.classList.add("w-100")
+							// wrapper 선택, 없을경우 ✅ inputEl 감싸는 새로운 div 생성
+							let wrapper = inputEl.closest(".input-wrapper");
+							if (!wrapper) {
+								wrapper = document.createElement("div");
+								wrapper.classList.add("input-wrapper", "w-100");
+								inputEl.parentElement.insertBefore(wrapper, inputEl);
+								wrapper.appendChild(inputEl);
+							}
 
 							// 기존 에러 제거
-							const existingError = wrapper.querySelector(`.${fieldName}-error`);
-							if (existingError) existingError.remove();
+							const oldError = wrapper.querySelector(`.${field}-error`);
+							if (oldError) oldError.remove();
 
 							// 새 에러 span 추가
 							const errorSpan = document.createElement('span');
@@ -2029,18 +2045,18 @@ document.addEventListener("submit", function(e) {
 					// 단일 필드 처리 (userId 등)
 					const inputEl = document.querySelector(`[name='${field}']:not([type="hidden"])`);
 					if (inputEl) {
-						// ✅ inputEl 감싸는 새로운 div 생성
-						const wrapper = document.createElement('div');
-						wrapper.classList.add('input-wrapper', 'w-100'); // 필요한 class 있으면 추가
-
-						// ✅ inputEl을 div (wrapper)로 감싸기
-						inputEl.parentElement.insertBefore(wrapper, inputEl);
-						wrapper.appendChild(inputEl);
-						inputEl.classList.add("w-100")
+						// wrapper 선택, 없을경우 ✅ inputEl 감싸는 새로운 div 생성
+						let wrapper = inputEl.closest(".input-wrapper");
+						if (!wrapper) {
+							wrapper = document.createElement("div");
+							wrapper.classList.add("input-wrapper", "w-100");
+							inputEl.parentElement.insertBefore(wrapper, inputEl);
+							wrapper.appendChild(inputEl);
+						}
 
 						// 기존 에러 제거
-						const existingError = inputEl.parentElement.querySelector(`.${field}-error`);
-						if (existingError) existingError.remove();
+						const oldError = wrapper.querySelector(`.${field}-error`);
+						if (oldError) oldError.remove();
 
 						const errorSpan = document.createElement('span');
 						errorSpan.className = `${field}-error text-danger d-block mt-1 fs-14`;
@@ -2093,9 +2109,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 		// ✅ 여기서 먼저 코드 그룹 로딩이 끝날 때까지 기다리기
 		await preloadCodeGroups(["GRAD", "EDUC", "SPEC", "VULN", "DSBL", "LANG", "MILT", "SRVC"]);
-
 		Object.assign(resume, resumeFromServer);
-
+		
+		
+		// 수정 모드일 이력서 제목을 바인딩
+		const resumeNameInput = document.getElementById("resumeNameInput");
+		if (resumeNameInput && resume.resumeName) {
+			resumeNameInput.value = resume.resumeName;
+		}
+		
 		// ✅ 자기소개서 존재 여부 체크
 		if (resume.introductionNo && !resume.introduction) {
 			alert("연결된 자기소개서가 삭제되었습니다. 다시 선택해 주세요.");

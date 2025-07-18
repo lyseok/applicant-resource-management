@@ -9,6 +9,7 @@
 }
 
 /* 등록 */
+
 .resume-wrap {
 	padding: 30px;
 	width:100%;
@@ -75,6 +76,9 @@
 .section {
 	position: relative;
 	margin-bottom: 60px;
+}
+#section-militaryList{
+	margin-bottom:0;
 }
 
 .section:first-of-type {
@@ -480,23 +484,50 @@
 }
 #quick_menu{
   position: sticky;
-  transform: translateY(8%);
+  transform: translateY(31%);
   display: flex;
   flex-direction: column;
   gap: 5px;
   top: 100px;
   width:calc(100% - 1024px);
 }
+#quick_menu:after {
+    content: '';
+    height: 100%;
+    width: 1px;
+    background: #eaeaea;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
 #quick_menu ~ .resume-wrap{
   max-width: 1024px;
 }
-
 #quick_menu a{
+	position:relative;
 	color:#666;
+	font-size:13px;
+	padding-left:20px;
+}
+#quick_menu a:before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: #333;
+    border-radius: 50%;
+    position: absolute;
+    left: -1px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
 }
 #quick_menu a.on{
 		color:var(--violet80);
 		font-weight:bold;
+}
+#quick_menu a.on:before {
+    content: '';
+    background: var(--violet80);
 }
 .section, .resume-header-wrap{
 	scroll-margin-top: 100px;
