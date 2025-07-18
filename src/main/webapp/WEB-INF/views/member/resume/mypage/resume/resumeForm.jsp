@@ -22,7 +22,7 @@
 </c:if>
 <script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
 </head>
-<body>
+<body class="aos_frans_none">
 	<div class="d-flex align-items-start gap-4 resume_form_bg">
 		<div class="resume-wrap resume_form_wrap">
 	
@@ -300,8 +300,8 @@
 							</div>
 	
 							<div class="section-form-btns">
-								<a href="/mypage/resume/list" class="btn btn_red_line" onclick="showLoading()">취소</a>
-								<button type="submit" class="btn btn_violet">등록</button>
+								<a href="/mypage/resume/list" class="btn btn_red_line h50" onclick="showLoading()">취소</a>
+								<button type="submit" class="btn btn_violet h50 justify-content-center w140">등록</button>
 							</div>
 						</div>
 					</div>

@@ -31,7 +31,7 @@ public interface ResumeMapper {
 	public int selectUserResumeNoCount(String userId);
 	
 	// 이력서 제목으로 검색조회
-	public List<ResumeVO> selectResumeSearch(String keyward);
+	public List<ResumeVO> selectResumeSearch(ResumeVO resumeVO);
 	
 	
 }

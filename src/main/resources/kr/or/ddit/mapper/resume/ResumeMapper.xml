@@ -231,8 +231,9 @@
 		SELECT *
 		  FROM RESUME
 		 WHERE RESUME_DELETE_DATE IS NULL
-           AND RESUME_NAME LIKE '%'||#{resumeName}||'%'  	
-           AND USER_ID = #{userId}
+       AND RESUME_NAME LIKE '%'||#{resumeName}||'%'  	
+       AND USER_ID = #{userId}
+	     AND RESUME_SUBMIT_YN = 'N'
   </select>
   
 </mapper>
