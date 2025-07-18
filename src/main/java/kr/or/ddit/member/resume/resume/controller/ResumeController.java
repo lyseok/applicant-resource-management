@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.validation.Valid;
 import kr.or.ddit.dto.ResumeSaveValidError;
 import kr.or.ddit.dto.ResumeSaveValidationErrorResponse;
@@ -93,6 +96,7 @@ public class ResumeController {
 		}
 		
 		model.addAttribute("resumeCnt", resumeCnt);
+	    model.addAttribute("mode", "create"); // ✅ JS에서 mode로 사용 가능
 		log.info("{}", userId);
 		return "member/resume/mypage/resume/resumeForm";
 	}
@@ -153,14 +157,18 @@ public class ResumeController {
 	  public String createResume(
 		@PathVariable String no
 		, Model model
-	  ){
+	  ) throws JsonProcessingException{
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 		ResumeVO vo = new ResumeVO();
 		vo.setResumeNo(no);
 		vo.setUserId(userId);
 		ResumeVO resumeVO = service.readResumeDetail(vo);
-		model.addAttribute("resume", resumeVO);
+	    String resumeJson = new ObjectMapper().writeValueAsString(resumeVO);
+	    log.info("♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣ {}", resumeJson);
+	    
+	    model.addAttribute("mode", "update"); // ✅ JS에서 mode로 사용 가능
+	    model.addAttribute("resumeJson", resumeJson); // ✅ resumeFromServer로 바인딩됨
 		return "member/resume/mypage/resume/resumeForm";
 	  }
 	 

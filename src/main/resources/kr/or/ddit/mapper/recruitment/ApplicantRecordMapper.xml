@@ -4,7 +4,7 @@
 	<select id="selectApplicantRecordList" resultType="ApplicantRecordVO">
 	SELECT 
 		APPLICANT_RECORD_NO
-		, RECRUITMENT_NO
+		, RECRUIT_PROCESS_NO
 		, APPLICANT_ID
 		, RECRUIT_PROCESS_STEP
 		, STEP_PASS_YN
@@ -15,7 +15,7 @@
 	<select id="selectApplicantRecord" resultType="ApplicantRecordVO">
 	SELECT 
 		APPLICANT_RECORD_NO
-		, RECRUITMENT_NO
+		, RECRUIT_PROCESS_NO
 		, APPLICANT_ID
 		, STEP_PASS_YN
 		, STEP_APPLICATION_YN
@@ -117,7 +117,8 @@
 		UPDATE APPLICANT_RECORD 
 		SET 
 			STEP_APPLICATION_YN = 'Y'
-		WHERE APPLICANT_ID = #{applicantId}
+		WHERE RECRUIT_PROCESS_NO = #{processNo}
+		AND APPLICANT_ID = #{applicantId}
 	</update>
 	
 	<update id="updateApplicantRecord">

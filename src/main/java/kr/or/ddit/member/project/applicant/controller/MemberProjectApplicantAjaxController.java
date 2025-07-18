@@ -25,4 +25,10 @@ public class MemberProjectApplicantAjaxController {
 		
 		return ResponseEntity.ok("ok");
 	}
+	@PutMapping("/agree")
+	public ResponseEntity<?> agreeProjectRequest(@RequestBody Map<String, String> reqData) {
+		service.modifyAgreeApplicantStatusCode(reqData);
+		
+		return ResponseEntity.ok("ok");
+	}
 }
