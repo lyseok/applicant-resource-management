@@ -151,9 +151,10 @@
       <div class="row mb-2 align-items-center">
         <div class="col">
           <ul class="nav nav-tabs" style="margin-bottom:0;">
-            <li class="nav-item"><button class="nav-link active" data-step="step1">1차 서류</button></li>
-            <li class="nav-item"><button class="nav-link" data-step="step2">2차 시험</button></li>
-            <li class="nav-item"><button class="nav-link" data-step="step3">3차 면접</button></li>
+			<!--  1차 2차 3차... 붙이기 -->
+			 <li class="nav-item"><button class="nav-link active" data-step="step1">1차 서류</button></li>
+			  <li class="nav-item"><button class="nav-link" data-step="step2">2차 시험</button></li>
+			  <li class="nav-item"><button class="nav-link" data-step="step3">3차 면접</button></li>
           </ul>
         </div>
         <div class="col-auto ms-auto d-flex gap-2">

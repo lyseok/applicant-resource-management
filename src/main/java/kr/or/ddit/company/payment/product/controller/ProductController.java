@@ -52,58 +52,9 @@ public class ProductController {
 		return "company/payment/product/ProductDetail";
 	}
 	
+
+
 	
-
-	@PostMapping
-	public String insertProduct(@ModelAttribute PaymentProductVO productVO, Model model) {
-
-		String type = productVO.getProductType();
-
-		LocalDate productPeriod = LocalDate.now();
-
-		if ("정기권".equals(type)) {
-
-			productPeriod = productPeriod.plusDays(30); // 적용됨
-
-			String formattedPeriod = productPeriod.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-
-			productVO.setProductPeriod(formattedPeriod);
-			productVO.setProductType("L");
-
-		} else if ("단건".equals(type)) {
-
-			productPeriod = productPeriod.plusDays(7);
-
-			String formattedPeriod = productPeriod.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-			productVO.setProductType("S");
-			productVO.setProductPeriod(formattedPeriod);
-
-		}
-
-//		MultipartFile file = productVO.getProductImgFile();
-//		if (file != null && !file.isEmpty()) {
-//			try {
-//				String uploadPath = RealuploadPath;
-//				String saveName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-//				Path path = Paths.get(uploadPath, saveName);
-//				Files.copy(file.getInputStream(), path, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-//				productVO.setProductImg(saveName);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//				return "fail";
-//			}
-//		}
-
-		log.info("등록된 상품 {} ", productVO);
-		model.addAttribute("productVO", productVO);
-		service.insertPaymentProduct(productVO);
-		return "company/payment/product/ResultProductInsert";
-	}
-
-	@GetMapping("/add")
-	String addForm() {
-		return "company/payment/product/InsertProduct";
-	}
 
 	@GetMapping("/list")
 	String listForm(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -137,4 +88,6 @@ public class ProductController {
 		
 		return "company/payment/product/ProductList";
 	}
+	
 }
+

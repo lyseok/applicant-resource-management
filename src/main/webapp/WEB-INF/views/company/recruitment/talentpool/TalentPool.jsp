@@ -294,8 +294,7 @@ body {
 			<!-- 버튼들 -->
 			<button type="button" id="resetFilter" class="btn btn_red_line">초기화</button>
 			<button class="btn btn_violet" type="submit">검색하기</button>
-			<button type="button" onclick="openModalById('select-top-job')">직군
-				선택 열기</button>
+			<button type="button" onclick="openModalById('select-top-job')">필터링열기</button>
 
 		</div>
 	</form>

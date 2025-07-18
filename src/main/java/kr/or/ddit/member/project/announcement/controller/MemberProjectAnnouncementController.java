@@ -12,15 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/board/project")
 public class MemberProjectAnnouncementController {
 	@GetMapping
-	public String projectAnnouncementPage(Model model) {
+	public String projectAnnouncementPage() {
 		return "member/project/announcement/announcementList";
 	}
 	@GetMapping("/form")
-	public String projectAnnouncementFormPage(Model model) {
+	public String projectAnnouncementFormPage() {
 		return "member/project/announcement/announcementForm";
 	}
 	@GetMapping("/detail")
-	public String projectAnnouncementDetailPage(Model model) {
+	public String projectAnnouncementDetailPage() {
 		return "member/project/announcement/announcementDetail";
 	}
 }

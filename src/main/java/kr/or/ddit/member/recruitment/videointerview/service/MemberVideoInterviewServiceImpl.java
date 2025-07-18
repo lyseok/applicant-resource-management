@@ -53,11 +53,6 @@ public class MemberVideoInterviewServiceImpl implements MemberVideoInterviewServ
 	        throw new VideoInterviewUrlNotFoundException("면접 접속 시간이 아닙니다.");
 	    }
 
-	    // 응시여부 업데이트
-	    if (1 > mapper.updateApplication(no)) {
-	        throw new DataUpdateException("단계별 응시 여부 변경에 실패했습니다");
-	    }
-
 	    return url;
     }
 }
