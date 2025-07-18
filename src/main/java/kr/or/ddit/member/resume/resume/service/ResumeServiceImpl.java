@@ -121,6 +121,11 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	@Transactional
 	public int createResume(ResumeVO resumeVO) {
+		ResumeVO vo = resumeMapper.selectResumeDetail(resumeVO);
+		// 이력서 번호가 있으면 수정
+		if(vo.getResumeNo() != null) {
+			return resumeMapper.updateResume(resumeVO);
+		}
 		int resumeCnt = resumeMapper.insertResume(resumeVO);
 
 		// 경력
@@ -313,6 +318,12 @@ public class ResumeServiceImpl implements ResumeService {
 		return resumeMapper.selectUserResumeNoCount(userId);
 	}
 
+
+	@Override
+	public List<ResumeVO> readResumeSearch(String keyward) {
+		List<ResumeVO> resumeList = resumeMapper.selectResumeSearch(keyward); 
+		return resumeList;
+	}
 	
 	
 	// 공통 코드 한글 맵핑
