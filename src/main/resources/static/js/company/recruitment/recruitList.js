@@ -11,10 +11,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 const row = document.createElement('div');
                 row.className = 'd-flex align-items-center justify-content-between border rounded p-3 mb-3 bg-white shadow-sm';
 
+				function truncateText(text, maxLength) {
+					if (!text) return '공고 내용 없음';
+					return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+				}
+
                 row.innerHTML = `
                     <div class="flex-grow-1">
                         <h5 class="fw-bold mb-1">${item.RECRUITMENTTITLE}</h5>
-                        <p class="text-muted mb-2">${item.RECCONTENT || '공고 내용 없음'}</p>
+                        <p class="text-muted mb-2">${truncateText(item.RECCONTENT, 5) || '공고 내용 없음'}</p>
                         <div class="small text-muted">
                             <span><strong>경력:</strong> ${item.yearCodeName || '-'}</span> |
                             <span><strong>직무:</strong> ${item.jobCodeName || '-'}</span> |
