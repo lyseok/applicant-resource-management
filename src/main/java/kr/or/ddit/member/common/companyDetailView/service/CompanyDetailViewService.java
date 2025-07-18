@@ -4,4 +4,5 @@ import kr.or.ddit.vo.common.CompanyVO;
 
 public interface CompanyDetailViewService {
 	public CompanyVO readCompanyInfoById(String userId);
+	
 }

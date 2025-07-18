@@ -222,13 +222,13 @@ public class ResumeServiceImpl implements ResumeService {
 	// 논리적 삭제
 	@Override
 	public int editResumeRemove(ResumeVO resumeVO) {
-		String resumeNo = resumeVO.getResumeNo();
-		
-		
-		
-		// resumeMapper.deleteResume(null);
-		return 0;
-
+		int result = resumeMapper.updateResumeDelete(resumeVO);
+		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", result);
+		if(result > 0) {
+			 return result;
+		} else {
+			throw new IllegalArgumentException("이력서를 삭제 실패했습니다.");
+		}
 	}
 
 	@Override
@@ -241,6 +241,81 @@ public class ResumeServiceImpl implements ResumeService {
 		return resumeMapper.deleteResume(no);
 	}
 
+	@Transactional
+	@Override
+	public void applicantCopyLogic(PrjAplcntVO prjAplcnt) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		prjAplcnt.setUserId(username);
+		log.info("================>>>>>>>>>> {}", prjAplcnt);
+
+		String aplcntNo = prjAplcntMapper.duplicationPrjRcrtPsncnt(prjAplcnt);
+		if (aplcntNo != null && !aplcntNo.isBlank()) {
+			throw new DataInsertException("이미 해당 프로젝트에 지원하셨습니다.");
+		}
+
+		ResumeVO beforeVo = new ResumeVO();
+		beforeVo.setUserId(username);
+		beforeVo.setResumeNo(prjAplcnt.getResumeNo());
+
+		log.info("================>>>>>>>>>> {}", beforeVo);
+
+		ResumeVO copyVo = readResumeDetail(beforeVo);
+		copyVo.setResumeSubmitYn("Y");
+		int res = createResume(copyVo);
+		if (res == 0) {
+			throw new DataInsertException("이력서 복사 실패");
+		}
+		prjAplcnt.setResumeNo(copyVo.getResumeNo());
+		prjAplcnt.setAplcntStatusCode("PRST-001"); // 지원완료
+
+		res = prjAplcntMapper.insertPrjRcrtPsncnt(prjAplcnt);
+		if (res == 0) {
+			throw new DataInsertException("프로젝트 지원 실패");
+		}
+
+	}
+
+	@Transactional
+	@Override
+	public void recruitApplicate(ApplicantVO applicant){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		MemberVO memVo= memberMapper.selectMemberById(username);
+		applicant.setUserId(username);
+		log.info("================>>>>>>>>>> {}", applicant);
+
+		String applicantNo = applicantMapper.duplicationApplicant(applicant);
+		if (applicantNo != null && !applicantNo.isBlank()) {
+			throw new DataInsertException("이미 해당 채용공고에 지원하셨습니다.");
+		}
+
+		ResumeVO beforeVo = new ResumeVO();
+		beforeVo.setUserId(username);
+		beforeVo.setResumeNo(applicant.getResumeNo());
+		
+		ResumeVO copyVo = readResumeDetail(beforeVo);
+		copyVo.setResumeSubmitYn("Y");
+		int res = createResume(copyVo);
+		if (res == 0) {
+			throw new DataInsertException("이력서 복사 실패");
+		}
+		applicant.setResumeNo(copyVo.getResumeNo());
+
+		res = applicantMapper.insertApplicant(applicant);
+		if (res == 0) {
+			throw new DataInsertException("채용공고 지원 실패");
+		}
+	}
+
+	@Override
+	public int readUserResumeNoCount(String userId) {
+		return resumeMapper.selectUserResumeNoCount(userId);
+	}
+
+	
+	
+	// 공통 코드 한글 맵핑
 	private void setCodeName(ResumeVO resumeVO) {
 		// 리스트 꺼내기
 		List<CareerVO> carrerList = resumeVO.getCareerList();
@@ -317,83 +392,10 @@ public class ResumeServiceImpl implements ResumeService {
 			edu.setLocationName(provider.getDistrictName(edu.getLocation()));
 //			log.info("MilitaryRank ------->>> {}", edu.getDepartmentCode());
 //			log.info("Discharge ------->>> {}", edu.getHighestEducationCode());
-//			log.info("Discharge ------->>> {}", edu.getGraduateYn());
+			log.info("GraduateYn ------->>> {}", edu.getGraduateYn());
 		}
 //		log.info(" ");
 
-	}
-
-
-	@Transactional
-	@Override
-	public void applicantCopyLogic(PrjAplcntVO prjAplcnt) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		prjAplcnt.setUserId(username);
-		log.info("================>>>>>>>>>> {}", prjAplcnt);
-
-		String aplcntNo = prjAplcntMapper.duplicationPrjRcrtPsncnt(prjAplcnt);
-		if (aplcntNo != null && !aplcntNo.isBlank()) {
-			throw new DataInsertException("이미 해당 프로젝트에 지원하셨습니다.");
-		}
-
-		ResumeVO beforeVo = new ResumeVO();
-		beforeVo.setUserId(username);
-		beforeVo.setResumeNo(prjAplcnt.getResumeNo());
-
-		log.info("================>>>>>>>>>> {}", beforeVo);
-
-		ResumeVO copyVo = readResumeDetail(beforeVo);
-		copyVo.setResumeSubmitYn("Y");
-		int res = createResume(copyVo);
-		if (res == 0) {
-			throw new DataInsertException("이력서 복사 실패");
-		}
-		prjAplcnt.setResumeNo(copyVo.getResumeNo());
-		prjAplcnt.setAplcntStatusCode("PRST-001"); // 지원완료
-
-		res = prjAplcntMapper.insertPrjRcrtPsncnt(prjAplcnt);
-		if (res == 0) {
-			throw new DataInsertException("프로젝트 지원 실패");
-		}
-
-	}
-
-	@Transactional
-	@Override
-	public void recruitApplicate(ApplicantVO applicant){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		MemberVO memVo= memberMapper.selectMemberById(username);
-		applicant.setUserId(username);
-		log.info("================>>>>>>>>>> {}", applicant);
-
-		String applicantNo = applicantMapper.duplicationApplicant(applicant);
-		if (applicantNo != null && !applicantNo.isBlank()) {
-			throw new DataInsertException("이미 해당 채용공고에 지원하셨습니다.");
-		}
-
-		ResumeVO beforeVo = new ResumeVO();
-		beforeVo.setUserId(username);
-		beforeVo.setResumeNo(applicant.getResumeNo());
-		
-		ResumeVO copyVo = readResumeDetail(beforeVo);
-		copyVo.setResumeSubmitYn("Y");
-		int res = createResume(copyVo);
-		if (res == 0) {
-			throw new DataInsertException("이력서 복사 실패");
-		}
-		applicant.setResumeNo(copyVo.getResumeNo());
-
-		res = applicantMapper.insertApplicant(applicant);
-		if (res == 0) {
-			throw new DataInsertException("채용공고 지원 실패");
-		}
-	}
-
-	@Override
-	public int readUserResumeNoCount(String userId) {
-		return resumeMapper.selectUserResumeNoCount(userId);
 	}
 
 
