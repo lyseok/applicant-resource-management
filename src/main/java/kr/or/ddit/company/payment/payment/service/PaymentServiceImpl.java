@@ -51,10 +51,17 @@ public class PaymentServiceImpl implements PaymentService {
 		return mapper.selectMyPaymentList(userId);
 	}
 
+	@Override
+	public PaymentVO checkbilling(String userId) {
+		
+		return mapper.checkbilling(userId);
+	}
+	
 	public String getUserId() {
 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	return authentication.getName();		// 기업 ID 
 	}
+
 
 	
 }
