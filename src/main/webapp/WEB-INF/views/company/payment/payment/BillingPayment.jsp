@@ -32,6 +32,7 @@
           method: "CARD", // 자동결제(빌링)는 카드만 지원합니다
           successUrl , // 현재 페이지로 돌아오게 함
           failUrl: window.location.origin + "/fail", // 요청이 실패하면 리다이렉트되는 URL
+          customerKey,
           customerEmail: "dhfjdhfj@naver.com",
           customerName: "김철민",
         });

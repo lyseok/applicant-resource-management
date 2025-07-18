@@ -18,4 +18,5 @@ public interface PaymentProductMapper {
 	public int deletePaymentProduct(String productNo);
 	
 	public PaymentProductVO selectPaymentProductByName(String productName);
+	
 }
