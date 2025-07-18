@@ -5,35 +5,7 @@ const no = document.querySelector("#noHidden").value;
 const userId = document.querySelector("#userIdHidden").value;
 const aboardDetail = document.querySelector("#aboardDetail");
 
-//함수 미리 만들어놓기
-function iniBtn(no, type) {
-      const editBtn = document.querySelector("#editBtn");
-      const listBtn = document.querySelector("#listBtn");
-		
-	  console.log("타입2 : ", type);  //얘는 const한 애로 잘 골라짐
-      if (editBtn) {
-        editBtn.onclick = function () {
-          alert("클릭 돼??");
 
-          aboardDetail.innerHTML = "";
-          const acommentFormContainer = document.querySelector(
-            "#acommentFormContainer"
-          );
-          if (acommentFormContainer) acommentFormContainer.innerHTML = "";
-
-          const aboardForm = document.querySelector("#aboardForm");
-          if (aboardForm) aboardForm.style.display = "block";
-
-          aform(no, type); // 수정 폼 불러오기
-        };
-      }
-
-      if (listBtn) {
-        listBtn.onclick = function () {
-          alist(type); // 목록으로
-        };
-      }
-    }
 
 fetch(`/ajax/admin/board/admin_board/detail/${no}`)
   .then((resp) => resp.json())
@@ -110,8 +82,24 @@ fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 				<button id="listBtn">목록</button>
 				<button id="editBtn">수정</button>`;
     aboardDetail.innerHTML = html;
-
-	//함수 호출은 html 출력된 후에
-    iniBtn(no, type);
     
-  });
+    const editBtn = document.querySelector("#editBtn");
+    const listBtn = document.querySelector("#listBtn");
+    
+	listBtn.onclick = function () {
+	  alist2(type); // 목록으로
+	};
+	
+	editBtn.onclick = function () {
+	  aboardDetail.innerHTML = "";
+	  const acommentFormContainer = document.querySelector(
+	    "#acommentFormContainer"
+	  );
+	  if (acommentFormContainer) acommentFormContainer.innerHTML = "";
+	
+	  const aboardForm = document.querySelector("#aboardForm");
+	  if (aboardForm) aboardForm.style.display = "block";
+	
+	  aform(no, type); // 수정 폼 불러오기
+	};
+});

@@ -5,6 +5,7 @@ const memType = document.querySelector("#memType");
 
 // 무조건 처음 한번 실행 되는 부분
 //1차 옵션 추가
+const addopt = function(){
 fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
   resp.json().then((rslt) => {
     rslt.cmnCodeList.map((v, i) => {
@@ -17,6 +18,9 @@ fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
     });
   });
 });
+}
+
+addopt();
 
 //등록 버튼 누를 경우
 aboardForm.onsubmit = function (e) {
@@ -68,7 +72,6 @@ aboardForm.onsubmit = function (e) {
 
 //1차 옵션 선택
 boardTypeCode.onchange = function () {
-	console.log("1차 옵션 선택됨!");
 	if1();
     //2차 옵션 추가
     fetch(`/ajax/admin/board/admin_board/group/${boardTypeCode.value}`).then(resp=>{
@@ -87,7 +90,6 @@ boardTypeCode.onchange = function () {
 				option.value = codeNo;
 				option.innerText = `${description}`;
 
-	    	    console.log("option:", option);
 				codeGroup.appendChild(option);
               }
           });
@@ -96,7 +98,6 @@ boardTypeCode.onchange = function () {
 };
 
 codeGroup.onchange = function(){
-	console.log("2차 옵션 선택됨!");
 	if2();
 	fetch(`/ajax/admin/board/admin_board/cmn/${codeGroup.value}`).then(resp=>{
 		resp.json().then(rslt=>{
@@ -132,7 +133,6 @@ const if2 = function(){
 }
 
 const cdis = function(){
-	console.log("2차가 풀림!");
 	codeGroup.disabled = false;		
 	codeGroup.innerHTML = "";
 	let copt = document.createElement("option");
@@ -145,7 +145,6 @@ const cdis = function(){
 }
 
 const mdis = function(){
-	console.log("3차가 풀림!");
 	memType.disabled = false;		
 	memType.innerHTML = "";
 	let mopt = document.createElement("option");
@@ -153,4 +152,9 @@ const mdis = function(){
 	mopt.textContent = "--선택--";
 	memType.appendChild(mopt);
 	memType.value = "-1";		
+}
+
+const aform = function(){
+	console.log("디테일에서 넘어온 수정", no);
+	console.log("디테일에서 넘어온 수정2", type);
 }

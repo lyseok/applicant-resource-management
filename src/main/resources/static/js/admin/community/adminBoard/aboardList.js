@@ -14,9 +14,9 @@ const flist = function () {
 const nlist = function () {
 	let html = `
 		<p class="h4">공지사항 탭 선택</p>
-		<button id="ufaq" onclick="noticeUser()">일반회원</button>
-		<button id="cfaq" onclick="noticeCorp()">기업회원</button>
-		<button id="afaq" onclick="noticeEvent()">이벤트</button>`;
+		<button id="untc" onclick="noticeUser()">일반회원</button>
+		<button id="cntc" onclick="noticeCorp()">기업회원</button>
+		<button id="antc" onclick="noticeEvent()">이벤트</button>`;
 	memTypeBtn.innerHTML = html;
 };
 
@@ -42,7 +42,7 @@ const bhtml = function (rslt) {
 };
 
 // FAQ 전체
-function faqAll() {
+const faqAll = function() {
 	fetch(`/ajax/admin/board/admin_board/list/${type}`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
@@ -52,7 +52,7 @@ function faqAll() {
 }
 
 // FAQ 일반회원
-function faqUser() {
+const faqUser = function() {
 	fetch(`/ajax/admin/board/admin_board/pre/UFAQ`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
@@ -62,7 +62,7 @@ function faqUser() {
 }
 
 // FAQ 기업회원
-function faqCorp() {
+const faqCorp = function() {
 	fetch(`/ajax/admin/board/admin_board/pre/CFAQ`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
@@ -72,7 +72,7 @@ function faqCorp() {
 }
 
 // 공지 일반
-function noticeUser() {
+const noticeUser = function() {
 	fetch(`/ajax/admin/board/admin_board/pre/UNTC`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
@@ -82,7 +82,7 @@ function noticeUser() {
 }
 
 // 공지 기업
-function noticeCorp() {
+const noticeCorp = function() {
 	fetch(`/ajax/admin/board/admin_board/pre/CNTC`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
@@ -92,7 +92,7 @@ function noticeCorp() {
 }
 
 // 공지 이벤트
-function noticeEvent() {
+const noticeEvent = function() {
 	fetch(`/ajax/admin/board/admin_board/pre/ENTC`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
@@ -101,8 +101,18 @@ function noticeEvent() {
 		});
 }
 
+const pre = function(type){
+	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
+		.then((resp) => resp.json())
+		.then((rslt) => {
+			bhtml(rslt);
+			nlist();
+		});
+}
+
 // 초기 로딩
-function alist(type) {
+const alist = function(type) {
+	console.log("디테일에서 넘어온 리스트", type);
 	if (type === "BRDD-001") {
 		fetch(`/ajax/admin/board/admin_board/${type}`)
 			.then((resp) => resp.json())
@@ -115,6 +125,20 @@ function alist(type) {
 	} else if (type === "BRDD-002") {
 		faqAll();  // FAQ 전체
 		flist();
+	}
+}
+
+//초기 이후 로딩
+const alist2 = function(type) {
+	console.log("디테일에서 넘어온 리스트", type);
+	if (type === "BRDD-001") {
+		fetch(`/ajax/admin/board/admin_board/${type}`)
+			.then((resp) => resp.json())
+			.then((rslt) => {
+				bhtml(rslt);
+			});
+	} else{
+		pre();
 	}
 }
 

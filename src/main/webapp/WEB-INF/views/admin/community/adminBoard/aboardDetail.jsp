@@ -6,16 +6,19 @@
 
 <head>
 	<title>띹잡 고객센터 | 게시글 상세</title>
-	<script src="/js/admin/community/adminBoard/aboardForm.js"></script>
-	<script src="/js/admin/community/adminBoard/aboardList.js"></script>
 </head>
 <body>
 
 	<sec:authentication property="principal.realUser.userId" var="userId"/>
 
-	<button><a href="/admin/board/admin_board/form">새로 등록</a></button>
-	<div id="aboardDetail"></div>
 	<!-- 게시글 상세 -->
+	<div id="aboardDetail"></div>
+
+	<!-- 리스트 -->
+	<div id="memTypeBtn"></div><br>
+	<ul id="aboardList">
+		<input type="hidden" id="typeHidden" value="${type}">
+	</ul>
 
 	<!-- 답글 폼 -->
   	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
@@ -25,17 +28,14 @@
 	
 	<!-- 등록 폼 미리 숨겨놓기 -->
 	  <form id="aboardForm" style="display: none;">
-	    <input type="hidden" name="userId" value="${userId}"><br>
 	    
 	    <label>게시판 유형 코드</label>
 	    <select id="boardTypeCode">
 	      <option value="-1">--선택--</option>
 	    </select>
 	    
-	    <select id="codeGroupNo" disabled>
+	    <select id="codeGroup" disabled>
 	      <option value="-1">--선택--</option>
-	      <option value="UFAQ">일반회원</option>
-	      <option value="CFAQ">기업회원</option>
 	    </select>
 	    
 	    <select id="memType" disabled>
@@ -44,11 +44,16 @@
 	    
 	    <br>
 	    <input type="text" name="boardTitle" placeholder="제목">
-	    <input type="text" name="boardContent" placeholder="내용">
+	    <label>작성자 아이디: </label>
+		<input type="text" name="userId" value="${userId}" disabled><br>
+		<textarea name="boardContent" placeholder="내용" rows="6" cols="60"></textarea>
 	    
 	    <button type="submit">등록</button>
 	  </form>
+	  
+	  <button><a href="/admin/board/admin_board/form">새로 등록</a></button>
 	
-
+<script src="/js/admin/community/adminBoard/aboardList.js"></script>
+<script src="/js/admin/community/adminBoard/aboardForm.js"></script>
 <script src="/js/admin/community/adminBoard/aboardDetail.js"></script>	
 </body>
