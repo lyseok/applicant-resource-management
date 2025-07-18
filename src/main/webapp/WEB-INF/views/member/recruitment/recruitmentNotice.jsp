@@ -91,7 +91,7 @@
         </div>
         <div class="d-flex align-items-center gap-2 mt-2">
             <c:choose>
-			  <c:when test="${recruitmentNotice.recruitFinishYn eq Y}">
+			  <c:when test="${recruitmentNotice.recruitFinishYn eq 'Y'}">
 			    <!-- 마감 완료 -->
 			    <button class="btn btn-secondary" style="height:48px;" id="deadBtn" disabled>
 			      <span id="dDayCounter">-</span><br>마감 완료
@@ -101,7 +101,7 @@
 			    <!-- 관리자: 마감 버튼 -->
 			    <button class="btn btn_violet" style="height:48px;" id="deadLineBtn"
 			            data-no="${recruitmentNotice.recruitmentNo}">
-			      <span id="dDayCounter">Loading...</span><br>마감
+			      <span id="dDayCounter"></span><br>마감
 			    </button>
 			  </c:when>
 			  <c:when test="${userInfo.userRole eq 'ROLE_USER'}">
@@ -114,7 +114,7 @@
 			    <button class="btn btn_violet" style="height:60px; width:200px;" id="applyBtn"
 			            data-finish="${recruitmentNotice.recruitmentFinishDate}"
 			            data-title="${recruitmentNotice.recruitmentTitle}">
-			      <span id="dDayCounter">Loading...</span><br>입사지원
+			      <span id="dDayCounter"></span><br>입사지원
 			    </button>
 			  </c:when>
 			</c:choose>
