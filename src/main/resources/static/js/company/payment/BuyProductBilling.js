@@ -1,10 +1,11 @@
 function doBilling() {
- 
-    const billingKey = body.dataset.billingKey;
-    const customerKey = body.dataset.customerKey;
-    const amount = body.dataset.amount;
-    const orderName = body.dataset.orderName;
-    const productNo = body.dataset.productNo;
+ 	
+ 	const body = document.body;
+	const billingKey = PbillingKey;
+	const customerKey = PcustomerKey;
+	const amount = Pamount;
+	const orderName = PproductName;
+	const productNo = PproductNo;;
 
     console.log("billingKey", billingKey);
     console.log("customerKey", customerKey);
@@ -23,7 +24,11 @@ function doBilling() {
         })
         
     })
-    .then(res => res.json())
+    .then(res => {
+		console.log("res :",res);
+		alert("로그확인시간");
+		return res.json();
+		})
     .then(data => {
         alert("결제 성공!");
         console.log(data);

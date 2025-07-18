@@ -69,25 +69,27 @@ public class PaymentController {
 	    return Map.of("hasBillingKey", hasBillingKey);
 	}
 	
-	@GetMapping("/success/executebilling")
-	String successBuy(
-		@RequestParam String billingKey,
-		@RequestParam String amount,
-		@RequestParam String orderName
-			) {
-	
-	PaymentVO vo = new PaymentVO();
-	PaymentProductVO product = pservice.selectPaymentProductByName(orderName);
-	
-	vo.setProductNo(product.getProductNo());
-	vo.setPaymentMethod("카드");
-	vo.setPaymentBillingKey(billingKey);
-	vo.setPaymentPay(amount);
-		
-	service.insertPayment(vo);
-		
-	return "company/payment/payment/SuccessSubscribe";
-	}
+//	@GetMapping("/success/executebilling")
+//	String successBuy(
+//		@RequestParam String billingKey,
+//		@RequestParam String amount,
+//		@RequestParam String orderName,
+//		@RequestParam String paymentKey
+//			) {
+//	
+//	PaymentVO vo = new PaymentVO();
+//	PaymentProductVO product = pservice.selectPaymentProductByName(orderName);
+//	
+//	vo.setUserId(service.getUserId());
+//	vo.setProductNo(product.getProductNo());
+//	vo.setPaymentMethod("카드");
+//	vo.setPaymentBillingKey(billingKey);
+//	vo.setPaymentPay(amount);
+//		
+//	service.insertPayment(vo);
+//		
+//	return "company/payment/payment/SuccessSubscribe";
+//	}
 	
 	
 	@GetMapping("/success")
@@ -149,7 +151,7 @@ public class PaymentController {
 				vo.setProductNo(productNo);	
 				vo.setPaymentPay(pamount);
 				vo.setPaymentMethod(paymentMethod);
-				vo.setTossPaymentKey(paymentKey);
+				
 				
 				service.insertPayment(vo);
 				log.info("insert에 들어갈 값 : {}", vo);
@@ -232,7 +234,6 @@ public class PaymentController {
 			vo.setProductNo(productNo);
 			vo.setPaymentPay(String.valueOf(paidAmount));
 			vo.setPaymentMethod(method);
-			vo.setTossPaymentKey(payKey);
 			service.insertPayment(vo);
 			
 			log.info("정기결제 저장완료 : {}" ,vo);
