@@ -82,8 +82,8 @@
 									</c:if>
 								</span>
 							</div>
-							<div class="fs-14 text-light">
-								<span>${resume.updateDate}</span>
+							<div class="">
+								<span class="fs-16 text-secondary">${resume.updateDate}</span>
 							</div>
 						</div>
 						<div class="d-flex gap-1">

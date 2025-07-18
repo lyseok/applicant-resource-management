@@ -4,7 +4,7 @@
 }
 /* 폰트사이즈 */
 .fs-14{font-size:14px !important;}
-.fs-16{font-size:14px !important;}
+.fs-16{font-size:16px !important;}
 
 /* padding */
 .p-6{padding:6rem !important;}
@@ -44,6 +44,7 @@
 .w100p{width:100% !important;}
 .w95p{width:95% !important;}
 /* px 넓이 - width */
+.w140{width:140px !important;}
 .w500{width:500px !important;}
 .w600{width:600px !important;}
 .w700{width:700px !important;}
@@ -128,7 +129,19 @@
 }
 
 
+/* aos 적용 */
+.aos_frans_none .layout-demo-wrapper {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
 
+
+/* 부트스트랩 덮어쓰기 */
+.text-success{
+	color: var(--violet80) !important;
+}
+.modal-dialog-centered{min-height:100vh}
 
 /* popover/tooltip */
 .toolTipWrap {

@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>이력서 상세페이지</title>
 <link rel="stylesheet" href="/css/member/resume/resume.css">
+<script type="text/javascript" src="/js/member/resume/resumeList.js" defer></script>
 </head>
 <body>
 	<div class="resume-main-wrap resume_detail_wrap">
