@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.common.CompanyMapper;
+import kr.or.ddit.mapper.common.CompanyOpProfitMapper;
+import kr.or.ddit.mapper.common.CompanySalesMapper;
 import kr.or.ddit.vo.common.CompanyVO;
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	private CompanyMapper companyMapper;
 	private CodeMapProvider codeMapProvider;
+	private CompanySalesMapper companySalesMapper;
+	private CompanyOpProfitMapper companyOpProfitMapper;
+	
 
 	@Override
 	public CompanyVO readCompanyInfoById(String userId) {
@@ -26,6 +31,7 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 		company.setComSize(sizeName);
 		return company;
 	}
+	
 	
 	
 	
