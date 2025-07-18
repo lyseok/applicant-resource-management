@@ -7,4 +7,5 @@ public interface CompanyManagementService {
 	public CompanyVO readCompanyManagementById(String userId);
 	
 	public int editCompanyInfo(CompanyInfoDTO companyInfoDTO);
+	
 }

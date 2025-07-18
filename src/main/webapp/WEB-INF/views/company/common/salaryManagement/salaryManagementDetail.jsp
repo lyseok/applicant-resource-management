@@ -7,7 +7,6 @@
   <script src="/js/company/common/salaryManagement/salaryManagementDetail.js"></script>
 </head>
 
-
 <body class="bg-light">
   <div class="container mt-5">
     <h2 class="text-center mb-4">연봉 관리</h2>

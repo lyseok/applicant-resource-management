@@ -33,14 +33,15 @@ public class CompanyVO extends UsersVO implements Serializable{
 	private String comPayment;
 	private String industryType;
 	
-	//추가
+	//추가1
 	private String comType; //기업구분
 	private String comSize; //기업규모
 	private String insuranceYn;//4대보험여부
 	private String ceoName;//대표자이름
 	private String comAddr;//기업주소
-	private Integer comCapital;//기업 자본금
+	private String comCapital;//기업 자본금
 	private String comMainBiz;//기업주요사업
+	
 	
 	public String getMemName() {
 		return comName;
