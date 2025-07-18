@@ -87,7 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                   data-exam-no="${exam.recruitExamNo}"
                                   data-applicant-id="${exam.applicantId}"
                                   data-exam-time="${exam.recruitExamTime}"
-                                  data-start-date="${exam.recruitExamStartDate}">
+                                  data-start-date="${exam.recruitExamStartDate}"
+								  data-available="${isExamAvailable}" >
                                   응시
                                 </button>`}
                           </div>
