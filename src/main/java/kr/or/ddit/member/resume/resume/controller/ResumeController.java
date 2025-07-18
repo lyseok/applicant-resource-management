@@ -96,6 +96,7 @@ public class ResumeController {
 		}
 		
 		model.addAttribute("resumeCnt", resumeCnt);
+	    model.addAttribute("mode", "create"); // ✅ JS에서 mode로 사용 가능
 		log.info("{}", userId);
 		return "member/resume/mypage/resume/resumeForm";
 	}
