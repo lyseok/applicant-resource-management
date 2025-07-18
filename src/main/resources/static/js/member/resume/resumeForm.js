@@ -2092,8 +2092,10 @@ window.addEventListener("DOMContentLoaded", async () => {
         introContainer.classList.add("d-none");
       }
       const introSection = document.querySelector("#section-introduction");
-      introSection.querySelector(".section-content")?.classList.remove("d-none");
-      introSection.querySelector(".btn-introduction")?.classList.remove("d-none");
+			if (introSection) {
+			  introSection.querySelector(".section-content")?.classList.add("d-none");
+			  introSection.querySelector(".btn-introduction")?.classList.add("d-none");
+			}
       // → 사용자에게 다시 선택하게 하기
     } else if (resume.introductionNo && resume.introduction) {
       // ✅ 자소서가 존재하면 렌더링
