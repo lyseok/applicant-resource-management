@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <span><strong>직무:</strong> ${item.jobCodeName || '-'}</span> |
                             <span><strong>지역:</strong> ${item.cityCodeName} ${item.districtCodeName}</span> |
                             <span><strong>급여:</strong> ${item.SALARY || '-'}</span> |
-                            <span><strong>등록일:</strong> ${item.RECRUITMENTRECEIPTSTART?.substring(0, 10) || '-'}</span> |
+                            <span><strong>등록일:</strong> ${item.RECRUITMENTSTARTDATE?.substring(0, 10) || '-'}</span> |
                             <span><strong>마감일:</strong> ${item.RECRUITMENTFINISHDATE?.substring(0, 10) || '-'}</span> |
                             <span><strong>지원자 수:</strong> ${item.APPLICANTCOUNT}</span>
                         </div>
