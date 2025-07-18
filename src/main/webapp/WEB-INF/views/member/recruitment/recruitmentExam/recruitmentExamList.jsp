@@ -40,9 +40,10 @@
 		</div>
 
 		<!-- 검색바 -->
+		 <!-- 검색바 -->
 		<div class="mb-3 d-flex justify-content-end">
-			<input id="search-input" type="search" class="form-control w-50"
-				placeholder="시험명, 내용으로 검색해보세요.">
+			<input id="examSearch" type="search" class="form-control w-50"
+				placeholder="시험명·공고명·기업명으로 검색" />
 		</div>
 
 		<!-- 총 개수 -->

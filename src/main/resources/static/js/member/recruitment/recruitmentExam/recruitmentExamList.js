@@ -8,23 +8,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const examBtnEl = document.getElementById('exam-btn');
   const confirmExamBtn = document.getElementById('confirmExamBtn');
   const examListGroupEl = document.querySelectorAll;
+  const examSearchEl     = document.getElementById('examSearch');
   const examModal = new bootstrap.Modal(document.getElementById('recruitExamModal'));
   const notAvailableModal = new bootstrap.Modal(document.getElementById('notAvailableModal'));
 
+  let allExams = [];
   axios
     .get('/ajax/mypage/recruitment_exam')
-    .then((resp) => {
-      const exams = resp.data;
-      console.log('가져온 시험들 체킁: ', exams);
-      renderExams(exams);
-    })
+	.then(({ data: exams }) => {
+		  console.log('가져온 시험들 체킁: ', exams);
+	      allExams = exams;
+	      renderExams(allExams);
+	    })
     .catch((err) => {
       console.error('에러 체킁', err);
       examListEl.innerHTML = `
         <div class="list-group-item text-center text-muted">시험이 존재하지 않습니다.</div>
         `;
     });
+	
+	
+	
+	examSearchEl.addEventListener('input', () => {
+	    const keyword = examSearchEl.value.trim().toLowerCase();
+	    const filtered = keyword
+	      ? allExams.filter(exam => 
+	          exam.recruitExamName.toLowerCase().includes(keyword) ||
+	          exam.recruitmentTitle.toLowerCase().includes(keyword) ||
+	          exam.companyName.toLowerCase().includes(keyword)
+	        )
+	      : allExams;
+	    renderExams(filtered);
+	  });
 
+	  
   function renderExams(exams) {
     examCountEl.textContent = `총 ${exams.length}건`;
     if (!exams.length) {
@@ -46,6 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
       item.innerHTML = `
                           <div>
                             <div class="h5 mb-1">${exam.recruitExamName}</div>
+							    <div class="small text-secondary mb-1">
+							     ${exam.companyName} &nbsp;|&nbsp; ${exam.recruitmentTitle}
+							    </div>
                                 <small class="text-secondary">
                                   시작일시 : ${
                                     exam.recruitExamStartDate
@@ -108,8 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
          return;
        }
 
-    
-
+   
       confirmExamBtn.dataset.examNo = recruitExamNo;
       confirmExamBtn.dataset.applicantId = applicantId;
       confirmExamBtn.dataset.examTime = recruitExamTime;

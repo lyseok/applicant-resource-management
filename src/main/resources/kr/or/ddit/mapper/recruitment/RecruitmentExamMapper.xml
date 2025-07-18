@@ -104,6 +104,8 @@
 				TO_CHAR(e.RECRUIT_EXAM_START_DATE, 'YYYY-MM-DD HH24:MI') AS recruitExamStartDate,
 				e.RECRUIT_EXAM_TIME AS recruitExamTime,
 				ar.APPLICANT_ID AS applicantId,
+				exam_proc.COMPANY_NAME AS companyName,
+                rn.RECRUITMENT_TITLE AS recruitmentTitle,
 		
 			CASE
 			WHEN EXISTS (
@@ -129,6 +131,10 @@
 			JOIN RECRUITMENT_EXAM e
 			ON exam_proc.RECRUIT_PROCESS_NO = e.PROCESS_NO
 			AND e.RECRUIT_EXAM_DEL_DATE IS NULL
+			
+			JOIN RECRUITMENT_NOTICE rn
+		    ON exam_proc.RECRUITMENT_NO = rn.RECRUITMENT_NO
+		   AND rn.RECRUITMENT_DEL_DATE IS NULL
 		
 			WHERE NOT EXISTS (
 			SELECT 1
