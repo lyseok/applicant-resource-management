@@ -22,4 +22,6 @@ public interface PaymentMapper {
 	public PaymentListVO selectPaymentCompany(String userId);
 	
 	public List<PaymentVO> selectMyPaymentList(String userId);
+	
+	public PaymentVO checkbilling(String userId);
 }

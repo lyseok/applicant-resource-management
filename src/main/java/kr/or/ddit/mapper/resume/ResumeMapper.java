@@ -11,16 +11,18 @@ public interface ResumeMapper {
 	// 전체 리스트 조회
 	public List<ResumeVO> selectResumeList(String userId);
 	// 단건 조회
-	public ResumeVO selectResumeDetail(ResumeVO ResumeVO);
+	public ResumeVO selectResumeDetail(ResumeVO resumeVO);
 	// 등록
-	public int insertResume(ResumeVO ResumeVO);
+	public int insertResume(ResumeVO resumeVO);
 	// 수정
-	public int updateResume(ResumeVO ResumeVO);
+	public int updateResume(ResumeVO resumeVO);
+	// 논리적 삭제
+	public int updateResumeDelete(ResumeVO resumeVO);
 	// 삭제
 	public int deleteResume(String ResumeNo);
 
 	// 자기소개서 조회
-	public ResumeVO selectIntroductionWithResume(ResumeVO ResumeVO);
+	public ResumeVO selectIntroductionWithResume(ResumeVO resumeVO);
 	
 	//추가
 	public List<ResumeVO> selectResumeWithCareers(String userId);

@@ -87,11 +87,40 @@
 							</div>
 						</div>
 						<div class="d-flex gap-1">
-							<a class="btn btn_gray_line fw-normal" href="<c:url value="/mypage/intoruction/edit/${resume.resumeNo}"/>">수정</a>
-							<a class="btn btn_red_line fw-normal" href="<c:url value="/mypage/intoruction/delete/${resume.resumeNo}"/>" onclick="return confirmDelete();">삭제</a>
+							<a class="btn btn_gray_line fw-normal" href="/mypage/resume/edit/${resume.resumeNo}">수정</a>
+							<a class="btn btn_red_line fw-normal" href="" data-bs-toggle="modal" data-bs-target="#deleteResumeModal${resume.resumeNo}">삭제</a>
 						</div>
 					</li>
 				</ul>
+				
+				
+				<!-- 삭제 확인 모달 -->
+				<div class="modal fade" id="deleteResumeModal${resume.resumeNo}" tabindex="-1" aria-labelledby="deleteResumeModal${resume.resumeNo}Label" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header border-0">
+								<h1 class="modal-title fs-5 fw-bold text-danger" id="deleteModalLabel">
+									<i class="bi bi-exclamation-triangle-fill me-1"></i> 이력서 정보 삭제
+								</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body text-center py-4">
+								<div style="font-size:2.4rem; color:#dc3545; margin-bottom:10px;">❗</div>
+								<p class="fs-5 mb-2 fw-semibold" style="color:#c82333;">
+									해당 이력서 정보를 <span style="color:#dc3545;">정말 삭제</span>하시겠습니까?
+								</p>
+								<p class="text-secondary mb-0" style="font-size:1.08rem;">
+									삭제된 데이터는 복구할 수 없습니다.<br>
+									실행 전 반드시 다시 한 번 확인해 주세요.
+								</p>
+							</div>
+							<div class="modal-footer border-0 justify-content-center">
+								<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+								<a class="btn btn-danger px-4" href="/mypage/resume/delete/${resume.resumeNo}">삭제</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</c:forEach>
 			<div class="PageBox">
 	            <span class="BtnType SizeS active">1</span>

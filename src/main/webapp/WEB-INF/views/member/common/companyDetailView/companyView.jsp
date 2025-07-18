@@ -1078,7 +1078,6 @@
 	            <div class="license-help-item tel">띹잡 고객센터 (T. 1588-9350, E. help@ddit.co.kr)</div>
 	        </div>
 	    </div>
-	
 	</div>
 	</div>
 </body>

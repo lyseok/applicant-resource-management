@@ -81,9 +81,9 @@
 			, COM_SIZE
 			, INSURANCE_YN
 			, CEO_NAME
-			, C.COM_ADDR
-			, C.COM_CAPITAL
-			, C.COM_MAIN_BIZ
+			, COM_ADDR
+			, COM_CAPITAL
+			, COM_MAIN_BIZ
 		) VALUES (
 			#{userId}
 			, #{comName}
