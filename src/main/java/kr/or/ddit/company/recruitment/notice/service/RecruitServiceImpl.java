@@ -192,7 +192,7 @@ public class RecruitServiceImpl implements RecruitService {
 				MemberVO member = memMapper.selectMemberById(appl.getUserId());
 				ApplicantRecordVO rec = new ApplicantRecordVO();
 				rec.setApplicantId(appl.getApplicantId());
-				rec.setRecruitmentNo(process.getRecruitProcessNo());
+				rec.setRecruitProcessNo(process.getRecruitProcessNo());
 				rec.setApplicantName(member.getMemName());
 				applRecordMapper.insertApplicantRecord(rec);
 			}
