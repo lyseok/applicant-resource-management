@@ -33,6 +33,19 @@ public class RecruitmentNoticeController {
 		return "member/recruitment/recruitmentNotice";
 	}
 	
+	@GetMapping("/company/recruit_notice/{recruitmentNo}")
+	public String selectRecruitDetailInCompany(
+		@PathVariable String recruitmentNo
+		, Model model
+	) {
+		RecruitmentNoticeVO notice = service.readRecruitNotice(recruitmentNo);
+		UsersVO user = service.searchUser();
+		log.info("{}", user);
+		model.addAttribute("recruitmentNotice", notice);
+		model.addAttribute("userInfo", user);
+		return "member/recruitment/recruitmentNotice";
+	}
+	
 	@GetMapping("/company/recruit_notice/list")
 	public String selectMyRecruitment() {
 		return "company/recruitment/recruitList";

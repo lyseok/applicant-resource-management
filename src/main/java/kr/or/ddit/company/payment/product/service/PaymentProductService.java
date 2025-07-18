@@ -16,4 +16,7 @@ public interface PaymentProductService {
 	public int updatePaymentProduct(PaymentProductVO vo);
 
 	public int deletePaymentProduct(String productNo);
+	
+	public PaymentProductVO selectPaymentProductByName(String productName);
+
 }

@@ -10,6 +10,14 @@
 			, USER_STATUS
 			, USER_ENABLED
 		FROM USERS
+		<where>
+			<if test="userRole != '' and userRole != null">
+				AND USER_ROLE = #{userRole}
+			</if>
+			<if test="userId != '' and userId != null">
+				AND USER_ID = #{userId}
+			</if>
+		</where>
 	</select>
 
 	<select id="selectUserById" resultType="UsersVO">
