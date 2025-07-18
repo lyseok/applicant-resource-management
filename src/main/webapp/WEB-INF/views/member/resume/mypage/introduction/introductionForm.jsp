@@ -32,7 +32,7 @@
 				 <c:if test="${not empty introdCreate }">
 				    <p class="h1 mb-3 fw-bold">자소서 등록</p>
 				 </c:if>
-	        <form:form modelAttribute="introduction" method="post" action="/mypage/introduction/edit/${introduction.introductionNo }">
+	        <form:form modelAttribute="introduction" method="post">
 				    <div class="introduct_add_wrap">
 				        <div class="introduct_area" id="introduct01">
 				            <div class="mb-3">
