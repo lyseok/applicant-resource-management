@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch((err) => {
       console.error('에러 체킁', err);
       examListEl.innerHTML = `
-        <div class="list-group-item text-center text-muted">시험 목록을 불러오는 중 오류</div>
+        <div class="list-group-item text-center text-muted">시험이 존재하지 않습니다.</div>
         `;
     });
 
@@ -101,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('시험번호 체킁: ', recruitExamNo);
       console.log('지원자번호 체킁: ', applicantId);
 
-     /*  const available = btn.dataset.available === 'true';
+       const available = btn.dataset.available === 'true';
        if (!available) {
          // 기간 아닐 때
          notAvailableModal.show();
          return;
-       }*/
+       }
 
     
 
