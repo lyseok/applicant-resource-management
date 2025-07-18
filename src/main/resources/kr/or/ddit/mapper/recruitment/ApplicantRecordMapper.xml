@@ -115,7 +115,8 @@
 		UPDATE APPLICANT_RECORD 
 		SET 
 			STEP_APPLICATION_YN = 'Y'
-		WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
+		WHERE RECRUIT_PROCESS_NO = #{processNo}
+		AND APPLICANT_ID = #{applicantId}
 	</update>
 	
 	<update id="updateApplicantRecord">

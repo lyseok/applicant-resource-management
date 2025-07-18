@@ -361,7 +361,7 @@
 	
 	<update id="updateInterview">
 		UPDATE INTERVIEW SET
-			INTERVIEW_DATE = TO_DATE(#{interviewDate}, 'YYYY-MM-DD"T"HH24:MI')
+			INTERVIEW_DATE = TO_DATE(#{interviewDate}, 'YYYY-MM-DD"T"HH24:MI:SS')
 			, INTERVIEW_LOCATION = #{interviewLocation}
 			, INTERVIEW_TYPE = #{interviewType}
 			, INTERVIEW_PASS_SCORE = #{interviewPassScore}
