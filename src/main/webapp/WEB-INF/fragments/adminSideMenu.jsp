@@ -49,19 +49,19 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">회원관리</span></li>
      
      <li class="menu-item">
-       <a href="/admin/common/users?userRole=ROLE_USER" class="menu-link">
+       <a href="/admin/common/users/list?userRole=ROLE_USER" class="menu-link">
          <i class="menu-icon tf-icons bx bx-user"></i>
          <div data-i18n="Basic">일반회원</div>
        </a>
      </li>
      <li class="menu-item">
-       <a href="/admin/common/users?userRole=ROLE_COMPANY" class="menu-link">
+       <a href="/admin/common/users/list?userRole=ROLE_COMPANY" class="menu-link">
          <i class="menu-icon tf-icons bx bx-building"></i>
          <div data-i18n="Basic">기업회원</div>
        </a>
      </li>
      <li class="menu-item">
-       <a href="/admin/common/users?userRole=ROLE_ADMIN" class="menu-link">
+       <a href="/admin/common/users/list?userRole=ROLE_ADMIN" class="menu-link">
          <i class="menu-icon tf-icons bx bx-lock-keyhole-open"></i>
          <div data-i18n="Basic">관리자</div>
        </a>

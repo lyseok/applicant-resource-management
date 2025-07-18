@@ -1,16 +1,10 @@
 package kr.or.ddit.company.payment.product.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,45 +12,77 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.company.payment.product.service.PaymentProductService;
-import kr.or.ddit.member.common.mypage.scrab.scrabCompany.service.MemberScrabCompanyService;
 import kr.or.ddit.vo.common.PaymentProductVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Controller
-@RequestMapping("/company/payment/product")
-public class ProductController {
+@RequestMapping("/admin")
+public class AdminProductController {
 
 	@Autowired
 	PaymentProductService service;
-
-//	@Value("${file.upload-dir}")
-//	private String RealuploadPath;
-
+	
 	@GetMapping("/detail")
-	public String detailForm(
-		@RequestParam String productNo,
-		Model model,
-		@ModelAttribute("billingKey")String billingKey
+	public String productDetail(
+			@RequestParam("productNo") 
+			String productNo
+			,Model model
 			) {
 		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
-		model.addAttribute("product",product);
-		model.addAttribute("billingKey",billingKey);
+		model.addAttribute("product", product);
+		return "admin/payment/AdminProductDetail";
 		
-		return "company/payment/product/ProductDetail";
 	}
 	
+	@PostMapping("/insert")
+	public String insertProduct(@ModelAttribute PaymentProductVO productVO, Model model) {
 
+		String type = productVO.getProductType();
 
+		LocalDate productPeriod = LocalDate.now();
+
+		if ("정기권".equals(type)) {
+
+			productPeriod = productPeriod.plusDays(30); // 적용됨
+
+			String formattedPeriod = productPeriod.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+			productVO.setProductPeriod(formattedPeriod);
+			productVO.setProductType("L");
+
+		} else if ("단건".equals(type)) {
+
+			productPeriod = productPeriod.plusDays(7);
+
+			String formattedPeriod = productPeriod.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+			productVO.setProductType("S");
+			productVO.setProductPeriod(formattedPeriod);
+
+		}
+
+//		MultipartFile file = productVO.getProductImgFile();
+//		if (file != null && !file.isEmpty()) {
+//			try {
+//				String uploadPath = RealuploadPath;
+//				String saveName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+//				Path path = Paths.get(uploadPath, saveName);
+//				Files.copy(file.getInputStream(), path, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+//				productVO.setProductImg(saveName);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				return "fail";
+//			}
+//		}
+
+		log.info("등록된 상품 {} ", productVO);
+		model.addAttribute("productVO", productVO);
+		service.insertPaymentProduct(productVO);
+		return "company/payment/product/ResultProductInsert";
+	}
 	
-
-	@GetMapping("/list")
+	@GetMapping("/product/list")
 	String listForm(@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "filterType", required = false) String filterType, Model model) {
 		int pageSize = 10;
@@ -86,8 +112,11 @@ public class ProductController {
 		model.addAttribute("currentPage", page);
 		model.addAttribute("productList", pageList);
 		
-		return "company/payment/product/ProductList";
+		return "admin/payment/AdminproductList";
 	}
 	
+	@GetMapping("/add")
+	String addForm() {
+		return "admin/payment/InsertProduct";
+	}
 }
-

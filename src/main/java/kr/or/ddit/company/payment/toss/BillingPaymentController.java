@@ -46,8 +46,11 @@ public class BillingPaymentController {
 	@ResponseBody
 	public Map<String, Object> checkBillingKey(HttpSession session){
 		Map<String, Object> map = new HashMap<>();
+		log.info("session id: {}", session.getId());
 		String billingKey = (String) session.getAttribute("billingKey");
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
+		map.put("billingKey", billingKey);
+		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
 		return map;
 	}
 	
@@ -138,10 +141,11 @@ public class BillingPaymentController {
 				// billingKey를 저장
 				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("result",jsonNode.toPrettyString());
-				session.setAttribute("billingKey", billingKey);
-				log.info("billingKey : {}", billingKey);
 				
-				return "redirect:/company/payment/product/detail?productNo=" + productNo;
+				session.setAttribute("billingKey", billingKey);
+				log.info("빌링빌링빌링키 = billingKey : {}", billingKey);
+				log.info("session id: {}", session.getId());
+				return "/company/payment/product/detail?productNo=" + productNo;
 				
 				
 			} catch (IOException e) {
@@ -163,12 +167,13 @@ public class BillingPaymentController {
 	public ResponseEntity<String> inssueBillingKey(@RequestBody Map<String, String> requestMap) {
 		String authKey = requestMap.get("authKey");
 		String customerKey = requestMap.get("customerKey");
-
+		String billingKey = requestMap.get("billingKey");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setBasicAuth("test_sk_xxxxx");
 
 		Map<String, String> body = new HashMap<>();
+		body.put("billingKey",billingKey);
 		body.put("authKey", authKey);
 		body.put("customerKey", customerKey);
 
@@ -204,7 +209,7 @@ public class BillingPaymentController {
 		body.put("orderName", "정기구독요금제");
 		body.put("customerEmail", "test");
 		body.put("customerName", "김철민");
-
+		body.put("billingKey", billingKey);
 		HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 		String url = "https://api.tosspayments.com/v1/billing/" + billingKey;
 

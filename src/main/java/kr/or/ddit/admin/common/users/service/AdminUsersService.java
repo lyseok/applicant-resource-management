@@ -7,7 +7,7 @@ import kr.or.ddit.vo.common.UsersVO;
 
 public interface AdminUsersService {
 
-	public List<UsersVO> readUsersList();
+	public List<UsersVO> readUsersList(String userRole, String userId);
 	public Optional<UsersVO> searchUserById(String userId);  //아이디로 회원 찾기
 	public void createUser(UsersVO user);
 	public void modifyUser(UsersVO user);
