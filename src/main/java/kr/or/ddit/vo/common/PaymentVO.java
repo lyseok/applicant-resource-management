@@ -15,7 +15,6 @@ public class PaymentVO implements Serializable{
 	private String paymentMethod;	// 결제수단 (카드통일 , 계좌이체 => 세금계산서 발행)
 	private String paymentDate;		// 결제일시	sysdate
 	private String paymentPay;		// 결제 금액 amount
-	private String tossPaymentKey;	// 결제 키값 (조회 및 취소) 
 	private String paymentBillingKey; // 정기구독 빌링키
 	
 	private List<PaymentProductVO> paymentProductList;

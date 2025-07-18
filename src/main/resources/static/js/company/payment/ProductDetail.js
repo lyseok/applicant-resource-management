@@ -12,11 +12,13 @@ function subscribe() {
 		credentials : "include"
 	 }) // <-- 여기 경로 중요
         .then(response => {
-			alert("응답 status:" ,response);
+			console.log("응답 status:" ,response);
+			alert("잠깐 로그 확인시간");
 			return response.json();
 			})
         .then(data => {
-			alert("받은 데이터 : " ,data);
+			console.log("받은 데이터 : " ,data);
+			alert("잠깐 로그 확인시간");
             if (data.hasBillingKey) {
                 // ✅ billingKey가 있으면 결제 페이지 이동
                 console.log("cmProductNo");
