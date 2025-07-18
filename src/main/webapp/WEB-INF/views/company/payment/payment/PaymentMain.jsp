@@ -11,7 +11,7 @@
 <body>
 	현재 살아있는 유료상품 내용 : (구현예정)
 	<a href="/company/payment/product/list"><button>상품 보러가기</button></a>
-	<a href="/company/payment/product/add"><button>상품 등록하기</button></a>
+	
 	<div class="container my-5">
 		<h2 class="mb-4">🧾 내가 구매한 상품</h2>
 		<div class="row gy-4">

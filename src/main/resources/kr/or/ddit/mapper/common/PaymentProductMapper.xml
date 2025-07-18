@@ -38,6 +38,7 @@ PRODUCT_NO
 	, PRODUCT_IMG
 	, PRODUCT_PERIOD
 FROM PAYMENT_PRODUCT
+ORDER BY PRODUCT_NAME ASC
 </select>
 
 
@@ -53,6 +54,14 @@ PRODUCT_NO
 FROM PAYMENT_PRODUCT
 WHERE PRODUCT_NO = #{productNo}
 </select>
+
+<!-- PaymentProductMapper.xml -->
+<select id="selectByProductName" resultType="kr.or.ddit.vo.common.PaymentProductVO">
+    SELECT * 
+    FROM PAYMENT_PRODUCT 
+    WHERE PRODUCT_NAME = #{productName}
+</select>
+
 
 <update id="updatePaymentProduct">
 

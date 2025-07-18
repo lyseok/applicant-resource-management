@@ -21,8 +21,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.oauth2.sdk.Response;
 
+import jakarta.mail.Session;
+import jakarta.servlet.http.HttpSession;
 import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.payment.payment.service.TossPaymentService;
+import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
+import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -35,6 +39,10 @@ public class PaymentController {
 	
 	@Autowired
 	private PaymentServiceImpl service;
+	
+	
+	@Autowired
+	private PaymentProductServiceImpl pservice;
 	
 //	@GetMapping
 //	public String productlist() {
@@ -61,6 +69,26 @@ public class PaymentController {
 	    return Map.of("hasBillingKey", hasBillingKey);
 	}
 	
+	@GetMapping("/success/executebilling")
+	String successBuy(
+		@RequestParam String billingKey,
+		@RequestParam String amount,
+		@RequestParam String orderName
+			) {
+	
+	PaymentVO vo = new PaymentVO();
+	PaymentProductVO product = pservice.selectPaymentProductByName(orderName);
+	
+	vo.setProductNo(product.getProductNo());
+	vo.setPaymentMethod("카드");
+	vo.setPaymentBillingKey(billingKey);
+	vo.setPaymentPay(amount);
+		
+	service.insertPayment(vo);
+		
+	return "company/payment/payment/SuccessSubscribe";
+	}
+	
 	
 	@GetMapping("/success")
 	String Test(
@@ -68,6 +96,7 @@ public class PaymentController {
 			@RequestParam String orderId,
 			@RequestParam int amount,
 			@RequestParam String productNo,
+			@RequestParam String billingKey,
 			Model model
 			) {
 		String bodyJson = String.format(
@@ -111,7 +140,7 @@ public class PaymentController {
 				String orderName = jsonNode.get("orderName").asText();
 				String method = jsonNode.get("method").asText();
 				int RtotalAmount = amount;
-				
+				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("orderName",orderName);
 				model.addAttribute("method",method);
 				model.addAttribute("RtotalAmount",RtotalAmount);
@@ -121,6 +150,7 @@ public class PaymentController {
 				vo.setPaymentPay(pamount);
 				vo.setPaymentMethod(paymentMethod);
 				vo.setTossPaymentKey(paymentKey);
+				
 				service.insertPayment(vo);
 				log.info("insert에 들어갈 값 : {}", vo);
 			}
@@ -191,6 +221,7 @@ public class PaymentController {
 			String orderName = jsonNode.get("orderName").asText();
 			String payKey = jsonNode.get("paymentKey").asText();
 			int paidAmount = jsonNode.get("totalAmount").asInt();
+			
 			
 			model.addAttribute("method",method);
 			model.addAttribute("orderName",orderName);

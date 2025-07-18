@@ -7,16 +7,21 @@
     <meta charset="UTF-8">
     <title>결제하기</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-    
-    <script>
-    	const productNo = "${product.productNo }"
-    </script>
+   <!--  <script>
+    	const PproductNo = "${product.productNo }"
+    	const PbillingKey = "${product.billingKey}"
+    	const Pamount = "${product.productPrice}"
+    	const PorderName = "${product.productName}"
+    	const PcustomerKey = "${customerKey}" 
+    </script> -->
 </head>
 <body class="container my-5"
+      data-product-no="${product.productNo}"
       data-billing-key="${billingKey}"
-   	 data-customer-key="${customerKey}" 
+      data-customer-key="${customerKey}"
       data-amount="${product.productPrice}"
       data-order-name="${product.productName}">
+
 
     <div class="card shadow">
         <div class="card-body">
