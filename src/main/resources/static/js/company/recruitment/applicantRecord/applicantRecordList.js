@@ -338,6 +338,11 @@ async function fetchApplicantData(recruitmentNo) {
       const resumeNo = row.RESUMEURL
       const userId = row.USERID
       
+		let score = null;
+		if (row.STEP_TYPE === 'RERP-001') score = row.EXAM_SCORE;
+		else if (row.STEP_TYPE === 'RERP-002') score = row.INTERVIEW_SCORE;
+
+      
         applicantDataTemp[stepKey].push({
         bir: row.bir,
         name: row.APPLICANT_NAME,
@@ -349,7 +354,7 @@ async function fetchApplicantData(recruitmentNo) {
         skill: row.skill ?? [],
         attend: row.attend ?? "-",
         pass: row.PASS ?? "-",
-        score: row.exam_score ?? row.interview_score ?? null,
+        score: score,
         
         _userId:userId,
         _recruitmentNo : row.RECRUITMENT_NO,
