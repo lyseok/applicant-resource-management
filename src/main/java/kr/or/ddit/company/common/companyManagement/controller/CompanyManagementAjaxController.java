@@ -66,4 +66,6 @@ public class CompanyManagementAjaxController {
     	return authentication.getName();
 	}
 	
+	
+	
 }

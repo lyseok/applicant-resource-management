@@ -99,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const payload = formToJSON(form);
     
-   	
 
     axios.put('/ajax/company/company_management/edit', payload)
       .then(() => window.location.href = '/company/company_management')

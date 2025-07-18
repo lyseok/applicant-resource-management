@@ -92,7 +92,7 @@
         <div class="section-title">기업 주요 사업</div>
         <div class="section-content" id="com_main_biz"></div>
     </div>
-    <!-- 수정 버튼 -->
+  
     <div class="d-flex gap-1">
         <button type="button" class="btn btn_violet" id="edit-btn">수정</button>
     </div>

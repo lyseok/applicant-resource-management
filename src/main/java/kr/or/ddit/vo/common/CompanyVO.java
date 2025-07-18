@@ -33,7 +33,7 @@ public class CompanyVO extends UsersVO implements Serializable{
 	private String comPayment;
 	private String industryType;
 	
-	//추가
+	//추가1
 	private String comType; //기업구분
 	private String comSize; //기업규모
 	private String insuranceYn;//4대보험여부

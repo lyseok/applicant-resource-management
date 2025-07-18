@@ -6,4 +6,5 @@ import kr.or.ddit.dto.CompanySalesDTO;
 
 public interface CompanySalesMapper {
 	public List<CompanySalesDTO> selectCompanySalesInfoById(String userId);
+	
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CompanySalesDTO {
+	
 	private String comSalesYear;           // 기준 연도
 	private Long comSalesAmount;           // 매출액
 	private Double growthRatePercent;      // 작년 대비 증가율 (%)

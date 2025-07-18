@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class CompanyOpProfitVO implements Serializable{
+	
 	private String comProfitId;
 	private String userId;
 	private String comProfitYear;

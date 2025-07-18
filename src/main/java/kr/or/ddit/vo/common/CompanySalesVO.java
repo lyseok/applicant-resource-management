@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class CompanySalesVO implements Serializable{
+	
 	private String comSalesId;
 	private String userId;
 	private String comSalesYear;

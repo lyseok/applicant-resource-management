@@ -35,20 +35,20 @@ document.addEventListener('DOMContentLoaded', () => {
   })
  
  
- 
- function formatCapitalKRW(amount) {
-  if (amount == null || isNaN(amount)) return '정보 없음';
-
-  const 조 = Math.floor(amount / 1_0000_0000_0000);
-  const 억 = Math.floor((amount % 1_0000_0000_0000) / 1_0000_0000);
-  const 만 = Math.floor((amount % 1_0000_0000) / 10_000);
-
-  let result = '';
-  if (조 > 0) result += `${조.toLocaleString()}조 `;
-  if (억 > 0) result += `${억.toLocaleString()}억 `;
-  if (조 === 0 && 억 === 0) result += `${만.toLocaleString()}만원`;
-
-  return result.trim();
-  
-}
+	 
+	 function formatCapitalKRW(amount) {
+	  if (amount == null || isNaN(amount)) return '정보 없음';
+	
+	  const 조 = Math.floor(amount / 1_0000_0000_0000);
+	  const 억 = Math.floor((amount % 1_0000_0000_0000) / 1_0000_0000);
+	  const 만 = Math.floor((amount % 1_0000_0000) / 10_000);
+	
+	  let result = '';
+	  if (조 > 0) result += `${조.toLocaleString()}조 `;
+	  if (억 > 0) result += `${억.toLocaleString()}억 `;
+	  if (조 === 0 && 억 === 0) result += `${만.toLocaleString()}만원`;
+	
+	  return result.trim();
+	  
+	}
 });

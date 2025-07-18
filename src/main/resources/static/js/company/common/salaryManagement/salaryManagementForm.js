@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 document.addEventListener('DOMContentLoaded', () => {
 	const formEl = document.getElementById('salaryForm');
 	const tbodyEl = document.getElementById('salaryTableBody');
@@ -60,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				});
 			}
 		});
+
+
 
 		axios.post('/ajax/company/salary_management', payload)
 			.then(resp => {
