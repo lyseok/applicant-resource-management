@@ -1,3 +1,21 @@
+document.addEventListener("DOMContentLoaded", function(){
+	const cards = document.querySelectorAll(".user-card");
+	
+	cards.forEach(card=>{
+		card.addEventListener("click", function(){
+			const userId = card.getAttribute("data-user-id");
+			if(userId){
+				window.location.href =`/company/talentpool/detail/${userId}`;	
+			}
+		});
+	});
+});
+
+
+
+
+
+
 // ✅ 선택된 모달 데이터 저장용 객체
 const modalData = {
   topJob: null,

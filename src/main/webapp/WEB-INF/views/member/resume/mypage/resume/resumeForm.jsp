@@ -7,11 +7,19 @@
 <meta charset="UTF-8">
 <title>이력서 등록</title>
 <link rel="stylesheet" href="/css/member/resume/resume.css">
-<script>
-  const mode = '${mode}'; // "update"로 들어옴
-  console.log(mode);
-  const resumeFromServer = ${resumeJson};;
-</script>
+<c:if test="${mode eq 'update'}">
+	<script>
+	  const mode = '${mode}'; // "update"로 들어옴
+	  console.log(mode);
+	  const resumeFromServer = ${resumeJson};
+	</script>
+</c:if>
+<c:if test="${mode eq 'create'}">
+	<script>
+	  const mode = '${mode}'; // "update"로 들어옴
+	  console.log(mode);
+	</script>
+</c:if>
 <script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
 </head>
 <body>

@@ -23,7 +23,7 @@ function selectType(type) {
 
 document.addEventListener('DOMContentLoaded', function() {
 	const form = document.getElementById('insertForm');
-	form.setAttribute('action', '/company/payment/product');
+	form.setAttribute('action', '/admin/insert');
 	form.setAttribute('method', 'post');
 
 })
