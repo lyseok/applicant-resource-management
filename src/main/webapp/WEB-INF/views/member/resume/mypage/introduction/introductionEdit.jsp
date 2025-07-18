@@ -19,31 +19,31 @@
    
       <div class="introduct_form_wrap">
 	    <p class="h1 mb-3 fw-bold">자소서 수정</p>
-         <form:form modelAttribute="introduction" method="post">
-		    <div class="introduct_add_wrap">
-		        <div class="introduct_area" id="introduct01">
-		            <div class="mb-3">
-		                <label for="title1" class="form-label h5 fw-bold">자소서 명</label>
-		                <form:input path="introductionName" cssClass="form-control" id="title1" placeholder="자소서 이름을 입력해주세요."/>
-		                <form:errors path="introductionName" cssClass="text-danger"/>
-		            </div>
-		            <div class="mb-3">
-		                <label for="question1" class="form-label h5 fw-bold">문항1</label>
-		                <form:input path="introductionQuestion" cssClass="form-control" id="question1" placeholder="지원동기, 입사 후 포부 같은 내용을 입력해주세요."/>
-		                <form:errors path="introductionQuestion" cssClass="text-danger"/>
-		            </div>
-		            <div class="mb-3">
-		                <label for="content1" class="form-label fw-bold h5">자소서 내용</label>
-		                <form:textarea path="introductionContent" cssClass="form-control" id="content1" rows="10"/>
-		                <form:errors path="introductionContent" cssClass="text-danger"/>
-		            </div>
-		            <div class="mb-3">
-		                <h5 class="form-label fw-bold h5">코칭</h5>
-		                <a href="javascript:void(0)">맞춤법 검사기</a>
-		            </div>
-		        </div>
-		    </div>
-		    <div class="text-end mt-3 d-flex justify-content-between">
+         <form:form modelAttribute="introduction" method="post" action="/mypage/introduction/edit/${introduction.introductionNo }">
+			    <div class="introduct_add_wrap">
+			        <div class="introduct_area" id="introduct01">
+			            <div class="mb-3">
+			                <label for="title1" class="form-label h5 fw-bold">자소서 명</label>
+			                <form:input path="introductionName" cssClass="form-control" id="title1" placeholder="자소서 이름을 입력해주세요."/>
+			                <form:errors path="introductionName" cssClass="text-danger"/>
+			            </div>
+			            <div class="mb-3">
+			                <label for="question1" class="form-label h5 fw-bold">문항1</label>
+			                <form:input path="introductionQuestion" cssClass="form-control" id="question1" placeholder="지원동기, 입사 후 포부 같은 내용을 입력해주세요."/>
+			                <form:errors path="introductionQuestion" cssClass="text-danger"/>
+			            </div>
+			            <div class="mb-3">
+			                <label for="content1" class="form-label fw-bold h5">자소서 내용</label>
+			                <form:textarea path="introductionContent" cssClass="form-control" id="content1" rows="10"/>
+			                <form:errors path="introductionContent" cssClass="text-danger"/>
+			            </div>
+			            <div class="mb-3">
+			                <h5 class="form-label fw-bold h5">코칭</h5>
+			                <a href="javascript:void(0)">맞춤법 검사기</a>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="text-end mt-3 d-flex justify-content-between">
 		    	<a href="/mypage/introduction/list" class="btn btn_gray_line">목록</a>
 		         <div class="">
 		            <a class="btn btn_red_line" href="/mypage/introduction/${introduction.introductionNo }">취소</a>

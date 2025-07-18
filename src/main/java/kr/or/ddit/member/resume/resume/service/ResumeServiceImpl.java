@@ -222,13 +222,13 @@ public class ResumeServiceImpl implements ResumeService {
 	// 논리적 삭제
 	@Override
 	public int editResumeRemove(ResumeVO resumeVO) {
-		String resumeNo = resumeVO.getResumeNo();
-		
-		
-		
-		// resumeMapper.deleteResume(null);
-		return 0;
-
+		int result = resumeMapper.updateResumeDelete(resumeVO);
+		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", result);
+		if(result > 0) {
+			 return result;
+		} else {
+			throw new IllegalArgumentException("이력서를 삭제 실패했습니다.");
+		}
 	}
 
 	@Override

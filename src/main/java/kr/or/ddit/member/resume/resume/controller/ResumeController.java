@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import kr.or.ddit.dto.ResumeSaveValidError;
 import kr.or.ddit.dto.ResumeSaveValidationErrorResponse;
+import kr.or.ddit.mapper.resume.ResumeMapper;
 import kr.or.ddit.member.common.mypage.introduction.service.introductionService;
 import kr.or.ddit.member.resume.resume.service.ResumeService;
 import kr.or.ddit.vo.resume.IntroductionVO;
@@ -130,18 +131,38 @@ public class ResumeController {
 		ResumeVO vo = new ResumeVO();
 		vo.setUserId(userId);
 		vo.setResumeNo(no);
-		int result = service.editResumeRemove(vo); // >> 논리적 삭제작업 해줘야함, 매퍼, 서비스 작업 아직 안해줬음
-		if(result < 1) {
-			redirectAttributes.addFlashAttribute("error", "자소서 삭제 중 오류가 발생했습니다.");
-		}
 
-		return "";
+		try {
+			service.editResumeRemove(vo);
+			redirectAttributes.addFlashAttribute("message", "이력서가 성공적으로 삭제되었습니다.");
+			return "redirect:/mypage/resume/list";
+
+		} catch (IllegalArgumentException e) {
+			redirectAttributes.addFlashAttribute("errors", e.getMessage());
+			return "redirect:/mypage/resume/list"; // 🔥 여기 꼭 필요
+		} catch (Exception e) {
+			log.error("자소서 삭제 중 예상치 못한 오류 발생", e);
+			redirectAttributes.addFlashAttribute("error", "이력서 삭제 중 오류가 발생했습니다.");
+			return "redirect:/mypage/resume/list"; // 🔥 이것도 꼭 필요
+		}
+		
 	}
 
-	/*
-	 * // 수정 로직 구현
-	 * 
-	 * @PostMapping("create") public String createResume() { return ""; }
-	 */
+	  // 수정 로직 구현	  
+	  @GetMapping("edit/{no}")
+	  public String createResume(
+		@PathVariable String no
+		, Model model
+	  ){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
+		ResumeVO vo = new ResumeVO();
+		vo.setResumeNo(no);
+		vo.setUserId(userId);
+		ResumeVO resumeVO = service.readResumeDetail(vo);
+		model.addAttribute("resume", resumeVO);
+		return "member/resume/mypage/resume/resumeForm";
+	  }
+	 
 
 }
