@@ -15,4 +15,5 @@ public class WorkHistoryVO implements Serializable {
 	private String workTable;
 	private String workType;
 	private String workTarget;
+	private String workContent;
 }

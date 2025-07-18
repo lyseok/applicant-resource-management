@@ -18,6 +18,8 @@ public class ProjectVO implements Serializable {
 	private String createDate;
 	private String finishDate;
 	private String deleteDate;
+	private String projectColor;
 	
 	private List<PrjMemVO> prjMemList;
+	private ChatroomVO chatroom;
 }
