@@ -47,7 +47,8 @@ public class RecruitmentExamAjaxController {
 	}
 	
 	@PostMapping(value = "/submit", consumes = "application/json")
-	public RecruitmentExamScoreResultVO submit(@RequestBody List<RecruitmentExamAnswerDTO> answers) {
+	public RecruitmentExamScoreResultVO submit(
+			@RequestBody List<RecruitmentExamAnswerDTO> answers) {
 		 RecruitmentExamScoreResultVO result = recruitmentExamService.gradeAndSave(getUserId(), answers);
 		 return result;
 	}
