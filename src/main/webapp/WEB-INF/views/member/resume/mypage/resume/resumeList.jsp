@@ -40,7 +40,7 @@
 		<div class="TypoBox searchBar">
 			<div class="searchBarWrap">
 				<label class="searchBarLabel" for="listKeyword">검색어</label>
-				<input type="text" id="listKeyword" class="searchBarInput" placeholder="자기소개서 제목, 문항, 내용으로 검색해보세요." maxlength="24" autocomplete="off" value="">
+				<input type="text" id="listKeyword" class="searchBarInput" placeholder="이력서 제목으로 검색해보세요." maxlength="24" autocomplete="off" value="">
 			</div>
 			<%-- <a href="/mypage/resume/search?${resumeNo}" class="searchBarBtn"> --%>
 			<a href="javascript:void(0)" class="searchBarBtn">
