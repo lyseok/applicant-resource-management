@@ -1,15 +1,26 @@
 
 function subscribe() {
 	alert(ProductNo);
-	
+	alert(BillingKey);
    	const productNo = ProductNo;
    	console.log("상품번호 : ", productNo);
-     fetch("/company/toss/check/billing") // <-- 여기 경로 중요
-        .then(response => response.json())
+   	 console.log("빌링키",BillingKey);
+   
+   
+     fetch("/company/toss/check/billing",{
+		method : "GET" ,
+		credentials : "include"
+	 }) // <-- 여기 경로 중요
+        .then(response => {
+			alert("응답 status:" ,response);
+			return response.json();
+			})
         .then(data => {
+			alert("받은 데이터 : " ,data);
             if (data.hasBillingKey) {
                 // ✅ billingKey가 있으면 결제 페이지 이동
                 console.log("cmProductNo");
+               
                 /*window.location.href  = "/company/toss/buyproduct";*/
                 window.location.href  = "/company/toss/buyproduct?productNo=" + productNo;
             } else {
@@ -44,7 +55,7 @@ function requestbillingPayment(){
 		return ;
 	}
 	
-	const url = `/company/toss/executeBilling?productNo=${productNo}&billingKey=${billingKey}&customerKey=${customerKey}&amount=${amount}`;		
+	const url = `/company/toss/executebilling?productNo=${productNo}&billingKey=${billingKey}&customerKey=${customerKey}&amount=${amount}`;		
 	window.location.href = url;
 
 	
