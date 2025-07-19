@@ -10,7 +10,9 @@ import kr.or.ddit.dto.CompanySalesDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.CompanyOpProfitMapper;
 import kr.or.ddit.mapper.common.CompanySalesMapper;
+import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	private final CodeMapProvider codeMapProvider;
 	private final CompanySalesMapper companySalesMapper;
 	private final CompanyOpProfitMapper companyOpProfitMapper;
+	private final RecruitmentNoticeMapper recruitmentNoticeMapper;
 	
 
 	@Override
@@ -48,6 +51,13 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	public List<CompanyOpProfitDTO> readCompanyProfitInfoById(String userId) {
 		List<CompanyOpProfitDTO> profits = companyOpProfitMapper.selectCompanyOpProfitInfoById(userId);
 		return profits;
+	}
+
+
+	@Override
+	public List<RecruitmentNoticeVO> readRecruitmentNoticeByUserId(String userId) {
+		
+		return recruitmentNoticeMapper.selectRecruitNoticeByUserId(userId);
 	}
 	
 	

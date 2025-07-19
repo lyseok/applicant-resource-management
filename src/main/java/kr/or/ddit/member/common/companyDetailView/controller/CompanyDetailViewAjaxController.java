@@ -13,6 +13,7 @@ import kr.or.ddit.dto.CompanyOpProfitDTO;
 import kr.or.ddit.dto.CompanySalesDTO;
 import kr.or.ddit.member.common.companyDetailView.service.CompanyDetailViewService;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,5 +45,13 @@ public class CompanyDetailViewAjaxController {
 		List<CompanyOpProfitDTO> profit = companyDetailViewService.readCompanyProfitInfoById(userId);
 		log.info("profit----{}", profit);
 		return profit;
+	}
+	
+
+	@GetMapping("/notice/{userId}")
+	public List<RecruitmentNoticeVO> companyGetNoticeInfo(@PathVariable("userId") String userId){
+		List<RecruitmentNoticeVO> notice = companyDetailViewService.readRecruitmentNoticeByUserId(userId);
+		log.info("notice----{}", notice);
+		return notice;
 	}
 }
