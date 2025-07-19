@@ -160,6 +160,7 @@
 	<update id="updateResume">
 		UPDATE RESUME 
 		   SET USER_ID = #{userId}
+		       , RESUME_NAME = #{resumeName}
 		       , USER_NAME = #{userName}
 		       , PHOTO = #{photo}
 		       , BIRTH = REPLACE(#{birth}, '-', '')
@@ -223,6 +224,16 @@
   	SELECT count(RESUME_NO)
 	  FROM RESUME
 		WHERE USER_ID = #{userId}
+  </select>
+  
+  
+  <select id="selectResumeSearch">
+		SELECT *
+		  FROM RESUME
+		 WHERE RESUME_DELETE_DATE IS NULL
+       AND RESUME_NAME LIKE '%'||#{resumeName}||'%'  	
+       AND USER_ID = #{userId}
+	     AND RESUME_SUBMIT_YN = 'N'
   </select>
   
 </mapper>

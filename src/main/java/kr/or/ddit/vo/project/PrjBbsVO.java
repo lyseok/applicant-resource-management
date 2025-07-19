@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.project;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,4 +16,7 @@ public class PrjBbsVO implements Serializable {
 	private String createDate;
 	private String content;
 	private String deleteDate;
+	
+	private List<PrjBbsCommentVO> bbsCommentList;
+	private PrjMemVO prjMem;
 }

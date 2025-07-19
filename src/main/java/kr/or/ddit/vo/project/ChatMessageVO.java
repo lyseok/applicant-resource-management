@@ -14,4 +14,6 @@ public class ChatMessageVO implements Serializable {
 	private String chatroomNo;
 	private String prjNo;
 	private String userId;
+	
+	private ChatroomMemVO chatroomMem;
 }

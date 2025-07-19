@@ -10,4 +10,8 @@ public class MyRecruitExamDTO {
     private Integer recruitExamTime;
     private String applicantId;
     private boolean taken; 
+    
+    // 추가
+    private String  recruitmentTitle;
+    private String  companyName;
 }

@@ -19,7 +19,6 @@ const ProductNo = "${product.productNo}";
 const BillingKey = "${sessionScope.billingKey}";
 const Amount = "${product.productPrice}";
 const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
-alert(BillingKey);
 </script>
 </head>
 <body class="container my-5" data-billing-key="${param.billingKey}"

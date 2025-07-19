@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.p6spy.engine.common.Loggable;
 
 import jakarta.servlet.http.HttpSession;
 import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
@@ -38,6 +41,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/company/toss")
 public class BillingPaymentController {
+	
+	@Value("${toss.secretKey}")
+	private String tossSecretKey;
 	
 	@Autowired
 	PaymentProductServiceImpl service;
@@ -51,6 +57,7 @@ public class BillingPaymentController {
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
 		map.put("billingKey", billingKey);
 		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
+		log.info("map 반환값 : {}", map);
 		return map;
 	}
 	
@@ -62,12 +69,13 @@ public class BillingPaymentController {
 			) {
 		log.info("productNo가 씨이이이 이게 뭔데 로고 이렇게쓰면 잘 보이겠지 : {}", productNo);
 		String billingKey = (String) session.getAttribute("billingKey");
+		String customerKey = (String) session.getAttribute("customerKey ");
 		
 		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
 		model.addAttribute("product",product);
-		model.addAttribute("billingKey",billingKey);
 		model.addAttribute("productNo",productNo);
-		
+		session.setAttribute("customerKey", customerKey);
+		session.setAttribute("billingKey",billingKey);
 //		return "/company/payment/payment/buyproduct?productNo=" + productNo;
 		return "company/payment/payment/BuyProduct";
 	}
@@ -139,13 +147,16 @@ public class BillingPaymentController {
 				String billingKey = jsonNode.get("billingKey").asText();
 				
 				// billingKey를 저장
-				model.addAttribute("billingKey",billingKey);
+//				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("result",jsonNode.toPrettyString());
 				
+				session.setAttribute("authKey", authKey);
+				session.setAttribute("customerKey", customerKey);
 				session.setAttribute("billingKey", billingKey);
+				log.info("customerKey",customerKey);
 				log.info("빌링빌링빌링키 = billingKey : {}", billingKey);
 				log.info("session id: {}", session.getId());
-				return "/company/payment/product/detail?productNo=" + productNo;
+				return "redirect:/company/toss/buyproduct?productNo=" + productNo;
 				
 				
 			} catch (IOException e) {
@@ -160,7 +171,8 @@ public class BillingPaymentController {
 		}
 
 		log.info("responseBody : {}", response.body());
-		return "company/payment/payment/BillingResult";
+		return "redirect:/company/toss/buyproduct?productNo=" + productNo;
+//		return "company/payment/payment/BillingResult";
 	}
 
 	@PostMapping("/api/toss/billing/issue")
@@ -177,6 +189,7 @@ public class BillingPaymentController {
 		body.put("authKey", authKey);
 		body.put("customerKey", customerKey);
 
+	
 		HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -191,17 +204,23 @@ public class BillingPaymentController {
 
 	}
 
-	@PostMapping("/api/toss/billing/execute")
+	@PostMapping("/api/billing/execute")	// 결제하기 눌렀을때 여기로
 	public ResponseEntity<String> executeBilling(@RequestBody Map<String, Object> payload) {
 		String billingKey = (String) payload.get("billingKey");
 		String customerKey = (String) payload.get("customerKey");
-		int amount = (int) payload.get("amount");
+//		int amount = (int) payload.get("amount");
+		int amount = Integer.parseInt(String.valueOf(payload.get("amount")));
 		String orderId = "ORDER_" + System.currentTimeMillis();
+		log.info("payloaad : {}", payload);
 
+		String encodedKey = Base64.getEncoder().encodeToString((tossSecretKey + ":").getBytes(StandardCharsets.UTF_8));
+		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setBasicAuth(""); // Secret Key
+		headers.set("Authorization", "Basic " + encodedKey); // Secret Key
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
+		log.info("customerKey", customerKey);
+		log.info("headers값 : {}",headers);
+		log.info("tossSecretKey : {}",tossSecretKey);
 		Map<String, Object> body = new HashMap<>();
 		body.put("amount", amount);
 		body.put("orderId", orderId);
@@ -210,7 +229,12 @@ public class BillingPaymentController {
 		body.put("customerEmail", "test");
 		body.put("customerName", "김철민");
 		body.put("billingKey", billingKey);
+		
+		log.info("body값 : {}", body);
+		
 		HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+		
+		log.info("request 값 : {}" , request);
 		String url = "https://api.tosspayments.com/v1/billing/" + billingKey;
 
 		RestTemplate restTemplate = new RestTemplate();
