@@ -130,6 +130,14 @@
 
 
 /* aos 적용 */
+.layout-demo-wrapper{
+	position: relative;
+  top: -100px;
+  transition:top 0.5s ease !important;;
+}
+.layout-demo-wrapper.aos-animate{
+  top:0px;
+}
 .aos_frans_none .layout-demo-wrapper {
   transform: none !important;
 }

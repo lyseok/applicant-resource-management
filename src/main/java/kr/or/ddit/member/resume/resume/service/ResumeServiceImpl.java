@@ -121,11 +121,15 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	@Transactional
 	public int createResume(ResumeVO resumeVO) {
-		ResumeVO vo = resumeMapper.selectResumeDetail(resumeVO);
 		// 이력서 번호가 있으면 수정
-		if(vo.getResumeNo() != null) {
-			return resumeMapper.updateResume(resumeVO);
+		if(resumeVO.getResumeNo() != null) {
+			log.info("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶" + resumeVO.getResumeNo());
+			int result = resumeMapper.updateResume(resumeVO);
+			log.info("▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶ 업데이트 결과 행 수: {}", result);
+
+			return result;
 		}
+		ResumeVO vo = resumeMapper.selectResumeDetail(resumeVO);
 		int resumeCnt = resumeMapper.insertResume(resumeVO);
 
 		// 경력
