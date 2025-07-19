@@ -97,6 +97,48 @@ boardTypeCode.onchange = function () {
     });
 };
 
+//수정시 1차 옵션 기입 - 공지사항
+boardTypeCode.onchange2 = function (type) {
+	codeGroup.disabled = false;	
+    fetch(`/ajax/admin/board/admin_board/group/BRDD-003`).then(resp=>
+       resp.json()).then(rslt=>{
+		let codeGroupNos = [];
+		 rslt.forEach(codeVO => {
+			let codeNo = codeVO.codeGroupNo;
+			let description = (codeVO.description || '').split(" ")[0];
+              if(!codeGroupNos.includes(codeNo)){
+                 codeGroupNos.push(codeNo);
+				let option = document.createElement("option");
+				option.value = codeNo;
+				option.innerText = `${description}`;
+				codeGroup.appendChild(option);
+              }
+        });
+	    codeGroup.value = type;
+	})
+};
+
+//수정시 1차 옵션 기입 - 자주묻는질문
+boardTypeCode.onchange3 = function (type) {
+	codeGroup.disabled = false;	
+    fetch(`/ajax/admin/board/admin_board/group/BRDD-002`).then(resp=>
+       resp.json()).then(rslt=>{
+		let codeGroupNos = [];
+		 rslt.forEach(codeVO => {
+			let codeNo = codeVO.codeGroupNo;
+			let description = (codeVO.description || '').split(" ")[0];
+              if(!codeGroupNos.includes(codeNo)){
+                 codeGroupNos.push(codeNo);
+				let option = document.createElement("option");
+				option.value = codeNo;
+				option.innerText = `${description}`;
+				codeGroup.appendChild(option);
+              }
+        });
+	    codeGroup.value = type.split("-")[0];
+	})
+};
+
 codeGroup.onchange = function(){
 	if2();
 	fetch(`/ajax/admin/board/admin_board/cmn/${codeGroup.value}`).then(resp=>{
@@ -108,6 +150,22 @@ codeGroup.onchange = function(){
 		    	memType.appendChild(option);
 			})
 		})
+	})
+}
+
+//수정시 2차 옵션 기입
+codeGroup.onchange2 = function(type){
+	memType.disabled = false;
+	let ctype = type.split("-")[0];
+	fetch(`/ajax/admin/board/admin_board/cmn/${ctype}`).then(resp=>
+		resp.json()).then(rslt=>{
+			rslt.forEach(item=>{
+				let option = document.createElement("option");
+				option.value = item.codeDetailNo;
+		    	option.innerHTML = item.codeName;
+		    	memType.appendChild(option);
+			})
+		memType.value = type;
 	})
 }
 
@@ -129,6 +187,18 @@ const if2 = function(){
 		memType.disabled = true;
 	}else{
 		mdis();
+	}
+}
+
+//수정에서 넘어올 때
+const if3 = function(type){
+	if(type.includes('NTC')){
+		boardTypeCode.value ='BRDD-003';  //비교 연산자 아니고 할당 연산자로
+		boardTypeCode.onchange2(type);
+	}else{
+		boardTypeCode.value ='BRDD-002';
+		boardTypeCode.onchange3(type);
+		codeGroup.onchange2(type);
 	}
 }
 
@@ -154,7 +224,25 @@ const mdis = function(){
 	memType.value = "-1";		
 }
 
-const aform = function(){
+const abno2 = function(no){
+	fetch(`/ajax/admin/board/admin_board/detail/${no}`)
+	  .then((resp) => resp.json())
+	  .then((rslt) => {
+	    let nohi = document.querySelector("#noHidden");
+	    if (nohi) nohi.value = rslt.boardNo;
+        let boti = document.querySelector('input[name="boardTitle"]');
+        if (boti) boti.value = rslt.boardTitle;
+        let usid = document.querySelector('input[name="userId"]');
+        if (usid) usid.value = rslt.userId;
+        let boct = document.querySelector('textarea[name="boardContent"]');
+        if (boct) boct.value = rslt.boardContent;
+	});
+}
+
+const aform = function(no, type){
 	console.log("디테일에서 넘어온 수정", no);
 	console.log("디테일에서 넘어온 수정2", type);
+	if3(type);  //옵션 넣어줌
+	abno2(no);  //제목, 내용 넣어줌
 }
+

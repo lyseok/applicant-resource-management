@@ -26,7 +26,7 @@
 		<br>
 		<input type="text" name="boardTitle" placeholder="제목">
 		<label>작성자 아이디: </label>
-		<input type="text" name="userId" value="${userId}" disabled><br>
+		<input type="text" name="userId" value="${userId}" readonly><br>
 		<textarea name="boardContent" placeholder="내용" rows="6" cols="60"></textarea>
 	  <button type="submit">등록</button>
 	</form>

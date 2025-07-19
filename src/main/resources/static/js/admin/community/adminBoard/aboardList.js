@@ -128,7 +128,6 @@ const pre = function(type){
 
 // 상세 이후 로딩
 const alist2 = function(type){
-	console.log("alist2 type? ", type);
 	if (type === "BRDD-001") {
 		fetch(`/ajax/admin/board/admin_board/${type}`)
 			.then((resp) => resp.json())

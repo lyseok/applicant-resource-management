@@ -124,7 +124,7 @@ const abbtn = function(no, type){
 	dbtn.textContent = "삭제";
 	
     aboardDetail.appendChild(lbtn);
-    aboardDetail.appendChild(ebtn);
+    if(type !== 'BRDD-001') aboardDetail.appendChild(ebtn);
     aboardDetail.appendChild(dbtn);
     
     const editBtn = document.querySelector("#editBtn");
@@ -133,6 +133,11 @@ const abbtn = function(no, type){
     
     if(listBtn != null){
 		listBtn.onclick = function () {
+		  aboardDetail.innerHTML = "";
+		  
+		  if (acommentFormContainer) acommentFormContainer.innerHTML = "";
+		  if (acommentListContainer) acommentListContainer.innerHTML = "";
+		  
 		  alist2(type); // 목록으로
 		};
 	}
@@ -142,7 +147,7 @@ const abbtn = function(no, type){
 		  aboardDetail.innerHTML = "";
 		  
 		  if (acommentFormContainer) acommentFormContainer.innerHTML = "";
-		  if (acommenListContainer) acommenListContainer.innerHTML = "";
+		  if (acommentListContainer) acommentListContainer.innerHTML = "";
 		  
 		  if (aboardform) aboardform.style.display = "block";
 		
