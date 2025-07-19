@@ -57,7 +57,19 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	@Override
 	public List<RecruitmentNoticeVO> readRecruitmentNoticeByUserId(String userId) {
 		
-		return recruitmentNoticeMapper.selectRecruitNoticeByUserId(userId);
+		List<RecruitmentNoticeVO> notices = recruitmentNoticeMapper.selectRecruitNoticeByUserId(userId);
+		
+		for (RecruitmentNoticeVO notice : notices) {
+		 
+			String jobName = codeMapProvider.getJobName(notice.getJobCode());
+			String year = codeMapProvider.getCodeName(notice.getYearCode());
+			String city = codeMapProvider.getCityName(notice.getCityCode());
+			notice.setJobCodeName(jobName);
+			notice.setYearCodeName(year);
+			notice.setCityCodeName(city);
+		}
+		
+		return notices;
 	}
 	
 	
