@@ -20,7 +20,7 @@
    <script type="text/javascript" src="/js/member/resume/introuction.js"></script>
    
 </head>
-<body>
+<body class="aos_frans_none">
    
    <%-- <c:if test="${not empty introdDetail}">?</c:if>
    <c:if test="${not empty introdCreate}">?</c:if> --%>
