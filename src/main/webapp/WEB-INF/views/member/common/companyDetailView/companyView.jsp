@@ -356,7 +356,6 @@
 	                                <i class="icon icon-up">상승</i>
 	                            </div>
 	                        </div>
-	
 	                    </div>
 	
 	                    <div class="chart-bar-wrap">
