@@ -29,7 +29,7 @@
 <div class="row gy-4">
     <c:forEach var="product" items="${productList}">
         <div class="col-12">
-            <div class="card flex-row shadow-sm" data-product-no="${product.productNo }"
+            <div class="card flex-row shadow-sm" data-product-no="${product.productNo }" data-product-name ="${product.productName}"
                    onclick="goToDetail(this)" >
                 <img src="/upload/${product.productImg}" class="img-fluid rounded-start" style="width: 200px; height: 200px; object-fit: cover;" alt="상품 이미지">
                 <div class="card-body">

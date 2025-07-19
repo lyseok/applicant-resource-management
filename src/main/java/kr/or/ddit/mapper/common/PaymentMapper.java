@@ -11,7 +11,7 @@ import kr.or.ddit.vo.common.PaymentVO;
 public interface PaymentMapper {
 	public List<PaymentVO> selectPaymentList();
 
-	public PaymentVO selectPaymentByPk(PaymentVO vo);
+	public PaymentVO selectPaymentByPk(String userId);
 
 	public int insertPayment(PaymentVO vo);
 
@@ -23,5 +23,5 @@ public interface PaymentMapper {
 	
 	public List<PaymentVO> selectMyPaymentList(String userId);
 	
-	public PaymentVO checkbilling(String userId);
+	public String checkbilling(String userId);
 }

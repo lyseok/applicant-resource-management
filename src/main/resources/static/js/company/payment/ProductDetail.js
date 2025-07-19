@@ -1,11 +1,14 @@
 
 function subscribe() {
-	alert(ProductNo);
-	alert(BillingKey);
+	alert("상품번호" , ProductNo);
+	console.log("커스터머키" ,customerKey);
+	console.log("상품명", orderName);
+	alert("빌링키", BillingKey);
    	const productNo = ProductNo;
+   	
    	console.log("상품번호 : ", productNo);
    	 console.log("빌링키",BillingKey);
-   
+   	
    
      fetch("/company/toss/check/billing",{
 		method : "GET" ,
