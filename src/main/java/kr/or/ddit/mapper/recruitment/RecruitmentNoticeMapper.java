@@ -32,4 +32,6 @@ public interface RecruitmentNoticeMapper {
  public int deleteRecruitmentNotice(String recruitmentNo);
  
  public int updateRecruitDeadLine(String recruitmentNo);
+ 
+ public List<RecruitmentNoticeVO> selectRecruitNoticeByUserId(String userId);
 }

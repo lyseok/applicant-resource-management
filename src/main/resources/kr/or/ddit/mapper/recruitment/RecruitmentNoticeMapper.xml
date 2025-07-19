@@ -327,5 +327,34 @@
 		RECRUIT_FINISH_YN = 'Y'
 		WHERE RECRUITMENT_NO = #{recruitmentNo}
 	</update>
+	
+	
+	
+	<select id="selectRecruitNoticeByUserId" resultType="RecruitmentNoticeVO">	       
+		 SELECT 
+		    RECRUITMENT_NO,
+		    USER_ID,
+		    JOB_CODE,
+		    YEAR_CODE,
+		    REC_CONTENT,
+		    PREFERENTIAL,
+		    CITY_CODE,
+		    DISTRICT_CODE,
+		    REC_POSITION_NUMBER,
+		    RECRUITMENT_CHARGER_TEL,
+		    RECRUITMENT_SALARY,
+		    WELFARE,
+		    RECRUITMENT_DESK,
+		    RECRUITMENT_IMG,
+		    RECRUITMENT_STARTDATE,
+		    RECRUITMENT_RECEIPT_START,
+		    RECRUITMENT_FINISH_DATE,
+		    RECRUITMENT_TITLE,
+		    RECRUITMENT_DEL_DATE,
+		    RECRUIT_FINISH_YN
+		  FROM RECRUITMENT_NOTICE
+		  WHERE USER_ID = #{userId}
+		ORDER BY RECRUITMENT_STARTDATE DESC
+	</select>
 
 </mapper>
