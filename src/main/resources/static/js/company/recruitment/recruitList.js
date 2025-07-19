@@ -1,42 +1,40 @@
-/**
- * 
- */
- document.addEventListener('DOMContentLoaded', function () {
-    const userId = '기업아이디값'; // 동적으로 넣거나 서버에서 넘기세요
+document.addEventListener('DOMContentLoaded', function () {
     const listContainer = document.getElementById('recruitment-list');
     const countEl = document.getElementById('recruitment-count');
 
-    fetch(`/ajax/recruit/list/corp03`)
+    fetch(`/ajax/recruit/list`)
         .then(response => response.json())
         .then(data => {
-            countEl.textContent = `총 ${data.length}건`;
             listContainer.innerHTML = '';
 
             data.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'col-md-6 col-lg-4';
+                const row = document.createElement('div');
+                row.className = 'd-flex align-items-center justify-content-between border rounded p-3 mb-3 bg-white shadow-sm';
 
-                card.innerHTML = `
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="fw-bold mb-2">${item.RECRUITMENTTITLE}</h5>
-                            <p class="text-muted mb-1">${item.RECCONTENT || '공고 내용 없음'}</p>
+				function truncateText(text, maxLength) {
+					if (!text) return '공고 내용 없음';
+					return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+				}
 
-                            <ul class="list-unstyled small text-muted mb-3">
-                                <li><strong>직무:</strong> ${item.jobCodeName || '-'}</li>
-                                <li><strong>지역:</strong> ${item.cityCodeName} ${item.districtCodeName}</li>
-                                <li><strong>급여:</strong> ${item.SALARY || '-'}</li>
-                                <li><strong>등록일:</strong> ${item.STARTDATE?.substring(0, 10) || '-'}</li>
-                                <li><strong>마감일:</strong> ${item.FINISHDATE?.substring(0, 10) || '-'}</li>
-                                <li><strong>지원자 수:</strong> ${item.APPLICANTCOUNT}</li>
-                            </ul>
-                        </div>
-                        <div class="card-footer text-end bg-white border-0">
-                            <a href="/company/recruit_notice/${item.RECRUITMENTNO}" class="btn btn-outline-primary btn-sm">상세보기</a>
+                row.innerHTML = `
+                    <div class="flex-grow-1">
+                        <h5 class="fw-bold mb-1">${item.RECRUITMENTTITLE}</h5>
+                        <p class="text-muted mb-2">${truncateText(item.RECCONTENT, 5) || '공고 내용 없음'}</p>
+                        <div class="small text-muted">
+                            <span><strong>경력:</strong> ${item.yearCodeName || '-'}</span> |
+                            <span><strong>직무:</strong> ${item.jobCodeName || '-'}</span> |
+                            <span><strong>지역:</strong> ${item.cityCodeName} ${item.districtCodeName}</span> |
+                            <span><strong>급여:</strong> ${item.SALARY || '-'}</span> |
+                            <span><strong>등록일:</strong> ${item.RECRUITMENTSTARTDATE?.substring(0, 10) || '-'}</span> |
+                            <span><strong>마감일:</strong> ${item.RECRUITMENTFINISHDATE?.substring(0, 10) || '-'}</span> |
+                            <span><strong>지원자 수:</strong> ${item.APPLICANTCOUNT}</span>
                         </div>
                     </div>
+                    <div>
+                        <a href="/company/recruit_notice/${item.RECRUITMENTNO}" class="btn btn-outline-primary btn-sm">상세보기</a>
+                    </div>
                 `;
-                listContainer.appendChild(card);
+                listContainer.appendChild(row);
             });
         })
         .catch(err => {

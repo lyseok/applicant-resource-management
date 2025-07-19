@@ -23,6 +23,20 @@
 	WHERE CODE_DETAIL_NO = #{codeDetailNo}
 </select>
 
+<select id="selectCmnCodeListByUc">
+	SELECT 
+		CODE_DETAIL_NO
+		, CODE_GROUP_NO
+		, UPPER_CODE_NO
+		, CODE_NAME
+		, SORT_ORDER
+		, USE_YN
+		, CREATE_DATE
+		, UPDATE_DATE
+	FROM CMN_CODE
+	WHERE UPPER_CODE_NO = #{upperCodeNo}
+</select>
+
 <insert id="insertCmnCode">
 	<selectKey resultType="int" keyProperty="sortOrder" order="BEFORE">
 	    SELECT MAX(SORT_ORDER) + 1

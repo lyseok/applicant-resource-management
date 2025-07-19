@@ -37,6 +37,30 @@ public class MemberAdminBoardController {
 		return "member/community/adminBoard/aboardForm";
 	}
 	
+
+	// 유형별 게시글 목록조회
+	@GetMapping  //http://localhost/member/admin_board?type=UFAQ-U5
+	public String aboardType(String type, Model model) {
+		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(type);
+		model.addAttribute("aboardList", aboardList);
+		model.addAttribute("type", type);
+
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);
+		return "member/community/adminBoard/aboardList";
+	}
+	
+	// 게시글 목록조회
+	@GetMapping("/list")
+	public String aboardList(Model model) {
+		List<AdminBoardVO> aboardList = service.readAdminBoardList();
+		model.addAttribute("aboardList", aboardList);
+		
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);		
+		return "member/community/adminBoard/aboardList";
+	}
+	
 	/*
 	private ErrorsUtils errorsUtils;
 	
@@ -64,29 +88,6 @@ public class MemberAdminBoardController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "member/community/adminBoard/aboardDetail";
-	}
-	
-	// 유형별 게시글 목록조회
-	@GetMapping("/list/type")
-	public String aboardType(String boardTypeCode, Model model) {
-		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(boardTypeCode);
-		model.addAttribute("aboardList", aboardList);
-		model.addAttribute("boardTypeCode", boardTypeCode);
-
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);
-		return "member/community/adminBoard/aboardList";
-	}
-	
-	// 게시글 목록조회
-	@GetMapping("/list")
-	public String aboardList(Model model) {
-		List<AdminBoardVO> aboardList = service.readAdminBoardList();
-		model.addAttribute("aboardList", aboardList);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);		
-		return "member/community/adminBoard/aboardList";
 	}
 	
 	// 수정 폼으로 이동

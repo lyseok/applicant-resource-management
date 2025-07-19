@@ -9,11 +9,14 @@ import kr.or.ddit.vo.common.PaymentProductVO;
 public interface PaymentProductMapper {
 	public List<PaymentProductVO> selectPaymentProductList();
 
-	public PaymentProductVO selectPaymentProductByPk(PaymentProductVO vo);
+	public PaymentProductVO selectPaymentProductByPk(String productNo);
 
 	public int insertPaymentProduct(PaymentProductVO vo);
 
 	public int updatePaymentProduct(PaymentProductVO vo);
 
-	public int deletePaymentProduct(PaymentProductVO vo);
+	public int deletePaymentProduct(String productNo);
+	
+	public PaymentProductVO selectPaymentProductByName(String productName);
+	
 }

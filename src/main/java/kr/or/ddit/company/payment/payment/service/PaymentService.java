@@ -15,4 +15,7 @@ public interface PaymentService {
 
 	public int deletePayment(String paymentNo);
 	
+	public List<PaymentVO> selectMyPaymentList(String userId);
+	
+	public PaymentVO checkbilling(String userId);
 }

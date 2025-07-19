@@ -9,9 +9,10 @@ import kr.or.ddit.vo.recruitment.InterviewVO;
 
 @Mapper
 public interface InterviewMapper {
-	
+	public InterviewVO selectInterviewByNo(String interviewNo);
 	public List<Map<String, Object>> selectMyInterviewList(String userId);
 	public List<InterviewVO> selectInterviewList();
+	public List<InterviewVO> selectInterviewListByCompany(String userId);
 	public InterviewVO selectInterview(String interviewNo);
 	public List<Map<String, Object>> selectMemberInterviewDetail(String interviewNo);
 	public int insertInterview(InterviewVO vo);

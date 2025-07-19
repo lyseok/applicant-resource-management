@@ -31,7 +31,7 @@ const setData = (data) => {
   console.log(recruitProcess);
   console.log(applicantRecordList);
   console.log(recruitmentNotice);
-    
+
   // 예시 데이터 (실제로는 axios 등으로 받아옴)
   const detail = {
     title: recruitmentNotice.recruitmentTitle,
@@ -44,14 +44,15 @@ const setData = (data) => {
     scoreItems: interviewQuestionList.map(
       (item) => item.interviewQuestionContent
     ),
-    videoInterview: videoInterview && videoInterview.roomTitle
-    ? {
-        roomTitle: videoInterview.roomTitle,
-        maxJoinCount: videoInterview.maxJoinCount,
-        startTime: videoInterview.startDate,
-        endTime: videoInterview.endDate,
-      }
-    : null, // 또는 {} 도 가능
+    videoInterview:
+      videoInterview && videoInterview.roomTitle
+        ? {
+            roomTitle: videoInterview.roomTitle,
+            maxJoinCount: videoInterview.maxJoinCount,
+            startTime: videoInterview.startDate,
+            endTime: videoInterview.endDate,
+          }
+        : null, // 또는 {} 도 가능
     // applicants: applicantRecordList.map((item) => ({
     //   name: item.applicantName,
     //   resumeUrl: '#', // 필요시 item.resumeUrl 등으로 교체
@@ -59,16 +60,17 @@ const setData = (data) => {
     //   score: item.score ?? 0, // item.score가 없다면 0, 실제로는 적절히 매핑
     // })),
     applicants: applicantRecordList.map((item) => {
-    // item.applicantId와 동일한 interviewScoreList 객체 찾기
-      const scoreObj = interviewScoreList.find(
-        (score) => score.applicantId === item.applicantId
-      )
+      const score =
+        item.applicant && item.applicant.interviewScore
+          ? item.applicant.interviewScore.applicantRating
+          : 0;
+
       return {
         name: item.applicantName,
         resumeUrl: '#', // 필요시 item.resumeUrl 등으로 교체
         time: item.evaluationStartTime ? item.evaluationStartTime : '',
-        score: scoreObj && scoreObj.applicantRating != null ? scoreObj.applicantRating : 0,
-      }
+        score: score != null ? score : 0,
+      };
     }),
   };
 
@@ -87,7 +89,7 @@ const setData = (data) => {
     .join('');
 
   // 화상면접 정보가 있으면
-  if(detail.interviewTypeCode === 'Y'){
+  if (detail.interviewTypeCode === 'Y') {
     const videoArea = document.getElementById('videoInterviewArea');
     if (detail.videoInterview) {
       videoArea.style.display = '';
@@ -110,10 +112,10 @@ const setData = (data) => {
           </button>
         </div>
       `;
-      document.getElementById('addVideoInterviewBtn').onclick = function() {
+      document.getElementById('addVideoInterviewBtn').onclick = function () {
         // 등록 페이지 이동
         const interviewNo = getParam('interviewNo');
-        location.href="/company/interview/create?interviewNo=" + interviewNo;
+        location.href = '/company/interview/create?interviewNo=' + interviewNo;
       };
     }
   }
@@ -125,7 +127,7 @@ const setData = (data) => {
       <tr>
         <td>${a.name}</td>
         <td><a href="${a.resumeUrl}" target="_blank">이력서 보기</a></td>
-        <td>${a.time}</td>
+        <td>${a.time && a.time.trim() ? a.time : '-'}</td>
         <td>${a.score}점</td>
       </tr>
     `
@@ -133,13 +135,10 @@ const setData = (data) => {
     .join('');
 };
 
-
-
-
-document.getElementById('editVideoInterviewBtn').onclick = function() {
+document.getElementById('editVideoInterviewBtn').onclick = function () {
   // 수정 페이지 이동
   const interviewNo = getParam('interviewNo');
-  location.href="/company/interview/create?interviewNo=" + interviewNo;
+  location.href = '/company/interview/create?interviewNo=' + interviewNo;
 };
 
 // document.getElementById('startInterviewBtn').onclick = async function() {
@@ -160,24 +159,26 @@ document.getElementById('editVideoInterviewBtn').onclick = function() {
 //   }
 // };
 
-document.getElementById('startInterviewBtn').onclick = async function() {
+document.getElementById('startInterviewBtn').onclick = async function () {
   // 1. 비동기 요청해서 "화상면접" 주소로 새 창 먼저 띄우기
   const interviewNo = getParam('interviewNo');
   let interviewPopup;
   try {
     const res = await axios.get('/ajax/company/videointerview/' + interviewNo, {
-      params: { interviewNo }
+      params: { interviewNo },
     });
     const url = res.data;
     if (url) {
       interviewPopup = window.open(url, '_blank'); // 새 창으로 열기
       setTimeout(() => {
         openEvaluationPopup(); // localStorage 세팅 및 팝업창 오픈
-    
+
         // 모달닫기
         const modalEl = document.getElementById('joinInterviewModal'); // 닫을 모달의 id
         if (modalEl) {
-          const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+          const modalInstance =
+            bootstrap.Modal.getInstance(modalEl) ||
+            new bootstrap.Modal(modalEl);
           modalInstance.hide();
         }
       }, 500); // 1000ms = 1초
@@ -194,5 +195,13 @@ document.getElementById('startInterviewBtn').onclick = async function() {
 
 function openEvaluationPopup() {
   // 팝업 오픈 (url/이름/옵션)
-  window.open('/popup/evaluate', 'evaluate_popup', 'width=600,height=760,scrollbars=yes');
+  window.open(
+    '/popup/evaluate',
+    'evaluate_popup',
+    'width=600,height=760,scrollbars=yes'
+  );
 }
+
+document.getElementById('edit-interview-confirm-btn').onclick = function () {
+  location.href = '/company/interview/edit';
+};

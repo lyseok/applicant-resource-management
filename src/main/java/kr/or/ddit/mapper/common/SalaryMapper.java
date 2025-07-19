@@ -11,10 +11,12 @@ import kr.or.ddit.vo.common.SalaryVO;
 public interface SalaryMapper {
 	public SalaryVO selectSalaryByPk(String salaryId);
 	public SalaryVO selectSalaryByCompany(String comId);
+	public SalaryVO selectSalaryByUserAndRank(String userId, String codeDetailNo);
 	
 	public List<SalaryVO> selectSalaryList();
 	public List<SalaryVO> searchSalaryRangeList(Map<String, Object> params);
 	public List<SalaryVO> searchSalaryComNameList(String comName);
+	public List<SalaryVO> selectSalaryListbyId(String userId);
 	
 	public int updateSalary(SalaryVO salary);
 	public int insertSalary(SalaryVO salary);

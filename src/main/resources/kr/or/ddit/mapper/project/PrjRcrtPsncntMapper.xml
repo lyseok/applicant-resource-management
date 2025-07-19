@@ -22,6 +22,12 @@
 	AND PRJ_ANNC_NO = #{prjAnncNo}
 </select>
 
+<select id="selectByAnncNoAndJobCode">
+  SELECT * FROM PRJ_RCRT_PSNCNT
+  WHERE PRJ_ANNC_NO = #{prjAnncNo}
+    AND JOB_CODE = #{jobCode}
+</select>
+
 <insert id="insertPrjRcrtPsncnt">
 <selectKey resultType="string" keyProperty="rcrtPsncntNo" order="BEFORE">
     SELECT
@@ -43,6 +49,13 @@
 		, #{rcrtPsncnt}
 	)
 </insert>
+
+<update id="updateRcrtPsncnt">
+  UPDATE PRJ_RCRT_PSNCNT
+    SET RCRT_PSNCNT = #{rcrtPsncnt}
+  WHERE PRJ_ANNC_NO = #{prjAnncNo}
+    AND JOB_CODE = #{jobCode}
+</update>
 
 <update id="updatePrjRcrtPsncnt">
 	UPDATE PRJ_RCRT_PSNCNT

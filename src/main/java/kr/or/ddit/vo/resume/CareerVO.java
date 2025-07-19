@@ -2,6 +2,11 @@ package kr.or.ddit.vo.resume;
 
 import java.io.Serializable;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import kr.or.ddit.common.annotation.PastString;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import lombok.Data;
@@ -9,42 +14,67 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of = "careerNo")
-public class CareerVO implements Serializable{
+public class CareerVO implements Serializable {
 
 	private String careerNo;
 	private String resumeNo;
-	
-	private String jobCode;
-	private String jobCodeName;
-	
-	private String startWorkDate;
-	private String retireDate;
-	private String tenure;
-	private String department;
-	private String responsibility;
-	private String freelancer;
-	
-	private String jobGradeCode;
-	private String jobGradeCodeName;
-	
-	private String positionCode;
-	private String positionCodeName;
-	
-	private String careerYear;
-	private String careerYearName;
-	
-	private String salary;
-	private String location;
-	private String deleteDate;
-	private String comId;
-	
-	//추가
+
+	@NotBlank(message = "회사명은 필수 입력 항목입니다.")
+    private String comId;
+
+	@NotBlank(message = "직무는 필수 입력 항목입니다.")
+    private String jobCode;
+    private String jobCodeName;
+
+	@NotBlank(message = "입사일자는 필수 입력 항목입니다.")
+    @PastString(message = "입사일자는 과거 날짜여야 합니다.")
+    private String startWorkDate;
+
+    @PastString(message = "퇴사일자는 과거 날짜여야 합니다.")
+    private String retireDate;
+
+	@NotBlank(message = "재직 여부는 필수 입력 항목입니다.")
+    @Pattern(regexp = "Y|N", message = "재직 여부는 Y 또는 N으로 입력해야 합니다.")
+    private String tenure; // 재직여부 (예: 2년 3개월)
+
+    @Size(max = 50, message = "근무 부서명은 최대 50자까지 입력 가능합니다.")
+    private String department;
+
+    @Size(max = 200, message = "담당 업무는 최대 200자까지 입력 가능합니다.")
+    private String responsibility;
+
+	@NotBlank(message = "프리랜서 여부는 필수 입력 항목입니다.")
+    @Pattern(regexp = "Y|N", message = "프리랜서 여부는 Y 또는 N으로 입력해야 합니다.")
+    private String freelancer;
+
+    @Size(max = 20, message = "직급은 최대 20자까지 입력 가능합니다.")
+    private String jobGradeCode;
+    private String jobGradeCodeName;
+
+    @Size(max = 20, message = "직책은 최대 20자까지 입력 가능합니다.")
+    private String positionCode;
+    private String positionCodeName;
+
+	@NotBlank(message = "연차는 필수 입력 항목입니다.")
+    @Size(max = 10, message = "연차는 최대 10자까지 입력 가능합니다.")
+    private String careerYear;
+    private String careerYearName;
+
+    @Size(max = 20, message = "연봉은 최대 20자까지 입력 가능합니다.")
+    private String salary;
+
+    @Size(max = 85, message = "근무지는 최대 85자까지 입력 가능합니다.")
+    private String location;
+
+    @PastString(message = "삭제일은 과거 날짜여야 합니다.")
+    private String deleteDate;
+
+	// 추가
 	private CompanyVO company;
-	private  ResumeVO resume;
+	private ResumeVO resume;
 	private String userName;
 	private String userId;
 	private MySkillVO myskill;
 	private String mySkillName;
-	
-	
+
 }

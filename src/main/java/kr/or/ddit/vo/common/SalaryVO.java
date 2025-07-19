@@ -10,8 +10,10 @@ import lombok.EqualsAndHashCode;
 public class SalaryVO implements Serializable{
 	private String salaryId;
 	private String userId;
-	private String jobCode;
+	private String codeDetailNo; //직책코드
 	private String salaryMin;
 	private String salaryMax;
 	private String createDate;
+	
+	private String codeName;
 }

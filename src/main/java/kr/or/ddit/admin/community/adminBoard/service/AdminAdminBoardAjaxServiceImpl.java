@@ -1,12 +1,16 @@
 package kr.or.ddit.admin.community.adminBoard.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.community.AdminBoardMapper;
+import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +41,21 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 		}
 		return aboardList;
 	}
+	
+	public List<AdminBoardVO> readAFaqListByCgn(String groupPrefix) {
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("boardTypeCode", groupPrefix + "%"); // 예: "CFAQ%" 또는 "UFAQ%"
+	    return mapper.selectAFaqListByCgn(paramMap);
+	}	
+
+	@Override
+	public List<AdminBoardVO> readAFaqListByUcn(String upperCodeNo) {
+		List<AdminBoardVO> aboardList = mapper.selectAFaqListByUcn(upperCodeNo);  //'BRDD-002'
+		for(AdminBoardVO aboard : aboardList) {
+			setCodeName(aboard);
+		}
+		return aboardList;
+	}
 		
 	@Override
 	public List<AdminBoardVO> readAdminBoardList() {
@@ -61,6 +80,21 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	@Override
 	public void removeAdminBoard(String boardNo) {
 		mapper.deleteAdminBoard(boardNo);
+	}
+
+	@Override
+	public void hiddenAdminBoard(AdminBoardVO board) {
+		mapper.upDeleteAdminBoard(board);
+	}
+
+	@Override
+	public List<CmnCodeGroupVO> readCmnGroupList(String upperCodeNo) {
+		return mapper.selectCmnGroupList(upperCodeNo);
+	}
+
+	@Override
+	public List<CmnCodeVO> readCmnList(String codeGroupNo) {
+		return mapper.selectCmnList(codeGroupNo);
 	}
 
 }

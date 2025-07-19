@@ -9,7 +9,9 @@ import kr.or.ddit.vo.recruitment.ApplicantVO;
 @Mapper
 public interface ApplicantMapper {
 	public List<ApplicantVO> selectApplicantList();
+	public List<ApplicantVO> selectApplicantListByNo(String recruitmentNo);
 	public ApplicantVO selectApplicant(String applicantId);
+	public String duplicationApplicant(ApplicantVO vo); 
 	public int insertApplicant(ApplicantVO vo);
 	public int updateApplicant(ApplicantVO vo);
 	public int deleteApplicant(String applicantId);

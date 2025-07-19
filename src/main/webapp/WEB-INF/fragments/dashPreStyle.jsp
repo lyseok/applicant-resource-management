@@ -9,12 +9,18 @@
     
     <!-- fonts -->
     <link rel="stylesheet" href="/dist/assets/css/fonts/pretendard.css" >
-
+		
+		<!-- aos 애니메이션 -->
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		
+		
     <!-- Core CSS -->
     <link rel="stylesheet" href="/dist/dashboard/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="/dist/dashboard/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="/dist/dashboard/assets/css/demo.css" />
-
+		
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">		
+    
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="/dist/dashboard/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="/dist/dashboard/assets/vendor/libs/apex-charts/apex-charts.css" />

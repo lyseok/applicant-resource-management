@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import kr.or.ddit.admin.community.adminComment.service.AdminAdminCommentAjaxService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
+import kr.or.ddit.vo.community.AdminBoardVO;
 import kr.or.ddit.vo.community.AdminCommentVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +32,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AdminAdminCommentAjaxController {
 	
-	private AdminAdminCommentAjaxService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final AdminAdminCommentAjaxService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
-	@GetMapping("/{boardNo}/{boardCommentNo}")
+	@GetMapping("/detail/{boardCommentNo}")
 	public ResponseEntity<AdminCommentVO> getOneComment(@PathVariable String commentNo) {
 	    return service.readAdminCommentbyPk(commentNo)
 	    		.map(ResponseEntity::ok)
@@ -40,9 +44,6 @@ public class AdminAdminCommentAjaxController {
 	
 	@GetMapping("/{boardNo}")
 	public List<AdminCommentVO> getComments(@PathVariable String boardNo){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    String username = authentication.getName(); // 아이디
-	    log.info("🔐 요청자: {}", username);
 		return service.searchAdminCommentCommentList(boardNo);
 	}
 	
@@ -61,7 +62,7 @@ public class AdminAdminCommentAjaxController {
 	}
 	
 	// 수정, 삭제 상태 변경
-	@PostMapping("/{boardNo}/{boardCommentNo}")
+	@PostMapping("/detail/{boardCommentNo}")
 	public Map<String, Object> editComment(
 		@PathVariable String boardNo
 		, @PathVariable String commentNo
@@ -70,5 +71,22 @@ public class AdminAdminCommentAjaxController {
 		comment.setBoardCommentNo(commentNo);
 	    service.modifyAdminComment(comment);
 	    return Map.of("ok", true);	// 수정 후 Detail 이동
+	}
+	
+
+	//에러 검증
+	@PostMapping("/check")
+	public ResponseEntity<?> saveAcomment(
+		@Valid @RequestBody AdminCommentVO vo
+		, BindingResult bindingResult
+	) {
+		log.info("{}", vo);
+		
+		if(bindingResult.hasErrors()) {
+			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
+			return ResponseEntity.badRequest().body(errors);
+		}
+		
+	    return ResponseEntity.ok("ok");
 	}
 }

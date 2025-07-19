@@ -4,7 +4,7 @@
 }
 /* 폰트사이즈 */
 .fs-14{font-size:14px !important;}
-.fs-16{font-size:14px !important;}
+.fs-16{font-size:16px !important;}
 
 /* padding */
 .p-6{padding:6rem !important;}
@@ -44,6 +44,7 @@
 .w100p{width:100% !important;}
 .w95p{width:95% !important;}
 /* px 넓이 - width */
+.w140{width:140px !important;}
 .w500{width:500px !important;}
 .w600{width:600px !important;}
 .w700{width:700px !important;}
@@ -88,25 +89,59 @@
   white-space: normal;
 }
 
-/* 라디오버튼 커스텀 */
-.form-check-wrap .form-check{
+
+
+/* 체크박스 커스텀 */
+.form-check{
 	display:flex;
 	align-items:center;
 	gap:7px;
+	margin:0;
 }
-.form-check-wrap .form-check input{
-	padding:0;
+.form-check .form-check-input{
 	width:20px;
 	height:20px;
+	padding:0;
 	margin-top:0;
 }
-.form-check-wrap .form-check input:checked,
-.form-check-wrap .form-check input[type=checkbox]:indeterminate{
+.form-check-input:checked[type=checkbox],
+.form-check-input:checked[type=radio]{
 	background-color:var(--violet100);
 }
-.form-check-wrap .form-check label{
-	margin-top:0;
+.form-radio-wrap .form-radio input:checked,
+.form-radio-wrap .form-radio input[type=checkbox]:indeterminate{
+	background-color:var(--violet100);
 }
+
+
+/* 라디오버튼 커스텀 */
+.required{
+	position:relative;
+}
+.required:after{
+	content:'*';
+	position:absolute;
+	top:20%;
+	right:auto;
+	transform:translateY(-50%);
+	color:red;
+	margin-left:5px;
+}
+
+
+/* aos 적용 */
+.aos_frans_none .layout-demo-wrapper {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+
+/* 부트스트랩 덮어쓰기 */
+.text-success{
+	color: var(--violet80) !important;
+}
+.modal-dialog-centered{min-height:100vh}
 
 /* popover/tooltip */
 .toolTipWrap {

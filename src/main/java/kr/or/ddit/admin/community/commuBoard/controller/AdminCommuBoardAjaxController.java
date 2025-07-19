@@ -26,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AdminCommuBoardAjaxController {
 
-	private AdminCommuBoardService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final AdminCommuBoardService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{categoryCode}/{commuPostNo}")
 	public ResponseEntity<CommuBoardVO> getOneBoard(@PathVariable String commuPostNo) {

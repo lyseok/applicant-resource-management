@@ -10,6 +10,14 @@
 			, USER_STATUS
 			, USER_ENABLED
 		FROM USERS
+		<where>
+			<if test="userRole != '' and userRole != null">
+				AND USER_ROLE = #{userRole}
+			</if>
+			<if test="userId != '' and userId != null">
+				AND USER_ID = #{userId}
+			</if>
+		</where>
 	</select>
 
 	<select id="selectUserById" resultType="UsersVO">
@@ -77,6 +85,12 @@
 
 	<select id="existsById" resultType="int">
 		SELECT COUNT(*)
+		FROM USERS
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="selectUserRoleById" resultType="String">
+		SELECT USER_ROLE
 		FROM USERS
 		WHERE USER_ID = #{userId}
 	</select>

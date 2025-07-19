@@ -50,6 +50,21 @@ public class CorsConfig {
 		corsConfigSource.registerCorsConfiguration("/common/auth/**", corsConfig);
 		return corsConfigSource;
 	}
+	
+	@Bean
+	public CorsConfigurationSource apiCorsConfigurationSource() {
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		
+		corsConfig.setAllowedOrigins(allowedOrigins);
+		corsConfig.setAllowedMethods(allowedMethods);
+		corsConfig.setAllowedHeaders(allowedHeaders);
+		corsConfig.setAllowCredentials(allowCredentials);
+		
+		UrlBasedCorsConfigurationSource corsConfigSource = 
+				new UrlBasedCorsConfigurationSource();
+		corsConfigSource.registerCorsConfiguration("/api/**", corsConfig);
+		return corsConfigSource;
+	}
 }
 
 

@@ -4,6 +4,7 @@ package kr.or.ddit.company.recruitment.interviewscore.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.common.exception.DataInsertException;
 import kr.or.ddit.mapper.recruitment.InterviewScoreMapper;
@@ -20,6 +21,7 @@ public class InterviewScoreServiceImpl implements InterviewScoreService {
 		
 	}
 	@Override
+	@Transactional
 	public void createInterviewScoreList(List<InterviewScoreVO> interviewScoreList) {
 		for(InterviewScoreVO vo : interviewScoreList) {
 			getOrCreateInterviewScoreNo(vo);
