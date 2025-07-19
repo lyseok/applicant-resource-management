@@ -320,8 +320,21 @@ public class ResumeServiceImpl implements ResumeService {
 
 
 	@Override
-	public List<ResumeVO> readResumeSearch(String keyward) {
-		List<ResumeVO> resumeList = resumeMapper.selectResumeSearch(keyward); 
+	public List<ResumeVO> readResumeSearch(ResumeVO vo) {
+		List<ResumeVO> resumeList = resumeMapper.selectResumeSearch(vo); 
+		for (ResumeVO resume : resumeList) {
+			resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
+			resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));
+			resume.setAwardList(awardMapper.selectAwardList(resume.getResumeNo()));
+			resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
+			resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
+			resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
+			// resume.setIntroductionList(IntroductionMapper.selectIntroductionList(resume.getResumeNo()));
+			resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
+			resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
+			resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
+			resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));
+		}
 		return resumeList;
 	}
 	

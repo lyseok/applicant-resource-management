@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       resultContainer.appendChild(scoreDiv);
     })
     .catch((err) => {
-      console.error('시험 결과를 가져오는 데 실패했습니다.');
+      console.error(err,'시험 결과를 가져오는 데 실패했습니다.');
       document.getElementById('result-score').textContent =
         '시험 결과를 불러오는 데 실패했습니다.';
     });

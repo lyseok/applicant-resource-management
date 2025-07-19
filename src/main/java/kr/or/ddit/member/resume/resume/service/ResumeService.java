@@ -30,6 +30,6 @@ public interface ResumeService {
 	public int readUserResumeNoCount(String userId);
 	
 	// 이력서 제목으로 검색
-	public List<ResumeVO> readResumeSearch(String keyward);
+	public List<ResumeVO> readResumeSearch(ResumeVO vo);
 	
 }

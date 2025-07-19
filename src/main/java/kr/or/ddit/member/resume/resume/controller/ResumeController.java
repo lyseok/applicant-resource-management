@@ -176,13 +176,20 @@ public class ResumeController {
 	  
 
 		
-		// 검색 로직 수행 >> 이거 userId 도 받아서 셀렉트 해야함!!!
+		// 검색 로직 수행
 		@GetMapping("search")
 		public String getintroductionSearch(
 			Model model
 			, @RequestParam String keyword
 		) {
-			model.addAttribute(MODELNAME, service.readResumeSearch(keyword));
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String userId = authentication.getName();
+			
+			ResumeVO vo = new ResumeVO();
+			vo.setUserId(userId);
+			vo.setResumeName(keyword);
+			
+			model.addAttribute(MODELNAME, service.readResumeSearch(vo));
 			return "member/resume/mypage/resume/resumeList";
 		}
 	 

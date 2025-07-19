@@ -12,7 +12,7 @@
 <script src="/dist/assets/js/plugins/axios.min.js"></script>
 <script src="/dist/dashboard/assets/vendor/libs/popper/popper.js"></script>
 <script src="/dist/dashboard/assets/vendor/js/bootstrap.js"></script>
-<script src="https://unpkg.com/perfect-scrollbar@1.5.8/dist/perfect-scrollbar.min.js"></script>
+<!-- <script src="https://unpkg.com/perfect-scrollbar@1.5.8/dist/perfect-scrollbar.min.js"></script> -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const menuInnerElement = document.getElementById('my-menu-inner'); // 올바른 ID 또는 클래스 선택
@@ -28,9 +28,10 @@
         }
     });
 </script>
+
 <script src="/dist/dashboard/assets/vendor/js/menu.js"></script>
 <!-- endbuild -->
-<script src="/dist/dashboard/assets/vendor/libs/masonry/masonry.js"></script>
+<!-- <script src="/dist/dashboard/assets/vendor/libs/masonry/masonry.js"></script> -->
 <!-- Main JS -->
 <script src="/dist/dashboard/assets/js/main.js"></script>
 
