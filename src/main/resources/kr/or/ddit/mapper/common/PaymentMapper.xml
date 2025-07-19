@@ -16,7 +16,8 @@
 		, USER_ID
 		, PRODUCT_NO
 		, PAYMENT_METHOD
-		, PAYMENT_DATE
+		,
+		PAYMENT_DATE
 		, PAYMENT_PAY
 		, PAYMENT_BILLING_KEY
 		) VALUES (
@@ -27,13 +28,34 @@
 		, #{paymentMethod}
 		, SYSDATE
 		, #{paymentPay}
-		, #{paymentBillingKey}
+		,
+		#{paymentBillingKey}
 		)
 	</insert>
 
+	<resultMap id="paymentResultMap" type="PaymentVO">
+		<id property="paymentNo" column="PAYMENT_NO" />
+		<result property="userId" column="USER_ID" />
+		<result property="productNo" column="PRODUCT_NO" />
+		<result property="paymentMethod" column="PAYMENT_METHOD" />
+		<result property="paymentDate" column="paymentDate" />
+		<result property="paymentPay" column="PAYMENT_PAY" />
+
+		<!-- nested mapping -->
+		<collection property="paymentProductList"
+			ofType="PaymentProductVO">
+			<result property="productNo" column="PRODUCT_NO" />
+			<result property="productName" column="PRODUCT_NAME" />
+		</collection>
+	</resultMap>
+
 	<!-- PaymentMapper.xml -->
-	<select id="selectMyPaymentList" resultType="PaymentVO">
-		SELECT p.PAYMENT_NO, p.USER_ID, p.PRODUCT_NO, p.PAYMENT_METHOD,
+	<select id="selectMyPaymentList" resultMap="paymentResultMap">
+		SELECT
+		p.PAYMENT_NO,
+		p.USER_ID,
+		p.PRODUCT_NO,
+		p.PAYMENT_METHOD,
 		TO_CHAR(p.PAYMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS paymentDate,
 		p.PAYMENT_PAY,
 		pr.PRODUCT_NAME
@@ -56,6 +78,12 @@
 		FROM PAYMENT
 	</select>
 
+	<select id="checkbilling">
+		SELECT PAYMENT_BILLING_KEY
+		FROM PAYMENT
+		WHERE USER_ID
+		=#{userId}
+	</select>
 
 	<select id="selectPaymentByPk">
 		SELECT

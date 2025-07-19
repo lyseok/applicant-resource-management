@@ -18,7 +18,8 @@
 const ProductNo = "${product.productNo}";
 const BillingKey = "${sessionScope.billingKey}";
 const Amount = "${product.productPrice}";
-const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
+/* const customerKey = "${sessionScope.customerKey}"; */
+const orderName = "${product.productName}";
 </script>
 </head>
 <body class="container my-5" data-billing-key="${param.billingKey}"
@@ -45,11 +46,12 @@ const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
 							<c:otherwise>${product.productType}</c:otherwise>
 						</c:choose>
 					</p>
+
 					<p>
 						<strong>이용기간:</strong> ${product.productPeriod}
 					</p>
 					<p>productNo: ${product.productNo}</p>
-
+					
 					<button class="btn btn-primary" onclick="subscribe()">구독하기</button>
 				</div>
 				<button onclick="history.back()">뒤로가기</button>
@@ -84,13 +86,14 @@ const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
       // ------  SDK 초기화 ------
       // @docs https://docs.tosspayments.com/sdk/v2/js#토스페이먼츠-초기화
       const clientKey = "test_ck_Gv6LjeKD8a9wXO9o7lLw8wYxAdXy";
-      const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
+ 	  /* const customerKey = "${sessionScope.customerKey}";  */
+ 	  const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
       const productNo = ProductNo;
       const tossPayments = TossPayments(clientKey);
       const currentUrl = "http://localhost/company/payment/product/detail?productNo=" + productNo;
       // 회원 결제
       // @docs https://docs.tosspayments.com/sdk/v2/js#tosspaymentspayment
-      const payment = tossPayments.payment({ customerKey });
+      const payment = tossPayments.payment({customerKey});
       const successUrl = window.location.origin + "/company/toss/success?productNo=" + productNo;
       // 비회원 결제
       // const payment = tossPayments.payment({customerKey: TossPayments.ANONYMOUS})
@@ -103,8 +106,8 @@ const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
           failUrl: window.location.origin + "/fail", // 요청이 실패하면 리다이렉트되는 URL
           customerEmail: "dhfjdhfj@naver.com",
           customerName: "김철민",
-        });
-      }
+        })
+      };
     </script>
 </body>
 </html>

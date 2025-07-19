@@ -19,4 +19,5 @@ public interface PaymentProductMapper {
 	
 	public PaymentProductVO selectPaymentProductByName(String productName);
 	
+	public List<PaymentProductVO> selectPaymentProductListByPk(String productNo);
 }
