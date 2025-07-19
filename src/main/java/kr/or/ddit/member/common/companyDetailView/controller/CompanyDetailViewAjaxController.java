@@ -1,5 +1,7 @@
 package kr.or.ddit.member.common.companyDetailView.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.ddit.dto.CompanyInfoDTO;
+import kr.or.ddit.dto.CompanyOpProfitDTO;
+import kr.or.ddit.dto.CompanySalesDTO;
 import kr.or.ddit.member.common.companyDetailView.service.CompanyDetailViewService;
 import kr.or.ddit.vo.common.CompanyVO;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +30,19 @@ public class CompanyDetailViewAjaxController {
 		log.info("company----{}", company);
 		
 		return ResponseEntity.ok(company);
-		
+	}
 	
+	@GetMapping("/sales/{userId}")
+	public List<CompanySalesDTO> companyGetSalesInfo(@PathVariable("userId") String userId){
+		List<CompanySalesDTO> sales = companyDetailViewService.readCompanySalesInfoById(userId);
+		log.info("sales----{}", sales);
+		return sales;
+	}
+	
+	@GetMapping("/profit/{userId}")
+	public List<CompanyOpProfitDTO> companyGetProfitInfo(@PathVariable("userId") String userId){
+		List<CompanyOpProfitDTO> profit = companyDetailViewService.readCompanyProfitInfoById(userId);
+		log.info("profit----{}", profit);
+		return profit;
 	}
 }

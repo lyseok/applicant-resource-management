@@ -1,8 +1,12 @@
 package kr.or.ddit.member.common.companyDetailView.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.dto.CompanyOpProfitDTO;
+import kr.or.ddit.dto.CompanySalesDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.CompanyOpProfitMapper;
 import kr.or.ddit.mapper.common.CompanySalesMapper;
@@ -31,6 +35,22 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 		company.setComSize(sizeName);
 		return company;
 	}
+
+
+	@Override
+	public List<CompanySalesDTO> readCompanySalesInfoById(String userId) {
+		List<CompanySalesDTO> sales = companySalesMapper.selectCompanySalesInfoById(userId);
+		return sales;
+	}
+
+
+	@Override
+	public List<CompanyOpProfitDTO> readCompanyProfitInfoById(String userId) {
+		List<CompanyOpProfitDTO> profits = companyOpProfitMapper.selectCompanyOpProfitInfoById(userId);
+		return profits;
+	}
+	
+	
 	
 	
 	

@@ -4,7 +4,38 @@
 <head>
 	<title>회사 상세</title>
 	<link rel="stylesheet" href="/dist/assets/css/company/companyView.css" >
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6bf5ec86aa5541bd55a19cacc5b550b3&libraries=services"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 	<script src="/js/member/common/companyDetailView/companyDetailView.js"></script>
+	
+	
+	
+	<style type="text/css">
+		.sales-summary-box, .profit-summary-box {
+			  display: flex;
+			  justify-content: space-between;
+			  margin: 10px 0 20px;
+			  font-size: 14px;
+			  font-family: 'Noto Sans KR', sans-serif;
+			}
+			
+			.summary-item {
+			  flex: 1;
+			  text-align: center;
+			}
+			
+			.summary-title {
+			  color: #777;
+			  margin-bottom: 4px;
+			}
+			
+			.summary-value {
+			  font-weight: bold;
+			  font-size: 16px;
+			}
+	
+	</style>
 </head>
 <body>
 	<div class="company-header n_inner">
@@ -324,251 +355,67 @@
 	                <!--사업분석-->
 	                <!--매출액-->
 	
-	                <div class="financial-analysis-card">
-	                    <div class="headers">
-	                        <h3 class="header">매출액</h3>
-	                        <div class="tooltip">
-	                            <a href="#" class="activator tooltip-activator" aria-describedby="tooltip-revenue">툴팁</a>
-	                            <div class="tooltip-popup" id="tooltip-revenue">
-	                                <p>기업의 주요 영업활동 등을 통해 얻는 수익을 말합니다.<br>상품 등의 판매나 용역의 제공으로 얻어진 수익입니다.</p>
-	                                <p class="source">[출처 : 네이버 지식백과 &gt; 용어해설 &gt; 매출액]</p>
-	                                <button type="button" class="button button-close">닫기</button>
-	                            </div>
-	                        </div>
-	                    </div>
-	
-	                    <div class="board-revenue">
-	                        <div class="revenue">
-	                            <div class="header">2022년 매출액 </div>
-	                            <div class="value">5,611억 4천만원</div>
-	                        </div>
-	                        <div class="compared compared-last-year">
-	                            <div class="header">작년 대비</div>
-	                            <div class="values">
-	                                <div class="value is-up">15%</div>
-	                                <i class="icon icon-up">상승</i>
-	                            </div>
-	                        </div>
-	
-	                        <div class="compared compared-average-industry">
-	                            <div class="header">업계평균 대비</div>
-	                            <div class="values">
-	                                <div class="value is-up">3138%</div>
-	                                <i class="icon icon-up">상승</i>
-	                            </div>
-	                        </div>
-	                    </div>
-	
-	                    <div class="chart-bar-wrap">
-	                        <div class="chart chart-bar chart-bar-revenue chart-bar-plus">
-	                            <div class="axios-y" aria-hidden="true">0</div>
-	                            <div class="bar bar1">
-	                                <div class="label-container">
-	                                    <div class="label">2019</div>
-	                                </div>
-	                                <div class="progress" style="height:118px">
-	                                    <div class="value">5,351억 5천만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar2">
-	                                <div class="label-container">
-	                                    <div class="label">2020</div>
-	                                </div>
-	                                <div class="progress" style="height:149px">
-	                                    <div class="value">6,742억 2천만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar3">
-	                                <div class="label-container">
-	                                    <div class="label">2021</div>
-	                                </div>
-	                                <div class="progress" style="height:108px">
-	                                    <div class="value">4,874억 8천만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar4 max">
-	                                <div class="label-container">
-	                                    <div class="label">2022</div>
-	                                </div>
-	                                <div class="progress" style="height:124px">
-	                                    <div class="value">5,611억 4천만원</div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="update">2022.12기준</div>
-	
-	                </div>
+	               <div class="financial-analysis-card">
+					  <div class="headers">
+					    <h3 class="header">매출액</h3>
+					  </div>
+					    <div class="sales-summary-box" id="salesHeaderSummary">
+					    <div class="summary-item">
+					      <div class="summary-title">최근 매출액</div>
+					      <div class="summary-value" id="totalSalesAmount">-</div>
+					    </div>
+					    <div class="summary-item">
+					      <div class="summary-title">작년 대비</div>
+					      <div class="summary-value" id="salesYoY">-</div>
+					    </div>
+					    <div class="summary-item">
+					      <div class="summary-title">업계 평균 대비</div>
+					      <div class="summary-value" id="salesVsAvg">-</div>
+					    </div>
+					  </div>
+					
+					  <canvas id="salesChart" width="540" height="300"></canvas>
+					  <div class="update" id="salesUpdate"></div>
+					</div>
 	
 	
 	                <!--영업이익-->
 	
-	
-	                <div class="financial-analysis-card">
-	                    <div class="headers">
-	                        <h3 class="header">영업이익 </h3>
-	                        <div class="tooltip">
-	                            <a href="#" class="activator tooltip-activator" aria-describedby="tooltip-operation-income">툴팁</a>
-	                            <div class="tooltip-popup" id="tooltip-operation-income">
-	                                <p>매출액에서 매출원가를 빼고 얻은 총이익 중에서 일반 관리비와 판매비를 제외한 금액입니다.<br>순수하게 영업을 통해 벌어들인 이익을 말합니다.</p>
-	                                <button type="button" class="button button-close">닫기</button>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="board-revenue">
-	                        <div class="revenue">
-	                            <div class="header">2022년 영업이익 </div>
-	                            <div class="value">-61억 3천만원</div>
-	                        </div>
-	
-	
-	                    </div>
-	                    <div class="chart-bar-wrap">
-	                        <div class="chart chart-bar chart-bar-operation-income chart-bar-minus">
-	                            <div class="axios-y" aria-hidden="true">0</div>
-	                            <div class="bar bar1 minus">
-	                                <div class="label-container">
-	                                    <div class="label">2019 </div>
-	                                </div>
-	                                <div class="progress" style="height:75px">
-	                                    <div class="value">-80억 7천만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar2 minus">
-	                                <div class="label-container">
-	                                    <div class="label">2020 </div>
-	                                </div>
-	                                <div class="progress" style="height:75px">
-	                                    <div class="value">-80억 3천만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar3 minus">
-	                                <div class="label-container">
-	                                    <div class="label">2021 </div>
-	                                </div>
-	                                <div class="progress" style="height:46px">
-	                                    <div class="value">-49억 2천만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar4 max minus">
-	                                <div class="label-container">
-	                                    <div class="label">2022 </div>
-	                                </div>
-	                                <div class="progress" style="height:57px">
-	                                    <div class="value">-61억 3천만원</div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="update">2022.12기준</div>
-	
-	                </div>
+				 
+				 
+				  <div class="financial-analysis-card">
+					  <div class="headers">
+					    <h3 class="header">영업이익</h3>
+					  </div>
+					    <div class="profit-summary-box" id="profitHeaderSummary">
+					    <div class="summary-item">
+					      <div class="summary-title">최근 영업이익</div>
+					      <div class="summary-value" id="totalOperatingProfit">-</div>
+					    </div>
+					    <div class="summary-item">
+					      <div class="summary-title">작년 대비</div>
+					      <div class="summary-value" id="profitYoY">-</div>
+					    </div>
+					    <div class="summary-item">
+					      <div class="summary-title">업계 평균 대비</div>
+					      <div class="summary-value" id="profitVsAvg">-</div>
+					    </div>
+					  </div>
+					
+					  <canvas id="profitChart" width="540" height="300"></canvas>
+					  <div class="update" id="profitUpdate"></div>
+					</div>
+				 
+				 
+				 
 	                <!--당기순이익-->
 	
-	
-	                <div class="financial-analysis-card">
-	                    <div class="headers">
-	                        <h3 class="header">당기순이익 </h3>
-	                        <div class="tooltip">
-	                            <a href="#" class="activator tooltip-activator" aria-describedby="tooltip-net-income">툴팁</a>
-	                            <div class="tooltip-popup" id="tooltip-net-income">
-	                                <p>일정 기간에 발생한 순이익을 말합니다.<br>순이익은 매출액에서 매출원가, 판매비, 관리비 등을 제외한 금액입니다. </p>
-	                                <p class="source">[출처 : 네이버 지식백과 &gt; 용어해설 &gt; 당기순이익]</p>
-	                                <button type="button" class="button button-close">닫기</button>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="board-revenue">
-	                        <div class="revenue">
-	                            <div class="header">2022년 당기순이익</div>
-	                            <div class="value">-7,932만원</div>
-	                        </div>
-	
-	
-	
-	                    </div>
-	                    <div class="chart-bar-wrap">
-	                        <div class="chart chart-bar chart-bar-net-income chart-bar-justify">
-	                            <div class="axios-y" aria-hidden="true">0</div>
-	                            <div class="bar bar1 minus">
-	                                <div class="label-container">
-	                                    <div class="label">2019</div>
-	                                </div>
-	                                <div class="progress" style="height:3px">
-	                                    <div class="value">-400만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar2 minus">
-	                                <div class="label-container">
-	                                    <div class="label">2020</div>
-	                                </div>
-	                                <div class="progress" style="height:6px">
-	                                    <div class="value">-943만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar3">
-	                                <div class="label-container">
-	                                    <div class="label">2021</div>
-	                                </div>
-	                                <div class="progress" style="height:46px">
-	                                    <div class="value">3,666만원</div>
-	                                </div>
-	                            </div>
-	                            <div class="bar bar4 max minus">
-	                                <div class="label-container">
-	                                    <div class="label">2022</div>
-	                                </div>
-	                                <div class="progress" style="height:51px">
-	                                    <div class="value">-7,932만원</div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="update">2022.12기준</div>
-	
-	                </div>
 	
 	                <!--산업 내 위치-->
 	                <!--기업등급-->
 	
 	
-	                <div class="financial-analysis-card">
-	                    <div class="headers">
-	                        <h3 class="header">기업등급 </h3>
-	                    </div>
-	                    <div class="chart-gauge" aria-hidden="true">
-	                        <table class="skip" aria-hidden="true">
-	                            <tbody>
-	                                <tr>
-	                                    <td class="value">양호 </td>
-	                                </tr>
-	                            </tbody>
-	                        </table>
-	                        <div class="needle class3"></div>
-	                        <svg width="435" height="297">
-	                            <g transform="translate(217.5, 148.5)">
-	                                <path class="arc chart-color1" d="M-148.4981437538672,-0.7424969062538331A148.5,148.5,0,0,1,-128.97441335880936,-73.60605069388642L-89.022743227461,-50.8055232062179A102.5,102.5,0,0,0,-102.49871875266926,-0.5124978645859791Z"></path><text class="label" transform="translate(-121.2236911992781, -32.4817901603663)" dy=".35em" fill="#fff" style="text-anchor: middle;">위험</text>
-	                                <path class="arc chart-color2" d="M-128.2319164525555,-74.89209305998081A148.5,148.5,0,0,1,-74.89209305998072,-128.23191645255557L-51.69319554645134,-88.51024536287504A102.5,102.5,0,0,0,-88.51024536287501,-51.6931955464514Z"></path><text class="label" transform="translate(-88.74190103891165, -88.74190103891178)" dy=".35em" fill="#fff" style="text-anchor: middle;">주의</text>
-	                                <path class="arc chart-color3 active" d="M-73.60605069388646,-128.97441335880933A148.5,148.5,0,0,1,-0.7424969062538787,-148.4981437538672L-0.5124978645860105,-102.49871875266926A102.5,102.5,0,0,0,-50.80552320621793,-89.02274322746099Z"></path><text class="label" transform="translate(-32.48179016036634, -121.22369119927808)" dy=".35em" fill="#fff" style="text-anchor: middle;">양호</text>
-	                                <path class="arc chart-color4" d="M0.7424969062538241,-148.4981437538672A148.5,148.5,0,0,1,73.60605069388642,-128.97441335880936L50.80552320621789,-89.022743227461A102.5,102.5,0,0,0,0.5124978645859729,-102.49871875266926Z"></path><text class="label" transform="translate(32.481790160366295, -121.2236911992781)" dy=".35em" fill="#fff" style="text-anchor: middle;">우수</text>
-	                                <path class="arc chart-color5" d="M74.89209305998067,-128.2319164525556A148.5,148.5,0,0,1,128.23191645255548,-74.89209305998085L88.510245362875,-51.69319554645143A102.5,102.5,0,0,0,51.69319554645131,-88.51024536287507Z"></path><text class="label" transform="translate(88.74190103891162, -88.74190103891182)" dy=".35em" fill="#fff" style="text-anchor: middle;">상위</text>
-	                                <path class="arc chart-color6" d="M128.97441335880927,-73.60605069388659A148.5,148.5,0,0,1,148.5,-1.6826650526014499e-13L102.5,-1.161435474017836e-13A102.5,102.5,0,0,0,89.02274322746095,-50.80552320621801Z"></path><text class="label" transform="translate(121.30451676625329, -32.178629742513536)" dy=".35em" fill="#fff" style="text-anchor: middle;">최상위</text>
-	                            </g>
-	                        </svg>
-	                    </div>
-	                    <div class="rating">
-	                        <div class="header">
-	                            <div class="header-container">
-	                                <strong>양호</strong>등급
-	                            </div>
-	                        </div>
-	                        <div class="description">
-	                            <div class="description-container">신용능력이 보통입니다. 외부 환경 변화에 대처 가능하나, 경제 여건 및 환경 변화에 따른 영향을 받을 가능성이 높습니다. </div>
-	                        </div>
-	                    </div>
-	                    <div class="based-on-data">NICE평가정보 자료를 바탕으로 구성되었습니다.</div>
-	
-	                </div>
+	                
 	                <!--총자산 증가율-->
 	                <!--동종업계 순위-->
 	
@@ -1056,9 +903,9 @@
 	        <div class="company-infomation-container working-environment-container working-environment-map">
 	            <h3 class="header">기업위치</h3>
 	
-	            <div class="address">대전 유성구 어은동 45번지 3층</div>
-	
-	            <a href="https://maps.naver.com/?mapMode=0&amp;dlevel=12&amp;pinTitle=%ed%95%9c%ea%b5%ad%ed%95%ad%ea%b3%b5%ec%9a%b0%ec%a3%bc%ec%97%b0%ea%b5%ac%ec%9b%90&amp;lat=36.3762892117961&amp;lng=127.354306544959" target="_blank" title="새창" class="btnMapApiL"><span>지도보기</span></a>
+	            <div id="bottom-address" class="address">
+	            	<div id="kakaoMap" style="width:100%;max-width:600px;height:300px;margin-top:10px;"></div>
+	            </div>
 	        </div>
 	
 	    </div>

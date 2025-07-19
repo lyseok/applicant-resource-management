@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.CompanyOpProfitMapper">
 	
-	<select id="selectCompanyOpProfitInfoById">
+	<select id="selectCompanyOpProfitInfoById" resultType="kr.or.ddit.dto.CompanyOpProfitDTO">
 		 SELECT 
-            COM_PROFIT_YEAR,
-            COM_OPERATING_PROFIT,
+            COM_PROFIT_YEAR AS comProfitYear,
+            COM_OPERATING_PROFIT AS comOperatingProfit,
             ROUND(
                 (COM_OPERATING_PROFIT - LAG(COM_OPERATING_PROFIT) OVER (PARTITION BY USER_ID ORDER BY COM_PROFIT_YEAR)) /
                 NULLIF(LAG(COM_OPERATING_PROFIT) OVER (PARTITION BY USER_ID ORDER BY COM_PROFIT_YEAR), 0) * 100,
