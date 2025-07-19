@@ -1,8 +1,8 @@
 /**
  *
  */
-const no = document.querySelector("#noHidden").value;
-const userId = document.querySelector("#userIdHidden").value;
+//const no = document.querySelector("#noHidden").value;
+//const userId = document.querySelector("#userIdHidden").value;
 const aboardDetail = document.querySelector("#aboardDetail");
 const acommentListContainer = document.querySelector("#acommentListContainer");
 const acommentFormContainer = document.querySelector("#acommentFormContainer");
@@ -10,6 +10,11 @@ const aboardform = document.querySelector("#aboardForm");
 
 // 1
 const abno = function(no){
+	listTitle.style.display = "none";
+	memTypeBtn.innerHTML = "";
+	formBtn.innerHTML = "";
+	aboardList.innerHTML = "";
+	pageTitle();
 	fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 	  .then((resp) => resp.json())
 	  .then((rslt) => {
@@ -21,7 +26,7 @@ const abno = function(no){
 const abdetail = function(rslt){
 	let html = "";
 	    html += `
-				<p>${rslt.boardTitle}</p>
+				<p>제목: ${rslt.boardTitle}</p>
 				<p>작성자: ${rslt.userId}</p>
 				<p>게시판 유형 코드: ${rslt.boardTypeCode}</p>
 				<p>등록일시: ${rslt.boardWriteDate}</p>
@@ -60,14 +65,14 @@ const aclist = function(no){
 			});
 			acommentListContainer.innerHTML = html;
 		});
-	    acform();
+	    acform(no);
 	});
 };
 
 // 6
-const acform = function(){
+const acform = function(no){
 	
-	achtml();
+	achtml(no);
 
     const acommentForm = document.querySelector("#acommentForm");
      
@@ -94,7 +99,7 @@ const acform = function(){
 }
 
 // 7
-const achtml = function(){
+const achtml = function(no){
 	let acommentFormHtml = `
 						<form id="acommentForm">
 							<label>작성자 아이디: </label>
@@ -107,8 +112,17 @@ const achtml = function(){
     acommentFormContainer.innerHTML = acommentFormHtml;
 }
 
+const detailToList = function(type){
+	if(type.startsWith('BRDD')){
+		alist(type)
+	}else{
+		alist2(type);
+	}	
+}
+
 // 3
 const abbtn = function(no, type){
+	allBtns.innerHTML = "";
 	
 	let lbtn = document.createElement("button");
 	lbtn.id = "listBtn";
@@ -123,9 +137,9 @@ const abbtn = function(no, type){
 	dbtn.className = "btn btn_gray_line";
 	dbtn.textContent = "삭제";
 	
-    aboardDetail.appendChild(lbtn);
-    if(type !== 'BRDD-001') aboardDetail.appendChild(ebtn);
-    aboardDetail.appendChild(dbtn);
+    allBtns.appendChild(lbtn);
+    if(type !== 'BRDD-001') allBtns.appendChild(ebtn);
+    allBtns.appendChild(dbtn);
     
     const editBtn = document.querySelector("#editBtn");
     const listBtn = document.querySelector("#listBtn");
@@ -134,17 +148,19 @@ const abbtn = function(no, type){
     if(listBtn != null){
 		listBtn.onclick = function () {
 		  aboardDetail.innerHTML = "";
+		  detTitle.innerHTML = "";
 		  
 		  if (acommentFormContainer) acommentFormContainer.innerHTML = "";
 		  if (acommentListContainer) acommentListContainer.innerHTML = "";
 		  
-		  alist2(type); // 목록으로
+		  detailToList(type); // 목록으로
 		};
 	}
 		
 	if(editBtn != null){
 		editBtn.onclick = function () {
 		  aboardDetail.innerHTML = "";
+		  detTitle.innerHTML = "";
 		  
 		  if (acommentFormContainer) acommentFormContainer.innerHTML = "";
 		  if (acommentListContainer) acommentListContainer.innerHTML = "";
@@ -175,5 +191,5 @@ const abbtn = function(no, type){
 	b001(no, type);
 }
 
-abno(no);  //위에서 만든 시작 함수 실행
+//abno(no);  //위에서 만든 시작 함수 실행
 

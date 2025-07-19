@@ -12,20 +12,20 @@
 	<sec:authentication property="principal.realUser.userId" var="userId"/>
 
 	<!-- 게시글 상세 -->
-	<div id="aboardDetail"></div>
+	<div id="aboardDetail"></div><br>
 
 	<!-- 리스트 -->
 	<div id="memTypeBtn"></div><br>
 	<ul id="aboardList">
 		<input type="hidden" id="typeHidden" value="${type}">
 	</ul>
+	
+	<div id="formBtn"></div>
 
 	<!-- 답글 리스트 -->
 	<div id="acommentListContainer"></div>
 
 	<!-- 답글 폼 -->
-  	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
-  	<input type="hidden" id="userIdHidden" value="${userId}">
 	<div id="acommentFormContainer"></div>	
 	
 	<!-- 등록 폼 미리 숨겨놓기 -->

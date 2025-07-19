@@ -1,27 +1,49 @@
 let type = document.querySelector("#typeHidden").value;
 const aboardList = document.querySelector("#aboardList");
 const memTypeBtn = document.querySelector("#memTypeBtn");
+const formBtn = document.querySelector("#formBtn");
+const detTitle = document.querySelector("#detTitle");
+const listTitle = document.querySelector("#listTitle");
+const allBtns = document.querySelector("#allBtns");
+const userId = document.querySelector("#userIdHidden")?.value;
 
 const bhtml = function (rslt) {
+	listTitle.style.display = "block";
 	let html = '';
 	rslt.forEach((item) => {
 		html += `
-			<li>작성자 : ${item.userId}</li>
 			<li>게시판 유형 코드: ${item.boardTypeCode}</li>
 			<li>제목: 
-				<a href="/admin/board/admin_board/detail?no=${item.boardNo}">
-				${item.boardTitle}
-				</a>
+				<button id="abDetail" onclick="abno('${item.boardNo}')">${item.boardTitle}</button>
 			</li>
 			<li>등록일시: ${item.boardWriteDate}</li>
-			<li>내용: ${item.boardContent}</li>
 			<li>삭제일시: ${item.boardDeleteDate}</li>
 			<li>조회수: ${item.boardPostHit}</li>
 			<li>게시글 상태: ${item.boardStatus}</li>
-			<hr/>`;
+			<hr/>
+			`;
 	});
+	newFormBtn();
+	allBtns.innerHTML = '';
 	aboardList.innerHTML = html;
 };
+
+const pageTitle = function(){
+	detTitle.innerHTML = "";
+	let title = document.createElement("p"); 
+	title.className = "h4";                  
+	title.textContent = "게시글 상세";         
+	detTitle.appendChild(title);         
+}
+
+const newFormBtn = function(){
+	formBtn.innerHTML = "";
+	let newForm = document.createElement("a");
+	newForm.href = "/admin/board/admin_board/form";
+	newForm.textContent = "새로 등록";
+	newForm.className = "btn btn_violet"; // 버튼처럼 보이게
+	formBtn.appendChild(newForm);
+}
 
 // FAQ 전체
 const faqAll = function(type) {
@@ -101,6 +123,14 @@ const nlist = function () {
 	memTypeBtn.innerHTML = html;
 };
 
+const pre = function(type){
+	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
+		.then((resp) => resp.json())
+		.then((rslt) => {
+			bhtml(rslt);
+			nlist();
+		});
+}
 
 // 초기 로딩(메뉴바 고정)
 const alist = function(type) {
@@ -117,15 +147,6 @@ const alist = function(type) {
 	}
 }
 
-const pre = function(type){
-	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
-		.then((resp) => resp.json())
-		.then((rslt) => {
-			bhtml(rslt);
-			nlist();
-		});
-}
-
 // 상세 이후 로딩
 const alist2 = function(type){
 	if (type === "BRDD-001") {
@@ -140,7 +161,6 @@ const alist2 = function(type){
 		pre(type);
 	}
 }
-
 
 alist(type);
 

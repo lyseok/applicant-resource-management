@@ -30,6 +30,7 @@
 		<textarea name="boardContent" placeholder="내용" rows="6" cols="60"></textarea>
 	  <button type="submit">등록</button>
 	</form>
+	
 
 <script src="/js/admin/community/adminBoard/aboardForm.js"></script>
 </body>

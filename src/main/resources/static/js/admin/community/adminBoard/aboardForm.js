@@ -242,6 +242,7 @@ const abno2 = function(no){
 const aform = function(no, type){
 	console.log("디테일에서 넘어온 수정", no);
 	console.log("디테일에서 넘어온 수정2", type);
+	allBtns.innerHTML = '';
 	if3(type);  //옵션 넣어줌
 	abno2(no);  //제목, 내용 넣어줌
 }

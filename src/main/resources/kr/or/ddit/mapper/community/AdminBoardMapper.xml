@@ -31,6 +31,7 @@
 		    FROM ADMIN_BOARD
 		    NATURAL JOIN USERS
 		    WHERE BOARD_NO = #{boardNo}
+		    AND BOARD_STATUS != 'D'
 		)
 		SELECT
 		      A.*
@@ -44,6 +45,7 @@
 		FROM A
 		LEFT OUTER JOIN ADMIN_COMMENT B 
 		  ON A.BOARD_NO = B.BOARD_NO
+		  AND B.BOARD_COMMENT_STATUS != 'D'
 	</select>
 	
 	<select id="selectDelAboardList">
@@ -110,6 +112,7 @@
 		     , BOARD_STATUS
 		FROM ADMIN_BOARD
 		<where>
+		BOARD_STATUS != 'D'
 		<if test='boardTypeCode!=null and boardTypeCode!=""'>
 			<choose>
 				<when test='boardTypeCode=="BRDD-002"'>
