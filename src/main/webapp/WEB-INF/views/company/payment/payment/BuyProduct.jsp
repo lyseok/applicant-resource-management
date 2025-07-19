@@ -43,9 +43,10 @@
 	<script>
 	PproductNo ="${product.productNo}"
 	PbillingKey	="${sessionScope.billingKey}"
-	PcustomerKey ="${customerKey}"
+	PcustomerKey ="${sessionScope.customerKey}"
 	Pamount	="${product.productPrice}"
 	PproductName ="${product.productName}"
+
 	</script>
 
 	<script src="/js/company/payment/BuyProductBilling.js"></script>
