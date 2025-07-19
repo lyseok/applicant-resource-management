@@ -152,7 +152,7 @@
       </a>
     </li>
     <li class="menu-item">
-      <a href="/company" class="menu-link">
+      <a href="/company/payment/done/product" class="menu-link">
         <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
         <div data-i18n="Basic">결제내역조회</div>
       </a>
