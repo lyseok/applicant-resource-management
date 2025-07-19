@@ -30,5 +30,8 @@ public interface ResumeMapper {
 	// 해당회원이 작성한 이력서 갯수 구해옴 -> name님의 이력서 n 으로 사용
 	public int selectUserResumeNoCount(String userId);
 	
+	// 이력서 제목으로 검색조회
+	public List<ResumeVO> selectResumeSearch(ResumeVO resumeVO);
+	
 	
 }

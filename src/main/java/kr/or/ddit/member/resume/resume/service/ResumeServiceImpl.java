@@ -121,6 +121,11 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	@Transactional
 	public int createResume(ResumeVO resumeVO) {
+		ResumeVO vo = resumeMapper.selectResumeDetail(resumeVO);
+		// 이력서 번호가 있으면 수정
+		if(vo.getResumeNo() != null) {
+			return resumeMapper.updateResume(resumeVO);
+		}
 		int resumeCnt = resumeMapper.insertResume(resumeVO);
 
 		// 경력
@@ -313,6 +318,25 @@ public class ResumeServiceImpl implements ResumeService {
 		return resumeMapper.selectUserResumeNoCount(userId);
 	}
 
+
+	@Override
+	public List<ResumeVO> readResumeSearch(ResumeVO vo) {
+		List<ResumeVO> resumeList = resumeMapper.selectResumeSearch(vo); 
+		for (ResumeVO resume : resumeList) {
+			resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
+			resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));
+			resume.setAwardList(awardMapper.selectAwardList(resume.getResumeNo()));
+			resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
+			resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
+			resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
+			// resume.setIntroductionList(IntroductionMapper.selectIntroductionList(resume.getResumeNo()));
+			resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
+			resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
+			resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
+			resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));
+		}
+		return resumeList;
+	}
 	
 	
 	// 공통 코드 한글 맵핑

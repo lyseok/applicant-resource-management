@@ -22,22 +22,8 @@
 </c:if>
 <script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
 </head>
-<body>
-	<div class="d-flex align-items-start">
-		<div id="quick_menu">
-			<a href="#resumeInfoView" class="on"><i class='bx  bx-hashtag'></i> 기본정보</a>
-			<a href="#section-educationList"><i class='bx  bx-hashtag'></i> 학력</a>
-			<a href="#section-introduction"><i class='bx  bx-hashtag'></i> 자기소개서</a>
-			<a href="#section-portfolioList"><i class='bx  bx-hashtag'></i> 포트폴리오</a>
-			<a href="#section-careerList"><i class='bx  bx-hashtag'></i> 경력</a>
-			<a href="#section-mySkillList"><i class='bx  bx-hashtag'></i> 보유기술</a>
-			<a href="#section-myExperienceList"><i class='bx  bx-hashtag'></i> 보유경험</a>
-			<a href="#section-supportList"><i class='bx  bx-hashtag'></i> 고용지원 정보</a>
-			<a href="#section-myLicenseList"><i class='bx  bx-hashtag'></i> 보유자격</a>
-			<a href="#section-languageSkillList"><i class='bx  bx-hashtag'></i> 어학</a>
-			<a href="#section-awardList"><i class='bx  bx-hashtag'></i> 수상</a>
-			<a href="#section-militaryList"><i class='bx  bx-hashtag'></i> 병역</a>
-		</div>
+<body class="aos_frans_none">
+	<div class="d-flex align-items-start gap-4 resume_form_bg">
 		<div class="resume-wrap resume_form_wrap">
 	
 			<!-- Header -->
@@ -128,8 +114,8 @@
 					<div class="formContainer"></div>
 					<div class="listContainer"></div>
 				</div>
-				
-	
+
+
 				<!-- 자기소개서 (INTRODUCTION) 입력폼 -->
 				<div class="section" id="section-introduction">
 					<div class="section-title">
@@ -171,6 +157,20 @@
 						</div>
 	
 					</div>
+					<div class="listContainer"></div>
+				</div>
+	
+	
+				<!-- 포트폴리오 (PORTFOLIO) 입력폼 -->
+				<div class="section" id="section-portfolioList">
+					<div class="section-title">
+						<h6>포트폴리오</h6>
+						<button class="add-btn" type="button" id="btn-portfolioList">+
+							추가</button>
+					</div>
+					<div class="section-content" style="color: #b8bfc9;">주요 프로젝트,
+						작업 포트폴리오 정보를 입력해주세요.</div>
+					<div class="formContainer"></div>
 					<div class="listContainer"></div>
 				</div>
 	
@@ -271,20 +271,6 @@
 					<div class="listContainer"></div>
 				</div>
 	
-	
-				<!-- 포트폴리오 (PORTFOLIO) 입력폼 -->
-				<div class="section" id="section-portfolioList">
-					<div class="section-title">
-						<h6>포트폴리오</h6>
-						<button class="add-btn" type="button" id="btn-portfolioList">+
-							추가</button>
-					</div>
-					<div class="section-content" style="color: #b8bfc9;">주요 프로젝트,
-						작업 포트폴리오 정보를 입력해주세요.</div>
-					<div class="formContainer"></div>
-					<div class="listContainer"></div>
-				</div>
-	
 				<!-- 병역 (MILITARY) 입력폼 -->
 				<div class="section" id="section-militaryList">
 					<div class="section-title">
@@ -310,17 +296,33 @@
 						<div class="inner">
 							<div class="section-form-row">
 								<label class="required h3 m-0">이력서 제목</label>
-								<input type="text" name="resumeName" value="" placeholder="이력서 제목을 입력해주세요.(미입력 시 기본 제목으로 등록.)" class="h50">
+								<input type="text" name="resumeName" id="resumeNameInput" placeholder="이력서 제목을 입력해주세요.(미입력 시 기본 제목으로 등록.)" class="h50">
 							</div>
 	
 							<div class="section-form-btns">
-								<a href="/mypage/resume/list" class="btn btn_red_line" onclick="showLoading()">취소</a>
-								<button type="submit" class="btn btn_violet">등록</button>
+								<a href="/mypage/resume/list" class="btn btn_red_line h50" onclick="showLoading()">취소</a>
+								<button type="submit" class="btn btn_violet h50 justify-content-center w140">등록</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</form>
+		</div>
+	
+		
+		<div id="quick_menu">
+			<a href="#resumeInfoView" class="on">기본정보</a>
+			<a href="#section-educationList">학력</a>
+			<a href="#section-introduction">자기소개서</a>
+			<a href="#section-portfolioList">포트폴리오</a>
+			<a href="#section-careerList">경력</a>
+			<a href="#section-mySkillList">보유기술</a>
+			<a href="#section-myExperienceList">보유경험</a>
+			<a href="#section-supportList">고용지원 정보</a>
+			<a href="#section-myLicenseList">보유자격</a>
+			<a href="#section-languageSkillList">어학</a>
+			<a href="#section-awardList">수상</a>
+			<a href="#section-militaryList">병역</a>
 		</div>
 	</div>
 	<!-- 삭제 확인 모달 -->

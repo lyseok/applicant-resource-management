@@ -56,7 +56,7 @@ WHERE PRODUCT_NO = #{productNo}
 </select>
 
 <!-- PaymentProductMapper.xml -->
-<select id="selectByProductName" resultType="kr.or.ddit.vo.common.PaymentProductVO">
+<select id="selectPaymentProductByName" resultType="kr.or.ddit.vo.common.PaymentProductVO">
     SELECT * 
     FROM PAYMENT_PRODUCT 
     WHERE PRODUCT_NAME = #{productName}

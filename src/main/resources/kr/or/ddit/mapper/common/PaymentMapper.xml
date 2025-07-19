@@ -18,7 +18,6 @@
 		, PAYMENT_METHOD
 		, PAYMENT_DATE
 		, PAYMENT_PAY
-		, TOSS_PAYMENT_KEY
 		, PAYMENT_BILLING_KEY
 		) VALUES (
 		#{paymentNo}
@@ -28,7 +27,6 @@
 		, #{paymentMethod}
 		, SYSDATE
 		, #{paymentPay}
-		, #{tossPaymentKey}
 		, #{paymentBillingKey}
 		)
 	</insert>
@@ -37,7 +35,7 @@
 	<select id="selectMyPaymentList" resultType="PaymentVO">
 		SELECT p.PAYMENT_NO, p.USER_ID, p.PRODUCT_NO, p.PAYMENT_METHOD,
 		TO_CHAR(p.PAYMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS paymentDate,
-		p.PAYMENT_PAY, p.TOSS_PAYMENT_KEY,
+		p.PAYMENT_PAY,
 		pr.PRODUCT_NAME
 		FROM PAYMENT p
 		JOIN PAYMENT_PRODUCT pr ON p.PRODUCT_NO = pr.PRODUCT_NO
@@ -54,7 +52,6 @@
 		, PAYMENT_METHOD
 		, PAYMENT_DATE
 		, PAYMENT_PAY
-		, TOSS_PAYMENT_KEY
 		, PAYMENT_BILLING_KEY
 		FROM PAYMENT
 	</select>
@@ -68,7 +65,6 @@
 		, PAYMENT_METHOD
 		, PAYMENT_DATE
 		, PAYMENT_PAY
-		, TOSS_PAYMENT_KEY
 		, PAYMENT_BILLING_KEY
 		FROM PAYMENT
 		WHERE
@@ -85,8 +81,6 @@
 		, PAYMENT_DATE =
 		#{paymentDate}
 		, PAYMENT_PAY = #{paymentPay}
-		, TOSS_PAYMENT_KEY =
-		#{tossPaymentKey}
 		, PAYMENT_BILLING_KEY =
 		#{paymentBillingKey}
 		WHERE PAYMENT_NO = #{paymentNo}

@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.project;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,13 +15,23 @@ public class PrjTaskVO implements Serializable {
 	private String sectNo;
 	private String creatorId;
 	private String taskName;
+	
 	private String taskStatus;
+	private String taskStatusName;
+	
 	private String detailContent;
 	private String startDate;
 	private String dueDate;
+	
 	private String priorityCode;
+	private String priorityCodeName;
+	
 	private String upperTaskNo;
 	private String progressRate;
 	private String deleteDate;
 	private String deleteUserId;
+	
+	private List<TasksManagerVO> tasksManagerList;
+	private PrjSectionVO prjSection;
+	private PrjMemVO prjMem;
 }

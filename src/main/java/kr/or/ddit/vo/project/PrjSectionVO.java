@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.project;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,4 +16,7 @@ public class PrjSectionVO implements Serializable {
 	private Integer sectOrder;
 	private String deleteDate;
 	private String delUserId;
+	
+	private List<PrjSectionVO> prjSectionList;
+	private PrjMemVO prjMem;
 }

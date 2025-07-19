@@ -29,4 +29,7 @@ public interface ResumeService {
 	// 이력서 등록 갯수 조회
 	public int readUserResumeNoCount(String userId);
 	
+	// 이력서 제목으로 검색
+	public List<ResumeVO> readResumeSearch(ResumeVO vo);
+	
 }
