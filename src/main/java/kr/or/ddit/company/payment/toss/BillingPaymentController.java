@@ -29,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.p6spy.engine.common.Loggable;
 
 import jakarta.servlet.http.HttpSession;
 import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
@@ -203,7 +204,7 @@ public class BillingPaymentController {
 
 	}
 
-	@PostMapping("/api/billing/execute")
+	@PostMapping("/api/billing/execute")	// 결제하기 눌렀을때 여기로
 	public ResponseEntity<String> executeBilling(@RequestBody Map<String, Object> payload) {
 		String billingKey = (String) payload.get("billingKey");
 		String customerKey = (String) payload.get("customerKey");
@@ -217,7 +218,7 @@ public class BillingPaymentController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Basic " + encodedKey); // Secret Key
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		
+		log.info("customerKey", customerKey);
 		log.info("headers값 : {}",headers);
 		log.info("tossSecretKey : {}",tossSecretKey);
 		Map<String, Object> body = new HashMap<>();
