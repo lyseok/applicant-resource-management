@@ -50,6 +50,11 @@ public class PaymentProductServiceImpl implements PaymentProductService {
 		return mapper.selectPaymentProductByName(productName);
 	}
 
+	public List<PaymentProductVO> selectPaymentProductListByPk(String productNo) {
+		
+		return mapper.selectPaymentProductListByPk(productNo);
+	}
+
 
 	
 

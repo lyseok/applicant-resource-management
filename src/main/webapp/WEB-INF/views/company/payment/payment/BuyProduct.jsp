@@ -41,6 +41,7 @@
 	</div>
 	
 	<script>
+	console.log("customerKey from server : '${customerKey}'")
 	PproductNo ="${product.productNo}"
 	PbillingKey	="${sessionScope.billingKey}"
 	PcustomerKey ="${sessionScope.customerKey}"
