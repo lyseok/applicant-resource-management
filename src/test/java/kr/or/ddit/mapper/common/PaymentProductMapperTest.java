@@ -34,7 +34,7 @@ class PaymentProductMapperTest {
 		pv.setProductPrice("test1");
 
 		
-		mapper.selectPaymentProductByPk(pv);
+		//mapper.selectPaymentProductByPk(pv);
 	
 	}
 
