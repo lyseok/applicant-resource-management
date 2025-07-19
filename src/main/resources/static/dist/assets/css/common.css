@@ -132,8 +132,6 @@
 /* aos 적용 */
 .aos_frans_none .layout-demo-wrapper {
   transform: none !important;
-  opacity: 1 !important;
-  transition: none !important;
 }
 
 
