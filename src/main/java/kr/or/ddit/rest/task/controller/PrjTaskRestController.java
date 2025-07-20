@@ -49,11 +49,11 @@ public class PrjTaskRestController {
     }
 	
 	@PutMapping("/{taskNo}")
-	public PrjTaskVO putPrjTaskApi(
+	public ResponseEntity<PrjTaskVO> putPrjTaskApi(
 	        @PathVariable String taskNo,
 	        @RequestBody PrjTaskVO prjTask) {
-	    // service에서 수정 처리 후, 수정된 PrjTaskVO 반환
-	    return prjTaskService.updateTask(taskNo, prjTask);
+	    PrjTaskVO updatedTask = prjTaskService.updateTask(taskNo, prjTask);
+	    return ResponseEntity.ok(updatedTask);
 	}
 	
 	@DeleteMapping("/{taskNo}")
@@ -77,22 +77,24 @@ public class PrjTaskRestController {
 	}
 	
 	@PatchMapping("/{taskNo}/status")
-    public PrjTaskVO patchPrjTaskStatusApi(
-        @PathVariable String taskNo,
-        @RequestBody Map<String, String> statusData
-    ) {
-        String taskStatus = statusData.get("taskStatus");
-        return prjTaskService.updateTaskStatus(taskNo, taskStatus);
-    }
-	
+	public ResponseEntity<PrjTaskVO> patchPrjTaskStatusApi(
+	        @PathVariable String taskNo,
+	        @RequestBody Map<String, String> statusData
+	) {
+	    String taskStatus = statusData.get("taskStatus");
+	    PrjTaskVO updatedTask = prjTaskService.updateTaskStatus(taskNo, taskStatus);
+	    return ResponseEntity.ok(updatedTask);
+	}
+
 	@PatchMapping("/{taskNo}/progress")
-    public PrjTaskVO patchPrjTaskProgressApi(
-        @PathVariable String taskNo,
-        @RequestBody Map<String, String> progressData
-    ) {
-        String progressRate = progressData.get("progressRate");
-        return prjTaskService.updateTaskProgress(taskNo, progressRate);
-    }
+	public ResponseEntity<PrjTaskVO> patchPrjTaskProgressApi(
+	        @PathVariable String taskNo,
+	        @RequestBody Map<String, String> progressData
+	) {
+	    String progressRate = progressData.get("progressRate");
+	    PrjTaskVO updatedTask = prjTaskService.updateTaskProgress(taskNo, progressRate);
+	    return ResponseEntity.ok(updatedTask);
+	}
 	
 	@GetMapping("/{prjNo}/tasks/statistics")
     public ResponseEntity<PrjTaskStatisticsVO> getTaskStatistics(@PathVariable String prjNo) {

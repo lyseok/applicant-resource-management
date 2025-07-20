@@ -27,10 +27,12 @@ public class PrjMemRestController {
 	private final ProjectMemberService projectMemberService;
 
     // 프로젝트 멤버 목록 조회
-    @GetMapping("/{prjNo}/members")
-    public List<PrjMemVO> getProjectMembers(@PathVariable String prjNo) {
-        return projectMemberService.getProjectMembers(prjNo);
-    }
+	@GetMapping("/{prjNo}/members")
+	public ResponseEntity<List<PrjMemVO>> getProjectMembers(@PathVariable String prjNo) {
+	    List<PrjMemVO> members = projectMemberService.getProjectMembers(prjNo);
+	    return ResponseEntity.ok(members);
+	}
+    
 	@GetMapping("/{prjNo}/members/{userId}")
 	public List<PrjMemVO> getPrjMemListApi() {
 		return null;
