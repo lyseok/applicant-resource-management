@@ -1,35 +1,36 @@
 console.log('kakao 객체:', window.kakao);
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
 
 	axios
 		.get('/ajax/member/company_view/testCompany')
 		.then((resp) => {
 			const company = resp.data;
 			console.log(company);
-
-			document.getElementById('industryType').textContent =
-				company.industryType || '-';
+			
+			console.log('체크',document.getElementById('head-com-name'));
+            console.log('체크',document.getElementById('head-com-indu'));
+			
+			document.getElementById('industryType').textContent =company.industryType || '-';
 			document.getElementById('comMem').textContent = company.comMem + '명';
 			document.getElementById('comType').textContent = company.comType || '-';
-			document.getElementById('comCreateYear').textContent =
-				company.comCreateYear || '-';
-			document.getElementById('comCapital').textContent =
-				formatKRW(company.comCapital) || '-';
+			document.getElementById('comCreateYear').textContent = company.comCreateYear || '-';
+			document.getElementById('comCapital').textContent = formatKRW(company.comCapital) || '-';
 			document.getElementById('ceoName').textContent = company.ceoName || '-';
-			document.getElementById('comMainBiz').textContent =
-				company.comMainBiz || '-';
-			document.getElementById('insuranceYn').textContent =
-				company.insuranceYn === 'Y'
+			document.getElementById('comMainBiz').textContent = company.comMainBiz || '-';
+			document.getElementById('insuranceYn').textContent = company.insuranceYn === 'Y'
 					? '국민연금, 건강보험, 고용보험, 산재보험'
 					: '-';
 			document.getElementById('comUrl').textContent = company.comUrl || '-';
-
 			document.getElementById('comInfo').textContent = company.comInfo || '-';
+            document.getElementById('head-com-name').textContent = company.comName;
+			document.getElementById('head-com-indu').textContent = company.industryType;
+			
+			
 			const addr = company.comAddr || '';
-			document.getElementById('companyAddr').textContent = addr;
-
+			document.getElementById('comAddr').textContent = addr;
 			const span = document.getElementById('companyAddr');
+			
 			if (span) span.textContent = addr;
 			else console.error('#companyAddr 요소를 찾을 수 없습니다.');
 
@@ -262,6 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			const notices = resp.data;
 			console.log(notices);
 			renderNotice(notices);
+			renderNoticeTab(notices);
 
 			// 1) 총 채용 횟수
 			document.querySelector('.recruit-history .total')
@@ -310,6 +312,92 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+	axios.get('/ajax/member/company_view/salary/testCompany')
+		 .then(resp => {
+			const salaries = resp.data;
+			console.log('연봉', salaries);
+		// 1) DOM 준비
+		  const section = document.querySelector('.tab-content[data-section="salary"]');
+		  const ctx = document.getElementById('salaryChart').getContext('2d');
+
+		  // 2) 차트용 데이터 가공 (만원 단위)
+		  const labels    = salaries.map(s => s.codeName);                              // ["사원","주임",...]
+		  const avgData   = salaries.map(s => parseInt(s.avgByRank, 10)   / 10000);     // ex: 25000000 → 2500(만원)
+		  const minData   = salaries.map(s => parseInt(s.salaryMin,  10)   / 10000);
+		  const maxData   = salaries.map(s => parseInt(s.salaryMax,  10)   / 10000);
+
+		  // 3) 차트 생성
+		  new Chart(ctx, {
+		    type: 'line',
+		    data: {
+		      labels,
+		      datasets: [
+		        {
+		          label: '평균연봉(만원)',
+		          data: avgData,
+		          borderColor: 'rgba(54,162,235,1)',
+		          backgroundColor: 'rgba(54,162,235,0.2)',
+		          pointBackgroundColor: 'rgba(54,162,235,1)',
+		          borderWidth: 2,
+		          fill: false,
+		          tension: 0.3,
+		        },
+		        {
+		          label: '최소연봉(만원)',
+		          data: minData,
+		          borderColor: 'rgba(200,200,200,0.6)',
+		          borderDash: [5,5],
+		          pointRadius: 0,
+		          fill: '+1',    // avgData 위쪽부터 채우기
+		          tension: 0.1,
+		        },
+		        {
+		          label: '최대연봉(만원)',
+		          data: maxData,
+		          borderColor: 'rgba(200,200,200,0.6)',
+		          borderDash: [5,5],
+		          pointRadius: 0,
+		          fill: '-1',    // minData 아래쪽부터 채우기
+		          tension: 0.1,
+		        },
+		      ]
+		    },
+		    options: {
+		      responsive: false,
+		      plugins: {
+		        tooltip: {
+		          callbacks: {
+		            label(ctx) {
+		              const val = ctx.raw * 10000; // 원 단위
+		              return `${ctx.dataset.label}: ${formatKRW(val)}`;
+		            }
+		          }
+		        },
+		        legend: {
+		          labels: { usePointStyle: true }
+		        }
+		      },
+		      scales: {
+		        y: {
+		          beginAtZero: true,
+		          title: { display: true, text: '만원' }
+		        }
+		      }
+		    }
+		  });
+
+		  // 4) (선택) 최신 데이터 기준 업데이트 문구
+		  const latest = salaries[salaries.length-1];
+		  if(latest) {
+		    document.querySelector('.salary-update').textContent =
+		      `${latest.createDate.slice(0,4)}년 ${latest.codeName} 기준`;
+		  }
+		})
+		.catch(err => {
+		  console.error('연봉정보 로드 실패', err);
+		});
+
+
 	function formatKRW(amount) {
 		if (amount == null || isNaN(amount)) return '정보 없음';
 
@@ -325,6 +413,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		return result.trim();
 	}
 
+	function formatDate(dtStr) {
+		return dtStr?.slice(0, 10) || '-';
+	}
 
 
 
@@ -359,13 +450,130 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 
+	function renderNoticeTab(notices){
+		const open = notices.filter(n => n.recruitFinishYn === 'N');
+		const closed = notices.filter(n => n.recruitFinishYn === 'Y');
+		const all = notices;
+
+		const statusTabs = document.querySelector('.status-tabs .tabs');
+		statusTabs.querySelector('[data-status="all"]	.count').textContent = all.length;
+		statusTabs.querySelector('[data-status="open"]	.count').textContent = open.length;
+		statusTabs.querySelector('[data-status="closed"] .count').textContent = closed.length;
+		
+		
+		
+		function renderJobFilter(list){
+			const filterBar = document.querySelector('.filter-bar');
+			const uniqueJobs = Array.from(new Set(list.map(n => n.jobCodeName))).filter(job => job);
+
+			const primary = uniqueJobs.slice(0, 8);
+			const extra = uniqueJobs.slice(8);
+			let html = `<button class="filter-btn active" data-filter="all">직무전체</button>`;
+
+			primary.forEach(j => {
+				html += `<button class="filter-btn" data-filter="${j}">${j}</button>`;
+			});
+
+			if (extra.length) {
+				html += `<div class="more-group" style="display:inline-block; position:relative;">
+				<button class="filter-btn more">⋯</button>
+				<div class="more-dropdown" style="display:none; position:absolute; top:100%; left:0; background:#fff; border:1px solid #ccc; padding:0.5rem;">
+					${extra.map(j => `<button class="filter-btn" data-filter="${j}">${j}</button>`).join('')}
+				</div>
+				</div>`;
+      		}
+      		filterBar.innerHTML = html;
+
+			const allBtn = filterBar.querySelector('[data-filter="all"]');
+			const jobBtns = filterBar.querySelectorAll('.filter-btn[data-filter]:not(.more)');
+			function applyFilter(code){
+				jobBtns.forEach(b => b.classList.toggle('active', b.dataset.filter === code));
+				if(code === 'all'){
+					renderCards(list);
+				}else{
+					renderCards(list.filter(n => n.jobCodeName === code));
+				}
+			}
+
+			allBtn.addEventListener('click', () => applyFilter('all'));
+			jobBtns.forEach(btn => btn.addEventListener('click', () => applyFilter(btn.dataset.filter)));
+			
+			const moreBtn = filterBar.querySelector('.filter-btn .more');
+			const drop = filterBar.querySelector('.more-dropdown');
+			 if (moreBtn && drop) {
+				moreBtn.addEventListener('click', () => drop.style.display = drop.style.display === 'none' ? 'block' : 'none');
+				document.addEventListener('click', e => {
+				if (!moreBtn.contains(e.target) && !drop.contains(e.target)) drop.style.display = 'none';
+				});
+			}
+
+			applyFilter('all');
+		}
+
+		function renderCards(list){
+			const cardList = document.querySelector('.card-list');
+			cardList.innerHTML = list.map(n => `
+				    <article class="job-card" data-id="${n.recruitmentNo}">
+					<div class="job-card-header">${n.deadlineDaysLabel}</div>
+					<h3 class="job-card-title"><strong>${n.recruitmentTitle}</strong></h3>
+					<div class="job-card-meta">
+						${n.yearCodeName.trim()} ｜ ${n.cityCodeName}
+					</div>
+					<div class="job-card-tags">
+						${n.jobCodeName}${n.totalPositions > 1 ? ` 외 ${n.totalPositions-1}` : ''}
+					</div>
+					</article>
+				`).join('');
 
 
+			cardList.querySelectorAll('.job-card').forEach(card => {
+				card.addEventListener('click', () => {
+				window.location.href = `/recruit_notice/${card.dataset.id}`;
+				});
+			});
+		}
 
-	function formatDate(dtStr) {
-		return dtStr?.slice(0, 10) || '-';
+		// 4) 상태탭 클릭
+    statusTabs.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        statusTabs.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const key = tab.dataset.status;
+        if (key === 'all')    renderJobFilter(all);
+        if (key === 'open')   renderJobFilter(open);
+        if (key === 'closed') renderJobFilter(closed);
+      });
+    });
+
+    // 5) 초기: 진행중
+    statusTabs.querySelector('[data-status="open"]').click();
 	}
 
+
+
+
+	
+
+
+	 //네비 탭 변환 함수 
+	  const tabs     = document.querySelectorAll('.company-nav-item');
+	  const contents = document.querySelectorAll('.tab-content');
+
+	  tabs.forEach(tab => {
+	    tab.addEventListener('click', function(e) {
+	      e.preventDefault();
+	      const key = tab.dataset.tab; // "info", "recruit", "salary", "essay"
+
+	      // 1) 네비게이션 active 토글
+	      tabs.forEach(t => t.classList.toggle('active', t === tab));
+
+	      // 2) 탭 컨텐츠 보였다 숨기기
+	      contents.forEach(sec => {
+	        const isTarget = sec.dataset.section === key;
+	        sec.classList.toggle('hidden', !isTarget);
+	      });
+	    });
+	  });
 
 
 });

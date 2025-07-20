@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.vo.common.SalaryVO;
 
 @Mapper
@@ -21,4 +22,6 @@ public interface SalaryMapper {
 	public int updateSalary(SalaryVO salary);
 	public int insertSalary(SalaryVO salary);
 	public int deleteSalary(String salaryId);
+	
+	public List<CompanySalaryDTO> selectSalaryStatisticsById(String userId);
 }

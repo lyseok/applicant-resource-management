@@ -1,15 +1,18 @@
 package kr.or.ddit.member.common.companyDetailView.service;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.dto.CompanyOpProfitDTO;
+import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.dto.CompanySalesDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.CompanyOpProfitMapper;
 import kr.or.ddit.mapper.common.CompanySalesMapper;
+import kr.or.ddit.mapper.common.SalaryMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
@@ -23,6 +26,7 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	private final CompanySalesMapper companySalesMapper;
 	private final CompanyOpProfitMapper companyOpProfitMapper;
 	private final RecruitmentNoticeMapper recruitmentNoticeMapper;
+	private final SalaryMapper salaryMapper;
 	
 
 	@Override
@@ -70,6 +74,18 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 		}
 		
 		return notices;
+	}
+
+
+	@Override
+	public List<CompanySalaryDTO> readSalaryStatisticsById(String userId) {
+		List<CompanySalaryDTO> salaries = salaryMapper.selectSalaryStatisticsById(userId);
+		for (CompanySalaryDTO salary : salaries) {
+			String rankName = codeMapProvider.getCodeName(salary.getCodeDetailNo());
+			salary.setCodeName(rankName);
+		}
+		return salaries;
+		
 	}
 	
 	
