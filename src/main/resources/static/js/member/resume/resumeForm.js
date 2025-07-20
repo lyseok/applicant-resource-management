@@ -1196,21 +1196,7 @@ document.addEventListener("change", function(e) {
 });
 
 
-
-
-
-// ---- JS 추가 바인딩 부분 ----
-document.addEventListener("DOMContentLoaded", function() {
-	// DOM 로드 되자마자 Company 정보 불러오기
-	axios.get("/ajax/career/company/list")
-		.then(resp => {
-			console.log(resp.data);
-			companyList = resp.data;
-		})
-		.catch(err => {
-			console.error(err)
-		})
-
+function bindListContainerEvents() {
 
 	document.querySelectorAll(".listContainer").forEach(container => {
 		container.addEventListener("click", async function(e) {
@@ -1219,18 +1205,17 @@ document.addEventListener("DOMContentLoaded", function() {
 				const idx = itemWrap.dataset.idx;
 				const type = itemWrap.dataset.type;
 				const section = document.querySelector(`#section-${type}`);
+				let formContainer = null;
 				if (section) {
-					const formContainer = section.querySelector('.formContainer');
-					// formContainer도 null일 수 있으므로 안전하게:
-					if (formContainer) {
-						// 여기서 로직 처리
-					}
+					formContainer = section.querySelector('.formContainer'); // 여기서 할당만
+					if (!formContainer) return;
 				} else {
 					console.warn("⚠️ section-introduction DOM 요소를 찾을 수 없습니다.");
+					return;
 				}
 				const formId = `form-${type}${idx}`;
 				let formEl = document.getElementById(formId);
-				
+
 				console.log("listContainer 객체 반복문 돌릴 떄 resume 객체 확인!! ", resume)
 				console.log("listContainer 객체 반복문 돌릴 떄 formId 확인!! ", formId)
 				console.log("listContainer 객체 반복문 돌릴 떄 list-item 확인!! ", itemWrap)
@@ -1278,6 +1263,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		});
 	});
+}
+
+// ---- JS 추가 바인딩 부분 ----
+document.addEventListener("DOMContentLoaded", function() {
+	// DOM 로드 되자마자 Company 정보 불러오기
+	axios.get("/ajax/career/company/list")
+		.then(resp => {
+			console.log(resp.data);
+			companyList = resp.data;
+		})
+		.catch(err => {
+			console.error(err)
+		})
+
+	bindListContainerEvents();
+	bindFormContainerEvents(); // ✅ 최초 로딩 시 한 번 바인딩
+
 	document.querySelectorAll(".add-btn").forEach(btn => {
 		btn.addEventListener("click", async function() {
 			// 1. section, type 등 기본 변수 셋업
@@ -1937,20 +1939,16 @@ document.addEventListener("submit", function(e) {
 		formData.append("comImage", resume.company.comImage);
 	}
 
-	console.log(resume)
+	console.log("resume 객체 확인 >>>> ", resume)
 
 	// axios 비동기 전송
-	axios.post("/mypage/resume/create", formData, {
-		headers: {
-			"Content-Type": "multipart/form-data"
-		}
-	})
+	axios.post("/mypage/resume/create", formData)
 		.then(resp => {
 			console.log(resp.data);
-			if (mode== "create" && resp.data === "ok") {
+			if (mode == "create" && resp.data === "ok") {
 				alert("정상적으로 등록되었습니다.");
 				window.location.href = "/mypage/resume/list";
-			} if (mode== "update" && resp.data === "ok") {
+			} if (mode == "update" && resp.data === "ok") {
 				alert("정상적으로 수정되었습니다.");
 				window.location.href = "/mypage/resume/" + resume.resumeNo;
 			} else {
@@ -2017,7 +2015,8 @@ document.addEventListener("submit", function(e) {
 							}
 
 							// 기존 에러 제거
-							const oldError = wrapper.querySelector(`.${field}-error`);
+							const safeField = field.replace(/\[.*?\]/g, "").replace(/\./g, "-");
+										const oldError = wrapper.querySelector(`.${safeField}-error`);
 							if (oldError) oldError.remove();
 
 							// 새 에러 span 추가
@@ -2055,7 +2054,8 @@ document.addEventListener("submit", function(e) {
 						}
 
 						// 기존 에러 제거
-						const oldError = wrapper.querySelector(`.${field}-error`);
+						const safeField = field.replace(/\[.*?\]/g, "").replace(/\./g, "-");
+										const oldError = wrapper.querySelector(`.${safeField}-error`);
 						if (oldError) oldError.remove();
 
 						const errorSpan = document.createElement('span');
@@ -2110,14 +2110,14 @@ window.addEventListener("DOMContentLoaded", async () => {
 		// ✅ 여기서 먼저 코드 그룹 로딩이 끝날 때까지 기다리기
 		await preloadCodeGroups(["GRAD", "EDUC", "SPEC", "VULN", "DSBL", "LANG", "MILT", "SRVC"]);
 		Object.assign(resume, resumeFromServer);
-		
-		
+
+
 		// 수정 모드일 이력서 제목을 바인딩
 		const resumeNameInput = document.getElementById("resumeNameInput");
 		if (resumeNameInput && resume.resumeName) {
 			resumeNameInput.value = resume.resumeName;
 		}
-		
+
 		// ✅ 자기소개서 존재 여부 체크
 		if (resume.introductionNo && !resume.introduction) {
 			alert("연결된 자기소개서가 삭제되었습니다. 다시 선택해 주세요.");
@@ -2192,3 +2192,77 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 	}
 });
+
+
+function bindFormContainerEvents() {
+	document.querySelectorAll('.formContainer').forEach(formContainer => {
+		if (formContainer.hasAttribute('data-bound')) return; // 중복 방지
+
+		formContainer.setAttribute('data-bound', 'true');
+
+		formContainer.addEventListener("click", async function (e) {
+			const formWrap = e.target.closest('.section-form-wrap');
+			if (!formWrap) return;
+
+			const matches = formWrap.id.match(/^form-([a-zA-Z]+)(\d+)$/);
+			if (!matches) return;
+			const thisType = matches[1];
+			const idx = parseInt(matches[2], 10);
+
+			const section = formWrap.closest('.section');
+			const addBtn = section.querySelector('.add-btn');
+			const listContainer = section.querySelector('.listContainer');
+			const secCont = section.querySelector('.section-content');
+
+			// ✅ 확인 버튼 클릭
+			if (e.target.classList.contains('save_btn')) {
+				let data = {};
+				formWrap.querySelectorAll("input, select, textarea").forEach(input => {
+					const key = input.name?.split('.').pop().replace(/\[\d+\]/, '');
+					if (key) data[key] = input.value;
+				});
+
+				const vo = makeVO(thisType, data);
+				const key = arrayKey[thisType];
+				const isEdit = formWrap.dataset.edit === "true";
+
+				if (isEdit) {
+					resume[key][idx] = vo;
+				} else {
+					resume[key].push(vo);
+					typeCounters[thisType] = resume[key].length;
+				}
+
+				const listItemHtml = listItemMap[thisType](idx, data, thisType);
+				const listItem = listContainer.querySelector(`[data-idx="${idx}"]`);
+
+				if (isEdit && listItem) {
+					listItem.outerHTML = listItemHtml;
+				} else {
+					listContainer.insertAdjacentHTML('beforeend', listItemHtml);
+				}
+
+				formWrap.style.display = 'none';
+				if (addBtn) addBtn.style.display = '';
+				listContainer.classList.remove('d-none');
+				if (secCont) secCont.style.display = 'none';
+			}
+
+			// ✅ 취소 버튼 클릭
+			if (e.target.classList.contains('btn_red_line')) {
+				formWrap.remove();
+				typeCounters[thisType] = Math.max((typeCounters[thisType] || 1) - 1, 0);
+
+				const hasList = listContainer.querySelectorAll('.list-item').length > 0;
+				if (hasList) {
+					listContainer.classList.remove('d-none');
+					if (secCont) secCont.style.display = 'none';
+				} else {
+					listContainer.classList.add('d-none');
+					if (secCont) secCont.style.display = '';
+				}
+				if (addBtn) addBtn.style.display = '';
+			}
+		});
+	});
+}
