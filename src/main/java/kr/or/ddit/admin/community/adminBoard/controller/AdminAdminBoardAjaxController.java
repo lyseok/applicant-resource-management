@@ -101,13 +101,17 @@ public class AdminAdminBoardAjaxController {
 				])
 		])
 		 */
-		log.info("찍힘 확인 : {}", board);
 		
 		service.createAdminBoard(board);
-		//boardNo를 확인해보자 : 
+		
 		log.info("board : {}", board);
 		
-	    return Map.of("ok", true);
+		log.info("등록된 boardNo: {}", board.getBoardNo());
+		
+	    return Map.of(
+            "ok", true,
+            "boardNo", board.getBoardNo()
+        );
 	}
 	
 	// 해당 유형의 해당 글의 게시글 수정

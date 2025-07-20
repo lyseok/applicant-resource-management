@@ -1,29 +1,30 @@
-const aboardForm = document.querySelector("#aboardForm");
 const boardTypeCode = document.querySelector("#boardTypeCode");
 const codeGroup = document.querySelector("#codeGroup");
 const memType = document.querySelector("#memType");
+const formTitle = document.querySelector("#formTitle");
 
 // 무조건 처음 한번 실행 되는 부분
 //1차 옵션 추가
 const addopt = function(){
-fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
-  resp.json().then((rslt) => {
-    rslt.cmnCodeList.map((v, i) => {
-      if (i > 0) {  //vo[1], vo[2] 만 넣어야 함
-        let option = document.createElement("option");
-        option.value = v.codeDetailNo;
-        option.innerHTML = v.codeName;
-        boardTypeCode.appendChild(option);
-      }
-    });
-  });
-});
+	aboardform.style.display = "block";
+	fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
+	  resp.json().then((rslt) => {
+	    rslt.cmnCodeList.map((v, i) => {
+	      if (i > 0) {  //vo[1], vo[2] 만 넣어야 함
+	        let option = document.createElement("option");
+	        option.value = v.codeDetailNo;
+	        option.innerHTML = v.codeName;
+	        boardTypeCode.appendChild(option);
+	      }
+	    });
+	  });
+	});
 }
 
 addopt();
 
 //등록 버튼 누를 경우
-aboardForm.onsubmit = function (e) {
+aboardform.onsubmit = function (e) {
   e.preventDefault();
   //JSON Object
   //JavaScript Object Notation => {"키":값}
@@ -33,7 +34,7 @@ aboardForm.onsubmit = function (e) {
 	3.첫째 딸 [AdminBoardVO.cmnCodeGroupVOList[0].cmnCodeList[0]] : codeDetailNo(=memType)
 	*/
   let adminBoard = {
-    userId: aboardForm.userId.value,
+    userId: aboardform.userId.value,
     boardTypeCode: boardTypeCode.value,
     cmnCodeGroupVOList: [
       {
@@ -41,8 +42,8 @@ aboardForm.onsubmit = function (e) {
         cmnCodeList: [{ codeDetailNo: memType.value }],
       },
     ],
-    boardTitle: aboardForm.boardTitle.value,
-    boardContent: aboardForm.boardContent.value,
+    boardTitle: aboardform.boardTitle.value,
+    boardContent: aboardform.boardContent.value,
   };
   /*
 	{
@@ -66,6 +67,9 @@ aboardForm.onsubmit = function (e) {
   }).then((resp) => {
     resp.json().then((rslt) => {
       console.log("글자", rslt.ok);
+	  console.log("rslt", rslt);
+	  let no = rslt.boardNo;
+	  if(no) abno(no);  //상세보기 페이지로 이동
     });
   });
 };
@@ -224,6 +228,7 @@ const mdis = function(){
 	memType.value = "-1";		
 }
 
+//수정 폼 옵션 제외 데이터 기입
 const abno2 = function(no){
 	fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 	  .then((resp) => resp.json())

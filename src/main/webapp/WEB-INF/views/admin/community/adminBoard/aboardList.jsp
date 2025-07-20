@@ -39,6 +39,8 @@
 	
 	<!-- 등록 폼 미리 숨겨놓기 -->
 	  <form id="aboardForm" style="display: none;">
+	  	<p class="h4" id="formTitle">관리자 게시판</p><br>
+	  	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
 	    
 	    <label>게시판 유형 코드</label>
 	    <select id="boardTypeCode">

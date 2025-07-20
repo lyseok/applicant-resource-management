@@ -10,6 +10,7 @@ const userId = document.querySelector("#userIdHidden")?.value;
 // 이게 리스트
 const bhtml = function (rslt) {
 	listTitle.style.display = "block";
+	aboardform.style.display = "none";
 	let html = '';
 	rslt.forEach((item) => {
 		html += `
@@ -44,12 +45,21 @@ const pageTitle = function(){
 }
 
 const newFormBtn = function(){
-	formBtn.innerHTML = "";
-	let newForm = document.createElement("a");
-	newForm.href = "/admin/board/admin_board/form";
-	newForm.textContent = "새 글 등록";
-	newForm.className = "btn btn_violet"; // 버튼처럼 보이게
+	formBtn.innerHTML = "";  //이건 div고
+	let newForm = document.createElement("button");  //이건 그냥 버튼 생성용 변수
+		newForm.id = "formForm";
+		newForm.className = "btn btn_violet";
+		newForm.textContent = "새 글 등록";
 	formBtn.appendChild(newForm);
+	const formForm = document.querySelector("#formForm");  //이건 버튼
+	if(formForm != null){
+			formForm.onclick = function () {
+			  memTypeBtn.innerHTML = "";
+			  aboardList.innerHTML = "";
+			  
+			  addopt(); // 폼으로
+			};
+		}
 }
 
 // FAQ 전체
@@ -114,13 +124,11 @@ const noticeEvent = function() {
 
 // 문의 전체
 const askAll = function(type) {
-	console.log("type2", type);
 	fetch(`/ajax/admin/board/admin_board/${type}`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
 			bhtml(rslt);
 			asklist(type);
-			console.log("type3", type);
 		});
 }
 
@@ -163,7 +171,6 @@ const nlist = function () {
 };
 
 const asklist = function (type) {
-	console.log("type4", type);
 	let html = `
 		<p class="h4">문의사항 탭 선택</p>
 		<button id="uask" onclick="askUser('${type}')">일반회원</button>
@@ -185,7 +192,6 @@ const pre = function(type){
 const alist = function(type) {
 	if (type === "BRDD-001") {
 		askAll(type);
-		console.log("type1", type);
 	} else if (type === "BRDD-003") {
 		noticeUser();  // 공지사항 일반(고정)
 	} else if (type === "BRDD-002") {
