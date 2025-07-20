@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,9 +18,10 @@
 				<tr>
 					<th>상품명</th>
 					<th>결제금액</th>
-					<th>결제일시</th>
-					<th>남은기간</th>
+					<th>결제기간</th>
+
 					<th>결제수단</th>
+					<th>누적사용액</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,23 +32,29 @@
                         ${product.productName}<br />
 							</c:forEach></td>
 						<td>${item.paymentPay}원</td>
-						<td>${item.paymentDate}</td>
-						<td>
+						<td>${item.startDate}~ ${item.endDate }</td>
+						<%-- <td>
    					 <c:forEach var="product" items="${item.paymentProductList}">
-     					<br />
-   	   				  <script>
-        		    const paymentDate = new Date("${item.paymentDate.replace(' ', 'T')}");
-         			const now = new Date();
-        		    const timeDiff = Math.floor((now - paymentDate) / (1000 * 60 * 60 * 24));
-       		  		const daysLeft = 30 - timeDiff;
-       			     document.write("${product.productName} 의 남은기간은 " + daysLeft + "일 입니다<br/>");
-       			 	</script>
-  				  </c:forEach>
-				</td>
+					${product.productName} 의 남은기간은 ${product.daysRemaining}일 입니다<br/>
+						</c:forEach>
+						</td> --%>
 						<td>${item.paymentMethod}</td>
+						<td><c:forEach var="product"
+								items="${item.paymentProductList }">
+								<c:set var="count"
+									value="${productCountMap[product.productName]}" />
+								<c:set var="total" value="${item.paymentPay * count }" />
+							누적 사용액 : <fmt:formatNumber value="${total }" type="number" /> 원 <br />
+							</c:forEach></td>
 					</tr>
 				</c:forEach>
+				<tr>
+					<td colspan="5" style="text-align: right;"><strong>총
+							누적 사용액 :</strong></td>
+					<td><strong><fmt:formatNumber
+								value="${totalUsedAmount}" type="number" /> 원</strong></td>
+				</tr>
 			</tbody>
-	</div>
+			</div>
 </body>
 </html>
