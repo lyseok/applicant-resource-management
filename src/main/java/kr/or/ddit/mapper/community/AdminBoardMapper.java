@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CmnCodeVO;
@@ -15,6 +16,10 @@ public interface AdminBoardMapper {
 	public AdminBoardVO selectAdminBoardByPk(String boardNo);  //게시글 단건조회
 	public List<AdminBoardVO> selectDelAboardList();	 //삭제된 게시글 목록조회
 	public List<AdminBoardVO> selectAdminBoardListByType(String boardTypeCode);	 //유형별 게시글 목록조회, FAQ는 문항별 게시글 목록조회
+	public List<AdminBoardVO> selectAdminBoardListByTypeAndUserRole(
+		    @Param("boardTypeCode") String boardTypeCode,
+		    @Param("userRole") String userRole
+		);
 	public List<CmnCodeVO> selectCmnList(String codeGroupNo);
 	public List<CmnCodeGroupVO> selectCmnGroupList(String upperCodeNo);
 	public List<AdminBoardVO> selectAFaqListByCgn(Map<String, Object> paramMap);	 //FAQ 회원별 게시글 목록조회
