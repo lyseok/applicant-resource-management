@@ -4,36 +4,85 @@
 const yearCode = document.getElementById('yearCode');
 const eduCode = document.getElementById('eduCode');
 const rankCodeList = document.querySelectorAll('.rank');
-const topJobCode = document.getElementById('upperJobCode');
-const jobCode = document.getElementById('jobCode');
 const cityCode = document.getElementById('cityCode');
 const districtCode = document.getElementById('districtCode');
 
-async function bringTobJob() {
+const topJobCode = document.getElementById('upperJobCode');
+const hiddenJobCode = document.getElementById('hiddenJobCode');
+const jobSearchInput = document.getElementById('jobSearchInput');
+const jobSuggestions = document.getElementById('jobSuggestions');
 
-	const resp = await axios.get('/ajax/admin/jobCode');
-	console.log('응답:', resp);
+const positionSelect = document.getElementById('positionSelect');
+const positionTagWrapper = document.getElementById('positionTagWrapper');
 
-	const list = resp.data;
+let jobList = [];
+let positionCodeMap = {};
+let positionTagIndex = 0;
 
-	topJobCode.innerHTML += list.map(
-		({ topJobCode, topJobName }) =>
-			`<option value="${topJobCode}">${topJobName}</option>`
-	).join('');
+async function bringTopJob() {
+  const resp = await axios.get('/ajax/admin/jobCode');
+  const list = resp.data;
+
+  topJobCode.innerHTML += list.map(
+    ({ topJobCode, topJobName }) =>
+      `<option value="${topJobCode}">${topJobName}</option>`
+  ).join('');
 }
-bringTobJob();
 
 topJobCode.addEventListener('change', async (e) => {
-	const selectedTopJobCode = e.target.value;
+  const selectedTopJobCode = e.target.value;
 
-	const resp = await axios.get(`/ajax/admin/jobCode/${selectedTopJobCode}`);
-	const jobList = resp.data;
+  const resp = await axios.get(`/ajax/admin/jobCode/${selectedTopJobCode}`);
+  jobList = resp.data;
 
-	jobCode.innerHTML += jobList.map(
-		({ jobCode, jobName }) =>
-			`<option value="${jobCode}">${jobName}</option>`
-	).join('');
-})
+  jobSearchInput.value = '';
+  hiddenJobCode.value = '';
+  jobSuggestions.style.display = 'none';
+});
+
+jobSearchInput.addEventListener('input', () => {
+  const keyword = jobSearchInput.value.trim().toLowerCase();
+
+  if (!keyword) {
+    jobSuggestions.style.display = 'none';
+    return;
+  }
+
+  const matches = jobList.filter(({ jobName }) =>
+    jobName.toLowerCase().includes(keyword)
+  );
+
+  if (matches.length === 0) {
+    jobSuggestions.style.display = 'none';
+    return;
+  }
+
+  jobSuggestions.innerHTML = matches.map(
+    ({ jobCode, jobName }) =>
+      `<li class="list-group-item" data-code="${jobCode}">${jobName}</li>`
+  ).join('');
+
+  jobSuggestions.style.display = 'block';
+});
+
+jobSuggestions.addEventListener('click', (e) => {
+  if (e.target.tagName === 'LI') {
+    const selectedName = e.target.textContent;
+    const selectedCode = e.target.dataset.code;
+
+    jobSearchInput.value = selectedName;
+    hiddenJobCode.value = selectedCode;
+    jobSuggestions.style.display = 'none';
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (!jobSearchInput.contains(e.target) && !jobSuggestions.contains(e.target)) {
+    jobSuggestions.style.display = 'none';
+  }
+});
+
+bringTopJob();
 
 async function bringCity() {
 	const resp = await axios.get("/ajax/admin/cityCode");
@@ -60,61 +109,61 @@ cityCode.addEventListener('change', async (e) => {
 	).join('');
 })
 
-async function bringPosition(targetSelect) {
-	try {
-		const [rankResp, posiResp] = await Promise.all([
-			axios.get('/ajax/company/cmncodegroup/RANK'),
-			axios.get('/ajax/company/cmncodegroup/SEAT')
-		]);
+async function initPositionSelect() {
+  try {
+    const [rankResp, posiResp] = await Promise.all([
+      axios.get('/ajax/company/cmncodegroup/RANK'),
+      axios.get('/ajax/company/cmncodegroup/SEAT')
+    ]);
 
-		const rankOptions = rankResp.data.cmnCodeList.map(({ codeDetailNo, codeName }) =>
-			`<option value="${codeDetailNo}">${codeName}</option>`
-		).join('\n');
+    const rankList = rankResp.data.cmnCodeList;
+    const posiList = posiResp.data.cmnCodeList;
+    const fullList = [...rankList, ...posiList];
 
-		const posiOptions = posiResp.data.cmnCodeList.map(({ codeDetailNo, codeName }) =>
-			`<option value="${codeDetailNo}">${codeName}</option>`
-		).join('\n');
+    positionCodeMap = Object.fromEntries(
+      fullList.map(({ codeDetailNo, codeName }) => [codeDetailNo, codeName])
+    );
 
-		targetSelect.innerHTML = `
+    positionSelect.innerHTML = `
       <option disabled selected>선택</option>
       <optgroup label="직급">
-        ${rankOptions}
+        ${rankList.map(({ codeDetailNo, codeName }) => `<option value="${codeDetailNo}">${codeName}</option>`).join('')}
       </optgroup>
       <optgroup label="직책">
-        ${posiOptions}
+        ${posiList.map(({ codeDetailNo, codeName }) => `<option value="${codeDetailNo}">${codeName}</option>`).join('')}
       </optgroup>
     `;
-	} catch (err) {
-		console.error('직급/직책 코드 로딩 실패', err);
-	}
+  } catch (err) {
+    console.error('직급/직책 불러오기 실패', err);
+  }
 }
 
-rankCodeList.forEach(select => bringPosition(select));
+// 선택된 값 → 태그 UI + hidden input
+function addPositionTag() {
+  const selectedCode = positionSelect.value;
+  const selectedText = positionCodeMap[selectedCode];
 
-let positionIndex = 1;
-function addPosition() {
-	const wrapper = document.getElementById('positionWrapper');
+  // 아무것도 선택 안 했으면 추가하지 않음
+  if (!selectedCode || !selectedText) {
+    alert("직급/직책을 선택해주세요.");
+    return;
+  }
 
-	const row = document.createElement('div');
-	row.className = 'd-flex align-items-center gap-2 mb-2';
+  const tag = document.createElement('span');
+  tag.className = 'position-tag';
 
-	const select = document.createElement('select');
-	select.name = `positionList[${positionIndex}].codeDetailNo`;
-	select.className = 'form-select rank';
+  tag.innerHTML = `
+    ${selectedText}
+    <button type="button" onclick="this.closest('span').remove()">x</button>
+    <input type="hidden" name="positionList[${positionTagIndex}].codeDetailNo" value="${selectedCode}" />
+  `;
 
-	const removeBtn = document.createElement('button');
-	removeBtn.type = 'button';
-	removeBtn.className = 'btn btn-sm btn-outline-danger';
-	removeBtn.innerText = 'X';
-	removeBtn.onclick = () => row.remove();
-
-	row.appendChild(select);
-	row.appendChild(removeBtn);
-	wrapper.appendChild(row);
-
-	bringPosition(select);
-	positionIndex++;
+  positionTagWrapper.appendChild(tag);
+  positionSelect.value = ''; // 초기화
+  positionTagIndex++;
 }
+
+initPositionSelect();
 
 let skillIndex = 1;
 function addSkill() {
@@ -347,10 +396,6 @@ document.getElementById('recruitForm').addEventListener('submit', async (e) => {
 		}
 	}
 	
-	if (processList.length === 0) {
-	  alert("전형을 하나 이상 등록해야 합니다.");
-	  return;
-	}
 
 	const form = e.target;
 
@@ -371,8 +416,9 @@ document.getElementById('recruitForm').addEventListener('submit', async (e) => {
 		}
 	};
 
-	notice.positionList = [...document.querySelectorAll('#positionWrapper select')].map(sel => ({
-		codeDetailNo: sel.value
+	notice.positionList = [...document.querySelectorAll('#positionTagWrapper input[type="hidden"]')]
+		.map(input => ({
+			codeDetailNo: input.value
 	}));
 
 	notice.skillList = [...document.querySelectorAll('#skillWrapper input')].map(input => ({

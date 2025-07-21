@@ -68,6 +68,37 @@ input[type="date"].move-down {
   margin-top: 6px; /* 👈 필요한 만큼 조정 (4~8px 사이 추천) */
 }
 
+#jobSuggestions {
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}
+
+#jobSuggestions li {
+  cursor: pointer;
+}
+
+.position-tag {
+  background-color: #8a2be2;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.position-tag button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  margin-left: 6px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
 </style>
 </head>
 <body>
@@ -100,24 +131,39 @@ input[type="date"].move-down {
 					</div>
 
 					<div class="mb-3">
-						<label class="form-label text-primary fw-semibold">직무</label> <select
-							id="upperJobCode" name="upperJobCode" class="form-select">
+						<label class="form-label fw-semibold text-primary">직무</label>
+
+						<!-- 상위 직무 select -->
+						<select id="upperJobCode" name="upperJobCode" class="form-select">
 							<option value="">상위 직무 선택</option>
-							<!-- 여기에 상위 직무 옵션들 추가 예정 -->
-						</select> <select id="jobCode" name="jobCode" class="form-select">
-							<option value="">선택</option>
-							<!-- jobCode 목록 동적 바인딩 -->
 						</select>
+
+						<!-- 하위 직무 자동완성 입력 -->
+						<input type="text" id="jobSearchInput" class="form-control mt-2"
+							placeholder="하위 직무 입력" autocomplete="off" />
+
+						<!-- 하위 직무 코드 숨김 제출용 -->
+						<input type="hidden" id="hiddenJobCode" name="jobCode" />
+
+						<!-- 자동완성 결과 리스트 -->
+						<ul id="jobSuggestions"
+							class="list-group position-absolute w-100 mt-1"
+							style="z-index: 999;"></ul>
 					</div>
 
 					<div class="mb-3">
 						<label class="form-label text-primary fw-semibold">직급/직책</label>
-						<div id="positionWrapper">
-							<select name="positionList[0].codeDetailNo"
-								class="form-select mb-2 rank"></select>
+
+						<!-- 선택된 태그들 렌더링 영역 -->
+						<div id="positionTagWrapper" class="d-flex flex-wrap gap-2 mb-2"></div>
+
+						<!-- select + 버튼 -->
+						<div class="d-flex gap-2">
+							<select id="positionSelect" class="form-select"
+								style="max-width: 200px;"></select>
+							<button type="button" class="btn btn-outline-secondary btn-sm"
+								onclick="addPositionTag()">+ 추가</button>
 						</div>
-						<button type="button" class="btn btn-sm btn-outline-secondary"
-							onclick="addPosition()">+ 추가</button>
 					</div>
 
 					<div class="mb-3">
@@ -129,7 +175,9 @@ input[type="date"].move-down {
 					<div class="mb-3">
 						<label class="form-label text-primary fw-semibold">근무지역</label>
 						<div class="d-flex gap-2">
-							<select id="cityCode" name="cityCode" class="form-select"></select>
+							<select id="cityCode" name="cityCode" class="form-select">							
+								<option value="">지역선택
+							</select>
 							<select id="districtCode" name="districtCode" class="form-select"></select>
 						</div>
 					</div>
