@@ -58,15 +58,15 @@ const newFormBtn = function(){
 	formBtn.appendChild(newForm);
 	const formForm = document.querySelector("#formForm");  //이건 버튼
 	if(formForm != null){
-			formForm.onclick = function () {
-			  memTypeBtn.innerHTML = "";
-			  aboardList.innerHTML = "";
-			  listTitle.style.display = "none";
-			  formBtn.innerHTML = "";
-			  
-			  addopt(); // 폼으로
-			};
-		}
+		formForm.onclick = function () {
+		  memTypeBtn.innerHTML = "";
+		  aboardList.innerHTML = "";
+		  listTitle.style.display = "none";
+		  formBtn.innerHTML = "";
+		  
+		  addopt(); // 폼으로
+		};
+	}
 }
 
 // FAQ 전체

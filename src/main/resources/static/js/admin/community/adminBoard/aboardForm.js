@@ -239,8 +239,8 @@ const bdis = function(){
 	let bopt = document.createElement("option");
 	bopt.value = "-1";
 	bopt.textContent = "--선택--";
-	codeGroup.appendChild(bopt);
-	codeGroup.value = "-1";
+	boardTypeCode.appendChild(bopt);
+	boardTypeCode.value = "-1";
 }
 
 const cdis = function(){
