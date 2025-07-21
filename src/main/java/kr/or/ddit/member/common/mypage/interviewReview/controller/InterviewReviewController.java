@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/mypage/interview_review")
+@RequestMapping("/mypage/interview/review")
 public class InterviewReviewController {
 	
-	@GetMapping("/form")
+	@GetMapping("/write")
 	public String formUI() {
 		return "member/community/interviewReview/interviewReviewForm";
 	}

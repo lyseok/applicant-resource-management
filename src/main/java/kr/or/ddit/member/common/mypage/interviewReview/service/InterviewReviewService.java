@@ -1,5 +1,7 @@
 package kr.or.ddit.member.common.mypage.interviewReview.service;
 
-public interface InterviewReviewService {
+import java.util.Map;
 
+public interface InterviewReviewService {
+	public Map<String, Object> readInterviewWithCompanyNameByNo(String interviewNo);
 }

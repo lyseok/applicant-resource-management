@@ -449,4 +449,26 @@
 		DELETE FROM INTERVIEW 
 		WHERE INTERVIEW_NO = #{interviewNo}
 	</delete>
+	
+	
+	<select id="selectInterviewWithCompanyNameByNo" resultType="HashMap">
+		  SELECT 
+		     I.INTERVIEW_NO                
+		    ,I.PROCESS_NO                  
+		    ,TO_CHAR(I.INTERVIEW_DATE, 'YYYY-MM-DD HH24:MI:SS') AS INTERVIEW_DATE          
+		    ,I.INTERVIEW_LOCATION           
+		    ,I.INTERVIEW_TYPE             
+		    ,I.INTERVIEW_PASS_SCORE       
+		    ,I.INTERVIEW_DEL_DATE          
+		    ,RP.COMPANY_NAME
+		    ,RENO.USER_ID                 
+		  FROM 
+		    INTERVIEW I
+		  JOIN 
+		    RECRUIT_PROCESS RP ON I.PROCESS_NO = RP.RECRUIT_PROCESS_NO
+		  JOIN 
+    		RECRUITMENT_NOTICE RENO ON RP.RECRUITMENT_NO = RENO.RECRUITMENT_NO
+		  WHERE 
+		    I.INTERVIEW_NO = #{interviewNo}
+	</select>
 </mapper>
