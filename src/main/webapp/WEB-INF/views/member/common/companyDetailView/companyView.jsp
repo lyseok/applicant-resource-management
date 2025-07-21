@@ -43,6 +43,11 @@
 	padding: 20px 0; /* 필요하면 위아래 여백 */
 }
 
+
+#recruit-title-main{
+	color: var(--violet70);
+	font-size: 15px;
+}
 table.table-in-progress-announcement tr.clickable-row:hover {
 	background-color: hotpink !important;
 }
@@ -96,14 +101,14 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 }
 
 .tab.active a {
-	color: #0076ff;
-	border-bottom: 2px solid #0076ff;
+	color: var(--violet70);
+	border-bottom: 2px solid var(--violet70);
 }
 
 .count {
 	font-size: 0.85em;
 	background: #eef;
-	color: #0076ff;
+	color: var(--violet70);
 	border-radius: 999px;
 	padding: 0 0.4em;
 	margin-left: 0.3em;
@@ -130,8 +135,8 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 }
 
 .filter-btn.active {
-	background: #0076ff;
-	border-color: #0076ff;
+	background: var(--violet70);
+	border-color: var(--violet70);
 	color: #fff;
 }
 
@@ -152,7 +157,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 .job-card-header {
 	font-weight: bold;
-	color: #0076ff;
+	 color: var(--violet70);
 }
 
 .job-card-title {
@@ -185,7 +190,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 .salary-summary-box .summary-value {
   font-size: 2rem;
   font-weight: bold;
-  color: #0076ff;
+  color: var(--violet70);
 }
 .salary-summary-box .summary-label {
   margin-top: .25rem;
@@ -208,11 +213,20 @@ table.table-in-progress-announcement tr.clickable-row:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top : 50px;
 }
 .salary-chart-note {
-  margin-top: .75rem;
+  margin-top: .70rem;
   font-size: .95rem;
   color: #333;
+  text-align: center;
+}
+
+.salary-company-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.2rem;
   text-align: center;
 }
 </style>
@@ -288,12 +302,12 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 			<div class="company-nav" role="navigation">
 				<div class="company-nav-container">
-					<a href="#" class="company-nav-item active" data-tab="info"><div
-							class="name">기업정보</div></a> <a href="#" class="company-nav-item"
-						data-tab="recruit"><div class="name">채용</div></a> <a href="#"
-						class="company-nav-item" data-tab="salary"><div class="name">연봉정보</div></a>
-					<a href="#" class="company-nav-item" data-tab="essay"><div
-							class="name">합격자소서</div></a>
+					<a href="#" class="company-nav-item active" data-tab="info">
+					<div class="name">기업정보</div></a> 
+					<a href="#" class="company-nav-item" data-tab="recruit">
+					<div class="name">채용</div></a> 
+					<a href="#" class="company-nav-item" data-tab="salary"><div class="name">연봉정보</div></a>
+					<a href="#" class="company-nav-item" data-tab="essay"><div class="name">합격자소서</div></a>
 				</div>
 			</div>
 		</div>
@@ -910,11 +924,11 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 						</div>
 					</div>
 				</div>
-				<!--근무환경-->
+				<!--기업소개-->
 
 
 				<div class="company-infomation-row working-environment">
-					<h2 class="header">근무환경</h2>
+					<h2 class="header">기업소개</h2>
 
 					<!--기업소개-->
 					<div
@@ -927,7 +941,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 							</div>
 							<p></p>
 						</div>
-						<a href="javascript:void(0);" class="button button-more-introduce">더보기</a>
+						
 					</div>
 
 					<!--직무 인터뷰: Company일때만 노출-->
@@ -971,27 +985,33 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 
 			<!-- 연봉정보 탭 -->
-			<div class="tab-content hidden" data-section="salary">
-
-				<!-- ── 1) 연봉 요약 박스 ─────────────────────────────────── -->
+			<div class="company-infomation-row tab-content hidden" data-section="salary">
+				<h2 class="header">연봉 정보</h2>
 				<div class="salary-summary-box">
 					<div class="summary-item">
+					 <div id="salaryCompanyName" class="salary-company-name">대덕인재개발원</div>
 						<div class="summary-value" id="salaryAvgGross">-- 만원</div>
 						<div class="summary-label">전체 평균 연봉</div>
-						<div class="summary-sub">(계약직 포함·임원 제외)</div>
-						<div class="summary-monthly" id="salaryAvgNet">-- 원</div>
+						<div class="summary-sub">(임원 제외)</div>
+						<div class="summary-monthly" id="salaryAvgNet"></div>
 					</div>
 					<div class="summary-item">
 						<div class="summary-value" id="salaryNewhireGross">-- 만원</div>
 						<div class="summary-label">신입사원 초봉</div>
-						<div class="summary-monthly" id="salaryNewhireNet">-- 원</div>
+						<div class="summary-monthly" id="salaryNewhireNet"></div>
 					</div>
 				</div>
 
-				<!-- ── 2) 차트 카드 ─────────────────────────────────────── -->
+			
+				<h2 class="header">직급별 평균 연봉</h2>
 				<div class="financial-analysis-card salary-chart-card">
-					<canvas id="salaryChart" width="540" height="300"></canvas>
-					<div class="salary-chart-note" id="salaryChartNote"></div>
+				  <canvas id="salaryChart" width="640" height="300"></canvas>
+				  <div class="salary-chart-note" id="salaryChartNote">직급별 평균 연봉</div>
+				</div>
+				<h2 class="header">직급별 최소 최대 연봉</h2>
+				<div class="financial-analysis-card salary-chart-card">
+					<canvas id="salaryRangeChart" width="640" height="300"></canvas>
+					 <div class="salary-chart-note">직급별 최소 | 최대 연봉</div>
 				</div>
 			</div>
 
