@@ -11,6 +11,7 @@ const aboardform = document.querySelector("#aboardForm");
 // 1
 const abno = function(no){
 	listTitle.style.display = "none";
+	aboardform.style.display = "none";
 	memTypeBtn.innerHTML = "";
 	formBtn.innerHTML = "";
 	aboardList.innerHTML = "";

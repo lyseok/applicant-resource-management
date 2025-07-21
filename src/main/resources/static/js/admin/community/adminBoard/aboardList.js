@@ -7,11 +7,14 @@ const listTitle = document.querySelector("#listTitle");
 const allBtns = document.querySelector("#allBtns");
 const userId = document.querySelector("#userIdHidden")?.value;
 
+// 이게 리스트
 const bhtml = function (rslt) {
 	listTitle.style.display = "block";
+	aboardform.style.display = "none";
 	let html = '';
 	rslt.forEach((item) => {
 		html += `
+			<li>유저: ${item.userId}</li>
 			<li>게시판 유형 코드: ${item.boardTypeCode}</li>
 			<li>제목: 
 				<button id="abDetail" onclick="abno('${item.boardNo}')">${item.boardTitle}</button>
@@ -23,7 +26,12 @@ const bhtml = function (rslt) {
 			<hr/>
 			`;
 	});
-	newFormBtn();
+	//console.log("타입 나오나", rslt[0].boardTypeCode);
+	//if(rslt[0].boardTypeCode !== 'BRDD-001') newFormBtn();
+	
+	let isthere = rslt.some(item => item.boardTypeCode !== 'BRDD-001');
+	if (isthere) newFormBtn();
+	
 	allBtns.innerHTML = '';
 	aboardList.innerHTML = html;
 };
@@ -37,21 +45,30 @@ const pageTitle = function(){
 }
 
 const newFormBtn = function(){
-	formBtn.innerHTML = "";
-	let newForm = document.createElement("a");
-	newForm.href = "/admin/board/admin_board/form";
-	newForm.textContent = "새로 등록";
-	newForm.className = "btn btn_violet"; // 버튼처럼 보이게
+	formBtn.innerHTML = "";  //이건 div고
+	let newForm = document.createElement("button");  //이건 그냥 버튼 생성용 변수
+		newForm.id = "formForm";
+		newForm.className = "btn btn_violet";
+		newForm.textContent = "새 글 등록";
 	formBtn.appendChild(newForm);
+	const formForm = document.querySelector("#formForm");  //이건 버튼
+	if(formForm != null){
+			formForm.onclick = function () {
+			  memTypeBtn.innerHTML = "";
+			  aboardList.innerHTML = "";
+			  
+			  addopt(); // 폼으로
+			};
+		}
 }
 
 // FAQ 전체
-const faqAll = function(type) {
+const faqAll = function() {
 	fetch(`/ajax/admin/board/admin_board/list/BRDD-002`)
 		.then((resp) => resp.json())
 		.then((rslt) => {
 			bhtml(rslt);
-			flist(type);
+			flist();
 		});
 }
 
@@ -105,6 +122,36 @@ const noticeEvent = function() {
 		});
 }
 
+// 문의 전체
+const askAll = function(type) {
+	fetch(`/ajax/admin/board/admin_board/${type}`)
+		.then((resp) => resp.json())
+		.then((rslt) => {
+			bhtml(rslt);
+			asklist(type);
+		});
+}
+
+// 문의 일반회원
+const askUser = function(type) {
+	fetch(`/ajax/admin/board/admin_board/${type}?userRole=ROLE_USER`)
+		.then((resp) => resp.json())
+		.then((rslt) => {
+			bhtml(rslt);
+			asklist(type);
+		});
+}
+
+// 문의 기업회원
+const askCorp = function(type) {
+	fetch(`/ajax/admin/board/admin_board/${type}?userRole=ROLE_COMPANY`)
+		.then((resp) => resp.json())
+		.then((rslt) => {
+			bhtml(rslt);
+			asklist(type);
+		});
+}
+
 const flist = function () {
 	let html = `
 		<p class="h4">자주 묻는 질문 탭 선택</p>
@@ -119,7 +166,16 @@ const nlist = function () {
 		<p class="h4">공지사항 탭 선택</p>
 		<button id="untc" onclick="noticeUser()">일반회원</button>
 		<button id="cntc" onclick="noticeCorp()">기업회원</button>
-		<button id="antc" onclick="noticeEvent()">이벤트</button>`;
+		<button id="entc" onclick="noticeEvent()">이벤트</button>`;
+	memTypeBtn.innerHTML = html;
+};
+
+const asklist = function (type) {
+	let html = `
+		<p class="h4">문의사항 탭 선택</p>
+		<button id="uask" onclick="askUser('${type}')">일반회원</button>
+		<button id="cask" onclick="askCorp('${type}')">기업회원</button>
+		<button id="aask" onclick="askAll('${type}')">전체</button>`;
 	memTypeBtn.innerHTML = html;
 };
 
@@ -135,11 +191,7 @@ const pre = function(type){
 // 초기 로딩(메뉴바 고정)
 const alist = function(type) {
 	if (type === "BRDD-001") {
-		fetch(`/ajax/admin/board/admin_board/${type}`)
-			.then((resp) => resp.json())
-			.then((rslt) => {
-				bhtml(rslt);
-			});
+		askAll(type);
 	} else if (type === "BRDD-003") {
 		noticeUser();  // 공지사항 일반(고정)
 	} else if (type === "BRDD-002") {
@@ -150,11 +202,7 @@ const alist = function(type) {
 // 상세 이후 로딩
 const alist2 = function(type){
 	if (type === "BRDD-001") {
-		fetch(`/ajax/admin/board/admin_board/${type}`)
-			.then((resp) => resp.json())
-			.then((rslt) => {
-				bhtml(rslt);
-			});
+		askAll(type);
 	}else if (type.startsWith('UFAQ') || type.startsWith('CFAQ')) {
 		faqAll();
 	}else{

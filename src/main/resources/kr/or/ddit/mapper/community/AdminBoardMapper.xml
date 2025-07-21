@@ -59,6 +59,26 @@
 		FROM ADMIN_BOARD
 		WHERE BOARD_STATUS = 'D'
 	</select>
+	
+	<select id="selectAdminBoardListByTypeAndUserRole" resultType="AdminBoardVO">
+		SELECT 
+			B.BOARD_NO,
+			B.BOARD_TYPE_CODE,
+			B.USER_ID,
+			B.BOARD_TITLE,
+			B.BOARD_WRITE_DATE,
+			B.BOARD_DELETE_DATE,
+			B.BOARD_POST_HIT,
+			B.BOARD_STATUS,
+			U.USER_ROLE
+		FROM ADMIN_BOARD B
+		JOIN USERS U ON B.USER_ID = U.USER_ID
+		WHERE B.BOARD_TYPE_CODE = #{boardTypeCode}
+			AND B.BOARD_STATUS != 'D'
+		<if test="userRole != null and userRole != ''">
+			AND U.USER_ROLE = #{userRole}
+		</if>
+	</select>
 
 	<select id="selectCmnGroupList">
 		WITH UPPER_CODE_VIEW AS (    

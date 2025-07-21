@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -39,10 +40,14 @@ public class AdminAdminBoardAjaxController {
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	
-	// 유형별 게시글 목록조회
-	@GetMapping("/{boardTypeCode}")  
-	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
-		return service.readAdminBoardListByType(boardTypeCode);
+	// 유형별 게시글 목록조회(회원권한 포함)
+	@GetMapping("/{boardTypeCode}")
+	public List<AdminBoardVO> getBoards(
+		@PathVariable String boardTypeCode,
+		@RequestParam(required = false) String userRole
+	) {
+		return service.readAdminBoardListByType(boardTypeCode, userRole);
+		
 	}
 
 	// 삭제된 게시글 목록조회
@@ -96,13 +101,17 @@ public class AdminAdminBoardAjaxController {
 				])
 		])
 		 */
-		log.info("찍힘 확인 : {}", board);
 		
 		service.createAdminBoard(board);
-		//boardNo를 확인해보자 : 
+		
 		log.info("board : {}", board);
 		
-	    return Map.of("ok", true);
+		log.info("등록된 boardNo: {}", board.getBoardNo());
+		
+	    return Map.of(
+            "ok", true,
+            "boardNo", board.getBoardNo()
+        );
 	}
 	
 	// 해당 유형의 해당 글의 게시글 수정

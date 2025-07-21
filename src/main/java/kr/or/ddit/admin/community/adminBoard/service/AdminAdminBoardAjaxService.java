@@ -13,6 +13,7 @@ public interface AdminAdminBoardAjaxService {
 	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo);
 	public List<AdminBoardVO> readDelAboardList();
 	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode);
+	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode, String userRole);
 	public List<CmnCodeVO> readCmnList(String codeGroupNo);
 	public List<CmnCodeGroupVO> readCmnGroupList(String upperCodeNo);
 	public List<AdminBoardVO> readAFaqListByCgn(String groupPrefix);	 //FAQ 회원별 게시글 목록조회

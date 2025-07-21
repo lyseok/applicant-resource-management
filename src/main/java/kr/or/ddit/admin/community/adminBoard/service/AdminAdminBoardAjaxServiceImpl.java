@@ -4,13 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.mapper.community.AdminBoardMapper;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CmnCodeVO;
+import kr.or.ddit.vo.common.UsersVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 
@@ -18,8 +21,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxService{
 
-	private final AdminBoardMapper mapper;  //UserMapper를 넣어야 하나?
+	private final AdminBoardMapper mapper;
 	private final CodeMapProvider codeMapProvider;
+	private final UserMapper userMapper;
 	
 	@Override
 	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo) {
@@ -42,6 +46,18 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 		return aboardList;
 	}
 	
+	//문의사항에서 유저권한 구분용
+	@Override
+	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode, String userRole) {
+		List<AdminBoardVO> aboardList = mapper.selectAdminBoardListByTypeAndUserRole(boardTypeCode, userRole);
+		for (AdminBoardVO aboard : aboardList) {
+			setCodeName(aboard);
+		}
+		return aboardList;
+	}
+
+	
+	@Override
 	public List<AdminBoardVO> readAFaqListByCgn(String groupPrefix) {
 	    Map<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("boardTypeCode", groupPrefix + "%"); // 예: "CFAQ%" 또는 "UFAQ%"
