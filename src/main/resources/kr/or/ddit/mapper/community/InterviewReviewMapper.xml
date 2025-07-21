@@ -139,7 +139,7 @@
 				, #{comId}
 				, #{jobCode}
 				, #{interviewDate}
-				, #{interviewReviewDate}
+				, SYSDATE
 				, #{userId}
 		)
 	 </insert>
