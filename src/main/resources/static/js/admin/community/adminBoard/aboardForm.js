@@ -2,6 +2,8 @@ const boardTypeCode = document.querySelector("#boardTypeCode");
 const codeGroup = document.querySelector("#codeGroup");
 const memType = document.querySelector("#memType");
 const formTitle = document.querySelector("#formTitle");
+let updateNo = null;  // 전역으로 선언
+let updateType = null;
 
 // 무조건 처음 한번 실행 되는 부분
 //1차 옵션 추가
@@ -25,53 +27,68 @@ addopt();
 
 //등록 버튼 누를 경우
 aboardform.onsubmit = function (e) {
-  e.preventDefault();
-  //JSON Object
-  //JavaScript Object Notation => {"키":값}
-  /*
-	1.할아버지 [AdminBoardVO] : userId, boardTypeCode, boardTitle, boardContent
-	2.첫째 아빠 [AdminBoardVO.cmnCodeGroupVOList[0]] : codeGroupNo
-	3.첫째 딸 [AdminBoardVO.cmnCodeGroupVOList[0].cmnCodeList[0]] : codeDetailNo(=memType)
-	*/
-  let adminBoard = {
-    userId: aboardform.userId.value,
-    boardTypeCode: boardTypeCode.value,
-    cmnCodeGroupVOList: [
-      {
-        codeGroupNo: codeGroup.value,
-        cmnCodeList: [{ codeDetailNo: memType.value }],
-      },
-    ],
-    boardTitle: aboardform.boardTitle.value,
-    boardContent: aboardform.boardContent.value,
-  };
-  /*
-	{
-		"userId": "testAdmin",
-		"boardTypeCode": "BRDD-002",
-		"codeGroupNo": "UFAQ",
-		"memType": "UFAQ-U2",
-		"boardTitle":"제목 연습",
-		"boardContent": "내용 연습"
-	}
-	*/
-  console.log("adminBoard(JSON Object) : ", adminBoard);
+	  e.preventDefault();
+	  //JSON Object
+	  //JavaScript Object Notation => {"키":값}
+	  /*
+		1.할아버지 [AdminBoardVO] : userId, boardTypeCode, boardTitle, boardContent
+		2.첫째 아빠 [AdminBoardVO.cmnCodeGroupVOList[0]] : codeGroupNo
+		3.첫째 딸 [AdminBoardVO.cmnCodeGroupVOList[0].cmnCodeList[0]] : codeDetailNo(=memType)
+		*/
+	  let adminBoard = {
+	    userId: aboardform.userId.value,
+	    boardTypeCode: boardTypeCode.value,
+	    cmnCodeGroupVOList: [
+	      {
+	        codeGroupNo: codeGroup.value,
+	        cmnCodeList: [{ codeDetailNo: memType.value }],
+	      },
+	    ],
+	    boardTitle: aboardform.boardTitle.value,
+	    boardContent: aboardform.boardContent.value,
+	  };
+	  /*
+		{
+			"userId": "testAdmin",
+			"boardTypeCode": "BRDD-002",
+			"codeGroupNo": "UFAQ",
+			"memType": "UFAQ-U2",
+			"boardTitle":"제목 연습",
+			"boardContent": "내용 연습"
+		}
+		*/
+	  console.log("adminBoard(JSON Object) : ", adminBoard);
 
-  //등록 비동기 이벤트
-  fetch(`/ajax/admin/board/admin_board/${adminBoard.boardTypeCode}`, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(adminBoard),
-  }).then((resp) => {
-    resp.json().then((rslt) => {
-      console.log("글자", rslt.ok);
-	  console.log("rslt", rslt);
-	  let no = rslt.boardNo;
-	  if(no) abno(no);  //상세보기 페이지로 이동
-    });
-  });
+	  // 수정일 경우
+	  if (updateNo) {
+	    fetch(`/ajax/admin/board/admin_board/${updateType}/${updateNo}`, {
+	      method: "post",
+	      headers: {
+	        "Content-Type": "application/json",
+	      },
+	      body: JSON.stringify(adminBoard),
+	    }).then((resp) => {
+	      resp.json().then((rslt) => {
+			console.log("글자", rslt.ok);
+	        if (rslt.boardNo) abno(rslt.boardNo);
+	      });
+	    });
+	  } else {
+	  // 등록일 경우
+	  fetch(`/ajax/admin/board/admin_board/${adminBoard.boardTypeCode}`, {
+	    method: "post",
+	    headers: {
+	      "Content-Type": "application/json",
+	    },
+	    body: JSON.stringify(adminBoard),
+	  }).then((resp) => {
+	    resp.json().then((rslt) => {
+	      console.log("글자", rslt.ok);
+		  let no = rslt.boardNo;
+		  if(no) abno(no);  //상세보기 페이지로 이동
+	    });
+	  });
+	};
 };
 
 //1차 옵션 선택
@@ -196,6 +213,8 @@ const if2 = function(){
 
 //수정에서 넘어올 때
 const if3 = function(type){
+	updateType = type;
+	
 	if(type.includes('NTC')){
 		boardTypeCode.value ='BRDD-003';  //비교 연산자 아니고 할당 연산자로
 		boardTypeCode.onchange2(type);
@@ -230,11 +249,13 @@ const mdis = function(){
 
 //수정 폼 옵션 제외 데이터 기입
 const abno2 = function(no){
+	updateNo = no;  // 전역변수에 저장
+	
 	fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 	  .then((resp) => resp.json())
 	  .then((rslt) => {
 	    let nohi = document.querySelector("#noHidden");
-	    if (nohi) nohi.value = rslt.boardNo;
+	    if (nohi) nohi.value = rslt.boardNo;  
         let boti = document.querySelector('input[name="boardTitle"]');
         if (boti) boti.value = rslt.boardTitle;
         let usid = document.querySelector('input[name="userId"]');

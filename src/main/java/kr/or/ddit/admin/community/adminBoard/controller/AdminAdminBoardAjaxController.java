@@ -43,8 +43,8 @@ public class AdminAdminBoardAjaxController {
 	// 유형별 게시글 목록조회(회원권한 포함)
 	@GetMapping("/{boardTypeCode}")
 	public List<AdminBoardVO> getBoards(
-		@PathVariable String boardTypeCode,
-		@RequestParam(required = false) String userRole
+		@PathVariable String boardTypeCode
+		, @RequestParam(required = false) String userRole
 	) {
 		return service.readAdminBoardListByType(boardTypeCode, userRole);
 		
@@ -115,16 +115,22 @@ public class AdminAdminBoardAjaxController {
 	}
 	
 	// 해당 유형의 해당 글의 게시글 수정
-	@PostMapping("/detail/{boardNo}")
+	@PostMapping("/{boardTypeCode}/{boardNo}")
 	public Map<String, Object> editBoard(
 		@PathVariable String boardTypeCode
 		, @PathVariable String boardNo
 		, @RequestBody AdminBoardVO board
 	) {
 		board.setBoardNo(boardNo);
+		board.setBoardTypeCode(boardTypeCode);
 	    service.modifyAdminBoard(board);
-	    return Map.of("ok", true);	// 수정 후 Detail 이동
+	    
+	    return Map.of(
+            "ok", true,
+            "boardNo", board.getBoardNo()
+        );	// 수정 후 Detail 이동
 	}
+
 	// 해당 유형의 해당 글의 삭제 상태 변경
 	@PostMapping("/hidden/{boardNo}")
 	public Map<String, Object> hiddenBoard(
@@ -133,6 +139,7 @@ public class AdminAdminBoardAjaxController {
 		, @RequestBody AdminBoardVO board
 	) {
 		board.setBoardNo(boardNo);
+		board.setBoardTypeCode(boardTypeCode);
 		service.hiddenAdminBoard(board);
 		return Map.of("ok", true);	// 수정 후 Detail 이동
 	}

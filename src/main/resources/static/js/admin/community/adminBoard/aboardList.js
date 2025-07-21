@@ -56,6 +56,8 @@ const newFormBtn = function(){
 			formForm.onclick = function () {
 			  memTypeBtn.innerHTML = "";
 			  aboardList.innerHTML = "";
+			  listTitle.style.display = "none";
+			  formBtn.innerHTML = "";
 			  
 			  addopt(); // 폼으로
 			};
