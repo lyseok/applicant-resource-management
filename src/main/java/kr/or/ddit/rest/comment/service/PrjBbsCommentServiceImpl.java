@@ -1,5 +1,7 @@
 package kr.or.ddit.rest.comment.service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.project.PrjBbsCommentMapper;
@@ -13,19 +15,29 @@ public class PrjBbsCommentServiceImpl implements PrjBbsCommentService {
 
     @Override
     public PrjBbsCommentVO insertPrjBbsComment(PrjBbsCommentVO vo) {
-        // COMMENT_NO 생성 로직 필요 시 추가 (예: UUID, 시퀀스 등)
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String username = authentication.getName();
+    	vo.setUserId(username);
         commentMapper.insertPrjBbsComment(vo);
         return commentMapper.selectPrjBbsComment(vo.getCommentNo());
     }
 
     @Override
     public PrjBbsCommentVO updatePrjBbsComment(PrjBbsCommentVO vo) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String username = authentication.getName();
+    	vo.setUserId(username);
         commentMapper.updatePrjBbsComment(vo);
         return commentMapper.selectPrjBbsComment(vo.getCommentNo());
     }
 
     @Override
     public boolean deletePrjBbsComment(String commentNo) {
-        return commentMapper.deletePrjBbsComment(commentNo) > 0;
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String username = authentication.getName();
+    	PrjBbsCommentVO vo = new PrjBbsCommentVO();
+    	vo.setUserId(username);
+    	vo.setCommentNo(commentNo);
+        return commentMapper.deletePrjBbsComment(vo) > 0;
     }
 }

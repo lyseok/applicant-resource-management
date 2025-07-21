@@ -16,6 +16,6 @@ public interface PrjBbsCommentMapper {
 	
     public int insertPrjBbsComment(PrjBbsCommentVO vo);
     public int updatePrjBbsComment(PrjBbsCommentVO vo);
-    public int deletePrjBbsComment(String commentNo);
+    public int deletePrjBbsComment(PrjBbsCommentVO vo);
     public PrjBbsCommentVO selectPrjBbsComment(String commentNo);
 }
