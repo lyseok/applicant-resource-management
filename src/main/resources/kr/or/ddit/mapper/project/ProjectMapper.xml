@@ -2,6 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.project.ProjectMapper">
 
+<resultMap id="projectMap" type="ProjectVO">
+    <id property="prjNo" column="PRJ_NO"/>
+    <result property="userId" column="USER_ID"/>
+    <result property="projectBoardNo" column="PROJECT_BOARD_NO"/>
+    <result property="projectName" column="PROJECT_NAME"/>
+    <result property="projectContents" column="PROJECT_CONTENTS"/>
+    <result property="projectStatus" column="PROJECT_STATUS"/>
+    <result property="createDate" column="CREATE_DATE"/>
+    <result property="finishDate" column="FINISH_DATE"/>
+    <result property="deleteDate" column="DELETE_DATE"/>
+    <result property="projectColor" column="PROJECT_COLOR"/>
+</resultMap>
+
+<resultMap id="prjMemMap" type="PrjMemVO">
+    <id property="prjNo" column="MEM_PRJ_NO"/>
+    <id property="userId" column="MEM_USER_ID"/>
+    <result property="authorityCode" column="AUTHORITY_CODE"/>
+    <result property="deleteDate" column="MEM_DELETE_DATE"/>
+    <result property="userName" column="USER_NAME"/>
+    <result property="userPosition" column="USER_POSITION"/>
+</resultMap>
+
+<resultMap id="chatroomMap" type="ChatroomVO">
+    <id property="chatroomNo" column="CHATROOM_NO"/>
+    <result property="prjNo" column="CHAT_PRJ_NO"/>
+    <result property="chatroomName" column="CHATROOM_NAME"/>
+    <!-- 채팅방멤버 연결 -->
+    <collection property="chatroomMemList" ofType="ChatroomMemVO">
+        <id property="chatroomNo" column="CHMEM_CHATROOM_NO"/>
+        <id property="prjNo" column="CHMEM_PRJ_NO"/>
+        <id property="userId" column="CHMEM_USER_ID"/>
+        <result property="readMessageNo" column="READ_MESSAGE_NO"/>
+    </collection>
+</resultMap>
+
+<resultMap id="projectDetailMap" type="ProjectVO" extends="projectMap">
+    <association property="chatroom" javaType="ChatroomVO" resultMap="chatroomMap"/>
+    <collection property="prjMemList" ofType="PrjMemVO" resultMap="prjMemMap"/>
+</resultMap>
+
 <select id="selectProjectList">
 	SELECT 
 		PRJ_NO
@@ -16,103 +56,90 @@
 	FROM PROJECT
 </select>
 
+<select id="selectMyProjectList" parameterType="string" resultMap="projectDetailMap">
+    SELECT
+        P.PRJ_NO,
+        P.USER_ID,
+        P.PROJECT_BOARD_NO,
+        P.PROJECT_NAME,
+        P.PROJECT_CONTENTS,
+        P.PROJECT_STATUS,
+        -- 상태명은 코드 테이블 join 또는 CASE WHEN으로 처리 가능
+        P.CREATE_DATE,
+        P.FINISH_DATE,
+        P.DELETE_DATE,
+        P.PROJECT_COLOR,
 
-<resultMap type="ProjectVO" id="ProjectResultMap">
-    <!-- ProjectVO 매핑: B_ prefix -->
-    <id property="prjNo" column="B_PRJ_NO" />
-    <result property="userId" column="B_USER_ID" />
-    <result property="projectBoardNo" column="PROJECT_BOARD_NO" />
-    <result property="projectName" column="PROJECT_NAME" />
-    <result property="projectContents" column="PROJECT_CONTENTS" />
-    <result property="projectStatus" column="PROJECT_STATUS" />
-    <result property="createDate" column="CREATE_DATE" />
-    <result property="finishDate" column="FINISH_DATE" />
-    <result property="deleteDate" column="B_DELETE_DATE" />
+        -- 멤버 정보
+        M.PRJ_NO AS MEM_PRJ_NO,
+        M.USER_ID AS MEM_USER_ID,
+        M.AUTHORITY_CODE,
+        M.DELETE_DATE AS MEM_DELETE_DATE,
+        M.USER_NAME,
+        M.USER_POSITION,
 
-    <!-- PrjMemVO 리스트 매핑: A_ prefix -->
-    <collection property="prjMemList" ofType="PrjMemVO">
-        <id property="prjNo" column="A_PRJ_NO" />
-        <result property="userId" column="A_USER_ID" />
-        <result property="authorityCode" column="AUTHORITY_CODE" />
-        <result property="deleteDate" column="A_DELETE_DATE" />
-    </collection>
-</resultMap>
+        -- 채팅방 정보
+        C.CHATROOM_NO,
+        C.PRJ_NO AS CHAT_PRJ_NO,
+        C.CHATROOM_NAME
 
-<select id="selectProjectUserIdList" resultMap="ProjectResultMap">
-	SELECT 
-	    A.PRJ_NO AS A_PRJ_NO,
-	    A.USER_ID AS A_USER_ID,
-	    A.AUTHORITY_CODE,
-	    A.DELETE_DATE AS A_DELETE_DATE,
-	
-	    B.PRJ_NO AS B_PRJ_NO,
-	    B.USER_ID AS B_USER_ID,
-	    B.PROJECT_BOARD_NO,
-	    B.PROJECT_NAME,
-	    B.PROJECT_CONTENTS,
-	    B.PROJECT_STATUS,
-	    B.CREATE_DATE,
-	    B.FINISH_DATE,
-	    B.DELETE_DATE AS B_DELETE_DATE
-	
-	FROM PRJ_MEM A
-	LEFT OUTER JOIN PROJECT B ON A.PRJ_NO = B.PRJ_NO
-	WHERE A.USER_ID = #{userID}
+    FROM PROJECT P
+    -- 내가 소속된 프로젝트만
+    INNER JOIN PRJ_MEM M ON P.PRJ_NO = M.PRJ_NO
+    LEFT JOIN CHATROOM C ON P.PRJ_NO = C.PRJ_NO
+    WHERE M.USER_ID = #{userId}
+    ORDER BY P.CREATE_DATE DESC
 </select>
 
-<select id="selectProjectByPk">
-	SELECT 
-		PRJ_NO
-		, USER_ID
-		, PROJECT_BOARD_NO
-		, PROJECT_NAME
-		, PROJECT_CONTENTS
-		, PROJECT_STATUS
-		, CREATE_DATE
-		, FINISH_DATE
-		, DELETE_DATE
-	FROM PROJECT
-	WHERE PRJ_NO = #{prjNo}
+<select id="selectProjectDetail" resultMap="projectDetailMap">
+	SELECT
+	    -- Project
+	    p.prj_no,
+	    p.user_id,
+	    p.project_board_no,
+	    p.project_name,
+	    p.project_contents,
+	    p.project_status,
+	    p.create_date,
+	    p.finish_date,
+	    p.delete_date,
+	    p.project_color,
+	
+	    -- PrjMem (프로젝트 멤버)
+	    pm.prj_no      AS mem_prj_no,
+	    pm.user_id     AS mem_user_id,
+	    pm.authority_code,
+	    pm.delete_date AS mem_delete_date,
+	    pm.user_name,
+	    pm.user_position,
+	
+	    -- Chatroom (채팅방)
+	    c.chatroom_no,
+	    c.prj_no       AS chat_prj_no,
+	    c.chatroom_name,
+	
+	    -- ChatroomMem (채팅방 멤버)
+	    cm.chatroom_no AS chmem_chatroom_no,
+	    cm.prj_no      AS chmem_prj_no,
+	    cm.user_id     AS chmem_user_id,
+	    cm.read_message_no
+	FROM
+	    project      p
+	    LEFT JOIN prj_mem      pm ON p.prj_no = pm.prj_no
+	    LEFT JOIN chatroom     c ON p.prj_no = c.prj_no
+	    LEFT JOIN chatroom_mem cm ON c.chatroom_no = cm.chatroom_no
+	WHERE
+	    p.prj_no = #{prjNo}
 </select>
 
-<insert id="insertProject">
-	<selectKey resultType="string" keyProperty="prjNo" order="BEFORE">
-	    SELECT
-	        'PRJT'||
-	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRJ_NO), LENGTH('PRJT' ) + 1)), 0) + 1, 6, '0')
-	    FROM PROJECT
-	</selectKey>
-	INSERT INTO PROJECT (
-		PRJ_NO
-		, USER_ID
-		, PROJECT_BOARD_NO
-		, PROJECT_NAME
-		, PROJECT_CONTENTS
-		, PROJECT_STATUS
-		, CREATE_DATE
-	) VALUES (
-		#{prjNo}
-		, #{userId}
-		, #{projectBoardNo}
-		, #{projectName}
-		, #{projectContents}
-		, #{projectStatus}
-		, SYSDATE
-	)
-</insert>
-
-<update id="updateProject">
-	UPDATE PROJECT
-	SET 
-		PROJECT_NAME = #{projectName}
-		, PROJECT_CONTENTS = #{projectContents}
-		, PROJECT_STATUS = #{projectStatus}
-	WHERE PRJ_NO = #{prjNo}
+<update id="updateProject" parameterType="ProjectVO">
+    UPDATE PROJECT
+    SET
+        PROJECT_NAME = #{projectName},
+        PROJECT_CONTENTS = #{projectContents},
+        PROJECT_STATUS = #{projectStatus},
+        PROJECT_COLOR = #{projectColor}
+    WHERE PRJ_NO = #{prjNo}
 </update>
-
-<delete id="deleteProject">
-	DELETE FROM PROJECT
-	WHERE PRJ_NO = #{prjNo}
-</delete>
 
 </mapper>

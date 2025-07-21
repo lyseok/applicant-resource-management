@@ -62,7 +62,7 @@ public class CodeMapProvider {
     	businessTypeCodeMapper.selectBusinessTypeCodeList()
 	    	.forEach(m -> businessMap.put(m.getBusinessTypeNo(), m.getBusinessTypeName()));
     	
-        log.info("{}", codeMap);
+        //log.info("{}", codeMap);
     }
 
     public String getCodeName(String code) {

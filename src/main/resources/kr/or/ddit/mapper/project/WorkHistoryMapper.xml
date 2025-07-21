@@ -40,31 +40,39 @@
 	WHERE WORK_HIST_NO = #{workHistNo}
 </select>
 
-<insert id="insertWorkHistory">
+<select id="selectWorkHistoryByPrjNo" parameterType="string" resultType="WorkHistoryVO">
+    SELECT *
+      FROM WORK_HISTORY
+     WHERE PRJ_NO = #{prjNo}
+     ORDER BY WORK_DATE DESC
+</select>
+
+<insert id="insertWorkHistory" parameterType="WorkHistoryVO">
 	<selectKey resultType="string" keyProperty="workHistNo" order="BEFORE">
 	    SELECT
 	        'WKHR'||
 	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(WORK_HIST_NO), LENGTH('WKHR' ) + 1)), 0) + 1, 6, '0')
 	    FROM WORK_HISTORY
 	</selectKey>
-
-	INSERT INTO WORK_HISTORY (
-		WORK_HIST_NO
-		, PRJ_NO
-		, USER_ID
-		, WORK_DATE
-		, WORK_TABLE
-		, WORK_TYPE
-		, WORK_TARGET
-	) VALUES (
-		#{workHistNo}
-		, #{prjNo}
-		, #{userId}
-		, SYSDATE
-		, #{workTable}
-		, #{workType}
-		, #{workTarget}
-	)
+    INSERT INTO WORK_HISTORY (
+        workHistNo
+        , prjNo
+        , userId
+        , workDate
+        , workTable
+        , workType
+        , workTarget
+        , workContent
+    ) VALUES (
+        #{workHistNo}
+        , #{prjNo}
+        , #{userId}
+        , #{workDate}
+        , #{workTable}
+        , #{workType}
+        , #{workTarget}
+        , #{workContent}
+    )
 </insert>
 
 </mapper>

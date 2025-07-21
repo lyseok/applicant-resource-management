@@ -15,13 +15,4 @@ public class PrjMemVO implements Serializable {
 	private String deleteDate;
 	private String userName;
 	private String userPosition;
-	
-	private ProjectVO project;
-	private List<WorkHistoryVO> workHistoryList;
-	private List<PrjSectionVO> prjSectionList;
-	private List<PrjTaskVO> prjTaskList;
-	private List<TasksManagerVO> tasksManagerList;
-	private List<PrjBbsVO> prjBbsList;
-	private List<PrjBbsCommentVO> prjBbsCommentList;
-	private ChatroomMemVO chatroomMem;
 }
