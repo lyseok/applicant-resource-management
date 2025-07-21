@@ -13,4 +13,9 @@ public interface PrjBbsCommentMapper {
 	public int insertPrjRcrtPsncnt(PrjBbsCommentVO prjBbsComment);
 	public int updatePrjRcrtPsncnt(PrjBbsCommentVO prjBbsComment);
 	public int deletePrjRcrtPsncnt(String commentNo);
+	
+    public int insertPrjBbsComment(PrjBbsCommentVO vo);
+    public int updatePrjBbsComment(PrjBbsCommentVO vo);
+    public int deletePrjBbsComment(String commentNo);
+    public PrjBbsCommentVO selectPrjBbsComment(String commentNo);
 }

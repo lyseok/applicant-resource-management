@@ -49,5 +49,59 @@
 	AND USER_ID = #{userId}
 </delete>
 
+<select id="selectProjectMembers" parameterType="string" resultType="PrjMemVO">
+    SELECT
+        PRJ_NO as prjNo,
+        USER_ID as userId,
+        AUTHORITY_CODE as authorityCode,
+        DELETE_DATE as deleteDate,
+        USER_NAME as userName,
+        USER_POSITION as userPosition
+    FROM PRJ_MEM
+    WHERE PRJ_NO = #{prjNo}
+    AND DELETE_DATE IS NULL
+</select>
+
+<select id="selectProjectMember" resultType="PrjMemVO">
+    SELECT 
+        PM.PRJ_NO as prjNo,
+        PM.USER_ID as userId,
+        PM.AUTHORITY_CODE as authorityCode,
+        PM.DELETE_DATE as deleteDate
+    FROM PRJ_MEM PM
+    LEFT JOIN USERS U ON PM.USER_ID = U.USER_ID
+    WHERE PM.PRJ_NO = #{prjNo}
+      AND PM.USER_ID = #{userId}
+      AND PM.DELETE_DATE IS NULL
+</select>
+
+<!-- 멤버 추가 -->
+<insert id="insertProjectMember" parameterType="PrjMemVO">
+    INSERT INTO PRJ_MEM (
+        PRJ_NO,
+        USER_ID,
+        AUTHORITY_CODE,
+        DELETE_DATE
+    ) VALUES (
+        #{prjNo},
+        #{userId},
+        #{authorityCode},
+        NULL
+    )
+</insert>
+
+<update id="updateProjectMemberAuthority">
+    UPDATE PRJ_MEM
+    SET AUTHORITY_CODE = #{authorityCode}
+    WHERE PRJ_NO = #{prjNo}
+      AND USER_ID = #{userId}
+</update>
+
+<update id="deleteProjectMember" parameterType="PrjMemVO">
+    UPDATE PRJ_MEM
+    SET DELETE_DATE = SYSDATE
+    WHERE PRJ_NO = #{prjNo}
+      AND USER_ID = #{userId}
+</update>
 
 </mapper>
