@@ -1,7 +1,10 @@
 package kr.or.ddit.admin.community.adminBoard.controller;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
@@ -117,7 +120,7 @@ public class AdminAdminBoardAjaxController {
 	// 해당 유형의 해당 글의 게시글 수정
 	@PostMapping("/{boardTypeCode}/{boardNo}")
 	public Map<String, Object> editBoard(
-		@PathVariable String boardTypeCode
+		@PathVariable(required = false) String boardTypeCode
 		, @PathVariable String boardNo
 		, @RequestBody AdminBoardVO board
 	) {
@@ -134,14 +137,17 @@ public class AdminAdminBoardAjaxController {
 	// 해당 유형의 해당 글의 삭제 상태 변경
 	@PostMapping("/hidden/{boardNo}")
 	public Map<String, Object> hiddenBoard(
-		@PathVariable String boardTypeCode
-		, @PathVariable String boardNo
-		, @RequestBody AdminBoardVO board
+	    @PathVariable String boardNo
+	    , @RequestBody AdminBoardVO board
 	) {
 		board.setBoardNo(boardNo);
-		board.setBoardTypeCode(boardTypeCode);
-		service.hiddenAdminBoard(board);
-		return Map.of("ok", true);	// 수정 후 Detail 이동
+	    board.setBoardDeleteDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+	    service.hiddenAdminBoard(board);
+
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("ok", true);
+	    result.put("boardTypeCode", board.getBoardTypeCode());  // null 허용
+	    return result;	// 삭제 후 list 이동
 	}
 	
 	//에러 검증

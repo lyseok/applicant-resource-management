@@ -159,6 +159,7 @@
 		     , BOARD_STATUS
 		FROM ADMIN_BOARD
 		<where>
+		BOARD_STATUS != 'D'
 		  <if test="boardTypeCode != null and boardTypeCode != ''">
 			AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
 		  </if>
@@ -177,6 +178,7 @@
 			JOIN CMN_CODE C 
 			ON A.BOARD_TYPE_CODE = C.CODE_DETAIL_NO
 		WHERE C.UPPER_CODE_NO = #{upperCodeNo}
+			AND A.BOARD_STATUS != 'D'
 	</select>
 
 	<select id="selectAdminBoardList" resultMap="adminBoardMap">
@@ -191,6 +193,7 @@
 		INNER JOIN USERS U 
 			ON A.USER_ID = U.USER_ID
 		WHERE A.USER_ID = #{userId}
+			AND A.BOARD_STATUS != 'D'
 	</select>
 	
 	<!-- 
@@ -264,15 +267,10 @@
 		</if>
 	</update>
 
-	<update id="upDeleteAdminBoard">
+	<update id="upDeleteAdminBoard" parameterType="AdminBoardVO">
 		UPDATE ADMIN_BOARD 
 		SET 
-			  USER_ID = #{userId}
-			, BOARD_TYPE_CODE = #{boardTypeCode}
-			, BOARD_TITLE = #{boardTitle}
-			, BOARD_CONTENT = #{boardContent}
-			, BOARD_DELETE_DATE = #{boardDeleteDate}
-			, BOARD_POST_HIT = #{boardPostHit}
+			  BOARD_DELETE_DATE = #{boardDeleteDate}
 			, BOARD_STATUS = 'D'
 		WHERE 
 			BOARD_NO = #{boardNo}

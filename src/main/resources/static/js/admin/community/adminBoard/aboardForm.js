@@ -23,8 +23,6 @@ const addopt = function(){
 	});
 }
 
-addopt();
-
 //등록 버튼 누를 경우
 aboardform.onsubmit = function (e) {
 	  e.preventDefault();
@@ -83,9 +81,8 @@ aboardform.onsubmit = function (e) {
 	    body: JSON.stringify(adminBoard),
 	  }).then((resp) => {
 	    resp.json().then((rslt) => {
-	      console.log("글자", rslt.ok);
-		  let no = rslt.boardNo;
-		  if(no) abno(no);  //상세보기 페이지로 이동
+	    console.log("글자", rslt.ok);
+		if (rslt.boardNo) abno(rslt.boardNo);  //상세보기 페이지로 이동
 	    });
 	  });
 	};
@@ -272,4 +269,7 @@ const aform = function(no, type){
 	if3(type);  //옵션 넣어줌
 	abno2(no);  //제목, 내용 넣어줌
 }
+
+
+
 

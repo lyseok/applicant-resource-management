@@ -7,65 +7,39 @@ const listTitle = document.querySelector("#listTitle");
 const allBtns = document.querySelector("#allBtns");
 const userId = document.querySelector("#userIdHidden")?.value;
 const aboardform = document.querySelector("#aboardForm");
+const modalElement = document.querySelector('#deleteModal');
 
+//1차 카드 UI 변경
 const bhtml = function (rslt) {
-	listTitle.style.display = "block";
-	aboardform.style.display = "none";
+  listTitle.style.display = "block";
+  aboardform.style.display = "none";
 
-	let html = '<ul class="list-unstyled">';
-	
-	rslt.forEach((item) => {
-		html += `
-			<li class="mb-3">
-				<div class="card">
-					<div class="card-body">
-						<h5 class="card-title d-flex justify-content-between align-items-center">
-							<span>${item.boardTitle}</span>
-							<button class="btn btn-sm btn-outline-primary" onclick="abno('${item.boardNo}')">상세 보기</button>
-						</h5>
-					</div>
-				</div>
-			</li>
-		`;
-	});
+  let html = '<div class="list_body">';
 
-	html += '</ul>';
+  rslt.forEach((item) => {
+    html += `
+      <div class="list_item mb-3">
+        <div class="box_item p-3 border rounded">
+          <div class="row align-items-center">
+            <div class="col">
+              <a href="javascript:void(0)" class="fw-bold fs-5 text-decoration-none" onclick="abno('${item.boardNo}')">
+                ${item.boardTitle}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
 
-	let isthere = rslt.some(item => item.boardTypeCode !== 'BRDD-001');
-	if (isthere) newFormBtn();
+  html += '</div>';
 
-	allBtns.innerHTML = '';
-	aboardList.innerHTML = html;
+  let isthere = rslt.some(item => item.boardTypeCode !== 'BRDD-001');
+  if (isthere) newFormBtn();
+
+  allBtns.innerHTML = '';
+  aboardList.innerHTML = html;
 };
-
-
-// 이게 리스트
-/*
-const bhtml = function (rslt) {
-	listTitle.style.display = "block";
-	aboardform.style.display = "none";
-	let html = '';
-	rslt.forEach((item) => {
-		html += `
-			<li>유저: ${item.userId}</li>
-			<li>게시판 유형 코드: ${item.boardTypeCode}</li>
-			<li>제목: 
-				<button id="abDetail" onclick="abno('${item.boardNo}')">${item.boardTitle}</button>
-			</li>
-			<li>등록일시: ${item.boardWriteDate}</li>
-			<li>삭제일시: ${item.boardDeleteDate}</li>
-			<li>조회수: ${item.boardPostHit}</li>
-			<li>게시글 상태: ${item.boardStatus}</li>
-			<hr/>
-			`;
-	});
-	let isthere = rslt.some(item => item.boardTypeCode !== 'BRDD-001');
-	if (isthere) newFormBtn();
-	
-	allBtns.innerHTML = '';
-	aboardList.innerHTML = html;
-};
-*/
 
 const pageTitle = function(){
 	detTitle.innerHTML = "";
@@ -243,7 +217,9 @@ const alist2 = function(type){
 	}
 }
 
-alist(type);
+alist(type);  //맨 처음 호출
+
+
 
 
 
