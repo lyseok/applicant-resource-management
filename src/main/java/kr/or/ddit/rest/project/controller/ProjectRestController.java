@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.or.ddit.rest.project.service.ProjectService;
 import kr.or.ddit.vo.project.ProjectVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +22,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class ProjectRestController {
+	private final ProjectService projectService;
+	
 	@GetMapping("/my")
-	public List<ProjectVO> getMyProjectListApi() {
-		return null;
-	}
+    public ResponseEntity<List<ProjectVO>> getMyProjects() {
+        List<ProjectVO> list = projectService.readMyProjectList();
+        return ResponseEntity.ok(list);
+    }
 	
 	@GetMapping("/{prjNo}")
-	public ProjectVO getProjectApi(@PathVariable String prjNo) {
-		return null;
-	}
+    public ResponseEntity<ProjectVO> getProjectDetail(@PathVariable String prjNo) {
+        ProjectVO project = projectService.readProjectDetail(prjNo);
+        if (project == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(project);
+    }
 	
 	@PostMapping
 	public ProjectVO postProjectApi(@RequestBody ProjectVO projectVO) {
@@ -37,9 +45,17 @@ public class ProjectRestController {
 	}
 	
 	@PutMapping("/{prjNo}")
-	public ProjectVO putProjectApi(@RequestBody ProjectVO projectVO) {
-		return null;
-	}
+    public ResponseEntity<ProjectVO> updateProject(
+            @PathVariable String prjNo,
+            @RequestBody ProjectVO projectVO // 요청 body
+    ) {
+        // 서비스에서 수정 처리 및 VO 반환
+        ProjectVO updated = projectService.modifyProject(prjNo, projectVO);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updated);
+    }
 	
 	@DeleteMapping("/{prjNo}")
 	public ResponseEntity<?> deleteProjectApi() {
