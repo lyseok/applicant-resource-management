@@ -1,6 +1,7 @@
 package kr.or.ddit.member.resume.resume.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -76,21 +77,8 @@ public class ResumeServiceImpl implements ResumeService {
 
 	// 리스트 조회
 	@Override
-	public List<ResumeVO> readResumeList(String id) {
-		List<ResumeVO> resumeList = resumeMapper.selectResumeList(id);
-		for (ResumeVO resume : resumeList) {
-			resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
-			resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));
-			resume.setAwardList(awardMapper.selectAwardList(resume.getResumeNo()));
-			resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
-			resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
-			resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
-			// resume.setIntroductionList(IntroductionMapper.selectIntroductionList(resume.getResumeNo()));
-			resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
-			resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
-			resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
-			resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));
-		}
+	public List<Map<String, Object>> readResumeList(String id) {
+		List<Map<String, Object>> resumeList = resumeMapper.selectResumeList(id);
 
 		return resumeList;
 	}
@@ -276,22 +264,21 @@ public class ResumeServiceImpl implements ResumeService {
 			}
 		}
 		
-		// 경력
-		if (resumeVO.getCareerList() != null || resumeVO.getCareerList() == null) {
-			// careerList 안에 jobCode가 null/공백인 것들은 걸러내고, update
-			List<CareerVO> filteredList = resumeVO.getCareerList().stream()
-					.filter(career -> career.getJobCode() != null && !career.getJobCode().trim().isEmpty())
-					.collect(Collectors.toList());
+		// 경력 - 무조건 삭제 후, 있으면 insert (stream 때문에 delete를 앞으로 뻄)
+		careerMapper.deleteCareer(resumeVO.getResumeNo());
 
-			careerMapper.deleteCareer(resumeVO.getResumeNo());
-			if(resumeVO.getCareerList() != null) {
-				for (CareerVO career : filteredList) {
-					
-					career.setResumeNo(resumeVO.getResumeNo());
-					careerMapper.insertCareer(career);
-				}
+		List<CareerVO> careerList = resumeVO.getCareerList();
+		if (careerList != null && !careerList.isEmpty()) {
+			List<CareerVO> filteredList = careerList.stream()
+				.filter(c -> c.getJobCode() != null && !c.getJobCode().trim().isEmpty())
+				.collect(Collectors.toList());
+
+			for (CareerVO career : filteredList) {
+				career.setResumeNo(resumeVO.getResumeNo());
+				careerMapper.insertCareer(career);
 			}
 		}
+
 
 		// 보유기술
 		if (resumeVO.getMySkillList() != null || resumeVO.getMySkillList() == null) {
@@ -457,21 +444,8 @@ public class ResumeServiceImpl implements ResumeService {
 
 
 	@Override
-	public List<ResumeVO> readResumeSearch(ResumeVO vo) {
-		List<ResumeVO> resumeList = resumeMapper.selectResumeSearch(vo); 
-		for (ResumeVO resume : resumeList) {
-			resume.setCareerList(careerMapper.selectCareerList(resume.getResumeNo()));
-			resume.setSupportList(supportMapper.selectSupportList(resume.getResumeNo()));
-			resume.setAwardList(awardMapper.selectAwardList(resume.getResumeNo()));
-			resume.setMyExperienceList(myExperienceMapper.selectMyExperienceList(resume.getResumeNo()));
-			resume.setMySkillList(mySkillMapper.selectMySkillList(resume.getResumeNo()));
-			resume.setMyLicenseList(myLicenseMapper.selectMyLicenseList(resume.getResumeNo()));
-			// resume.setIntroductionList(IntroductionMapper.selectIntroductionList(resume.getResumeNo()));
-			resume.setLanguageSkillList(languageSkillMapper.selectLanguageSkillList(resume.getResumeNo()));
-			resume.setPortfolioList(portfolioMapper.selectPortfolioList(resume.getResumeNo()));
-			resume.setMilitaryList(militaryMapper.selectMilitaryList(resume.getResumeNo()));
-			resume.setEducationList(educationMapper.selectEducationList(resume.getResumeNo()));
-		}
+	public List<Map<String, Object>> readResumeSearch(ResumeVO vo) {
+		List<Map<String, Object>> resumeList = resumeMapper.selectResumeSearch(vo); 
 		return resumeList;
 	}
 	

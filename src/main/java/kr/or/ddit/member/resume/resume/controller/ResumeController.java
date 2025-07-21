@@ -63,7 +63,7 @@ public class ResumeController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 
-		List<ResumeVO> resumeList = service.readResumeList(userId);
+		List<Map<String, Object>> resumeList = service.readResumeList(userId);
 		log.info("{}", resumeList);
 		model.addAttribute(MODELNAME, resumeList);
 		return "member/resume/mypage/resume/resumeList";
