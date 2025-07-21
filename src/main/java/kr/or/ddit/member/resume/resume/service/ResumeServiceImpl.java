@@ -231,6 +231,8 @@ public class ResumeServiceImpl implements ResumeService {
 		}
 	}
 
+	
+	// 이력서 수정, 근데 이제 삭제를 먼저 하고 insert 하는! resumeForm 입력 순서대로 정렬!
 	@Override
 	@Transactional
 	public int editResume(ResumeVO resumeVO) {
@@ -238,111 +240,16 @@ public class ResumeServiceImpl implements ResumeService {
 		if(resumeVO.getResumeNo() == null) {
 			return 0;
 		}
+		// 기본정보는 여러개가 아니라 update로 처리해도 ㄱㅊ, 자소서는 이떄 introductionNO로 들어가고 추후js로 비동기 요청보냄!
 		int result = resumeMapper.updateResume(resumeVO);
-		log.info("자소서 번호 확인 !!! ▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶" + resumeVO.getIntroductionNo());
-		
-		// 경력
-		if (resumeVO.getCareerList() != null) {
-			// careerList 안에 jobCode가 null/공백인 것들은 걸러내고, update
-			List<CareerVO> filteredList = resumeVO.getCareerList().stream()
-					.filter(career -> career.getJobCode() != null && !career.getJobCode().trim().isEmpty())
-					.collect(Collectors.toList());
+		// log.info("이력서 업데이트 > 리슘 서비스 - 자소서 번호 확인 !!! ▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶" + resumeVO.getIntroductionNo());
 
-			for (CareerVO career : filteredList) {
-				careerMapper.deleteCareer(career.getCareerNo());
-				
-				career.setResumeNo(resumeVO.getResumeNo());
-				careerMapper.insertCareer(career);
-			}
-		}
 
-		// 고용지원
-		if (resumeVO.getSupportList() != null) {
-			for (SupportVO support : resumeVO.getSupportList()) {
-				supportMapper.deleteSupport(support.getSupportNo());
-				
-				support.setResumeNo(resumeVO.getResumeNo());
-				supportMapper.insertSupport(support);
-			}
-		}
-
-		// 수상
-		if (resumeVO.getAwardList() != null) {
-			for (AwardVO award : resumeVO.getAwardList()) {
-				awardMapper.deleteAward(award.getAwardCode());
-
-				award.setResumeNo(resumeVO.getResumeNo());
-				awardMapper.insertAward(award);
-			}
-		}
-
-		// 보유경험
-		if (resumeVO.getMyExperienceList() != null) {
-			for (MyExperienceVO myExperience : resumeVO.getMyExperienceList()) {
-				myExperienceMapper.deleteMyExperience(myExperience.getMyExpCode());
-
-				myExperience.setResumeNo(resumeVO.getResumeNo());
-				myExperienceMapper.insertMyExperience(myExperience);
-			}
-		}
-
-		// 보유기술
-		if (resumeVO.getMySkillList() != null) {
-			for (MySkillVO mySkill : resumeVO.getMySkillList()) {
-				mySkillMapper.deleteMySkill(mySkill.getMySkillCode());
-
-				mySkill.setResumeNo(resumeVO.getResumeNo());
-				mySkillMapper.insertMySkill(mySkill);
-			}
-		}
-
-		// 보유자격
-		if (resumeVO.getMyLicenseList() != null) {
-			for (MyLicenseVO myLicense : resumeVO.getMyLicenseList()) {
-				myLicenseMapper.deleteMyLicense(myLicense.getLicenseCode());
-
-				myLicense.setResumeNo(resumeVO.getResumeNo());
-				myLicenseMapper.insertMyLicense(myLicense);
-			}
-		}
-
-		// 어학
-		if (resumeVO.getLanguageSkillList() != null) {
-			for (LanguageSkillVO languageSkill : resumeVO.getLanguageSkillList()) {
-				languageSkillMapper.deleteLanguageSkill(languageSkill.getLanguageSkillNo());
-				languageSkill.setResumeNo(resumeVO.getResumeNo());
-				languageSkillMapper.insertLanguageSkill(languageSkill);
-			}
-		}
-
-		// 포트폴리오
-		if (resumeVO.getPortfolioList() != null) {
-			for (PortfolioVO portfolio : resumeVO.getPortfolioList()) {
-				portfolioMapper.deletePortfolio(resumeVO.getResumeNo());
-
-				portfolio.setResumeNo(resumeVO.getResumeNo());
-				portfolioMapper.insertPortfolio(portfolio);
-			}
-		}
-
-		// 병역
-		if (resumeVO.getMilitaryList() != null) {
-			for (MilitaryVO military : resumeVO.getMilitaryList()) {
-				militaryMapper.deleteMilitary(military.getMilitaryNo());
-
-				military.setResumeNo(resumeVO.getResumeNo());
-				militaryMapper.insertMilitary(military);
-			}
-		}
-
-		// 사용자가 학력을 입력한경우 >> 이력서 전체 학력 먼저 삭제 → 이후에 새로 insert
+		// 학력 >> 하위테이블(specialty) 먼저 지우고 학력 삭제 가능 + 같은 이력서 번호로 등록된 기존 데이터 전부 지우고 사용자가 보낸 객체로 다시 인서트 작업
 		if (resumeVO.getEducationList() != null) {
+			specialtyMapper.deleteSpecialty(resumeVO.getResumeNo());
+			educationMapper.deleteEducation(resumeVO.getResumeNo());
 			for (EducationVO education : resumeVO.getEducationList()) {
-				SpecialtyVO delVO = new SpecialtyVO();
-				 // 하위테이블 먼저 지우고 학력 삭제 가능 + 우선 기존 이력서 번호로 등록되어있는 데이터 이력서 번호로 전부 지우고 사용자가 보낸 객체로 다시 인서트 작업
-				specialtyMapper.deleteSpecialty(resumeVO.getResumeNo());
-				educationMapper.deleteEducation(resumeVO.getResumeNo());
-
 				education.setResumeNo(resumeVO.getResumeNo());
 				educationMapper.insertEducation(education);
 				// 3. 전공 insert (specialtyList)
@@ -352,6 +259,116 @@ public class ResumeServiceImpl implements ResumeService {
 						specialty.setResumeNo(resumeVO.getResumeNo());
 						specialtyMapper.insertSpecialty(specialty);
 					}
+				}
+			}
+		}
+
+		// 포트폴리오
+		if (resumeVO.getPortfolioList() != null || resumeVO.getPortfolioList() == null) {
+			log.info("{}", resumeVO.getPortfolioList());
+			portfolioMapper.deletePortfolio(resumeVO.getResumeNo());
+			if(resumeVO.getPortfolioList() != null ) {
+				for (PortfolioVO portfolio : resumeVO.getPortfolioList()) {
+	
+					portfolio.setResumeNo(resumeVO.getResumeNo());
+					portfolioMapper.insertPortfolio(portfolio);
+				}
+			}
+		}
+		
+		// 경력
+		if (resumeVO.getCareerList() != null || resumeVO.getCareerList() == null) {
+			// careerList 안에 jobCode가 null/공백인 것들은 걸러내고, update
+			List<CareerVO> filteredList = resumeVO.getCareerList().stream()
+					.filter(career -> career.getJobCode() != null && !career.getJobCode().trim().isEmpty())
+					.collect(Collectors.toList());
+
+			careerMapper.deleteCareer(resumeVO.getResumeNo());
+			if(resumeVO.getCareerList() != null) {
+				for (CareerVO career : filteredList) {
+					
+					career.setResumeNo(resumeVO.getResumeNo());
+					careerMapper.insertCareer(career);
+				}
+			}
+		}
+
+		// 보유기술
+		if (resumeVO.getMySkillList() != null || resumeVO.getMySkillList() == null) {
+			mySkillMapper.deleteMySkill(resumeVO.getResumeNo());
+			if(resumeVO.getMySkillList() != null) {
+				for (MySkillVO mySkill : resumeVO.getMySkillList()) {
+	
+					mySkill.setResumeNo(resumeVO.getResumeNo());
+					mySkillMapper.insertMySkill(mySkill);
+				}
+			}
+		}
+
+		// 보유경험
+		if (resumeVO.getMyExperienceList() != null || resumeVO.getMyExperienceList() == null) {
+			myExperienceMapper.deleteMyExperience(resumeVO.getResumeNo());
+			if(resumeVO.getMyExperienceList() != null) {
+				for (MyExperienceVO myExperience : resumeVO.getMyExperienceList()) {
+	
+					myExperience.setResumeNo(resumeVO.getResumeNo());
+					myExperienceMapper.insertMyExperience(myExperience);
+				}
+			}
+		}
+		
+		// 고용지원
+		if (resumeVO.getSupportList() != null || resumeVO.getSupportList() == null) {
+			supportMapper.deleteSupport(resumeVO.getResumeNo());
+			if(resumeVO.getSupportList() != null) {
+				for (SupportVO support : resumeVO.getSupportList()) {
+					
+					support.setResumeNo(resumeVO.getResumeNo());
+					supportMapper.insertSupport(support);
+				}
+			}
+		}
+
+		// 보유자격
+		if (resumeVO.getMyLicenseList() != null || resumeVO.getMyLicenseList() == null) {
+			myLicenseMapper.deleteMyLicense(resumeVO.getResumeNo());
+			if(resumeVO.getMyLicenseList() != null) {
+				for (MyLicenseVO myLicense : resumeVO.getMyLicenseList()) {	
+					myLicense.setResumeNo(resumeVO.getResumeNo());
+					myLicenseMapper.insertMyLicense(myLicense);
+				}
+			}
+		}
+
+		// 어학
+		if (resumeVO.getLanguageSkillList() != null || resumeVO.getLanguageSkillList() == null) {
+			languageSkillMapper.deleteLanguageSkill(resumeVO.getResumeNo());
+			if(resumeVO.getLanguageSkillList() != null) {
+				for (LanguageSkillVO languageSkill : resumeVO.getLanguageSkillList()) {
+					languageSkill.setResumeNo(resumeVO.getResumeNo());
+					languageSkillMapper.insertLanguageSkill(languageSkill);
+				}
+			}
+		}
+
+		// 수상
+		if (resumeVO.getAwardList() != null || resumeVO.getAwardList() == null) {
+			awardMapper.deleteAward(resumeVO.getResumeNo());
+			if(resumeVO.getAwardList() != null) {
+				for (AwardVO award : resumeVO.getAwardList()) {
+					award.setResumeNo(resumeVO.getResumeNo());
+					awardMapper.insertAward(award);
+				}
+			}
+		}
+
+		// 병역
+		if (resumeVO.getMilitaryList() != null || resumeVO.getMilitaryList() == null) {
+			militaryMapper.deleteMilitary(resumeVO.getResumeNo());
+			if(resumeVO.getMilitaryList() != null) {
+				for (MilitaryVO military : resumeVO.getMilitaryList()) {
+					military.setResumeNo(resumeVO.getResumeNo());
+					militaryMapper.insertMilitary(military);
 				}
 			}
 		}
