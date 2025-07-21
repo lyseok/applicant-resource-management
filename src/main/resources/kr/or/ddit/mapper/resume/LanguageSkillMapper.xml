@@ -75,7 +75,7 @@
 	
 	<delete id="deleteLanguageSkill">
 		DELETE FROM LANGUAGE_SKILL 
-		 WHERE LANGUAGE_SKILL_NO = #{languageSkillNo}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 	
 </mapper>
