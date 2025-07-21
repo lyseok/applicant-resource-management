@@ -26,7 +26,7 @@ const abdetail = function(rslt) {
     <div class="jv_cont jv_benefit expand">
       <h2 class="jv_title h5">${rslt.boardTitle}</h2>
       <div class="desc_area" style="margin: 20px 0;">
-        ${rslt.boardContent}
+        ${rslt.boardContent?.replaceAll('\n', '<br>')}
       </div>
       <div class="cont">
         <div class="details">

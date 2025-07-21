@@ -13,7 +13,7 @@
 	<sec:authentication property="principal.realUser.userId" var="userId"/>
 	<input type="hidden" id="userIdHidden" value="${userId}">
 
-	<p class="h4" style="display: none;" id="listTitle">게시글 목록</p>
+	<p class="h1 mb-3 fw-bold" style="display: none;" id="listTitle">게시글 목록</p>
 	
 	<!-- 회원 탭 버튼 -->
 	<div id="memTypeBtn"></div><br>
@@ -39,35 +39,57 @@
 	<div id="acommentFormContainer"></div>	
 	
 	<!-- 등록 폼 미리 숨겨놓기 -->
-	  <form id="aboardForm" style="display: none;">
-	  	<p class="h4" id="formTitle">관리자 게시판</p><br>
-	  	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
-	    
-	    <label>게시판 유형 코드</label>
-	    <select id="boardTypeCode">
-	      <option value="-1">--선택--</option>
-	    </select>
-	    
-	    <select id="codeGroup" disabled>
-	      <option value="-1">--선택--</option>
-	    </select>
-	    
-	    <select id="memType" disabled>
-	      <option value="-1">--선택--</option>
-	    </select>
-	    
-	    <br>
-	    <input type="text" name="boardTitle" placeholder="제목">
-	    <label>작성자 아이디: </label>
-		<input type="text" name="userId" value="${userId}" disabled><br>
-		<textarea name="boardContent" placeholder="내용" rows="6" cols="60"></textarea>
-	    
-	    <button type="submit">등록</button>
-	  </form>
+	<form id="aboardForm" style="display: none;" class="p-4 border rounded bg-light">
+	  <p class="h1 mb-3 fw-bold">게시글 등록</p>
 	  
-	 <!-- 모달 폼 미리 숨겨놓기 -->
-	 <!-- 삭제 모달 -->
-	 <!-- 삭제 확인 모달 -->
+	  <input type="hidden" id="noHidden" value="${aboard.boardNo}">
+	
+	  <div class="row g-3 mb-3">
+	    <div class="col-md-4">
+	      <label for="boardTypeCode" class="form-label">게시판 유형 코드</label>
+	      <select id="boardTypeCode" class="form-select">
+	        <option value="-1">--선택--</option>
+	      </select>
+	    </div>
+	    <div class="col-md-4">
+	      <label for="codeGroup" class="form-label">1차 분류</label>
+	      <select id="codeGroup" class="form-select" disabled>
+	        <option value="-1">--선택--</option>
+	      </select>
+	    </div>
+	    <div class="col-md-4">
+	      <label for="memType" class="form-label">2차 분류</label>
+	      <select id="memType" class="form-select" disabled>
+	        <option value="-1">--선택--</option>
+	      </select>
+	    </div>
+	  </div>
+	
+	  <div class="mb-3">
+	    <label for="boardTitle" class="form-label">제목</label>
+	    <input type="text" class="form-control" name="boardTitle" id="boardTitle" placeholder="제목을 입력하세요">
+	  </div>
+	
+	  <div class="mb-3">
+	    <label class="form-label">작성자 아이디</label><br>
+	    <strong>${userId}</strong>
+	    <input type="hidden" name="userId" value="${userId}">
+	  </div>
+	
+	  <div class="mb-3">
+	    <label for="boardContent" class="form-label">내용</label>
+	    <textarea class="form-control" name="boardContent" rows="6" placeholder="내용을 입력하세요"></textarea>
+	  </div>
+	
+	  <div class="text-end">
+	    <button type="submit" class="btn btn-primary px-4">등록</button>
+	  </div>
+	</form>
+
+	  
+	<!-- 모달 폼 미리 숨겨놓기 -->
+	<!-- 삭제 모달 -->
+	<!-- 삭제 확인 모달 -->
 	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">

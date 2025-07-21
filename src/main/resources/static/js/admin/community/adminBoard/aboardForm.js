@@ -1,7 +1,6 @@
 const boardTypeCode = document.querySelector("#boardTypeCode");
 const codeGroup = document.querySelector("#codeGroup");
 const memType = document.querySelector("#memType");
-const formTitle = document.querySelector("#formTitle");
 let updateNo = null;  // 전역으로 선언
 let updateType = null;
 
@@ -56,37 +55,50 @@ aboardform.onsubmit = function (e) {
 		}
 		*/
 	  console.log("adminBoard(JSON Object) : ", adminBoard);
-
-	  // 수정일 경우
-	  if (updateNo) {
-	    fetch(`/ajax/admin/board/admin_board/${updateType}/${updateNo}`, {
-	      method: "post",
-	      headers: {
-	        "Content-Type": "application/json",
-	      },
-	      body: JSON.stringify(adminBoard),
-	    }).then((resp) => {
-	      resp.json().then((rslt) => {
-			console.log("글자", rslt.ok);
-	        if (rslt.boardNo) abno(rslt.boardNo);
-	      });
-	    });
-	  } else {
-	  // 등록일 경우
-	  fetch(`/ajax/admin/board/admin_board/${adminBoard.boardTypeCode}`, {
+	  // 등록 or 수정 구분
+	  const url = updateNo
+	    ? `/ajax/admin/board/admin_board/${updateType}/${updateNo}`
+	    : `/ajax/admin/board/admin_board/${adminBoard.boardTypeCode}`;
+	
+	  fetch(url, {
 	    method: "post",
-	    headers: {
-	      "Content-Type": "application/json",
-	    },
+	    headers: { "Content-Type": "application/json" },
 	    body: JSON.stringify(adminBoard),
 	  }).then((resp) => {
 	    resp.json().then((rslt) => {
-	    console.log("글자", rslt.ok);
-		if (rslt.boardNo) abno(rslt.boardNo);  //상세보기 페이지로 이동
-	    });
-	  });
-	};
+	      if (rslt.ok && rslt.boardNo) {
+	        abno(rslt.boardNo); // 상세 페이지로 이동
+	        aboardform.reset(); //폼 초기화
+	        //옵션 초기화
+	        bdis();
+	        cdis(); codeGroup.disabled = true;	
+	        mdis(); memType.disabled = true;
+	        //수정 상태 해제
+	        updateNo = null;
+	        updateType = null;
+	      }
+	   });
+	});
 };
+
+//수정에서 넘어올 시, 0차 옵션 기입하고 선택
+const addopt2 = function(type){
+	fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
+	  resp.json().then((rslt) => {
+	    rslt.cmnCodeList.map((v, i) => {
+	      if (i > 0) {  //vo[1], vo[2] 만 넣어야 함
+	        let option = document.createElement("option");
+	        option.value = v.codeDetailNo;
+	        option.innerHTML = v.codeName;
+	        boardTypeCode.appendChild(option);
+	      }
+	    });
+		boardTypeCode.value = type;  //수정에서 가져온 type을 0차 옵션에 배정
+		if3(type);  
+	  });
+	});
+	//이 줄에서 값을 할당해버리면 fetch가 돌기 전이라서 순서가 거꾸로 됨
+}
 
 //1차 옵션 선택
 boardTypeCode.onchange = function () {
@@ -222,6 +234,15 @@ const if3 = function(type){
 	}
 }
 
+const bdis = function(){
+	boardTypeCode.innerHTML = "";
+	let bopt = document.createElement("option");
+	bopt.value = "-1";
+	bopt.textContent = "--선택--";
+	codeGroup.appendChild(bopt);
+	codeGroup.value = "-1";
+}
+
 const cdis = function(){
 	codeGroup.disabled = false;		
 	codeGroup.innerHTML = "";
@@ -266,7 +287,8 @@ const aform = function(no, type){
 	console.log("디테일에서 넘어온 수정", no);
 	console.log("디테일에서 넘어온 수정2", type);
 	allBtns.innerHTML = '';
-	if3(type);  //옵션 넣어줌
+	
+	addopt2(type);  //옵션 넣어줌
 	abno2(no);  //제목, 내용 넣어줌
 }
 

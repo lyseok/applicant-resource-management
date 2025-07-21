@@ -44,7 +44,7 @@ const bhtml = function (rslt) {
 const pageTitle = function(){
 	detTitle.innerHTML = "";
 	let title = document.createElement("p"); 
-	title.className = "h4";                  
+	title.className = "h1 mb-3 fw-bold";                  
 	title.textContent = "게시글 상세";         
 	detTitle.appendChild(title);         
 }
