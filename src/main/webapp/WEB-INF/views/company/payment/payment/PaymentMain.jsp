@@ -9,7 +9,6 @@
 <title>나의 결제상품</title>
 </head>
 <body>
-	현재 살아있는 유료상품 내용 : (구현예정)
 	<a href="/company/payment/product/list"><button>상품 보러가기</button></a>
 
 	<div class="container my-5">

@@ -53,6 +53,24 @@ public class BillingPaymentController {
 	@Autowired
 	PaymentServiceImpl Pservice;
 
+	@GetMapping("/change/buyproduct")
+	public String buyProduct(
+	    @RequestParam String productNo,
+	    @RequestParam String oldPaymentNo,
+	    @RequestParam String billingKey,
+	    HttpSession session,
+	    Model model
+	) {
+	    PaymentProductVO product = service.selectPaymentProductByPk(productNo);
+	    model.addAttribute("product", product);
+	    model.addAttribute("oldPaymentNo", oldPaymentNo);
+	    model.addAttribute("billingKey", billingKey);
+	    session.setAttribute("customerKey", "고객 고유키"); // 실 사용 환경에서는 사용자 기준으로 발급
+	    log.info("session : {}", session);
+	    return "company/payment/product/ChangeProduct";
+	}
+
+	
 	@GetMapping("/check/billing")
 	@ResponseBody
 	public Map<String, Object> checkBillingKey(HttpSession session){
