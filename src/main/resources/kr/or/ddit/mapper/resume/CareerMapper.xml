@@ -162,6 +162,6 @@
 	
 	<delete id="deleteCareer">
 		DELETE FROM CAREER 
-		 WHERE CAREER_NO = #{careerNo}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>

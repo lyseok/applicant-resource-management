@@ -75,6 +75,6 @@
 	
 	<delete id="deleteMilitary">
 		DELETE FROM MILITARY 
-		 WHERE MILITARY_NO = #{militaryNo}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>

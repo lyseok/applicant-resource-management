@@ -72,7 +72,7 @@
 	position: relative;
 	margin-bottom: 60px;
 }
-#section-militaryList{
+#section-supportList{
 	margin-bottom:0;
 }
 
@@ -465,6 +465,15 @@
 }
 
 /* 등록 폼 */
+#section-mySkillList .list-item strong{
+	background: var(--violet20);
+  padding: 5px 13px;
+  border-radius: 15px;
+  border: 1px solid var(--violet30);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--violet80);
+}
 /* 삭제 */
 .listContainer {
 	display: flex;

@@ -156,7 +156,7 @@ const templateMap = {
         <div class="d-flex w-100 flex-column">
   				<div class="d-flex position-relative gap-2">
   					<div class="flex-fill">
-		          <input type="text" name="resumeVO.careerList[${idx}].comId" class="w-100 h-100" placeholder="예: NAVER" maxlength="100" id="comId" >
+		          <input type="text" name="resumeVO.careerList[${idx}].comId" class="w-100 h-100" placeholder="예: NAVER" maxlength="100" id="comId" value="">
 		          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="z-index: 2000; max-width:301px">
 							</ul>
 						</div>
@@ -499,9 +499,9 @@ const listItemMap = {
 	careerList: (idx, data, type = "careerList") => `
     <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}"  data-type="${type}">
       <div class="d-flex flex-column">
-        <strong>${data.comId || '회사명 미입력'}</strong>
+        <strong>${data.comName || data.company.comName || '회사명 미입력'}</strong>
         <span>${data.startWorkDate || '입사일 없음'} ~ ${data.retireDate || '재직중'}</span>
-        <small>${data.department || ''} / ${data.responsibility || ''}</small>
+        <small>${data.department || ''} ${data.responsibility ? ' / ' + data.responsibility : ''}</small>
       </div>      
       <div class="d-flex gap-2">
         <button type="button" class="btn_edit">
@@ -1237,26 +1237,61 @@ function bindListContainerEvents() {
 					formEl.dataset.idx = idx;
 					formEl.dataset.edit = "true";
 
+
+					// 👉 라디오 먼저 처리 (빠르게 반응시킴, select 처럼 비동기 요청 보낼 필요 없기 떄문에 !! )
+					for (const [key, val] of Object.entries(data)) {
+						const input = formEl.querySelector(`[name$='.${key}']`);
+						if (input && input.type === "radio") {
+							const radio = formEl.querySelector(`[name$='.${key}'][value="${val}"]`);
+							if (radio) {
+								radio.checked = true;
+								radio.dispatchEvent(new Event("change", { bubbles: true }));
+							}
+						}
+					}
 					// select 세팅
 					await setDynamicSelects(type, formEl);
 
 					// 값 바인딩
-					setTimeout(() => {
-						for (const [key, val] of Object.entries(data)) {
-							const input = formEl.querySelector(`[name$='.${key}']`);
+					for (const [key, val] of Object.entries(data)) {
+						const input = formEl.querySelector(`[name$='.${key}']`);
+						if (input) {
+							if (input.tagName === "SELECT") {
+								// 옵션이 존재할 때만 value 세팅
+								const hasOption = input.querySelector(`option[value="${val}"]`);
+								console.log("🔍 option 있음?", hasOption, val, input);
+								if (hasOption) {
+									input.value = val;
+									input.dispatchEvent(new Event("change", { bubbles: true }));
+
+								}
+							} else if (input.type !== "radio") {
+								// radio는 이미 위에서 처리함
+								input.value = val;
+							} 
+						}
+					}
+					// specialtyList 바인딩 추가
+					if (data.specialtyList && data.specialtyList.length > 0) {
+						const specialty = data.specialtyList[0];
+
+						for (const [key, val] of Object.entries(specialty)) {
+							const input = formEl.querySelector(`[name$='.specialtyList[0].${key}']`);
 							if (input) {
 								if (input.tagName === "SELECT") {
 									const hasOption = input.querySelector(`option[value="${val}"]`);
 									if (hasOption) {
 										input.value = val;
-										input.dispatchEvent(new Event("change"));
+										input.dispatchEvent(new Event("change", { bubbles: true }));
 									}
 								} else {
 									input.value = val;
 								}
 							}
 						}
-					}, 50);
+					}
+
+
 				}
 				return;
 			}
@@ -1308,6 +1343,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
 				// 동적으로 생성된 input에도 적용됨
 				document.addEventListener("input", function(e) {
+					console.log("INPUT 발생!", e.target);
+
 					const inputEl = e.target;
 					if (inputEl.id !== "comId") return;
 
@@ -1342,20 +1379,21 @@ document.addEventListener("DOMContentLoaded", function() {
 							const parentWrap = inputEl.closest(".section-form-wrap");
 							if (!parentWrap) return;
 
-							const idx = parseInt(parentWrap.dataset.idx);
+							const idx = parentWrap.dataset.idx;
 							console.log("회사명 idx 확인", idx)
-							console.log("comid  확인",  c.userId)
-							console.log("리슘 몇번쨰에 들어갈건지 확인",  resume.careerList[idx].comId)
-							
+							console.log("comid  확인", c.userId)
+							console.log("리슘 몇번쨰에 들어갈건지 확인", resume.careerList[idx].comId)
+
 							if (!isNaN(idx)) {
-							  // 해당 idx가 아직 없는 경우, 미리 빈 객체로 생성
-							  if (!resume.careerList[idx]) resume.careerList[idx] = {};
-							  resume.careerList[idx].comId = c.userId;
+								// 해당 idx가 아직 없는 경우, 미리 빈 객체로 생성
+								if (!resume.careerList[idx]) resume.careerList[idx] = {};
+								resume.careerList[idx].comId = c.userId;
+								resume.careerList[idx].comName = c.comName; // ✅ 꼭 추가!
+								console.log("아직도 안돼?????????????????", resume.careerList[idx].comId)
 							}
 						});
 
 						suggestionBox.appendChild(li);
-
 						if (c.comName === inputVal) {
 							inputEl.dataset.userid = c.userId;
 							exactMatchFound = true;
@@ -1369,7 +1407,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 
 			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			document.addEventListener("click", function (e) {
+			document.addEventListener("click", function(e) {
 				if (e.target.classList.contains("search_com_btn")) {
 					const comId = document.querySelector("#comId");
 					const userId = comId.dataset.userid;
@@ -1394,7 +1432,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						.catch(err => {
 							console.error(err);
 						})
-					}
+				}
 			})
 
 			// section-content, +버튼 숨김
@@ -1452,19 +1490,8 @@ document.addEventListener("DOMContentLoaded", function() {
 							if (!name) return;
 
 							const key = name.split('.').pop().replace(/\[\d+\]/, '');
-							console.log("DEBUG:", {
-								id: input.id,
-								name: input.name,
-								key,
-								value: input.value,
-								userid: input.dataset.userid
-							});
-							// ⭐ 'comId'인 경우는 value가 아니라 data-userid로 처리
-								if (key === "comId" && input.dataset.userid) {
-									data[key] = input.dataset.userid;
-								} else {
-									data[key] = input.value;
-								}
+							// ❗ comId는 2차 루프에서 처리하므로 건너뜀
+							if (key === "comId") return;
 						});
 						// 위에서 만든 변수들을 vo 형태에 맞게 세팅할 수 있게 미리만들어둔 함수에 넘겨줌
 						const vo = makeVO(thisType, data);
@@ -1964,14 +1991,14 @@ document.addEventListener("submit", function(e) {
 
 	console.log("resume 객체 확인 >>>> ", resume)
 	function safeStringify(obj) {
-	  const seen = new WeakSet();
-	  return JSON.stringify(obj, function (key, value) {
-	    if (typeof value === "object" && value !== null) {
-	      if (seen.has(value)) return "[Circular]";
-	      seen.add(value);
-	    }
-	    return value;
-	  }, 2);
+		const seen = new WeakSet();
+		return JSON.stringify(obj, function(key, value) {
+			if (typeof value === "object" && value !== null) {
+				if (seen.has(value)) return "[Circular]";
+				seen.add(value);
+			}
+			return value;
+		}, 2);
 	}
 
 	console.log("resume >>>", safeStringify(resume));
@@ -2050,7 +2077,7 @@ document.addEventListener("submit", function(e) {
 
 							// 기존 에러 제거
 							const safeField = field.replace(/\[.*?\]/g, "").replace(/\./g, "-");
-										const oldError = wrapper.querySelector(`.${safeField}-error`);
+							const oldError = wrapper.querySelector(`.${safeField}-error`);
 							if (oldError) oldError.remove();
 
 							// 새 에러 span 추가
@@ -2089,7 +2116,7 @@ document.addEventListener("submit", function(e) {
 
 						// 기존 에러 제거
 						const safeField = field.replace(/\[.*?\]/g, "").replace(/\./g, "-");
-										const oldError = wrapper.querySelector(`.${safeField}-error`);
+						const oldError = wrapper.querySelector(`.${safeField}-error`);
 						if (oldError) oldError.remove();
 
 						const errorSpan = document.createElement('span');
@@ -2234,7 +2261,7 @@ function bindFormContainerEvents() {
 
 		formContainer.setAttribute('data-bound', 'true');
 
-		formContainer.addEventListener("click", async function (e) {
+		formContainer.addEventListener("click", async function(e) {
 			const formWrap = e.target.closest('.section-form-wrap');
 			if (!formWrap) return;
 
@@ -2253,7 +2280,19 @@ function bindFormContainerEvents() {
 				let data = {};
 				formWrap.querySelectorAll("input, select, textarea").forEach(input => {
 					const key = input.name?.split('.').pop().replace(/\[\d+\]/, '');
-					if (key) data[key] = input.value;
+					if (key === "comId") {
+						if (input.dataset.userid) {
+							data[key] = input.dataset.userid;
+							data["comName"] = input.value;         // 보여주기용 comName ← ✅ 이것만 추가해도 충분
+						} else {
+							alert("회사명을 자동완성 리스트에서 선택해 주세요.");
+							input.focus();
+							throw new Error("comId는 반드시 자동완성으로 선택된 userId여야 함");
+						}
+					} else {
+						data[key] = input.value;
+					}
+
 				});
 
 				const vo = makeVO(thisType, data);

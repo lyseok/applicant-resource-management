@@ -45,6 +45,6 @@
 	
 	<delete id="deleteMySkill">
 		DELETE FROM MY_SKILL
-		 WHERE MY_SKILL_CODE = #{mySkillCode}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>
