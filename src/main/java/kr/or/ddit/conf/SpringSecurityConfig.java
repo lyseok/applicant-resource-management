@@ -146,6 +146,8 @@ public class SpringSecurityConfig {
 //   }
 	@Autowired
 	private CorsConfigurationSource authCorsConfigurationSource;
+	@Autowired
+	private CorsConfigurationSource apiCorsConfigurationSource;
 	
 	@Bean
 	public SecurityContextRepository securityContextRepository() {
@@ -168,6 +170,7 @@ public class SpringSecurityConfig {
    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
    
       http.securityMatcher("/**")
+      	 .cors(cors -> cors.configurationSource(apiCorsConfigurationSource))
          .csrf(csrf->csrf.disable())
          .authorizeHttpRequests(authroize->
             authroize

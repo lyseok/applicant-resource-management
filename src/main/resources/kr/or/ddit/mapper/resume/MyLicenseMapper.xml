@@ -50,6 +50,6 @@
 	
 	<delete id="deleteMyLicense">
 		DELETE FROM MY_LICENSE
-		 WHERE MY_LICENSE = #{myLicense}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>

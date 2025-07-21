@@ -51,6 +51,6 @@
 	
 	<delete id="deleteSupport">
 		DELETE FROM SUPPORT 
-		 WHERE SUPPORT_NO = #{supportNo}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>

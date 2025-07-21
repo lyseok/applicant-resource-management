@@ -20,17 +20,20 @@ public class AdminProjectAjaxServiceImpl implements AdminProjectAjaxService{
 
 	@Override
 	public List<ProjectVO> readProjectUserIdList(String userId) {
-		return mapper.selectProjectUserIdList(userId);
+//		return mapper.selectProjectUserIdList(userId);
+		return null;
 	}
 
 	@Override
 	public ProjectVO readProjectByPk(String prjNo) {
-		return mapper.selectProjectByPk(prjNo);
+//		return mapper.selectProjectByPk(prjNo);
+		return null;
 	}
 
 	@Override
 	public int createProject(ProjectVO project) {
-		return mapper.insertProject(project);
+//		return mapper.insertProject(project);
+		return 0;
 	}
 
 	@Override
@@ -40,7 +43,8 @@ public class AdminProjectAjaxServiceImpl implements AdminProjectAjaxService{
 
 	@Override
 	public int removeProject(String prjNo) {
-		return mapper.deleteProject(prjNo);
+//		return mapper.deleteProject(prjNo);
+		return 0;
 	}
 
 }
