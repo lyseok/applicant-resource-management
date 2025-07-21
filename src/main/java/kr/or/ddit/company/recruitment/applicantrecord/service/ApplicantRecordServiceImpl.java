@@ -94,7 +94,7 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 				inputResume.setResumeNo(resumeNo);
 				inputResume.setUserId(userId);
 				ResumeVO detailResume = resumeService.readResumeDetail(inputResume);
-//				detailResume.setApplicantId(id);
+				detailResume.setApplicantId(id);
 				return detailResume;
 			})
 			.collect(Collectors.toList());

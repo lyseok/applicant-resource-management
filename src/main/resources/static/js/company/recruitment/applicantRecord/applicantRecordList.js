@@ -346,8 +346,6 @@ async function fetchApplicantData(recruitmentNo) {
       const stepKey = "step" + row.STEP;
       if (!applicantDataTemp[stepKey]) applicantDataTemp[stepKey] = [];
       
-      const resumeNo = row.RESUMEURL
-      const userId = row.USERID
       
 		let score = null;
 		if (row.STEP_TYPE === 'RERP-001') score = row.EXAM_SCORE;
@@ -357,7 +355,6 @@ async function fetchApplicantData(recruitmentNo) {
         applicantDataTemp[stepKey].push({
         bir: row.bir,
         name: row.APPLICANT_NAME,
-        resumeNo: resumeNo || "#",
         career: row.career ?? 0,
         language: row.language ?? 0,
         major: row.major ?? "",
@@ -367,8 +364,6 @@ async function fetchApplicantData(recruitmentNo) {
         pass: row.PASS ?? "-",
         score: score,
         
-        _userId:userId,
-        _recruitmentNo : row.RECRUITMENT_NO,
         _applicantId : row.APPLICANT_ID,
         _processNo : row.PROCESS_NO,
         _step : row.STEP,
@@ -467,14 +462,15 @@ async function fetchFinalPassers(recruitmentNo){
 }
 
 function mergeResumeDetail(resumeDetailList){
+	console.log('병합 대상 resume array:', resumeDetailList);
 	const allApplicants = Object.values(applicantData).flat();
 
-	resumeDetailList.forEach(detail => {
-		const applicantId = detail.applicantId;
-		const resume = detail.resume;
+	resumeDetailList.forEach(resume => {
+		const applicantId = resume.applicantId;
+		if (!applicantId || !resume) return;
 
 		const targets = allApplicants.filter(app => app._applicantId === applicantId);
-		if (targets.length === 0 || !resume) return;
+		if (targets.length === 0) return;
 
 		targets.forEach(app => {
 			app.bir = app.bir || resume.birth;
@@ -482,7 +478,10 @@ function mergeResumeDetail(resumeDetailList){
 			app.language = app.language || (resume.languageSkillList?.map(l => l.languageName).join(', ') || '');
 			app.cert = app.cert?.length ? app.cert : (resume.myLicenseList?.map(l => l.licenseName) || []);
 			app.skill = app.skill?.length ? app.skill : (resume.mySkillList?.map(s => s.skillName) || []);
-			app.major = app.major || (resume.educationList?.[0]?.major || '');
+			app.major = app.major || (resume.educationList?.[0]?.departmentCode || '');
+			
+			app.resumeNo = resume.resumeNo || "";
+			app._userId = resume.userId || app._userId;
 		});
 	});
 }
@@ -508,3 +507,28 @@ async function fetchResumeDetail(){
 		console.error("상세 이력서 정보 가져오기 실패", err);
 	}
 }
+
+document.addEventListener('click', function(e) {
+  const $target = e.target.closest('.resume-link');
+  if (!$target) return;
+
+  const resumeNo = $target.dataset.resumeNo;
+  const userId = $target.dataset.userId;
+
+  if (!resumeNo || !userId) {
+    alert('이력서 정보가 부족합니다.');
+    return;
+  }
+
+  const popupUrl = `/mypage/resume/${resumeNo}/${userId}`;
+  const width = 1000;
+  const height = 800;
+  const left = (window.innerWidth - width) / 2;
+  const top = (window.innerHeight - height) / 2;
+
+  window.open(
+    popupUrl,
+    'resumePopup',
+    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+  );
+});
