@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.ddit.dto.CompanyInfoDTO;
 import kr.or.ddit.dto.CompanyOpProfitDTO;
+import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.dto.CompanySalesDTO;
 import kr.or.ddit.member.common.companyDetailView.service.CompanyDetailViewService;
 import kr.or.ddit.vo.common.CompanyVO;
@@ -53,5 +54,12 @@ public class CompanyDetailViewAjaxController {
 		List<RecruitmentNoticeVO> notice = companyDetailViewService.readRecruitmentNoticeByUserId(userId);
 		log.info("notice----{}", notice);
 		return notice;
+	}
+	
+	@GetMapping("/salary/{userId}")
+	public List<CompanySalaryDTO> companyGetSalaryInfo(@PathVariable("userId") String userId){
+		List<CompanySalaryDTO> salaries = companyDetailViewService.readSalaryStatisticsById(userId);
+		log.info("salary----{}", salaries);
+		return salaries;
 	}
 }
