@@ -2,6 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.project.PrjAplcntMapper">
 
+<!-- TagVO -->
+<resultMap id="TagVOMap" type="kr.or.ddit.vo.common.TagVO">
+  <id     property="tagNo"   column="TAG_NO"/>
+  <result property="tagName" column="TAG_NAME"/>
+</resultMap>
+
+<!-- PrjAnncBoardTagVO -->
+<resultMap id="PrjAnncBoardTagVOMap" type="kr.or.ddit.vo.project.PrjAnncBoardTagVO">
+  <id     property="tagNo"     column="TAG_NO"/>
+  <id     property="prjAnncNo" column="PRJ_ANNC_NO"/>
+  <association property="tag" javaType="kr.or.ddit.vo.common.TagVO" resultMap="TagVOMap"/>
+</resultMap>
+
+<!-- PrjAplcntVO -->
+<resultMap id="PrjAplcntVOMap" type="kr.or.ddit.vo.project.PrjAplcntVO">
+  <id     property="prjAplcntNo"    column="PRJ_APLCNT_NO"/>
+  <result property="resumeNo"       column="RESUME_NO"/>
+  <result property="userId"         column="USER_ID"/>
+  <result property="aplcntStatusCode" column="APLCNT_STATUS_CODE"/>
+  <result property="aplcntDate"     column="APLCNT_DATE"/>
+  <result property="rcrtPsncntNo"   column="RCRT_PSNCNT_NO"/>
+  <result property="prjAnncNo"      column="PRJ_ANNC_NO"/>
+  <!-- resume, member association 필요시 추가 -->
+</resultMap>
+
+<!-- PrjRcrtPsncntVO -->
+<resultMap id="PrjRcrtPsncntVOMap" type="kr.or.ddit.vo.project.PrjRcrtPsncntVO">
+  <id     property="rcrtPsncntNo"   column="RCRT_PSNCNT_NO"/>
+  <id     property="prjAnncNo"      column="PRJ_ANNC_NO"/>
+  <result property="jobCode"        column="JOB_CODE"/>
+  <result property="rcrtPsncnt"     column="RCRT_PSNCNT"/>
+  <collection property="aplcntList"
+              ofType="kr.or.ddit.vo.project.PrjAplcntVO"
+              resultMap="PrjAplcntVOMap"/>
+</resultMap>
+
+<!-- PrjAnncBbsVO (최상위) -->
+<resultMap id="PrjAnncBbsVOMap" type="kr.or.ddit.vo.project.PrjAnncBbsVO">
+  <id     property="prjAnncNo"        column="PRJ_ANNC_NO"/>
+  <result property="userId"           column="USER_ID"/>
+  <result property="memName"          column="MEM_NAME"/>
+  <result property="prjEmpTitle"      column="PRJ_EMP_TITLE"/>
+  <result property="prjTopic"         column="PRJ_TOPIC"/>
+  <result property="anncCreateDate"   column="ANNC_CREATE_DATE"/>
+  <result property="prjStartPlanDate" column="PRJ_START_PLAN_DATE"/>
+  <result property="prjEndPlanDate"   column="PRJ_END_PLAN_DATE"/>
+  <result property="prjAnncHit"       column="PRJ_ANNC_HIT"/>
+  <result property="prjAnncContent"   column="PRJ_ANNC_CONTENT"/>
+  <result property="anncEndPlanDate"  column="ANNC_END_PLAN_DATE"/>
+  <result property="anncEndYn"        column="ANNC_END_YN"/>
+  <collection property="prjAnncBoardTagList"
+              ofType="kr.or.ddit.vo.project.PrjAnncBoardTagVO"
+              resultMap="PrjAnncBoardTagVOMap"/>
+  <collection property="prjRcrtPsncntList"
+              ofType="kr.or.ddit.vo.project.PrjRcrtPsncntVO"
+              resultMap="PrjRcrtPsncntVOMap"/>
+</resultMap>
+
 <select id="selectPrjRcrtPsncntList">
 	SELECT 
 		PRJ_APLCNT_NO
@@ -12,6 +70,48 @@
 		, RCRT_PSNCNT_NO
 		, PRJ_ANNC_NO
 	FROM PRJ_APLCNT
+</select>
+
+<select id="selectMyPrjRcrtPsncntList" resultMap="PrjAnncBbsVOMap">
+	SELECT 
+	    AP.PRJ_APLCNT_NO
+	    , AP.RESUME_NO
+	    , AP.USER_ID
+	    , AP.APLCNT_STATUS_CODE
+	    , AP.APLCNT_DATE
+	    , AP.RCRT_PSNCNT_NO
+	    , AP.PRJ_ANNC_NO
+	    
+	    , RC.RCRT_PSNCNT_NO
+	    , RC.PRJ_ANNC_NO
+	    , RC.JOB_CODE
+	    , RC.RCRT_PSNCNT
+	    
+	    , AN.PRJ_ANNC_NO
+	    , AN.USER_ID
+	    , AN.PRJ_EMP_TITLE
+	    , AN.PRJ_TOPIC
+	    , AN.ANNC_CREATE_DATE
+	    , AN.PRJ_START_PLAN_DATE
+	    , AN.PRJ_END_PLAN_DATE
+	    , AN.PRJ_ANNC_HIT
+	    , AN.PRJ_ANNC_CONTENT
+	    , AN.ANNC_END_PLAN_DATE
+	    , AN.ANNC_END_YN
+	
+	    , TAG.TAG_NAME
+	    
+	FROM PRJ_APLCNT AP
+	LEFT OUTER JOIN PRJ_RCRT_PSNCNT RC
+	    ON AP.RCRT_PSNCNT_NO = RC.RCRT_PSNCNT_NO
+	    AND AP.PRJ_ANNC_NO = RC.PRJ_ANNC_NO
+	LEFT OUTER JOIN PRJ_ANNC_BBS AN
+	    ON RC.PRJ_ANNC_NO = AN.PRJ_ANNC_NO
+	LEFT OUTER JOIN PRJ_ANNC_BOARD_TAG TA
+	    ON TA.PRJ_ANNC_NO = AN.PRJ_ANNC_NO
+	LEFT OUTER JOIN TAG
+	    ON TA.TAG_NO = TAG.TAG_NO
+	WHERE AP.USER_ID = #{userId}
 </select>
 
 <select id="selectPrjRcrtPsncntByPk">
@@ -26,6 +126,20 @@
 		FROM PRJ_APLCNT
 	WHERE PRJ_APLCNT_NO = #{prjAplcntNo}
 </select>
+
+<select id="duplicationPrjRcrtPsncnt">
+  SELECT PRJ_APLCNT_NO
+  FROM PRJ_APLCNT
+  WHERE USER_ID = #{userId}
+    AND PRJ_ANNC_NO = #{prjAnncNo}
+</select>
+
+<update id="updateStatusCode">
+	UPDATE PRJ_APLCNT
+	SET
+		APLCNT_STATUS_CODE = #{aplcntStatusCode}
+	WHERE PRJ_APLCNT_NO = #{prjAplcntNo}
+</update>
 
 <insert id="insertPrjRcrtPsncnt">
 	<selectKey resultType="string" keyProperty="prjAplcntNo" order="BEFORE">

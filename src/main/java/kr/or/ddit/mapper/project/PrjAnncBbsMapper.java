@@ -9,6 +9,8 @@ import kr.or.ddit.vo.project.PrjAnncBbsVO;
 @Mapper
 public interface PrjAnncBbsMapper {
 	public List<PrjAnncBbsVO> selectPrjAnncBbsList();
+	public List<PrjAnncBbsVO> selectMyPrjAnncBbsList(String userId);
+	public List<PrjAnncBbsVO> selectMyApplicantPrjAnncBbsList(String userId);
 	public PrjAnncBbsVO selectPrjAnncBbsByPk(String prjAnncNo);
 	public int insertPrjAnncBbs(PrjAnncBbsVO prjAnncBbs);
 	public int updatePrjAnncBbs(PrjAnncBbsVO prjAnncBbs);

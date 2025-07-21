@@ -27,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AdminCommuTagAjaxController {
 
-	private AdminCommuTagService service;
-	private ErrorsUtils errorsUtils;  //검증 추가해야 함
+	private final AdminCommuTagService service;
+	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/{tagNo}/{boardNo}")
 	public ResponseEntity<CommuTagVO> getOnetag(

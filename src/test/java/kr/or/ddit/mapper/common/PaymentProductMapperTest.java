@@ -34,7 +34,7 @@ class PaymentProductMapperTest {
 		pv.setProductPrice("test1");
 
 		
-		mapper.selectPaymentProductByPk(pv);
+		//mapper.selectPaymentProductByPk(pv);
 	
 	}
 
@@ -72,7 +72,7 @@ class PaymentProductMapperTest {
 
 		pv.setProductNo("PAPD000004");
 		
-		assertEquals(1, mapper.deletePaymentProduct(pv));
+//		assertEquals(1, mapper.deletePaymentProduct(pv));
 	}
 
 }

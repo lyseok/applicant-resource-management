@@ -14,10 +14,15 @@ public class ProjectVO implements Serializable {
 	private String projectBoardNo;
 	private String projectName;
 	private String projectContents;
+	
 	private String projectStatus;
+	private String projectStatusName;
+	
 	private String createDate;
 	private String finishDate;
 	private String deleteDate;
+	private String projectColor;
 	
 	private List<PrjMemVO> prjMemList;
+	private ChatroomVO chatroom;
 }

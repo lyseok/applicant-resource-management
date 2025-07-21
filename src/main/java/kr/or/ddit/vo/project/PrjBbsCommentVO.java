@@ -15,4 +15,7 @@ public class PrjBbsCommentVO implements Serializable {
 	private String commentContent;
 	private String createDate;
 	private String deleteDate;
+	
+	private PrjBbsVO prjBbs;
+	private PrjMemVO prjMem;
 }

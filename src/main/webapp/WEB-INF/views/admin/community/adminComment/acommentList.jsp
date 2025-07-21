@@ -1,48 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<title>띹잡 고객센터 | 댓글 목록</title>
+<title>띹잡 고객센터 | 문의사항 답글</title>
 
 <body>
 
-	<h4>관리자 게시판 댓글 목록</h4>
+	<p class="h4">문의 답글 목록</p><br>
 	
-<table class="table">
-	<thead>
-		<tr>
-			<th>댓글 번호</th>
-			<th>사용자 ID</th>
-			<th>게시글 번호</th>
-			<th>댓글 내용</th>
-			<th>작성 일시</th>
-			<th>삭제일시</th>
-			<th>댓글 상태</th>
-		</tr>
-	</thead>
-	<tbody>
-		<c:if test="${not empty acommentList}">
-			<c:forEach items="${acommentList}" var="acomment">
-				<c:url value="/admin/adminComment/detail" var="detailURL">
-					<c:param name="boardCommentNo" value="${acomment.boardCommentNo }"/>
-				</c:url>
-				<tr>
-					<td>
-					<a href="${detailURL}">${acomment.boardCommentNo}</a>
-					</td>
-					<td>${acomment.users.userId}</td>  <!-- has A 관계 -->					
-					<td>${acomment.boardNo}</td>
-					<td>${acomment.boardCommentContent}</td>
-					<td>${acomment.boardWriteDate}</td>
-					<td>${acomment.boardDeleteDate}</td>
-					<td>${acomment.boardCommentStatus}</td>
-				</tr>
-			</c:forEach>
-		</c:if>
-		<c:if test="${empty acommentList }">
-			<tr>
-				<td colspan="9">댓글 없음.</td>
-			</tr>
-		</c:if>		
-	</tbody>
-</table>
+	<ul id="acommentList"></ul>
+	<input type="hidden" value="boardNo" name="boardNo">
+
+<script>
+//답글 전체가 나오고
+fetch(`/ajax/admin/board/admin_comment`)
+	.then(resp => {resp.json()
+		.then(rslt=> {
+			const acommentList = document.querySelector("#acommentList");
+			let html = "";
+			rslt.forEach(item => {
+				console.log("아이템 나오니? :", item);
+				html += `
+					<p class="h4">답글 목록</p>
+					<li>작성자: \${item.userId}</li>
+					<li>문의글: 
+						<a href="/admin/board/admin_board/detail?no=\${item.boardNo}">
+						\${item.boardNo.boardTitle}
+						</a>
+					</li>
+					<li>답변: \${item.boardCommentContent}</li>
+					<li>등록일시: \${item.boardWriteDate}</li>
+					<li>삭제일시: \${item.boardDeleteDate}</li>
+					<li>답변 상태: \${item.boardCommentStatus}</li><hr/>`;
+			});
+			acommentList.innerHTML = html;
+	});
+});
+</script>
 </body>

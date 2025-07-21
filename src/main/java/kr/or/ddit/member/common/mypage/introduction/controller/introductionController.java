@@ -171,8 +171,9 @@ public class introductionController {
 		if(!errors.hasErrors()) {
 			itrdVO.setUserId(userId);
 			itrdVO.setIntroductionNo(no);
+			log.info("자소서번호  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", no);
 			service.editIntroduction(itrdVO);
-			lvn = "redirect:/mypage/introduction/" + itrdVO.getIntroductionNo();
+			lvn = "redirect:/mypage/introduction/" + no;
 		} else {
 			log.info("유효성 검사 실패!!!");
 			String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
@@ -180,10 +181,11 @@ public class introductionController {
 
 	        // 입력 데이터 유지용 add FlashAttribute
 	        redirectAttributes.addFlashAttribute(MODELNAME, itrdVO);
-	        lvn = "redirect:/mypage/introduction/edit/" + itrdVO.getIntroductionNo();
+	        lvn = "redirect:/mypage/introduction/edit/" + no;
 		}		
 		return lvn;
 	}
+
 	
 	
 	

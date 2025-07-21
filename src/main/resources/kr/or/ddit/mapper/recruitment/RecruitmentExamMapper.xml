@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.RecruitmentExamMapper">
+
+
+ <!-- 1) 문제+보기 재사용 매핑 -->
+  <resultMap id="questionWithOptionMap" type="kr.or.ddit.vo.recruitment.RecruitmentExamQuestionsVO">
+    <id     column="recruitExamQuestNo"      property="recruitExamQuestNo"/>
+    <result column="recruitExamNo"           property="recruitExamNo"/>
+    <result column="recruitExamQuestContent" property="recruitExamQuestContent"/>
+    <collection property="optionList"
+                ofType="kr.or.ddit.vo.recruitment.RecruitmentExamOptionVO"
+                resultMap="optionMap"/>
+  </resultMap>
+
+  <!-- 보기도 resultMap 으로 -->
+  <resultMap id="optionMap" type="kr.or.ddit.vo.recruitment.RecruitmentExamOptionVO">
+    <id     column="recruitOptionNo"           property="recruitOptionNo"/>
+    <result column="recruitExamQuestNo"        property="recruitExamQuestNo"/>
+    <result column="recruitExamOptionContent"  property="recruitExamOptionContent"/>
+    <result column="recruitExamOptionCorrectYn" property="recruitExamOptionCorrectYn"/>
+  </resultMap>
+
+  <!-- 2) 시험 전체 + questionList 매핑 -->
+  <resultMap id="examWithQuestionsMap" type="kr.or.ddit.vo.recruitment.RecruitmentExamVO">
+    <id     column="recruitExamNo"         property="recruitExamNo"/>
+    <result column="processNo"             property="processNo"/>
+    <result column="recruitExamName"       property="recruitExamName"/>
+    <result column="recruitExamCutline"    property="recruitExamCutline"/>
+    <result column="recruitExamStartDate"  property="recruitExamStartDate"/>
+    <result column="recruitExamTime"       property="recruitExamTime"/>
+    <collection property="questionList"
+                ofType="kr.or.ddit.vo.recruitment.RecruitmentExamQuestionsVO"
+                resultMap="questionWithOptionMap"/>
+  </resultMap>
+
+
 	<select id="selectRecruitExamList" resultType="RecruitmentExamVO">
 	SELECT 
 		RECRUIT_EXAM_NO
@@ -37,14 +71,14 @@
 		, RECRUIT_EXAM_NAME
 		, RECRUIT_EXAM_CUTLINE
 		, RECRUIT_EXAM_START_DATE
-		, RECRUIT_EXAM_END_DATE
+		, RECRUIT_EXAM_TIME
 	) VALUES (
 		#{recruitExamNo}
 		, #{processNo}
 		, #{recruitExamName}
 		, #{recruitExamCutline}
 		, TO_DATE(#{recruitExamStartDate}, 'YYYY-MM-DD HH24:MI')
-		, TO_DATE(#{recruitExamEndDate}, 'YYYY-MM-DD HH24:MI')
+		, #{recruitExamTime}
 	)
 	</insert>
 	
@@ -61,4 +95,100 @@
 	DELETE FROM RECRUITMENT_EXAM 
 	WHERE RECRUIT_EXAM_NO = #{recruitExamNo}
 	</delete>
+	
+
+	  <select id="selectMyRecruitExams" parameterType="string" resultType="kr.or.ddit.dto.MyRecruitExamDTO">
+			SELECT
+				e.RECRUIT_EXAM_NO AS recruitExamNo,
+				e.RECRUIT_EXAM_NAME AS recruitExamName,
+				TO_CHAR(e.RECRUIT_EXAM_START_DATE, 'YYYY-MM-DD HH24:MI') AS recruitExamStartDate,
+				e.RECRUIT_EXAM_TIME AS recruitExamTime,
+				ar.APPLICANT_ID AS applicantId,
+				exam_proc.COMPANY_NAME AS companyName,
+                rn.RECRUITMENT_TITLE AS recruitmentTitle,
+		
+			CASE
+			WHEN EXISTS (
+			SELECT 1
+			FROM APPLICANT_ANSWER aa
+			WHERE aa.APPLICANT_ID = ar.APPLICANT_ID
+			AND aa.RECRUIT_EXAM_NO = e.RECRUIT_EXAM_NO
+			) THEN 1 ELSE 0
+			END AS taken
+		
+			FROM APPLICANT_RECORD ar
+		
+			JOIN APPLICANT a
+			ON ar.APPLICANT_ID = a.APPLICANT_ID
+			AND a.USER_ID = #{userId}
+			AND a.APPLICANT_DEL_DATE IS NULL
+		
+			JOIN RECRUIT_PROCESS exam_proc
+			ON ar.RECRUIT_PROCESS_NO = exam_proc.RECRUIT_PROCESS_NO
+			AND exam_proc.RECRUIT_PROCESS_TYPE = 'RERP-001'
+			AND exam_proc.RECRUIT_PROCESS_DEL_DATE IS NULL
+		
+			JOIN RECRUITMENT_EXAM e
+			ON exam_proc.RECRUIT_PROCESS_NO = e.PROCESS_NO
+			AND e.RECRUIT_EXAM_DEL_DATE IS NULL
+			
+			JOIN RECRUITMENT_NOTICE rn
+		    ON exam_proc.RECRUITMENT_NO = rn.RECRUITMENT_NO
+		   AND rn.RECRUITMENT_DEL_DATE IS NULL
+		
+			WHERE NOT EXISTS (
+			SELECT 1
+			FROM RECRUIT_PROCESS prev_proc
+			JOIN APPLICANT_RECORD prev_ar
+			ON prev_proc.RECRUIT_PROCESS_NO = prev_ar.RECRUIT_PROCESS_NO
+			AND prev_ar.APPLICANT_ID = ar.APPLICANT_ID
+			WHERE prev_proc.RECRUITMENT_NO = exam_proc.RECRUITMENT_NO
+			AND prev_proc.RECRUIT_PROCESS_DEL_DATE IS NULL
+			AND prev_proc.RECRUIT_PROCESS_NO != exam_proc.RECRUIT_PROCESS_NO
+			AND prev_ar.STEP_APPLICATION_YN = 'Y'
+			AND (prev_ar.STEP_PASS_YN IS NULL OR prev_ar.STEP_PASS_YN != 'Y')
+			)
+		
+			ORDER BY e.RECRUIT_EXAM_START_DATE
+	</select>
+  
+  <select id="selectRecruitExamQuestionWithOptionByNo" resultMap="examWithQuestionsMap">
+  	    SELECT 
+	      q.RECRUIT_EXAM_QUEST_NO     AS recruitExamQuestNo,
+	      q.RECRUIT_EXAM_NO           AS recruitExamNo,
+	      e.RECRUIT_EXAM_NAME         AS recruitExamName,
+	      e.RECRUIT_EXAM_CUTLINE      AS recruitExamCutLine,
+	      e.RECRUIT_EXAM_TIME         AS recruitExamTime,       
+	      q.RECRUIT_EXAM_QUEST_CONTENT AS recruitExamQuestContent,
+	      o.RECRUIT_OPTION_NO         AS recruitOptionNo,
+	      o.RECRUIT_EXAM_OPTION_CONTENT AS recruitExamOptionContent
+	  FROM RECRUITMENT_EXAM_QUESTIONS q
+	  JOIN RECRUITMENT_EXAM           e ON q.RECRUIT_EXAM_NO = e.RECRUIT_EXAM_NO
+	  JOIN RECRUITMENT_EXAM_OPTION    o ON q.RECRUIT_EXAM_QUEST_NO = o.RECRUIT_EXAM_QUEST_NO
+	  WHERE q.RECRUIT_EXAM_NO = #{recruitExamNo}
+	  ORDER BY q.RECRUIT_EXAM_QUEST_NO, o.RECRUIT_OPTION_NO
+  
+  </select>
+  
+  
+  <select id="selectCutlineByExamNo" resultType="int">
+    SELECT RECRUIT_EXAM_CUTLINE
+    FROM RECRUITMENT_EXAM
+    WHERE RECRUIT_EXAM_NO = #{recruitExamNo}
+  </select>
+  
+<update id="updateStepApplicationYN">
+
+
+UPDATE APPLICANT_RECORD
+SET STEP_APPLICATION_YN = 'Y'
+WHERE RECRUIT_PROCESS_NO = (SELECT PROCESS_NO
+                        FROM RECRUITMENT_EXAM
+                        WHERE RECRUIT_EXAM_NO = #{recruitExamNo}) 
+  AND APPLICANT_ID = #{applicantId}
+
+
+</update>
+	
+	
 </mapper>

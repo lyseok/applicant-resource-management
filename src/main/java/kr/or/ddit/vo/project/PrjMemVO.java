@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.project;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,4 +13,6 @@ public class PrjMemVO implements Serializable {
 	private String userId;
 	private String authorityCode;
 	private String deleteDate;
+	private String userName;
+	private String userPosition;
 }

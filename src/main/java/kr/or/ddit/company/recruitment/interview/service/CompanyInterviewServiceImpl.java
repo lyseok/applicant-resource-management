@@ -2,7 +2,10 @@ package kr.or.ddit.company.recruitment.interview.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.common.exception.DataInsertException;
 import kr.or.ddit.common.exception.DataUpdateException;
@@ -36,7 +39,9 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 	
 	@Override
 	public List<InterviewVO> readInterviewList() {
-		List<InterviewVO> interviewList = interviewMapper.selectInterviewList();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		List<InterviewVO> interviewList = interviewMapper.selectInterviewListByCompany(username);
 		for(InterviewVO inteVo : interviewList) {
 			setCodeName(inteVo);
 		}
@@ -52,6 +57,7 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 	}
 
 	@Override
+	@Transactional
 	public void createVideoInterviewLogic(VideoInterviewSaveDTO dto) {
 		VideoInterviewVO videoInterviewVO = new VideoInterviewVO();
 		videoInterviewVO.setInterviewNo(dto.getInterviewNo());
@@ -95,6 +101,7 @@ public class CompanyInterviewServiceImpl implements CompanyInterviewService{
 	}
 	
 	@Override
+	@Transactional
 	public void createInterview(InterviewVO vo) {
 	    // 1. PK로 select해서 존재여부 확인
 	    InterviewVO dbInterview = interviewMapper.selectInterviewByNo(vo.getInterviewNo());

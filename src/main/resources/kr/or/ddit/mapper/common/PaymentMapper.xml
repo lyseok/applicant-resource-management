@@ -3,30 +3,68 @@
 <mapper namespace="kr.or.ddit.mapper.common.PaymentMapper">
 
 	<insert id="insertPayment">
-	<selectKey resultType="string" keyProperty="paymentNo" order="BEFORE">
-    SELECT
-        'PAMT'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO), LENGTH('PAMT' ) + 1)), 0) + 1, 6, '0')
-    FROM PAYMENT
-</selectKey>
+		<selectKey resultType="string" keyProperty="paymentNo"
+			order="BEFORE">
+			SELECT
+			'PAMT'||
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO),
+			LENGTH('PAMT' ) + 1)), 0) + 1, 6, '0')
+			FROM PAYMENT
+		</selectKey>
 		INSERT INTO PAYMENT (
 		PAYMENT_NO
 		, USER_ID
 		, PRODUCT_NO
 		, PAYMENT_METHOD
-		, PAYMENT_DATE
+		,
+		PAYMENT_DATE
 		, PAYMENT_PAY
-		, PAYMENT_CONTRACT
+		, PAYMENT_BILLING_KEY
 		) VALUES (
 		#{paymentNo}
-		, #{userId}
+		,
+		#{userId}
 		, #{productNo}
 		, #{paymentMethod}
 		, SYSDATE
 		, #{paymentPay}
-		, #{paymentContract}
+		,
+		#{paymentBillingKey}
 		)
 	</insert>
+
+	<resultMap id="paymentResultMap" type="PaymentVO">
+		<id property="paymentNo" column="PAYMENT_NO" />
+		<result property="userId" column="USER_ID" />
+		<result property="productNo" column="PRODUCT_NO" />
+		<result property="paymentMethod" column="PAYMENT_METHOD" />
+		<result property="paymentDate" column="paymentDate" />
+		<result property="paymentPay" column="PAYMENT_PAY" />
+
+		<!-- nested mapping -->
+		<collection property="paymentProductList"
+			ofType="PaymentProductVO">
+			<result property="productNo" column="PRODUCT_NO" />
+			<result property="productName" column="PRODUCT_NAME" />
+		</collection>
+	</resultMap>
+
+	<!-- PaymentMapper.xml -->
+	<select id="selectMyPaymentList" resultMap="paymentResultMap">
+		SELECT
+		p.PAYMENT_NO,
+		p.USER_ID,
+		p.PRODUCT_NO,
+		p.PAYMENT_METHOD,
+		TO_CHAR(p.PAYMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS paymentDate,
+		p.PAYMENT_PAY,
+		pr.PRODUCT_NAME
+		FROM PAYMENT p
+		JOIN PAYMENT_PRODUCT pr ON p.PRODUCT_NO = pr.PRODUCT_NO
+		WHERE p.USER_ID = #{userId}
+		ORDER BY p.PAYMENT_DATE DESC
+	</select>
+
 
 	<select id="selectPaymentList">
 		SELECT
@@ -36,10 +74,16 @@
 		, PAYMENT_METHOD
 		, PAYMENT_DATE
 		, PAYMENT_PAY
-		, PAYMENT_CONTRACT
+		, PAYMENT_BILLING_KEY
 		FROM PAYMENT
 	</select>
 
+	<select id="checkbilling">
+		SELECT PAYMENT_BILLING_KEY
+		FROM PAYMENT
+		WHERE USER_ID
+		=#{userId}
+	</select>
 
 	<select id="selectPaymentByPk">
 		SELECT
@@ -49,20 +93,24 @@
 		, PAYMENT_METHOD
 		, PAYMENT_DATE
 		, PAYMENT_PAY
-		, PAYMENT_CONTRACT
+		, PAYMENT_BILLING_KEY
 		FROM PAYMENT
-		WHERE PAYMENT_NO = #{paymentNo}
+		WHERE
+		PAYMENT_NO = #{paymentNo}
 	</select>
 
 	<update id="updatePayment">
 		UPDATE PAYMENT
 		SET
 		USER_ID = #{userId}
-		, PRODUCT_NO = #{productNo}
+		, PRODUCT_NO =
+		#{productNo}
 		, PAYMENT_METHOD = #{paymentMethod}
-		, PAYMENT_DATE = #{paymentDate}
+		, PAYMENT_DATE =
+		#{paymentDate}
 		, PAYMENT_PAY = #{paymentPay}
-		, PAYMENT_CONTRACT = #{paymentContract}
+		, PAYMENT_BILLING_KEY =
+		#{paymentBillingKey}
 		WHERE PAYMENT_NO = #{paymentNo}
 	</update>
 

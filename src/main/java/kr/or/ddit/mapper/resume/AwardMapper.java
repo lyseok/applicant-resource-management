@@ -14,9 +14,9 @@ public interface AwardMapper {
 	// 단건 조회
 	public AwardVO selectAwardDetail(AwardVO vo);
 	// 등록
-	public void insertAward(AwardVO vo);
+	public int insertAward(AwardVO vo);
 	// 수정
-	public void updateAward(AwardVO vo);
+	public int updateAward(AwardVO vo);
 	// 삭제
-	public void deleteAward(String no);
+	public int deleteAward(String no);
 }

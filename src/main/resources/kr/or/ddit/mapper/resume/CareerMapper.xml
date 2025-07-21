@@ -153,6 +153,13 @@
 		 WHERE CAREER_NO = #{careerNo}
 	</update>
 	
+	<update id="updateCareerDelete">
+			UPDATE CAREER 
+		  SET DELETE_DATE = SYSDATE
+		 	WHERE CAREER_NO = #{careerNo}
+		  AND RESUME_NO = #{resumeNo}
+	</update>
+	
 	<delete id="deleteCareer">
 		DELETE FROM CAREER 
 		 WHERE CAREER_NO = #{careerNo}

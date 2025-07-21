@@ -16,8 +16,8 @@ public class AdminUsersServiceImpl implements AdminUsersService {
 	private final UserMapper mapper;
 
 	@Override
-	public List<UsersVO> readUsersList() {
-		return mapper.selectUsersList();
+	public List<UsersVO> readUsersList(String userRole, String userId) {
+		return mapper.selectUsersList(userRole, userId);
 	}
 
 	@Override

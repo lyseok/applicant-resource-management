@@ -22,7 +22,9 @@ import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.common.UsersVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin/common/users")
 @RequiredArgsConstructor
@@ -38,6 +40,26 @@ public class AdminUsersController {
 		return "admin/common/users/userForm";
 	}
 	
+	// 회원 목록조회
+	@GetMapping("/list")
+	public String usersList(
+		@RequestParam(required = false) String userRole
+		, @RequestParam(required = false) String userId
+		, Model model
+	) {
+		List<UsersVO> userList = service.readUsersList(userRole, userId);
+		model.addAttribute("userList", userList);
+		model.addAttribute("userRole", userRole);
+		model.addAttribute("userId", userId);
+		
+		log.info("🔥 넘어온 userRole: {}", userRole);
+		log.info("🔥 넘어온 userId: {}", userId);
+		
+		model.addAttribute("boardCss", true);
+		model.addAttribute("searchBar", true);		
+		return "admin/common/users/userList";
+	}
+
 	/*
 	private ErrorsUtils errorsUtils;
 	
@@ -52,17 +74,6 @@ public class AdminUsersController {
 	@ModelAttribute(MODELNAME)
 	public UsersVO user() {
 		return new UsersVO();
-	}
-	
-	// 회원 목록조회
-	@GetMapping("/list")
-	public String usersList(Model model) {
-		List<UsersVO> userList = service.readUsersList();
-		model.addAttribute("userList", userList);
-		
-		model.addAttribute("boardCss", true);
-		model.addAttribute("searchBar", true);		
-		return "admin/common/users/userList";
 	}
 	
 	// 회원 아이디로 단건조회

@@ -13,4 +13,6 @@ public interface RecruitmentExamOptionMapper {
 	public int insertRecrExamOption(RecruitmentExamOptionVO vo);
 	public int updateRecrExamOption(RecruitmentExamOptionVO vo);
 	public int deleteRecrExamOption(String recruitOptionNo);
+	
+	public String selectOptionCorrectYn(String recruitOptionNo);
 }

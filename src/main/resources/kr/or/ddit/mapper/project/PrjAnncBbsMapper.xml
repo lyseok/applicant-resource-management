@@ -2,37 +2,231 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.project.PrjAnncBbsMapper">
 
-<select id="selectPrjAnncBbsList">
-	SELECT 
-		PRJ_ANNC_NO
-		, USER_ID
-		, PRJ_EMP_TITLE
-		, PRJ_TOPIC
-		, ANNC_CREATE_DATE
-		, PRJ_START_PLAN_DATE
-		, PRJ_END_PLAN_DATE
-		, PRJ_ANNC_HIT
-		, PRJ_ANNC_CONTENT
-		, ANNC_END_PLAN_DATE
-		, ANNC_END_YN
-	FROM PRJ_ANNC_BBS
+<!-- TagVO -->
+<resultMap id="TagVOMap" type="kr.or.ddit.vo.common.TagVO">
+    <id     property="tagNo"   column="TAG_NO"/>
+    <result property="tagName" column="TAG_NAME"/>
+</resultMap>
+
+<!-- PrjAnncBoardTagVO -->
+<resultMap id="PrjAnncBoardTagVOMap" type="kr.or.ddit.vo.project.PrjAnncBoardTagVO">
+    <id     property="tagNo"     column="TAG_NO"/>
+    <id     property="prjAnncNo" column="PRJ_ANNC_NO"/>
+    <result property="tagDate"   column="TAG_DATE"/>
+    <!-- TagVO 연관객체 -->
+    <association property="tag" javaType="kr.or.ddit.vo.common.TagVO" resultMap="TagVOMap"/>
+</resultMap>
+
+<!-- PrjRcrtPsncntVO -->
+<resultMap id="PrjRcrtPsncntVOMap" type="kr.or.ddit.vo.project.PrjRcrtPsncntVO">
+    <id     property="rcrtPsncntNo" column="RCRT_PSNCNT_NO"/>
+    <result property="prjAnncNo"    column="PRJ_ANNC_NO"/>
+    <result property="jobCode"      column="JOB_CODE"/>
+    <result property="rcrtPsncnt"   column="RCRT_PSNCNT"/>
+    <!-- 지원자 리스트 -->
+	<collection property="aplcntList"
+	            ofType="kr.or.ddit.vo.project.PrjAplcntVO"
+	            resultMap="PrjAplcntVOMap"/>
+</resultMap>
+
+<resultMap id="PrjAplcntVOMap" type="kr.or.ddit.vo.project.PrjAplcntVO">
+  <id     property="prjAplcntNo"         column="PRJ_APLCNT_NO"/>
+  <result property="resumeNo"            column="RESUME_NO"/>
+  <result property="userId"              column="APL_USER_ID"/>
+  <result property="aplcntStatusCode"    column="APLCNT_STATUS_CODE"/>
+  <result property="aplcntDate"          column="APLCNT_DATE"/>
+  <result property="rcrtPsncntNo"        column="APL_RCRT_PSNCNT_NO"/>
+  <result property="prjAnncNo"           column="APL_PRJ_ANNC_NO"/>
+</resultMap>
+
+<!-- PrjAnncBbsVO -->
+<resultMap id="PrjAnncBbsVOMap" type="kr.or.ddit.vo.project.PrjAnncBbsVO">
+    <id     property="prjAnncNo"        column="PRJ_ANNC_NO"/>
+    <result property="userId"           column="USER_ID"/>
+    <result property="prjEmpTitle"      column="PRJ_EMP_TITLE"/>
+    <result property="prjTopic"         column="PRJ_TOPIC"/>
+    <result property="anncCreateDate"   column="ANNC_CREATE_DATE"/>
+    <result property="prjStartPlanDate" column="PRJ_START_PLAN_DATE"/>
+    <result property="prjEndPlanDate"   column="PRJ_END_PLAN_DATE"/>
+    <result property="prjAnncHit"       column="PRJ_ANNC_HIT"/>
+    <result property="prjAnncContent"   column="PRJ_ANNC_CONTENT"/>
+    <result property="anncEndPlanDate"  column="ANNC_END_PLAN_DATE"/>
+    <result property="anncEndYn"        column="ANNC_END_YN"/>
+    <result property="memName" column="MEM_NAME"/>
+    <!-- 태그 리스트 -->
+    <collection property="prjAnncBoardTagList"
+                ofType="kr.or.ddit.vo.project.PrjAnncBoardTagVO"
+                resultMap="PrjAnncBoardTagVOMap"/>
+  	<!-- 모집 인원 리스트 -->
+    <collection property="prjRcrtPsncntList"
+                ofType="kr.or.ddit.vo.project.PrjRcrtPsncntVO"
+                resultMap="PrjRcrtPsncntVOMap"/>
+</resultMap>
+
+<select id="selectPrjAnncBbsList" resultMap="PrjAnncBbsVOMap">
+	SELECT
+	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
+	    B.USER_ID,             -- 사용자 ID
+	    M.MEM_NAME,            -- 사용자명 
+	    B.PRJ_EMP_TITLE,       -- 게시글 제목
+	    B.PRJ_TOPIC,           -- 프로젝트 주제
+	    B.ANNC_CREATE_DATE,    -- 작성일시
+	    B.PRJ_START_PLAN_DATE, -- 프로젝트 시작 예정일
+	    B.PRJ_END_PLAN_DATE,   -- 프로젝트 마감 예정일
+	    B.PRJ_ANNC_HIT,        -- 조회수
+	    B.PRJ_ANNC_CONTENT,    -- 내용
+	    B.ANNC_END_PLAN_DATE,  -- 모집 마감 예정일
+	    B.ANNC_END_YN,         -- 모집 마감 여부
+	    B.DELETE_DATE,         -- 삭제일시
+	    T.TAG_NO,              -- 태그번호
+	    T.TAG_DATE,            -- 태그 일자
+	    C.TAG_NAME             -- 태그명 ← 추가
+	FROM
+	    PRJ_ANNC_BBS B
+	LEFT OUTER JOIN
+	    PRJ_ANNC_BOARD_TAG T
+	ON
+	    B.PRJ_ANNC_NO = T.PRJ_ANNC_NO
+	LEFT OUTER JOIN
+	    TAG C
+	ON
+	    T.TAG_NO = C.TAG_NO
+   	LEFT OUTER JOIN 
+   		MEMBER M 
+   	ON 
+   		B.USER_ID = M.USER_ID
+    ORDER BY B.ANNC_CREATE_DATE DESC
 </select>
 
-<select id="selectPrjAnncBbsByPk">
+<select id="selectMyPrjAnncBbsList" resultMap="PrjAnncBbsVOMap">
+	SELECT
+	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
+	    B.USER_ID,             -- 사용자 ID
+	    M.MEM_NAME,            -- 사용자명 
+	    B.PRJ_EMP_TITLE,       -- 게시글 제목
+	    B.PRJ_TOPIC,           -- 프로젝트 주제
+	    B.ANNC_CREATE_DATE,    -- 작성일시
+	    B.PRJ_START_PLAN_DATE, -- 프로젝트 시작 예정일
+	    B.PRJ_END_PLAN_DATE,   -- 프로젝트 마감 예정일
+	    B.PRJ_ANNC_HIT,        -- 조회수
+	    B.PRJ_ANNC_CONTENT,    -- 내용
+	    B.ANNC_END_PLAN_DATE,  -- 모집 마감 예정일
+	    B.ANNC_END_YN,         -- 모집 마감 여부
+	    B.DELETE_DATE,         -- 삭제일시
+	    T.TAG_NO,              -- 태그번호
+	    T.TAG_DATE,            -- 태그 일자
+	    C.TAG_NAME             -- 태그명 ← 추가
+	FROM
+	    PRJ_ANNC_BBS B
+	LEFT OUTER JOIN
+	    PRJ_ANNC_BOARD_TAG T
+	ON
+	    B.PRJ_ANNC_NO = T.PRJ_ANNC_NO
+	LEFT OUTER JOIN
+	    TAG C
+	ON
+	    T.TAG_NO = C.TAG_NO
+   	LEFT OUTER JOIN 
+   		MEMBER M 
+   	ON 
+   		B.USER_ID = M.USER_ID
+   	WHERE B.USER_ID = #{userId}
+    ORDER BY B.ANNC_CREATE_DATE DESC
+</select>
+
+<select id="selectMyApplicantPrjAnncBbsList" resultMap="PrjAnncBbsVOMap">
 	SELECT 
-		PRJ_ANNC_NO
-		, USER_ID
-		, PRJ_EMP_TITLE
-		, PRJ_TOPIC
-		, ANNC_CREATE_DATE
-		, PRJ_START_PLAN_DATE
-		, PRJ_END_PLAN_DATE
-		, PRJ_ANNC_HIT
-		, PRJ_ANNC_CONTENT
-		, ANNC_END_PLAN_DATE
-		, ANNC_END_YN
-	FROM PRJ_ANNC_BBS
-	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+	    AP.PRJ_APLCNT_NO
+	    , AP.RESUME_NO
+	    , AP.USER_ID
+	    , AP.APLCNT_STATUS_CODE
+	    , AP.APLCNT_DATE
+	    , AP.RCRT_PSNCNT_NO
+	    , AP.PRJ_ANNC_NO
+	    
+	    , RC.RCRT_PSNCNT_NO
+	    , RC.PRJ_ANNC_NO
+	    , RC.JOB_CODE
+	    , RC.RCRT_PSNCNT
+	    
+	    , AN.PRJ_ANNC_NO
+	    , AN.USER_ID
+	    , AN.PRJ_EMP_TITLE
+	    , AN.PRJ_TOPIC
+	    , AN.ANNC_CREATE_DATE
+	    , AN.PRJ_START_PLAN_DATE
+	    , AN.PRJ_END_PLAN_DATE
+	    , AN.PRJ_ANNC_HIT
+	    , AN.PRJ_ANNC_CONTENT
+	    , AN.ANNC_END_PLAN_DATE
+	    , AN.ANNC_END_YN
+	
+	    , TAG.TAG_NAME
+	    
+	FROM PRJ_APLCNT AP
+	LEFT OUTER JOIN PRJ_RCRT_PSNCNT RC
+	    ON AP.RCRT_PSNCNT_NO = RC.RCRT_PSNCNT_NO
+	    AND AP.PRJ_ANNC_NO = RC.PRJ_ANNC_NO
+	LEFT OUTER JOIN PRJ_ANNC_BBS AN
+	    ON RC.PRJ_ANNC_NO = AN.PRJ_ANNC_NO
+	LEFT OUTER JOIN PRJ_ANNC_BOARD_TAG TA
+	    ON TA.PRJ_ANNC_NO = AN.PRJ_ANNC_NO
+	LEFT OUTER JOIN TAG
+	    ON TA.TAG_NO = TAG.TAG_NO
+	WHERE AP.USER_ID = #{userId}
+</select>
+
+<select id="selectPrjAnncBbsByPk" resultMap="PrjAnncBbsVOMap">
+	SELECT
+	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
+	    B.USER_ID,             -- 사용자 ID
+	    M.MEM_NAME,            -- 사용자명
+	    B.PRJ_EMP_TITLE,       -- 게시글 제목
+	    B.PRJ_TOPIC,           -- 프로젝트 주제
+	    B.ANNC_CREATE_DATE,    -- 작성일시
+	    B.PRJ_START_PLAN_DATE, -- 프로젝트 시작 예정일
+	    B.PRJ_END_PLAN_DATE,   -- 프로젝트 마감 예정일
+	    B.PRJ_ANNC_HIT,        -- 조회수
+	    B.PRJ_ANNC_CONTENT,    -- 내용
+	    B.ANNC_END_PLAN_DATE,  -- 모집 마감 예정일
+	    B.ANNC_END_YN,         -- 모집 마감 여부
+	    B.DELETE_DATE,         -- 삭제일시
+	
+	    -- 태그 관련
+	    T.TAG_NO,
+	    T.TAG_DATE,
+	    C.TAG_NAME,
+	
+	    -- 모집 인원 관련
+	    P.RCRT_PSNCNT_NO,
+	    P.JOB_CODE,
+	    P.RCRT_PSNCNT,
+	    
+	    -- 지원자(프로젝트 지원자) 관련 (RCRT_PSNCNT_NO를 기준)
+	    A.PRJ_APLCNT_NO,
+	    A.RESUME_NO,
+	    A.USER_ID      AS APL_USER_ID,
+	    A.APLCNT_STATUS_CODE,
+	    A.APLCNT_DATE,
+	    A.RCRT_PSNCNT_NO AS APL_RCRT_PSNCNT_NO,
+	    A.PRJ_ANNC_NO  AS APL_PRJ_ANNC_NO
+	
+	FROM
+	    PRJ_ANNC_BBS B
+	LEFT OUTER JOIN
+	    PRJ_ANNC_BOARD_TAG T ON B.PRJ_ANNC_NO = T.PRJ_ANNC_NO
+	LEFT OUTER JOIN
+	    TAG C ON T.TAG_NO = C.TAG_NO
+	LEFT OUTER JOIN
+	    PRJ_RCRT_PSNCNT P ON B.PRJ_ANNC_NO = P.PRJ_ANNC_NO
+	LEFT OUTER JOIN
+	    MEMBER M ON B.USER_ID = M.USER_ID
+    LEFT OUTER JOIN
+    	PRJ_APLCNT A 
+    		ON P.RCRT_PSNCNT_NO = A.RCRT_PSNCNT_NO
+    		AND B.PRJ_ANNC_NO    = A.PRJ_ANNC_NO
+	WHERE
+	    B.PRJ_ANNC_NO = #{prjAnncNo}
 </select>
 
 <insert id="insertPrjAnncBbs">
@@ -60,8 +254,8 @@
 		, #{prjEmpTitle}
 		, #{prjTopic}
 		, SYSDATE
-		, #{prjStartPlanDate}
-		, #{prjEndPlanDate}
+		, REPLACE(#{prjStartPlanDate}, '-', '')
+		, REPLACE(#{prjEndPlanDate}, '-', '')
 		, 0
 		, #{prjAnncContent}
 		, #{anncEndPlanDate}
@@ -74,8 +268,8 @@
 	SET 
 		PRJ_EMP_TITLE = #{prjEmpTitle}
 		, PRJ_TOPIC = #{prjTopic}
-		, PRJ_START_PLAN_DATE = #{prjStartPlanDate}
-		, PRJ_END_PLAN_DATE = #{prjEndPlanDate}
+		, PRJ_START_PLAN_DATE = REPLACE(#{prjStartPlanDate}, '-', '')
+		, PRJ_END_PLAN_DATE = REPLACE(#{prjEndPlanDate}, '-', '')
 		, PRJ_ANNC_CONTENT = #{prjAnncContent}
 		, ANNC_END_PLAN_DATE = #{anncEndPlanDate}
 		, ANNC_END_YN = #{anncEndYn}
