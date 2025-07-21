@@ -2,7 +2,7 @@ function doBilling() {
 
 	const body = document.body;
 	const billingKey = PbillingKey;
-	const customerKey = PcustomerKey;
+	const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
 	const amount = Pamount;
 	const orderName = PproductName;
 	const productNo = PproductNo;;
@@ -11,6 +11,7 @@ function doBilling() {
 	console.log("customerKey", customerKey);
 	console.log("amount", amount);
 	console.log("orderName", orderName);
+
 	fetch("/company/toss/api/billing/execute", {
 		method: "POST",
 		headers: {
@@ -26,18 +27,25 @@ function doBilling() {
 	})
 		.then(res => {
 			console.log("res :", res);
+			console.log("orderName",orderName)
 			alert("로그확인시간");
 			return res.json();
 		})
 		.then(data => {
-			console.log("data",data);
-			alert("결제 성공!");
+			console.log("data 전체", data);
 
-			const { billingKey, orderName, amount, paymentKey } = data;
+			/*const { billingKey, orderName, amount, paymentKey } = data;*/
+
+			const paymentKey = data.paymentKey;
+			const amount = Pamount;
+			const orderName = PproductName;
+			const billingKey = PbillingKey;
+
 			console.log("billingKey:", billingKey);
 			console.log("amount:", amount);
 			console.log("orderName:", orderName);
 			console.log("paymentKey:", paymentKey);
+			alert("결제 성공!");
 
 			window.location.href =
 				`/company/payment/success/executebilling?billingKey=${billingKey}` +

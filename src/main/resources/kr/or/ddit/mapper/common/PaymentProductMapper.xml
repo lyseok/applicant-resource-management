@@ -41,6 +41,18 @@ FROM PAYMENT_PRODUCT
 ORDER BY PRODUCT_NAME ASC
 </select>
 
+<select id="selectPaymentProductListByPk" resultType="PaymentProductVO">
+SELECT 
+PRODUCT_NO
+	, PRODUCT_NAME
+	, PRODUCT_TYPE
+	, PRODUCT_DETAIL
+	, PRODUCT_PRICE
+	, PRODUCT_IMG
+	, PRODUCT_PERIOD
+FROM PAYMENT_PRODUCT
+WHERE PRODUCT_NO = #{productNo}
+</select>
 
 <select id="selectPaymentProductByPk">
 SELECT 

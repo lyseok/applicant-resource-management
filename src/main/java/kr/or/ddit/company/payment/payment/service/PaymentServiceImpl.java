@@ -22,9 +22,9 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public PaymentVO selectPaymentByPk(PaymentVO vo) {
+	public PaymentVO selectPaymentByPk(String userId) {
 		// TODO Auto-generated method stub
-		return mapper.selectPaymentByPk(vo);
+		return mapper.selectPaymentByPk(userId);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public PaymentVO checkbilling(String userId) {
+	public String checkbilling(String userId) {
 		
 		return mapper.checkbilling(userId);
 	}

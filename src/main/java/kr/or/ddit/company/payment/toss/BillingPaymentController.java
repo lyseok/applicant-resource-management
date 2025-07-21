@@ -16,6 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.p6spy.engine.common.Loggable;
 
 import jakarta.servlet.http.HttpSession;
+import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
 import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
@@ -47,6 +49,9 @@ public class BillingPaymentController {
 	
 	@Autowired
 	PaymentProductServiceImpl service;
+	
+	@Autowired
+	PaymentServiceImpl Pservice;
 
 	@GetMapping("/check/billing")
 	@ResponseBody
@@ -54,8 +59,13 @@ public class BillingPaymentController {
 		Map<String, Object> map = new HashMap<>();
 		log.info("session id: {}", session.getId());
 		String billingKey = (String) session.getAttribute("billingKey");
+		String customerKey = (String) session.getAttribute("customerKey");
+		if(billingKey == null || billingKey == "") {
+			billingKey = Pservice.checkbilling(Pservice.getUserId());		
+		}
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
 		map.put("billingKey", billingKey);
+		map.put("customerKey", customerKey);
 		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
 		log.info("map 반환값 : {}", map);
 		return map;
@@ -149,7 +159,7 @@ public class BillingPaymentController {
 				// billingKey를 저장
 //				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("result",jsonNode.toPrettyString());
-				
+			
 				session.setAttribute("authKey", authKey);
 				session.setAttribute("customerKey", customerKey);
 				session.setAttribute("billingKey", billingKey);
@@ -208,6 +218,7 @@ public class BillingPaymentController {
 	public ResponseEntity<String> executeBilling(@RequestBody Map<String, Object> payload) {
 		String billingKey = (String) payload.get("billingKey");
 		String customerKey = (String) payload.get("customerKey");
+		String orderName = (String) payload.get("orderName");
 //		int amount = (int) payload.get("amount");
 		int amount = Integer.parseInt(String.valueOf(payload.get("amount")));
 		String orderId = "ORDER_" + System.currentTimeMillis();
@@ -218,16 +229,16 @@ public class BillingPaymentController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Basic " + encodedKey); // Secret Key
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		log.info("customerKey", customerKey);
+		log.info("customerKey : {} ", customerKey);
 		log.info("headers값 : {}",headers);
 		log.info("tossSecretKey : {}",tossSecretKey);
 		Map<String, Object> body = new HashMap<>();
 		body.put("amount", amount);
 		body.put("orderId", orderId);
 		body.put("customerKey", customerKey);
-		body.put("orderName", "정기구독요금제");
+		body.put("orderName", orderName);
 		body.put("customerEmail", "test");
-		body.put("customerName", "김철민");
+		body.put("customerName", Pservice.getUserId());
 		body.put("billingKey", billingKey);
 		
 		log.info("body값 : {}", body);
@@ -238,10 +249,13 @@ public class BillingPaymentController {
 		String url = "https://api.tosspayments.com/v1/billing/" + billingKey;
 
 		RestTemplate restTemplate = new RestTemplate();
-
+		restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 		try {
 			ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+			log.info("이젠 진짜 그만하자 : {}",response.getBody());
+			
 			return ResponseEntity.ok(response.getBody());
+			
 		} catch (HttpClientErrorException e) {
 			return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
 		}
