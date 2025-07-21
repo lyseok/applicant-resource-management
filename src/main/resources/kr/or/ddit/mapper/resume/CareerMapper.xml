@@ -149,7 +149,7 @@
 		   	   , CAREER_YEAR = #{careerYear}
 		   	   , SALARY = #{salary}
 		   	   , LOCATION = #{location} 
-		   	   , COM_ID = # {comId}
+		   	   , COM_ID = #{comId}
 		 WHERE CAREER_NO = #{careerNo}
 	</update>
 	

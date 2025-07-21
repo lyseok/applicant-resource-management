@@ -171,6 +171,7 @@
 		       , UPDATE_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
 		       , RESUME_SUBMIT_YN = #{resumeSubmitYn}
 		       , RESUME_DELETE_DATE = #{resumeDeleteDate}
+		       , INTRODUCTION_NO = #{introductionNo}
 		 WHERE RESUME_NO = #{resumeNo}
 	</update>	
 	

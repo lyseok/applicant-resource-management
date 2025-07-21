@@ -1306,13 +1306,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			if (addBtn.closest("#section-careerList")) {
 				// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-				document.querySelector("#comId").addEventListener("input", function() {
-					const inputVal = this.value.trim();
+				// 동적으로 생성된 input에도 적용됨
+				document.addEventListener("input", function(e) {
+					const inputEl = e.target;
+					if (inputEl.id !== "comId") return;
+
+					const inputVal = inputEl.value.trim();
 					const suggestionBox = document.querySelector("#comSuggestions");
 					suggestionBox.innerHTML = ""; // 초기화
 
 					if (!inputVal) {
-						this.removeAttribute("data-userid"); // 입력값 없을 때 속성 제거
+						inputEl.removeAttribute("data-userid");
 						return;
 					}
 
@@ -1327,65 +1331,70 @@ document.addEventListener("DOMContentLoaded", function() {
 						li.innerText = c.comName;
 						li.dataset.userid = c.userId;
 						li.classList.add("list-group-item", "list-group-item-action");
-						li.style.maxWidth = "301px"
+						li.style.maxWidth = "301px";
 
-						// 클릭 시 input 값과 data 설정
 						li.addEventListener("click", () => {
-							const inputEl = document.querySelector("#comId");
 							inputEl.value = c.comName;
-							inputEl.dataset.userid = c.userId; // userId 설정
+							inputEl.dataset.userid = c.userId;
 							suggestionBox.innerHTML = "";
+
+							// 📌 상위 .section-form-wrap 에 있는 data-idx 가져오기
+							const parentWrap = inputEl.closest(".section-form-wrap");
+							if (!parentWrap) return;
+
+							const idx = parseInt(parentWrap.dataset.idx);
+							console.log("회사명 idx 확인", idx)
+							console.log("comid  확인",  c.userId)
+							console.log("리슘 몇번쨰에 들어갈건지 확인",  resume.careerList[idx].comId)
+							
+							if (!isNaN(idx)) {
+							  // 해당 idx가 아직 없는 경우, 미리 빈 객체로 생성
+							  if (!resume.careerList[idx]) resume.careerList[idx] = {};
+							  resume.careerList[idx].comId = c.userId;
+							}
 						});
 
 						suggestionBox.appendChild(li);
 
-						// 입력값이 정확히 일치하는 항목 확인
 						if (c.comName === inputVal) {
-							this.dataset.userid = c.userId;
+							inputEl.dataset.userid = c.userId;
 							exactMatchFound = true;
 						}
 					});
 
-					// 정확히 일치하는 항목이 없는 경우 userId 속성 제거
 					if (!exactMatchFound) {
-						this.removeAttribute("data-userid");
+						inputEl.removeAttribute("data-userid");
 					}
 				});
 			}
 
 			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			document.addEventListener("DOMContentLoaded", function() {
-				const searchButton = document.querySelector(".search_com_btn");
-				if (searchButton) {
-					const searchButton = document.querySelector(".search_com_btn");
-					searchButton.addEventListener("click", function(e) {
-						const comId = document.querySelector("#comId");
-						const userId = comId.dataset.userid;
-						const userName = comId.value;
-						console.log(userId)
-						console.log(userName)
-						axios.get(`/ajax/career/company/${userId}`)
-							.then(resp => {
-								const comSearchMsg = document.querySelector("#comSearchMsg");
-								console.log(resp.data)
-								if (resp.data.success == true) {
-									comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
-									comSearchMsg.classList.remove("text-danger")
-									comSearchMsg.classList.add("text-primary", "fs-14")
-								} else {
-									comId.value = "";
-									comSearchMsg.innerHTML = `${resp.data.message}`;
-									comSearchMsg.classList.remove("text-primary")
-									comSearchMsg.classList.add("text-danger")
-								}
-							})
-							.catch(err => {
-								console.error(err);
-							})
-					})
-				} else {
-					console.warn("search_com_btn 버튼을 찾을 수 없습니다.");
-				}
+			document.addEventListener("click", function (e) {
+				if (e.target.classList.contains("search_com_btn")) {
+					const comId = document.querySelector("#comId");
+					const userId = comId.dataset.userid;
+					const userName = comId.value;
+					console.log(userId)
+					console.log(userName)
+					axios.get(`/ajax/career/company/${userId}`)
+						.then(resp => {
+							const comSearchMsg = document.querySelector("#comSearchMsg");
+							console.log(resp.data)
+							if (resp.data.success == true) {
+								comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
+								comSearchMsg.classList.remove("text-danger")
+								comSearchMsg.classList.add("text-primary", "fs-14")
+							} else {
+								comId.value = "";
+								comSearchMsg.innerHTML = `${resp.data.message}`;
+								comSearchMsg.classList.remove("text-primary")
+								comSearchMsg.classList.add("text-danger")
+							}
+						})
+						.catch(err => {
+							console.error(err);
+						})
+					}
 			})
 
 			// section-content, +버튼 숨김
@@ -1439,10 +1448,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						// JS JSON 객체에 넘기기 위한 반복문 코드
 						formWrap.querySelectorAll("input, select, textarea").forEach(input => {
-							const fromDataName = input.name.split('.').pop().replace(/\[\d+\]/, '');
-							data[fromDataName] = input.value;
-						});
+							const name = input.name;
+							if (!name) return;
 
+							const key = name.split('.').pop().replace(/\[\d+\]/, '');
+							console.log("DEBUG:", {
+								id: input.id,
+								name: input.name,
+								key,
+								value: input.value,
+								userid: input.dataset.userid
+							});
+							// ⭐ 'comId'인 경우는 value가 아니라 data-userid로 처리
+								if (key === "comId" && input.dataset.userid) {
+									data[key] = input.dataset.userid;
+								} else {
+									data[key] = input.value;
+								}
+						});
 						// 위에서 만든 변수들을 vo 형태에 맞게 세팅할 수 있게 미리만들어둔 함수에 넘겨줌
 						const vo = makeVO(thisType, data);
 						const key = arrayKey[thisType];
@@ -1940,7 +1963,18 @@ document.addEventListener("submit", function(e) {
 	}
 
 	console.log("resume 객체 확인 >>>> ", resume)
+	function safeStringify(obj) {
+	  const seen = new WeakSet();
+	  return JSON.stringify(obj, function (key, value) {
+	    if (typeof value === "object" && value !== null) {
+	      if (seen.has(value)) return "[Circular]";
+	      seen.add(value);
+	    }
+	    return value;
+	  }, 2);
+	}
 
+	console.log("resume >>>", safeStringify(resume));
 	// axios 비동기 전송
 	axios.post("/mypage/resume/create", formData)
 		.then(resp => {

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -110,6 +111,16 @@ public class ResumeController {
 			@RequestPart(value = "comImage", required = false) MultipartFile comImage) {
 		log.info("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ 이력서 번호!!!!!!!!!!!!!!!! = {}", vo.getResumeNo());
 		if (!bindingResult.hasErrors()) {
+			// pk가 있을경우 업데이트 처리
+			if(vo.getResumeNo() != null) {
+				int result = service.editResume(vo);
+				if(result > 0) return ResponseEntity.ok("ok");
+				else {
+					return ResponseEntity
+								.status(HttpStatus.INTERNAL_SERVER_ERROR)
+								.body("이력서 수정 중 오류가 발생했습니다.");
+				}
+			}				
 			service.createResume(vo);
 			return ResponseEntity.ok("ok");
 		} else {
