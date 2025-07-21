@@ -149,7 +149,7 @@
 		   	   , CAREER_YEAR = #{careerYear}
 		   	   , SALARY = #{salary}
 		   	   , LOCATION = #{location} 
-		   	   , COM_ID = # {comId}
+		   	   , COM_ID = #{comId}
 		 WHERE CAREER_NO = #{careerNo}
 	</update>
 	
@@ -162,6 +162,6 @@
 	
 	<delete id="deleteCareer">
 		DELETE FROM CAREER 
-		 WHERE CAREER_NO = #{careerNo}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>
