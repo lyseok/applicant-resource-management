@@ -54,16 +54,14 @@ public class CorsConfig {
 	@Bean
 	public CorsConfigurationSource apiCorsConfigurationSource() {
 		CorsConfiguration corsConfig = new CorsConfiguration();
-		
-		corsConfig.setAllowedOrigins(allowedOrigins);
-		corsConfig.setAllowedMethods(allowedMethods);
-		corsConfig.setAllowedHeaders(allowedHeaders);
-		corsConfig.setAllowCredentials(allowCredentials);
-		
-		UrlBasedCorsConfigurationSource corsConfigSource = 
-				new UrlBasedCorsConfigurationSource();
-		corsConfigSource.registerCorsConfiguration("/api/**", corsConfig);
-		return corsConfigSource;
+	    // 아래 allowedOrigins에 와일드카드(*) 사용 금지! 반드시 명확히
+	    corsConfig.setAllowedOrigins(allowedOrigins); // e.g., [http://localhost:3000]
+	    corsConfig.setAllowedMethods(allowedMethods);
+	    corsConfig.setAllowedHeaders(allowedHeaders);
+	    corsConfig.setAllowCredentials(true); // true로!
+	    UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
+	    corsConfigSource.registerCorsConfiguration("/api/**", corsConfig);
+	    return corsConfigSource;
 	}
 }
 
