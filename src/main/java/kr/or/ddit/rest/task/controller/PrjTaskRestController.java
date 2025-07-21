@@ -26,13 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api")
 @Slf4j
 @RequiredArgsConstructor
 public class PrjTaskRestController {
 	private final PrjTaskService prjTaskService;
 	
-	@GetMapping("/{prjNo}/tasks")
+	@GetMapping("/projects/{prjNo}/tasks")
 	public ResponseEntity<List<PrjTaskVO>> getPrjTaskApi(
 	        @PathVariable String prjNo,
 	        @RequestParam(required = false) String status,
@@ -42,13 +42,13 @@ public class PrjTaskRestController {
 	    return ResponseEntity.ok(list);
 	}
 	
-	@PostMapping
+	@PostMapping("/tasks")
     public ResponseEntity<PrjTaskVO> createTask(@RequestBody PrjTaskVO prjTaskVO) {
         PrjTaskVO createdTask = prjTaskService.createTask(prjTaskVO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
 	
-	@PutMapping("/{taskNo}")
+	@PutMapping("/tasks/{taskNo}")
 	public ResponseEntity<PrjTaskVO> putPrjTaskApi(
 	        @PathVariable String taskNo,
 	        @RequestBody PrjTaskVO prjTask) {
@@ -56,7 +56,7 @@ public class PrjTaskRestController {
 	    return ResponseEntity.ok(updatedTask);
 	}
 	
-	@DeleteMapping("/{taskNo}")
+	@DeleteMapping("/tasks/{taskNo}")
 	public ResponseEntity<?> deletePrjTaskApi(@PathVariable String taskNo) {
 	    int updated = prjTaskService.deleteTask(taskNo); // 1: 성공, 0: 실패
 
@@ -76,7 +76,7 @@ public class PrjTaskRestController {
 	    }
 	}
 	
-	@PatchMapping("/{taskNo}/status")
+	@PatchMapping("/tasks/{taskNo}/status")
 	public ResponseEntity<PrjTaskVO> patchPrjTaskStatusApi(
 	        @PathVariable String taskNo,
 	        @RequestBody Map<String, String> statusData
@@ -86,7 +86,7 @@ public class PrjTaskRestController {
 	    return ResponseEntity.ok(updatedTask);
 	}
 
-	@PatchMapping("/{taskNo}/progress")
+	@PatchMapping("/tasks/{taskNo}/progress")
 	public ResponseEntity<PrjTaskVO> patchPrjTaskProgressApi(
 	        @PathVariable String taskNo,
 	        @RequestBody Map<String, String> progressData
@@ -96,7 +96,7 @@ public class PrjTaskRestController {
 	    return ResponseEntity.ok(updatedTask);
 	}
 	
-	@GetMapping("/{prjNo}/tasks/statistics")
+	@GetMapping("/tasks/{prjNo}/tasks/statistics")
     public ResponseEntity<PrjTaskStatisticsVO> getTaskStatistics(@PathVariable String prjNo) {
         PrjTaskStatisticsVO stats = prjTaskService.getTaskStatistics(prjNo);
         return ResponseEntity.ok(stats);
