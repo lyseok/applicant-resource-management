@@ -35,6 +35,10 @@ public class RecruitNoticeAjaxController {
 		@Valid @RequestBody RecruitmentNoticeVO notice
 		, BindingResult bindingResult
 	){
+		if (notice.getProcessList() == null || notice.getProcessList().isEmpty()) {
+		       bindingResult.rejectValue("processList", "NotEmpty", "전형은 최소 1개 이상 등록해야 합니다.");
+		 }
+		
 		if(bindingResult.hasErrors()) {
 			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
 			return ResponseEntity.badRequest().body(errors);
