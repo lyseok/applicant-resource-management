@@ -1,12 +1,10 @@
 /**
  *
  */
-//const no = document.querySelector("#noHidden").value;
-//const userId = document.querySelector("#userIdHidden").value;
 const aboardDetail = document.querySelector("#aboardDetail");
 const acommentListContainer = document.querySelector("#acommentListContainer");
 const acommentFormContainer = document.querySelector("#acommentFormContainer");
-const aboardform = document.querySelector("#aboardForm");
+//const aboardform = document.querySelector("#aboardForm");
 
 // 1
 const abno = function(no){

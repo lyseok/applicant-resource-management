@@ -6,8 +6,41 @@ const detTitle = document.querySelector("#detTitle");
 const listTitle = document.querySelector("#listTitle");
 const allBtns = document.querySelector("#allBtns");
 const userId = document.querySelector("#userIdHidden")?.value;
+const aboardform = document.querySelector("#aboardForm");
+
+const bhtml = function (rslt) {
+	listTitle.style.display = "block";
+	aboardform.style.display = "none";
+
+	let html = '<ul class="list-unstyled">';
+	
+	rslt.forEach((item) => {
+		html += `
+			<li class="mb-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title d-flex justify-content-between align-items-center">
+							<span>${item.boardTitle}</span>
+							<button class="btn btn-sm btn-outline-primary" onclick="abno('${item.boardNo}')">상세 보기</button>
+						</h5>
+					</div>
+				</div>
+			</li>
+		`;
+	});
+
+	html += '</ul>';
+
+	let isthere = rslt.some(item => item.boardTypeCode !== 'BRDD-001');
+	if (isthere) newFormBtn();
+
+	allBtns.innerHTML = '';
+	aboardList.innerHTML = html;
+};
+
 
 // 이게 리스트
+/*
 const bhtml = function (rslt) {
 	listTitle.style.display = "block";
 	aboardform.style.display = "none";
@@ -26,15 +59,13 @@ const bhtml = function (rslt) {
 			<hr/>
 			`;
 	});
-	//console.log("타입 나오나", rslt[0].boardTypeCode);
-	//if(rslt[0].boardTypeCode !== 'BRDD-001') newFormBtn();
-	
 	let isthere = rslt.some(item => item.boardTypeCode !== 'BRDD-001');
 	if (isthere) newFormBtn();
 	
 	allBtns.innerHTML = '';
 	aboardList.innerHTML = html;
 };
+*/
 
 const pageTitle = function(){
 	detTitle.innerHTML = "";
