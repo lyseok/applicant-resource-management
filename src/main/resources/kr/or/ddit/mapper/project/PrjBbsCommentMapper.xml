@@ -68,4 +68,42 @@
 	WHERE COMMENT_NO = #{commentNo}
 </delete>
 
+<!-- 댓글 등록 -->
+<insert id="insertPrjBbsComment" parameterType="PrjBbsCommentVO">
+	<selectKey resultType="string" keyProperty="commentNo"
+		order="BEFORE">
+		SELECT
+		'PCOM'||
+		LPAD(NVL(TO_NUMBER(SUBSTR(MAX(COMMENT_NO), LENGTH('PCOM' ) + 1)), 0) + 1, 6, '0')
+		FROM PRJ_BBS_COMMENT
+	</selectKey>
+	INSERT INTO PRJ_BBS_COMMENT
+	(COMMENT_NO, PRJ_POST_NO, PRJ_NO, USER_ID, COMMENT_CONTENT, CREATE_DATE)
+	VALUES
+	(#{commentNo}, #{prjPostNo}, #{prjNo}, #{userId}, #{commentContent},
+	SYSDATE)
+</insert>
+
+<!-- 댓글 수정 -->
+<update id="updatePrjBbsComment" parameterType="PrjBbsCommentVO">
+	UPDATE PRJ_BBS_COMMENT
+	SET COMMENT_CONTENT = #{commentContent}
+	WHERE COMMENT_NO = #{commentNo}
+	AND USER_ID = #{userId}
+</update>
+
+<!-- 댓글 삭제 (실제 삭제 or soft delete) -->
+<update id="deletePrjBbsComment">
+	UPDATE PRJ_BBS_COMMENT
+	SET DELETE_DATE = SYSDATE
+	WHERE COMMENT_NO = #{commentNo}
+	AND USER_ID = #{userId}
+</update>
+
+<!-- 댓글 단건 조회 (수정/등록 후 반환용) -->
+<select id="selectPrjBbsComment" parameterType="string"
+	resultType="PrjBbsCommentVO">
+	SELECT * FROM PRJ_BBS_COMMENT WHERE COMMENT_NO = #{commentNo}
+</select>
+
 </mapper>

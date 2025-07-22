@@ -17,5 +17,5 @@ public interface SpecialtyMapper {
 	// 수정
 	public int updateSpecialty(SpecialtyVO vo);
 	// 삭제
-	public int deleteSpecialty(SpecialtyVO vo);	
+	public int deleteSpecialty(String no);	
 }

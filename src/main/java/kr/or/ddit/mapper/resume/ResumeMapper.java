@@ -1,6 +1,7 @@
 package kr.or.ddit.mapper.resume;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,7 +10,7 @@ import kr.or.ddit.vo.resume.ResumeVO;
 @Mapper
 public interface ResumeMapper {
 	// 전체 리스트 조회
-	public List<ResumeVO> selectResumeList(String userId);
+	public List<Map<String, Object>> selectResumeList(String userId);
 	// 단건 조회
 	public ResumeVO selectResumeDetail(ResumeVO resumeVO);
 	// 등록
@@ -31,7 +32,7 @@ public interface ResumeMapper {
 	public int selectUserResumeNoCount(String userId);
 	
 	// 이력서 제목으로 검색조회
-	public List<ResumeVO> selectResumeSearch(ResumeVO resumeVO);
+	public List<Map<String, Object>> selectResumeSearch(ResumeVO resumeVO);
 	
 	
 }

@@ -3,6 +3,14 @@ let currentStep = 'step1'; // 초기 단계
 // 컬럼 정보(스텝별로 다르면 이렇게 관리)
 const columns = {};
 
+const STEP_TYPE_LABELS ={
+	'RERP-001' : '시험',
+	'RERP-002' : '면접',
+	'RERP-003' : '서류'
+};
+
+const FINAL_STEP_KEY = 'final';
+
 function generateColumns(step, type) {
   const baseCols = [
     { key: 'bir', label: '생년월일' },
@@ -12,20 +20,24 @@ function generateColumns(step, type) {
     { key: 'language', label: '어학' },
     { key: 'major', label: '전공' },
     { key: 'cert', label: '자격증' },
-    { key: 'skill', label: '기술' },
-    { key: 'attend', label: '응시여부' },
-    { key: 'pass', label: '합격여부' }
+    { key: 'skill', label: '기술' }
   ];
 
-  // 점수 항목 이름 다르게 처리
-  const scoreLabel = type === 'RERP-001' ? '시험점수'
-                  : type === 'RERP-002' ? '면접점수'
-                  : '점수';
-
-  baseCols.push({ key: 'score', label: scoreLabel });
-  baseCols.push({ key: 'passSelect', label: '합격선택' });
-
-  columns["step" + step] = baseCols;
+  if(step === FINAL_STEP_KEY){
+	baseCols.push({key : 'alarm', label : '합격 알림 여부'});
+	baseCols.push({key : 'accept', label : '채용 수락 여부'});
+	baseCols.push({key : 'hireDate', label : '입사 예정일'});
+	baseCols.push({key : 'passSelect', label : '메일 발송'});
+  }else{
+	baseCols.push({key : 'attend', label : '응시 여부'});
+	baseCols.push({key : 'pass', label : '합격 여부'});
+	const scoreLabel = type === 'RERP-001' ? '시험점수'
+					: type === 'RERP-002' ? '면접점수'
+					: '점수';
+	baseCols.push({key : 'score', label: scoreLabel});
+	baseCols.push({key : 'passSelect', label: '합격선택'});
+  }
+  columns[step === FINAL_STEP_KEY ? FINAL_STEP_KEY : "step" + step] = baseCols;
 }
 
 function formatCellValue(key, value, applicant) {
@@ -67,6 +79,7 @@ let applicantData = {};
 
 // 테이블 렌더링 함수
 function renderApplicantTable() {
+	console.log("render", currentStep, columns[currentStep], applicantData[currentStep]);
   const tableHead = document.querySelector('#mainTable thead tr');
   const tableBody = document.querySelector('#mainTable tbody');
   
@@ -83,11 +96,9 @@ function renderApplicantTable() {
   // 헤더 렌더링
   tableHead.innerHTML = columnSet.map(col => `<th class="text-center">${col.label}</th>`).join('');
   
+  
   // "지원자 ID"가 없는 행 제외
-  const validDataList = Array.isArray(dataList)
-    ? dataList.filter(row => row.name)
-    : [];
-
+  const validDataList = Array.isArray(dataList) ? dataList.filter(row => row.name): [];
   if (validDataList.length === 0) {
     tableBody.innerHTML = ''; // 아무 행도 안 만듦
     return;
@@ -325,18 +336,16 @@ async function fetchApplicantData(recruitmentNo) {
       step: r.STEP,
       step_type: r.STEP_TYPE
     })).filter((v, i, arr) =>
-      v.step && arr.findIndex(d => d.step === v.step) === i
-    );
+      v.step && arr.findIndex(d => d.step === v.step) === i);
     
     stepMetaList.forEach(info => generateColumns(info.step, info.step_type));
+	renderStepTabs(stepMetaList); // 여기에 탭 생성 추가
 
     const applicantDataTemp = {};
     result.forEach(row => {
       const stepKey = "step" + row.STEP;
       if (!applicantDataTemp[stepKey]) applicantDataTemp[stepKey] = [];
       
-      const resumeNo = row.RESUMEURL
-      const userId = row.USERID
       
 		let score = null;
 		if (row.STEP_TYPE === 'RERP-001') score = row.EXAM_SCORE;
@@ -346,7 +355,6 @@ async function fetchApplicantData(recruitmentNo) {
         applicantDataTemp[stepKey].push({
         bir: row.bir,
         name: row.APPLICANT_NAME,
-        resumeNo: resumeNo || "#",
         career: row.career ?? 0,
         language: row.language ?? 0,
         major: row.major ?? "",
@@ -356,8 +364,6 @@ async function fetchApplicantData(recruitmentNo) {
         pass: row.PASS ?? "-",
         score: score,
         
-        _userId:userId,
-        _recruitmentNo : row.RECRUITMENT_NO,
         _applicantId : row.APPLICANT_ID,
         _processNo : row.PROCESS_NO,
         _step : row.STEP,
@@ -366,6 +372,11 @@ async function fetchApplicantData(recruitmentNo) {
     });
 
     applicantData = applicantDataTemp;
+    await fetchFinalPassers(recruitmentNo);
+    generateColumns(FINAL_STEP_KEY);
+    await fetchResumeDetail();
+    currentStep = 'step' + stepMetaList[0]?.step;
+    updateStepActionButton();
     renderApplicantTable();
     fillFilterOptions();
   } catch (error) {
@@ -375,3 +386,149 @@ async function fetchApplicantData(recruitmentNo) {
 
 fetchApplicantData(recruitmentNo);
 console.log(applicantData);
+
+function renderStepTabs(stepMetaList){
+	const $nav = document.querySelector('.nav-tabs');
+	$nav.innerHTML = '';
+	
+	stepMetaList.forEach((stepInfo, idx)=>{
+		const step = stepInfo.step;
+		const type = STEP_TYPE_LABELS[stepInfo.step_type] || '단계';
+		const isActive = idx === 0 ? 'active' : '';
+		const li = document.createElement('li');
+		li.className = 'nav-item';
+		li.innerHTML = `<button class="nav-link ${isActive}" data-step="step${step}">${step}차 ${type}</button>`;
+		$nav.appendChild(li);
+	});
+	
+	// 최종 합격자
+	const finalTab = document.createElement('li');
+	finalTab.className = 'nav-item';
+	finalTab.innerHTML = `<button class="nav-link" data-step="${FINAL_STEP_KEY}">최종 합격자</button>`;
+	$nav.appendChild(finalTab);
+	
+	document.querySelectorAll('.nav-link[data-step]').forEach(btn =>{
+		btn.addEventListener('click', function (){
+			document.querySelectorAll('.nav-link[data-step]').forEach(b=>b.classList.remove('active'));
+			this.classList.add('active');
+			currentStep = this.getAttribute('data-step');
+			updateStepActionButton();
+			renderApplicantTable();
+		});
+	});
+}
+
+function updateStepActionButton(){
+	const $btn = document.getElementById('stepActionBtn');
+	if (!$btn) return; // 버튼이 없으면 무시
+	
+	if(currentStep === FINAL_STEP_KEY){
+		$btn.textContent = '합격 메일 전송';
+	}else{
+		$btn.textContent = '단계 마감';
+	}
+}
+
+async function fetchFinalPassers(recruitmentNo){
+	try{
+		const response = await axios.get(`/applicant/record/passer/${recruitmentNo}`);
+		const result = response.data;
+		
+		generateColumns(FINAL_STEP_KEY);
+		
+		const mergedFinalList = [];
+		
+		// 모든 step에서 지원자 데이터 하나의 배열로 flatten
+		const allApplicants = Object.values(applicantData).flat();
+		
+		result.forEach(passer => {
+			const base = allApplicants.find(a => a._applicantId === passer.applicantId);
+			if (!base) return;
+
+			mergedFinalList.push({
+				...base, // 기존 applicant 정보
+				alarm: passer.passAlarmYn,
+				accept: passer.recruitAcceptYn,
+				hireDate: passer.hireDate ?? "-",
+				passSelect: true,
+				_passerNo: passer.passerNo
+			});
+		});
+
+		applicantData[FINAL_STEP_KEY] = mergedFinalList;
+	} catch (e) {
+		console.error('최종합격자 조회 실패:', e);
+	}
+}
+
+function mergeResumeDetail(resumeDetailList){
+	console.log('병합 대상 resume array:', resumeDetailList);
+	const allApplicants = Object.values(applicantData).flat();
+
+	resumeDetailList.forEach(resume => {
+		const applicantId = resume.applicantId;
+		if (!applicantId || !resume) return;
+
+		const targets = allApplicants.filter(app => app._applicantId === applicantId);
+		if (targets.length === 0) return;
+
+		targets.forEach(app => {
+			app.bir = app.bir || resume.birth;
+			app.career = app.career || (resume.careerList?.[0]?.year || 0);
+			app.language = app.language || (resume.languageSkillList?.map(l => l.languageName).join(', ') || '');
+			app.cert = app.cert?.length ? app.cert : (resume.myLicenseList?.map(l => l.licenseName) || []);
+			app.skill = app.skill?.length ? app.skill : (resume.mySkillList?.map(s => s.skillName) || []);
+			app.major = app.major || (resume.educationList?.[0]?.departmentCode || '');
+			
+			app.resumeNo = resume.resumeNo || "";
+			app._userId = resume.userId || app._userId;
+		});
+	});
+}
+
+async function fetchResumeDetail(){
+	const allApplicants = Object.values(applicantData).flat();
+
+	const targetIds = [...new Set(
+		allApplicants
+			.filter(a => !a.bir || !a.career || !a.language || !a.major || !a.cert?.length || !a.skill?.length)
+			.map(a => a._applicantId)
+	)];
+
+	if (targetIds.length === 0) return;
+
+	try {
+		const response = await axios.post('/applicant/record/resume', targetIds); // 서버에서 applicantId로 처리
+		const resumeDetailList = response.data;
+
+		mergeResumeDetail(resumeDetailList); // applicantId 기준 병합
+		renderApplicantTable();
+	} catch (err) {
+		console.error("상세 이력서 정보 가져오기 실패", err);
+	}
+}
+
+document.addEventListener('click', function(e) {
+  const $target = e.target.closest('.resume-link');
+  if (!$target) return;
+
+  const resumeNo = $target.dataset.resumeNo;
+  const userId = $target.dataset.userId;
+
+  if (!resumeNo || !userId) {
+    alert('이력서 정보가 부족합니다.');
+    return;
+  }
+
+  const popupUrl = `/mypage/resume/${resumeNo}/${userId}`;
+  const width = 1000;
+  const height = 800;
+  const left = (window.innerWidth - width) / 2;
+  const top = (window.innerHeight - height) / 2;
+
+  window.open(
+    popupUrl,
+    'resumePopup',
+    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+  );
+});
