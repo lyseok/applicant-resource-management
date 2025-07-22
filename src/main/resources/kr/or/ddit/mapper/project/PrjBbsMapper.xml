@@ -68,28 +68,29 @@
 
 <select id="selectProjectPosts" resultMap="PrjBbsWithCommentMap">
     SELECT 
-        pbb.PRJ_POST_NO
-        , pbb.PRJ_NO
-        , pbb.USER_ID
-        , pbb.TITLE
-        , pbb.CREATE_DATE
-        , pbb.CONTENT
-        , pbb.DELETE_DATE
-        
-        , mem.USER_NAME
-        , mem.USER_POSITION
-        , mem.AUTHORITY_CODE
-        , mem.DELETE_DATE AS memDeleteDate
-        
-        , cmt.COMMENT_NO
-        , cmt.COMMENT_CONTENT
-        , cmt.CREATE_DATE AS commentCreateDate
-        , cmt.DELETE_DATE AS commentDeleteDate
-        , cmt.USER_ID AS commentUserId
-    FROM PRJ_BBS pbb
-    LEFT JOIN PRJ_MEM mem ON pbb.PRJ_NO = mem.PRJ_NO AND pbb.USER_ID = mem.USER_ID
-    LEFT JOIN PRJ_BBS_COMMENT cmt ON pbb.PRJ_POST_NO = cmt.PRJ_POST_NO
-    WHERE pbb.PRJ_NO = #{prjNo}
+	    pbb.PRJ_POST_NO
+	    , pbb.PRJ_NO
+	    , pbb.USER_ID
+	    , pbb.TITLE
+	    , pbb.CREATE_DATE
+	    , pbb.CONTENT
+	    , pbb.DELETE_DATE
+	
+	    , mem.USER_NAME
+	    , mem.USER_POSITION
+	    , mem.AUTHORITY_CODE
+	    , mem.DELETE_DATE AS memDeleteDate
+	
+	    , cmt.COMMENT_NO
+	    , cmt.COMMENT_CONTENT
+	    , cmt.CREATE_DATE AS commentCreateDate
+	    , cmt.DELETE_DATE AS commentDeleteDate
+	    , cmt.USER_ID AS commentUserId
+	FROM PRJ_BBS pbb
+	LEFT JOIN PRJ_MEM mem ON pbb.PRJ_NO = mem.PRJ_NO AND pbb.USER_ID = mem.USER_ID
+	LEFT JOIN PRJ_BBS_COMMENT cmt ON pbb.PRJ_POST_NO = cmt.PRJ_POST_NO AND cmt.DELETE_DATE IS NULL
+	WHERE pbb.PRJ_NO = #{prjNo}
+	  AND pbb.DELETE_DATE IS NULL
 </select>
 
 <select id="selectPrjBbsWithComments" parameterType="string" resultMap="PrjBbsWithCommentMap">

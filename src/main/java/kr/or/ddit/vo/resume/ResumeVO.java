@@ -93,5 +93,7 @@ public class ResumeVO implements Serializable {
 	private MemberVO member;
 	private List<JobVO> joblist;
 	private List<TopJobVO> topjoblist;
+	
+	private String applicantId;   // 지원자 id
 
 }

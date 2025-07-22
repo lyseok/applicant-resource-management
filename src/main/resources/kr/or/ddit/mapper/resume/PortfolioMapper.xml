@@ -83,6 +83,6 @@
 	
 	<delete id="deletePortfolio">
 		DELETE FROM PORTFOLIO 
-		 WHERE POR_CODE = #{porCode}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>
