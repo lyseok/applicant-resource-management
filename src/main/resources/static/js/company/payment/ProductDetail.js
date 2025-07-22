@@ -23,16 +23,20 @@ function subscribe() {
 			console.log("받은 데이터 : " ,data);
 			alert("잠깐 로그 확인시간");
             if (data.hasBillingKey) {
-                // ✅ billingKey가 있으면 결제 페이지 이동
-                console.log("cmProductNo");
-               
-                /*window.location.href  = "/company/toss/buyproduct";*/
-                window.location.href  = "/company/toss/buyproduct?productNo=" + productNo;
-            } else {
-                // ❌ 없으면 카드 등록 모달
-                showNoCardModal();
-            }
-        })
+				const go = confirm("등록된 카드로 결제 하시겠습니까?");
+				if(go){
+                window.location.href  = "/company/toss/buyproduct?productNo=" + productNo;					
+				} else {
+				// ❌ 카드 등록 화면으로 이동
+				requestbillingPayment();
+			}
+		} else {
+			const goToBilling = confirm("등록된 카드가 없습니다. 카드를 등록하시겠습니까?");
+			if (goToBilling) {
+				requestbillingPayment();
+			}
+		}
+	})
         .catch(err => {
 			
             console.error("Billing check error:", err);

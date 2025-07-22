@@ -80,9 +80,9 @@ public class BillingPaymentController {
 		String customerKey = (String) session.getAttribute("customerKey");
 		if(billingKey == null || billingKey == "") {
 			billingKey = Pservice.checkbilling(Pservice.getUserId());		
+			map.put("billingKey", billingKey);
 		}
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
-		map.put("billingKey", billingKey);
 		map.put("customerKey", customerKey);
 		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
 		log.info("map 반환값 : {}", map);
@@ -92,18 +92,33 @@ public class BillingPaymentController {
 	@GetMapping("/buyproduct")
 	String productFormUi(
 		@RequestParam String productNo
+		,@RequestParam(required = false) String billingKey
+		,@RequestParam(required = false) String customerKey
 		,HttpSession session
 		,Model model
 			) {
 		log.info("productNo가 씨이이이 이게 뭔데 로고 이렇게쓰면 잘 보이겠지 : {}", productNo);
-		String billingKey = (String) session.getAttribute("billingKey");
-		String customerKey = (String) session.getAttribute("customerKey ");
+		
+		if(session.getAttribute("billingKey") == null && billingKey != null) {
+			session.setAttribute("billingKey", billingKey);
+		}
+		
+		if(session.getAttribute("customerKey") == null && customerKey != null) {
+			session.setAttribute("customerKey", customerKey);
+		}
+		
+		String sessionBillingKey = (String) session.getAttribute("billingKey");
+		String sessionCustomerKey = (String) session.getAttribute("customerKey");
+		
+		log.info("최종 sessionBillingKey: {}", sessionBillingKey);
+		log.info("최종 sessionCustomerKey: {}", sessionCustomerKey);
+		
 		
 		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
 		model.addAttribute("product",product);
 		model.addAttribute("productNo",productNo);
-		session.setAttribute("customerKey", customerKey);
-		session.setAttribute("billingKey",billingKey);
+		session.setAttribute("customerKey", sessionCustomerKey);
+		session.setAttribute("billingKey",sessionBillingKey);
 //		return "/company/payment/payment/buyproduct?productNo=" + productNo;
 		return "company/payment/payment/BuyProduct";
 	}

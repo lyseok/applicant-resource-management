@@ -29,7 +29,9 @@
 <div class="row gy-4">
     <c:forEach var="product" items="${productList}">
         <div class="col-12">
-            <div class="card flex-row shadow-sm" data-product-no="${product.productNo }" data-product-name ="${product.productName}"
+            <div class="card flex-row shadow-sm"
+             data-product-no="${product.productNo }"
+              data-product-name="${product.productName}"
                    onclick="goToDetail(this)" >
                 <img src="/upload/${product.productImg}" class="img-fluid rounded-start" style="width: 200px; height: 200px; object-fit: cover;" alt="상품 이미지">
                 <div class="card-body">
@@ -38,6 +40,7 @@
                     <p class="card-text mb-1" id="amount"><strong>가격:</strong> ₩<fmt:formatNumber value="${product.productPrice}" pattern="#,##0" /></p>
                     <p class="card-text mb-1">
                         <strong>유형:</strong>
+                        
                         <c:choose>
                             <c:when test="${product.productType == 'L'}">정기권</c:when>
                             <c:when test="${product.productType == 'S'}">단건</c:when>

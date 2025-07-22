@@ -7,11 +7,11 @@
 <html>
 <head>
 <script>
-const ProductNo = "${product.productNo}";
-const BillingKey = "${sessionScope.billingKey}";
-const Amount = "${product.productPrice}";
-const customerKey = "${sessionScope.customerKey}";
-const orderName = "${product.productName}";
+	const ProductNo = "${product.productNo}";
+	const BillingKey = "${sessionScope.billingKey}";
+	const Amount = "${product.productPrice}";
+	const customerKey = "${sessionScope.customerKey}";
+	const orderName = "${product.productName}";
 </script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -50,8 +50,14 @@ const orderName = "${product.productName}";
 							name="newProductNo" value="${product.productNo}" /> <input
 							type="hidden" name="billingKey"
 							value="${payment.paymentBillingKey}" />
-						<button type="button" onclick="subscribe()">이
-							요금제로 변경하기</button>
+						<button id="change-btn"
+								class="btn btn-success"
+								data-product-no="${product.productNo}"
+								data-product-name="${product.productName}"
+								data-amount="${product.productPrice}"
+							onclick="doChangeBilling(this)">이 요금제로 변경하기
+							</button>
+
 					</form>
 
 				</div>
