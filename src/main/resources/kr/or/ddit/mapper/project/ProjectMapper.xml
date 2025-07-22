@@ -99,7 +99,7 @@
 	    p.project_board_no,
 	    p.project_name,
 	    p.project_contents,
-	    p.project_status,
+	    (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = p.project_status) as project_status,
 	    p.create_date,
 	    p.finish_date,
 	    p.delete_date,
