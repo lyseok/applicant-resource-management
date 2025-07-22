@@ -39,6 +39,8 @@ public class RecruitViewDTO implements Serializable{
 	
 	private String yearCode;
 	private String yearCodeName;
+
+	private String recruitmentFinishDate;
 	
 	@NotBlank
 	private String comName;
