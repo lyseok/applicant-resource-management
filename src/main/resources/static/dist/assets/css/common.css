@@ -3,6 +3,7 @@
 	flex-direction:column !important;
 }
 /* 폰트사이즈 */
+.fs-12{font-size:12px !important;}
 .fs-14{font-size:14px !important;}
 .fs-16{font-size:16px !important;}
 
