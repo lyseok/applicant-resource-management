@@ -6,14 +6,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+const ProductNo = "${product.productNo}";
+const BillingKey = "${sessionScope.billingKey}";
+const Amount = "${product.productPrice}";
+const customerKey = "${sessionScope.customerKey}";
+const orderName = "${product.productName}";
+</script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body class="container my-5"
-      data-billing-key="${billingKey}"
-      data-product-no="${product.productNo}"
-      data-old-payment-no="${oldPaymentNo}"
-      data-trigger-billing="${triggerBilling}">
+<body class="container my-5" data-billing-key="${billingKey}"
+	data-product-no="${product.productNo}"
+	data-old-payment-no="${oldPaymentNo}"
+	data-trigger-billing="${triggerBilling}">
 	<div style="display: flex; gap: 40px;">
 
 		<!-- 왼쪽: 현재 상품 정보 -->
@@ -34,15 +40,18 @@
 			<h3>변경 가능한 상품</h3>
 			<c:forEach var="product" items="${changeableProducts}">
 				<div style="margin-bottom: 20px; border-bottom: 1px solid #eee;">
+					${product.productNo }
 					<p>상품명: ${product.productName}</p>
 					<p>내용: ${product.productDetail}</p>
 					<p>가격: ${product.productPrice} 원</p>
 					<form id="changeForm">
-						<input type="hidden" name="oldPaymentNo" value="${payment.paymentNo}" /> 
-						<input type="hidden" name="newProductNo" value="${product.productNo}" />
-						<input type="hidden" name="billingKey" value="${payment.paymentBillingKey}" />
-						<button type="button" onclick="goToPaymentPage()">
-						이 요금제로 변경하기</button>
+						<input type="hidden" name="oldPaymentNo"
+							value="${payment.paymentNo}" /> <input type="hidden"
+							name="newProductNo" value="${product.productNo}" /> <input
+							type="hidden" name="billingKey"
+							value="${payment.paymentBillingKey}" />
+						<button type="button" onclick="subscribe()">이
+							요금제로 변경하기</button>
 					</form>
 
 				</div>
@@ -50,6 +59,7 @@
 		</div>
 
 	</div>
-<script src="/js/company/payment/ComparsionProduct.js"></script>
+	<script src="/js/company/payment/ProductDetail.js"></script>
+	<script src="/js/company/payment/ComparsionProduct.js"></script>
 </body>
 </html>

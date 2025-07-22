@@ -13,4 +13,6 @@ public interface ChatroomMapper {
 	public int insertChatroom(ChatroomVO Chatroom);
 	public int updateChatroom(ChatroomVO Chatroom);
 	public int deleteChatroom(String ChatroomNo);
+	
+	public ChatroomVO selectProjectChatroom(String prjNo);
 }

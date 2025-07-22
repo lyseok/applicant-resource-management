@@ -8,6 +8,8 @@ const failUrl = `${window.location.origin}/fail`;
 const payment = tossPayments.payment({ customerKey });
 
 async function requestBillingAuth() {
+	console.log("productNo", productNo);
+	console.log("successUrl", successUrl);
   await payment.requestBillingAuth({
     method: "CARD",
     successUrl,

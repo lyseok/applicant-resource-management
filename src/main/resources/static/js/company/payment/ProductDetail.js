@@ -62,6 +62,40 @@ function requestbillingPayment(){
 	
 	const url = `/company/toss/executebilling?productNo=${productNo}&billingKey=${billingKey}&customerKey=${customerKey}&amount=${amount}`;		
 	window.location.href = url;
-
 	
+}
+
+function changesubscribe(button) {
+	const productNo = button.dataset.productNo;
+	const billingKey = button.dataset.billingKey;
+	const customerKey = button.dataset.customerKey;
+	const amount = button.dataset.amount;
+	const orderName = button.dataset.orderName;
+
+	alert("상품번호: " + productNo);
+	console.log("커스터머키:", customerKey);
+	console.log("상품명:", orderName);
+	alert("빌링키: " + billingKey);
+
+	// 결제 가능한지 먼저 확인
+	fetch("/company/toss/check/billing", {
+		method: "GET",
+		credentials: "include"
+	})
+	.then(response => {
+		console.log("응답 status:", response);
+		return response.json();
+	})
+	.then(data => {
+		console.log("받은 데이터:", data);
+		if (data.hasBillingKey) {
+			// ✅ 결제 페이지 이동
+			window.location.href = `/company/toss/buyproduct?productNo=${productNo}`;
+		} else {
+			showNoCardModal();
+		}
+	})
+	.catch(err => {
+		console.error("Billing check error:", err);
+	});
 }

@@ -2,146 +2,135 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.PaymentMapper">
 
-	<insert id="insertPayment">
-		<selectKey resultType="string" keyProperty="paymentNo"
-			order="BEFORE">
-			SELECT
-			'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO), LENGTH('PAMT') + 1)),
-			0) + 1, 6, '0')
-			FROM PAYMENT
-		</selectKey>
-		INSERT INTO PAYMENT (
-		PAYMENT_NO,
-		USER_ID,
-		PRODUCT_NO,
-		PAYMENT_METHOD,
-		PAYMENT_DATE,
-		PAYMENT_PAY,
-		PAYMENT_BILLING_KEY,
-		START_DATE,
-		END_DATE,
-		STATUS
-		) VALUES (
-		#{paymentNo},
-		#{userId},
-		#{productNo},
-		#{paymentMethod},
-		SYSDATE,
-		#{paymentPay},
-		#{paymentBillingKey},
-		TO_CHAR(SYSDATE, 'YYYYMMDD'),
-		TO_CHAR(ADD_MONTHS(SYSDATE, 1), 'YYYYMMDD'),
-		'A'  <!-- 기본 상태: Active -->
-		)
-	</insert>
+	 <insert id="insertPayment">
+    <selectKey resultType="string" keyProperty="paymentNo" order="BEFORE">
+      SELECT 'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO), LENGTH('PAMT') + 1)), 0) + 1, 6, '0')
+      FROM PAYMENT
+    </selectKey>
+    INSERT INTO PAYMENT (
+      PAYMENT_NO,
+      USER_ID,
+      PRODUCT_NO,
+      PAYMENT_METHOD,
+      PAYMENT_DATE,
+      PAYMENT_PAY,
+      PAYMENT_BILLING_KEY,
+      START_DATE,
+      END_DATE,
+      STATUS
+    ) VALUES (
+      #{paymentNo},
+      #{userId},
+      #{productNo},
+      #{paymentMethod},
+      SYSDATE,
+      #{paymentPay},
+      #{paymentBillingKey},
+      TO_CHAR(SYSDATE, 'YYYYMMDD'),
+      TO_CHAR(ADD_MONTHS(SYSDATE, 1), 'YYYYMMDD'),
+      'A'
+    )
+  </insert>
 
-	<update id="cancelPayment">
-		UPDATE PAYMENT
-		SET STATUS = 'C'
-		WHERE PAYMENT_NO = #{paymentNo}
-	</update>
+  <update id="cancelPayment">
+    UPDATE PAYMENT
+    SET STATUS = 'C'
+    WHERE PAYMENT_NO = #{paymentNo}
+  </update>
 
-
-	<resultMap id="paymentResultMap" type="PaymentVO">
+  <resultMap id="paymentResultMap" type="PaymentVO">
     <id property="paymentNo" column="PAYMENT_NO" />
     <result property="userId" column="USER_ID" />
     <result property="productNo" column="PRODUCT_NO" />
     <result property="paymentMethod" column="PAYMENT_METHOD" />
     <result property="paymentDate" column="PAYMENT_DATE" />
     <result property="paymentPay" column="PAYMENT_PAY" />
+    <result property="paymentBillingKey" column="PAYMENT_BILLING_KEY" />
     <result property="startDate" column="START_DATE" />
     <result property="endDate" column="END_DATE" />
-    <result property="status" column="STATUS" /> <!-- ✅ 이거 추가 -->
-    
+    <result property="status" column="STATUS" />
+
     <collection property="paymentProductList" ofType="PaymentProductVO">
-        <result property="productNo" column="PRODUCT_NO" />
-        <result property="productName" column="PRODUCT_NAME" />
+      <result property="productNo" column="PRODUCT_NO" />
+      <result property="productName" column="PRODUCT_NAME" />
     </collection>
-</resultMap>
+  </resultMap>
 
-
-	<!-- PaymentMapper.xml -->
-	<select id="selectMyPaymentList" resultMap="paymentResultMap">
-		SELECT
-		p.PAYMENT_NO,
-		p.USER_ID,
-		p.PRODUCT_NO,
-		p.PAYMENT_METHOD,
-		TO_CHAR(p.PAYMENT_DATE,
-		'YYYY-MM-DD HH24:MI:SS') AS PAYMENT_DATE,
-		p.PAYMENT_PAY,
-		p.START_DATE,
-		p.END_DATE,
-		pr.PRODUCT_NAME
-		FROM PAYMENT p
-		JOIN PAYMENT_PRODUCT pr ON
-		p.PRODUCT_NO = pr.PRODUCT_NO
-		WHERE p.USER_ID = #{userId}
-		ORDER BY
-		p.PAYMENT_DATE DESC
-	</select>
-
-
-
-	<select id="selectPaymentList">
-		SELECT
-		PAYMENT_NO,
-		USER_ID,
-		PRODUCT_NO,
-		PAYMENT_METHOD,
-		PAYMENT_DATE,
-		PAYMENT_PAY,
-		PAYMENT_BILLING_KEY,
-		START_DATE,
-		END_DATE
-		FROM
-		PAYMENT
-	</select>
-
-	<select id="checkbilling">
-		SELECT PAYMENT_BILLING_KEY
-		FROM PAYMENT
-		WHERE USER_ID
-		=#{userId}
-	</select>
-
-	<select id="selectPaymentByPk">
+  <!-- ✅ 수정됨: PAYMENT_BILLING_KEY, STATUS 추가 -->
+  <select id="selectMyPaymentList" resultMap="paymentResultMap">
     SELECT
-        PAYMENT_NO,
-        USER_ID,
-        PRODUCT_NO,
-        PAYMENT_METHOD,
-        PAYMENT_DATE,
-        PAYMENT_PAY,
-        PAYMENT_BILLING_KEY,
-        START_DATE,
-        END_DATE,
-        STATUS
+      p.PAYMENT_NO,
+      p.USER_ID,
+      p.PRODUCT_NO,
+      p.PAYMENT_METHOD,
+      TO_CHAR(p.PAYMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS PAYMENT_DATE,
+      p.PAYMENT_PAY,
+      p.PAYMENT_BILLING_KEY,
+      p.START_DATE,
+      p.END_DATE,
+      p.STATUS,
+      pr.PRODUCT_NAME
+    FROM PAYMENT p
+    JOIN PAYMENT_PRODUCT pr ON p.PRODUCT_NO = pr.PRODUCT_NO
+    WHERE p.USER_ID = #{userId}
+    ORDER BY p.PAYMENT_DATE DESC
+  </select>
+
+  <select id="selectPaymentList" resultType="PaymentVO">
+    SELECT
+      PAYMENT_NO,
+      USER_ID,
+      PRODUCT_NO,
+      PAYMENT_METHOD,
+      PAYMENT_DATE,
+      PAYMENT_PAY,
+      PAYMENT_BILLING_KEY,
+      START_DATE,
+      END_DATE,
+      STATUS
+    FROM PAYMENT
+  </select>
+
+  <select id="checkbilling">
+    SELECT PAYMENT_BILLING_KEY
+    FROM PAYMENT
+    WHERE USER_ID = #{userId}
+  </select>
+
+  <select id="selectPaymentByPk" resultType="PaymentVO">
+    SELECT
+      PAYMENT_NO,
+      USER_ID,
+      PRODUCT_NO,
+      PAYMENT_METHOD,
+      PAYMENT_DATE,
+      PAYMENT_PAY,
+      PAYMENT_BILLING_KEY,
+      START_DATE,
+      END_DATE,
+      STATUS
     FROM PAYMENT
     WHERE PAYMENT_NO = #{paymentNo}
-</select>
+  </select>
 
+  <update id="updatePayment">
+    UPDATE PAYMENT
+    SET
+      USER_ID = #{userId},
+      PRODUCT_NO = #{productNo},
+      PAYMENT_METHOD = #{paymentMethod},
+      PAYMENT_DATE = #{paymentDate},
+      PAYMENT_PAY = #{paymentPay},
+      PAYMENT_BILLING_KEY = #{paymentBillingKey},
+      START_DATE = #{startDate},
+      END_DATE = #{endDate},
+      STATUS = #{status}
+    WHERE PAYMENT_NO = #{paymentNo}
+  </update>
 
-	<update id="updatePayment">
-		UPDATE PAYMENT
-		SET
-		USER_ID = #{userId},
-		PRODUCT_NO =
-		#{productNo},
-		PAYMENT_METHOD = #{paymentMethod},
-		PAYMENT_DATE =
-		#{paymentDate},
-		PAYMENT_PAY = #{paymentPay},
-		PAYMENT_BILLING_KEY =
-		#{paymentBillingKey},
-		START_DATE = #{startDate},
-		END_DATE = #{endDate}
-		WHERE PAYMENT_NO = #{paymentNo}
-	</update>
-
-	<delete id="deletePayment">
-		DELETE FROM PAYMENT
-		WHERE PAYMENT_NO = #{paymentNo}
-	</delete>
+  <delete id="deletePayment">
+    DELETE FROM PAYMENT
+    WHERE PAYMENT_NO = #{paymentNo}
+  </delete>
 
 </mapper>
