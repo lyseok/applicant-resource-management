@@ -82,6 +82,7 @@
 	  </div>
 	
 	  <div class="text-end">
+	    <button type="button" class="btn btn-secondary px-4 me-2" onclick="history.back()">취소</button>
 	    <button type="submit" class="btn btn-primary px-4">등록</button>
 	  </div>
 	</form>
