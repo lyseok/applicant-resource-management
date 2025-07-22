@@ -136,10 +136,10 @@ function aceditable(pBtn, commentNo, userId, boardNo) {
           body: JSON.stringify(acommentVO),
         }).then((resp) => {
           resp.json().then((rslt) => {
-            if(rslt.ok){
-	            hjDiv.contentEditable = false;
-	            pBtn.innerText = "답글 수정모드";
-	        }
+            if (rslt.ok) {
+              hjDiv.contentEditable = false;
+              pBtn.innerText = "답글 수정모드";
+            }
           });
         });
 
@@ -152,6 +152,30 @@ function aceditable(pBtn, commentNo, userId, boardNo) {
     });
   }
 }
+
+const acdel = function (cno, bno) {
+  console.log("no?", cno);
+  fetch(`/ajax/admin/board/admin_comment/hidden/${cno}`, {
+    method : "POST",
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({ boardCommentNo : cno, boardNo : bno }),
+    })
+    .then((resp)=>{
+      resp.json()
+      .then((rslt)=>{
+        if (rslt.ok) {
+          console.log("삭제완료", rslt.ok);
+          if (rslt.boardNo){
+            abno(rslt.boardNo ?? "ABNO000001"); //목록으로, 널일 시 기본값 부여
+            acommentListContainer.innerHTML = "";
+            aclist();
+          }
+        }
+      })
+    })
+};
 
 // 6
 const aclist = function (no) {
@@ -170,32 +194,20 @@ const aclist = function (no) {
           <div id=hjb class="CommentItem_root mb-3 p-3 border rounded">
             <div class="CommentItem_header d-flex align-items-center mb-2">
               <div>
-                <span class="Typo_root Typo_violet Typo_title40"><b>${
-                  comment.userId
-                }</b></span>
+                <span class="Typo_root Typo_violet Typo_title40"><b>${comment.userId}</b></span>
               </div>
             </div>
-            <div class="CommentItem_content mb-2" id=hjg >${
-              comment.boardCommentContent
-            }</div>
+            <div class="CommentItem_content mb-2" id=hjg >${comment.boardCommentContent}</div>
             <div class="CommentItem_meta Typo_root Typo_secondary Typo_label50">
-              작성일: ${comment.boardWriteDate ?? "-"} / 상태: ${
-          comment.boardCommentStatus
-        }
-              <input type="hidden" id="cnoHidden" value="${
-                comment.boardCommentNo
-              }">
+              작성일: ${comment.boardWriteDate ?? "-"} / 상태: ${comment.boardCommentStatus}
+              <input type="hidden" id="cnoHidden" value="${comment.boardCommentNo}">
             </div>
             <div class="mt-3">
 				      <button class="btn btn-sm btn-outline-primary" 
-				      onclick="aceditable(this,'${comment.boardCommentNo}','${
-          comment.userId
-        }','${comment.boardNo}')">
+				      onclick="aceditable(this,'${comment.boardCommentNo}','${comment.userId}','${comment.boardNo}')">
 				      	답글 수정모드
 				      </button>
-				      <button class="btn btn-sm btn-outline-danger" onclick="acdel('${
-                comment.boardCommentNo
-              }')">답글 삭제</button>
+				      <button class="btn btn-sm btn-outline-danger" onclick="acdel('${comment.boardCommentNo}','${comment.boardNo}')">답글 삭제</button>
 			      </div>
           </div>
         `;
@@ -356,9 +368,10 @@ const abbtn = function (no, type) {
             if (rslt.ok) {
               modal.hide();
               console.log("글자", rslt.ok);
-              if (rslt.boardTypeCode)
+              if (rslt.boardTypeCode){
                 detailToList(rslt.boardTypeCode ?? "BRDD-001"); //목록으로, 널일 시 기본값 부여
               aboardDetail.innerHTML = "";
+              }
             }
           });
         });
