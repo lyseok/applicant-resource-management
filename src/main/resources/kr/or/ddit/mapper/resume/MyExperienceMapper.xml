@@ -66,6 +66,6 @@
 	
 	<delete id="deleteMyExperience">
 		DELETE FROM MY_EXPERIENCE 
-		 WHERE MY_EXP_CODE = #{myExpCode}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>

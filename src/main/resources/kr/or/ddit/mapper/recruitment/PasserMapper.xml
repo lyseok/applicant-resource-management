@@ -37,6 +37,19 @@
 		
 	</select>
 	
+	<select id="selectpasserByRecruit">
+	SELECT
+	PASSER_NO
+	, APPLICANT_ID
+	, RECRUITMENT_NO
+	, PASS_ALARM_YN
+	, RECRUIT_ACCEPT_YN
+	, HIRE_DATE
+	FROM PASSER
+	WHERE RECRUITMENT_NO = #{recruitmentNo}
+	AND PASSER_DEL_DATE IS NULL
+	</select>
+	
 	<insert id="insertPasser">
 	<selectKey resultType="string" keyProperty="passerNo" order="BEFORE">
     SELECT
