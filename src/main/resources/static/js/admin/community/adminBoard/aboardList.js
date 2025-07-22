@@ -101,6 +101,7 @@ const asklist = function (type, activeTab = 'all') {
 };
 
 // ✅ FAQ 탭 렌더링
+/*
 const flist = function (activeTab = 'all') {
 	let html = `
 		<p class="h4">자주 묻는 질문 탭 선택</p>
@@ -117,6 +118,75 @@ const flist = function (activeTab = 'all') {
 		</ul>`;
 	memTypeBtn.innerHTML = html;
 };
+*/
+
+// ✅ 드롭다운 항목을 동적으로 생성하는 함수
+const loadFaqDropdownItems = function(groupCode, containerId, userType) {
+	fetch(`/ajax/admin/board/admin_board/cmn/${groupCode}`)
+		.then(resp => resp.json())
+		.then(rslt => {
+			const menu = document.querySelector(`#${containerId}`);
+			rslt.forEach(item => {
+				const li = document.createElement("li");
+				li.innerHTML = `
+					<a class="dropdown-item" href="#" onclick="faqDetail('${item.codeDetailNo}', event, '${userType}')">
+						${item.codeName}
+					</a>`;
+				menu.appendChild(li);
+			});
+		});
+};
+
+// ✅ 상세 유형 FAQ 조회
+const faqDetail = function(codeDetailNo, event, userType = 'all') {
+	if (event) setActiveTab(event);
+	fetch(`/ajax/admin/board/admin_board/pre/${codeDetailNo}`)
+		.then(resp => resp.json())
+		.then(rslt => {
+			bhtml(rslt);
+			flist(userType); // 클릭된 탭 유지
+		});
+};
+
+// ✅ 자주 묻는 질문 탭 UI 생성
+const flist = function (activeTab = 'all') {
+	let html = `
+		<p class="h4">자주 묻는 질문 탭 선택</p>
+		<ul class="nav nav-underline" id="faqTabs" style="display: flex; gap: 12px;">
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="faqAll(event)">전체</a>
+			</li>
+
+			<li class="nav-item dropdown" id="userFaqDropdown">
+				<a class="nav-link dropdown-toggle ${activeTab === 'user' ? 'active' : ''}" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+					일반회원
+				</a>
+				<ul class="dropdown-menu" id="userFaqDropdownMenu">
+					<li><a class="dropdown-item" href="#" onclick="faqUser(event)">전체</a></li>
+					<li><hr class="dropdown-divider"></li>
+				</ul>
+			</li>
+
+			<li class="nav-item dropdown" id="corpFaqDropdown">
+				<a class="nav-link dropdown-toggle ${activeTab === 'corp' ? 'active' : ''}" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+					기업회원
+				</a>
+				<ul class="dropdown-menu" id="corpFaqDropdownMenu">
+					<li><a class="dropdown-item" href="#" onclick="faqCorp(event)">전체</a></li>
+					<li><hr class="dropdown-divider"></li>
+				</ul>
+			</li>
+		</ul>`;
+
+	memTypeBtn.innerHTML = html;
+
+	// ✅ 드롭다운 항목 생성 함수 호출
+	loadFaqDropdownItems('UFAQ', 'userFaqDropdownMenu', 'user');
+	loadFaqDropdownItems('CFAQ', 'corpFaqDropdownMenu', 'corp');
+};
+
+
+
 
 // ✅ 공지사항 탭 렌더링
 const nlist = function (activeTab = 'user') {
