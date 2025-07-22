@@ -89,32 +89,6 @@
 
 	  
 	<!-- 모달 폼 미리 숨겨놓기 -->
-	<!-- 답글 수정 확인 모달 -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header border-0">
-					<h1 class="modal-title fs-5 fw-bold text-primary" id="editModalLabel">
-						<i class="bi bi-pencil-square me-1"></i> 답글 수정
-					</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body text-center py-4">
-					<div style="font-size:2.4rem; color:#007bff; margin-bottom:10px;">📝</div>
-					<p class="fs-5 mb-2 fw-semibold" style="color:#333;">
-						답글을 <span style="color:#0d6efd;">수정</span>하시겠습니까?
-					</p>
-					<p class="text-secondary mb-0" style="font-size:1.1rem;">
-						변경한 내용은 즉시 반영되며,<br>실행 전 다시 한 번 확인해 주세요.
-					</p>
-				</div>
-				<div class="modal-footer border-0 justify-content-center">
-					<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary px-4">확인</button>
-				</div>
-			</div>
-		</div>
-	</div>
 	<!-- 게시글 삭제 확인 모달 -->
 	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
@@ -143,6 +117,7 @@
 		</div>
 	</div>
 	
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/admin/community/adminBoard/aboardList.js"></script>
 <script src="/js/admin/community/adminBoard/aboardDetail.js"></script>
 <script src="/js/admin/community/adminBoard/aboardForm.js"></script>
