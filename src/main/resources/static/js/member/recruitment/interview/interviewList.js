@@ -71,13 +71,13 @@ function renderIntroductionList(list) {
           }
         </div>
         <div class="d-flex flex-column align-items-center gap-2 " >
-          <a class="btn btn_violet_line fw-normal review-btn w-review"
-            href="${data.APRE_STEP_APPLICATION_YN === 'Y' 
-                    ? '/mypage/interview/review/write?intr_interview_no=' + data.INTR_INTERVIEW_NO 
-                    : 'javascript:void(0);'}"
-            data-record-no="${data.APRE_APPLICANT_RECORD_NO}">
-            면접 리뷰작성
-          </a>
+			   <a class="btn btn_violet_line fw-normal review-btn w-review"
+		         href="${data.APRE_STEP_APPLICATION_YN === 'Y' 
+		                 ? '/mypage/interview/review/write?intr_interview_no=' + data.INTR_INTERVIEW_NO 
+		                 : 'javascript:void(0);'}"
+		         data-record-no="${data.APRE_APPLICANT_RECORD_NO}">
+		         면접 리뷰작성
+		       </a>
           ${data.INTR_INTERVIEW_TYPE === 'Y'
             ? `<a class="btn btn_violet_line fw-normal w-review" 
                   href="/mypage/introduction/edit/${data.INTR_INTERVIEW_NO}" 
@@ -177,4 +177,7 @@ document.getElementById('startInterviewBtn').onclick = async function() {
     return;
   }
 };
+
+
+
 
