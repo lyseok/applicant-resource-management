@@ -227,7 +227,7 @@ async function bringEdu() {
 }
 bringEdu();
 
-const uploadImages = new Set();
+const uploadImages = [];
 const editor = new toastui.Editor({
 	el: document.querySelector('#editor'),
 	height: '400px',
@@ -242,19 +242,15 @@ const editor = new toastui.Editor({
 					headers: { 'Content-Type': 'multipart/form-data' }
 				});
 
-				const imageUrl = res.data.url;
-				uploadImages.add(imageUrl);
-				callback(res.data.url, '이미지');
+				const url = res.data.url;
+				uploadImages.push(url);
+				callback(url, '이미지');
 			} catch (err) {
 				alert('이미지 업로드 실패');
 				console.error(err);
 			}
 		}
 	}
-});
-
-document.getElementById('recruitForm').addEventListener('submit', (e) => {
-	document.getElementById('recContent').value = editor.getHTML();
 });
 
 let processIndex = 0;
@@ -380,22 +376,23 @@ function initProcessTypeSelect(container) {
 
 document.getElementById('recruitForm').addEventListener('submit', async (e) => {
 	e.preventDefault();
+	
+	const html = editor.getHTML();
+	document.getElementById('recContent').value = html;
 
-	document.getElementById('recContent').value = editor.getHTML();
+	const usedImages = Array.from(html.matchAll(/<img[^>]*src="([^"]+)"[^>]*>/g)).map(m => m[1]);
 
-	const contentHTML = editor.getHTML();
-	const usedImages = Array.from(contentHTML.matchAll(/<img[^>]*src="([^"]+)"[^>]*>/g)).map(m => m[1]);
+	const unused = uploadImages.filter(url => !usedImages.includes(url));
 
-	const unusedImages = Array.from(uploadImages).filter(img => !usedImages.includes(img));
-
-	for (const url of unusedImages) {
+	for (const url of unused) {
 		try {
-			await axios.delete(`/upload/editor`, { url });
+			await axios.delete(`/upload/editor`,{params : { url }});
 		} catch (err) {
 			console.warn('이미지 삭제 실패 :', url, err);
 		}
 	}
 	
+	const orderedUsedImages = uploadImages.filter(url => usedImages.includes(url));
 
 	const form = e.target;
 
@@ -410,7 +407,8 @@ document.getElementById('recruitForm').addEventListener('submit', async (e) => {
 		recruitmentSalary: form.recruitmentSalary.value,
 		recPositionNumber: form.recPositionNumber.value,
 		recruitmentFinishDate: form.recruitmentFinishDate.value,
-		recContent: form.recContent.value,
+		recContent: html,
+		fileList : orderedUsedImages.map(url => ({filePath : url})),
 		education: {
 			codeDetailNo: form['education.codeDetailNo'].value
 		}

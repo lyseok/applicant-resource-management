@@ -13,7 +13,7 @@
 		, SOURCE_NO
 		, FILE_TOTAL
 	) VALUES (
-		SEQ_FILE_NO.NEXTVAL,
+		SEQ_FILE_NO.NEXTVAL
 		, #{realFile}
 		, #{fileName}
 		, #{fileSize}
@@ -24,6 +24,11 @@
 		, #{fileTotal}
 	)
 	</insert>
+	
+	<delete id="deleteByFilePath">
+		DELETE FROM FILES 
+		WHERE FILE_PATH = #{filePath}
+	</delete>
 	
 	<update id="updateSource">
 		UPDATE FILES SET
