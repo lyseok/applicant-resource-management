@@ -21,8 +21,55 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin")
 public class AdminProductController {
 
+//	@Autowired
+//	private FileUploadService fileUploadService;
+	
 	@Autowired
 	PaymentProductService service;
+	
+	@GetMapping("/delete/product")
+	public String deleteProduct(
+			@RequestParam String productNo		
+			, Model model
+		) {
+		
+		PaymentProductVO vo = service.selectPaymentProductByPk(productNo);
+		vo.setProductStatus("D");
+		service.updatePaymentProduct(vo);
+		log.info("vo값 : {}" , vo);
+		model.addAttribute("message : {}" ,"삭제가 완료되었습니다");
+		return "redirect:/admin/product/list";
+	}
+	
+	@PostMapping("/update/done")
+	public String productDone(PaymentProductVO productVO
+			, Model model
+			) {
+//		if(!productVO.getProductImgFile().isEmpty()) {
+//			String uploadedFileName = fileUploadService.saveFile(productVO.getProductImgFile());
+//			productVO.setProductImg(uploadedFileName);
+//		}
+		log.info("넘어온 상품정보 : {}",productVO.getProductName());
+		productVO.setProductStatus("A");
+		service.updatePaymentProduct(productVO);
+		model.addAttribute("product",productVO);
+		model.addAttribute("message", "상품수정이 완료되었습니다");
+		log.info("model : {}", model);
+		return "admin/payment/UpdateResult";
+	}
+	
+	@GetMapping("/update/product")
+	public String productUpdate(
+		@RequestParam("productNo") String productNo
+		, Model model
+			){
+		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
+		model.addAttribute("product",product);
+		log.info("상품 업데이트 모델 : {}", model);
+		return "admin/payment/UpdateProduct";
+	}
+	
+	
 	
 	@GetMapping("/detail")
 	public String productDetail(
@@ -88,8 +135,11 @@ public class AdminProductController {
 		int pageSize = 10;
 		int offset = (page - 1) * pageSize;
 		List<PaymentProductVO> productList = service.selectPaymentProductList();
-
-		List<PaymentProductVO> filterList = productList;
+		
+		List<PaymentProductVO> filterList = productList.stream()
+								.filter(p->"A".equals(p.getProductStatus()))
+								.toList();
+	
 		if("S".equals(filterType)) {
 			filterList = productList.stream()
 					.filter(p->"S".equalsIgnoreCase(p.getProductType()))

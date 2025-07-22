@@ -50,49 +50,44 @@ public class PaymentController {
 
 	@Autowired
 	private PaymentProductServiceImpl pservice;
-	
+
 	@PostMapping("/product/change/confirm")
 	@ResponseBody
 	public ResponseEntity<?> changeProduct(@RequestBody Map<String, String> payload) {
-	    String oldPaymentNo = payload.get("oldPaymentNo");
-	    String newProductNo = payload.get("newProductNo");
-	    String billingKey = payload.get("billingKey");
-	    String paymentKey = payload.get("paymentKey"); // 추가로 받은 값
-	    log.info(" /product/change/confirm 의 oldPaymentNo : {}", oldPaymentNo);
-	    log.info("/product/change/confirm 의 payload :{} ", payload);
-	    // 나머지 기존 로직 동일
-	    PaymentVO oldPayment = service.selectPaymentByPk(oldPaymentNo);
-	    LocalDate nextStart = LocalDate.parse(oldPayment.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
-	    LocalDate nextEnd = nextStart.plusMonths(1);
-	    log.info("/product/change/confirm 의oldPayment :{}",oldPayment);
-	    service.cancelPayment(oldPaymentNo);
+		String oldPaymentNo = payload.get("oldPaymentNo");
+		String newProductNo = payload.get("newProductNo");
+		String billingKey = payload.get("billingKey");
+		String paymentKey = payload.get("paymentKey"); // 추가로 받은 값
+		log.info(" /product/change/confirm 의 oldPaymentNo : {}", oldPaymentNo);
+		log.info("/product/change/confirm 의 payload :{} ", payload);
+		// 나머지 기존 로직 동일
+		PaymentVO oldPayment = service.selectPaymentByPk(oldPaymentNo);
+		LocalDate nextStart = LocalDate.parse(oldPayment.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+		LocalDate nextEnd = nextStart.plusMonths(1);
+		log.info("/product/change/confirm 의oldPayment :{}", oldPayment);
+		service.cancelPayment(oldPaymentNo);
 
-	    PaymentProductVO newProduct = pservice.selectPaymentProductByPk(newProductNo);
-	    PaymentVO newPayment = new PaymentVO();
-	    newPayment.setUserId(service.getUserId());
-	    newPayment.setProductNo(newProduct.getProductNo());
-	    newPayment.setPaymentPay(newProduct.getProductPrice());
-	    newPayment.setPaymentMethod("카드");
-	    newPayment.setPaymentDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-	    newPayment.setPaymentBillingKey(billingKey);
-	    newPayment.setStartDate(nextStart.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-	    newPayment.setEndDate(nextEnd.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-	    newPayment.setStatus("T");
+		PaymentProductVO newProduct = pservice.selectPaymentProductByPk(newProductNo);
+		PaymentVO newPayment = new PaymentVO();
+		newPayment.setUserId(service.getUserId());
+		newPayment.setProductNo(newProduct.getProductNo());
+		newPayment.setPaymentPay(newProduct.getProductPrice());
+		newPayment.setPaymentMethod("카드");
+		newPayment.setPaymentDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		newPayment.setPaymentBillingKey(billingKey);
+		newPayment.setStartDate(nextStart.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+		newPayment.setEndDate(nextEnd.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+		newPayment.setStatus("T");
 
-	    log.info("newPayment: {}", newPayment);
-	    service.insertPayment(newPayment);
+		log.info("newPayment: {}", newPayment);
+		service.insertPayment(newPayment);
 
-	    // 성공 응답
-	    return ResponseEntity.ok().body("요금제 변경 완료");
+		// 성공 응답
+		return ResponseEntity.ok().body("요금제 변경 완료");
 	}
 
-
 	@GetMapping("/change/product")
-	public String changeProduct(
-			Model model
-			, @RequestParam String productNo
-			, @RequestParam String paymentNo	
-			) {
+	public String changeProduct(Model model, @RequestParam String productNo, @RequestParam String paymentNo) {
 		log.info("받은 paymentNo값 : {}", paymentNo);
 		log.info("받은 productNo값 : {}", productNo);
 		PaymentVO payment = service.selectPaymentByPk(paymentNo);
@@ -100,86 +95,101 @@ public class PaymentController {
 		log.info("productList의 값 : {}", productList);
 		payment.setPaymentProductList(productList);
 		log.debug("payment의 값 : {}", payment);
-		
+
 		model.addAttribute("payment", payment);
 		List<PaymentProductVO> allProducts = pservice.selectPaymentProductList();
 		List<PaymentProductVO> changeableProducts = allProducts.stream()
-										.filter(p -> !p.getProductNo().equals(productNo))
-										.collect(Collectors.toList());
+				.filter(p -> !p.getProductNo().equals(productNo)).collect(Collectors.toList());
 		
-		
-		model.addAttribute("changeableProducts",changeableProducts);
+		model.addAttribute("changeableProducts", changeableProducts);
 		log.info("Comparison 으로 넘어가는 payment 값 : {}", payment);
 		return "company/payment/product/ComparisonProduct";
 	}
-	
-	@GetMapping("/done/products")
-	public String done(
-			Model model
-			, Authentication auth
-			) {
 
+	@GetMapping("/done/products")
+	public String doun(@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "page", defaultValue = "1") int page, Model model, Authentication auth) {
 		List<PaymentVO> purchaseList = service.selectMyPaymentList(service.getUserId());
-		List<PaymentVO> expiredPayments = new ArrayList<>();
 		Map<String, Integer> productCountMap = new HashMap<>();
+		List<Long> cumulativeAmounts = new ArrayList<>();
 		long totalUsedAmount = 0;
+
+		LocalDate now = LocalDate.now();
 
 		for (PaymentVO payment : purchaseList) {
 			LocalDate paymentDate = LocalDate.parse(payment.getPaymentDate(),
 					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-			LocalDate now = LocalDate.now();
+
 			long daysLeft = 30 - ChronoUnit.DAYS.between(paymentDate, now);
 
 			List<PaymentProductVO> productList = pservice.selectPaymentProductListByPk(payment.getProductNo());
 
-			// ✅ 만료된 상품만 추가
-			List<PaymentProductVO> expiredProducts = new ArrayList<>();
 			for (PaymentProductVO product : productList) {
 				product.setDaysRemaining((int) daysLeft);
-				if (daysLeft <= 0) {
-					expiredProducts.add(product);
-					
-					productCountMap.merge(product.getProductName(), 1, Integer::sum);
-				}
 			}
-			
-			// 누적금액
 
-			if (!expiredProducts.isEmpty()) {
-				payment.setPaymentProductList(expiredProducts);
-				payment.setStartDate(paymentDate.toString());
-				payment.setEndDate(paymentDate.plusDays(30).toString());
-				expiredPayments.add(payment);			
+			payment.setPaymentProductList(productList);
+			payment.setStartDate(paymentDate.toString());
+			payment.setEndDate(paymentDate.plusDays(30).toString());
+
+		}
+
+		List<PaymentVO> filteredList = purchaseList;
+
+		if ("expired".equals(filter)) {
+			filteredList = purchaseList.stream()
+					.filter(p -> p.getPaymentProductList().stream().allMatch(prod -> prod.getDaysRemaining() <= 0))
+					.toList();
+		} else if ("active".equals(filter)) {
+			filteredList = purchaseList.stream()
+					.filter(p -> p.getPaymentProductList().stream().allMatch(prod -> prod.getDaysRemaining() > 0))
+					.toList();
+		}
+		if (List.of("A", "E", "S", "C").contains(filter)) {
+		    filteredList = purchaseList.stream()
+		            .filter(p -> filter.equals(p.getStatus()))
+		            .toList();
+		} 
+
+		for (PaymentVO payment : filteredList) {
+			for (PaymentProductVO product : payment.getPaymentProductList()) {
+				productCountMap.merge(product.getProductName(), 1, Integer::sum);
 			}
-					
-		}
-		
-		// 총 결제금액 확인
-		for(PaymentVO payment : expiredPayments) {
 			totalUsedAmount += Long.parseLong(payment.getPaymentPay());
+			cumulativeAmounts.add(totalUsedAmount);
 		}
-		
-		
-		model.addAttribute("totalUsedAmount",totalUsedAmount);
-		model.addAttribute("purchaseList", purchaseList);
+
+		int pageSize = 10;
+		int totalItems = filteredList.size();
+		int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+		int offset = (page - 1) * pageSize;
+
+		List<PaymentVO> pageList = filteredList.stream().skip(offset).limit(pageSize).toList();
+
+		List<Long> pageCumulativeAmounts = cumulativeAmounts.subList(offset,
+				Math.min(offset + pageSize, cumulativeAmounts.size()));
+
+		model.addAttribute("purchaseList", pageList); // ⬅️ 페이징된 리스트
+		model.addAttribute("cumulativeList", pageCumulativeAmounts); // ⬅️ 순차 누적 금액
 		model.addAttribute("productCountMap", productCountMap);
-		model.addAttribute("purchaseList", expiredPayments);
-		log.info("만료된 상품 리스트 : {}", expiredPayments);
-		log.debug("누적 사용량 Map :  {}" ,productCountMap);
+		model.addAttribute("totalUsedAmount", totalUsedAmount);
+		model.addAttribute("selectedFilter", filter);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("currentPage", page);
+
+		log.info("결제 내역(필터 : {}) : {}", filter, filteredList);
+
 		return "company/payment/paymentlist/PaymentDoneList";
 	}
 
 	@GetMapping("/buydetail")
-	public String buyDetail(Model model
-			, @RequestParam String paymentNo
-			, @RequestParam String productNo
-					) {
+	public String buyDetail(Model model, @RequestParam String paymentNo, @RequestParam String productNo) {
 		log.info("너 뭘로 나오나 보자 : {}", paymentNo);
 		PaymentVO payment = service.selectPaymentByPk(paymentNo);
-		
+
 		List<PaymentProductVO> productList = pservice.selectPaymentProductListByPk(productNo);
 		payment.setPaymentProductList(productList);
-		
+
 		model.addAttribute("payment", payment);
 		log.info("detail로 가는 값 : {}", model);
 		return "company/payment/payment/BuyProductDetail";
@@ -188,7 +198,15 @@ public class PaymentController {
 	@GetMapping("/main")
 	String mainForm(Model model, Authentication auth) {
 
-		List<PaymentVO> purchaseList = service.selectMyPaymentList(service.getUserId());
+		List<PaymentVO> fullList = service.selectMyPaymentList(service.getUserId());
+		log.info("fullList: {}", fullList);
+
+		if (fullList != null) {
+			for (PaymentVO p : fullList) {
+				log.info("결제 번호 : {}, 상태 : {}", p.getPaymentNo(), p.getStatus());
+			}
+		}
+		List<PaymentVO> purchaseList = fullList.stream().filter(p -> "A".equalsIgnoreCase(p.getStatus())).toList();
 
 		for (PaymentVO payment : purchaseList) {
 			LocalDate paymentDate = LocalDate.parse(payment.getPaymentDate(),
