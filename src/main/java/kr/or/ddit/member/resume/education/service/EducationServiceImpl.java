@@ -34,8 +34,8 @@ public class EducationServiceImpl implements EducationService {
 	}
 
 	@Override
-	public void removeEducation(EducationVO vo) {
-		mapper.deleteEducation(vo);
+	public void removeEducation(String no) {
+		mapper.deleteEducation(no);
 	}
 
 }
