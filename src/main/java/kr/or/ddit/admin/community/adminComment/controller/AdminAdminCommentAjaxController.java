@@ -68,13 +68,13 @@ public class AdminAdminCommentAjaxController {
 	// 수정
 	@PostMapping("/detail/{boardCommentNo}")
 	public Map<String, Object> editComment(
-		@PathVariable String boardNo
-		, @PathVariable String commentNo
+		@PathVariable String commentNo
 		,  @RequestBody AdminCommentVO comment
 	) {
 		comment.setBoardCommentNo(commentNo);
 	    service.modifyAdminComment(comment);
-	    return Map.of("ok", true);	// 수정 후 Detail 이동
+	    
+	    return Map.of("ok", true);
 	}
 	
 	// 해당 유형의 해당 답글의 삭제 상태 변경

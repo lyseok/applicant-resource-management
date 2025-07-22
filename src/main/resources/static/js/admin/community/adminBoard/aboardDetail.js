@@ -7,44 +7,44 @@ const acommentFormContainer = document.querySelector("#acommentFormContainer");
 
 // 1
 const abhit = async function(no) {
-  const resp = await fetch(`/ajax/admin/board/admin_board/hit/${no}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ boardNo: no })
-    });
-    return await resp.json();
+	const resp = await fetch(`/ajax/admin/board/admin_board/hit/${no}`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ boardNo: no })
+	});
+	return await resp.json();
 }
 
 // 2
-const abno = function(no){
+const abno = function(no) {
 	listTitle.style.display = "none";
 	aboardform.style.display = "none";
 	memTypeBtn.innerHTML = "";
 	formBtn.innerHTML = "";
 	aboardList.innerHTML = "";
 	pageTitle();
-	
+
 	abhit(no)  //조회수부터 증가
-	.then((rslt) => {
-    if (rslt.ok) {
-      console.log("글자", rslt.ok);
-	  return fetch(`/ajax/admin/board/admin_board/detail/${no}`)
-	} else {
-      throw new Error("조회수 증가 실패");
-    }
-  })
-  .then((resp) => resp.json())
-  .then(rslt => {
-    abdetail(rslt); // 상세 정보 렌더링
-  })
-  .catch(err => {
-    console.error("에러 발생:", err);
-  });
+		.then((rslt) => {
+			if (rslt.ok) {
+				console.log("조회수 증가", rslt.ok);
+				return fetch(`/ajax/admin/board/admin_board/detail/${no}`)
+			} else {
+				throw new Error("조회수 증가 실패");
+			}
+		})
+		.then((resp) => resp.json())
+		.then(rslt => {
+			abdetail(rslt); // 상세 정보 렌더링
+		})
+		.catch(err => {
+			console.error("에러 발생:", err);
+		});
 }
 
 // 3
 const abdetail = function(rslt) {
-  let html = `
+	let html = `
     <div class="jv_cont jv_benefit expand">
       <h2 class="jv_title h5">${rslt.boardTitle}</h2>
       <div class="desc_area" style="margin: 20px 0;">
@@ -85,40 +85,62 @@ const abdetail = function(rslt) {
     </div>
   `;
 
-  aboardDetail.innerHTML = html;
+	aboardDetail.innerHTML = html;
 
-  let no = rslt.boardNo;
-  abbtn(no, rslt.boardTypeCode);
+	let no = rslt.boardNo;
+	abbtn(no, rslt.boardTypeCode);
 };
 
 // 5
-const b001 = function(no, type){
+const b001 = function(no, type) {
 	if (type === "BRDD-001") {
 		aclist(no);
-	}	
+	}
 }
 
 // 답글 수정
-/*
-const acedt = function(comment){
-	fetch(`/ajax/admin/board/admin_comment/detail/${comment.commentNo}`, {
-	    method: "post",
-	    headers: { "Content-Type": "application/json" },
-	    body: JSON.stringify(acommentBoard),
-	  }).then((resp) => {
-	    resp.json().then((rslt) => {
-	      if (rslt.ok && rslt.boardNo) {
-	        
-	      }
-	   });
-	});
+function acedt(commentNo) {
+
+
+
 }
-*/
+
+//버튼 누르면(이거 자체가 온클릭)
+function aceditable(pBtn, commentNo, userId, boardNo) {  
+
+	const hjDiv = pBtn.closest("#hjb").querySelector("#hjg");
+	if (pBtn.innerText.includes("모드")) {
+		hjDiv.contentEditable = true;
+		hjDiv.focus();
+		pBtn.innerText = "수정";
+	} else {
+		//alert("서버로 전송할꺼얌");
+		// 서버에 떤송하고, 사용자에게는 잘 수정 되었다고 알려주면 끄읕!
+		// 예쁘게 할 거면 sweetalert2
+		//acedt(no);
+		let acommentVO = {
+			boardCommentNo: commentNo,
+			userId: userId,
+			boardNo: boardNo
+		}
+		
+		console.log("acommentVO?", acommentVO);
+
+		//fetch(`/ajax/admin/board/admin_comment/detail/${no}`, {
+
+		//}
+     
+        hjDiv.contentEditable = false;
+		pBtn.innerText = "답글 수정모드";
+	}
+}
+
+
 // 6
-const aclist = function(no){
-  fetch(`/ajax/admin/board/admin_comment/${no}`).then(resp => {
-    resp.json().then(rslt => {
-      let html = `
+const aclist = function(no) {
+	fetch(`/ajax/admin/board/admin_comment/${no}`).then(resp => {
+		resp.json().then(rslt => {
+			let html = `
         <div class="Comments_root">
           <h3 class="PoseHeading_root mb-3">
             <span class="Typo_root Typo_primary Typo_title20"><b>답글</b></span>&nbsp;
@@ -126,67 +148,71 @@ const aclist = function(no){
           </h3>
       `;
 
-      rslt.forEach(comment => {
-        html += `
-          <div class="CommentItem_root mb-3 p-3 border rounded">
+			rslt.forEach(comment => {
+				html += `
+          <div id=hjb class="CommentItem_root mb-3 p-3 border rounded">
             <div class="CommentItem_header d-flex align-items-center mb-2">
               <div>
                 <span class="Typo_root Typo_violet Typo_title40"><b>${comment.userId}</b></span>
               </div>
             </div>
-            <div class="CommentItem_content mb-2">${comment.boardCommentContent}</div>
+            <div class="CommentItem_content mb-2" id=hjg >${comment.boardCommentContent}</div>
             <div class="CommentItem_meta Typo_root Typo_secondary Typo_label50">
               작성일: ${comment.boardWriteDate ?? "-"} / 상태: ${comment.boardCommentStatus}
+              <input type="hidden" id="cnoHidden" value="${comment.boardCommentNo}">
             </div>
             <div class="mt-3">
-				<button class="btn btn-sm btn-outline-primary" onclick="acedt('${comment.boardCommentNo}')">답글 수정</button>
-				<button class="btn btn-sm btn-outline-primary" onclick="acdel('${comment.boardCommentNo}')">답글 삭제</button>
-			</div>
+				      <button class="btn btn-sm btn-outline-primary" 
+				      onclick="aceditable(this,'${comment.boardCommentNo}','${comment.userId}','${comment.boardNo}')">
+				      	답글 수정모드
+				      </button>
+				      <button class="btn btn-sm btn-outline-danger" onclick="acdel('${comment.boardCommentNo}')">답글 삭제</button>
+			      </div>
           </div>
         `;
-      });
+			});
 
-      html += `</div>`; // Close Comments_root
+			html += `</div>`; // Close Comments_root
 
-      acommentListContainer.innerHTML = html;
-    });
+			acommentListContainer.innerHTML = html;
+		});
 
-    acform(no); // 폼 로드
-  });
+		acform(no); // 폼 로드
+	});
 };
 
 // 7
-const acform = function(no){
-	
+const acform = function(no) {
+
 	achtml(no);
 
-    const acommentForm = document.querySelector("#acommentForm");
-     
-      acommentForm.onsubmit = function (e) {
-	    e.preventDefault();
-	    let adminComment = {
-	      userId: acommentForm.userId.value,
-	      boardNo: acommentForm.boardNo.value,
-	      boardCommentContent: acommentForm.boardCommentContent.value,
-	    };
-	
-	    fetch(`/ajax/admin/board/admin_comment/${adminComment.boardNo}`, {
-	      method: "post",
-	      headers: {
-	        "Content-Type": "application/json",
-	      },
-	      body: JSON.stringify(adminComment),
-	    }).then((resp) => {
-	      resp.json().then((rslt) => {
-	        console.log("글자", rslt.ok);
-	      });
-	    });
+	const acommentForm = document.querySelector("#acommentForm");
+
+	acommentForm.onsubmit = function(e) {
+		e.preventDefault();
+		let adminComment = {
+			userId: acommentForm.userId.value,
+			boardNo: acommentForm.boardNo.value,
+			boardCommentContent: acommentForm.boardCommentContent.value,
+		};
+
+		fetch(`/ajax/admin/board/admin_comment/${adminComment.boardNo}`, {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(adminComment),
+		}).then((resp) => {
+			resp.json().then((rslt) => {
+				console.log("글자", rslt.ok);
+			});
+		});
 	};
 }
 
 // 8
-const achtml = function(no){
-  let html = `
+const achtml = function(no) {
+	let html = `
     <div class="CommentForm_root mt-4 p-3 border rounded">
       <div class="CommentForm_profile d-flex align-items-center mb-3">
         <div>
@@ -217,22 +243,22 @@ const achtml = function(no){
     </div>
   `;
 
-  acommentFormContainer.innerHTML = html;
+	acommentFormContainer.innerHTML = html;
 };
 
 // 상세보기->목록
-const detailToList = function(type){
-	if(type.startsWith('BRDD')){
+const detailToList = function(type) {
+	if (type.startsWith('BRDD')) {
 		alist(type)
-	}else{
+	} else {
 		alist2(type);
-	}	
+	}
 }
 
 // 4
-const abbtn = function(no, type){
+const abbtn = function(no, type) {
 	allBtns.innerHTML = "";
-	
+
 	let lbtn = document.createElement("button");
 	lbtn.id = "listBtn";
 	lbtn.className = "btn btn_violet_line";
@@ -245,72 +271,72 @@ const abbtn = function(no, type){
 	dbtn.id = "delBtn";
 	dbtn.className = "btn btn_gray_line";
 	dbtn.textContent = "삭제";
-	
-    allBtns.appendChild(lbtn);
-    if(type !== 'BRDD-001') allBtns.appendChild(ebtn);
-    allBtns.appendChild(dbtn);
-    
-    const editBtn = document.querySelector("#editBtn");
-    const listBtn = document.querySelector("#listBtn");
-    const delBtn = document.querySelector("#delBtn");
-    
-    if(listBtn){
-		listBtn.onclick = function () {
-		  aboardDetail.innerHTML = "";
-		  detTitle.innerHTML = "";
-		  
-		  if (acommentFormContainer) acommentFormContainer.innerHTML = "";
-		  if (acommentListContainer) acommentListContainer.innerHTML = "";
-		  
-		  detailToList(type); // 목록으로
-		};
-	}
-		
-	if(editBtn){
-		editBtn.onclick = function () {
-		  aboardDetail.innerHTML = "";
-		  detTitle.innerHTML = "";
-		  
-		  if (acommentFormContainer) acommentFormContainer.innerHTML = "";
-		  if (acommentListContainer) acommentListContainer.innerHTML = "";
-		  
-		  if (aboardform) aboardform.style.display = "block";
-		
-		  aform(no, type); // 수정 폼 불러오기
+
+	allBtns.appendChild(lbtn);
+	if (type !== 'BRDD-001') allBtns.appendChild(ebtn);
+	allBtns.appendChild(dbtn);
+
+	const editBtn = document.querySelector("#editBtn");
+	const listBtn = document.querySelector("#listBtn");
+	const delBtn = document.querySelector("#delBtn");
+
+	if (listBtn) {
+		listBtn.onclick = function() {
+			aboardDetail.innerHTML = "";
+			detTitle.innerHTML = "";
+
+			if (acommentFormContainer) acommentFormContainer.innerHTML = "";
+			if (acommentListContainer) acommentListContainer.innerHTML = "";
+
+			detailToList(type); // 목록으로
 		};
 	}
 
-	if(delBtn){
-		delBtn.onclick = function () {
-		  const modal = new bootstrap.Modal(modalElement);
-		  modal.show();
-		
-		  // '삭제하기' 버튼에 이벤트 연결 (중복 방지 위해 기존 제거)
-		  const confirmBtn = document.querySelector("#deleteModal .btn-danger");
-		  const newConfirmBtn = confirmBtn.cloneNode(true); // 기존 버튼 복제
-		  confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn); // 이벤트 중첩 방지
-		
-		  newConfirmBtn.onclick = function () {
-		    fetch(`/ajax/admin/board/admin_board/hidden/${no}`, {
-		      method: "post",
-		      headers: {
-		        "Content-Type": "application/json",
-		      },
-		      body: JSON.stringify({ boardNo: no, boardTypeCode: type }),
-		    }).then((resp) => {
-		      resp.json().then((rslt) => {
-		        if (rslt.ok) {
-		          modal.hide();
-		          console.log("글자", rslt.ok);
-		          if (rslt.boardTypeCode) detailToList(rslt.boardTypeCode ?? "BRDD-001");  //목록으로, 널일 시 기본값 부여
-		          aboardDetail.innerHTML = "";
-        		}
-      		  });
-    		});
-  		  };
+	if (editBtn) {
+		editBtn.onclick = function() {
+			aboardDetail.innerHTML = "";
+			detTitle.innerHTML = "";
+
+			if (acommentFormContainer) acommentFormContainer.innerHTML = "";
+			if (acommentListContainer) acommentListContainer.innerHTML = "";
+
+			if (aboardform) aboardform.style.display = "block";
+
+			aform(no, type); // 수정 폼 불러오기
 		};
 	}
-	
+
+	if (delBtn) {
+		delBtn.onclick = function() {
+			let modal = new bootstrap.Modal(modalElement);
+			modal.show();
+
+			// '삭제하기' 버튼에 이벤트 연결 (중복 방지 위해 기존 제거)
+			let confirmBtn = document.querySelector("#deleteModal .btn-danger");
+			let newConfirmBtn = confirmBtn.cloneNode(true); // 기존 버튼 복제
+			confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn); // 이벤트 중첩 방지
+
+			newConfirmBtn.onclick = function() {
+				fetch(`/ajax/admin/board/admin_board/hidden/${no}`, {
+					method: "post",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ boardNo: no, boardTypeCode: type }),
+				}).then((resp) => {
+					resp.json().then((rslt) => {
+						if (rslt.ok) {
+							modal.hide();
+							console.log("글자", rslt.ok);
+							if (rslt.boardTypeCode) detailToList(rslt.boardTypeCode ?? "BRDD-001");  //목록으로, 널일 시 기본값 부여
+							aboardDetail.innerHTML = "";
+						}
+					});
+				});
+			};
+		};
+	}
+
 	b001(no, type);
 }
 

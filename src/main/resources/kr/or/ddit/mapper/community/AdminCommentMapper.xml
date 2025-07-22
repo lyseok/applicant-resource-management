@@ -80,8 +80,7 @@
 			  USER_ID = #{userId}
 			, BOARD_NO = #{boardNo}
 			, BOARD_COMMENT_CONTENT = #{boardCommentContent}
-			, BOARD_WRITE_DATE = #{boardWriteDate}
-			, BOARD_DELETE_DATE = #{boardDeleteDate}
+			, BOARD_WRITE_DATE = sysdate
 			, BOARD_COMMENT_STATUS = 'U'
 		WHERE 
 			BOARD_COMMENT_NO = #{boardCommentNo}
