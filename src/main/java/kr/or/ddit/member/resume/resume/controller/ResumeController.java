@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -62,7 +63,7 @@ public class ResumeController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 
-		List<ResumeVO> resumeList = service.readResumeList(userId);
+		List<Map<String, Object>> resumeList = service.readResumeList(userId);
 		log.info("{}", resumeList);
 		model.addAttribute(MODELNAME, resumeList);
 		return "member/resume/mypage/resume/resumeList";
@@ -74,6 +75,18 @@ public class ResumeController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 
+		ResumeVO vo = new ResumeVO();
+		vo.setUserId(userId);
+		vo.setResumeNo(no);
+		ResumeVO resume = service.readResumeDetail(vo);
+		log.info("{}", resume);
+		model.addAttribute(MODELNAME, resume);
+		return "member/resume/mypage/resume/resumeDetail";
+	}
+	
+	// 상세조회
+	@GetMapping("{no}/{userId}")
+	public String getResumeDetailByApplicant(Model model, @PathVariable String no, @PathVariable String userId) {
 		ResumeVO vo = new ResumeVO();
 		vo.setUserId(userId);
 		vo.setResumeNo(no);
@@ -108,10 +121,18 @@ public class ResumeController {
 	public ResponseEntity<?> createResume(@Valid @RequestPart("resume") ResumeVO vo, BindingResult bindingResult,
 			@RequestPart(value = "photo", required = false) MultipartFile photo,
 			@RequestPart(value = "comImage", required = false) MultipartFile comImage) {
-		log.info("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ introductionNo = {}", vo.getIntroductionNo());
-		log.info("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ 이력서 제목 = {}", vo.getResumeName());
-
+		log.info("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ 이력서 번호!!!!!!!!!!!!!!!! = {}", vo.getResumeNo());
 		if (!bindingResult.hasErrors()) {
+			// pk가 있을경우 업데이트 처리
+			if(vo.getResumeNo() != null) {
+				int result = service.editResume(vo);
+				if(result > 0) return ResponseEntity.ok("ok");
+				else {
+					return ResponseEntity
+								.status(HttpStatus.INTERNAL_SERVER_ERROR)
+								.body("이력서 수정 중 오류가 발생했습니다.");
+				}
+			}				
 			service.createResume(vo);
 			return ResponseEntity.ok("ok");
 		} else {

@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,22 +55,30 @@ public class PaymentController {
 	String mainForm(Model model, Authentication auth) {
 
 		List<PaymentVO> purchaseList = service.selectMyPaymentList(service.getUserId());
+		
 		model.addAttribute("purchaseList", purchaseList);
+		log.info("purchaseList : {}", purchaseList);
 		return "company/payment/payment/PaymentMain";
 	}
 
-	@GetMapping("/check/billing")
-	@ResponseBody
-	public Map<String, Object> billingCheck() {
-		PaymentVO vo = service.checkbilling(service.getUserId());
-		boolean hasBillingKey = (vo != null && vo.getPaymentBillingKey() != null);
-
-		return Map.of("hasBillingKey", hasBillingKey);
-	}
+	/*
+	 * @GetMapping("/check/billing")
+	 * 
+	 * @ResponseBody public Map<String, Object> billingCheck() { PaymentVO vo =
+	 * service.checkbilling(service.getUserId()); boolean hasBillingKey = (vo !=
+	 * null && vo.getPaymentBillingKey() != null);
+	 * 
+	 * return Map.of("hasBillingKey", hasBillingKey); }
+	 */
 
 	@GetMapping("/success/executebilling")
-	String successBuy(@RequestParam("billingKey") String billingKey, @RequestParam("amount") String amount,
-			@RequestParam("orderName") String orderName, @RequestParam("paymentKey") String paymentKey) {
+	String successBuy(
+			@RequestParam("billingKey") String billingKey
+			, @RequestParam("amount") String amount
+			, @RequestParam("orderName") String orderName
+			, @RequestParam("paymentKey") String paymentKey
+			, Model model
+			) {
 		log.info("billingKey: {}", billingKey);
 		log.info("amount: {}", amount);
 		log.info("orderName: {}", orderName);
@@ -82,10 +91,15 @@ public class PaymentController {
 		vo.setPaymentMethod("카드");
 		vo.setPaymentBillingKey(billingKey);
 		vo.setPaymentPay(amount);
+		
+		List<PaymentProductVO> productList = new ArrayList<>();
+		productList.add(product);
+		vo.setPaymentProductList(productList);
 
 		log.info("어 이게 뭐지 : {}", vo);
 		service.insertPayment(vo);
-
+		PaymentVO result = service.selectPaymentByPk(vo.getPaymentNo());
+		model.addAttribute("result",result);
 		return "company/payment/payment/SuccessSubscribe";
 	}
 

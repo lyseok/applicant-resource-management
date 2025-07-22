@@ -19,7 +19,6 @@ public class SupportVO implements Serializable {
 	private String disabilityCode;
 	private String disabilityCodeName;
 
-	@NotBlank(message = "장애등급은 필수 입력 항목입니다.")
     @Size(max = 20, message = "장애등급은 최대 10자까지 입력 가능합니다.")
 	private String disabilityLevelCode;
 	private String disabilityLevelCodeName;

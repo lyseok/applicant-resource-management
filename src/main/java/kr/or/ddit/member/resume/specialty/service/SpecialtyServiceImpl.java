@@ -34,8 +34,8 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 	}
 
 	@Override
-	public void removeSpecialty(SpecialtyVO vo) {
-		mapper.deleteSpecialty(vo);
+	public void removeSpecialty(String no) {
+		mapper.deleteSpecialty(no);
 	}
 
 }

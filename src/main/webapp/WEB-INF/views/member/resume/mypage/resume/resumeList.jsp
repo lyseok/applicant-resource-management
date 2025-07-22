@@ -56,39 +56,39 @@
 				<ul>
 					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
-							<a class="d-block h4 fw-bold mb-4" href="<c:url value="/mypage/resume/${resume.resumeNo}"/>">${resume.resumeName}</a>
+							<a class="d-block h4 fw-bold mb-4" href="<c:url value="/mypage/resume/${resume.RESUME_NO}"/>">${resume.RESUME_NAME}</a>
 							<div class="d-flex gap-4 icon_box mb-3">
 								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${empty resume.careerList[0] }">
+									<c:if test="${empty resume.CAREER_YN }">
 										<i class='bx  bx-education'  ></i> 신입
 									</c:if>
-									<c:if test="${not empty resume.careerList[0] }">
+									<c:if test="${not empty resume.CAREER_YN }">
 										<i class='bx  bx-briefcase-alt'  ></i>경력
 									</c:if>
 								</span>
 								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.militaryList[0] }">
+									<c:if test="${not empty resume.MILITARY_YN }">
 										<i class='bx  bx-face-alt-2'  ></i> 군필
 									</c:if>
 								</span>
 								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.languageSkillList[0] }">
+									<c:if test="${not empty resume.LANGUAGE_SKILL_YN }">
 										<i class='bx  bx-translate'  ></i> 어학능력 보유
 									</c:if>
 								</span>
 								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.myLicenseList[0] }">
-										<i class='bx  bx-credit-card-front'  ></i>  보유 자격 ${resume.languageSkillList.size() }개
+									<c:if test="${not empty resume.MY_LICENSE_CNT }">
+										<i class='bx  bx-credit-card-front'  ></i>  보유 자격 ${resume.MY_LICENSE_CNT }개
 									</c:if>
 								</span>
 							</div>
 							<div class="">
-								<span class="fs-16 text-secondary">${resume.updateDate}</span>
+								<span class="fs-16 text-secondary">${resume.UPDATE_DATE}</span>
 							</div>
 						</div>
 						<div class="d-flex gap-1">
-							<a class="btn btn_gray_line fw-normal" href="/mypage/resume/edit/${resume.resumeNo}">수정</a>
-							<a class="btn btn_red_line fw-normal" href="" data-bs-toggle="modal" data-bs-target="#deleteResumeModal${resume.resumeNo}">삭제</a>
+							<a class="btn btn_gray_line fw-normal" href="/mypage/resume/edit/${resume.RESUME_NO}">수정</a>
+							<a class="btn btn_red_line fw-normal" href="" data-bs-toggle="modal" data-bs-target="#deleteResumeModal${resume.RESUME_NO}">삭제</a>
 						</div>
 					</li>
 				</ul>

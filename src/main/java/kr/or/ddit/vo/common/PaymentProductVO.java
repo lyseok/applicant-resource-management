@@ -18,5 +18,7 @@ public class PaymentProductVO implements Serializable{
 	private String productPeriod;
 	private String productType;
 	
+	private int daysRemaining;
+	
 	private MultipartFile productImgFile;
 }

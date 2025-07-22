@@ -104,4 +104,187 @@
 	WHERE TASK_NO = #{taskNo}
 </delete>
 
+<!-- PrjTaskVO 기본 매핑 -->
+<resultMap id="prjTaskMap" type="PrjTaskVO">
+    <id property="taskNo" column="TASK_NO"/>
+    <result property="prjNo" column="PRJ_NO"/>
+    <result property="userId" column="USER_ID"/>
+    <result property="sectNo" column="SECT_NO"/>
+    <result property="creatorId" column="CREATOR_ID"/>
+    <result property="taskName" column="TASK_NAME"/>
+    <result property="taskStatus" column="TASK_STATUS"/>
+    <result property="taskStatusName" column="TASK_STATUS_NAME"/>
+    <result property="detailContent" column="DETAIL_CONTENT"/>
+    <result property="startDate" column="START_DATE"/>
+    <result property="dueDate" column="DUE_DATE"/>
+    <result property="priorityCode" column="PRIORITY_CODE"/>
+    <result property="priorityCodeName" column="PRIORITY_CODE_NAME"/>
+    <result property="upperTaskNo" column="UPPER_TASK_NO"/>
+    <result property="progressRate" column="PROGRESS_RATE"/>
+    <result property="deleteDate" column="DELETE_DATE"/>
+    <result property="deleteUserId" column="DELETE_USER_ID"/>
+    <!-- section, member 조인 결과도 매핑 -->
+    <association property="prjSection" javaType="PrjSectionVO">
+        <id property="sectNo" column="SECT_NO"/>
+        <result property="sectName" column="SECT_NAME"/>
+    </association>
+    <association property="prjMem" javaType="PrjMemVO">
+        <result property="userId" column="USER_ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="userPosition" column="USER_POSITION"/>
+    </association>
+</resultMap>
+
+<select id="selectProjectTaskList" resultMap="prjTaskMap">
+	SELECT
+	    t.task_no,
+	    t.prj_no,
+	    t.user_id,
+	    t.sect_no,
+	    t.creator_id,
+	    t.task_name,
+	    t.task_status,
+	    t.detail_content,
+	    t.start_date,
+	    t.due_date,
+	    t.priority_code,
+	    t.upper_task_no,
+	    t.progress_rate,
+	    t.delete_date,
+	    t.delete_user_id,
+	    m.user_name,
+	    m.user_position
+	FROM
+	    prj_task    t
+	    LEFT JOIN prj_section s ON t.sect_no = s.sect_no
+	    LEFT JOIN prj_mem     m ON t.prj_no = m.prj_no
+	                           AND t.user_id = m.user_id
+	WHERE
+	    t.prj_no = #{prjNo}
+	      <if test="status != null and status != ''">
+	        AND T.TASK_STATUS = #{status}
+	      </if>
+	      <if test="userId != null and userId != ''">
+	        AND T.USER_ID = #{userId}
+	      </if>
+	      AND t.delete_date is NULL order by t.start_date asc
+</select>
+
+<select id="selectTaskByNo" parameterType="string" resultMap="prjTaskMap">
+    SELECT
+        T.TASK_NO,
+        T.PRJ_NO,
+        T.USER_ID,
+        T.SECT_NO,
+        T.CREATOR_ID,
+        T.TASK_NAME,
+        T.TASK_STATUS,
+        T.DETAIL_CONTENT,
+        T.START_DATE,
+        T.DUE_DATE,
+        T.PRIORITY_CODE,
+        T.UPPER_TASK_NO,
+        T.PROGRESS_RATE,
+        T.DELETE_DATE,
+        T.DELETE_USER_ID,
+        (SELECT MEM_NAME FROM MEMBER WHERE T.USER_ID = USER_ID) as USER_NAME
+    FROM
+        PRJ_TASK T
+
+    WHERE
+        T.TASK_NO = #{taskNo}
+</select>
+
+<insert id="insertTask" parameterType="PrjTaskVO" useGeneratedKeys="true" keyProperty="taskNo">
+<selectKey resultType="string" keyProperty="taskNo" order="BEFORE">
+	    SELECT
+	        'TASK'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(TASK_NO), LENGTH('TASK' ) + 1)), 0) + 1, 6, '0')
+	    FROM PRJ_TASK
+	</selectKey>
+    INSERT INTO PRJ_TASK
+    (
+    	TASK_NO
+    	, PRJ_NO
+    	, USER_ID
+    	, SECT_NO
+    	, CREATOR_ID
+    	, TASK_NAME
+    	, TASK_STATUS
+    	, DETAIL_CONTENT
+    	, START_DATE
+    	, DUE_DATE
+    	, PRIORITY_CODE
+    	, UPPER_TASK_NO
+    	, PROGRESS_RATE
+   	)
+    VALUES
+    (
+    	#{taskNo}
+    	, #{prjNo}
+    	, #{userId}
+    	, #{sectNo}
+    	, #{creatorId}
+    	, #{taskName}
+    	, #{taskStatus}
+    	, #{detailContent}
+    	, #{startDate}
+    	, #{dueDate}
+    	, #{priorityCode}
+    	, #{upperTaskNo}
+    	, #{progressRate}
+   	)
+</insert>
+
+<update id="updateTask" parameterType="PrjTaskVO">
+    UPDATE PRJ_TASK
+    SET
+        TASK_NAME = #{taskName},
+        TASK_STATUS = #{taskStatus},
+        DETAIL_CONTENT = #{detailContent},
+        START_DATE = #{startDate},
+        DUE_DATE = #{dueDate},
+        PRIORITY_CODE = #{priorityCode},
+        UPPER_TASK_NO = #{upperTaskNo},
+        PROGRESS_RATE = #{progressRate}
+    WHERE TASK_NO = #{taskNo}
+</update>
+
+<update id="updateTaskDelete">
+    UPDATE PRJ_TASK
+       SET DELETE_DATE = SYSDATE,
+           DELETE_USER_ID = #{deleteUserId}
+     WHERE TASK_NO = #{taskNo}
+       AND DELETE_DATE IS NULL
+</update>
+
+<!-- 작업 상태 변경 -->
+<update id="updateTaskStatus">
+    UPDATE PRJ_TASK
+    SET TASK_STATUS = #{taskStatus}
+    WHERE TASK_NO = #{taskNo}
+</update>
+
+<update id="updateTaskProgress">
+    UPDATE PRJ_TASK
+    SET PROGRESS_RATE = #{progressRate}
+    WHERE TASK_NO = #{taskNo}
+</update>
+
+<select id="selectTaskStatisticsByPrjNo" parameterType="string" resultType="PrjTaskStatisticsVO">
+    SELECT 
+        COUNT(*) AS total,
+        SUM(CASE WHEN TASK_STATUS = 'PEND-003' THEN 1 ELSE 0 END) AS completed,
+        SUM(CASE WHEN TASK_STATUS = 'PEND-002' THEN 1 ELSE 0 END) AS inProgress,
+        SUM(CASE WHEN TASK_STATUS = 'PEND-001' THEN 1 ELSE 0 END) AS todo,
+        SUM(CASE 
+                WHEN DUE_DATE &lt;= #{today} 
+                  AND TASK_STATUS != 'PEND-003' 
+                THEN 1 ELSE 0 END) AS overdue,
+        CASE WHEN COUNT(*) = 0 THEN 0
+             ELSE ROUND( (SUM(CASE WHEN TASK_STATUS = 'PEND-003' THEN 1 ELSE 0 END) * 100.0) / COUNT(*), 1)
+        END AS completionRate
+    FROM PRJ_TASK
+    WHERE PRJ_NO = #{prjNo}
+</select>
 </mapper>

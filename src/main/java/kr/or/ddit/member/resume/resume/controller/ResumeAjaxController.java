@@ -1,6 +1,7 @@
 package kr.or.ddit.member.resume.resume.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,7 @@ public class ResumeAjaxController {
 	private final ResumeService service;
 	
 	@GetMapping
-	public List<ResumeVO> getResumeList(){
+	public List<Map<String, Object>> getResumeList(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 		return service.readResumeList(userId);

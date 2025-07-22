@@ -50,4 +50,13 @@
 	WHERE CHATROOM_NO = #{chatroomNo}
 </delete>
 
+
+<select id="selectProjectChatroom">
+	SELECT
+	    c.CHATROOM_NO,
+	    c.PRJ_NO,
+	    c.CHATROOM_NAME
+	FROM CHATROOM c
+	WHERE c.PRJ_NO = #{prjNo}
+</select>
 </mapper>
