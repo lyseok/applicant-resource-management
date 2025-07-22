@@ -69,21 +69,21 @@ btnShowResumeList.onclick = function () {
 
   // 카드 UI 렌더링
   resumeListDiv.innerHTML = resumeList.map(resume => `
-    <div class="card mb-2 resume-card ${selectedResume && selectedResume.resumeNo === resume.resumeNo ? 'selected-card' : ''}" data-id="${resume.resumeNo}">
+    <div class="card mb-2 resume-card ${selectedResume && selectedResume.RESUME_NO === resume.RESUME_NO ? 'selected-card' : ''}" data-id="${resume.RESUME_NO}">
       <div class="card-body py-2 px-3">
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <p class="mb-1 text-secondary" style="font-size: .92em;">
-              ${resume.updateDate ? `수정일: ${resume.updateDate}` : ''}
+              ${resume.UPDATE_DATE ? `수정일: ${resume.UPDATE_DATE}` : ''}
             </p>
-            <h6 class="mb-1">${resume.resumeName || resume.resumeNo}</h6>
+            <h6 class="mb-1">${resume.RESUME_NAME || resume.RESUME_NAME}</h6>
             <div class="text-secondary" style="font-size:.96em;">
-              ${resume.resumeMainYn === 'Y' ? `<span class="badge bg-purple">대표 이력서</span>` : ''}
-              ${resume.resumeSubmitYn === 'Y' ? `<span class="badge bg-success">제출됨</span>` : ''}
+              ${resume.RESUME_MAIN_YN === 'Y' ? `<span class="badge bg-purple">대표 이력서</span>` : ''}
+              ${resume.RESUME_SUBMIT_YN === 'Y' ? `<span class="badge bg-success">제출됨</span>` : ''}
             </div>
           </div>
           <div>
-            ${resume.photo ? `<img src="${resume.photo}" alt="증명사진" style="width:38px; height:38px; border-radius:50%;">` : ''}
+            ${resume.PHOTO ? `<img src="${resume.PHOTO}" alt="증명사진" style="width:38px; height:38px; border-radius:50%;">` : ''}
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@ btnShowResumeList.onclick = function () {
   resumeListDiv.querySelectorAll('.resume-card').forEach(card => {
     card.onclick = function () {
       const rid = this.getAttribute('data-id');
-      selectedResume = resumeList.find(r => r.resumeNo === rid);
+      selectedResume = resumeList.find(r => r.RESUME_NO === rid);
       renderSelectedResumeCard();
       selectedResumeCard.style.display = 'block';
       resumeListDiv.style.display = 'none';
@@ -114,8 +114,8 @@ function renderSelectedResumeCard() {
   div.innerHTML = `
     <div class="card mb-0 selected-card">
       <div class="card-body py-2 px-3">
-        <p class="mb-1 text-secondary" style="font-size: .92em;">${selectedResume.updateDate ? `수정일: ${selectedResume.updateDate}` : ''}</p>
-        <h6 class="mb-1">${selectedResume.resumeName || selectedResume.resumeNo}</h6>
+        <p class="mb-1 text-secondary" style="font-size: .92em;">${selectedResume.UPDATE_DATE ? `수정일: ${selectedResume.UPDATE_DATE}` : ''}</p>
+        <h6 class="mb-1">${selectedResume.RESUME_NAME || selectedResume.RESUME_NO}</h6>
       </div>
     </div>
   `;
@@ -133,7 +133,7 @@ btnSaveApplication.onclick = async function () {
   const recruitmentNo = document.getElementById('recruitNo').dataset.no;
 
   // 이력서 번호
-  const resumeNo = selectedResume.resumeNo;
+  const resumeNo = selectedResume.RESUME_NO;
 
   // 서버로 전송할 객체
   const applyData = {
