@@ -159,31 +159,65 @@ const askCorp = function(type) {
 		});
 }
 
+function setActiveTab(element) {
+  document.querySelectorAll('.nav-tabs .nav-link').forEach(el => {
+    el.classList.remove('active');
+  });
+  element.classList.add('active');
+}
+
 const flist = function () {
-	let html = `
-		<p class="h4">자주 묻는 질문 탭 선택</p>
-		<button id="ufaq" onclick="faqUser()">일반회원</button>
-		<button id="cfaq" onclick="faqCorp()">기업회원</button>
-		<button id="afaq" onclick="faqAll()">전체</button>`;
-	memTypeBtn.innerHTML = html;
+  let html = `
+    <p class="h4 mb-3">자주 묻는 질문 탭 선택</p>
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link" id="ufaq" href="javascript:void(0)" onclick="setActiveTab(this); faqUser()">일반회원</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="cfaq" href="javascript:void(0)" onclick="setActiveTab(this); faqCorp()">기업회원</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="afaq" href="javascript:void(0)" onclick="setActiveTab(this); faqAll()">전체</a>
+      </li>
+    </ul>
+  `;
+  memTypeBtn.innerHTML = html;
 };
 
 const nlist = function () {
-	let html = `
-		<p class="h4">공지사항 탭 선택</p>
-		<button id="untc" onclick="noticeUser()">일반회원</button>
-		<button id="cntc" onclick="noticeCorp()">기업회원</button>
-		<button id="entc" onclick="noticeEvent()">이벤트</button>`;
-	memTypeBtn.innerHTML = html;
+  let html = `
+    <p class="h4 mb-3">공지사항 탭 선택</p>
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link" id="untc" href="javascript:void(0)" onclick="setActiveTab(this); noticeUser()">일반회원</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="cntc" href="javascript:void(0)" onclick="setActiveTab(this); noticeCorp()">기업회원</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="entc" href="javascript:void(0)" onclick="setActiveTab(this); noticeEvent()">이벤트</a>
+      </li>
+    </ul>
+  `;
+  memTypeBtn.innerHTML = html;
 };
 
 const asklist = function (type) {
-	let html = `
-		<p class="h4">문의사항 탭 선택</p>
-		<button id="uask" onclick="askUser('${type}')">일반회원</button>
-		<button id="cask" onclick="askCorp('${type}')">기업회원</button>
-		<button id="aask" onclick="askAll('${type}')">전체</button>`;
-	memTypeBtn.innerHTML = html;
+  let html = `
+    <p class="h4 mb-3">문의사항 탭 선택</p>
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link" id="uask" href="javascript:void(0)" onclick="setActiveTab(this); askUser('${type}')">일반회원</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="cask" href="javascript:void(0)" onclick="setActiveTab(this); askCorp('${type}')">기업회원</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="aask" href="javascript:void(0)" onclick="setActiveTab(this); askAll('${type}')">전체</a>
+      </li>
+    </ul>
+  `;
+  memTypeBtn.innerHTML = html;
 };
 
 const pre = function(type){
