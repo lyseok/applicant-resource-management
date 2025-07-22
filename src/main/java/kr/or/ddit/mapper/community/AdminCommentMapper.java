@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.ddit.vo.community.AdminBoardVO;
 import kr.or.ddit.vo.community.AdminCommentVO;
 
 @Mapper
@@ -14,5 +15,6 @@ public interface AdminCommentMapper {
 	public List<AdminCommentVO> searchAdminCommentList();  //문의게시판 관리자답글 모두
 	public int insertAdminComment(AdminCommentVO comment);
 	public int updateAdminComment(AdminCommentVO comment);
+	public int upDeleteAdminComment(AdminCommentVO comment);
 	public int deleteAdminComment(String commentNo);
 }

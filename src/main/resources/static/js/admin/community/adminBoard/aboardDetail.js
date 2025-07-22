@@ -6,6 +6,16 @@ const acommentListContainer = document.querySelector("#acommentListContainer");
 const acommentFormContainer = document.querySelector("#acommentFormContainer");
 
 // 1
+const abhit = async function(no) {
+  const resp = await fetch(`/ajax/admin/board/admin_board/hit/${no}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ boardNo: no })
+    });
+    return await resp.json();
+}
+
+// 2
 const abno = function(no){
 	listTitle.style.display = "none";
 	aboardform.style.display = "none";
@@ -13,14 +23,26 @@ const abno = function(no){
 	formBtn.innerHTML = "";
 	aboardList.innerHTML = "";
 	pageTitle();
-	fetch(`/ajax/admin/board/admin_board/detail/${no}`)
-	  .then((resp) => resp.json())
-	  .then((rslt) => {
-	    abdetail(rslt);
-	});
+	
+	abhit(no)  //조회수부터 증가
+	.then((rslt) => {
+    if (rslt.ok) {
+      console.log("글자", rslt.ok);
+	  return fetch(`/ajax/admin/board/admin_board/detail/${no}`)
+	} else {
+      throw new Error("조회수 증가 실패");
+    }
+  })
+  .then((resp) => resp.json())
+  .then(rslt => {
+    abdetail(rslt); // 상세 정보 렌더링
+  })
+  .catch(err => {
+    console.error("에러 발생:", err);
+  });
 }
 
-// 2
+// 3
 const abdetail = function(rslt) {
   let html = `
     <div class="jv_cont jv_benefit expand">
@@ -69,14 +91,30 @@ const abdetail = function(rslt) {
   abbtn(no, rslt.boardTypeCode);
 };
 
-// 4
+// 5
 const b001 = function(no, type){
 	if (type === "BRDD-001") {
 		aclist(no);
 	}	
 }
 
-// 5
+// 답글 수정
+/*
+const acedt = function(comment){
+	fetch(`/ajax/admin/board/admin_comment/detail/${comment.commentNo}`, {
+	    method: "post",
+	    headers: { "Content-Type": "application/json" },
+	    body: JSON.stringify(acommentBoard),
+	  }).then((resp) => {
+	    resp.json().then((rslt) => {
+	      if (rslt.ok && rslt.boardNo) {
+	        
+	      }
+	   });
+	});
+}
+*/
+// 6
 const aclist = function(no){
   fetch(`/ajax/admin/board/admin_comment/${no}`).then(resp => {
     resp.json().then(rslt => {
@@ -100,6 +138,10 @@ const aclist = function(no){
             <div class="CommentItem_meta Typo_root Typo_secondary Typo_label50">
               작성일: ${comment.boardWriteDate ?? "-"} / 상태: ${comment.boardCommentStatus}
             </div>
+            <div class="mt-3">
+				<button class="btn btn-sm btn-outline-primary" onclick="acedt('${comment.boardCommentNo}')">답글 수정</button>
+				<button class="btn btn-sm btn-outline-primary" onclick="acdel('${comment.boardCommentNo}')">답글 삭제</button>
+			</div>
           </div>
         `;
       });
@@ -113,7 +155,7 @@ const aclist = function(no){
   });
 };
 
-// 6
+// 7
 const acform = function(no){
 	
 	achtml(no);
@@ -142,7 +184,7 @@ const acform = function(no){
 	};
 }
 
-// 7
+// 8
 const achtml = function(no){
   let html = `
     <div class="CommentForm_root mt-4 p-3 border rounded">
@@ -187,7 +229,7 @@ const detailToList = function(type){
 	}	
 }
 
-// 3
+// 4
 const abbtn = function(no, type){
 	allBtns.innerHTML = "";
 	

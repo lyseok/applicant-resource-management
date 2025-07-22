@@ -87,6 +87,15 @@
 			BOARD_COMMENT_NO = #{boardCommentNo}
 	</update>
 	
+	<update id="upDeleteAdminComment">
+		UPDATE ADMIN_COMMENT 
+		SET 
+			  BOARD_DELETE_DATE = #{boardDeleteDate}
+			, BOARD_COMMENT_STATUS = 'D'
+		WHERE 
+			BOARD_COMMENT_NO = #{boardCommentNo}
+	</update>
+	
 	<delete id="deleteAdminComment">
 		DELETE FROM 
 			ADMIN_COMMENT 

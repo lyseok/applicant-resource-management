@@ -90,7 +90,11 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	@Override
 	public void modifyAdminBoard(AdminBoardVO board) {
 		mapper.updateAdminBoard(board);
-
+	}
+	
+	@Override
+	public void addABoardPostHit(AdminBoardVO board) {
+		mapper.updateABoardPostHit(board);		
 	}
 
 	@Override

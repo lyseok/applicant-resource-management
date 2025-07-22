@@ -2,7 +2,6 @@ const boardTypeCode = document.querySelector("#boardTypeCode");
 const codeGroup = document.querySelector("#codeGroup");
 const memType = document.querySelector("#memType");
 let updateNo = null;  // 전역으로 선언
-let updateType = null;
 
 // 무조건 처음 한번 실행 되는 부분
 //1차 옵션 추가
@@ -57,7 +56,7 @@ aboardform.onsubmit = function (e) {
 	  console.log("adminBoard(JSON Object) : ", adminBoard);
 	  // 등록 or 수정 구분
 	  const url = updateNo
-	    ? `/ajax/admin/board/admin_board/${updateType}/${updateNo}`
+	    ? `/ajax/admin/board/admin_board/detail/${updateNo}`
 	    : `/ajax/admin/board/admin_board/${adminBoard.boardTypeCode}`;
 	
 	  fetch(url, {
@@ -75,7 +74,6 @@ aboardform.onsubmit = function (e) {
 	        mdis(); memType.disabled = true;
 	        //수정 상태 해제
 	        updateNo = null;
-	        updateType = null;
 	      }
 	   });
 	});
@@ -222,7 +220,6 @@ const if2 = function(){
 
 //수정에서 넘어올 때
 const if3 = function(type){
-	updateType = type;
 	
 	if(type.includes('NTC')){
 		boardTypeCode.value ='BRDD-003';  //비교 연산자 아니고 할당 연산자로

@@ -118,20 +118,27 @@ public class AdminAdminBoardAjaxController {
 	}
 	
 	// 해당 유형의 해당 글의 게시글 수정
-	@PostMapping("/{boardTypeCode}/{boardNo}")
+	@PostMapping("/detail/{boardNo}")
 	public Map<String, Object> editBoard(
-		@PathVariable(required = false) String boardTypeCode
-		, @PathVariable String boardNo
+		@PathVariable String boardNo
 		, @RequestBody AdminBoardVO board
 	) {
 		board.setBoardNo(boardNo);
-		board.setBoardTypeCode(boardTypeCode);
 	    service.modifyAdminBoard(board);
 	    
 	    return Map.of(
             "ok", true,
             "boardNo", board.getBoardNo()
         );	// 수정 후 Detail 이동
+	}
+	
+	// 해당 글의 조회수 증가
+	@PostMapping("/hit/{boardNo}")
+	public Map<String, Object> hitUpBoard(@PathVariable String boardNo) {
+	    AdminBoardVO board = new AdminBoardVO();
+	    board.setBoardNo(boardNo);
+	    service.addABoardPostHit(board);
+	    return Map.of("ok", true);
 	}
 
 	// 해당 유형의 해당 글의 삭제 상태 변경

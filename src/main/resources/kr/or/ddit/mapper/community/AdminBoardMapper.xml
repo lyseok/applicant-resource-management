@@ -262,9 +262,14 @@
 			, BOARD_STATUS = 'U'
 		WHERE 
 			BOARD_NO = #{boardNo}
-		<if test='boardTypeCode!=null and boardTypeCode!=""'>
-			AND BOARD_TYPE_CODE = #{boardTypeCode}
-		</if>
+	</update>
+	
+	<update id="updateABoardPostHit">
+		UPDATE ADMIN_BOARD 
+		SET 
+			BOARD_POST_HIT = BOARD_POST_HIT + 1 
+		WHERE 
+			BOARD_NO = #{boardNo}
 	</update>
 
 	<update id="upDeleteAdminBoard" parameterType="AdminBoardVO">

@@ -21,6 +21,7 @@ public interface AdminAdminBoardAjaxService {
 	public List<AdminBoardVO> readAdminBoardList();
 	public void createAdminBoard(AdminBoardVO board);  //selectKey로 만들어진 boardNo가 반환돼야 뷰에서 사용
 	public void modifyAdminBoard(AdminBoardVO board);
+	public void addABoardPostHit(AdminBoardVO board);
 	public void hiddenAdminBoard(AdminBoardVO board);
 	public void removeAdminBoard(String boardNo);
 }

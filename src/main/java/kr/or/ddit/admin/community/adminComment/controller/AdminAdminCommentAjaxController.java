@@ -1,5 +1,8 @@
 package kr.or.ddit.admin.community.adminComment.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +55,7 @@ public class AdminAdminCommentAjaxController {
 		return service.searchAdminCommentList();
 	}
 	
+	// 해당 게시글의 답글 등록
 	@PostMapping("/{boardNo}")
 	public Map<String, Object> inComment(
 			@PathVariable String boardNo
@@ -61,7 +65,7 @@ public class AdminAdminCommentAjaxController {
 	    return Map.of("ok", true);
 	}
 	
-	// 수정, 삭제 상태 변경
+	// 수정
 	@PostMapping("/detail/{boardCommentNo}")
 	public Map<String, Object> editComment(
 		@PathVariable String boardNo
@@ -73,6 +77,21 @@ public class AdminAdminCommentAjaxController {
 	    return Map.of("ok", true);	// 수정 후 Detail 이동
 	}
 	
+	// 해당 유형의 해당 답글의 삭제 상태 변경
+	@PostMapping("/hidden/{boardCommentNo}")
+	public Map<String, Object> hiddenComment(
+	    @PathVariable String commentNo
+	    , @RequestBody AdminCommentVO comment
+	) {
+		comment.setBoardCommentNo(commentNo);
+		comment.setBoardDeleteDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+	    service.hiddenAdminComment(comment);
+
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("ok", true);
+	    result.put("boardNo", comment.getBoardNo());  // null 허용
+	    return result;	// 삭제 후 board detail 이동
+	}	
 
 	//에러 검증
 	@PostMapping("/check")
