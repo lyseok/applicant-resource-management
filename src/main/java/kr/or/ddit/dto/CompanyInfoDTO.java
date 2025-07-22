@@ -1,7 +1,10 @@
 package kr.or.ddit.dto;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import kr.or.ddit.vo.common.FilesVO;
 import lombok.Data;
 
 @Data
@@ -43,6 +46,7 @@ public class CompanyInfoDTO {
 	private String comCapital;
 	private String comMainBiz;
 	
+	private List<FilesVO> fileList;
 
 	
 	

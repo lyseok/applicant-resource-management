@@ -109,6 +109,12 @@ body {
 		width: 100%; /* 화면이 작을 때 한 줄로 표시 */
 	}
 }
+
+
+/* 간단한 스타일 */
+    #logoPreview { max-height:100px; margin-bottom:8px; display:none; }
+    .form-row { margin-bottom:12px; }
+    label { display:block; margin-bottom:4px; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -232,14 +238,16 @@ body {
 							<option value="">--선택--</option>
 						</select>
 					</div>
-
-					<!-- 기업 로고 (toast 에디터로 대체) -->
-					<div class="section-form-row vertical">
-						<label>기업 이미지</label>
-						<div id="comImageEditor"></div>
-						<input type="hidden" id="comImageContent" name="comImageContent">
-					</div>
-
+					
+					
+									  <!-- 로고 업로드 -->
+				    <div class="form-row">
+				      <label>기업 로고</label>
+				      <img id="logoPreview" alt="로고 미리보기">
+				      <input type="file" id="logoInput" accept="image/*" class="form-control">
+				      <!-- 업로드된 URL 보관 -->
+				      <input type="hidden" id="logoUrl" name="logoUrl">
+				    </div>
 				</div>
 
 				<!-- 버튼들 -->
