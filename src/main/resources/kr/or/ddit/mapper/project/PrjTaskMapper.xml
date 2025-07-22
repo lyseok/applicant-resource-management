@@ -241,6 +241,7 @@
     SET
         TASK_NAME = #{taskName},
         TASK_STATUS = #{taskStatus},
+        USER_ID = #{userId},
         DETAIL_CONTENT = #{detailContent},
         START_DATE = #{startDate},
         DUE_DATE = #{dueDate},
