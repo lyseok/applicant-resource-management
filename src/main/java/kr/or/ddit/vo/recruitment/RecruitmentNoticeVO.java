@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.FilesVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -60,4 +61,5 @@ public class RecruitmentNoticeVO implements Serializable{
 	@Valid
 	private List<RecruitProcessVO> processList;
 	private CompanyVO company;
+	private List<FilesVO> fileList;
 }
