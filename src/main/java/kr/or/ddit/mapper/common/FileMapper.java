@@ -13,9 +13,11 @@ public interface FileMapper {
 	
 	public int insertFile(FilesVO vo);
 	
-	public int updateSource(FilesVO vo);
+	public int updateSource(String sourceNo, String filePath, int order);
 	
 	public int updateFile(FilesVO vo);
 	
 	public int deleteFile(String fileNo);
+	
+	public int deleteByFilePath(String filePath);
 }
