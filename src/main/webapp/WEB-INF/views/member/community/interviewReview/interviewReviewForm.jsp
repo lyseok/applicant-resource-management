@@ -7,7 +7,7 @@
 <title>면접 리뷰 등록</title>
 <link rel="stylesheet" href="/css/member/resume/resume.css">
 <script
-	src="/js/member/common/mypage/interviewReviewWrite/interviewReviewWrite.js"></script>
+	src="/js/member/common/mypage/interviewReview/interviewReviewWrite.js"></script>
 <style>
 	/* 입력 필드 수직으로 나열하기 위한 스타일 */
 	.section-form-row {
@@ -88,7 +88,7 @@
 				</div>
 				<div class="section-form-row autocomplete">
 					<label class="required" for="jobNameInput">직무 선택 </label> 
-					<input type="text"  id="jobNameInput" name="jobName" autocomplete="off" placeholder="직무를 검색해주세요. " required>
+					<input type="text"  id="jobNameInput" name="jobName" autocomplete="off" placeholder="직무를 검색해주세요. ">
         			<input type="hidden" id="jobCodeHidden" name="jobCode">
          			<ul id="jobSuggestions" class="suggestions"></ul>
 				</div>
@@ -111,8 +111,8 @@
 					<label class="required">전반적 평가 </label>
 					<div class="form-check-wrap d-flex gap-3">
 						<div class="form-check">
-							<input class="form-check-input" type="radio" name="evaluation" value="1" required> 
-							<label class="form-check-label" for="evaluation">부정적</label>
+							<input class="form-check-input" type="radio" name="evaluation" value="1"> 
+							<label class="form-check-label" for="evaluation">긍정적</label>
 						</div>
 						<div class="form-check">
 							<input class="form-check-input" type="radio" name="evaluation" value="2"> 
@@ -120,7 +120,7 @@
 						</div>
 						<div class="form-check">
 							<input class="form-check-input" type="radio" name="evaluation" value="3"> 
-							<label class="form-check-label" for="evaluation">긍정적</label>
+							<label class="form-check-label" for="evaluation">부정적</label>
 						</div>
 					</div>
 				</div>
@@ -129,7 +129,7 @@
 					<label class="required">면접 난이도 </label>
 					<div class="form-check-wrap d-flex gap-3">
 						<div class="form-check">
-							<input class="form-check-input" type="radio" name="interviewLevel" value="1" required> 
+							<input class="form-check-input" type="radio" name="interviewLevel" value="1"> 
 							<label class="form-check-label">상</label>
 						</div>
 						<div class="form-check">
@@ -159,7 +159,7 @@
 				</div>
 				<div class="section-form-row">
 					<label class="required">전형 및 면접 진행방식 </label>
-					<textarea id="interviewContent" name="interviewContent" cols="30" rows="5"  placeholder="서류 합격 후 어떤 전형과 면접을 경험하셨나요? " required></textarea>
+					<textarea id="interviewContent" name="interviewContent" cols="30" rows="5"  placeholder="서류 합격 후 어떤 전형과 면접을 경험하셨나요? " ></textarea>
 				</div>
 			</div>
 		</div>
@@ -186,9 +186,7 @@
 				</div>
 				<div class="section-form-row">
 					<label class="required">면접질문</label> 
-					<input type="text" name="interviewQuestionContent" placeholder="Q.1 ex) 경력 사항에 대한 상세한 질문 " required> 
-					<input type="text" name="interviewQuestionContent" placeholder="Q.2 ex) 우리 회사의 강점은 ?  " required>
-					<input type="text" name="interviewQuestionContent" placeholder="Q.3 ex) 우리 회사를 선택한 이유  " required>
+					<textarea id="interviewQuestion" name="interviewQuestion" cols="30" rows="5" placeholder="ex) &#10;Q1. 자기소개 해주세요.&#10;Q2. 회사에 지원한 이유는 무엇인가요?"></textarea>
 				</div>
 				<div class="section-form-row">
 					<label class="required">TIP&특이사항</label>

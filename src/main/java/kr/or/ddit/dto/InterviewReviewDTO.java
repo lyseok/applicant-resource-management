@@ -34,8 +34,8 @@ public class InterviewReviewDTO {
 	@NotBlank(message = "합격여부를 선택해주세요. ")
 	private String interviewPassYn;
 	
-	@NotEmpty(message = "질문을 입력해주세요. ")
-	private List<@NotBlank String> interviewQuestionContent;
+	@NotBlank(message = "질문 내용을 입력해주세요")
+	private String interviewQuestion;
 	
 	private String tip;
 }

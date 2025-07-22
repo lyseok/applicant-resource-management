@@ -30,6 +30,50 @@
 	      <result property="interviewPassYn"    column="INTERVIEW_PASS_YN"/>
 		</association>
 	</resultMap>
+	
+	<resultMap id="interviewReviewListMap" type="kr.or.ddit.vo.community.InterviewReviewVO">
+	  
+	  <!-- 기본 필드 -->
+	  <id     property="interviewReviewNo" column="INTERVIEW_REVIEW_NO"/>
+	  <result property="interviewNo" column="INTERVIEW_NO"/>
+	  <result property="comId" column="COM_ID"/>
+	  <result property="jobCode" column="JOB_CODE"/>
+	  <result property="interviewDate" column="INTERVIEW_DATE"/>
+	  <result property="interviewReviewDate" column="INTERVIEW_REVIEW_DATE"/>
+	
+	  <!-- 면접 정보 -->
+	  <association property="interviewInformation" javaType="InterviewInformationVO">
+	    <id     property="interviewInformationNo" column="INTERVIEW_INFORMATION_NO"/>
+	    <result property="evaluation" column="EVALUATION"/>
+	    <result property="interviewLevel" column="INTERVIEW_LEVEL"/>
+	    <result property="interviewType" column="INTERVIEW_TYPE"/>
+	    <result property="interviewContent" column="INTERVIEW_CONTENT"/>
+	  </association>
+	
+	  <!-- 합격 정보 -->
+	  <association property="passInformation" javaType="PassInformationVO">
+	    <id     property="passInformationNo" column="PASS_INFORMATION_NO"/>
+	    <result property="interviewQuestion" column="INTERVIEW_QUESTION"/>
+	    <result property="tip" column="TIP"/>
+	    <result property="interviewPassYn" column="INTERVIEW_PASS_YN"/>
+	  </association>
+	
+	  <!-- 채용 공고 정보 -->
+	  <association property="recruitmentNotice" javaType="RecruitmentNoticeVO">
+	    <result property="recruitmentNo" column="RECRUITMENT_NO"/>
+	    <result property="recruitmentTitle" column="RECRUITMENT_TITLE"/>
+	    <result property="jobCode" column="JOB_CODE"/>
+	    <result property="yearCode" column="YEAR_CODE"/>
+	  </association>
+	
+	  <!-- 회사 정보 -->
+	  <association property="company" javaType="CompanyVO">
+	    <result property="comName" column="COM_NAME"/>
+	  </association>
+	
+	</resultMap>
+
+
 
 
 	<select id="selectInterviewList" resultType="kr.or.ddit.vo.recruitment.InterviewVO">
@@ -112,6 +156,56 @@
 	    FROM INTERVIEW_REVIEW
 	    WHERE COM_ID = #{comId}
 	    ORDER BY INTERVIEW_REVIEW_DATE DESC
+	 </select>
+	 
+	 
+	 
+	 <select id="selectInterviewReviewAllList" resultMap="interviewReviewListMap">
+	 	SELECT
+		    IR.INTERVIEW_REVIEW_NO AS INTERVIEW_REVIEW_NO,
+		    IR.INTERVIEW_NO AS INTERVIEW_NO,
+		    IR.COM_ID AS COM_ID,
+		    IR.JOB_CODE AS JOB_CODE,
+		    IR.INTERVIEW_DATE AS INTERVIEW_DATE,
+		    TO_CHAR(IR.INTERVIEW_REVIEW_DATE, 'YYYY-MM-DD HH24:MI') AS INTERVIEW_REVIEW_DATE,
+		   
+		    II.INTERVIEW_INFORMATION_NO AS INTERVIEW_INFORMATION_NO,
+		    II.EVALUATION AS EVALUATION,
+		    II.INTERVIEW_LEVEL AS INTERVIEW_LEVEL,
+		    II.INTERVIEW_TYPE AS INTERVIEW_TYPE,
+		    II.INTERVIEW_CONTENT AS INTERVIEW_CONTENT,
+		
+		    
+		    PI.PASS_INFORMATION_NO AS PASS_INFORMATION_NO,
+		    PI.INTERVIEW_QUESTION AS INTERVIEW_QUESTION ,
+		    PI.TIP AS TIP,
+		    PI.INTERVIEW_PASS_YN AS INTERVIEW_PASS_YN,
+
+		   
+		    RN.RECRUITMENT_NO AS RECRUITMENT_NO,
+		    RN.RECRUITMENT_TITLE AS RECRUITMENT_TITLE,
+		    RN.JOB_CODE AS JOB_CODE,
+		    RN.YEAR_CODE AS YEAR_CODE,
+		 
+		    C.COM_NAME
+
+		FROM TEAM1_202501F.INTERVIEW_REVIEW IR
+			JOIN TEAM1_202501F.INTERVIEW_INFORMATION II
+			    ON IR.INTERVIEW_REVIEW_NO = II.INTERVIEW_REVIEW_NO
+			LEFT JOIN TEAM1_202501F.PASS_INFORMATION PI
+			    ON IR.INTERVIEW_REVIEW_NO = PI.INTERVIEW_REVIEW_NO
+			JOIN TEAM1_202501F.INTERVIEW I
+			    ON IR.INTERVIEW_NO = I.INTERVIEW_NO
+			JOIN TEAM1_202501F.RECRUIT_PROCESS RP
+			    ON I.PROCESS_NO = RP.RECRUIT_PROCESS_NO
+			JOIN TEAM1_202501F.RECRUITMENT_NOTICE RN
+			    ON RP.RECRUITMENT_NO = RN.RECRUITMENT_NO
+			JOIN TEAM1_202501F.COMPANY C
+			    ON RN.USER_ID = C.USER_ID
+		WHERE IR.STATUS IS NULL
+		ORDER BY IR.INTERVIEW_REVIEW_DATE DESC
+	 
+	 
 	 </select>
 	 
 	 

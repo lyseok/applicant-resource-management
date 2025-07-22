@@ -80,8 +80,6 @@
 
 		form.querySelectorAll('span.text-danger').forEach(el => el.remove());
 		const fData = new FormData(form);
-		const questions = fData.getAll('interviewQuestionContent');
-		
 		const rawDate  = fData.get('interviewDate');
 		const yyyymmdd = rawDate.replace(/-/g, '');
 
@@ -95,40 +93,45 @@
 			interviewType: fData.get('interviewType'),
 			evaluation: fData.get('evaluation'),
 			interviewLevel: fData.get('interviewLevel'),
-			// textarea name="interview_content" → interviewContent
+		
 			interviewContent: fData.get('interviewContent'),
 			interviewPassYn: fData.get('interviewPassYn'),
-			interviewQuestionContent: questions,
+			interviewQuestion: fData.get('interviewQuestion'),
 			tip: fData.get('tip')
 		};
 
 		axios.post('/ajax/member/interview/review/write', payload)
 			 .then(resp => {
+				console.log(payload);
 				alert('등록 성공');
+				location.href = '/mypage/interview';
 			 })
 			 .catch(err => {
 				
-				 if (err.response && err.response.data) {
-					const errors = err.response.data; // { field: ["msg1","msg2"], ... }
-					console.log('서버 에러:', errors);
-					Object.entries(errors).forEach(([field, messages]) => {
-						
-						const baseField = field.replace(/\[\d+\]$/, '');
-						// name 속성 또는 id가 field인 요소 찾아서
-						const inputEl = form.querySelector(`[name="${baseField}"], #${baseField}`);
-						if (inputEl) {
-						// 기존 메시지 지웠으니 바로 추가
-						
-						const next = inputEl.nextElementSibling;
-						  if (next?.classList.contains('text-danger')) next.remove();
+				 console.log('서버 에러 응답:', err.response?.data); // ✅ 꼭 확인
 
-						const span = document.createElement('span');
-						span.className = 'text-danger small';
-						span.textContent = messages.join(', ');
-						inputEl.insertAdjacentElement('afterend', span);
-				}
-          });
-        }
+				if (err.response && err.response.data) {
+						const errors = err.response.data;
+
+						Object.entries(errors).forEach(([field, messages]) => {
+							const inputEl = form.querySelector(`[name="${field}"], #${field}`);
+							if (inputEl) {
+								const parent = inputEl.closest('.section-form-row');
+								const span = document.createElement('span');
+								span.className = 'text-danger small';
+								span.textContent = messages.join(', ');
+								parent.appendChild(span);
+							}
+						});
+					}
 	  });
 	});
+
+
+	document.querySelector('.btn_red_line').addEventListener('click', () => {
+  if (confirm('정말 취소하시겠습니까? 입력 내용이 사라집니다.')) {
+    window.history.back(); // 또는 location.href = '/mypage/interview';
+  }
+});
+
  });

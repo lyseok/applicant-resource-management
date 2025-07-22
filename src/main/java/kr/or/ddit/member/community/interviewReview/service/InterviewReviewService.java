@@ -1,5 +1,6 @@
-package kr.or.ddit.member.common.mypage.interviewReview.service;
+package kr.or.ddit.member.community.interviewReview.service;
 
+import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.dto.InterviewReviewDTO;
@@ -17,5 +18,8 @@ public interface InterviewReviewService {
 	public int createPassInformation(PassInformationVO passInformation);
 	
 	public boolean registerInterviewReview(InterviewReviewDTO interviewReviewDTO);
+	
+	public List<InterviewReviewVO> readInterviewReviewAllList();
+	
 	
 }

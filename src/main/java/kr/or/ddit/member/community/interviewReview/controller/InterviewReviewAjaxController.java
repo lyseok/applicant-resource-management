@@ -1,5 +1,6 @@
-package kr.or.ddit.member.common.mypage.interviewReview.controller;
+package kr.or.ddit.member.community.interviewReview.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import kr.or.ddit.dto.InterviewReviewDTO;
-import kr.or.ddit.member.common.mypage.interviewReview.service.InterviewReviewService;
+import kr.or.ddit.member.community.interviewReview.service.InterviewReviewService;
 import kr.or.ddit.validate.utils.ErrorsUtils;
+import kr.or.ddit.vo.community.InterviewReviewVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,11 +29,17 @@ public class InterviewReviewAjaxController {
 	private final InterviewReviewService interviewReviewService;
 	private final ErrorsUtils errorsUtils;
 	
+	
+	@GetMapping()
+	public List<InterviewReviewVO> reviewList(){
+		List<InterviewReviewVO> reviewList = interviewReviewService.readInterviewReviewAllList();
+		return reviewList;
+	}
+
 	@GetMapping("/{interviewNo}")
 	public Map<String, Object> getInterviewInfo(@PathVariable String interviewNo){
 		return interviewReviewService.readInterviewWithCompanyNameByNo(interviewNo);
 	}
-	
 	
 	@PostMapping("/write")
 	public ResponseEntity<?> writeInterviewReview(
@@ -42,6 +50,7 @@ public class InterviewReviewAjaxController {
 		
 		if(bindingResult.hasErrors()) {
 			MultiValueMap<String, String> errors = errorsUtils.errorsToMap(bindingResult);
+			log.info("bindingResult.hasErrors(): {}", bindingResult.hasErrors());
 			return ResponseEntity.badRequest().body(errors);
 		}
 		interviewReviewService.registerInterviewReview(interviewReviewDTO);

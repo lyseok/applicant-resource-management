@@ -1,5 +1,6 @@
-package kr.or.ddit.member.common.mypage.interviewReview.service;
+package kr.or.ddit.member.community.interviewReview.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.Authentication;
@@ -56,16 +57,16 @@ public class InterviewReviewServiceImpl implements InterviewReviewService{
 		inserted += createInterviewInformation(interviewInformation);
 		
 		
-		for(String question : dto.getInterviewQuestionContent()) {
-			PassInformationVO passInformation = new PassInformationVO();
-			passInformation.setInterviewReviewNo(reviewNo);
-			passInformation.setInterviewQuestion(question);
-			passInformation.setTip(dto.getTip());
-			passInformation.setInterviewPassYn(dto.getInterviewPassYn());
-			inserted += createPassInformation(passInformation);
-		}
 		
-		int expected = 2 + dto.getInterviewQuestionContent().size();
+		PassInformationVO passInformation = new PassInformationVO();
+		passInformation.setInterviewReviewNo(reviewNo);
+		passInformation.setInterviewQuestion(dto.getInterviewQuestion());
+		passInformation.setTip(dto.getTip());
+		passInformation.setInterviewPassYn(dto.getInterviewPassYn());
+		inserted += createPassInformation(passInformation);
+		
+		
+		int expected = 3;
 		return inserted == expected;
 		
 		
@@ -95,6 +96,20 @@ public class InterviewReviewServiceImpl implements InterviewReviewService{
     	return authentication.getName();
 	}
 
+	@Override
+	public List<InterviewReviewVO> readInterviewReviewAllList() {
+		List<InterviewReviewVO> interviewReview =  interviewReviewMapper.selectInterviewReviewAllList();
+		for (InterviewReviewVO iReview : interviewReview) {
+			String jobName = codeMapProvider.getJobName(iReview.getRecruitmentNotice().getJobCode());
+			String year = codeMapProvider.getCodeName(iReview.getRecruitmentNotice().getYearCode());
+			iReview.getRecruitmentNotice().setJobCodeName(jobName);
+			iReview.getRecruitmentNotice().setYearCodeName(year);
+		}
+		
+		return interviewReview;
+	}
+
+	
 	
 	
 }
