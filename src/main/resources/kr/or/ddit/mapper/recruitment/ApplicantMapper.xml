@@ -31,8 +31,9 @@
 		, RESUME_NO
 		, RESUME_VIEW_YN
 		, USER_ID
-		, STATUS FROM APPLICANT 
+	FROM APPLICANT 
 	WHERE APPLICANT_ID = #{applicantId}
+	AND APPLICANT_DEL_DATE IS NULL
 	</select>
 	
 	<select id="duplicationApplicant">

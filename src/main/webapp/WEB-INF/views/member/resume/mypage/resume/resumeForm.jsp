@@ -99,6 +99,21 @@
 		</div>
 			<form action="post" id="resume_form">
 	
+				<!-- 스킬 -->
+				<!-- 보유기술 (MY_SKILL) 입력폼 -->
+				<div class="section" id="section-mySkillList">
+					<div class="section-title">
+						<h6>나의스킬</h6>
+						<button class="add-btn" type="button" id="btn-mySkillList">+
+							추가</button>
+					</div>
+					<div class="section-content" style="color: #b8bfc9;">주요 보유기술,
+						툴, 언어 등을 입력해주세요.</div>
+					<div class="formContainer"></div>
+					<div class="listContainer"></div>
+				</div>
+				
+				
 				<!-- 학력 -->
 				<!-- 학력 (EDUCATION) 입력폼 -->
 				<div class="section" id="section-educationList">
@@ -161,19 +176,6 @@
 				</div>
 	
 	
-				<!-- 포트폴리오 (PORTFOLIO) 입력폼 -->
-				<div class="section" id="section-portfolioList">
-					<div class="section-title">
-						<h6>포트폴리오</h6>
-						<button class="add-btn" type="button" id="btn-portfolioList">+
-							추가</button>
-					</div>
-					<div class="section-content" style="color: #b8bfc9;">주요 프로젝트,
-						작업 포트폴리오 정보를 입력해주세요.</div>
-					<div class="formContainer"></div>
-					<div class="listContainer"></div>
-				</div>
-	
 				<!-- 경력 (CAREER) 입력폼 -->
 				<div class="section" id="section-careerList">
 					<div class="section-title">
@@ -188,16 +190,30 @@
 				</div>
 	
 	
-				<!-- 스킬 -->
-				<!-- 보유기술 (MY_SKILL) 입력폼 -->
-				<div class="section" id="section-mySkillList">
+				<!-- 포트폴리오 (PORTFOLIO) 입력폼 -->
+				<div class="section" id="section-portfolioList">
 					<div class="section-title">
-						<h6>보유기술</h6>
-						<button class="add-btn" type="button" id="btn-mySkillList">+
+						<h6>포트폴리오</h6>
+						<button class="add-btn" type="button" id="btn-portfolioList">+
 							추가</button>
 					</div>
-					<div class="section-content" style="color: #b8bfc9;">주요 보유기술,
-						툴, 언어 등을 입력해주세요.</div>
+					<div class="section-content" style="color: #b8bfc9;">주요 프로젝트,
+						작업 포트폴리오 정보를 입력해주세요.</div>
+					<div class="formContainer"></div>
+					<div class="listContainer"></div>
+				</div>
+	
+	
+	
+				<!-- 보유자격 (MY_LICENSE) 입력폼 -->
+				<div class="section" id="section-myLicenseList">
+					<div class="section-title">
+						<h6>자격증</h6>
+						<button class="add-btn" type="button" id="btn-myLicenseList">+
+							추가</button>
+					</div>
+					<div class="section-content" style="color: #b8bfc9;">보유한 자격증
+						정보를 입력해주세요.</div>
 					<div class="formContainer"></div>
 					<div class="listContainer"></div>
 				</div>
@@ -215,39 +231,10 @@
 				</div>
 	
 	
-				<!-- 활동 - 고용지원 (SUPPORT) 입력폼 -->
-				<div class="section" id="section-supportList">
-					<div class="section-title">
-						<h6>고용지원 정보</h6>
-						<button class="add-btn" type="button" id="btn-supportList">+
-							추가</button>
-					</div>
-					<div class="section-content" style="color: #b8bfc9;">장애 등 고용지원
-						대상 정보를 입력해주세요.</div>
-					<div class="formContainer"></div>
-					<div class="listContainer"></div>
-				</div>
-	
-	
-	
-				<!-- 보유자격 (MY_LICENSE) 입력폼 -->
-				<div class="section" id="section-myLicenseList">
-					<div class="section-title">
-						<h6>보유자격</h6>
-						<button class="add-btn" type="button" id="btn-myLicenseList">+
-							추가</button>
-					</div>
-					<div class="section-content" style="color: #b8bfc9;">보유한 자격증
-						정보를 입력해주세요.</div>
-					<div class="formContainer"></div>
-					<div class="listContainer"></div>
-				</div>
-	
-	
 				<!-- 어학 (LANGUAGE_SKILL) 입력폼 -->
 				<div class="section" id="section-languageSkillList">
 					<div class="section-title">
-						<h6>어학</h6>
+						<h6>어학 자격증</h6>
 						<button class="add-btn" type="button" id="btn-languageSkillList">+
 							추가</button>
 					</div>
@@ -282,6 +269,21 @@
 					<div class="formContainer"></div>
 					<div class="listContainer"></div>
 				</div>
+				
+	
+				<!-- 활동 - 고용지원 (SUPPORT) 입력폼 -->
+				<div class="section" id="section-supportList">
+					<div class="section-title">
+						<h6>취업우대사항</h6>
+						<button class="add-btn" type="button" id="btn-supportList">+
+							추가</button>
+					</div>
+					<div class="section-content" style="color: #b8bfc9;">장애 등 고용지원
+						대상 정보를 입력해주세요.</div>
+					<div class="formContainer"></div>
+					<div class="listContainer"></div>
+				</div>
+	
 	
 				<div class="" id="form-resume">
 					<input type="hidden" name="resumeName" id="hiddenResumeName" value="${memberInfo.memName }님의 이력서 ${resumeCnt + 1}">

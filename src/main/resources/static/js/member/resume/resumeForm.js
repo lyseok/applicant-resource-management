@@ -156,7 +156,7 @@ const templateMap = {
         <div class="d-flex w-100 flex-column">
   				<div class="d-flex position-relative gap-2">
   					<div class="flex-fill">
-		          <input type="text" name="resumeVO.careerList[${idx}].comId" class="w-100 h-100" placeholder="예: NAVER" maxlength="100" id="comId" >
+		          <input type="text" name="resumeVO.careerList[${idx}].comId" class="w-100 h-100" placeholder="예: NAVER" maxlength="100" id="comId" value="">
 		          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="z-index: 2000; max-width:301px">
 							</ul>
 						</div>
@@ -499,9 +499,9 @@ const listItemMap = {
 	careerList: (idx, data, type = "careerList") => `
     <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}"  data-type="${type}">
       <div class="d-flex flex-column">
-        <strong>${data.comId || '회사명 미입력'}</strong>
+        <strong>${data.comName || data.company.comName || '회사명 미입력'}</strong>
         <span>${data.startWorkDate || '입사일 없음'} ~ ${data.retireDate || '재직중'}</span>
-        <small>${data.department || ''} / ${data.responsibility || ''}</small>
+        <small>${data.department || ''} ${data.responsibility ? ' / ' + data.responsibility : ''}</small>
       </div>      
       <div class="d-flex gap-2">
         <button type="button" class="btn_edit">
@@ -1196,21 +1196,7 @@ document.addEventListener("change", function(e) {
 });
 
 
-
-
-
-// ---- JS 추가 바인딩 부분 ----
-document.addEventListener("DOMContentLoaded", function() {
-	// DOM 로드 되자마자 Company 정보 불러오기
-	axios.get("/ajax/career/company/list")
-		.then(resp => {
-			console.log(resp.data);
-			companyList = resp.data;
-		})
-		.catch(err => {
-			console.error(err)
-		})
-
+function bindListContainerEvents() {
 
 	document.querySelectorAll(".listContainer").forEach(container => {
 		container.addEventListener("click", async function(e) {
@@ -1219,18 +1205,17 @@ document.addEventListener("DOMContentLoaded", function() {
 				const idx = itemWrap.dataset.idx;
 				const type = itemWrap.dataset.type;
 				const section = document.querySelector(`#section-${type}`);
+				let formContainer = null;
 				if (section) {
-					const formContainer = section.querySelector('.formContainer');
-					// formContainer도 null일 수 있으므로 안전하게:
-					if (formContainer) {
-						// 여기서 로직 처리
-					}
+					formContainer = section.querySelector('.formContainer'); // 여기서 할당만
+					if (!formContainer) return;
 				} else {
 					console.warn("⚠️ section-introduction DOM 요소를 찾을 수 없습니다.");
+					return;
 				}
 				const formId = `form-${type}${idx}`;
 				let formEl = document.getElementById(formId);
-				
+
 				console.log("listContainer 객체 반복문 돌릴 떄 resume 객체 확인!! ", resume)
 				console.log("listContainer 객체 반복문 돌릴 떄 formId 확인!! ", formId)
 				console.log("listContainer 객체 반복문 돌릴 떄 list-item 확인!! ", itemWrap)
@@ -1252,32 +1237,84 @@ document.addEventListener("DOMContentLoaded", function() {
 					formEl.dataset.idx = idx;
 					formEl.dataset.edit = "true";
 
+
+					// 👉 라디오 먼저 처리 (빠르게 반응시킴, select 처럼 비동기 요청 보낼 필요 없기 떄문에 !! )
+					for (const [key, val] of Object.entries(data)) {
+						const input = formEl.querySelector(`[name$='.${key}']`);
+						if (input && input.type === "radio") {
+							const radio = formEl.querySelector(`[name$='.${key}'][value="${val}"]`);
+							if (radio) {
+								radio.checked = true;
+								radio.dispatchEvent(new Event("change", { bubbles: true }));
+							}
+						}
+					}
 					// select 세팅
 					await setDynamicSelects(type, formEl);
 
 					// 값 바인딩
-					setTimeout(() => {
-						for (const [key, val] of Object.entries(data)) {
-							const input = formEl.querySelector(`[name$='.${key}']`);
+					for (const [key, val] of Object.entries(data)) {
+						const input = formEl.querySelector(`[name$='.${key}']`);
+						if (input) {
+							if (input.tagName === "SELECT") {
+								// 옵션이 존재할 때만 value 세팅
+								const hasOption = input.querySelector(`option[value="${val}"]`);
+								console.log("🔍 option 있음?", hasOption, val, input);
+								if (hasOption) {
+									input.value = val;
+									input.dispatchEvent(new Event("change", { bubbles: true }));
+
+								}
+							} else if (input.type !== "radio") {
+								// radio는 이미 위에서 처리함
+								input.value = val;
+							} 
+						}
+					}
+					// specialtyList 바인딩 추가
+					if (data.specialtyList && data.specialtyList.length > 0) {
+						const specialty = data.specialtyList[0];
+
+						for (const [key, val] of Object.entries(specialty)) {
+							const input = formEl.querySelector(`[name$='.specialtyList[0].${key}']`);
 							if (input) {
 								if (input.tagName === "SELECT") {
 									const hasOption = input.querySelector(`option[value="${val}"]`);
 									if (hasOption) {
 										input.value = val;
-										input.dispatchEvent(new Event("change"));
+										input.dispatchEvent(new Event("change", { bubbles: true }));
 									}
 								} else {
 									input.value = val;
 								}
 							}
 						}
-					}, 50);
+					}
+
+
 				}
 				return;
 			}
 
 		});
 	});
+}
+
+// ---- JS 추가 바인딩 부분 ----
+document.addEventListener("DOMContentLoaded", function() {
+	// DOM 로드 되자마자 Company 정보 불러오기
+	axios.get("/ajax/career/company/list")
+		.then(resp => {
+			console.log(resp.data);
+			companyList = resp.data;
+		})
+		.catch(err => {
+			console.error(err)
+		})
+
+	bindListContainerEvents();
+	bindFormContainerEvents(); // ✅ 최초 로딩 시 한 번 바인딩
+
 	document.querySelectorAll(".add-btn").forEach(btn => {
 		btn.addEventListener("click", async function() {
 			// 1. section, type 등 기본 변수 셋업
@@ -1304,13 +1341,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			if (addBtn.closest("#section-careerList")) {
 				// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-				document.querySelector("#comId").addEventListener("input", function() {
-					const inputVal = this.value.trim();
+				// 동적으로 생성된 input에도 적용됨
+				document.addEventListener("input", function(e) {
+					console.log("INPUT 발생!", e.target);
+
+					const inputEl = e.target;
+					if (inputEl.id !== "comId") return;
+
+					const inputVal = inputEl.value.trim();
 					const suggestionBox = document.querySelector("#comSuggestions");
 					suggestionBox.innerHTML = ""; // 초기화
 
 					if (!inputVal) {
-						this.removeAttribute("data-userid"); // 입력값 없을 때 속성 제거
+						inputEl.removeAttribute("data-userid");
 						return;
 					}
 
@@ -1325,64 +1368,70 @@ document.addEventListener("DOMContentLoaded", function() {
 						li.innerText = c.comName;
 						li.dataset.userid = c.userId;
 						li.classList.add("list-group-item", "list-group-item-action");
-						li.style.maxWidth = "301px"
+						li.style.maxWidth = "301px";
 
-						// 클릭 시 input 값과 data 설정
 						li.addEventListener("click", () => {
-							const inputEl = document.querySelector("#comId");
 							inputEl.value = c.comName;
-							inputEl.dataset.userid = c.userId; // userId 설정
+							inputEl.dataset.userid = c.userId;
 							suggestionBox.innerHTML = "";
+
+							// 📌 상위 .section-form-wrap 에 있는 data-idx 가져오기
+							const parentWrap = inputEl.closest(".section-form-wrap");
+							if (!parentWrap) return;
+
+							const idx = parentWrap.dataset.idx;
+							console.log("회사명 idx 확인", idx)
+							console.log("comid  확인", c.userId)
+							console.log("리슘 몇번쨰에 들어갈건지 확인", resume.careerList[idx].comId)
+
+							if (!isNaN(idx)) {
+								// 해당 idx가 아직 없는 경우, 미리 빈 객체로 생성
+								if (!resume.careerList[idx]) resume.careerList[idx] = {};
+								resume.careerList[idx].comId = c.userId;
+								resume.careerList[idx].comName = c.comName; // ✅ 꼭 추가!
+								console.log("아직도 안돼?????????????????", resume.careerList[idx].comId)
+							}
 						});
 
 						suggestionBox.appendChild(li);
-
-						// 입력값이 정확히 일치하는 항목 확인
 						if (c.comName === inputVal) {
-							this.dataset.userid = c.userId;
+							inputEl.dataset.userid = c.userId;
 							exactMatchFound = true;
 						}
 					});
 
-					// 정확히 일치하는 항목이 없는 경우 userId 속성 제거
 					if (!exactMatchFound) {
-						this.removeAttribute("data-userid");
+						inputEl.removeAttribute("data-userid");
 					}
 				});
 			}
 
 			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			document.addEventListener("DOMContentLoaded", function() {
-				const searchButton = document.querySelector(".search_com_btn");
-				if (searchButton) {
-					const searchButton = document.querySelector(".search_com_btn");
-					searchButton.addEventListener("click", function(e) {
-						const comId = document.querySelector("#comId");
-						const userId = comId.dataset.userid;
-						const userName = comId.value;
-						console.log(userId)
-						console.log(userName)
-						axios.get(`/ajax/career/company/${userId}`)
-							.then(resp => {
-								const comSearchMsg = document.querySelector("#comSearchMsg");
-								console.log(resp.data)
-								if (resp.data.success == true) {
-									comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
-									comSearchMsg.classList.remove("text-danger")
-									comSearchMsg.classList.add("text-primary", "fs-14")
-								} else {
-									comId.value = "";
-									comSearchMsg.innerHTML = `${resp.data.message}`;
-									comSearchMsg.classList.remove("text-primary")
-									comSearchMsg.classList.add("text-danger")
-								}
-							})
-							.catch(err => {
-								console.error(err);
-							})
-					})
-				} else {
-					console.warn("search_com_btn 버튼을 찾을 수 없습니다.");
+			document.addEventListener("click", function(e) {
+				if (e.target.classList.contains("search_com_btn")) {
+					const comId = document.querySelector("#comId");
+					const userId = comId.dataset.userid;
+					const userName = comId.value;
+					console.log(userId)
+					console.log(userName)
+					axios.get(`/ajax/career/company/${userId}`)
+						.then(resp => {
+							const comSearchMsg = document.querySelector("#comSearchMsg");
+							console.log(resp.data)
+							if (resp.data.success == true) {
+								comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
+								comSearchMsg.classList.remove("text-danger")
+								comSearchMsg.classList.add("text-primary", "fs-14")
+							} else {
+								comId.value = "";
+								comSearchMsg.innerHTML = `${resp.data.message}`;
+								comSearchMsg.classList.remove("text-primary")
+								comSearchMsg.classList.add("text-danger")
+							}
+						})
+						.catch(err => {
+							console.error(err);
+						})
 				}
 			})
 
@@ -1437,10 +1486,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						// JS JSON 객체에 넘기기 위한 반복문 코드
 						formWrap.querySelectorAll("input, select, textarea").forEach(input => {
-							const fromDataName = input.name.split('.').pop().replace(/\[\d+\]/, '');
-							data[fromDataName] = input.value;
-						});
+							const name = input.name;
+							if (!name) return;
 
+							const key = name.split('.').pop().replace(/\[\d+\]/, '');
+							// ❗ comId는 2차 루프에서 처리하므로 건너뜀
+							if (key === "comId") return;
+						});
 						// 위에서 만든 변수들을 vo 형태에 맞게 세팅할 수 있게 미리만들어둔 함수에 넘겨줌
 						const vo = makeVO(thisType, data);
 						const key = arrayKey[thisType];
@@ -1937,20 +1989,27 @@ document.addEventListener("submit", function(e) {
 		formData.append("comImage", resume.company.comImage);
 	}
 
-	console.log(resume)
+	console.log("resume 객체 확인 >>>> ", resume)
+	function safeStringify(obj) {
+		const seen = new WeakSet();
+		return JSON.stringify(obj, function(key, value) {
+			if (typeof value === "object" && value !== null) {
+				if (seen.has(value)) return "[Circular]";
+				seen.add(value);
+			}
+			return value;
+		}, 2);
+	}
 
+	console.log("resume >>>", safeStringify(resume));
 	// axios 비동기 전송
-	axios.post("/mypage/resume/create", formData, {
-		headers: {
-			"Content-Type": "multipart/form-data"
-		}
-	})
+	axios.post("/mypage/resume/create", formData)
 		.then(resp => {
 			console.log(resp.data);
-			if (mode== "create" && resp.data === "ok") {
+			if (mode == "create" && resp.data === "ok") {
 				alert("정상적으로 등록되었습니다.");
 				window.location.href = "/mypage/resume/list";
-			} if (mode== "update" && resp.data === "ok") {
+			} if (mode == "update" && resp.data === "ok") {
 				alert("정상적으로 수정되었습니다.");
 				window.location.href = "/mypage/resume/" + resume.resumeNo;
 			} else {
@@ -2017,7 +2076,8 @@ document.addEventListener("submit", function(e) {
 							}
 
 							// 기존 에러 제거
-							const oldError = wrapper.querySelector(`.${field}-error`);
+							const safeField = field.replace(/\[.*?\]/g, "").replace(/\./g, "-");
+							const oldError = wrapper.querySelector(`.${safeField}-error`);
 							if (oldError) oldError.remove();
 
 							// 새 에러 span 추가
@@ -2055,7 +2115,8 @@ document.addEventListener("submit", function(e) {
 						}
 
 						// 기존 에러 제거
-						const oldError = wrapper.querySelector(`.${field}-error`);
+						const safeField = field.replace(/\[.*?\]/g, "").replace(/\./g, "-");
+						const oldError = wrapper.querySelector(`.${safeField}-error`);
 						if (oldError) oldError.remove();
 
 						const errorSpan = document.createElement('span');
@@ -2110,14 +2171,14 @@ window.addEventListener("DOMContentLoaded", async () => {
 		// ✅ 여기서 먼저 코드 그룹 로딩이 끝날 때까지 기다리기
 		await preloadCodeGroups(["GRAD", "EDUC", "SPEC", "VULN", "DSBL", "LANG", "MILT", "SRVC"]);
 		Object.assign(resume, resumeFromServer);
-		
-		
+
+
 		// 수정 모드일 이력서 제목을 바인딩
 		const resumeNameInput = document.getElementById("resumeNameInput");
 		if (resumeNameInput && resume.resumeName) {
 			resumeNameInput.value = resume.resumeName;
 		}
-		
+
 		// ✅ 자기소개서 존재 여부 체크
 		if (resume.introductionNo && !resume.introduction) {
 			alert("연결된 자기소개서가 삭제되었습니다. 다시 선택해 주세요.");
@@ -2192,3 +2253,89 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 	}
 });
+
+
+function bindFormContainerEvents() {
+	document.querySelectorAll('.formContainer').forEach(formContainer => {
+		if (formContainer.hasAttribute('data-bound')) return; // 중복 방지
+
+		formContainer.setAttribute('data-bound', 'true');
+
+		formContainer.addEventListener("click", async function(e) {
+			const formWrap = e.target.closest('.section-form-wrap');
+			if (!formWrap) return;
+
+			const matches = formWrap.id.match(/^form-([a-zA-Z]+)(\d+)$/);
+			if (!matches) return;
+			const thisType = matches[1];
+			const idx = parseInt(matches[2], 10);
+
+			const section = formWrap.closest('.section');
+			const addBtn = section.querySelector('.add-btn');
+			const listContainer = section.querySelector('.listContainer');
+			const secCont = section.querySelector('.section-content');
+
+			// ✅ 확인 버튼 클릭
+			if (e.target.classList.contains('save_btn')) {
+				let data = {};
+				formWrap.querySelectorAll("input, select, textarea").forEach(input => {
+					const key = input.name?.split('.').pop().replace(/\[\d+\]/, '');
+					if (key === "comId") {
+						if (input.dataset.userid) {
+							data[key] = input.dataset.userid;
+							data["comName"] = input.value;         // 보여주기용 comName ← ✅ 이것만 추가해도 충분
+						} else {
+							alert("회사명을 자동완성 리스트에서 선택해 주세요.");
+							input.focus();
+							throw new Error("comId는 반드시 자동완성으로 선택된 userId여야 함");
+						}
+					} else {
+						data[key] = input.value;
+					}
+
+				});
+
+				const vo = makeVO(thisType, data);
+				const key = arrayKey[thisType];
+				const isEdit = formWrap.dataset.edit === "true";
+
+				if (isEdit) {
+					resume[key][idx] = vo;
+				} else {
+					resume[key].push(vo);
+					typeCounters[thisType] = resume[key].length;
+				}
+
+				const listItemHtml = listItemMap[thisType](idx, data, thisType);
+				const listItem = listContainer.querySelector(`[data-idx="${idx}"]`);
+
+				if (isEdit && listItem) {
+					listItem.outerHTML = listItemHtml;
+				} else {
+					listContainer.insertAdjacentHTML('beforeend', listItemHtml);
+				}
+
+				formWrap.style.display = 'none';
+				if (addBtn) addBtn.style.display = '';
+				listContainer.classList.remove('d-none');
+				if (secCont) secCont.style.display = 'none';
+			}
+
+			// ✅ 취소 버튼 클릭
+			if (e.target.classList.contains('btn_red_line')) {
+				formWrap.remove();
+				typeCounters[thisType] = Math.max((typeCounters[thisType] || 1) - 1, 0);
+
+				const hasList = listContainer.querySelectorAll('.list-item').length > 0;
+				if (hasList) {
+					listContainer.classList.remove('d-none');
+					if (secCont) secCont.style.display = 'none';
+				} else {
+					listContainer.classList.add('d-none');
+					if (secCont) secCont.style.display = '';
+				}
+				if (addBtn) addBtn.style.display = '';
+			}
+		});
+	});
+}

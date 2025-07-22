@@ -16,7 +16,7 @@ public interface EducationMapper {
 	public int insertEducation(EducationVO vo);
 	// 수정
 	public int updateEducation(EducationVO vo);
-	// 삭제
-	public int deleteEducation(EducationVO vo);
+	// 이력서 번호기준 전체 eduction 삭제
+	public int deleteEducation(String no);
 	
 }
