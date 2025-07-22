@@ -120,4 +120,38 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
   
+  
+  let imageEditor;
+
+  imageEditor = new toastui.Editor({
+    el: document.querySelector('#comImageEditor'),
+    height: '300px',
+    initialEditType: 'wysiwyg',
+    previewStyle: 'vertical',
+    hooks: {
+      addImageBlobHook: async (blob, callback) => {
+        const formData = new FormData();
+        formData.append('file', blob);
+
+        try {
+          const response = await axios.post('/upload/image', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+          const imageUrl = response.data.url;
+          callback(imageUrl, blob.name);
+        } catch (err) {
+          console.error('이미지 업로드 실패:', err);
+        }
+      }
+    }
+  });
+
+  // 저장 시 에디터 내용 포함
+  document.getElementById('companyForm').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('comImageContent').value = imageEditor.getHTML();
+    // 이후 기존 저장 로직 계속 진행...
+  });
+
+  
 });
