@@ -247,6 +247,17 @@ const acform = function (no) {
 
   acommentForm.onsubmit = function (e) {
     e.preventDefault();
+
+    Swal.fire({
+      title: "정말로 등록하시겠습니까?",
+      text: "등록한 답글은 즉시 반영됩니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "확인",
+    }).then((result) => {
+
     let adminComment = {
       userId: acommentForm.userId.value,
       boardNo: acommentForm.boardNo.value,
@@ -271,7 +282,15 @@ const acform = function (no) {
         }
       });
     });
-  };
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "답글 등록 완료!",
+        text: "답글이 등록되었습니다.",
+        icon: "success"
+      });
+    }
+  });
+ };
 };
 
 // 8
