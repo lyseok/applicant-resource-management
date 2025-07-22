@@ -39,8 +39,8 @@ public class AdminAdminCommentAjaxController {
 	private final ErrorsUtils errorsUtils;  //검증 추가해야 함
 	
 	@GetMapping("/detail/{boardCommentNo}")
-	public ResponseEntity<AdminCommentVO> getOneComment(@PathVariable String commentNo) {
-	    return service.readAdminCommentbyPk(commentNo)
+	public ResponseEntity<AdminCommentVO> getOneComment(@PathVariable String boardCommentNo) {
+	    return service.readAdminCommentbyPk(boardCommentNo)
 	    		.map(ResponseEntity::ok)
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 상태코드 404 객체 반환
 	}
@@ -68,10 +68,10 @@ public class AdminAdminCommentAjaxController {
 	// 수정
 	@PostMapping("/detail/{boardCommentNo}")
 	public Map<String, Object> editComment(
-		@PathVariable String commentNo
+		@PathVariable String boardCommentNo
 		,  @RequestBody AdminCommentVO comment
 	) {
-		comment.setBoardCommentNo(commentNo);
+		comment.setBoardCommentNo(boardCommentNo);
 	    service.modifyAdminComment(comment);
 	    
 	    return Map.of("ok", true);
@@ -80,10 +80,10 @@ public class AdminAdminCommentAjaxController {
 	// 해당 유형의 해당 답글의 삭제 상태 변경
 	@PostMapping("/hidden/{boardCommentNo}")
 	public Map<String, Object> hiddenComment(
-	    @PathVariable String commentNo
+	    @PathVariable String boardCommentNo
 	    , @RequestBody AdminCommentVO comment
 	) {
-		comment.setBoardCommentNo(commentNo);
+		comment.setBoardCommentNo(boardCommentNo);
 		comment.setBoardDeleteDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 	    service.hiddenAdminComment(comment);
 

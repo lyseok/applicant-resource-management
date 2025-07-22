@@ -98,13 +98,6 @@ const b001 = function(no, type) {
 	}
 }
 
-// 답글 수정
-function acedt(commentNo) {
-
-
-
-}
-
 //버튼 누르면(이거 자체가 온클릭)
 function aceditable(pBtn, commentNo, userId, boardNo) {  
 
@@ -117,21 +110,26 @@ function aceditable(pBtn, commentNo, userId, boardNo) {
 		//alert("서버로 전송할꺼얌");
 		// 서버에 떤송하고, 사용자에게는 잘 수정 되었다고 알려주면 끄읕!
 		// 예쁘게 할 거면 sweetalert2
-		//acedt(no);
 		let acommentVO = {
 			boardCommentNo: commentNo,
 			userId: userId,
-			boardNo: boardNo
+			boardNo: boardNo,
+			boardCommentContent: hjDiv.innerHTML
 		}
-		
-		console.log("acommentVO?", acommentVO);
 
-		//fetch(`/ajax/admin/board/admin_comment/detail/${no}`, {
-
-		//}
-     
-        hjDiv.contentEditable = false;
-		pBtn.innerText = "답글 수정모드";
+		fetch(`/ajax/admin/board/admin_comment/detail/${commentNo}`, {
+			method : "POST",
+			headers : {
+				"Content-Type" : "application/json"
+			},
+			body : JSON.stringify(acommentVO),
+		}).then((resp)=>{
+			resp.json().then((rslt)=>{
+				console.log("수정 결과?", rslt);
+				hjDiv.contentEditable = false;
+				pBtn.innerText = "답글 수정모드";
+			})
+		})
 	}
 }
 
