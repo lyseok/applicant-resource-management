@@ -42,6 +42,16 @@ public class RecruitViewAjaxController {
 		return viewList;
 	}
 	
+	// 검색
+	@GetMapping("/list/{keyword}")
+	public List<RecruitViewDTO> getRecruitViewListKeyward(
+		@PathVariable String keyword
+	){
+		List<RecruitViewDTO> viewList = service.readSearchRecruitViewList(keyword);
+		log.info("list 잘 담겼나 확인 >>>>>>>>>>>>>>>>> {}", viewList);
+		return viewList;
+	}
+	
 	@PostMapping("/{no}")
 	public ResponseEntity<?> insertRecruitView(
 		@PathVariable String no
