@@ -83,6 +83,18 @@ public class ResumeController {
 		model.addAttribute(MODELNAME, resume);
 		return "member/resume/mypage/resume/resumeDetail";
 	}
+	
+	// 상세조회
+	@GetMapping("{no}/{userId}")
+	public String getResumeDetailByApplicant(Model model, @PathVariable String no, @PathVariable String userId) {
+		ResumeVO vo = new ResumeVO();
+		vo.setUserId(userId);
+		vo.setResumeNo(no);
+		ResumeVO resume = service.readResumeDetail(vo);
+		log.info("{}", resume);
+		model.addAttribute(MODELNAME, resume);
+		return "member/resume/mypage/resume/resumeDetail";
+	}
 
 	// 등록 폼 이동
 	@GetMapping("create")
