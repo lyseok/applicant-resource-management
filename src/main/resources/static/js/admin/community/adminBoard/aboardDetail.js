@@ -5,6 +5,18 @@ const aboardDetail = document.querySelector("#aboardDetail");
 const acommentListContainer = document.querySelector("#acommentListContainer");
 const acommentFormContainer = document.querySelector("#acommentFormContainer");
 
+//태그가 직접 들어가는 엔터를 사용해서, 위험요소 제거용
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[c]));
+}
+
+
 // 1
 const abhit = async function (no) {
   const resp = await fetch(`/ajax/admin/board/admin_board/hit/${no}`, {
@@ -124,7 +136,10 @@ function aceditable(pBtn, commentNo, userId, boardNo) {
           boardCommentNo: commentNo,
           userId: userId,
           boardNo: boardNo,
-          boardCommentContent: hjDiv.innerHTML,
+          boardCommentContent: escapeHTML(hjDiv.innerText)
+			  .split("\n")
+			  .map(line => `<div>${line}</div>`)
+			  .join(""),
         };
 
         fetch(`/ajax/admin/board/admin_comment/detail/${commentNo}`, {
@@ -261,7 +276,7 @@ const acform = function (no) {
 	  boardNo: acommentForm.boardNo.value,
 	  boardCommentContent: acommentForm.boardCommentContent.value
 	    .split("\n")
-	    .map(line => `<div>${line}</div>`)
+	    .map(line => `<div>${escapeHTML(line)}</div>`)
 	    .join(""),
 	};
 
