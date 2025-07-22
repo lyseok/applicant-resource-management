@@ -14,5 +14,5 @@ public interface EducationService {
 	// 수정
 	public void editEducation(EducationVO vo);
 	// 삭제
-	public void removeEducation(EducationVO vo);
+	public void removeEducation(String no);
 }
