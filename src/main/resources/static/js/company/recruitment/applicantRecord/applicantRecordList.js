@@ -1,5 +1,13 @@
 let currentStep = 'step1'; // 초기 단계
 
+// 로딩 show/hide 함수
+function showLoading() {
+  document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
+}
+function hideLoading() {
+  document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
+}
+
 // 컬럼 정보(스텝별로 다르면 이렇게 관리)
 const columns = {};
 
@@ -42,7 +50,8 @@ function generateColumns(step, type) {
 
 function formatCellValue(key, value, applicant) {
   if (key === 'resumeNo' ) {
-    return `<button class="btn btn-outline-primary btn-sm resume-link" data-resume-no="${value}" data-user-id="${applicant._userId}">상세</button>`;
+    return `<button class="btn btn-outline-primary btn-sm resume-link" 
+    		data-resume-no="${value}" data-user-id="${applicant._userId}" data-applicant-id="${applicant._applicantId}">상세</button>`;
   }
   if (key === 'passSelect') {
     const checked = applicant.pass === 'Y' ? 'checked' : '';
@@ -54,7 +63,7 @@ function formatCellValue(key, value, applicant) {
   if (value === null || value === undefined || value === '') {
     return '-';
   }
-  return key === 'career' ? `${value}년` : value;
+  return key === 'career' ? `${value}` : value;
 }
 
 function generateRowDataAttributes(applicant) {
@@ -188,7 +197,7 @@ function closeStep(){
 		alert('선택된 지원자가 없습니다.');
 		return;
 	}
-	
+	showLoading();
 	axios.post(`/applicant/record/pass`, selectedApplicants)
 		.then(res=>{
 			alert(`마감 완료, ${selectedApplicants.length}명 반영됨`);
@@ -197,6 +206,9 @@ function closeStep(){
 		.catch(err=>{
 			console.error('단계 마감 실패', err);
 			alert('단계 마감 중 오류가 발생했습니다.');
+		})
+		.finally(() => {
+			hideLoading();
 		});
    	
   }
@@ -360,7 +372,7 @@ async function fetchApplicantData(recruitmentNo) {
         major: row.major ?? "",
         cert: row.cert ?? [],
         skill: row.skill ?? [],
-        attend: row.attend ?? "-",
+        attend: row.ATTEND ?? "-",
         pass: row.PASS ?? "-",
         score: score,
         
@@ -423,11 +435,53 @@ function updateStepActionButton(){
 	if (!$btn) return; // 버튼이 없으면 무시
 	
 	if(currentStep === FINAL_STEP_KEY){
-		$btn.textContent = '합격 메일 전송';
+		$btn.textContent = '입사일 변경';
+		$btn.onclick = () =>{
+			const modal = new bootstrap.Modal(document.getElementById('hireDateModal'));
+			const overlay = document.getElementById('overlay');
+			if (overlay) overlay.style.display = 'none';
+			modal.show();
+		};
 	}else{
 		$btn.textContent = '단계 마감';
+		$btn.onclick = closeStep;
 	}
 }
+
+document.getElementById('confirmHireDateBtn').addEventListener('click', ()=>{
+	const date = document.getElementById('hireDatePicker').value;
+	if(!date){
+		alert('입사일을 선택해 주세요.');
+		return;
+	}
+	
+	const finalApplicants = applicantData[FINAL_STEP_KEY] || [];
+	const payload = finalApplicants.map(a=>({
+		applicantId : a._applicantId,
+		recruitmentNo : a._recruitmentNo,
+		hireDate : date
+	}));
+	
+	if(payload.length === 0){
+		alert("최종합격자 데이터가 없습니다.");
+		return;
+	}
+	
+	showLoading();
+	axios.post('/applicant/record/hiredate', payload)
+		.then(()=>{
+			alert("입사 예정일이 변경되었습니다.");
+			fetchApplicantData(payload[0].recruitmentNo);
+			bootstrap.Modal.getInstance(document.getElementById('hireDateModal')).hide();
+		})
+		.catch(err=>{
+			console.error('입사일 업데이트 실패', err);
+			alert("입사 예정일 변경 실패");
+		})
+		.finally(()=>{
+			hideLoading();
+		})
+})
 
 async function fetchFinalPassers(recruitmentNo){
 	try{
@@ -451,7 +505,8 @@ async function fetchFinalPassers(recruitmentNo){
 				accept: passer.recruitAcceptYn,
 				hireDate: passer.hireDate ?? "-",
 				passSelect: true,
-				_passerNo: passer.passerNo
+				_passerNo: passer.passerNo,
+				_recruitmentNo : base._recruitmentNo ?? passer.recruitmentNo ?? recruitmentNo
 			});
 		});
 
@@ -474,10 +529,10 @@ function mergeResumeDetail(resumeDetailList){
 
 		targets.forEach(app => {
 			app.bir = app.bir || resume.birth;
-			app.career = app.career || (resume.careerList?.[0]?.year || 0);
-			app.language = app.language || (resume.languageSkillList?.map(l => l.languageName).join(', ') || '');
-			app.cert = app.cert?.length ? app.cert : (resume.myLicenseList?.map(l => l.licenseName) || []);
-			app.skill = app.skill?.length ? app.skill : (resume.mySkillList?.map(s => s.skillName) || []);
+			app.career = app.career || getHighestCareerYear(resume.careerList);
+			app.language = app.language || (resume.languageSkillList?.map(l => l.languageExamScore).join(', ') || '');
+			app.cert = app.cert?.length ? app.cert : (resume.myLicenseList?.map(l => l.licenseCode) || []);
+			app.skill = app.skill?.length ? app.skill : (resume.mySkillList?.map(s => s.mySkillName) || []);
 			app.major = app.major || (resume.educationList?.[0]?.departmentCode || '');
 			
 			app.resumeNo = resume.resumeNo || "";
@@ -514,11 +569,20 @@ document.addEventListener('click', function(e) {
 
   const resumeNo = $target.dataset.resumeNo;
   const userId = $target.dataset.userId;
+  const applicantId = $target.dataset.applicantId;
 
   if (!resumeNo || !userId) {
     alert('이력서 정보가 부족합니다.');
     return;
   }
+  
+  axios.post(`/applicant/record/${applicantId}`)
+  	.then(()=>{
+		console.log('이력서 열람');
+	})
+	.catch(err=>{
+		console.error('이력서 열람 실패');
+	})
 
   const popupUrl = `/mypage/resume/${resumeNo}/${userId}`;
   const width = 1000;
@@ -532,3 +596,23 @@ document.addEventListener('click', function(e) {
     `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
   );
 });
+
+function getHighestCareerYear(careerList) {
+  if (!Array.isArray(careerList) || careerList.length === 0) return 0;
+
+  const extractYear = (name) => {
+    if (!name) return 0;
+    const match = name.match(/(\d+)(년)/g);
+    if (!match) return 0;
+
+    // 예: "6년 ~ 7년" → 7 추출
+    const nums = match.map(m => parseInt(m.replace('년', ''), 10));
+    return Math.max(...nums);
+  };
+
+  const sorted = careerList
+    .filter(c => c.careerYearName)
+    .sort((a, b) => extractYear(b.careerYearName) - extractYear(a.careerYearName));
+
+  return sorted[0]?.careerYearName || 0;
+}
