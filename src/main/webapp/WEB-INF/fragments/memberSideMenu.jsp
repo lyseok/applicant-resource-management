@@ -25,6 +25,14 @@
           <div data-i18n="Basic">마이 홈</div>
         </a>
       </li>
+      <li class="menu-item">
+        <a href="http://localhost:3000/" class="menu-link">
+          <!-- <i class="menu-icon tf-icons bx bx-garage"></i> -->
+          <span class="menu-icon material-symbols-outlined"
+            style="font-size:1.35rem; width:20px; height: 20px;">Communities</span>
+          <div data-i18n="Basic">프로젝트 홈</div>
+        </a>
+      </li>
 
       <li class="menu-header small text-uppercase"><span class="menu-header-text">이력서</span></li>
       <li class="menu-item">
@@ -68,11 +76,6 @@
           <div data-i18n="Account">프로젝트 관리</div>
         </a>
         <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="/mypage/notice_management" class="menu-link">
-              <div data-i18n="Account">내 프로젝트</div>
-            </a>
-          </li>
           <li class="menu-item">
             <a href="/mypage/notice_management" class="menu-link">
               <div data-i18n="Account">프로젝트 공고관리</div>
