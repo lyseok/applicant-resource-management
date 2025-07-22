@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.RecruitViewMapper">
+
+	<select id="selectRecruitViewList" resultType="kr.or.ddit.dto.RecruitViewDTO">
+		SELECT 
+		    RV.RECRUIT_VIEW_NO as RECRUIT_VIEW_NO
+		    , RV.USER_ID as USER_ID
+		    , RV.RECRUITMENT_NO as RECRUITMENT_NO
+		    , RV.VIEW_AT as VIEW_AT
+		    , RN.RECRUITMENT_TITLE as RECRUITMENT_TITLE
+		    , RN.RECRUITMENT_SALARY as RECRUITMENT_SALARY
+		    , RN.WELFARE as WELFARE
+        , RN.CITY_CODE AS CITY_CODE
+        , RN.DISTRICT_CODE AS DISTRICT_CODE
+        , RN.YEAR_CODE AS YEAR_CODE
+        , C.COM_NAME as COM_NAME
+		FROM RECRUIT_VIEW RV 
+        LEFT JOIN RECRUITMENT_NOTICE RN ON RV.RECRUITMENT_NO = RN.RECRUITMENT_NO
+        LEFT JOIN COMPANY C ON C.USER_ID = RN.USER_ID
+		WHERE RV.USER_ID = #{userId}
+		ORDER BY VIEW_AT
+	</select>
+	
+	
+	
+	<insert id="insertRecruitView">
+		<selectKey resultType="string" keyProperty="recruitViewNo" order="BEFORE">
+		    SELECT
+		        'RCTV'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUIT_VIEW_NO), LENGTH('RCTV' ) + 1)), 0) + 1, 6, '0')
+		    FROM RECRUIT_VIEW
+		</selectKey>
+			INSERT INTO RECRUIT_VIEW(
+				RECRUIT_VIEW_NO
+				, USER_ID
+				, RECRUITMENT_NO
+				, VIEW_AT
+			)VALUES(
+				#{recruitViewNo}
+				, #{userId}
+				, #{recruitmentNo}
+				, SYSDATE
+			)
+	</insert>
+</mapper>
