@@ -1488,7 +1488,7 @@
   }
 
   .MainContainer_mainContent {
-    max-width: 856px;
+    max-width: 100%;
   }
 
   .MainContainer_sideContent {
@@ -1624,7 +1624,7 @@
 
 .Recommend_recommendItem_inner {
   box-sizing: border-box;
-  width: 264px;
+  width: 385px;
   padding: 20px;
   border-radius: 12px;
   background: var(--base-white, #fff);

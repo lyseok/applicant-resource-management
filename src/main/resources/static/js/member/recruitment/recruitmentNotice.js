@@ -1,6 +1,17 @@
 /**
  * 
  */
+
+//================================= 예솔 - 최근본 공고 인서트 ===========================================
+document.addEventListener('DOMContentLoaded', function() {
+	const recruitmentNo = document.getElementById('recruitNo').dataset.no;
+	console.log("비동기 요청 전 스트립트 동작 확인", recruitmentNo)
+	axios.post(`/ajax/recruit_view/${recruitmentNo}`)
+	.then(resp => {
+		console.log("최근본 공고 insert 확인", resp.data);
+	});
+});
+
 console.log(document.getElementById('recruitNo').dataset.no);
 const mockResumes = [
   
@@ -176,3 +187,4 @@ deadLineBtn.onclick = async function(){
 		alert('서버 오류가 발생했습니다.\n' + (err.response?.data?.message || ''));
 	}
 }
+
