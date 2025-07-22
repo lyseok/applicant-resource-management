@@ -154,8 +154,17 @@ function aceditable(pBtn, commentNo, userId, boardNo) {
 }
 
 const acdel = function (cno, bno) {
-  console.log("no?", cno);
-  fetch(`/ajax/admin/board/admin_comment/hidden/${cno}`, {
+
+  Swal.fire({
+    title: "삭제하시겠습니까?",
+    text: "삭제한 답글은 즉시 반영되며, 되돌릴 수 없습니다.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "확인"
+  }).then((result) => {
+    fetch(`/ajax/admin/board/admin_comment/hidden/${cno}`, {
     method : "POST",
     headers : {
       "Content-Type" : "application/json"
@@ -175,6 +184,14 @@ const acdel = function (cno, bno) {
         }
       })
     })
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "삭제 완료!",
+        text: "답글이 삭제되었습니다.",
+        icon: "success"
+      });
+    }
+  });
 };
 
 // 6
