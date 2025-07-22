@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.security.acls.model.NotFoundException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,9 @@ public class PrjTaskServiceImpl implements PrjTaskService {
     }
     
     public PrjTaskVO createTask(PrjTaskVO prjTaskVO) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String username = authentication.getName();
+    	prjTaskVO.setCreatorId(username);
         prjTaskMapper.insertTask(prjTaskVO);
 
         return prjTaskMapper.selectTaskByNo(prjTaskVO.getTaskNo());
@@ -39,8 +43,9 @@ public class PrjTaskServiceImpl implements PrjTaskService {
         if (existingTask == null) {
             throw new NotFoundException("Task not found: " + taskNo);
         }
-
+        
         existingTask.setTaskName(prjTask.getTaskName());
+        existingTask.setUserId(prjTask.getUserId());
         existingTask.setTaskStatus(prjTask.getTaskStatus());
         existingTask.setTaskStatusName(prjTask.getTaskStatusName());
         existingTask.setDetailContent(prjTask.getDetailContent());
