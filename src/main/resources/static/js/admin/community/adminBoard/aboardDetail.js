@@ -27,7 +27,6 @@ const abno = function (no) {
   abhit(no) //조회수부터 증가
     .then((rslt) => {
       if (rslt.ok) {
-        console.log("조회수 증가", rslt.ok);
         return fetch(`/ajax/admin/board/admin_board/detail/${no}`);
       } else {
         throw new Error("조회수 증가 실패");
@@ -175,7 +174,6 @@ const acdel = function (cno, bno) {
       resp.json()
       .then((rslt)=>{
         if (rslt.ok) {
-          console.log("답글 삭제완료", rslt.ok);
           if (rslt.boardNo){
             abno(rslt.boardNo ?? "ABNO000001"); //목록으로, 널일 시 기본값 부여
             acommentListContainer.innerHTML = "";
@@ -259,10 +257,13 @@ const acform = function (no) {
     }).then((result) => {
 
     let adminComment = {
-      userId: acommentForm.userId.value,
-      boardNo: acommentForm.boardNo.value,
-      boardCommentContent: acommentForm.boardCommentContent.value,
-    };
+	  userId: acommentForm.userId.value,
+	  boardNo: acommentForm.boardNo.value,
+	  boardCommentContent: acommentForm.boardCommentContent.value
+	    .split("\n")
+	    .map(line => `<div>${line}</div>`)
+	    .join(""),
+	};
 
     fetch(`/ajax/admin/board/admin_comment/${adminComment.boardNo}`, {
       method: "post",
@@ -273,7 +274,6 @@ const acform = function (no) {
     }).then((resp) => {
       resp.json().then((rslt) => {
         if (rslt.ok) {
-          console.log("답글 등록완료", rslt.ok);
           if (rslt.boardNo){
             abno(rslt.boardNo ?? "ABNO000001"); //목록으로, 널일 시 기본값 부여
             acommentListContainer.innerHTML = "";
