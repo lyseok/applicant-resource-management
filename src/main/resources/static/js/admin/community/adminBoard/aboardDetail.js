@@ -175,7 +175,7 @@ const acdel = function (cno, bno) {
       resp.json()
       .then((rslt)=>{
         if (rslt.ok) {
-          console.log("삭제완료", rslt.ok);
+          console.log("답글 삭제완료", rslt.ok);
           if (rslt.boardNo){
             abno(rslt.boardNo ?? "ABNO000001"); //목록으로, 널일 시 기본값 부여
             acommentListContainer.innerHTML = "";
@@ -235,13 +235,13 @@ const aclist = function (no) {
       acommentListContainer.innerHTML = html;
     });
 
-    acform(no); // 폼 로드
+    acform(no); // 폼 로드, 폼에서 등록시 no(boardCommentNo)가 필요하니 같이 넘김
   });
 };
 
 // 7
 const acform = function (no) {
-  achtml(no);
+  achtml(no);  //답글 등록 폼 html
 
   const acommentForm = document.querySelector("#acommentForm");
 
@@ -261,7 +261,14 @@ const acform = function (no) {
       body: JSON.stringify(adminComment),
     }).then((resp) => {
       resp.json().then((rslt) => {
-        console.log("글자", rslt.ok);
+        if (rslt.ok) {
+          console.log("답글 등록완료", rslt.ok);
+          if (rslt.boardNo){
+            abno(rslt.boardNo ?? "ABNO000001"); //목록으로, 널일 시 기본값 부여
+            acommentListContainer.innerHTML = "";
+            aclist(rslt.boardCommentNo);
+          }
+        }
       });
     });
   };
@@ -387,7 +394,7 @@ const abbtn = function (no, type) {
               console.log("글자", rslt.ok);
               if (rslt.boardTypeCode){
                 detailToList(rslt.boardTypeCode ?? "BRDD-001"); //목록으로, 널일 시 기본값 부여
-              aboardDetail.innerHTML = "";
+                aboardDetail.innerHTML = "";
               }
             }
           });

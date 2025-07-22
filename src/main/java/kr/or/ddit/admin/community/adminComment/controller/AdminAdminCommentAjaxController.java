@@ -58,11 +58,14 @@ public class AdminAdminCommentAjaxController {
 	// 해당 게시글의 답글 등록
 	@PostMapping("/{boardNo}")
 	public Map<String, Object> inComment(
-			@PathVariable String boardNo
-			, @RequestBody AdminCommentVO comment
+		@PathVariable String boardNo
+		, @RequestBody AdminCommentVO comment
 	) {
 		service.createAdminComment(comment);
-	    return Map.of("ok", true);
+		return Map.of(
+            "ok", true,
+            "boardNo", comment.getBoardNo()
+        );
 	}
 	
 	// 수정
