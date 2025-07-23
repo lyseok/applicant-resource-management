@@ -62,4 +62,5 @@ public class CompanyDetailViewAjaxController {
 		log.info("salary----{}", salaries);
 		return salaries;
 	}
+	
 }

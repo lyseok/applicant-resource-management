@@ -6,38 +6,90 @@ document.addEventListener('DOMContentLoaded', () => {
   const comTypeSelect   = document.getElementById('comType');
   const comSizeSelect   = document.getElementById('comSize');
   const insuranceSelect = document.getElementById('insuranceYn');
+
   const logoInput    = document.getElementById('logoInput');
   const logoPreview  = document.getElementById('logoPreview');
   const logoUrlInput = document.getElementById('logoUrl');
-  
-  // 로고 파일 선택 시 S3 업로드 후 미리보기
-  logoInput.addEventListener('change', async e => {
+
+  const backInput    = document.getElementById('backInput');
+  const backPreview  = document.getElementById('backPreview');
+  const backUrlInput = document.getElementById('backUrl');
+
+  const extraImagesInput = document.getElementById('extraImagesInput');
+  const extraImagePreviewContainer = document.getElementById('extraImagePreviewContainer');
+
+  let logoFile = null;
+  let backFile = null;
+  let extraFiles = [];
+
+  // 로고 파일 선택
+  logoInput.addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
-    const fd = new FormData();
-    fd.append('file', file);
-    try {
-      const res = await axios.post(
-        '/upload/company/editor',
-        fd,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
-      );
-      logoUrl = res.data.url;
-      logoPreview.src = logoUrl;
+    logoFile = file;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      logoPreview.src = e.target.result;
       logoPreview.style.display = 'block';
-      logoUrlInput.value = logoUrl;
-    } catch {
-      alert('로고 업로드 실패');
-    }
+    };
+    reader.readAsDataURL(file);
   });
 
-  // 서버 값과 정확히 매칭되지 않더라도 select에서 찾도록 설정
-  function setSelectValue(selectEl, value) {
-    const matched = [...selectEl.options].find(
-      opt => opt.value == value || opt.textContent.trim() == value
-    );
-    if (matched) selectEl.value = matched.value;
-  }
+  // 배경 이미지 선택
+  backInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    backFile = file;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      backPreview.src = e.target.result;
+      backPreview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // 추가 이미지 선택
+  extraImagesInput.addEventListener('change', e => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    for (const file of files) {
+      extraFiles.push(file);
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.height = '80px';
+        img.style.border = '1px solid #ccc';
+        img.style.borderRadius = '6px';
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '❌';
+        Object.assign(delBtn.style, {
+          position: 'absolute', top: '0', right: '0', background: 'rgba(0,0,0,0.6)',
+          color: 'white', border: 'none', cursor: 'pointer',
+          borderRadius: '50%', width: '20px', height: '20px', fontSize: '12px'
+        });
+
+        delBtn.addEventListener('click', () => {
+          const idx = Array.from(extraImagePreviewContainer.children).indexOf(wrapper);
+          extraFiles.splice(idx, 1);
+          wrapper.remove();
+        });
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(delBtn);
+        extraImagePreviewContainer.appendChild(wrapper);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
 
   // select 옵션 불러오기
   async function loadSelectOptions() {
@@ -60,7 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 회사 데이터 불러오기 + 폼 세팅
+  // select 매핑
+  function setSelectValue(selectEl, value) {
+    const matched = [...selectEl.options].find(
+      opt => opt.value == value || opt.textContent.trim() == value
+    );
+    if (matched) selectEl.value = matched.value;
+  }
+
+  // 회사 데이터 불러오기
   async function loadCompanyDataAndApply() {
     const { data: company } = await axios.get('/ajax/company/company_management'); 
     [
@@ -71,20 +131,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const el = document.getElementById(id);
       if (el) el.value = company[id] ?? '';
     });
+
     setSelectValue(industrySelect, company.industryType);
     setSelectValue(comTypeSelect,   company.comType);
     setSelectValue(comSizeSelect,   company.comSize);
     setSelectValue(insuranceSelect, company.insuranceYn);
 
-    if (company.logoUrl) {
-      logoUrl = company.logoUrl;
-      logoPreview.src = logoUrl;
+    if (company.comLogo) {
+      logoPreview.src = company.comLogo;
       logoPreview.style.display = 'block';
-      logoUrlInput.value = logoUrl;
+      logoUrlInput.value = company.comLogo;
+    }
+
+    if (company.comBackgroundImg) {
+      backPreview.src = company.comBackgroundImg;
+      backPreview.style.display = 'block';
+      backUrlInput.value = company.comBackgroundImg;
     }
   }
 
-  // 초기 실행: 옵션 → 데이터
+  // 초기 실행
   (async () => {
     try {
       await loadSelectOptions();
@@ -94,20 +160,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })();
 
-
- 
   // 취소
   cancelBtnEl.addEventListener('click', () => history.back());
 
-  // 저장 버튼
+  // 저장
   form.addEventListener('submit', async e => {
     e.preventDefault();
-   
-    // 기존 에러 메시지 전부 제거
     document.querySelectorAll('.text-danger').forEach(el => el.remove());
-   
-    // FormData → payload 객체
+
     const formData = new FormData(form);
+
+    const fileList = [];
+    let logoPath = null;
+    let backPath = null;
+
+    if (logoFile) {
+      const fd = new FormData();
+      fd.append('file', logoFile);
+      const res = await axios.post('/upload/company/editor', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      logoPath = res.data.url;
+      fileList.push({ filePath: res.data.url });
+    } else {
+      const oldLogo = logoUrlInput.value;
+      if (oldLogo) {
+        logoPath = oldLogo;
+        fileList.push({ filePath: oldLogo });
+      }
+    }
+
+    if (backFile) {
+      const fd = new FormData();
+      fd.append('file', backFile);
+      const res = await axios.post('/upload/company/editor', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      backPath = res.data.url;
+    } else {
+      const oldBack = backUrlInput.value;
+      if (oldBack) backPath = oldBack;
+    }
+
+    for (const file of extraFiles) {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await axios.post('/upload/company/editor', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      fileList.push({ filePath: res.data.url });
+    }
+
     const payload = {
       comName:        formData.get('comName'),
       comCreateYear:  formData.get('comCreateYear'),
@@ -125,8 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
       industryType:   formData.get('industryType'),
       comType:        formData.get('comType'),
       comSize:        formData.get('comSize'),
-
-      fileList: logoUrl ? [{ filePath: logoUrl }] : []
+      comLogo:        logoPath,
+      comBackgroundImg: backPath,
+      fileList
     };
 
     try {
@@ -137,10 +241,8 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.entries(err.response.data).forEach(([field, messages]) => {
           const el = document.getElementById(field);
           if (!el) return;
-          // 기존 에러가 있으면 제거
           const nxt = el.nextElementSibling;
           if (nxt?.classList.contains('text-danger')) nxt.remove();
-          // 새 에러 span 생성
           const span = document.createElement('span');
           span.className = 'text-danger small';
           span.textContent = Array.isArray(messages)
@@ -151,5 +253,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-
 });

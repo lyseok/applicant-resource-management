@@ -8,7 +8,23 @@
   <link rel = "stylesheet" href="/css/company/common/companyManagement.css">
   <script src = "/js/company/common/companyManagement/companyManagementDetail.js"></script>
  
+ <style type="text/css">
+ 
+ 	.profile-img {
+  width: 120px;
+  height: 120px;
 
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid #ccc;
+}
+
+.profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+ </style>
  
 </head>
 <body>
@@ -16,7 +32,7 @@
     <!-- Header Section -->
     <div class="company-header">
         <div class="profile-img">
-            <!-- 여기에 기업 로고 이미지 삽입 -->
+            <img id = "com_logo">
         </div>
         <div class="header-info">
             <div class="d-flex align-items-center">
