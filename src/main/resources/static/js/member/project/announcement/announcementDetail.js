@@ -59,54 +59,6 @@ selectField.onchange = function () {
   selectedField = this.value;
 };
 
-// // 이력서 카드 렌더
-// function renderSelectedResumeCard() {
-//   selectedResumeCard.innerHTML = `
-//     <div class="card mb-0 selected-card">
-//       <div class="card-body py-2 px-3">
-//         <p class="mb-1 text-secondary" style="font-size: .92em;">${selectedResume.createdAt}</p>
-//         <h6 class="mb-1">${selectedResume.title}</h6>
-//         <div class="d-flex align-items-center gap-2 text-secondary" style="font-size:.96em;">
-//           <i class="bi bi-file-earmark-text"></i>
-//           <span>${selectedResume.hasAttachment ? "첨부파일이 있습니다" : "첨부파일이 없습니다"}</span>
-//         </div>
-//       </div>
-//     </div>
-//   `;
-// }
-// renderSelectedResumeCard();
-
-// // 이력서 목록 렌더
-// function renderResumeList() {
-//   resumeList.innerHTML = mockResumes.map(resume => `
-//     <div class="card mb-2 resume-card ${selectedResume.id === resume.id ? 'selected-card' : ''}" data-id="${resume.id}">
-//       <div class="card-body py-2 px-3">
-//         <p class="mb-1 text-secondary" style="font-size: .92em;">${resume.createdAt}</p>
-//         <h6 class="mb-1">${resume.title}</h6>
-//         <div class="d-flex align-items-center gap-2 text-secondary" style="font-size:.96em;">
-//           <i class="bi bi-file-earmark-text"></i>
-//           <span>${resume.hasAttachment ? "첨부파일이 있습니다" : "첨부파일이 없습니다"}</span>
-//         </div>
-//       </div>
-//     </div>
-//   `).join('');
-//   // 카드 클릭시 이력서 선택
-//   resumeList.querySelectorAll('.resume-card').forEach(card => {
-//     card.onclick = function() {
-//       const rid = this.getAttribute('data-id');
-//       selectedResume = mockResumes.find(r => r.id === rid);
-//       renderSelectedResumeCard();
-//       resumeList.style.display = 'none';
-//     };
-//   });
-// }
-
-// // 이력서 변경 버튼
-// btnShowResumeList.onclick = function() {
-//   renderResumeList();
-//   resumeList.style.display = resumeList.style.display === 'none' ? 'block' : 'none';
-// };
-
 // 모달 열기용 예시 (프로젝트 제목 넘기기)
 function openApplicationModal(title) {
   modalProjectTitle.textContent = title;
@@ -190,9 +142,8 @@ function renderAnnouncementDetail(data) {
         }</div>
         <div class="text-secondary small mt-1 d-flex align-items-center gap-3 flex-wrap">
           <span>작성일 ${data.anncCreateDate || '-'}</span>
-          <span>수정일 ${data.updateDate || '-'}</span>
           <span class="d-flex align-items-center gap-1"><i class="bi bi-eye"></i>조회수 ${
-            data.view || 0
+            data.prjAnncHit || 0
           }</span>
         </div>
         <div class="small text-secondary" style="font-size:1.01em;">
@@ -346,25 +297,25 @@ btnShowResumeList.onclick = function () {
     .map(
       (resume) => `
     <div class="card mb-2 resume-card ${
-      selectedResume && selectedResume.resumeNo === resume.resumeNo
+      selectedResume && selectedResume.RESUME_NO === resume.RESUME_NO
         ? 'selected-card'
         : ''
-    }" data-id="${resume.resumeNo}">
+    }" data-id="${resume.RESUME_NO}">
       <div class="card-body py-2 px-3">
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <p class="mb-1 text-secondary" style="font-size: .92em;">
-              ${resume.updateDate ? `수정일: ${resume.updateDate}` : ''}
+              ${resume.UPDATE_DATE ? `수정일: ${resume.UPDATE_DATE}` : ''}
             </p>
-            <h6 class="mb-1">${resume.resumeName || resume.resumeNo}</h6>
+            <h6 class="mb-1">${resume.RESUME_NAME || resume.RESUME_NO}</h6>
             <div class="text-secondary" style="font-size:.96em;">
               ${
-                resume.resumeMainYn === 'Y'
+                resume.RESUME_MAIN_YN === 'Y'
                   ? `<span class="badge bg-purple">대표 이력서</span>`
                   : ''
               }
               ${
-                resume.resumeSubmitYn === 'Y'
+                resume.RESUME_SUBMIT_YN === 'Y'
                   ? `<span class="badge bg-success">제출됨</span>`
                   : ''
               }
@@ -388,7 +339,7 @@ btnShowResumeList.onclick = function () {
   resumeListDiv.querySelectorAll('.resume-card').forEach((card) => {
     card.onclick = function () {
       const rid = this.getAttribute('data-id');
-      selectedResume = resumeList.find((r) => r.resumeNo === rid);
+      selectedResume = resumeList.find((r) => r.RESUME_NO === rid);
       renderSelectedResumeCard();
       selectedResumeCard.style.display = 'block';
       resumeListDiv.style.display = 'none';
@@ -409,12 +360,12 @@ function renderSelectedResumeCard() {
     <div class="card mb-0 selected-card">
       <div class="card-body py-2 px-3">
         <p class="mb-1 text-secondary" style="font-size: .92em;">${
-          selectedResume.updateDate
-            ? `수정일: ${selectedResume.updateDate}`
+          selectedResume.UPDATE_DATE
+            ? `수정일: ${selectedResume.UPDATE_DATE}`
             : ''
         }</p>
         <h6 class="mb-1">${
-          selectedResume.resumeName || selectedResume.resumeNo
+          selectedResume.RESUME_NAME || selectedResume.RESUME_NO
         }</h6>
       </div>
     </div>
@@ -446,7 +397,7 @@ btnSaveApplication.onclick = async function () {
   }
 
   // 이력서 번호
-  const resumeNo = selectedResume.resumeNo;
+  const resumeNo = selectedResume.RESUME_NO;
 
   // 서버로 전송할 객체
   const applyData = {

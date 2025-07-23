@@ -15,4 +15,5 @@ public interface ProjectMapper {
 	public ProjectVO selectProjectDetail(String prjNo);
 	
 	public int updateProject(ProjectVO project);
+	public int createProject(ProjectVO project);
 }
