@@ -31,4 +31,5 @@ public interface PaymentMapper {
 	
 	public int checkPayment(String userId);
 	
+	public int updateComPaymentStatus(PaymentVO vo);
 }

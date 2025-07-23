@@ -354,6 +354,8 @@ public class PaymentController {
 
 				service.insertPayment(vo);
 				log.info("insert에 들어갈 값 : {}", vo);
+				service.updateComPaymentStatus(vo);
+				log.info("update 한 후 : {}",vo);
 			}
 		} else {
 			log.info("겔제응답이 없ㅇ름");

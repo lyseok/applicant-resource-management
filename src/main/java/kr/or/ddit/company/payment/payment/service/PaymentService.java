@@ -24,4 +24,6 @@ public interface PaymentService {
 	public int comePayment(PaymentVO vo);
 	
 	public int checkPayment(String userId);
+	
+	public int updateComPaymentStatus(PaymentVO vo);
 }

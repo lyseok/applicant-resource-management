@@ -80,6 +80,12 @@ public class PaymentServiceImpl implements PaymentService {
 		return mapper.checkPayment(userId);
 	}
 
+	@Override
+	public int updateComPaymentStatus(PaymentVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateComPaymentStatus(vo);
+	}
+
 
 
 	
