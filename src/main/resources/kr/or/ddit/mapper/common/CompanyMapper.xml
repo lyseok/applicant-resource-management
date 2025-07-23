@@ -94,7 +94,7 @@
 			, #{comCreateYear}
 			, #{comMem}
 			, #{comLogo}
-			, #{comPayment}
+			, N
 			, #{industryType}
 			, #{comType}
 			, #{comSize}
