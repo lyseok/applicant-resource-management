@@ -87,7 +87,10 @@ public class PaymentController {
 	}
 
 	@GetMapping("/change/product")
-	public String changeProduct(Model model, @RequestParam String productNo, @RequestParam String paymentNo) {
+	public String changeProduct(Model model
+			, @RequestParam String productNo
+			, @RequestParam String paymentNo
+			) {
 		log.info("받은 paymentNo값 : {}", paymentNo);
 		log.info("받은 productNo값 : {}", productNo);
 		PaymentVO payment = service.selectPaymentByPk(paymentNo);

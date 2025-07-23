@@ -8,15 +8,15 @@
 <head>
 <script>
 	const ProductNo = "${product.productNo}";
-	const BillingKey = "${sessionScope.billingKey}";
+	/* const billingKey = "${sessionScope.billingKey}"; */
 	const Amount = "${product.productPrice}";
-	const customerKey = "${sessionScope.customerKey}";
+	/* const customerKey = "${sessionScope.customerKey}"; */
 	const orderName = "${product.productName}";
 </script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body class="container my-5" data-billing-key="${billingKey}"
+<body class="container my-5" 
 	data-product-no="${product.productNo}"
 	data-old-payment-no="${oldPaymentNo}"
 	data-trigger-billing="${triggerBilling}">
@@ -25,6 +25,7 @@
 		<!-- 왼쪽: 현재 상품 정보 -->
 		<div style="flex: 1; border: 1px solid #ccc; padding: 20px;">
 			<h3>현재 이용 중인 상품</h3>
+			
 			<%-- <p>payment 객체 확인: ${payment}</p>
 			<p>product 리스트 크기: ${fn:length(payment.paymentProductList)}</p> --%>
 			<c:forEach var="product" items="${payment.paymentProductList}">
@@ -52,6 +53,7 @@
 							value="${payment.paymentBillingKey}" />
 						<button id="change-btn"
 								class="btn btn-success"
+								data-billing-key="${payment.paymentBillingKey}"
 								data-product-no="${product.productNo}"
 								data-product-name="${product.productName}"
 								data-amount="${product.productPrice}"
@@ -65,6 +67,8 @@
 		</div>
 
 	</div>
+	
+	<script src="/js/company/payment/ChangeProduct.js"></script>
 	<script src="/js/company/payment/ProductDetail.js"></script>
 	<script src="/js/company/payment/ComparsionProduct.js"></script>
 </body>

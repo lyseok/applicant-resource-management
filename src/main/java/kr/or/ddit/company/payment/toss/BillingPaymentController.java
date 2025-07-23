@@ -138,7 +138,7 @@ public class BillingPaymentController {
 				, @RequestParam String productNo
 				, HttpSession session
 				, Model model) {
-			
+		log.info("productNo : {}", productNo);
 		log.info("customerKey : {}", customerKey);
 		log.info("authKey : {}", authKey);
 
