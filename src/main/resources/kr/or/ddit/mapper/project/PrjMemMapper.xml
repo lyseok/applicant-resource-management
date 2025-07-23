@@ -81,12 +81,14 @@
         PRJ_NO,
         USER_ID,
         AUTHORITY_CODE,
-        DELETE_DATE
+        USER_NAME,
+        USER_POSITION
     ) VALUES (
         #{prjNo},
         #{userId},
         #{authorityCode},
-        NULL
+        (SELECT MEM_NAME FROM MEMBER WHERE USER_ID = #{userId}),
+       	#{userPosition}
     )
 </insert>
 

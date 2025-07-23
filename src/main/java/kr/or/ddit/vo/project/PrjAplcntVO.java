@@ -18,6 +18,8 @@ public class PrjAplcntVO implements Serializable {
 	private String rcrtPsncntNo;
 	private String prjAnncNo;
 	
+	private String userPosition;
+	
 	private ResumeVO resume;
 	private MemberVO member;
 }
