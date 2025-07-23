@@ -75,6 +75,7 @@
 			, COM_CREATE_YEAR
 			, COM_MEM
 			, COM_LOGO
+			, COM_BACKGROUND_IMG
 			, COM_PAYMENT
 			, INDUSTRY_TYPE
 			, COM_TYPE
@@ -94,6 +95,7 @@
 			, #{comCreateYear}
 			, #{comMem}
 			, #{comLogo}
+			, #{comBackgroundImg}
 			, #{comPayment}
 			, #{industryType}
 			, #{comType}
@@ -118,6 +120,7 @@
 			, COM_CREATE_YEAR = #{comCreateYear}
 			, COM_MEM = #{comMem}
 			, COM_LOGO = #{comLogo}
+			, COM_BACKGROUND_IMG = #{comBackgroundImg}
 			, COM_PAYMENT = #{comPayment}
 			, INDUSTRY_TYPE = #{industryType}
 			, COM_TYPE = #{comType}
@@ -148,7 +151,8 @@
 			, COM_URL            
 			, COM_CREATE_YEAR    
 			, COM_MEM            
-			, COM_LOGO           
+			, COM_LOGO 
+			, COM_BACKGROUND_IMG          
 			, COM_PAYMENT        
 			, INDUSTRY_TYPE
 			, COM_TYPE
@@ -179,6 +183,8 @@
 		  , COM_ADDR = #{comAddr}
 		  , COM_CAPITAL = #{comCapital}
 		  , COM_MAIN_BIZ = #{comMainBiz}
+		  , COM_LOGO = #{comLogo}
+		  , COM_BACKGROUND_IMG = #{comBackgroundImg}
 		WHERE USER_ID = #{userId}
 	</update>
 	

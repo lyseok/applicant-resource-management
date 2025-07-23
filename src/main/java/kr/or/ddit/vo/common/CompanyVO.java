@@ -29,6 +29,7 @@ public class CompanyVO extends UsersVO implements Serializable{
 	@NotNull
 	private Integer comMem;
 	private String comLogo;
+	private String comBackgroundImg;
 	@MimeTypeCheck(mainType = "image/")
 	private transient MultipartFile comImage;
 	private String comPayment;

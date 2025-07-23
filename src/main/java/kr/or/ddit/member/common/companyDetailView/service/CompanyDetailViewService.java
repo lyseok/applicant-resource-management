@@ -7,6 +7,7 @@ import kr.or.ddit.dto.CompanyOpProfitDTO;
 import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.dto.CompanySalesDTO;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.FilesVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 
 public interface CompanyDetailViewService {
@@ -19,5 +20,7 @@ public interface CompanyDetailViewService {
 	public List<RecruitmentNoticeVO> readRecruitmentNoticeByUserId(String userId);
 	
 	public List<CompanySalaryDTO> readSalaryStatisticsById(String userId);
+	
+	public List<FilesVO> readCompanyImageFileListBySourceNo(String sourceNo);
 	
 }

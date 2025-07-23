@@ -76,5 +76,22 @@
 		DELETE FROM FILES
 		WHERE FILE_NO = #{fileNo}
 	</delete>
+	
+	<select id="selectFileListBySourceNo">
+		SELECT 
+	    FILE_NO,
+	    REAL_FILE,
+	    FILE_NAME,
+	    FILE_SIZE,
+	    FILE_TYPE,
+	    FILE_PATH,
+	    FILE_SOURCE,
+	    SOURCE_NO,
+	    FILE_TOTAL
+	FROM 
+	    FILES
+	WHERE 
+	    SOURCE_NO = #{sourceNo}
+	</select>
 
 </mapper>

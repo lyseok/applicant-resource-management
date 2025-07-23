@@ -241,13 +241,31 @@ body {
 					
 					
 									  <!-- 로고 업로드 -->
-				    <div class="form-row">
+				    <div class="section-form-row">
 				      <label>기업 로고</label>
 				      <img id="logoPreview" alt="로고 미리보기">
 				      <input type="file" id="logoInput" accept="image/*" class="form-control">
 				      <!-- 업로드된 URL 보관 -->
 				      <input type="hidden" id="logoUrl" name="logoUrl">
 				    </div>
+				    
+				    
+				    <div class="section-form-row">
+				      <label>기업 로고</label>
+				      <img id="backPreview" alt="배경 미리보기">
+				      <input type="file" id="backInput" accept="image/*" class="form-control">
+				      <!-- 업로드된 URL 보관 -->
+				      <input type="hidden" id="backUrl" name="backUrl">
+				    </div>
+				    
+				   <div class="form-row">
+					  <label>부가 이미지들</label>
+					  <!-- ✅ 미리보기 박스 -->
+					  <div id="extraImagePreviewContainer"
+					       style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;"></div>
+					  <input type="file" id="extraImagesInput" accept="image/*" multiple class="form-control">
+					  
+					</div>
 				</div>
 
 				<!-- 버튼들 -->

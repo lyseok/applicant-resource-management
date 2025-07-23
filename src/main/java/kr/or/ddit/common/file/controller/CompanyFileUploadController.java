@@ -25,7 +25,9 @@ public class CompanyFileUploadController {
 	private final FileService fileService;
 	
 	 @PostMapping("/editor")
-	    public ResponseEntity<Map<String, String>> uploadEditorImage(@RequestParam("file") MultipartFile file) {
+	    public ResponseEntity<Map<String, String>> uploadEditorImage(
+	    		@RequestParam("file") MultipartFile file,
+	    		@RequestParam(value = "source", required = false) Integer source) {
 	        try {
 	        	log.info("업로드 요청: {}", file.getOriginalFilename());
 	        	
@@ -33,6 +35,13 @@ public class CompanyFileUploadController {
 	            log.info("uploadEditorImage - uploaded to S3: {}", s3Url);
 	            fileService.saveUploadFile(file, s3Url, 827);
 	            log.info("uploadEditorImage - metadata saved for fileSource=2");
+	            
+	            if (source != null && source == 827) {
+	                fileService.saveUploadFile(file, s3Url, 827);
+	                log.info("파일 메타데이터 저장됨 (fileSource=827)");
+	            } else {
+	                log.info("fileSource 저장 생략 (source={})", source);
+	            }
 	            return ResponseEntity.ok(Map.of("url", s3Url));
 	        } catch (Exception e) {
 	        	log.error("uploadEditorImage - error occurred", e);

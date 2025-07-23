@@ -45,6 +45,8 @@ public class CompanyInfoDTO {
 	private String comAddr;
 	private String comCapital;
 	private String comMainBiz;
+	private String comLogo;
+	private String comBackgroundImg;
 	
 	private List<FilesVO> fileList;
 

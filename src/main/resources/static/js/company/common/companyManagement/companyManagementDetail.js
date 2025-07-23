@@ -21,10 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('insurance_Yn').textContent = company.insuranceYn === 'Y' ? '가입' : '미가입';
         document.getElementById('ceo_name').textContent = company.ceoName || '정보 없음';
         document.getElementById('com_addr').textContent = company.comAddr || '정보 없음';
-       document.getElementById('com_capital').textContent = company.comCapital != null ? formatCapitalKRW(company.comCapital) : '정보 없음';
-
+        document.getElementById('com_capital').textContent = company.comCapital != null ? formatCapitalKRW(company.comCapital) : '정보 없음';
         document.getElementById('com_main_biz').textContent = company.comMainBiz || '정보 없음';
-
+		document.getElementById('com_logo').src = company.comLogo;
 
   }).catch(err => {
     console.error('에러체킁', err);

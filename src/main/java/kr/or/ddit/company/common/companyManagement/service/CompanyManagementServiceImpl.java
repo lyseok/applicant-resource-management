@@ -1,12 +1,14 @@
 package kr.or.ddit.company.common.companyManagement.service;
 
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.common.file.service.FileService;
 import kr.or.ddit.conf.CodeMapProvider;
@@ -17,6 +19,8 @@ import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.FilesVO;
 import kr.or.ddit.vo.common.InduCodeVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CompanyManagementServiceImpl implements CompanyManagementService {
@@ -48,11 +52,16 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 		return company;
 	}
 
+	@Transactional
 	@Override
 	public int editCompanyInfo(CompanyInfoDTO companyInfoDTO) {
+		String comId = getUserId();
+		log.info("👤 [회사정보 수정] 요청 userId = {}", comId);
+		log.info("📂 fileList = {}", companyInfoDTO.getFileList());
+		
 		
 		CompanyVO companyVO = new CompanyVO();
-		companyVO.setUserId(getUserId());
+		companyVO.setUserId(comId);
 		companyVO.setComInfo(companyInfoDTO.getComInfo());
 	    companyVO.setComNum(companyInfoDTO.getComNum());
 	    companyVO.setComEmail(companyInfoDTO.getComEmail());
@@ -66,16 +75,18 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 	    companyVO.setComAddr(companyInfoDTO.getComAddr());
 	    companyVO.setComMainBiz(companyInfoDTO.getComMainBiz());
 	    companyVO.setComCapital(companyInfoDTO.getComCapital());
+	    companyVO.setComLogo(companyInfoDTO.getComLogo());
+	    companyVO.setComBackgroundImg(companyInfoDTO.getComBackgroundImg());
+	   
 	    int updateCount = companyMapper.updateCompanyInfoById(companyVO);
 	    
 	    if(companyInfoDTO.getFileList() != null && !companyInfoDTO.getFileList().isEmpty()) {
 	    	List<String> filePaths = companyInfoDTO.getFileList().stream()
 	    		.map(FilesVO::getFilePath)
 	    		.collect(Collectors.toList());
-	    	fileService.updateFilesWithOrder(
-	    			String.valueOf(getUserId())
-	    			, filePaths);
-	    	
+	    	  log.info("📎 파일 경로 목록 = {}", filePaths);
+	          log.info("🔧 파일 업데이트 호출: sourceNo = {}, filePaths = {}", comId, filePaths);
+	    	fileService.updateFilesWithOrder(comId,filePaths);
 	    }
 	    return updateCount;
 	}
