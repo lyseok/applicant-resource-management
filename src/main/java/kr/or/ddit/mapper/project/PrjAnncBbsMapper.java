@@ -15,4 +15,6 @@ public interface PrjAnncBbsMapper {
 	public int insertPrjAnncBbs(PrjAnncBbsVO prjAnncBbs);
 	public int updatePrjAnncBbs(PrjAnncBbsVO prjAnncBbs);
 	public int deletePrjAnncBbs(String prjAnncNo);	
+	public int updateHitCnt(String prjAnncNo);
+	public int updateAnncEndYn(String prjAnncNo);
 }

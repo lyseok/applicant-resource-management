@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.or.ddit.company.common.company.service.CompanyServiceImpl;
 import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.payment.payment.service.TossPaymentService;
 import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
@@ -52,7 +53,8 @@ public class PaymentController {
 
 	@Autowired
 	private PaymentProductServiceImpl pservice;
-
+	
+	
 	@PostMapping("/product/change/confirm")
 	@ResponseBody
 	public ResponseEntity<?> changeProduct(@RequestBody Map<String, String> payload) {

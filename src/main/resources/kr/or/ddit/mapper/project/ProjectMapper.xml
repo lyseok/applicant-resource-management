@@ -156,4 +156,29 @@
 	  WHERE PRJ_NO = #{prjNo}
 </update>
 
+<insert id="createProject">
+	<selectKey resultType="string" keyProperty="prjNo" order="BEFORE">
+	    SELECT
+	        'PRJT'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRJ_NO), LENGTH('PROJECT' ) + 1)), 0) + 1, 6, '0')
+	    FROM PROJECT
+	</selectKey>
+	INSERT INTO PROJECT (
+		PRJ_NO
+		, USER_ID
+		, PROJECT_BOARD_NO
+		, PROJECT_NAME
+		, PROJECT_STATUS
+		, CREATE_DATE
+		, PROJECT_COLOR
+	) VALUES (
+		#{prjNo}
+		, #{userId}
+		, #{projectBoardNo}
+		, #{projectName}
+		, 'PROG-001'
+		, SYSDATE
+		, #{projectColor}
+	)
+</insert>
 </mapper>

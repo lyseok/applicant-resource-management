@@ -29,4 +29,6 @@ public interface PaymentMapper {
 	
 	public int comePayment(PaymentVO vo);
 	
+	public int checkPayment(String userId);
+	
 }

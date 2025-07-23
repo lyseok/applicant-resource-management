@@ -15,5 +15,7 @@ public interface CompanyService {
 	public void removeCompany();
 	
 	public void registerCompany(CompanyVO company);
+	
+	public CompanyVO selectCompanyById(String userId);
 
 }

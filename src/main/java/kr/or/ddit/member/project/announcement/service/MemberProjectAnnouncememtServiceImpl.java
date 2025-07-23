@@ -37,6 +37,7 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 	
 	@Override
 	public PrjAnncBbsVO readPrjAnncBbs(String prjAnncNo) {
+		prjAnncBbsMapper.updateHitCnt(prjAnncNo);
 		PrjAnncBbsVO prjAnncBbs = prjAnncBbsMapper.selectPrjAnncBbsByPk(prjAnncNo);
 		for(PrjRcrtPsncntVO prscnt: prjAnncBbs.getPrjRcrtPsncntList()) {
 			prscnt.setJobCodeName(codeMapProvider.getJobName(prscnt.getJobCode()));

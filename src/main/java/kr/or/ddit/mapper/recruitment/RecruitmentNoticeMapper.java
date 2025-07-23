@@ -13,6 +13,8 @@ public interface RecruitmentNoticeMapper {
  public List<RecruitmentNoticeVO> readRecruitmentNoticeList();
  
  public List<Map<String, Object>> selectMyRecruitNotice(String userId); 
+ 
+ public List<Map<String, Object>> selectApplicatedNotice(String userId);
   
  public Optional<RecruitmentNoticeVO> realTimeRecruitment();
  // 최신순으로 보기
