@@ -1,5 +1,7 @@
 package kr.or.ddit.company.common.companyManagement.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,7 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.mail.Multipart;
+import kr.or.ddit.common.file.S3Uploader;
 import kr.or.ddit.common.file.service.FileService;
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.dto.CompanyInfoDTO;
@@ -28,6 +33,7 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 	private final CompanyMapper companyMapper;
 	private final CodeMapProvider provider;
 	private final FileService fileService;
+	private final S3Uploader s3Uploader;
 	
 	@Override
 	public CompanyVO readCompanyManagementById(String userId) {
@@ -40,18 +46,12 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 		String sizeName = provider.getCodeName(company.getComSize());
 		company.setComType(typeName);
 		company.setComSize(sizeName);
-		
-//		List<FilesVO> files = fileService.getFilesBySource(userId);
-//	    company.setFileList(files);
-//	    if (!files.isEmpty()) {
-//	        company.setComLogo(files.get(0).getFilePath());
-//	    }
 		return company;
 	}
 
 	@Transactional
 	@Override
-	public int editCompanyInfo(CompanyInfoDTO companyInfoDTO) {
+	public int editCompanyInfo(CompanyInfoDTO companyInfoDTO , MultipartFile logoFile, MultipartFile backgroundFile, List<MultipartFile> extraFiles) {
 		String comId = getUserId();
 		log.info("👤 [회사정보 수정] 요청 userId = {}", comId);
 		log.info("📂 fileList = {}", companyInfoDTO.getFileList());
@@ -71,24 +71,48 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 	    companyVO.setComAddr(companyInfoDTO.getComAddr());
 	    companyVO.setComMainBiz(companyInfoDTO.getComMainBiz());
 	    companyVO.setComCapital(companyInfoDTO.getComCapital());
-
-	    // feature/#028_기업상세 브랜치에서 추가된 필드
+	    
 	    companyVO.setComLogo(companyInfoDTO.getComLogo());
 	    companyVO.setComBackgroundImg(companyInfoDTO.getComBackgroundImg());
-	   
+	    
+	    if(logoFile != null && !logoFile.isEmpty()) {
+	    
+			try {
+				String logoUrl = s3Uploader.upload(logoFile);
+				log.info("로고 -----{}", logoUrl);
+				companyVO.setComLogo(logoUrl);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	    }
+	    
+	    if(backgroundFile != null && !backgroundFile.isEmpty()) {
+	    	String backgroundUrl;
+			try {
+				backgroundUrl = s3Uploader.upload(backgroundFile);
+				log.info("배경 -----{}", backgroundUrl);
+				companyVO.setComBackgroundImg(backgroundUrl);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	    }
 	    int updateCount = companyMapper.updateCompanyInfoById(companyVO);
 	    
-	    if(companyInfoDTO.getFileList() != null && !companyInfoDTO.getFileList().isEmpty()) {
-	    	List<String> filePaths = companyInfoDTO.getFileList().stream()
-	    		.map(FilesVO::getFilePath)
-	    		.collect(Collectors.toList());
-
-	    	log.info("📎 파일 경로 목록 = {}", filePaths);
-	        log.info("🔧 파일 업데이트 호출: sourceNo = {}, filePaths = {}", comId, filePaths);
-
-	    	fileService.updateFilesWithOrder(comId, filePaths);
-	    }
-
+	   if(extraFiles != null && !extraFiles.isEmpty()) {
+		   List<String> urls = new ArrayList<>();
+		   for (MultipartFile file : extraFiles) {
+			   if(file != null && !file.isEmpty()) {
+				   try {
+					String url = s3Uploader.upload(file);
+					urls.add(url);
+					fileService.saveUploadFile(file, url, 827);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			   }
+		   }
+		   fileService.updateFilesWithOrder(comId, urls);
+	   }
 	    return updateCount;
 	}
 
@@ -96,4 +120,6 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	return authentication.getName();
 	}
+
+	
 }
