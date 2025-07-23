@@ -1,61 +1,114 @@
-.introduct_form_wrap{
-   position:relative;
-   width:847px;
-    margin: 0 auto;
+.introduct_form_wrap {
+	position: relative;
+	width: 847px;
+	margin: 0 auto;
 }
+
 .introduct_area {
-    position: relative;
-    width: 100%;
-    display: grid;
-    grid-template-columns: auto;
-    grid-auto-flow: row;
-    grid-gap: 8px;
-    gap: 8px;
-    padding: 24px 30px 24px 37px;
-    background: var(--white);
-    border-radius: 8px;
-    z-index: 1;
-    border:1px solid #dbdbdb;
-    margin: 0 auto;
-    scroll-behavior: smooth;
+	position: relative;
+	width: 100%;
+	gap: 8px;
+	padding: 24px 30px 24px 37px;
+	background: var(--white);
+	border-radius: 8px;
+	z-index: 1;
+	border: 1px solid #dbdbdb;
+	margin: 0 auto;
+	scroll-behavior: smooth;
 }
 
 .introduct_area:before {
-    width: 7px;
-    position: absolute;
-    display: block;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    background: var(--violet70);
-    content: "";
-    z-index: 2;
-    border-radius: 8px 0 0 8px;
-}
-.form-label.h5{
-   font-size:1.125rem;
+	width: 7px;
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background: var(--violet70);
+	content: "";
+	z-index: 2;
+	border-radius: 8px 0 0 8px;
 }
 
-.fixed_btn_wrap{
-   position:fixed;
-   right:calc(50% - 600px);
-   top:220px;
-   display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap:5px;
+.introduction_fix_wrap {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	margin: 0 auto;
+	padding: 20px;
+	padding-left:17.75rem;
+	padding-right:1.625rem;
+	border-top: 1px solid #eaeaea;
+	box-shadow: 1px 1px 60px 0px rgba(0, 0, 0, 0.1);
 }
+
+.introduction_fix_wrap .inner {
+	max-width: 1280px;
+	margin: 0 auto;
+	display:flex;
+	justify-content:space-between;
+	gap:30px;
+}
+.introduction_fix_wrap .tit_box{
+	display:flex;
+	width:calc(100% - 228px);
+	align-items:center;
+}
+.introduction_fix_wrap .tit_box label{
+	flex-basis:100px;
+	margin-bottom:0;
+  font-size: 15px;
+	color: #395081;
+	font-weight: bold;
+}
+.introduction_fix_wrap .tit_box input {
+    flex: 1;
+    border: 0;
+    border-bottom: 2px solid #333;
+    border-radius: 0;
+    background: none;
+    padding: 7px 11px;
+    font-size: 15px;
+    margin-bottom: 0;
+    outline: none;
+    transition: border 0.2s;
+    max-width: 450px;
+}
+
+.form-label.h5 {
+	font-size: 1.125rem;
+}
+
+.fixed_btn_wrap {
+	position: fixed;
+	right: calc(50% - 600px);
+	top: 220px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+}
+
 .fixed_btn_wrap a {
-    padding: 8px;
-    border: 1px solid var(--violet80);
-    border-radius: 5px;
-    line-height: 1;
-    cursor: pointer;
+	padding: 8px;
+	border: 1px solid var(--violet80);
+	border-radius: 5px;
+	line-height: 1;
+	cursor: pointer;
 }
+
 .fixed_btn_wrap a i {
-    color: var(--violet80);
-    background: #fff;
-    font-size: 16px;
+	color: var(--violet80);
+	background: #fff;
+	font-size: 16px;
 }
-.fixed_btn_wrap a.remove{display:none;}
-.fixed_btn_wrap a.active{background:var(--violet80); color:#fff;}
+
+.fixed_btn_wrap a.remove {
+	display: none;
+}
+
+.fixed_btn_wrap a.active {
+	background: var(--violet80);
+	color: #fff;
+}
