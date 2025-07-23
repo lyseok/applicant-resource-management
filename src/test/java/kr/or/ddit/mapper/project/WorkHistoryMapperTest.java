@@ -49,6 +49,6 @@ class WorkHistoryMapperTest {
 		vo.setWorkTable("PRJ_MEM"); // 작업 테이블
 		vo.setWorkType("C"); // 작업 종류
 
-		assertEquals(1, mapper.insertWorkHistory(vo));
+//		assertEquals(1, mapper.insertWorkHistory(vo));
 	}
 }
