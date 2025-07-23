@@ -35,6 +35,12 @@ const templateMap = {
 				<h6>이력서 기본정보<span class="must">필수</span></h6>
 			</div>
 	    <div id="form-basicInfo" class="section-form-wrap">
+	    	
+	    	<div class="section-form-row">   
+          <label for="inputphoto" class="form-label">프로필</label>
+          <input type="file" class="form-control" id="inputphoto" name="photo" placeholder="주소 전체">
+         </div>
+	    	
 	      <div class="section-form-row">
 	        <label for="inputUserName" class="form-label required">이름</label>
 	        <input type="text" class="form-control" id="inputUserName" name="userName" placeholder="이름">
@@ -60,7 +66,7 @@ const templateMap = {
 	        <input type="text" class="form-control" id="inputAddress" name="address" placeholder="주소 전체">
 	      </div>
 
-	      <div class="section-form-row d-flex justify-content-end gap-2 mt-3">
+	      <div class="section-form-row d-flex justify-content-end gap-2 mt-3 w100p">
 	        <button type="button" class="btn btn_red_line" id="cancelBasicBtn">취소</button>
 	        <button type="button" class="btn btn_violet" id="saveBasicBtn">확인</button>
 	      </div>
@@ -1268,7 +1274,7 @@ function bindListContainerEvents() {
 							} else if (input.type !== "radio") {
 								// radio는 이미 위에서 처리함
 								input.value = val;
-							} 
+							}
 						}
 					}
 					// specialtyList 바인딩 추가
@@ -1572,6 +1578,38 @@ document.addEventListener("DOMContentLoaded", function() {
 // ↓↓↓ listContainer 영역에서 삭제 버튼클릭 이벤트
 // 모달 열릴 때 삭제할 타입/idx를 삭제 버튼에 세팅
 document.addEventListener("DOMContentLoaded", function() {
+	document.addEventListener("change", function(e) {
+		if (e.target.id === "inputphoto" && e.target.files.length > 0) {
+			const file = e.target.files[0];
+
+			// 1. profile-img-wrap 안에 기존 이미지가 있으면 삭제
+			const wrapper = document.querySelector(".profile-img-wrap");
+			if (!wrapper) return;
+			const oldImg = wrapper.querySelector(".profile-img");
+			if (oldImg) {
+				wrapper.removeChild(oldImg);
+			}
+
+			// 2. 새 img 태그 생성
+			const img = document.createElement("img");
+			img.className = "profile-img";
+
+			// 3. FileReader로 이미지 읽어서 넣기
+			if (file.type.startsWith("image/")) {
+				const reader = new FileReader();
+				reader.onload = function(event) {
+					img.src = event.target.result;
+					
+					wrapper.appendChild(img);
+				};
+				reader.readAsDataURL(file);
+			}
+
+			// 4. resume객체에 임시 보관, 밑에서 formData에 다시 추가할 용도로 없는 필드명 붙여줌
+			resume._temp_PhotoFile = file;
+
+		}
+	});
 
 	// 모달 내 삭제 버튼 클릭 시 진짜 삭제 실행
 	document.querySelector("#deleteResumeList .btn-danger").addEventListener("click", function() {
@@ -1717,6 +1755,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	// 버튼 이벤트 등록
 	const editBtn = document.getElementById("resumeEditBtn");
+
 
 
 	editBtn.addEventListener("click", () => {
@@ -1981,8 +2020,8 @@ document.addEventListener("submit", function(e) {
 	}));
 
 	// photo가 File 타입일 때만 첨부
-	if (resume.photo instanceof File) {
-		formData.append("photo", resume.photo);
+	if (resume._temp_PhotoFile instanceof File) {
+		formData.append("photo", resume._temp_PhotoFile);
 	}
 
 	if (resume.company?.comImage instanceof File) {
@@ -2009,7 +2048,7 @@ document.addEventListener("submit", function(e) {
 			if (mode == "create" && resp.data === "ok") {
 				alert("정상적으로 등록되었습니다.");
 				window.location.href = "/mypage/resume/list";
-			} if (mode == "update" && resp.data === "ok") {
+			} else if (mode == "update" && resp.data === "ok") {
 				alert("정상적으로 수정되었습니다.");
 				window.location.href = "/mypage/resume/" + resume.resumeNo;
 			} else {

@@ -1,6 +1,7 @@
 <%@page import="jakarta.mail.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -82,14 +83,15 @@ const orderName = "${product.productName}";
 		</div>
 	</div>
 	<script src="/js/company/payment/ProductDetail.js"></script>
-	<script>
+	<script src="/js/company/payment/TossBillingCard.js"></script>
+	<!-- <script>
       // ------  SDK 초기화 ------
       // @docs https://docs.tosspayments.com/sdk/v2/js#토스페이먼츠-초기화
       const clientKey = "test_ck_Gv6LjeKD8a9wXO9o7lLw8wYxAdXy";
  	  /* const customerKey = "${sessionScope.customerKey}";  */
  	  const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
       const productNo = ProductNo;
-      const tossPayments = TossPayments(clientKey);
+      const tossPayments = TossPaym ents(clientKey);
       const currentUrl = "http://localhost/company/payment/product/detail?productNo=" + productNo;
       // 회원 결제
       // @docs https://docs.tosspayments.com/sdk/v2/js#tosspaymentspayment
@@ -108,6 +110,6 @@ const orderName = "${product.productName}";
           customerName: "김철민",
         })
       };
-    </script>
+    </script> -->
 </body>
 </html>

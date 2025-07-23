@@ -125,16 +125,19 @@ public class ResumeController {
 		if (!bindingResult.hasErrors()) {
 			// pk가 있을경우 업데이트 처리
 			if(vo.getResumeNo() != null) {
-				int result = service.editResume(vo);
-				if(result > 0) return ResponseEntity.ok("ok");
-				else {
+				int result = service.editResume(vo, photo);
+				if(result > 0) { 
+					return ResponseEntity.ok("ok");
+				} else {
 					return ResponseEntity
-								.status(HttpStatus.INTERNAL_SERVER_ERROR)
-								.body("이력서 수정 중 오류가 발생했습니다.");
+						.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body("이력서 수정 중 오류가 발생했습니다.");
 				}
-			}				
-			service.createResume(vo);
-			return ResponseEntity.ok("ok");
+			} else {			
+				int result = service.createResumeWithPhoto(vo, photo);
+	            return ResponseEntity.ok("ok");
+
+			}
 		} else {
 			List<ResumeSaveValidError> errors = bindingResult.getFieldErrors().stream()
 					.map(error -> new ResumeSaveValidError(error.getField(), error.getDefaultMessage()))
@@ -192,6 +195,7 @@ public class ResumeController {
 	    
 	    model.addAttribute("mode", "update"); // ✅ JS에서 mode로 사용 가능
 	    model.addAttribute("resumeJson", resumeJson); // ✅ resumeFromServer로 바인딩됨
+	    model.addAttribute("resumeVO", resumeVO);
 		return "member/resume/mypage/resume/resumeForm";
 	  }
 	  

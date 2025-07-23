@@ -54,6 +54,9 @@
 
     <!-- 채팅방 생성 -->
     <insert id="insertChatroom" parameterType="kr.or.ddit.vo.project.ChatroomVO">
+    <selectKey keyProperty="chatroomNo" resultType="string" order="BEFORE">
+	    SELECT 'CATR' || LPAD(CHATROOM_SEQ.NEXTVAL, 6, '0') AS messageNo FROM DUAL
+	  </selectKey>
         INSERT INTO chatroom (
             chatroom_no,
             prj_no,

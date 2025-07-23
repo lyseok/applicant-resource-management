@@ -17,7 +17,6 @@
 <c:if test="${mode eq 'create'}">
 	<script>
 	  const mode = '${mode}'; // "update"로 들어옴
-	  console.log(mode);
 	</script>
 </c:if>
 <script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
@@ -25,11 +24,20 @@
 <body class="aos_frans_none">
 	<div class="d-flex align-items-start gap-4 resume_form_bg">
 		<div class="resume-wrap resume_form_wrap">
-	
 			<!-- Header -->
 			<div class="resume-header-wrap" id="resumeInfoView">
 				<div class="resume-header">
-					<div class="profile-img">${memberInfo.memImg }</div>
+					<div class="profile-img-wrap">
+						<c:if test="${not empty memberInfo.memImg }">
+							<img src="${memberInfo.memImg }" alt="" class="profile-img">
+						</c:if>
+						<c:if test="${not empty resumeVO.photo }">
+							<img src="${resumeVO.photo }" alt="" class="profile-img" >
+						</c:if>
+						<c:if test="${empty memberInfo.memImg and empty resumeVO.photo}">
+							<img src="https://placehold.co/120x150" alt="" class="profile-img">
+						</c:if>
+					</div>
 					<div class="header-info">
 						<div class="d-flex align-items-end">
 							<span class="name lh1" id="viewName">${memberInfo.memName }</span>
@@ -95,6 +103,7 @@
 		  data-birth="${memberInfo.memBir}"
 		  data-email="${memberInfo.memEmail}"
 		  data-tel="${memberInfo.memTel}"
+		  data-photo="${memberInfo.memTel}"
 		  data-address="${memberInfo.memAdd1}||${memberInfo.memAdd2}">
 		</div>
 			<form action="post" id="resume_form">
@@ -291,6 +300,7 @@
 					<input type="hidden" name="birth" id="hiddenBirth">
 					<input type="hidden" name="email" id="hiddenEmail">
 					<input type="hidden" name="tel" id="hiddenTel">
+					<input type="hidden" name="photo" id="hiddenPhoto">
 					<input type="hidden" name="address" id="hiddenAddress">
 					<input type="hidden" name="userId" value="${memberInfo.userId}">
 					<input type="hidden" name="resumeSubmitYn" value="N">
