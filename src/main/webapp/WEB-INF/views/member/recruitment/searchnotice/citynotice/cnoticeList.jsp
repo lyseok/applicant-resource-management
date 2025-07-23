@@ -272,6 +272,7 @@
 	                                    <div class="viewport">
 	                                        <div class="overview" style="top: 0px;">
 	                                            <div class="wrap_list_check" id="second_cityopt">
+	                                        		<%-- 
 	                                                <ul class="list_check" id="sp_area_lastDepth_117000" style="display: none;">
 	                                                    <li>
 	                                                        <div class="inpChk">
@@ -333,6 +334,7 @@
 	                                                    <button type="button" class="btn_all_category" data-logging-flow="area">지역 펼쳐보기</button>
 	                                                    <button type="button" class="btn_reset">지역 초기화</button>
 	                                                </div>
+		                                    		--%>
 	                                            </div>
 	                                        </div>
 	                                    </div>
