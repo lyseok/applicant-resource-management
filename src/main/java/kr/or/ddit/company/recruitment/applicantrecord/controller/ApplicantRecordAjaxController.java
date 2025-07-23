@@ -57,4 +57,19 @@ public class ApplicantRecordAjaxController {
 		return service.getResumeByApplicantId(applicantIds);
 	}
 	
+	@PostMapping("/{applicantId}")
+	public ResponseEntity<?> updateResumeView(@PathVariable String applicantId){
+		service.updateResumeView(applicantId);
+		return ResponseEntity.ok("Success");
+	}
+	
+	@PostMapping("/hiredate")
+	public ResponseEntity<?> updateHireDate(@RequestBody List<PasserVO> list){
+		try {
+			list.forEach(p-> service.updateHireDate(p));
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 실패");
+		}
+	}
 }

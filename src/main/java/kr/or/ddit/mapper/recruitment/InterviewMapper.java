@@ -18,4 +18,5 @@ public interface InterviewMapper {
 	public int insertInterview(InterviewVO vo);
 	public int updateInterview(InterviewVO vo);
 	public int deleteInterview(String inteviewNo);
+	public Map<String, Object> selectInterviewWithCompanyNameByNo(String interviewNo);
 }

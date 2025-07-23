@@ -84,7 +84,7 @@ class EducationMapperTest {
 		EducationVO vo = new EducationVO();
 		vo.setEducationNo("EDCT000002");
 		vo.setResumeNo("RESM000002");
-		mapper.deleteEducation(vo);
+//		mapper.deleteEducation(vo);
 
 		EducationVO delete = mapper.selectEducationDetail(vo);
 		assertNotNull(delete);

@@ -12,7 +12,9 @@ public interface ApplicantMapper {
 	public List<ApplicantVO> selectApplicantListByNo(String recruitmentNo);
 	public ApplicantVO selectApplicant(String applicantId);
 	public String duplicationApplicant(ApplicantVO vo); 
+	public String selectApplicantMail(String applicantId);
+	
 	public int insertApplicant(ApplicantVO vo);
-	public int updateApplicant(ApplicantVO vo);
+	public int updateApplicant(String applicantId);
 	public int deleteApplicant(String applicantId);
 }

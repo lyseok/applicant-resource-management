@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.mail.MessagingException;
+import kr.or.ddit.admin.common.email.utils.EmailUtil;
 import kr.or.ddit.common.exception.DataUpdateException;
 import kr.or.ddit.mapper.recruitment.ApplicantMapper;
 import kr.or.ddit.mapper.recruitment.ApplicantRecordMapper;
@@ -21,9 +23,11 @@ import kr.or.ddit.vo.recruitment.PasserVO;
 import kr.or.ddit.vo.recruitment.RecruitProcessVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 	
 	private final ApplicantRecordMapper applMapper;
@@ -31,6 +35,8 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 	private final RecruitProcessMapper processMapper;
 	private final PasserMapper passMapper;
 	private final ResumeService resumeService;
+	
+	private final EmailUtil emailUtils;
 
 	@Override
 	public List<Map<String, Object>> getApplicantsByRecruitment(String recruitmentNo) {
@@ -53,6 +59,8 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 			processVo.setRecruitProcessStep(formatStep);
 			processVo = processMapper.selectNextStep(processVo);
 			
+			String email = applicantMapper.selectApplicantMail(vo.getApplicantId());
+			
 			if(vo.getRecruitProcessFinal().equals("N")) {				
 				ApplicantRecordVO applVo = new ApplicantRecordVO();
 				applVo.setRecruitProcessNo(processVo.getRecruitProcessNo());
@@ -60,17 +68,33 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 				applVo.setApplicantName(vo.getApplicantName());
 				if(applMapper.selectDuplicateRecord(applVo)==null) {					
 					applMapper.insertApplicantRecord(applVo);
-				}else {
-					return;
 				}
+				
+			try {
+				String subject = String.format("[%s차 전형] 합격을 축하드립니다", vo.getRecruitProcessStep());
+				String body = vo.getApplicantName() + "님, " + subject + "!\n다음 단계도 잘 준비해 주세요";
+				emailUtils.sendEmail(email, subject, body);
+			} catch(MessagingException e) {
+				log.warn("중간 합격자 메일 전송 실패 : {}", email, e);
+			}
+				
 			}else {
 				PasserVO pass = new PasserVO();
 				pass.setApplicantId(vo.getApplicantId());
 				pass.setRecruitmentNo(vo.getRecruitmentNo());
+				
 				if(passMapper.selectDuplicatePasser(pass)==null) {					
 					passMapper.insertPasser(pass);
-				}else {
-					return;
+				}
+				
+				try {
+					String subject = "최종 합격을 진심으로 축하드립니다!";
+					String body = vo.getApplicantName() + "님, 최종 합격하셨습니다.\n입사 관련 내용을 확인해 주세요";
+					emailUtils.sendEmail(email, subject, body);
+					
+					passMapper.updateAlarm(pass.getPasserNo());
+				} catch (MessagingException e) {
+					log.warn("최종 합격자 메일 전송 실패: {}", email, e);
 				}
 			}
 			
@@ -98,6 +122,17 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 				return detailResume;
 			})
 			.collect(Collectors.toList());
+	}
+
+	@Override
+	public void updateResumeView(String applicantId) {
+		applicantMapper.updateApplicant(applicantId);
+	}
+
+	@Override
+	public void updateHireDate(PasserVO vo) {
+		passMapper.updatePasser(vo);
+		
 	}
 
 }
