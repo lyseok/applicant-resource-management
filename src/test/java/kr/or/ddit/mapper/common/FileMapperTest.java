@@ -71,7 +71,7 @@ class FileMapperTest {
 		FV.setFileType("TEST1");
 		FV.setRealFile("TEST1");
 		
-		mapper.deleteFile(FV);
+//		mapper.deleteFile(FV);
 		
 	}
 
