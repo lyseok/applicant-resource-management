@@ -1,7 +1,10 @@
 package kr.or.ddit.admin.community.adminBoard.controller;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -39,20 +43,30 @@ public class AdminAdminBoardAjaxController {
 	            .orElse(ResponseEntity.status(404).body(null));  //없을 시 js에서 처리(상태코드 404 객체 반환)
 	}
 	
-	// 유형별 게시글 목록조회
-	@GetMapping("/{boardTypeCode}")  
-	public List<AdminBoardVO> getBoards(@PathVariable String boardTypeCode){
-		return service.readAdminBoardListByType(boardTypeCode);
+	// 유형별 게시글 목록조회(회원권한 포함)
+	@GetMapping("/{boardTypeCode}")
+	public List<AdminBoardVO> getBoards(
+		@PathVariable String boardTypeCode
+		, @RequestParam(required = false) String userRole
+	) {
+		return service.readAdminBoardListByType(boardTypeCode, userRole);
+		
+	}
+
+	// 삭제된 게시글 목록조회
+	@GetMapping("/hidden")  
+	public List<AdminBoardVO> gethiddenBoards(){
+		return service.readDelAboardList();
 	}
 	
 	// 일반/기업/전체/이벤트 앞부분 글자대로 목록조회
-	@GetMapping("/pre/{groupPrefix}")
+	@GetMapping("/pre/{groupPrefix}")  //UFAQ
 	public List<AdminBoardVO> getPre(@PathVariable String groupPrefix) {
 	    return service.readAFaqListByCgn(groupPrefix);
 	}
 
 	// 해당 상위코드 전체 목록조회
-	@GetMapping("/list/{upperCodeNo}")
+	@GetMapping("/list/{upperCodeNo}")  //BRDD-002
 	public List<AdminBoardVO> getUpper(@PathVariable String upperCodeNo) {
 		return service.readAFaqListByUcn(upperCodeNo);
 	}
@@ -90,36 +104,57 @@ public class AdminAdminBoardAjaxController {
 				])
 		])
 		 */
-		log.info("찍힘 확인 : {}", board);
 		
 		service.createAdminBoard(board);
-		//boardNo를 확인해보자 : 
+		
 		log.info("board : {}", board);
 		
-	    return Map.of("ok", true);
+		log.info("등록된 boardNo: {}", board.getBoardNo());
+		
+	    return Map.of(
+            "ok", true,
+            "boardNo", board.getBoardNo()
+        );
 	}
 	
 	// 해당 유형의 해당 글의 게시글 수정
 	@PostMapping("/detail/{boardNo}")
 	public Map<String, Object> editBoard(
-		@PathVariable String boardTypeCode
-		, @PathVariable String boardNo
+		@PathVariable String boardNo
 		, @RequestBody AdminBoardVO board
 	) {
 		board.setBoardNo(boardNo);
 	    service.modifyAdminBoard(board);
-	    return Map.of("ok", true);	// 수정 후 Detail 이동
+	    
+	    return Map.of(
+            "ok", true,
+            "boardNo", board.getBoardNo()
+        );	// 수정 후 Detail 이동
 	}
+	
+	// 해당 글의 조회수 증가
+	@PostMapping("/hit/{boardNo}")
+	public Map<String, Object> hitUpBoard(@PathVariable String boardNo) {
+	    AdminBoardVO board = new AdminBoardVO();
+	    board.setBoardNo(boardNo);
+	    service.addABoardPostHit(board);
+	    return Map.of("ok", true);
+	}
+
 	// 해당 유형의 해당 글의 삭제 상태 변경
 	@PostMapping("/hidden/{boardNo}")
 	public Map<String, Object> hiddenBoard(
-		@PathVariable String boardTypeCode
-		, @PathVariable String boardNo
-		, @RequestBody AdminBoardVO board
+	    @PathVariable String boardNo
+	    , @RequestBody AdminBoardVO board
 	) {
 		board.setBoardNo(boardNo);
-		service.hiddenAdminBoard(board);
-		return Map.of("ok", true);	// 수정 후 Detail 이동
+	    board.setBoardDeleteDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+	    service.hiddenAdminBoard(board);
+
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("ok", true);
+	    result.put("boardTypeCode", board.getBoardTypeCode());  // null 허용
+	    return result;	// 삭제 후 list 이동
 	}
 	
 	//에러 검증

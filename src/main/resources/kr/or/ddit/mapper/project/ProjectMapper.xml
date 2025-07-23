@@ -13,6 +13,9 @@
     <result property="finishDate" column="FINISH_DATE"/>
     <result property="deleteDate" column="DELETE_DATE"/>
     <result property="projectColor" column="PROJECT_COLOR"/>
+    <result property="memCnt" column="MEM_CNT"/>
+    <result property="avgProgress" column="AVG_PROGRESS"/>
+    
 </resultMap>
 
 <resultMap id="prjMemMap" type="PrjMemVO">
@@ -69,7 +72,11 @@
         P.FINISH_DATE,
         P.DELETE_DATE,
         P.PROJECT_COLOR,
-
+        (SELECT 
+            ROUND(AVG(NVL(PROGRESS_RATE, 0)))
+        FROM PRJ_TASK
+        WHERE PRJ_NO = P.PRJ_NO) AS AVG_PROGRESS,
+        
         -- 멤버 정보
         M.PRJ_NO AS MEM_PRJ_NO,
         M.USER_ID AS MEM_USER_ID,
@@ -77,7 +84,7 @@
         M.DELETE_DATE AS MEM_DELETE_DATE,
         M.USER_NAME,
         M.USER_POSITION,
-
+		(SELECT COUNT(*) FROM PRJ_MEM WHERE PRJ_NO = P.PRJ_NO) AS MEM_CNT,
         -- 채팅방 정보
         C.CHATROOM_NO,
         C.PRJ_NO AS CHAT_PRJ_NO,
@@ -99,12 +106,17 @@
 	    p.project_board_no,
 	    p.project_name,
 	    p.project_contents,
-	    (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = p.project_status) as project_status,
+	    -- (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = p.project_status) as project_status,
+	    project_status,
 	    p.create_date,
 	    p.finish_date,
 	    p.delete_date,
 	    p.project_color,
-	
+		(SELECT 
+            ROUND(AVG(NVL(PROGRESS_RATE, 0)))
+        FROM PRJ_TASK
+        WHERE PRJ_NO = P.PRJ_NO) AS AVG_PROGRESS,
+        
 	    -- PrjMem (프로젝트 멤버)
 	    pm.prj_no      AS mem_prj_no,
 	    pm.user_id     AS mem_user_id,
@@ -134,12 +146,14 @@
 
 <update id="updateProject" parameterType="ProjectVO">
     UPDATE PROJECT
-    SET
-        PROJECT_NAME = #{projectName},
-        PROJECT_CONTENTS = #{projectContents},
-        PROJECT_STATUS = #{projectStatus},
-        PROJECT_COLOR = #{projectColor}
-    WHERE PRJ_NO = #{prjNo}
+	  SET
+	    PROJECT_CONTENTS = #{projectContents},
+	    PROJECT_NAME = #{projectName},
+	    PROJECT_STATUS = #{projectStatus}
+	    <if test="projectStatus == 'PROG-004'">
+	      , FINISH_DATE = SYSDATE
+	    </if>
+	  WHERE PRJ_NO = #{prjNo}
 </update>
 
 </mapper>

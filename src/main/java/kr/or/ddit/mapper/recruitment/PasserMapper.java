@@ -12,6 +12,7 @@ public interface PasserMapper {
 	public PasserVO selectPasser(String passerNo);
 	public int insertPasser(PasserVO vo);
 	public int updatePasser(PasserVO vo);
+	public int updateAlarm(String passerNo);
 	public int deletePasser(String passerNo);
 	public PasserVO selectDuplicatePasser(PasserVO vo);
 	public List<PasserVO> selectpasserByRecruit(String recruitmentNo);

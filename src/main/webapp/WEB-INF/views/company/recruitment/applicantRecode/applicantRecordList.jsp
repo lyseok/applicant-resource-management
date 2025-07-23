@@ -8,89 +8,95 @@
     <script defer src="/js/company/recruitment/applicantRecord/applicantRecordList.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css">
     <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-      body {
-        font-size: 13px;
-      }
+body {
+	font-size: 13px;
+}
 
-      table {
-        font-size: 13px;
-      }
+table {
+	font-size: 13px;
+}
 
-      .form-select,
-      .form-control {
-        font-size: 13px;
-        padding: 2px 6px;
-        height: 28px;
-      }
+.form-select, .form-control {
+	font-size: 13px;
+	padding: 2px 6px;
+	height: 28px;
+}
 
-      .form-select {
-        width: 10em;
-        min-width: 90px;
-        max-width: 180px;
-        display: inline-block;
-      }
+.form-select {
+	width: 10em;
+	min-width: 90px;
+	max-width: 180px;
+	display: inline-block;
+}
 
-      th,
-      td {
-        padding: 4px 6px !important;
-      }
+th, td {
+	padding: 4px 6px !important;
+}
 
-      .btn-sm {
-        padding: 2px 7px;
-        font-size: 12px;
-      }
+.btn-sm {
+	padding: 2px 7px;
+	font-size: 12px;
+}
 
-      .nav-link {
-        padding: 4px 10px;
-        font-size: 13px;
-      }
+.nav-link {
+	padding: 4px 10px;
+	font-size: 13px;
+}
 
-      /* 경력 슬라이더 noUiSlider 커스텀 */
-      #careerSlider .noUi-base {
-        height: 6px;
-        /* 더 얇게 */
-        background: #e9ecef;
-      }
+/* 경력 슬라이더 noUiSlider 커스텀 */
+#careerSlider .noUi-base {
+	height: 6px;
+	/* 더 얇게 */
+	background: #e9ecef;
+}
 
-      #careerSlider .noUi-connect {
-        background: #8bb4ff;
-      }
+#careerSlider .noUi-connect {
+	background: #8bb4ff;
+}
 
-      #careerSlider .noUi-handle {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #fff;
-        border: 2px solid #0d6efd;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
-        top: -7px;
-        /* 바 가운데 맞춤 */
-        cursor: grab;
-        transition: border 0.2s;
-      }
+#careerSlider .noUi-handle {
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #fff;
+	border: 2px solid #0d6efd;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+	top: -7px;
+	/* 바 가운데 맞춤 */
+	cursor: grab;
+	transition: border 0.2s;
+}
 
-      #careerSlider .noUi-handle:hover {
-        border: 2.5px solid #296ed7;
-      }
+#careerSlider .noUi-handle:hover {
+	border: 2.5px solid #296ed7;
+}
 
-      #careerSlider .noUi-tooltip {
-        font-size: 12px;
-        background: #0d6efd;
-        color: #fff;
-        border-radius: 4px;
-        padding: 1px 7px;
-      }
+#careerSlider .noUi-tooltip {
+	font-size: 12px;
+	background: #0d6efd;
+	color: #fff;
+	border-radius: 4px;
+	padding: 1px 7px;
+}
 
-      #careerSlider .noUi-value {
-        font-size: 12px;
-        color: #296ed7;
-        font-weight: 600;
-        top: -22px;
-        /* 필요시 조절 */
-      }
+#careerSlider .noUi-value {
+	font-size: 12px;
+	color: #296ed7;
+	font-weight: 600;
+	top: -22px;
+	/* 필요시 조절 */
+}
+.modal.show {
+  display: block;
+  z-index: 2000 !important;
+}
 
-    </style>
+.modal-backdrop.show {
+  z-index: 1990 !important;
+}
+</style>
   </head>
 
   <body>
@@ -176,5 +182,24 @@
         </table>
       </div>
     </div>
+    
+    <!-- 모달: 입사예정일 변경 -->
+	<div class="modal fade" id="hireDateModal" tabindex="-1" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">입사 예정일 변경</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	      <div class="modal-body">
+	        <input type="date" id="hireDatePicker" class="form-control" />
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="btn btn-primary" id="confirmHireDateBtn">변경하기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
    
   </body>

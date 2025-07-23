@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.ddit.mapper.project.ChatMapper">
+
+    <!-- 채팅방 ResultMap -->
+    <resultMap id="chatroomMap" type="kr.or.ddit.vo.project.ChatroomVO">
+        <id property="chatroomNo" column="chatroom_no"/>
+        <result property="prjNo" column="prj_no"/>
+        <result property="chatroomName" column="chatroom_name"/>
+        <collection property="chatroomMemList" ofType="kr.or.ddit.vo.project.ChatroomMemVO">
+            <id property="chatroomNo" column="chatroom_no"/>
+            <id property="userId" column="user_id"/>
+            <result property="prjNo" column="prj_no"/>
+            <result property="readMessageNo" column="read_message_no"/>
+        </collection>
+    </resultMap>
+
+    <!-- 채팅 메시지 ResultMap -->
+    <resultMap id="messageMap" type="kr.or.ddit.vo.project.ChatMessageVO">
+        <id property="messageNo" column="message_no"/>
+        <result property="message" column="message"/>
+        <result property="createDate" column="create_date"/>
+        <result property="chatroomNo" column="chatroom_no"/>
+        <result property="prjNo" column="prj_no"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <!-- 프로젝트 ID로 채팅방 조회 -->
+    <select id="selectChatroomByProjectId" parameterType="string" resultMap="chatroomMap">
+        SELECT 
+            c.chatroom_no,
+            c.prj_no,
+            c.chatroom_name,
+            cm.user_id,
+            cm.read_message_no
+        FROM chatroom c
+        LEFT JOIN chatroom_mem cm ON c.chatroom_no = cm.chatroom_no
+        WHERE c.prj_no = #{projectId}
+    </select>
+
+    <!-- 채팅방 번호로 채팅방 조회 -->
+    <select id="selectChatroomByNo" parameterType="string" resultMap="chatroomMap">
+        SELECT 
+            c.chatroom_no,
+            c.prj_no,
+            c.chatroom_name,
+            cm.user_id,
+            cm.read_message_no
+        FROM chatroom c
+        LEFT JOIN chatroom_mem cm ON c.chatroom_no = cm.chatroom_no
+        WHERE c.chatroom_no = #{chatroomNo}
+    </select>
+
+    <!-- 채팅방 생성 -->
+    <insert id="insertChatroom" parameterType="kr.or.ddit.vo.project.ChatroomVO">
+    <selectKey keyProperty="chatroomNo" resultType="string" order="BEFORE">
+	    SELECT 'CATR' || LPAD(CHATROOM_SEQ.NEXTVAL, 6, '0') AS messageNo FROM DUAL
+	  </selectKey>
+        INSERT INTO chatroom (
+            chatroom_no,
+            prj_no,
+            chatroom_name
+        ) VALUES (
+            #{chatroomNo},
+            #{prjNo},
+            #{chatroomName}
+        )
+    </insert>
+
+    <!-- 채팅 메시지 목록 조회 (Oracle 페이징) -->
+    <select id="selectChatMessages" resultMap="messageMap">
+        <![CDATA[
+        SELECT * FROM (
+            SELECT t.*, ROWNUM rn
+            FROM (
+                SELECT 
+                    message_no,
+                    message,
+                    create_date,
+                    chatroom_no,
+                    prj_no,
+                    user_id
+                FROM chat_message
+                WHERE chatroom_no = #{chatroomNo}
+                ORDER BY create_date ASC
+            ) t
+            WHERE ROWNUM <= #{offset} + #{size}
+        )
+        WHERE rn > #{offset}
+        ]]>
+    </select>
+
+    <!-- 채팅 메시지 저장 -->
+    <insert id="insertChatMessage" parameterType="kr.or.ddit.vo.project.ChatMessageVO">
+      <selectKey keyProperty="messageNo" resultType="string" order="BEFORE">
+	    SELECT 'MASG' || LPAD(CHAT_MESSAGE_SEQ.NEXTVAL, 6, '0') AS messageNo FROM DUAL
+	  </selectKey>
+        INSERT INTO chat_message (
+            message_no,
+            message,
+            create_date,
+            chatroom_no,
+            prj_no,
+            user_id
+        ) VALUES (
+            #{messageNo},
+            #{message},
+           	SYSDATE,
+            #{chatroomNo},
+            #{prjNo},
+            #{userId}
+        )
+    </insert>
+
+    <!-- 채팅방 멤버 추가 -->
+    <insert id="insertChatroomMember" parameterType="kr.or.ddit.vo.project.ChatroomMemVO">
+        INSERT INTO chatroom_mem (
+            chatroom_no,
+            prj_no,
+            user_id,
+            read_message_no
+        ) VALUES (
+            #{chatroomNo},
+            #{prjNo},
+            #{userId},
+            #{readMessageNo}
+        )
+    </insert>
+
+    <!-- 채팅방 멤버 제거 -->
+    <delete id="deleteChatroomMember">
+        DELETE FROM chatroom_mem
+        WHERE chatroom_no = #{chatroomNo}
+        AND user_id = #{userId}
+    </delete>
+
+    <!-- 읽음 메시지 번호 업데이트 -->
+    <update id="updateReadMessageNo" parameterType="kr.or.ddit.vo.project.ChatroomMemVO">
+        UPDATE chatroom_mem
+        SET read_message_no = #{readMessageNo}
+        WHERE chatroom_no = #{chatroomNo}
+        AND user_id = #{userId}
+    </update>
+
+
+    <!-- 읽지 않은 메시지 수 조회 (Oracle) -->
+    <select id="selectUnreadCount" resultType="int">
+        SELECT 
+            COUNT(cm.message_no) as unread_count
+        FROM chat_message cm
+        LEFT JOIN chatroom_mem crm ON cm.chatroom_no = crm.chatroom_no 
+            AND crm.user_id = #{userId}
+        WHERE cm.chatroom_no = #{chatroomNo}
+        AND cm.user_id != #{userId}
+        AND (crm.read_message_no IS NULL OR cm.message_no > crm.read_message_no)
+    </select>
+
+    <!-- 프로젝트 멤버 목록 조회 -->
+    <select id="selectProjectMembers" parameterType="string" resultType="string">
+        SELECT user_id
+        FROM prj_mem
+        WHERE prj_no = #{projectId}
+        AND delete_date IS NULL
+    </select>
+
+</mapper>

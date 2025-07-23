@@ -1,145 +1,334 @@
-const type = document.querySelector("#typeHidden").value;
+let type = document.querySelector("#typeHidden").value;
 const aboardList = document.querySelector("#aboardList");
 const memTypeBtn = document.querySelector("#memTypeBtn");
+const formBtn = document.querySelector("#formBtn");
+const detTitle = document.querySelector("#detTitle");
+const listTitle = document.querySelector("#listTitle");
+const allBtns = document.querySelector("#allBtns");
+const userId = document.querySelector("#userIdHidden")?.value;
+const aboardform = document.querySelector("#aboardForm");
+const modalElement = document.querySelector('#deleteModal');
 
-const flist = function () {
-	let html = `
-		<p class="h4">자주 묻는 질문 탭 선택</p>
-		<button id="ufaq" onclick="faqUser()">일반회원</button>
-		<button id="cfaq" onclick="faqCorp()">기업회원</button>
-		<button id="afaq" onclick="faqAll()">전체</button>`;
-	memTypeBtn.innerHTML = html;
+// ✅ 게시글 상세 제목 설정
+const pageTitle = function () {
+	detTitle.innerHTML = "";
+	let title = document.createElement("p");
+	title.className = "h1 mb-3 fw-bold";
+	title.textContent = "게시글 상세";
+	detTitle.appendChild(title);
 };
 
-const nlist = function () {
-	let html = `
-		<p class="h4">공지사항 탭 선택</p>
-		<button id="untc" onclick="noticeUser()">일반회원</button>
-		<button id="cntc" onclick="noticeCorp()">기업회원</button>
-		<button id="antc" onclick="noticeEvent()">이벤트</button>`;
-	memTypeBtn.innerHTML = html;
+// ✅ 새 글 등록 버튼 생성
+const newFormBtn = function () {
+	formBtn.innerHTML = "";
+	let newForm = document.createElement("button");
+	newForm.id = "formForm";
+	newForm.className = "btn btn_violet";
+	newForm.textContent = "새 글 등록";
+	formBtn.appendChild(newForm);
+
+	const formForm = document.querySelector("#formForm");
+	if (formForm != null) {
+		formForm.onclick = function () {
+			memTypeBtn.innerHTML = "";
+			aboardList.innerHTML = "";
+			listTitle.style.display = "none";
+			formBtn.innerHTML = "";
+			addopt();
+		};
+	}
 };
 
+// ✅ 탭 UI 활성화 처리
+function setActiveTab(e) {
+	if (!e || !e.target) return;
+
+	const parent = e.target.closest("ul");
+	if (!parent) return;
+
+	const links = parent.querySelectorAll(".nav-link");
+	links.forEach(link => link.classList.remove("active"));
+
+	e.target.classList.add("active");
+}
+
+// ✅ 카드 UI 렌더링
 const bhtml = function (rslt) {
-	let html = `<p class="h4">게시글 목록</p>`;
+	listTitle.style.display = "block";
+	aboardform.style.display = "none";
+
+	let html = '<div class="list_body">';
 	rslt.forEach((item) => {
 		html += `
-			<li>작성자 : ${item.userId}</li>
-			<li>게시판 유형 코드: ${item.boardTypeCode}</li>
-			<li>제목: 
-				<a href="/admin/board/admin_board/detail?no=${item.boardNo}">
-				${item.boardTitle}
-				</a>
-			</li>
-			<li>등록일시: ${item.boardWriteDate}</li>
-			<li>내용: ${item.boardContent}</li>
-			<li>삭제일시: ${item.boardDeleteDate}</li>
-			<li>조회수: ${item.boardPostHit}</li>
-			<li>게시글 상태: ${item.boardStatus}</li>
-			<hr/>`;
+			<div class="list_item mb-3">
+				<div class="box_item p-3 border rounded">
+					<div class="row align-items-center">
+						<div class="col">
+							<a href="javascript:void(0)" class="fw-bold fs-5 text-decoration-none" onclick="abno('${item.boardNo}')">
+								${item.boardTitle}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
 	});
+	html += '</div>';
+
+	let isthere = rslt.some(item => item.boardTypeCode !== 'BRDD-001');
+	if (isthere) newFormBtn();
+
+	allBtns.innerHTML = '';
 	aboardList.innerHTML = html;
 };
 
-// FAQ 전체
-const faqAll = function() {
-	fetch(`/ajax/admin/board/admin_board/list/${type}`)
-		.then((resp) => resp.json())
-		.then((rslt) => {
-			bhtml(rslt);
-			flist();
-		});
-}
+// ✅ 문의사항 탭 렌더링
+const asklist = function (type, activeTab = 'all') {
+	let html = `
+		<p class="h4">문의사항 탭 선택</p>
+		<ul class="nav nav-underline" id="askTabs">
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="askUser('${type}', event)">일반회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="askCorp('${type}', event)">기업회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="askAll('${type}', event)">전체</a>
+			</li>
+		</ul>`;
+	memTypeBtn.innerHTML = html;
+};
 
-// FAQ 일반회원
-const faqUser = function() {
+// ✅ FAQ 탭 렌더링
+/*
+const flist = function (activeTab = 'all') {
+	let html = `
+		<p class="h4">자주 묻는 질문 탭 선택</p>
+		<ul class="nav nav-underline" id="faqTabs">
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="faqUser(event)">일반회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="faqCorp(event)">기업회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="faqAll(event)">전체</a>
+			</li>
+		</ul>`;
+	memTypeBtn.innerHTML = html;
+};
+*/
+
+// ✅ 드롭다운 항목을 동적으로 생성하는 함수
+const loadFaqDropdownItems = function(groupCode, containerId, userType) {
+	fetch(`/ajax/admin/board/admin_board/cmn/${groupCode}`)
+		.then(resp => resp.json())
+		.then(rslt => {
+			const menu = document.querySelector(`#${containerId}`);
+			rslt.forEach(item => {
+				const li = document.createElement("li");
+				li.innerHTML = `
+					<a class="dropdown-item" href="#" onclick="faqDetail('${item.codeDetailNo}', event, '${userType}')">
+						${item.codeName}
+					</a>`;
+				menu.appendChild(li);
+			});
+		});
+};
+
+// ✅ 상세 유형 FAQ 조회
+const faqDetail = function(codeDetailNo, event, userType = 'all') {
+	if (event) setActiveTab(event);
+	fetch(`/ajax/admin/board/admin_board/pre/${codeDetailNo}`)
+		.then(resp => resp.json())
+		.then(rslt => {
+			bhtml(rslt);
+			flist(userType); // 클릭된 탭 유지
+		});
+};
+
+// ✅ 자주 묻는 질문 탭 UI 생성
+const flist = function (activeTab = 'all') {
+	let html = `
+		<p class="h4">자주 묻는 질문 탭 선택</p>
+		<ul class="nav nav-underline" id="faqTabs" style="display: flex; gap: 12px;">
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="faqAll(event)">전체</a>
+			</li>
+
+			<li class="nav-item dropdown" id="userFaqDropdown">
+				<a class="nav-link dropdown-toggle ${activeTab === 'user' ? 'active' : ''}" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+					일반회원
+				</a>
+				<ul class="dropdown-menu" id="userFaqDropdownMenu">
+					<li><a class="dropdown-item" href="#" onclick="faqUser(event)">전체</a></li>
+					<li><hr class="dropdown-divider"></li>
+				</ul>
+			</li>
+
+			<li class="nav-item dropdown" id="corpFaqDropdown">
+				<a class="nav-link dropdown-toggle ${activeTab === 'corp' ? 'active' : ''}" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+					기업회원
+				</a>
+				<ul class="dropdown-menu" id="corpFaqDropdownMenu">
+					<li><a class="dropdown-item" href="#" onclick="faqCorp(event)">전체</a></li>
+					<li><hr class="dropdown-divider"></li>
+				</ul>
+			</li>
+		</ul>`;
+
+	memTypeBtn.innerHTML = html;
+
+	// ✅ 드롭다운 항목 생성 함수 호출
+	loadFaqDropdownItems('UFAQ', 'userFaqDropdownMenu', 'user');
+	loadFaqDropdownItems('CFAQ', 'corpFaqDropdownMenu', 'corp');
+};
+
+
+
+
+// ✅ 공지사항 탭 렌더링
+const nlist = function (activeTab = 'user') {
+	let html = `
+		<p class="h4">공지사항 탭 선택</p>
+		<ul class="nav nav-underline" id="noticeTabs">
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="noticeUser(event)">일반회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="noticeCorp(event)">기업회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'event' ? 'active' : ''}" href="#" onclick="noticeEvent(event)">이벤트</a>
+			</li>
+		</ul>`;
+	memTypeBtn.innerHTML = html;
+};
+
+// ✅ 문의사항 데이터
+const askAll = function(type, event) {
+	if (event) setActiveTab(event);
+	fetch(`/ajax/admin/board/admin_board/${type}`)
+		.then(resp => resp.json())
+		.then(rslt => {
+			bhtml(rslt);
+			asklist(type, 'all');
+		});
+};
+
+const askUser = function(type, event) {
+	if (event) setActiveTab(event);
+	fetch(`/ajax/admin/board/admin_board/${type}?userRole=ROLE_USER`)
+		.then(resp => resp.json())
+		.then(rslt => {
+			bhtml(rslt);
+			asklist(type, 'user');
+		});
+};
+
+const askCorp = function(type, event) {
+	if (event) setActiveTab(event);
+	fetch(`/ajax/admin/board/admin_board/${type}?userRole=ROLE_COMPANY`)
+		.then(resp => resp.json())
+		.then(rslt => {
+			bhtml(rslt);
+			asklist(type, 'corp');
+		});
+};
+
+// ✅ FAQ 데이터
+const faqAll = function(event) {
+	if (event) setActiveTab(event);
+	fetch(`/ajax/admin/board/admin_board/list/BRDD-002`)
+		.then(resp => resp.json())
+		.then(rslt => {
+			bhtml(rslt);
+			flist('all');
+		});
+};
+
+const faqUser = function(event) {
+	if (event) setActiveTab(event);
 	fetch(`/ajax/admin/board/admin_board/pre/UFAQ`)
-		.then((resp) => resp.json())
-		.then((rslt) => {
+		.then(resp => resp.json())
+		.then(rslt => {
 			bhtml(rslt);
-			flist();
+			flist('user');
 		});
-}
+};
 
-// FAQ 기업회원
-const faqCorp = function() {
+const faqCorp = function(event) {
+	if (event) setActiveTab(event);
 	fetch(`/ajax/admin/board/admin_board/pre/CFAQ`)
-		.then((resp) => resp.json())
-		.then((rslt) => {
+		.then(resp => resp.json())
+		.then(rslt => {
 			bhtml(rslt);
-			flist();
+			flist('corp');
 		});
-}
+};
 
-// 공지 일반
-const noticeUser = function() {
+// ✅ 공지사항 데이터
+const noticeUser = function(event) {
+	if (event) setActiveTab(event);
 	fetch(`/ajax/admin/board/admin_board/pre/UNTC`)
-		.then((resp) => resp.json())
-		.then((rslt) => {
+		.then(resp => resp.json())
+		.then(rslt => {
 			bhtml(rslt);
-			nlist();
+			nlist('user');
 		});
-}
+};
 
-// 공지 기업
-const noticeCorp = function() {
+const noticeCorp = function(event) {
+	if (event) setActiveTab(event);
 	fetch(`/ajax/admin/board/admin_board/pre/CNTC`)
-		.then((resp) => resp.json())
-		.then((rslt) => {
+		.then(resp => resp.json())
+		.then(rslt => {
 			bhtml(rslt);
-			nlist();
+			nlist('corp');
 		});
-}
+};
 
-// 공지 이벤트
-const noticeEvent = function() {
+const noticeEvent = function(event) {
+	if (event) setActiveTab(event);
 	fetch(`/ajax/admin/board/admin_board/pre/ENTC`)
-		.then((resp) => resp.json())
-		.then((rslt) => {
+		.then(resp => resp.json())
+		.then(rslt => {
 			bhtml(rslt);
-			nlist();
+			nlist('event');
 		});
-}
+};
 
-const pre = function(type){
+// ✅ 단일 타입 프리로드
+const pre = function(type) {
 	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
-		.then((resp) => resp.json())
-		.then((rslt) => {
+		.then(resp => resp.json())
+		.then(rslt => {
 			bhtml(rslt);
 			nlist();
 		});
-}
+};
 
-// 초기 로딩
+// ✅ 초기 로딩
 const alist = function(type) {
-	console.log("디테일에서 넘어온 리스트", type);
 	if (type === "BRDD-001") {
-		fetch(`/ajax/admin/board/admin_board/${type}`)
-			.then((resp) => resp.json())
-			.then((rslt) => {
-				bhtml(rslt);
-			});
+		askAll(type);
 	} else if (type === "BRDD-003") {
-		noticeUser();  // 공지사항 일반
-		nlist();
+		noticeUser();
 	} else if (type === "BRDD-002") {
-		faqAll();  // FAQ 전체
-		flist();
+		faqAll();
 	}
-}
+};
 
-//초기 이후 로딩
+// ✅ 상세 이후 복귀
 const alist2 = function(type) {
-	console.log("디테일에서 넘어온 리스트", type);
 	if (type === "BRDD-001") {
-		fetch(`/ajax/admin/board/admin_board/${type}`)
-			.then((resp) => resp.json())
-			.then((rslt) => {
-				bhtml(rslt);
-			});
-	} else{
-		pre();
+		askAll(type);
+	} else if (type.startsWith('UFAQ') || type.startsWith('CFAQ')) {
+		faqAll();
+	} else {
+		pre(type);
 	}
-}
+};
 
 alist(type);

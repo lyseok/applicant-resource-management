@@ -41,7 +41,14 @@
 	FROM APPLICANT
 	WHERE USER_ID = #{userId}
     AND RECRUITMENT_NO = #{recruitmentNo}
-		
+	</select>
+	
+	<select id="selectApplicantMail">
+	SELECT
+	M.MEM_EMAIL
+	FROM APPLICANT A
+	NATURAL JOIN MEMBER M
+	WHERE APPLICANT_ID = #{applicantId}
 	</select>
 	
 	<insert id="insertApplicant">
@@ -68,8 +75,7 @@
 	
 	<update id="updateApplicant">
 	UPDATE APPLICANT SET 
-		RESUME_VIEW_YN = #{resumeViewYn}
-		, STATUS = #{status} 
+		RESUME_VIEW_YN = 'Y'
 	WHERE APPLICANT_ID = #{applicantId}
 	</update>
 	

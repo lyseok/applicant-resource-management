@@ -37,13 +37,15 @@ public class AdminApplicantServiceImpl implements AdminApplicantService {
 	@Override
 	public int insertApplicant(ApplicantVO vo) {
 		
-		return AlMapper.insertApplicant(vo);
+//		return AlMapper.insertApplicant(vo);
+		return 0;
 	}
 
 	@Override
 	public int updateApplicant(ApplicantVO vo) {
 		
-		return AlMapper.updateApplicant(vo);
+//		return AlMapper.updateApplicant(vo);
+		return 0;
 	}
 
 	@Override

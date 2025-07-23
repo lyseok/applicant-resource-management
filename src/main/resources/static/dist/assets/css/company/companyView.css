@@ -266,15 +266,15 @@
 }
 
 .company-nav-item.active {
-    border-bottom: 2px solid #39f;
+    border-bottom: 2px solid var(--violet70);
 }
 
 .company-nav-item:hover .name, .company-nav-item.active .name {
-    color: #39f;
+    color: var(--violet70);
 }
 
 .company-nav-item:hover .post .value, .company-nav-item.active .post .value {
-    color: #39f;
+    color: var(--violet70);
 }
 
 .company-nav-item .name {
@@ -381,6 +381,18 @@
 
 .company-infomation-row h2.header:before {
     content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 3px;
+    height: 25px;
+    background-color: #3c4146;
+}
+
+
+	salary-summary-box h2.header:before{
+	content: '';
     display: block;
     position: absolute;
     left: 0;

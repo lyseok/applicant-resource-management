@@ -52,8 +52,8 @@
 	
 	<c:if test="${not empty resumeList}">
 		<div class="">
-			<c:forEach items="${resumeList }" var="resume">
-				<ul>
+			<ul>
+				<c:forEach items="${resumeList }" var="resume">
 					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
 							<a class="d-block h4 fw-bold mb-4" href="<c:url value="/mypage/resume/${resume.RESUME_NO}"/>">${resume.RESUME_NAME}</a>
@@ -90,52 +90,52 @@
 							<a class="btn btn_gray_line fw-normal" href="/mypage/resume/edit/${resume.RESUME_NO}">수정</a>
 							<a class="btn btn_red_line fw-normal" href="" data-bs-toggle="modal" data-bs-target="#deleteResumeModal${resume.RESUME_NO}">삭제</a>
 						</div>
-					</li>
-				</ul>
-				
-				
-				<!-- 삭제 확인 모달 -->
-				<div class="modal fade" id="deleteResumeModal${resume.resumeNo}" tabindex="-1" aria-labelledby="deleteResumeModal${resume.resumeNo}Label" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header border-0">
-								<h1 class="modal-title fs-5 fw-bold text-danger" id="deleteModalLabel">
-									<i class="bi bi-exclamation-triangle-fill me-1"></i> 이력서 정보 삭제
-								</h1>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body text-center py-4">
-								<div style="font-size:2.4rem; color:#dc3545; margin-bottom:10px;">❗</div>
-								<p class="fs-5 mb-2 fw-semibold" style="color:#c82333;">
-									해당 이력서 정보를 <span style="color:#dc3545;">정말 삭제</span>하시겠습니까?
-								</p>
-								<p class="text-secondary mb-0" style="font-size:1.08rem;">
-									삭제된 데이터는 복구할 수 없습니다.<br>
-									실행 전 반드시 다시 한 번 확인해 주세요.
-								</p>
-							</div>
-							<div class="modal-footer border-0 justify-content-center">
-								<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-								<a class="btn btn-danger px-4" href="/mypage/resume/delete/${resume.resumeNo}">삭제</a>
+						
+						<!-- 삭제 확인 모달 -->
+						<div class="modal fade" id="deleteResumeModal${resume.RESUME_NO}" tabindex="-1" aria-labelledby="deleteResumeModal${resume.RESUME_NO}Label" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header border-0">
+										<h1 class="modal-title fs-5 fw-bold text-danger" id="deleteModalLabel">
+											<i class="bi bi-exclamation-triangle-fill me-1"></i> 이력서 정보 삭제
+										</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body text-center py-4">
+										<div style="font-size:2.4rem; color:#dc3545; margin-bottom:10px;">❗</div>
+										<p class="fs-5 mb-2 fw-semibold" style="color:#c82333;">
+											해당 이력서 정보를 <span style="color:#dc3545;">정말 삭제</span>하시겠습니까?
+										</p>
+										<p class="text-secondary mb-0" style="font-size:1.08rem;">
+											삭제된 데이터는 복구할 수 없습니다.<br>
+											실행 전 반드시 다시 한 번 확인해 주세요.
+										</p>
+									</div>
+									<div class="modal-footer border-0 justify-content-center">
+										<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+										<a class="btn btn-danger px-4" href="/mypage/resume/delete/${resume.resumeNo}">삭제</a>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-			</c:forEach>
+					</li>
+				</c:forEach>
+			</ul>
 			<div class="PageBox">
-	            <span class="BtnType SizeS active">1</span>
-	            <button class="BtnType SizeS page" data-page="2">2</button>
-	            <button class="BtnType SizeS page" data-page="3">3</button>
-	            <button class="BtnType SizeS page" data-page="4">4</button>
-	            <button class="BtnType SizeS page" data-page="5">5</button>
-	            <button class="BtnType SizeS page" data-page="6">6</button>
-	            <button class="BtnType SizeS page" data-page="7">7</button>
-	            <button class="BtnType SizeS page" data-page="8">8</button>
-	            <button class="BtnType SizeS page" data-page="9">9</button>
-	            <button class="BtnType SizeS page" data-page="10">10</button>
-	            <button data-page="11" class="BtnType SizeS BtnNext btnNext">다음</button>
-	        </div>
+        <span class="BtnType SizeS active">1</span>
+        <button class="BtnType SizeS page" data-page="2">2</button>
+        <button class="BtnType SizeS page" data-page="3">3</button>
+        <button class="BtnType SizeS page" data-page="4">4</button>
+        <button class="BtnType SizeS page" data-page="5">5</button>
+        <button class="BtnType SizeS page" data-page="6">6</button>
+        <button class="BtnType SizeS page" data-page="7">7</button>
+        <button class="BtnType SizeS page" data-page="8">8</button>
+        <button class="BtnType SizeS page" data-page="9">9</button>
+        <button class="BtnType SizeS page" data-page="10">10</button>
+        <button data-page="11" class="BtnType SizeS BtnNext btnNext">다음</button>
+      </div>
 		</div>
+		
 	</c:if>
 	
 	
