@@ -33,6 +33,10 @@
 				    <p class="h1 mb-3 fw-bold">자소서 등록</p>
 				 </c:if>
 	        <form:form modelAttribute="introduction" method="post">
+	        
+					 <c:if test="${not empty introdEdit }">
+					 	<input type="hidden" path="introduction.introductionNo">
+					 </c:if>
 				    <div class="introduct_add_wrap">
 		            <div class="introduction_fix_wrap">
 		            	<div class="inner">

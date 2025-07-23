@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.or.ddit.mapper.resume.IntroductionMapper;
 import kr.or.ddit.mapper.resume.introductionQuestionMapper;
 import kr.or.ddit.vo.resume.IntroductionVO;
-import kr.or.ddit.vo.resume.introductionQuestionVO;
+import kr.or.ddit.vo.resume.IntroductionQuestionVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +42,7 @@ public class introductionServiceImpl implements introductionService {
 
 		// 하위 항목이 있을경우
 		if (vo.getIntroductionQuestionList() != null) {
-			for (introductionQuestionVO question : vo.getIntroductionQuestionList()) {
+			for (IntroductionQuestionVO question : vo.getIntroductionQuestionList()) {
 				question.setIntroductionNo(vo.getIntroductionNo());
 				questionMapper.createIntroductionQuestion(question);
 			}

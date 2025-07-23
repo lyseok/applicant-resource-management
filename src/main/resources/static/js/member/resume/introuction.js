@@ -99,11 +99,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		html = `<div class="mb-3">
               <label for="question${totalNum}" class="form-label h5 fw-bold">문항 ${totalNum}</label>
-              <input type="text" class="form-control" id="question${totalNum}" name="introductionList[${currentIdx}].introductionQuestion[${currentIdx}].question" placeholder="지원동기, 입사 후 포부 같은 내용을 입력해주세요.">
+              <input type="text" class="form-control" id="question${totalNum}" name="introductionList[0].introductionQuestionList[${currentIdx}].question" placeholder="지원동기, 입사 후 포부 같은 내용을 입력해주세요.">
             </div>
             <div class="mb-3">
               <label for="content${totalNum}" class="form-label fw-bold h5">내용</label>
-              <textarea class="form-control" id="content${totalNum}" name="introductionList[${currentIdx}].introductionContent[${currentIdx}].content" rows="10">${introductionContent}</textarea>
+              <textarea class="form-control" id="content${totalNum}" name="introductionList[0].introductionQuestionList[${currentIdx}].content" rows="10">${introductionContent}</textarea>
             </div>`;
 
 		/* 폼 추가 코드 */

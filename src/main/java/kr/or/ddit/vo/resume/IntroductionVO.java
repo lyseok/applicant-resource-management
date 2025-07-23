@@ -24,7 +24,7 @@ public class IntroductionVO implements Serializable{
 	private String introductionDeleteDate;
 	
 	@Valid
-	List<introductionQuestionVO> introductionQuestionList;
+	List<IntroductionQuestionVO> introductionQuestionList;
 	
 	
 	

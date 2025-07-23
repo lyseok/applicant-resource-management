@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import kr.or.ddit.vo.resume.introductionQuestionVO;
+import kr.or.ddit.vo.resume.IntroductionQuestionVO;
 
 @Mapper
 public interface introductionQuestionMapper {
-	public List<introductionQuestionVO> readIntroductionQuestionList(String introductionNo);
-	public introductionQuestionVO readIntroductionQuestionDetail(String questionNo);
-	public int createIntroductionQuestion(introductionQuestionVO vo);
-	public int editIntroductionQuestion(introductionQuestionVO vo);
+	public List<IntroductionQuestionVO> readIntroductionQuestionList(String introductionNo);
+	public IntroductionQuestionVO readIntroductionQuestionDetail(String questionNo);
+	public int createIntroductionQuestion(IntroductionQuestionVO vo);
+	public int editIntroductionQuestion(IntroductionQuestionVO vo);
 	public int removeIntroductionQuestion(String introductionNo);
 }

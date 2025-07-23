@@ -73,6 +73,7 @@ public class introductionController {
 		, Model model
 	) {
 		IntroductionVO introdDetail = service.readIntroductionDetail(no);
+		log.info("introdDetaion 확인 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<{}", introdDetail);
 		model.addAttribute("introdDetail", introdDetail);
 		return "member/resume/mypage/introduction/introductionDetail";
 	}
@@ -101,8 +102,15 @@ public class introductionController {
 		if(!errors.hasErrors()) {
 			List<IntroductionVO> itrdList = itrdListVO.getIntroductionList();
 	        for(IntroductionVO itrd:itrdList) {
-	        	itrd.setUserId(userId);
-	        	service.createIntroduction(itrd);
+	        	// pk가 있으면 수정 로직 !
+	        	if(itrd.getIntroductionNo() !=null) {
+	        		log.info("pk 있는 지 확인 >>>>>>>>>>>>>>>>>>>>>>> {}", itrd);
+		        	itrd.setUserId(userId);
+		        	service.editIntroduction(itrd);
+	        	} else {
+		        	itrd.setUserId(userId);
+		        	service.createIntroduction(itrd);
+	        	}
 	        }
 	        lvn = "redirect:/mypage/introduction/list";
 		} else {

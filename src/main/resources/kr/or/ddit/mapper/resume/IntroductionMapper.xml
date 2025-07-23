@@ -8,10 +8,36 @@
 		   AND INTRODUCTION_DELETE_DATE IS NULL
 	</select>
 	
-	<select id="selectIntroductionDetail">
-		SELECT INTRODUCTION_NO, USER_ID, INTRODUCTION_NAME, INTRODUCTION_QUESTION, INTRODUCTION_CONTENT 
-		  FROM INTRODUCTION
-		 WHERE INTRODUCTION_NO = #{introductionNo}
+		<resultMap id="introductionResultMap" type="kr.or.ddit.vo.resume.IntroductionVO">
+	    <!-- 단일 필드 -->
+	    <id property="introductionNo" column="INTRODUCTION_NO"/>
+	    <result property="userId" column="USER_ID"/>
+	    <result property="introductionName" column="INTRODUCTION_NAME"/>
+	    <result property="introductionCreateDate" column="INTRODUCTION_CREATE_DATE"/>
+	    <result property="introductionDeleteDate" column="INTRODUCTION_DELETE_DATE"/>
+	    <result property="introductionSubmitYn" column="INTRODUCTION_SUBMIT_YN"/>
+	
+	    <!-- 컬렉션 필드 -->
+	    <collection property="introductionQuestionList" ofType="kr.or.ddit.vo.resume.IntroductionQuestionVO">
+	        <id property="questionNo" column="QUESTION_NO"/>
+	        <result property="question" column="QUESTION"/>
+	        <result property="content" column="CONTENT"/>
+	    </collection>
+	</resultMap>
+		
+	<select id="selectIntroductionDetail" resultMap="introductionResultMap">
+		SELECT 
+           I.INTRODUCTION_NO
+           , I.USER_ID
+           , I.INTRODUCTION_NAME
+           , I.INTRODUCTION_CREATE_DATE
+           , I.INTRODUCTION_DELETE_DATE
+           , I.INTRODUCTION_SUBMIT_YN
+           , Q.QUESTION_NO
+           , Q.QUESTION
+           , Q.CONTENT 
+	  FROM INTRODUCTION I LEFT JOIN INTRODUCTION_QUESTION Q ON I.INTRODUCTION_NO = Q.INTRODUCTION_NO
+	 WHERE I.INTRODUCTION_NO = #{introductionNo}
 	</select>
 	
 	

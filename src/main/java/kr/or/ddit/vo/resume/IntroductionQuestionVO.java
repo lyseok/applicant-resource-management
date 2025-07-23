@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of = "questionNo")
-public class introductionQuestionVO implements Serializable{
+public class IntroductionQuestionVO implements Serializable{
 	private String questionNo;
 	private String introductionNo;
 
