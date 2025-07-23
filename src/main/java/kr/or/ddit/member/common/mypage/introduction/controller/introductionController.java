@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nimbusds.jose.proc.SecurityContext;
 
+import jakarta.validation.Valid;
 import kr.or.ddit.member.common.mypage.introduction.service.introductionService;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.UpdateGroup;
@@ -44,10 +45,9 @@ public class introductionController {
 	
 	
 	@ModelAttribute(MODELNAME)
-	public IntroductionListVO setupIntroductionListVO() { // 메서드 이름도 명확하게 변경
+	public IntroductionVO setupIntroductionVO() { // 메서드 이름도 명확하게 변경
 	    // List 필드를 초기화하여 NPE 방지
-		IntroductionListVO vo = new IntroductionListVO();
-		vo.setIntroductionList(new ArrayList<>()); // 필드에 List가 있다면 초기화
+		IntroductionVO vo = new IntroductionVO();
 		return vo;
 	}
 	
@@ -83,14 +83,28 @@ public class introductionController {
 	public String getintroductionCreateForm(
 		Model model
 	) {
+		IntroductionVO vo = new IntroductionVO();
+		model.addAttribute(MODELNAME, vo);
 		model.addAttribute("introdCreate", true);
 		return "member/resume/mypage/introduction/introductionForm";
 	}
 	
+	// 자소서 수정 페이지 이동
+	@GetMapping("edit/{no}")
+	public String getintroductionEditForm (
+		Model model
+		, @PathVariable String no
+	) {
+		log.info("=====>{}", no);
+		model.addAttribute(MODELNAME, service.readIntroductionDetail(no));
+		model.addAttribute("introdEdit", true);
+		return "member/resume/mypage/introduction/introductionForm";
+	}	
+	
 	// 자소서 등록 로직 구현 controller
 	@PostMapping("create")
 	public String createIntrodcution(
-		@Validated(InsertGroup.class) @ModelAttribute IntroductionListVO itrdListVO
+		@Valid @ModelAttribute(MODELNAME) IntroductionVO itrdVO
 		, BindingResult errors
 		, RedirectAttributes redirectAttributes
 	) {
@@ -98,31 +112,28 @@ public class introductionController {
 		String userId = authentication.getName();
 		
 		String lvn = "";
-		
+		log.info("진짜 설마 아직도 안찍힘??? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", itrdVO);
 		if(!errors.hasErrors()) {
-			List<IntroductionVO> itrdList = itrdListVO.getIntroductionList();
-	        for(IntroductionVO itrd:itrdList) {
-	        	// pk가 있으면 수정 로직 !
-	        	if(itrd.getIntroductionNo() !=null) {
-	        		log.info("pk 있는 지 확인 >>>>>>>>>>>>>>>>>>>>>>> {}", itrd);
-		        	itrd.setUserId(userId);
-		        	service.editIntroduction(itrd);
-	        	} else {
-		        	itrd.setUserId(userId);
-		        	service.createIntroduction(itrd);
-	        	}
-	        }
-	        lvn = "redirect:/mypage/introduction/list";
-		} else {
-			log.info("유효성 검사 실패!!!");
-			 String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
-	        redirectAttributes.addFlashAttribute(errorsName, errors); 
-
-	        // 입력 데이터 유지용 add FlashAttribute
-	        redirectAttributes.addFlashAttribute(MODELNAME, itrdListVO);
-			
-	        lvn = "redirect:/mypage/introduction/create"; // 입력데이터 가지고 다시 입력 폼으로 보내줌			
-		}
+      	// pk가 있으면 수정 로직 !
+      	if(itrdVO.getIntroductionNo() != null) {
+      		log.info("pk 있는 지 확인 >>>>>>>>>>>>>>>>>>>>>>> {}", itrdVO);
+      		itrdVO.setUserId(userId);
+        	service.editIntroduction(itrdVO);
+      	} else {
+      		itrdVO.setUserId(userId);
+        	service.createIntroduction(itrdVO);
+      	}
+    	  lvn = "redirect:/mypage/introduction/list";
+      } else {
+				log.info("유효성 검사 실패!!!");
+				String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
+	      redirectAttributes.addFlashAttribute(errorsName, errors); 
+	
+	      // 입력 데이터 유지용 add FlashAttribute
+	      redirectAttributes.addFlashAttribute(MODELNAME, itrdVO);
+		
+	      lvn = "redirect:/mypage/introduction/create"; // 입력데이터 가지고 다시 입력 폼으로 보내줌			
+      }
 		return lvn;
 	}
 
@@ -157,7 +168,7 @@ public class introductionController {
 	}
 	
 
-	
+	/*
 	// 자소서 수정 페이지 이동
 	@GetMapping("edit/{no}")
 	public String getintroductionEditForm (
@@ -198,6 +209,7 @@ public class introductionController {
 		}		
 		return lvn;
 	}
+	*/
 
 	
 	

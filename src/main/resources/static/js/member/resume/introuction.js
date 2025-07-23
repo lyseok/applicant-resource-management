@@ -87,8 +87,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		console.log(`현재 자소서 개수 (itrdNum): ${itrdNum}`);
 		const totalNum = fomatNumber(itrdNum);
 
-		const introductionName = "새로운 자소서";
-		const introductionContent = "여기에 새로운 자소서 내용이 들어갑니다.";
 
 		// 기존 HTML 폼 구조에 맞춰 introductionList[인덱스]를 사용합니다.
 		// 자소서 명, 문항, 내용 필드의 인덱스는 itrdNum - 1로 해야 정확합니다.
@@ -98,12 +96,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		const currentIdx = itrdNum - 1; // 여기를 수정
 
 		html = `<div class="mb-3">
-              <label for="question${totalNum}" class="form-label h5 fw-bold">문항 ${totalNum}</label>
-              <input type="text" class="form-control" id="question${totalNum}" name="introductionList[0].introductionQuestionList[${currentIdx}].question" placeholder="지원동기, 입사 후 포부 같은 내용을 입력해주세요.">
+              <label for="question${currentIdx}" class="form-label h5 fw-bold">문항 ${itrdNum}</label>
+              <input type="text" class="form-control" id="question${currentIdx}" name="introductionQuestionList[${currentIdx}].question" placeholder="지원동기, 입사 후 포부 같은 내용을 입력해주세요.">
             </div>
             <div class="mb-3">
-              <label for="content${totalNum}" class="form-label fw-bold h5">내용</label>
-              <textarea class="form-control" id="content${totalNum}" name="introductionList[0].introductionQuestionList[${currentIdx}].content" rows="10">${introductionContent}</textarea>
+              <label for="content${currentIdx}" class="form-label fw-bold h5">내용</label>
+              <textarea class="form-control" id="content${currentIdx}" name="introductionQuestionList[${currentIdx}].content" rows="10" placeholder="여기에 새로운 자소서 내용이 들어갑니다"></textarea>
             </div>`;
 
 		/* 폼 추가 코드 */
@@ -197,34 +195,35 @@ document.addEventListener("DOMContentLoaded", function() {
 			const updatedAreas = document.querySelectorAll('.introduct_area');
 			updatedAreas.forEach((area, idx) => {
 				const newIndex = idx;
-				const newNum = fomatNumber(newIndex + 1); // 01, 02 형식 유지
+				const newNum = fomatNumber(newIndex + 1);
 				const newAreaId = `introduct${newNum}`;
-
-				// 👉 영역 ID 재설정
 				area.id = newAreaId;
 
-				// 👉 내부 input name/index/label for 등 업데이트
-				const titleInput = area.querySelector('input[name^="introductionList"][name$=".introductionName"]');
-				const questionInput = area.querySelector('input[name^="introductionList"][name$=".introductionQuestion"]');
-				const contentTextarea = area.querySelector('textarea[name^="introductionList"][name$=".introductionContent"]');
+				const questionInput = area.querySelector('input[name^="introductionQuestionList"]');
+				const contentTextarea = area.querySelector('textarea[name^="introductionQuestionList"]');
+				const questionLabel = area.querySelector(`label[for^="question"]`);
 
-				if (titleInput) {
-					titleInput.name = `introductionList[${newIndex}].introductionName`;
-					titleInput.id = `title${newNum}`;
-					area.querySelector(`label[for^="title"]`).setAttribute("for", `title${newNum}`);
-				}
+				
 
 				if (questionInput) {
-					questionInput.name = `introductionList[${newIndex}].introductionQuestion`;
+					questionInput.name = `introductionQuestionList[${newIndex}].question`;
 					questionInput.id = `question${newNum}`;
 					area.querySelector(`label[for^="question"]`).setAttribute("for", `question${newNum}`);
+					questionLabel.textContent = `문항 ${newNum}`; // ✅ 텍스트 갱신					
 				}
 
 				if (contentTextarea) {
-					contentTextarea.name = `introductionList[${newIndex}].introductionContent`;
+					contentTextarea.name = `introductionQuestionList[${newIndex}].content`;
 					contentTextarea.id = `content${newNum}`;
 					area.querySelector(`label[for^="content"]`).setAttribute("for", `content${newNum}`);
 				}
+
+				// ✅ removeAreaId 재설정: 항상 마지막 항목으로
+				if (updatedAreas.length > 0) {
+				  const lastArea = updatedAreas[updatedAreas.length - 1];
+				  removeAreaId = lastArea.id; // <== 핵심
+				}
+
 			});
 
 			// 🔁 페이저 순서 및 data-area-id 재설정

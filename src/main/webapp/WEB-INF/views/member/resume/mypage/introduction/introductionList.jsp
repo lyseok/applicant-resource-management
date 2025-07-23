@@ -49,7 +49,7 @@
 				<ul>
 					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
-							<a class="d-block h4 fw-bold" href="<c:url value="/mypage/introduction/${introduction.introductionNo}"/>">${introduction.introductionName}</a>
+							<a class="d-block h4 fw-bold" href="/mypage/introduction/edit/${introduction.introductionNo}">${introduction.introductionName}</a>
 							<p class="text-truncate w800">${introduction.introductionQuestionList.introductionContent}</p>
 						</div>
 						<div class="d-flex gap-1">

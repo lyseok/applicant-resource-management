@@ -64,8 +64,6 @@
 	<update id="updateIntroduction">
 		UPDATE INTRODUCTION 
 		   SET INTRODUCTION_NAME = #{introductionName}
-		       , INTRODUCTION_QUESTION = #{introductionQuestion}
-		       , INTRODUCTION_CONTENT = #{introductionContent}
 		 WHERE INTRODUCTION_NO = #{introductionNo}
 		   AND USER_ID = #{userId}
 	</update>

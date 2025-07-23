@@ -52,7 +52,15 @@ public class introductionServiceImpl implements introductionService {
 
 	@Override
 	public int editIntroduction(IntroductionVO vo) {
-		return mapper.updateIntroduction(vo);
+		int result = mapper.updateIntroduction(vo);
+		// 하위 항목이 있을경우
+		if (vo.getIntroductionQuestionList() != null) {
+			for (IntroductionQuestionVO question : vo.getIntroductionQuestionList()) {
+				question.setIntroductionNo(vo.getIntroductionNo());
+				questionMapper.editIntroductionQuestion(question);
+			}
+		}
+		return result;
 	}
 
 	@Override
