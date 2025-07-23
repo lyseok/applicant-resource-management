@@ -12,7 +12,14 @@
 	<div class="resume-main-wrap resume_detail_wrap">
 		<!-- Header -->
 		<div class="resume-header">
-			<div class="profile-img">🙍‍♂️</div>
+			<div class="profile-img-wrap">
+				<c:if test="${not empty resumeList.photo }">
+					<img src="${resumeList.photo }" alt="" class="profile-img">
+				</c:if>
+				<c:if test="${empty resumeList.photo }">
+					<img src="https://placehold.co/120x150?text=No Image" alt="" class="profile-img ddit-bg">
+				</c:if>
+			</div>
 			<div class="header-info">
 				<div class="d-flex align-items-center">
 					<span class="name lh1">${resumeList.userName }</span> <span
