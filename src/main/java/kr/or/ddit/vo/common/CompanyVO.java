@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true) 
-public class CompanyVO extends UsersVO implements Serializable{
+public class CompanyVO extends UsersVO implements Serializable {
 	@NotBlank
 	private String userId;
 	@NotBlank
@@ -30,21 +30,24 @@ public class CompanyVO extends UsersVO implements Serializable{
 	private Integer comMem;
 	private String comLogo;
 	private String comBackgroundImg;
+
 	@MimeTypeCheck(mainType = "image/")
 	private transient MultipartFile comImage;
+
 	private String comPayment;
 	private String industryType;
-	
-	//추가1
-	private String comType; //기업구분
-	private String comSize; //기업규모
-	private String insuranceYn;//4대보험여부
-	private String ceoName;//대표자이름
-	private String comAddr;//기업주소
-	private String comCapital;//기업 자본금
-	private String comMainBiz;//기업주요사업
+
+	// 추가1
+	private String comType;      // 기업 구분
+	private String comSize;      // 기업 규모
+	private String insuranceYn;  // 4대보험 여부
+	private String ceoName;      // 대표자 이름
+	private String comAddr;      // 기업 주소
+	private String comCapital;   // 기업 자본금
+	private String comMainBiz;   // 기업 주요 사업
+
 	private List<FilesVO> fileList;
-	
+
 	public String getMemName() {
 		return comName;
 	}

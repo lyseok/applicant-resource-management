@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('company_bg').src = company.comBackgroundImg;
 			document.getElementById('logoImg').src = company.comLogo;
 			
-			
 			const addr = company.comAddr || '';
 			document.getElementById('comAddr').textContent = addr;
 			const span = document.getElementById('companyAddr');
@@ -320,24 +319,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-	axios.get(`/ajax/member/company_view/salary/${userId}`)
-		 .then(resp => {
-			const salaries = resp.data;
-			console.log('연봉', salaries);
-		
-			const salaryAvgExclExec = salaries[0].salaryAvgExclExec;
-			document.getElementById('salaryAvgGross').textContent = formatKRW(salaryAvgExclExec);
-			document.getElementById('salary-avg').textContent = formatKRW(salaryAvgExclExec) + '(임원제외)';
+axios.get(`/ajax/member/company_view/salary/${userId}`)
+  .then(resp => {
+    const salaries = resp.data;
+    console.log('연봉', salaries);
 
-		// 1) DOM 준비
-		  const section = document.querySelector('.tab-content[data-section="salary"]');
-		  const ctx = document.getElementById('salaryChart').getContext('2d');
+    const salaryAvgExclExec = salaries[0].salaryAvgExclExec;
+    document.getElementById('salaryAvgGross').textContent = formatKRW(salaryAvgExclExec);
+    document.getElementById('salary-avg').textContent = formatKRW(salaryAvgExclExec) + '(임원제외)';
 
-		  // 2) 차트용 데이터 가공 (만원 단위)
-		  const labels    = salaries.map(s => s.codeName);                              // ["사원","주임",...]
-		  const avgData   = salaries.map(s => parseInt(s.avgByRank, 10)   / 10000);     // ex: 25000000 → 2500(만원)
-		  const minData   = salaries.map(s => parseInt(s.salaryMin,  10)   / 10000);
-		  const maxData   = salaries.map(s => parseInt(s.salaryMax,  10)   / 10000);
+    // 1) DOM 준비
+    const section = document.querySelector('.tab-content[data-section="salary"]');
+    const ctx = document.getElementById('salaryChart').getContext('2d');
+
+    // 2) 차트용 데이터 가공 (만원 단위)
+    const labels = salaries.map(s => s.codeName);
+    const avgData = salaries.map(s => parseInt(s.avgByRank, 10) / 10000);
+    const minData = salaries.map(s => parseInt(s.salaryMin, 10) / 10000);
+    const maxData = salaries.map(s => parseInt(s.salaryMax, 10) / 10000);
 
 		  // 3) 차트 생성
 		 new Chart(ctx, {

@@ -41,6 +41,7 @@ public class CompanyInfoDTO {
 	
 	@NotBlank(message = "기업의 규모를 선택해주세요")
 	private String comSize;
+
 	private String ceoName;
 	private String comAddr;
 	private String comCapital;
