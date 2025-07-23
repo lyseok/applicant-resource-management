@@ -167,4 +167,25 @@
 	)
 </insert>
 
+<select id="selectPrjRcrtPsncntByBbs">
+	SELECT 
+	    PA.PRJ_APLCNT_NO
+	    , PA.RESUME_NO
+	    , PA.USER_ID
+	    , PA.APLCNT_STATUS_CODE
+	    , PA.APLCNT_DATE
+	    , PA.RCRT_PSNCNT_NO
+	    , PA.PRJ_ANNC_NO
+	    
+	    , (SELECT JOB_NAME 
+	        FROM JOB 
+	        WHERE JOB_CODE = (
+	            SELECT JOB_CODE 
+	            FROM PRJ_RCRT_PSNCNT 
+	            WHERE PRJ_ANNC_NO = PA.PRJ_ANNC_NO 
+	            AND RCRT_PSNCNT_NO = PA.RCRT_PSNCNT_NO)) AS USER_POSITION
+	FROM PRJ_APLCNT PA
+	WHERE PA.PRJ_ANNC_NO = #{prjAnncNo}
+</select>
+
 </mapper>
