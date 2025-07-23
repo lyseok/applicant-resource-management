@@ -49,14 +49,15 @@
 					</p>
 					<p>productNo: ${product.productNo}</p>
 
-					<button>수정</button>
-					<button>삭제</button>
+					<a href="/admin/update/product?productNo=${product.productNo}">
+					<button>수정</button></a>
+					<button id="deleteBtn" data-product-no="${product.productNo}" onclick="deleteProduct()">삭제</button>
 				</div>
 				<button onclick="history.back()">뒤로가기</button>
 			</div>
 		</div>
 	</div>
 	<!-- 카드 등록 필요 모달 -->
-
+<script src="/js/admin/payment/AdminProduct.js"></script>
 </body>
 </html>
