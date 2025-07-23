@@ -87,4 +87,32 @@
   <button type="button" class="btn-close" onclick="document.getElementById('interviewAlert').style.display='none'"></button>
 </div>
 
+
+<!-- 리뷰 작성 이동 확인 모달 -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header border-0">
+				<h1 class="modal-title fs-5 fw-bold text-primary" id="reviewModalLabel">
+					<i class="bi bi-pencil-square me-1"></i> 면접 리뷰 
+				</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center py-4">
+				<div style="font-size:2.4rem; color:#007bff; margin-bottom:10px;">📝</div>
+				<p class="fs-5 mb-2 fw-semibold" style="color:#333;">
+					면접 리뷰를  <span style="color:#0d6efd;">작성 </span>하시겠습니까?
+				</p>
+				<p class="text-secondary mb-0" style="font-size:1.1rem;">
+					작성한 내용은 즉시 반영되며,<br>실행 전 다시 한 번 확인해 주세요.
+				</p>
+			</div>
+			<div class="modal-footer border-0 justify-content-center">
+				<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+				<button type="button" class="btn btn-primary px-4" id="writeReviewBtn">작성하기</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 </body>
