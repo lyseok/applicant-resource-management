@@ -76,9 +76,14 @@
 	
 	<update id="updatePasser">
 	UPDATE PASSER SET 
-		PASS_ALARM_YN = #{passAlarmYn}
-		, RECRUIT_ACCEPT_YN = #{recruitAcceptYn}
-		, HIRE_DATE = #{hireDate} 
+		HIRE_DATE = #{hireDate} 
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUITMENT_NO = #{recruitmentNo}
+	</update>
+	
+	<update id="updateAlarm">
+	UPDATE PASSER SET
+		PASS_ALARM_YN = 'Y'
 	WHERE PASSER_NO = #{passerNo}
 	</update>
 	

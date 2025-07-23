@@ -14,5 +14,5 @@ public interface SpecialtyService {
 	// 수정
 	public void editSpecialty(SpecialtyVO vo);
 	// 삭제
-	public void removeSpecialty(SpecialtyVO vo);
+	public void removeSpecialty(String no);
 }
