@@ -86,7 +86,6 @@
         top: -22px;
         /* 필요시 조절 */
       }
-
     </style>
   </head>
 
@@ -112,7 +111,8 @@
         </div>
         <div class="col-auto ms-auto d-flex align-items-center gap-2">
           <button class="btn btn_violet_line" id="searchBtn" type="button">검색</button>
-          <button class="btn btn_gray_line" style="width:100px; justify-content:center;" id="resetFilters" type="button">초기화</button>
+          <button class="btn btn_gray_line" style="width:100px; justify-content:center;" id="resetFilters"
+            type="button">초기화</button>
         </div>
       </div>
 
@@ -127,15 +127,38 @@
           <button class="btn btn_gray_line" style="width:100px" id="btnRequestParticipation">참여 요청</button>
         </div>
       </div>
-      
+
     </div>
-      
+
     <!-- 탭 내용(지원자 테이블) -->
     <div class="tab-content" id="recruitTabContent"></div>
-    
+
     <!-- 단계별 탭 & 버튼 한 줄에 배치 -->
     <div class="col-auto ms-auto gap-2 mt-3 container">
-      <button class="btn btn_violet_line" id="createProjectBtn">프로젝트 생성</button>
+      <button class="btn btn_violet_line" id="createBtn">프로젝트 생성</button>
     </div>
-      
+
+
+    <!-- 프로젝트 지원 모달 -->
+    <div class="modal fade" id="applicationModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+        <div class="modal-content">
+          <!-- 헤더 -->
+          <div class="modal-header bg-white">
+            <h5 class="modal-title text-purple fw-semibold" id="modalProjectTitle">프로젝트 제목</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <!-- 프로젝트명 입력 -->
+          <div class="px-4 pb-2 pt-3">
+            <label for="inputProjectName" class="form-label fw-medium mb-1">프로젝트명</label>
+            <input type="text" id="inputProjectName" class="form-control" placeholder="프로젝트명을 입력하세요" maxlength="30"
+              autocomplete="off">
+          </div>
+          <!-- 하단 버튼 -->
+          <div class="modal-footer bg-white">
+            <button id="createProjectBtn" class="btn w-100 py-2 text-white" style="background: #ae8be1;">생성</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>

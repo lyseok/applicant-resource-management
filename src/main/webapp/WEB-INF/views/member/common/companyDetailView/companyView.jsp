@@ -235,17 +235,16 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 	<div class="company-header n_inner">
 		<div class="company-header-container">
 			<div class="company-header-branding background-type1">
+				<!-- ↓ 여기 이미지 삽입하세요~~~ -->
+				<img  alt="company_bg" id="company_bg">
 				<div class="company-header-branding-container ">
 					<input type="hidden" id="mId" value=""> <input
 						type="hidden" id="cId" value=""> <input type="hidden"
 						id="jkcId" value="kari042"> <input type="hidden"
 						id="devPath" value="https://www.jobkorea.co.kr">
-					<div class="logo">
-						<a href="/company/1899862"><img
-							src="//imgs.jobkorea.co.kr/img1/_whitebg/200X80/Co_Logo/Logo/2008/3/2R12v007Pq_dW2M2J3829q0dvMlS5_8Qvq.jpg?v=202506270920&amp;hash=r&amp;serviceCode=CL"
-							onerror="companylogoOnError('//imgs.jobkorea.co.kr/img1/_whitebg/200X80/Co_Logo/Logo/2008/3/2R12v007Pq_dW2M2J3829q0dvMlS5_8Qvq.jpg?v=202506270920&amp;hash=r&amp;serviceCode=CL' , this)"
-							alt="(재)한국항공우주연구원 로고" class="width"
-							style="left: 9px; margin: -21px 0 0 0"></a>
+					<div class="logo" >
+						<a href="/company/1899862"><img id="logoImg"
+							 class="width" style="left: 9px; margin: -21px 0 0 0"></a>  <!-- 로고이미지 -->
 					</div>
 
 
@@ -321,7 +320,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 			<div class="tab-content" data-section="info">
 				<!--기업 사진/동영상 영역-->
 				<div class="company-infomation-row corporate-gallery">
-					<h2 class="header skip">기업 사진/동영상</h2>
+					<h2 class="header skip">기업 사진</h2>
 					<div
 						class="company-infomation-container corporate-gallery-container">
 						<div class="company-gallery-viewer screen-out" aria-hidden="true">
@@ -337,12 +336,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 										<li class="company-gallery-viewer-item thumbnail js-lazy-img">
 											<div class="js-lazy-img__inner display-table">
 												<div class="cell">
-													<img
-														src="//imgs.jobkorea.co.kr/img3/_thumb/0x390/Company/Visual_Co/images/2007/10/JK_CO_kari042_1.jpg"
-														data-lg-src="//imgs.jobkorea.co.kr/img3/_thumb/0x390/Company/Visual_Co/images/2007/10/JK_CO_kari042_1.jpg"
-														alt="" class="thumbnail attatched"
-														onerror="Company.Gallery.fileOnerror(this);"
-														style="width: 515px; height: auto;">
+													<img style="width: 515px; height: auto;">
 												</div>
 											</div>
 											<div class="header">
@@ -352,12 +346,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 										<li class="company-gallery-viewer-item thumbnail js-lazy-img">
 											<div class="js-lazy-img__inner display-table">
 												<div class="cell">
-													<img
-														src="//imgs.jobkorea.co.kr/img3/_thumb/0x390/Company/Visual_Co/images/2007/10/JK_CO_kari042_4.jpg"
-														data-lg-src="//imgs.jobkorea.co.kr/img3/_thumb/0x390/Company/Visual_Co/images/2007/10/JK_CO_kari042_4.jpg"
-														alt="" class="thumbnail attatched"
-														onerror="Company.Gallery.fileOnerror(this);"
-														style="width: 462px; height: auto;">
+													<img style="width: 462px; height: auto;">
 												</div>
 											</div>
 											<div class="header">
@@ -367,12 +356,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 										<li class="company-gallery-viewer-item thumbnail js-lazy-img">
 											<div class="js-lazy-img__inner display-table">
 												<div class="cell">
-													<img
-														src="//imgs.jobkorea.co.kr/img3/_thumb/0x390/Company/Visual_Co/images/2007/10/JK_CO_kari042_3.jpg"
-														data-lg-src="//imgs.jobkorea.co.kr/img3/_thumb/0x390/Company/Visual_Co/images/2007/10/JK_CO_kari042_3.jpg"
-														alt="" class="thumbnail attatched"
-														onerror="Company.Gallery.fileOnerror(this);"
-														style="width: 490px; height: auto;">
+													<img style="width: 490px; height: auto;">
 												</div>
 											</div>
 											<div class="header">
@@ -382,12 +366,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 										<li class="company-gallery-viewer-item thumbnail js-lazy-img">
 											<div class="js-lazy-img__inner display-table">
 												<div class="cell">
-													<img
-														src="//imgs.jobkorea.co.kr/img3/_thumb/0x390/Company/Visual_Co/images/2007/10/JK_CO_kari042_2.jpg"
-														data-lg-src="//imgs.jobkorea.co.kr/img3/_thumb/0x390/Company/Visual_Co/images/2007/10/JK_CO_kari042_2.jpg"
-														alt="" class="thumbnail attatched"
-														onerror="Company.Gallery.fileOnerror(this);"
-														style="width: 456px; height: auto;">
+													<img style="width: 456px; height: auto;">
 												</div>
 											</div>
 											<div class="header">
@@ -401,50 +380,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 							</div>
 						</div>
 						<div class="company-gallery-container">
-							<ul class="company-gallery-list">
-								<li class="company-gallery-list-item thumbnail js-lazy-img"><a
-									href="#company-gallery-viewer" data-category="undefined"
-									data-index="1" class="js-lazy-img__inner"><img
-										src="//imgs.jobkorea.co.kr/img3/_thumb/300x0/Company/Visual_Co/images/2007/10/JK_CO_kari042_1.jpg"
-										alt=""
-										data-lg-src="//imgs.jobkorea.co.kr/img3/_thumb/300x0/Company/Visual_Co/images/2007/10/JK_CO_kari042_1.jpg"
-										class="attatched" onerror="Company.Gallery.fileOnerror(this);">
-										<div class="mask">
-											<div class="mask-header">KSR-Ⅲ 발사</div>
-										</div> </a></li>
-								<li class="company-gallery-list-item thumbnail js-lazy-img"><a
-									href="#company-gallery-viewer" data-category="undefined"
-									data-index="2" class="js-lazy-img__inner"><img
-										src="//imgs.jobkorea.co.kr/img3/_thumb/300x0/Company/Visual_Co/images/2007/10/JK_CO_kari042_4.jpg"
-										alt=""
-										data-lg-src="//imgs.jobkorea.co.kr/img3/_thumb/300x0/Company/Visual_Co/images/2007/10/JK_CO_kari042_4.jpg"
-										class="attatched" onerror="Company.Gallery.fileOnerror(this);">
-										<div class="mask">
-											<div class="mask-header">아음속풍동</div>
-										</div> </a></li>
-								<li class="company-gallery-list-item thumbnail js-lazy-img"><a
-									href="#company-gallery-viewer" data-category="undefined"
-									data-index="3" class="js-lazy-img__inner"><img
-										src="//imgs.jobkorea.co.kr/img3/_thumb/300x0/Company/Visual_Co/images/2007/10/JK_CO_kari042_3.jpg"
-										alt=""
-										data-lg-src="//imgs.jobkorea.co.kr/img3/_thumb/300x0/Company/Visual_Co/images/2007/10/JK_CO_kari042_3.jpg"
-										class="attatched" onerror="Company.Gallery.fileOnerror(this);">
-										<div class="mask">
-											<div class="mask-header">기체구조시험</div>
-										</div> </a></li>
-								<li class="company-gallery-list-item thumbnail js-lazy-img"><a
-									href="#company-gallery-viewer" data-category="undefined"
-									data-index="4" class="js-lazy-img__inner"><img
-										src="//imgs.jobkorea.co.kr/img3/_thumb/300x0/Company/Visual_Co/images/2007/10/JK_CO_kari042_2.jpg"
-										alt=""
-										data-lg-src="//imgs.jobkorea.co.kr/img3/_thumb/300x0/Company/Visual_Co/images/2007/10/JK_CO_kari042_2.jpg"
-										class="attatched" onerror="Company.Gallery.fileOnerror(this);">
-										<div class="mask">
-											<div class="mask-header">기체구조시험동</div>
-										</div> </a></li>
-							</ul>
-							<!-- [Dev]
-	            <div class="mtcBtnB file-count"><span class=""></span></div>  -->
+							<ul class="company-gallery-list" id="companyGalleryList"></ul>
 						</div>
 					</div>
 				</div>
@@ -520,7 +456,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 									<td class="field-value">
 										<div class="value-container">
 											<div class="values">
-												<div class="value"></div>
+												<div id="comSales" class="value"></div>
 												<div class="reference"></div>
 											</div>
 										</div>
@@ -540,7 +476,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 										<div class="value-container">
 											<div class="values">
 												<div class="salary-average">
-													<div class="salary-average-item"></div>
+													<div id="salary-avg" class="salary-average-item"></div>
 												</div>
 												<a href="/company/1899862/salary"
 													class="button button-view dev_new_pop"></a>
