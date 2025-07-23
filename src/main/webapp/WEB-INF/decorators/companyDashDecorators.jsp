@@ -12,7 +12,7 @@
 	
 	<sitemesh:write property="head" />
 </head>
-<body>
+<body class="aos_frans_none">
     <div class="layout-wrapper layout-content-navbar layout-menu-fixed">
       <div class="layout-container">
         <!-- Layout container -->

@@ -12,22 +12,27 @@
 	<sec:authentication property="principal.realUser.userId" var="userId"/>
 
 	<!-- 게시글 상세 -->
-	<div id="aboardDetail"></div>
+	<div id="aboardDetail"></div><br>
 
 	<!-- 리스트 -->
 	<div id="memTypeBtn"></div><br>
 	<ul id="aboardList">
 		<input type="hidden" id="typeHidden" value="${type}">
 	</ul>
+	
+	<!-- 새 글 등록 버튼 -->
+	<div id="formBtn"></div>
+
+	<!-- 답글 리스트 -->
+	<div id="acommentListContainer"></div>
 
 	<!-- 답글 폼 -->
-  	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
-  	<input type="hidden" id="userIdHidden" value="${userId}">
-  	
-	<div id="acommentFormContainer"></div>
+	<div id="acommentFormContainer"></div>	
 	
 	<!-- 등록 폼 미리 숨겨놓기 -->
 	  <form id="aboardForm" style="display: none;">
+	  	<p class="h4" id="formTitle">관리자 게시판</p><br>
+	  	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
 	    
 	    <label>게시판 유형 코드</label>
 	    <select id="boardTypeCode">
@@ -51,7 +56,6 @@
 	    <button type="submit">등록</button>
 	  </form>
 	  
-	  <button><a href="/admin/board/admin_board/form">새로 등록</a></button>
 	
 <script src="/js/admin/community/adminBoard/aboardList.js"></script>
 <script src="/js/admin/community/adminBoard/aboardForm.js"></script>

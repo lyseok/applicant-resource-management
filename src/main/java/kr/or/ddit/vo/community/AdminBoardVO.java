@@ -5,7 +5,6 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
-import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.UsersVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

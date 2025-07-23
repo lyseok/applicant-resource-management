@@ -2,6 +2,7 @@ console.log('kakao 객체:', window.kakao);
 
 document.addEventListener('DOMContentLoaded', () => {
 
+	const userId = 'testCompany';
 	axios
 		.get('/ajax/member/company_view/testCompany')
 		.then((resp) => {
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('comInfo').textContent = company.comInfo || '-';
             document.getElementById('head-com-name').textContent = company.comName;
 			document.getElementById('head-com-indu').textContent = company.industryType;
-			
+			document.getElementById('salaryCompanyName').textContent = company.comName + '의 평균 연봉';
 			
 			const addr = company.comAddr || '';
 			document.getElementById('comAddr').textContent = addr;
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			console.error('회사정보 로드 실패', err);
 		});
 
-	axios.get('/ajax/member/company_view/sales/testCompany').then((resp) => {
+	axios.get(`/ajax/member/company_view/sales/${userId}`).then((resp) => {
 		const sales = resp.data;
 		const labels = sales.map((s) => s.comSalesYear);
 		const data = sales.map((s) => s.comSalesAmount / 100_000_000); // 억 원
@@ -153,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	axios.get('/ajax/member/company_view/profit/testCompany').then((resp) => {
+	axios.get(`/ajax/member/company_view/profit/${userId}`).then((resp) => {
 		const profit = resp.data;
 		console.log(profit);
 
@@ -258,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-	axios.get('/ajax/member/company_view/notice/testCompany')
+	axios.get(`/ajax/member/company_view/notice/${userId}`)
 		.then(resp => {
 			const notices = resp.data;
 			console.log(notices);
@@ -312,10 +313,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-	axios.get('/ajax/member/company_view/salary/testCompany')
+	axios.get(`/ajax/member/company_view/salary/${userId}`)
 		 .then(resp => {
 			const salaries = resp.data;
 			console.log('연봉', salaries);
+		
+			const salaryAvgExclExec = salaries[0].salaryAvgExclExec;
+			document.getElementById('salaryAvgGross').textContent = formatKRW(salaryAvgExclExec);
+
 		// 1) DOM 준비
 		  const section = document.querySelector('.tab-content[data-section="salary"]');
 		  const ctx = document.getElementById('salaryChart').getContext('2d');
@@ -327,64 +332,110 @@ document.addEventListener('DOMContentLoaded', () => {
 		  const maxData   = salaries.map(s => parseInt(s.salaryMax,  10)   / 10000);
 
 		  // 3) 차트 생성
-		  new Chart(ctx, {
-		    type: 'line',
-		    data: {
-		      labels,
-		      datasets: [
-		        {
-		          label: '평균연봉(만원)',
-		          data: avgData,
-		          borderColor: 'rgba(54,162,235,1)',
-		          backgroundColor: 'rgba(54,162,235,0.2)',
-		          pointBackgroundColor: 'rgba(54,162,235,1)',
-		          borderWidth: 2,
-		          fill: false,
-		          tension: 0.3,
-		        },
-		        {
-		          label: '최소연봉(만원)',
-		          data: minData,
-		          borderColor: 'rgba(200,200,200,0.6)',
-		          borderDash: [5,5],
-		          pointRadius: 0,
-		          fill: '+1',    // avgData 위쪽부터 채우기
-		          tension: 0.1,
-		        },
-		        {
-		          label: '최대연봉(만원)',
-		          data: maxData,
-		          borderColor: 'rgba(200,200,200,0.6)',
-		          borderDash: [5,5],
-		          pointRadius: 0,
-		          fill: '-1',    // minData 아래쪽부터 채우기
-		          tension: 0.1,
-		        },
-		      ]
-		    },
-		    options: {
-		      responsive: false,
-		      plugins: {
-		        tooltip: {
-		          callbacks: {
-		            label(ctx) {
-		              const val = ctx.raw * 10000; // 원 단위
-		              return `${ctx.dataset.label}: ${formatKRW(val)}`;
-		            }
-		          }
-		        },
-		        legend: {
-		          labels: { usePointStyle: true }
-		        }
-		      },
-		      scales: {
-		        y: {
-		          beginAtZero: true,
-		          title: { display: true, text: '만원' }
-		        }
-		      }
-		    }
-		  });
+		 new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels,
+				datasets: [
+					{
+						label: '직급별 평균연봉(만원)',
+						data: avgData,
+						borderColor: 'rgba(124, 58, 237, 1)',
+						backgroundColor: 'rgba(124, 58, 237, 0.2)',
+						pointBackgroundColor: 'rgba(124, 58, 237, 1)',
+						borderWidth: 2,
+						fill: false,
+						tension: 0.3,
+					}
+				]
+			},
+			options: {
+				responsive: false,
+				plugins: {
+					datalabels: {
+						display: true,
+						align: 'top',
+						font: {
+							size: 11,
+							weight: 'bold',
+						},
+						formatter: (value) => formatKRW(value * 10000),
+						color: '#333',
+					},
+					tooltip: {
+						callbacks: {
+							label(ctx) {
+								const val = ctx.raw * 10000;
+								return `${ctx.dataset.label}: ${formatKRW(val)}`;
+							}
+						}
+					},
+					legend: {
+					position: 'top',     // 상단에 표시
+			align: 'start',      // 왼쪽 정렬 (start: 좌측, center: 가운데, end: 우측)
+			labels: { usePointStyle: true }
+					}
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						title: { display: true, text: '만원' }
+					}
+				}
+			},
+			plugins: [ChartDataLabels]
+
+		});
+
+
+
+		 const barCtx = document.getElementById('salaryRangeChart').getContext('2d');
+
+new Chart(barCtx, {
+  type: 'bar',
+  data: {
+    labels, // 직급 라벨 (ex. 사원, 주임, 대리, ...)
+    datasets: [
+      {
+        label: '최소 연봉',
+        data: minData,
+        backgroundColor: 'rgba(248, 115, 171, 0.6)',
+      },
+      {
+        label: '최대 연봉',
+        data: maxData,
+        backgroundColor: 'rgba(124, 58, 237, 0.6)',
+      }
+    ]
+  },
+  options: {
+    responsive: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label(ctx) {
+            const val = ctx.raw * 10000;
+            return `${ctx.dataset.label}: ${formatKRW(val)}`;
+          }
+        }
+      },
+      legend: {
+        position: 'top',
+        align: 'start',
+        labels: { usePointStyle: true }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: '만원'
+        }
+      }
+    }
+  }
+});
 
 		  // 4) (선택) 최신 데이터 기준 업데이트 문구
 		  const latest = salaries[salaries.length-1];
@@ -393,13 +444,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		      `${latest.createDate.slice(0,4)}년 ${latest.codeName} 기준`;
 		  }
 		})
+
 		.catch(err => {
 		  console.error('연봉정보 로드 실패', err);
 		});
 
 
 	function formatKRW(amount) {
-		if (amount == null || isNaN(amount)) return '정보 없음';
+			const num = Number(amount);
+			console.log("왜", num);
+		if (amount == null || isNaN(num)) return '정보 없음';
 
 		const 조 = Math.floor(amount / 1_0000_0000_0000);
 		const 억 = Math.floor((amount % 1_0000_0000_0000) / 1_0000_0000);
@@ -428,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			tbody.innerHTML = noFinishNotice.map(notice => `
         <tr class="clickable-row" data-href="/recruit_notice/${notice.recruitmentNo}">
           <td>${formatDate(notice.recruitmentReceiptStart)} ~ ${formatDate(notice.recruitmentFinishDate)}</td>
-          <td><strong>${notice.recruitmentTitle}</strong></td>
+          <td id="recruit-title-main"><strong>${notice.recruitmentTitle}</strong></td>
           <td>${notice.yearCodeName.trim() || '-'} | ${notice.cityCodeName}</td>
         </tr>
       `).join('');
@@ -512,9 +566,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		function renderCards(list){
 			const cardList = document.querySelector('.card-list');
-			cardList.innerHTML = list.map(n => `
+			cardList.innerHTML = list.map(n => 
+				`
 				    <article class="job-card" data-id="${n.recruitmentNo}">
-					<div class="job-card-header">${n.deadlineDaysLabel}</div>
+					<div class="job-card-header">${getDdayLabel(n.recruitmentFinishDate)}</div>
 					<h3 class="job-card-title"><strong>${n.recruitmentTitle}</strong></h3>
 					<div class="job-card-meta">
 						${n.yearCodeName.trim()} ｜ ${n.cityCodeName}
@@ -525,7 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					</article>
 				`).join('');
 
-
+		
 			cardList.querySelectorAll('.job-card').forEach(card => {
 				card.addEventListener('click', () => {
 				window.location.href = `/recruit_notice/${card.dataset.id}`;
@@ -553,6 +608,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 	
+
+	function getDdayLabel(date){
+		if(!date) return '';
+
+		const today = new Date();
+		const end = new Date(date.replace(' ', 'T'));
+		today.setHours(0, 0, 0, 0);
+		end.setHours(0, 0, 0, 0);
+
+		const diffTime = end - today;
+		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+		if(diffDays > 0) return `D-${diffDays}`;
+		if(diffDays === 0) return 'D-DAY';
+	}
 
 
 	 //네비 탭 변환 함수 

@@ -31,6 +31,7 @@
 		    FROM ADMIN_BOARD
 		    NATURAL JOIN USERS
 		    WHERE BOARD_NO = #{boardNo}
+		    AND BOARD_STATUS != 'D'
 		)
 		SELECT
 		      A.*
@@ -44,6 +45,39 @@
 		FROM A
 		LEFT OUTER JOIN ADMIN_COMMENT B 
 		  ON A.BOARD_NO = B.BOARD_NO
+		  AND B.BOARD_COMMENT_STATUS != 'D'
+	</select>
+	
+	<select id="selectDelAboardList">
+		SELECT 
+		       BOARD_NO
+		     , USER_ID
+		     , BOARD_TYPE_CODE
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_STATUS
+		FROM ADMIN_BOARD
+		WHERE BOARD_STATUS = 'D'
+	</select>
+	
+	<select id="selectAdminBoardListByTypeAndUserRole" resultType="AdminBoardVO">
+		SELECT 
+			B.BOARD_NO,
+			B.BOARD_TYPE_CODE,
+			B.USER_ID,
+			B.BOARD_TITLE,
+			B.BOARD_WRITE_DATE,
+			B.BOARD_DELETE_DATE,
+			B.BOARD_POST_HIT,
+			B.BOARD_STATUS,
+			U.USER_ROLE
+		FROM ADMIN_BOARD B
+		JOIN USERS U ON B.USER_ID = U.USER_ID
+		WHERE B.BOARD_TYPE_CODE = #{boardTypeCode}
+			AND B.BOARD_STATUS != 'D'
+		<if test="userRole != null and userRole != ''">
+			AND U.USER_ROLE = #{userRole}
+		</if>
 	</select>
 
 	<select id="selectCmnGroupList">
@@ -98,6 +132,7 @@
 		     , BOARD_STATUS
 		FROM ADMIN_BOARD
 		<where>
+		BOARD_STATUS != 'D'
 		<if test='boardTypeCode!=null and boardTypeCode!=""'>
 			<choose>
 				<when test='boardTypeCode=="BRDD-002"'>
@@ -124,6 +159,7 @@
 		     , BOARD_STATUS
 		FROM ADMIN_BOARD
 		<where>
+		BOARD_STATUS != 'D'
 		  <if test="boardTypeCode != null and boardTypeCode != ''">
 			AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
 		  </if>
@@ -142,6 +178,7 @@
 			JOIN CMN_CODE C 
 			ON A.BOARD_TYPE_CODE = C.CODE_DETAIL_NO
 		WHERE C.UPPER_CODE_NO = #{upperCodeNo}
+			AND A.BOARD_STATUS != 'D'
 	</select>
 
 	<select id="selectAdminBoardList" resultMap="adminBoardMap">
@@ -156,6 +193,7 @@
 		INNER JOIN USERS U 
 			ON A.USER_ID = U.USER_ID
 		WHERE A.USER_ID = #{userId}
+			AND A.BOARD_STATUS != 'D'
 	</select>
 	
 	<!-- 
@@ -221,21 +259,23 @@
 			, BOARD_TITLE = #{boardTitle}
 			, BOARD_CONTENT = #{boardContent}
 			, BOARD_DELETE_DATE = #{boardDeleteDate}
-			, BOARD_POST_HIT = #{boardPostHit}
 			, BOARD_STATUS = 'U'
 		WHERE 
 			BOARD_NO = #{boardNo}
 	</update>
-
-	<update id="upDeleteAdminBoard">
+	
+	<update id="updateABoardPostHit">
 		UPDATE ADMIN_BOARD 
 		SET 
-			  USER_ID = #{userId}
-			, BOARD_TYPE_CODE = #{boardTypeCode}
-			, BOARD_TITLE = #{boardTitle}
-			, BOARD_CONTENT = #{boardContent}
-			, BOARD_DELETE_DATE = #{boardDeleteDate}
-			, BOARD_POST_HIT = #{boardPostHit}
+			BOARD_POST_HIT = BOARD_POST_HIT + 1 
+		WHERE 
+			BOARD_NO = #{boardNo}
+	</update>
+
+	<update id="upDeleteAdminBoard" parameterType="AdminBoardVO">
+		UPDATE ADMIN_BOARD 
+		SET 
+			  BOARD_DELETE_DATE = #{boardDeleteDate}
 			, BOARD_STATUS = 'D'
 		WHERE 
 			BOARD_NO = #{boardNo}

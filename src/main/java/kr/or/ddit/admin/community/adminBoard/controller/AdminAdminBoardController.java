@@ -36,7 +36,11 @@ public class AdminAdminBoardController { // 동기 컨트롤러는 페이지 이
 	
 	// 등록 폼으로 이동
 	@GetMapping("/form")
-	public String formUI(Model model) {
+	public String formUI(
+		String type
+		, Model model			
+	) {
+		model.addAttribute("type", type);
 		model.addAttribute("boardCss", true);    // 게시판 전용 css 이 한줄만 추가해주면 됩니다.
 		model.addAttribute("searchBar", true);   // 서치바 전용 css
 		return "admin/community/adminBoard/aboardForm";
