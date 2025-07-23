@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.nimbusds.jose.proc.SecurityContext;
 
 import kr.or.ddit.member.common.mypage.introduction.service.introductionService;
 import kr.or.ddit.validate.InsertGroup;
@@ -85,14 +89,15 @@ public class introductionController {
 	// 자소서 등록 로직 구현 controller
 	@PostMapping("create")
 	public String createIntrodcution(
-		// @RequestBody Map<String, String> formDataMap
-		@AuthenticationPrincipal UserDetails userDetails 
-		, @Validated(InsertGroup.class) @ModelAttribute IntroductionListVO itrdListVO
+		@Validated(InsertGroup.class) @ModelAttribute IntroductionListVO itrdListVO
 		, BindingResult errors
 		, RedirectAttributes redirectAttributes
 	) {
-		String userId = userDetails.getUsername();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
+		
 		String lvn = "";
+		
 		if(!errors.hasErrors()) {
 			List<IntroductionVO> itrdList = itrdListVO.getIntroductionList();
 	        for(IntroductionVO itrd:itrdList) {
