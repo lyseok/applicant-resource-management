@@ -49,8 +49,4 @@ public class CompanyInfoDTO {
 	private String comBackgroundImg;
 	
 	private List<FilesVO> fileList;
-
-	
-	
-	
 }

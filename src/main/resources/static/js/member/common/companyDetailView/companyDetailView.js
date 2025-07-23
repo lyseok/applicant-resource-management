@@ -691,5 +691,4 @@ new Chart(barCtx, {
     .join('');
 }
 
-
 });

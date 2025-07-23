@@ -52,6 +52,7 @@ public class CompanyManagementServiceImpl implements CompanyManagementService {
 		return company;
 	}
 
+
 	@Transactional
 	@Override
 	public int editCompanyInfo(CompanyInfoDTO companyInfoDTO) {

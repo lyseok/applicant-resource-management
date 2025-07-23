@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
   })
  
  
-	 
 	 function formatCapitalKRW(amount) {
 	  if (amount == null || isNaN(amount)) return '정보 없음';
 	

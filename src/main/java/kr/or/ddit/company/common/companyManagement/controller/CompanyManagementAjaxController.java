@@ -59,7 +59,6 @@ public class CompanyManagementAjaxController {
 	}
 	
 	
-	
 
 	public String getUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

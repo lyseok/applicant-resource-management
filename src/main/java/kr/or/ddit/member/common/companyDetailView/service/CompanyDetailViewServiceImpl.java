@@ -104,8 +104,4 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	
 	
 	
-	
-	
-	
-	
 }

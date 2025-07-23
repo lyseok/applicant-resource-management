@@ -60,4 +60,6 @@ public class CompanyFileUploadController {
 				return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).body("삭제 실패");
 			}
 		}
+	    
+	
 }

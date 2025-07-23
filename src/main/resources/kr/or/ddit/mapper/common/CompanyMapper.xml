@@ -197,9 +197,4 @@
 		JOIN USERS U
 		  ON C.USER_ID = U.USER_ID
 	</select>
-	
-	
-	
-	
-	
 </mapper>

@@ -261,5 +261,4 @@ extraImagesInput.addEventListener('change', e => {
       }
     }
   });
-
 });
