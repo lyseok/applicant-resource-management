@@ -106,7 +106,8 @@
 	    p.project_board_no,
 	    p.project_name,
 	    p.project_contents,
-	    (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = p.project_status) as project_status,
+	    -- (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = p.project_status) as project_status,
+	    project_status,
 	    p.create_date,
 	    p.finish_date,
 	    p.delete_date,
@@ -145,9 +146,14 @@
 
 <update id="updateProject" parameterType="ProjectVO">
     UPDATE PROJECT
-    SET
-        PROJECT_CONTENTS = #{projectContents}
-    WHERE PRJ_NO = #{prjNo}
+	  SET
+	    PROJECT_CONTENTS = #{projectContents},
+	    PROJECT_NAME = #{projectName},
+	    PROJECT_STATUS = #{projectStatus}
+	    <if test="projectStatus == 'PROG-004'">
+	      , FINISH_DATE = SYSDATE
+	    </if>
+	  WHERE PRJ_NO = #{prjNo}
 </update>
 
 </mapper>

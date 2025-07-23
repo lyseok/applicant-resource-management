@@ -43,7 +43,8 @@ public class MemberApplicantServiceImpl implements MemberApplicantService {
 	@Override
 	public int updateApplicant(ApplicantVO vo) {
 		
-		return AlMapper.updateApplicant(vo);
+//		return AlMapper.updateApplicant(vo);
+		return 0;
 	}
 
 	@Override

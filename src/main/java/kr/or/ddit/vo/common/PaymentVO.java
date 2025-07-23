@@ -16,6 +16,9 @@ public class PaymentVO implements Serializable{
 	private String paymentDate;		// 결제일시	sysdate
 	private String paymentPay;		// 결제 금액 amount
 	private String paymentBillingKey; // 정기구독 빌링키
+	private String startDate;
+	private String endDate;
+	private String status;
 	
 	private List<PaymentProductVO> paymentProductList;
 	private List<CompanyVO> CompanyList;

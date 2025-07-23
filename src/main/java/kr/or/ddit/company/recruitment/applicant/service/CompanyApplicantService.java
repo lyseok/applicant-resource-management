@@ -9,6 +9,6 @@ public interface CompanyApplicantService {
 	public List<ApplicantVO> selectApplicantList();
 	public ApplicantVO selectApplicant(String applicantId);
 	public int insertApplicant(ApplicantVO vo);
-	public int updateApplicant(ApplicantVO vo);
+	public int updateApplicant(String applicantId);
 	public int deleteApplicant(String applicantId);
 }

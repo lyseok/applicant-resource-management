@@ -18,4 +18,6 @@ public interface PaymentService {
 	public List<PaymentVO> selectMyPaymentList(String userId);
 	
 	public String checkbilling(String userId);
+	
+	public int cancelPayment(String oldPaymentNo);
 }

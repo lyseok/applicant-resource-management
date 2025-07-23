@@ -21,4 +21,6 @@ public interface InterviewReviewMapper {
 	public int insertInterviewReview(InterviewReviewVO interviewReview);
 	public int deleteInterviewReview(String reviewNo);
 	public int updateDeleteStatusMyInterviewReview(String reviewNo);
+	
+	public List<InterviewReviewVO> selectInterviewReviewAllList();
 }

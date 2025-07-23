@@ -74,12 +74,8 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public ChatroomVO createChatroom(String projectId, String chatroomName) {
         log.info("채팅방 생성: projectId={}, chatroomName={}", projectId, chatroomName);
-        
-        // 채팅방 번호 생성
-        String chatroomNo = "CHAT" + System.currentTimeMillis();
-        
+
         ChatroomVO chatroom = new ChatroomVO();
-        chatroom.setChatroomNo(chatroomNo);
         chatroom.setPrjNo(projectId);
         chatroom.setChatroomName(chatroomName);
         
@@ -89,10 +85,10 @@ public class ChatServiceImpl implements ChatService {
         // 프로젝트 멤버들을 채팅방에 자동 추가
         List<String> projectMembers = chatMapper.selectProjectMembers(projectId);
         for (String userId : projectMembers) {
-            addChatroomMember(chatroomNo, userId);
+            addChatroomMember(chatroom.getChatroomNo(), userId);
         }
         
-        return chatMapper.selectChatroomByNo(chatroomNo);
+        return chatMapper.selectChatroomByNo(chatroom.getChatroomNo());
     }
 
     @Override

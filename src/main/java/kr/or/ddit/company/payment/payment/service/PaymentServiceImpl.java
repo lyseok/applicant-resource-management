@@ -57,10 +57,17 @@ public class PaymentServiceImpl implements PaymentService {
 		return mapper.checkbilling(userId);
 	}
 	
+	@Override
+	public int cancelPayment(String oldPaymentNo) {
+		// TODO Auto-generated method stub
+		return mapper.cancelPayment(oldPaymentNo);
+	}
+
 	public String getUserId() {
 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	return authentication.getName();		// 기업 ID 
 	}
+
 
 
 	
