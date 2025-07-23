@@ -11,4 +11,5 @@ import kr.or.ddit.vo.recruitment.RecruitViewVO;
 public interface RecruitViewMapper {
 	public List<RecruitViewDTO> selectRecruitViewList(String id);
 	public int insertRecruitView(RecruitViewVO vo);
+	public List<RecruitViewDTO> selectSearchRecruitViewList(String keyword);
 }

@@ -39,6 +39,15 @@ public class RecruitViewServiceImpl implements RecruitViewService {
 	public int createtRecruitView(RecruitViewVO vo) {
 		return mapper.insertRecruitView(vo);
 	}
+
+	@Override
+	public List<RecruitViewDTO> readSearchRecruitViewList(String keyword) {
+		List<RecruitViewDTO> list = mapper.selectSearchRecruitViewList(keyword);
+		list.forEach(vo ->{
+			setCodeName(vo);			
+		});
+		return list;
+	}
 	
 
 	// 공통 코드 한글 맵핑

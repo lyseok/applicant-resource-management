@@ -5,6 +5,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>최근 본 공고</title>
+	
+   <link rel="stylesheet" href="/css/member/recruitment/RecruitView/RecruitViewList.css" >
 	<script defer src="/js/member/recruitment/RecruitView/RecruitViewList.js" ></script>
 </head>
 
@@ -25,7 +27,7 @@
 	</div>
 	
 	<!-- 리스트 렌더링 영역 -->
-	<div id="interviewListArea"></div>
+	<div id="recruitViewListArea"></div>
 
 	<!-- 페이지네이션 렌더링 영역 -->
 	<div id="pageBox" class="PageBox"></div>
