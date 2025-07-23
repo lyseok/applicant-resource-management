@@ -27,4 +27,6 @@ public interface PaymentMapper {
 	
 	public int cancelPayment(String oldPaymentNo);
 	
+	public int comePayment(PaymentVO vo);
+	
 }

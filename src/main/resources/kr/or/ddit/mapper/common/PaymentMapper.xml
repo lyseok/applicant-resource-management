@@ -31,6 +31,36 @@
       'A'
     )
   </insert>
+  
+   <insert id="comePayment">
+    <selectKey resultType="string" keyProperty="paymentNo" order="BEFORE">
+      SELECT 'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO), LENGTH('PAMT') + 1)), 0) + 1, 6, '0')
+      FROM PAYMENT
+    </selectKey>
+    INSERT INTO PAYMENT (
+      PAYMENT_NO,
+      USER_ID,
+      PRODUCT_NO,
+      PAYMENT_METHOD,
+      PAYMENT_DATE,
+      PAYMENT_PAY,
+      PAYMENT_BILLING_KEY,
+      START_DATE,
+      END_DATE,
+      STATUS
+    ) VALUES (
+      #{paymentNo},
+      #{userId},
+      #{productNo},
+      #{paymentMethod},
+      SYSDATE,
+      #{paymentPay},
+      #{paymentBillingKey},
+      #{startDate},
+      TO_CHAR(ADD_MONTHS(TO_DATE(#{startDate}, 'YYYYMMDD'), 1), 'YYYYMMDD'),
+      'S'
+    )
+  </insert>
 
   <update id="cancelPayment">
     UPDATE PAYMENT
