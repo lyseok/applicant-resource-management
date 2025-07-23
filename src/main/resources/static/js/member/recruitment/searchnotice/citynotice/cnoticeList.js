@@ -4,13 +4,35 @@
 const ulcity1 = document.querySelector('#first_cityopt > ul');  //내가 따로 부여한 id
 
 const li1 = function(codeno, name){
+	if (document.getElementById(`depth1_btn_${codeno}`)) return;  //중복생성방지
+	
 	let depth1li = document.createElement('li');
 	depth1li.className = 'depth1_btn_wrapper';  //활성화된 것에는 depth1_btn_wrapper on 이 동적으로 붙음
 	depth1li.id = `depth1_btn_${codeno}`;
 	ulcity1.appendChild(depth1li);
 	
-	//console.log(ulcity1.innerHTML);
 	bt1(codeno, name);
+
+	//클릭시
+    depth1li.addEventListener('click', function () {
+	    console.log(`지역 클릭됨: ${codeno} / ${name}`);
+	
+	    // ✅ 기존 열린 모든 2차 ul 닫기
+	    document.querySelectorAll('#second_cityopt .list_check').forEach(ul => {
+	      ul.style.display = 'none';
+	    });
+	
+	    // ✅ 현재 codeno에 해당하는 ul 보여주기
+	    let ulDepth = document.querySelector(`#sp_area_lastDepth_${codeno}`);
+	    if (ulDepth) {
+	      ulDepth.style.display = 'block';
+	    }
+	
+	    // ✅ 클릭한 li에만 on 클래스 추가 (중첩 허용이면 제거하지 않음)
+	    this.classList.add('on');
+	    
+	    cityData2(codeno);
+    });
 }
 
 const bt1 = function(codeno, name){
@@ -77,14 +99,14 @@ const ul2 = function(codeno, name){
 	ulDepth.style.display = 'none';  //1차 옵션 선택값의 codeno와 같으면 display='block'(동적)
 	divcity2.appendChild(ulDepth);
 	
+	//선택된 1차 옵션 지역이랑 같으면
+	//if(codeno === )
+	
 	//console.log(divcity2.innerHTML);
 	
 	if(divcity2 && divcity2.querySelector('.list_check')){  //해당 div가 있고 그 안에 ul이 있으면
-		let ulcity2 = document.querySelector(`#sp_area_lastDepth_${codeno}`);  //방금 만든 ul 태그 명명
 		let li2 = document.createElement('li');  //빈 li 생성 그냥 여기서
-		ulcity2.appendChild(li2);  //방금 만든 ul에 li 추가
-		
-		//console.log(ulcity2.innerHTML);
+		ulDepth.appendChild(li2);  //방금 만든 ul에 li 추가
 		
 		div2(codeno, name);
 	}
@@ -99,8 +121,6 @@ const div2 = function(codeno, name){
 	divDepth.id = `second_divopt_${codeno}`;
 	licity2.appendChild(divDepth);
 	
-	//console.log(licity2.innerHTML);
-	
 	input2(codeno, name);
 }
 
@@ -111,7 +131,7 @@ const input2 = function(codeno, name){
 	let inputDepth = document.createElement('input');
 	inputDepth.type = 'checkbox';
 	inputDepth.id = `loc_mcd_${codeno}`;
-	inputDepth.name = `loc_mcd[]`;
+	inputDepth.name = `loc_cd[]`;
 	inputDepth.value = `${codeno}`;
 	inputDepth.setAttribute('data-is_representative', `n`);
 	inputDepth.setAttribute('data-representative', '');
@@ -119,6 +139,7 @@ const input2 = function(codeno, name){
 	//전국이나 전체일 때
 	if(name === '전국' || name.includes('전체')){
 		inputDepth.setAttribute('data-check-type', 'all');
+		inputDepth.name = `loc_mcd[]`;
 	}
 	divcity_2.appendChild(inputDepth);
 	
@@ -136,38 +157,30 @@ const label2 = function(codeno, name){
 	labelDepth.className = 'lbl';
 	divcity_2.appendChild(labelDepth);
 	
-	//console.log("라벨 만들고", divcity_2.innerHTML);
-	
 	//span 생성
 	if(divcity_2 && divcity_2.querySelector('input') && divcity_2.querySelector('label')){
-		let labelcity2 = document.querySelector(`#second_divopt_${codeno} > .lbl`);
-		
 		let sptxt2 = document.createElement('span');
 		sptxt2.className = 'txt';
 		sptxt2.textContent = `${name}`;
-		labelcity2.appendChild(sptxt2);
+		labelDepth.appendChild(sptxt2);
 		
 		if(name !== '전국' && !name.includes('전체')){
 			let spcnt2 = document.createElement('span');
 			spcnt2.className = 'count';
 			spcnt2.textContent = `(1,180)`;  //추후에 채용공고 리스트와 조인한 값 기입
-			labelcity2.appendChild(spcnt2);
+			labelDepth.appendChild(spcnt2);
 		}
-		//console.log(labelcity2.innerHTML);
 	}
-	//console.log("스판 만들고", divcity_2.innerHTML);
 }
 
 
-//지역 초기화
+//지역 초기화 버튼 생성
 const recityOpt = function(){
 	let divcity__2 = document.createElement('div');
 	divcity__2.className = 'area_btn';
 	divcity2.appendChild(divcity__2);
 	
 	if(divcity2 && divcity2.querySelector(`.area_btn`)){
-		let divcity__2 = divcity2.querySelector(`.area_btn`);
-		
 		let btncity2 = document.createElement('button');
 		btncity2.type = 'button';
 		btncity2.className = 'btn_all_category';
@@ -179,12 +192,16 @@ const recityOpt = function(){
 		btncity_2.className = 'btn_reset';
 		btncity_2.textContent = '지역 초기화';
 		
+		btncity_2.addEventListener('click', function () {
+		    // 다른 li의 on 클래스 제거 (선택된 것만 표시)
+		    ulcity1.querySelectorAll('li').forEach(li => li.classList.remove('on'));
+	    });
+		
 		divcity__2.appendChild(btncity2);
 		divcity__2.appendChild(btncity_2);
-		
-		//console.log(divcity__2.innerHTML);
 	}
 }
+
 
 //두번째 카테고리
 const cityData2 = function (code) {
@@ -194,15 +211,13 @@ const cityData2 = function (code) {
   fetch(`/ajax/admin/cityCode/CICO${code}`)
     .then(resp => resp.json())
     .then(data => {
-	  //console.log("data?",data);
 	  data.forEach(city =>{
 		let codeno = city.districtCodeNo;
 		let name = city.districtName;
 		ul2(codeno, name);
 	  })
-   });
-   
-   recityOpt();  //초기화 버튼 호출
+    });
+	recityOpt();  //초기화 버튼 호출
 };
 
 //----------------------------------------------------------------
