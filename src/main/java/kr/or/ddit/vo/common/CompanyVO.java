@@ -1,6 +1,7 @@
 package kr.or.ddit.vo.common;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,6 +43,7 @@ public class CompanyVO extends UsersVO implements Serializable{
 	private String comCapital;//기업 자본금
 	private String comMainBiz;//기업주요사업
 	
+	private List<FilesVO> fileList;
 	
 	public String getMemName() {
 		return comName;
