@@ -26,15 +26,11 @@
 			INTRODUCTION_NO
 			, USER_ID
 			, INTRODUCTION_NAME
-			, INTRODUCTION_QUESTION
-			, INTRODUCTION_CONTENT
 			, INTRODUCTION_CREATE_DATE
 		) VALUES (
 			#{introductionNo}
 			, #{userId}
 			, #{introductionName}
-			, #{introductionQuestion}
-			, #{introductionContent}
 			, TO_CHAR(SYSDATE, 'YYYYMMDD')
 		)
 	</insert>

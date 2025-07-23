@@ -8,8 +8,8 @@ import kr.or.ddit.vo.resume.IntroductionVO;
 public interface introductionService {
 	public List<IntroductionVO> readIntroductionList(String userId);
 	public IntroductionVO readIntroductionDetail(String no);
-	public void createIntroduction(IntroductionVO vo);
-	public void editIntroduction(IntroductionVO vo);
-	public void removeIntroduction(IntroductionVO vo);
+	public int createIntroduction(IntroductionVO vo);
+	public int editIntroduction(IntroductionVO vo);
+	public int removeIntroduction(IntroductionVO vo);
 	public List<IntroductionVO> readIntroductionSearch(String name);
 }
