@@ -340,12 +340,12 @@
 	                                                        </div>
 	                                                    </li>
 	                                                </ul>
+		                                    		--%>
 	
 	                                                <div class="area_btn">
 	                                                    <button type="button" class="btn_all_category" data-logging-flow="area">지역 펼쳐보기</button>
 	                                                    <button type="button" class="btn_reset">지역 초기화</button>
 	                                                </div>
-		                                    		--%>
 	                                            </div>
 	                                        </div>
 	                                    </div>
