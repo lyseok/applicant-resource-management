@@ -20,4 +20,10 @@ public interface PaymentService {
 	public String checkbilling(String userId);
 	
 	public int cancelPayment(String oldPaymentNo);
+	
+	public int comePayment(PaymentVO vo);
+	
+	public int checkPayment(String userId);
+	
+	public int updateComPaymentStatus(PaymentVO vo);
 }

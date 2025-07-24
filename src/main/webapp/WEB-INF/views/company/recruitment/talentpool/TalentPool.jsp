@@ -232,12 +232,12 @@ body {
 	<!-- 🔍 상단 검색 바 -->
 	<!-- 상단 통합 필터 영역 -->
 	<form id="filterForm" action="/company/talentpool/filter" method="post">
-		<input type="hidden" name="topJob" id="hiddenTopJob">
-<input type="hidden" name="job" id="hiddenJob">
-<input type="hidden" name="careerlong" id="hiddenCareer">
-<input type="hidden" name="location" id="hiddenLocation">
-<input type="hidden" name="edudone" id="hiddenEdu">
-<input type="hidden" name="gedu" id="hiddenGedu">
+		<input type="hidden" name="topJob" id="hiddenTopJob"> <input
+			type="hidden" name="job" id="hiddenJob"> <input type="hidden"
+			name="careerlong" id="hiddenCareer"> <input type="hidden"
+			name="location" id="hiddenLocation"> <input type="hidden"
+			name="edudone" id="hiddenEdu"> <input type="hidden"
+			name="gedu" id="hiddenGedu">
 		<div class="search-filter-bar"
 			style="flex-wrap: wrap; justify-content: flex-start;">
 
@@ -245,7 +245,7 @@ body {
 			<input type="text" name="license" placeholder="원하시는 자격증있나요?">
 			<input type="text" name="skillName" placeholder="원하시는 기술명있나요?">
 
-			
+
 
 			<!-- 경력 -->
 			<%-- <select name="careerlong" id="yearSel">
@@ -444,37 +444,39 @@ body {
   </div>
 </div> --%>
 
-<!-- 경력 -->
-<div class="modal fade" id="select-career" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3">
-      <h5 class="fw-bold mb-3">경력 선택</h5>
-      <label for="careerSelect" class="form-label">경력</label>
-      <select id="careerSelect" name="careerlong" class="form-select">
-        <option value="">선택</option>
-      </select>
-            <button id="nextCareer" class="btn btn-primary mt-3" disabled>다음</button>
-      
-    </div>
-  </div>
-</div>
+	<!-- 경력 -->
+	<div class="modal fade" id="select-career" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">경력 선택</h5>
+				<label for="careerSelect" class="form-label">경력</label> <select
+					id="careerSelect" name="careerlong" class="form-select">
+					<option value="">선택</option>
+				</select>
+				<button id="nextCareer" class="btn btn-primary mt-3" disabled>다음</button>
+
+			</div>
+		</div>
+	</div>
 
 	<!-- 📌 지역 선택 모달 -->
-	<div class="modal fade" id="select-location" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3">
-      <h5 class="fw-bold mb-3">지역 선택</h5>
-      <label for="locationSelect" class="form-label">지역</label>
-      <select id="locationSelect" name="location" class="form-select">
-        <option value="">선택</option>
-        <c:forEach var="city" items="${cityList}">
-          <option value="${city.cityName}">${city.cityName}</option>
-        </c:forEach>
-      </select>
-      <button id="nextLocation" class="btn btn-primary mt-3" disabled>다음</button>
-    </div>
-  </div>
-</div>
+	<div class="modal fade" id="select-location" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">지역 선택</h5>
+				<label for="locationSelect" class="form-label">지역</label> <select
+					id="locationSelect" name="location" class="form-select">
+					<option value="">선택</option>
+					<c:forEach var="city" items="${cityList}">
+						<option value="${city.cityName}">${city.cityName}</option>
+					</c:forEach>
+				</select>
+				<button id="nextLocation" class="btn btn-primary mt-3" disabled>다음</button>
+			</div>
+		</div>
+	</div>
 
 	<!-- 📌 학력 선택 모달 -->
 	<%-- <div class="modal fade" id="educationModal" tabindex="-1" aria-hidden="true">
@@ -492,23 +494,24 @@ body {
     </div>
   </div>
 </div> --%>
-<!-- 📌 학력 선택 모달 -->
-<div class="modal fade" id="educationModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3">
-      <h5 class="fw-bold mb-3">최종학력 선택</h5>
-      <label for="eduSelect" class="form-label">최종학력</label>
-      <select id="eduSelect" name="edudone" class="form-select">
-        <option value="">선택</option>
-      </select>
-            <button id="nextEdu" class="btn btn-primary mt-3" disabled>다음</button>
-      
-    </div>
-  </div>
-</div>
+	<!-- 📌 학력 선택 모달 -->
+	<div class="modal fade" id="educationModal" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">최종학력 선택</h5>
+				<label for="eduSelect" class="form-label">최종학력</label> <select
+					id="eduSelect" name="edudone" class="form-select">
+					<option value="">선택</option>
+				</select>
+				<button id="nextEdu" class="btn btn-primary mt-3" disabled>다음</button>
+
+			</div>
+		</div>
+	</div>
 
 
-<%-- 	<div class="modal fade" id="select-gedu" tabindex="-1" aria-hidden="true">
+	<%-- 	<div class="modal fade" id="select-gedu" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content p-3">
       <h5 class="fw-bold mb-3">졸업 상태 선택</h5>
@@ -524,19 +527,20 @@ body {
   </div>
 </div> --%>
 
-<!-- 📌 졸업 상태 선택 모달 -->
-<div class="modal fade" id="select-gedu" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3">
-      <h5 class="fw-bold mb-3">졸업 상태 선택</h5>
-      <label for="geduSelect" class="form-label">졸업 상태</label>
-      <select id="geduSelect" name="gedu" class="form-select">
-        <option value="">선택</option>
-      </select>
-       <button id="nextGedu" class="btn btn-primary mt-3" disabled>다음</button>
-    </div>
-  </div>
-</div>
+	<!-- 📌 졸업 상태 선택 모달 -->
+	<div class="modal fade" id="select-gedu" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">졸업 상태 선택</h5>
+				<label for="geduSelect" class="form-label">졸업 상태</label> <select
+					id="geduSelect" name="gedu" class="form-select">
+					<option value="">선택</option>
+				</select>
+				<button id="nextGedu" class="btn btn-primary mt-3" disabled>다음</button>
+			</div>
+		</div>
+	</div>
 
 </body>
 
