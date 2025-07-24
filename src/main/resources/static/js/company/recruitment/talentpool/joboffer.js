@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('이직 제안 메일이 성공적으로 전송되었습니다!');
         modal.hide();
       } else {
-        console.log('메일 전송 실패: ' + response);
+       showModal(response);
       }
     })
     .catch(err => {
@@ -113,3 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.hide();
   });
 });
+
+function showModal(message) {
+  document.getElementById('errorModalMessage').textContent = message;
+  const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+  errorModal.show();
+}

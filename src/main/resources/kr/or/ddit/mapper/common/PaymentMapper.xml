@@ -65,6 +65,12 @@
 		'S'
 		)
 	</insert>
+	
+	<select id="getPaymentNo">
+	SELECT PAYMENT_NO
+	FROM PAYMENT
+	WHERE USER_ID = #{userId}
+	</select>
 
 	<update id="updateComPaymentStatus" parameterType="String">
     UPDATE company c
@@ -77,7 +83,7 @@
             AND p.start_date &lt;= TO_CHAR(SYSDATE, 'YYYYMMDD')
             AND p.end_date   &gt;= TO_CHAR(SYSDATE, 'YYYYMMDD')
             AND p.status     = 'A'
-            AND p.payment_no = #{userId}
+            AND p.user_id = #{userId}
         ) THEN 'Y'
         ELSE 'N'
       END

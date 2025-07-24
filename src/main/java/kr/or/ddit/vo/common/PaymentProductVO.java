@@ -22,4 +22,7 @@ public class PaymentProductVO implements Serializable{
 	private int daysRemaining;
 	
 	private MultipartFile productImgFile;
+	
+	private Integer productLimit;
+    private String limitCycle;
 }
