@@ -455,6 +455,7 @@
                                                             {{/hasCountInJobCategory}}
                                                         {{/mclsList}}
                                                     </script>
+                                                    	<%--
 	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_16">
 	                                                        <button type="button" data-mcls_cd_no="16" class="first_depth depth1_btn_16">
 	                                                            <span class="txt">기획·전략 </span>
@@ -581,6 +582,7 @@
 	                                                            <span class="count">(4,617)</span>
 	                                                        </button>
 	                                                    </li>
+	                                                    --%>
 	                                                </ul>
 	                                            </div>
 	                                        </div>
@@ -693,6 +695,7 @@
 	                                        <h2 class="option_title">업종</h2>
 	                                        <div class="option_list depth1_wrapper">
 	                                            <ul>
+	                                            	<%-- 
 	                                                <li>
 	                                                    <button type="button" id="sp_industry_1depth_1" class="btn_option job_category01 depth1" data-code="1">서비스업</button>
 	                                                </li>
@@ -720,6 +723,7 @@
 	                                                <li>
 	                                                    <button type="button" id="sp_industry_1depth_4" class="btn_option job_category09 depth1" data-code="4">은행·금융업</button>
 	                                                </li>
+	                                                --%>
 	                                            </ul>
 	                                            <ul>
 	                                                <li>
