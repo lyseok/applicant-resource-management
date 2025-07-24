@@ -28,14 +28,25 @@ public class AjaxRecruitmentNoticeServiceImpl implements AjaxRecruitmentNoticeSe
 	private final ScrabRecruitmentMapper scrabRecruitmentMapper; 
 	
 	@Override
-	public Map<String, Object> readRecruitmentNoticeDtoList(Map<String, Object> params) {
+	public Map<String, Object> searchRecruitmentNoticeList(Map<String, Object> params) {
+		Map<String, Object> resp = myScrabList();
+		
+		List<RecruitmentNoticeDTO> list = mapper.searchRecruitNoticeDtoList(params);
+		int cnt = mapper.countRecruitmentNotice(params);
+		
+		resp.put("noticeCnt", cnt);
+		resp.put("data", list);
+		
+		
+		return resp;
+	}
+	
+	public Map<String, Object> myScrabList() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		
-		List<RecruitmentNoticeDTO> list = mapper.selectRecruitNoticeDtoList(params);
 		List<ScrabCompanyVO> cVoList = scrabCompanyMapper.selectMyScrabCompanyList(username);
 		List<ScrabRecruitmentVO> rVoList = scrabRecruitmentMapper.selectMyScrabRecruitmentList(username);
-//		log.info("공고 리스트 : {}", list);
 		
 		List<String> cList = new ArrayList<String>();
 		List<String> rList = new ArrayList<String>();
@@ -48,13 +59,12 @@ public class AjaxRecruitmentNoticeServiceImpl implements AjaxRecruitmentNoticeSe
 			rList.add(vo.getRecruitmentNo());
 		}
 		
-		Map<String, Object> resp = new HashMap<String, Object>();
+		Map<String, Object> scrabMap = new HashMap<String, Object>();
+
+		scrabMap.put("myScrabCompany", cList);
+		scrabMap.put("myScrabRecruit", rList);
 		
-		resp.put("data", list);
-		resp.put("myScrabCompany", cList);
-		resp.put("myScrabRecruit", rList);
-		
-		return resp;
+		return scrabMap;
 	}
 
 }

@@ -10,8 +10,6 @@ public class RecruitmentNoticeDTO {
     private String recruitmentTitle;
     private String userId;
     private String comName; 
-    private int noticeCnt;
-    private int totalPage;
     private int viewCnt;
     private int scrabCnt;
 

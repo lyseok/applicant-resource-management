@@ -59,7 +59,7 @@
 								data-product-no="${product.productNo}"
 								data-product-name="${product.productName}"
 								data-amount="${product.productPrice}"
-							onclick="doChangeBilling(event, this)">이 요금제로 변경하기
+							onclick="doChangeBilling(event, btn)">이 요금제로 변경하기
 							</button>
 
 					</form>

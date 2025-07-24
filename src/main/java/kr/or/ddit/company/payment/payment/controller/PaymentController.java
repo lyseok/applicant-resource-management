@@ -33,9 +33,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.company.common.company.service.CompanyServiceImpl;
+import kr.or.ddit.company.payment.link.service.PaymentProductLinkService;
 import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.payment.payment.service.TossPaymentService;
 import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
+import kr.or.ddit.vo.common.PaymentProductLinkVO;
 import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +55,20 @@ public class PaymentController {
 
 	@Autowired
 	private PaymentProductServiceImpl pservice;
+	
+	@Autowired
+	private PaymentProductLinkService lservice;
+	
+	@GetMapping("/cancel/payment")
+	public String cancleFormUI(
+		@RequestParam String productNo
+			,@RequestParam String paymentNo
+			,Model model		
+			) {
+		log.info("paymentNo : {}",paymentNo);
+		log.info("paymentNo : {}", paymentNo);
+		return "company/payment/payment/CancelPayment";
+	}
 	
 	
 	@PostMapping("/product/change/confirm")
@@ -229,7 +245,9 @@ public class PaymentController {
 	}
 
 	@GetMapping("/main")
-	String mainForm(Model model, Authentication auth) {
+	String mainForm(Model model
+			, Authentication auth
+		) {
 
 		List<PaymentVO> fullList = service.selectMyPaymentList(service.getUserId());
 		log.info("fullList: {}", fullList);
@@ -255,8 +273,14 @@ public class PaymentController {
 			}
 			payment.setPaymentProductList(productList);
 		}
-
+		
+		// 잔여량 표시위해 
+		String paymentNo = service.getPaymentNo(service.getUserId());
+		PaymentProductLinkVO ppvo = lservice.selectToPaymentNo(paymentNo);
+		model.addAttribute("linkList" , ppvo);
 		model.addAttribute("purchaseList", purchaseList);
+		
+		log.info("linkList : {}", ppvo);
 		log.info("purchaseList : {}", purchaseList);
 		
 //		Optional<PaymentVO> purchaseList = fullList.stream()
@@ -282,6 +306,7 @@ public class PaymentController {
 		log.info("orderName: {}", orderName);
 		log.info("paymentKey: {}", paymentKey);
 		PaymentVO vo = new PaymentVO();
+		PaymentProductLinkVO lvo = new PaymentProductLinkVO();
 		PaymentProductVO product = pservice.selectPaymentProductByName(orderName);
 
 		vo.setUserId(service.getUserId());
@@ -296,10 +321,24 @@ public class PaymentController {
 
 		log.info("어 이게 뭐지 : {}", vo);
 		service.insertPayment(vo);
+		service.updateComPaymentStatus(vo.getUserId());
 		PaymentVO result = service.selectPaymentByPk(vo.getPaymentNo());
 		model.addAttribute("result", result);
+		
+		lvo.setUsageAllowed(product.getProductLimit());
+		lvo.setUsageRemaining(product.getProductLimit());
+		lvo.setPaymentNo(result.getPaymentNo());
+		lvo.setProductNo(result.getProductNo());
+		
+		lservice.insertLink(lvo);
+		
+		log.info("lvo 값: {}", lvo);
+		
 		return "company/payment/payment/SuccessSubscribe";
 	}
+
+	
+
 
 	@GetMapping("/success")
 	String Test(@RequestParam String paymentKey, @RequestParam String orderId, @RequestParam int amount,
@@ -354,7 +393,6 @@ public class PaymentController {
 
 				service.insertPayment(vo);
 				log.info("insert에 들어갈 값 : {}", vo);
-				service.updateComPaymentStatus(vo);
 				log.info("update 한 후 : {}",vo);
 			}
 		} else {

@@ -1,13 +1,15 @@
 
-function subscribe() {
-	alert("상품번호" , ProductNo);
+function subscribe(event ,btn) {
+	
+   	const productNo = btn.dataset.productNo;
+   	const billingKey = btn.dataset.billingKey;
+	alert("상품번호" , productNo);
 	/*console.log("커스터머키" ,customerKey);*/
 	console.log("상품명", orderName);
-	alert("빌링키", BillingKey);
-   	const productNo = ProductNo;
+	alert("빌링키", billingKey);
    	
    	console.log("상품번호 : ", productNo);
-   	 console.log("빌링키",BillingKey);
+   	 console.log("빌링키",billingKey);
    	
    
      fetch("/company/toss/check/billing",{
@@ -60,7 +62,7 @@ function showNoCardModal() {
     modal.show();
 }
 
-const billingKey = document.body.dataset.billingKey;
+const billingKey = btn.dataset.billingKey;
 if(billingKey) {
 	console.log("받은 billingKey", billingKey);
 }
