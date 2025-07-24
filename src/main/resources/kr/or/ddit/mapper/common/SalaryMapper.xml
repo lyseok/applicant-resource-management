@@ -100,12 +100,12 @@
 	<update id="updateSalary">
 		UPDATE SALARY
 		    SET
-		      SALARY_ID   = #{salaryId},
 		      CODE_DETAIL_NO = #{codeDetailNo},
 		      SALARY_MIN  = #{salaryMin},
 		      SALARY_MAX  = #{salaryMax},
 		      CREATE_DATE = SYSDATE
-		WHERE  USER_ID    = #{userId}
+		WHERE SALARY_ID = #{salaryId}
+     		 AND USER_ID = #{userId}
 	</update>
 	
 	
@@ -125,6 +125,7 @@
 			,  TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		FROM SALARY
 		WHERE  USER_ID = #{userId}
+		ORDER BY SALARY_ID
 	</select>
 	
 	<select id="selectSalaryByUserAndRank" resultType="kr.or.ddit.vo.common.SalaryVO">
@@ -141,42 +142,51 @@
 	
 	
 	<select id="selectSalaryStatisticsById" resultType="kr.or.ddit.dto.CompanySalaryDTO">
-		  SELECT
-			  user_id,
-			  code_detail_no,
-			  salary_min,
-			  salary_max,
-			  create_date,
-		 
-			    ROUND(
-			      AVG(
-			        CASE
-			          WHEN code_detail_no BETWEEN 'RANK-001' AND 'RANK-006'
-			            THEN (TO_NUMBER(salary_min) + TO_NUMBER(salary_max)) / 2
-			          ELSE NULL
-			        END
-			      ) OVER (), 
-			      0
-			    ) AS salaryAvgExclExec,
-			 
-			   ROUND(
-			      AVG(
-			        CASE
-			          WHEN code_detail_no BETWEEN 'RANK-007' AND 'RANK-011'
-			            THEN (TO_NUMBER(salary_min) + TO_NUMBER(salary_max)) / 2
-			          ELSE NULL
-			        END
-			      ) OVER (),
-			      0
-			    ) AS salaryAvgExec,
-		
-			  ROUND(
-			    AVG((TO_NUMBER(salary_min) + TO_NUMBER(salary_max)) / 2) 
-			      OVER (PARTITION BY code_detail_no), 
-			    0
-			  ) AS avgByRank
-		FROM SALARY
-		WHERE USER_ID = #{userId}
-		ORDER BY code_detail_no, salary_id
-	</select>
+    SELECT
+        user_id,
+        code_detail_no,
+        salary_min,
+        salary_max,
+        create_date,
+        
+        ROUND(
+            AVG((TO_NUMBER(salary_min) + TO_NUMBER(salary_max)) / 2) OVER (),
+            0
+        ) AS salaryAvgAll,
+        
+       
+        ROUND(
+            AVG(
+                CASE
+                    WHEN code_detail_no BETWEEN 'RANK-001' AND 'RANK-006'
+                        THEN (TO_NUMBER(salary_min) + TO_NUMBER(salary_max)) / 2
+                    ELSE NULL
+                END
+            ) OVER (), 
+            0
+        ) AS salaryAvgExclExec,
+        
+       
+        ROUND(
+            AVG(
+                CASE
+                    WHEN code_detail_no BETWEEN 'RANK-007' AND 'RANK-011'
+                        THEN (TO_NUMBER(salary_min) + TO_NUMBER(salary_max)) / 2
+                    ELSE NULL
+                END
+            ) OVER (),
+            0
+        ) AS salaryAvgExec,
+        
+       
+        ROUND(
+            AVG((TO_NUMBER(salary_min) + TO_NUMBER(salary_max)) / 2) 
+            OVER (PARTITION BY code_detail_no), 
+            0
+        ) AS avgByRank
+        
+    FROM SALARY
+    WHERE USER_ID = #{userId}
+    ORDER BY code_detail_no, salary_id
+</select>
 </mapper>
