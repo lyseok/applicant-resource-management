@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.or.ddit.mapper.resume.introductionQuestionMapper">
+	<select id="readIntroductionQuestionList">
+		SELECT 
+		    QUESTION_NO
+		    , INTRODUCTION_NO
+		    , QUESTION
+		    , CONTENT
+		FROM INTRODUCTION_QUESTION
+		WHERE INTRODUCTION_NO = #{introductionNo}
+	</select>
+	
+	
+	<select id="readIntroductionQuestionDetail">
+		SELECT 
+		    QUESTION_NO
+		    , INTRODUCTION_NO
+		    , QUESTION
+		    , CONTENT
+		FROM INTRODUCTION_QUESTION
+		WHERE QUESTION_NO = #{questionNo}
+	</select>
+	
+	
+	<insert id="createIntroductionQuestion">
+		<selectKey resultType="string" keyProperty="questionNo" order="BEFORE">
+		    SELECT
+		        'ITDQ'||
+		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(QUESTION_NO), LENGTH('INTD' ) + 1)), 0) + 1, 6, '0')
+		    FROM INTRODUCTION_QUESTION
+		</selectKey>
+		INSERT INTO INTRODUCTION_QUESTION(
+		    QUESTION_NO
+		    , INTRODUCTION_NO
+		    , QUESTION
+		    , CONTENT
+		)VALUES(
+		    #{questionNo}
+		    , #{introductionNo}
+		    , #{question}
+		    , #{content}
+		)
+	</insert>
+	
+	
+	<update id="editIntroductionQuestion">
+		UPDATE INTRODUCTION_QUESTION
+		SET QUESTION = #{question}
+		    , CONTENT = #{content}
+		WHERE QUESTION_NO = #{questionNo}
+	</update>
+	
+	
+	<delete id="removeIntroductionQuestion">
+		DELETE INTRODUCTION_QUESTION
+		WHERE INTRODUCTION_NO = #{introductionNo}	
+	</delete>	
+</mapper>
