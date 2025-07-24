@@ -69,12 +69,13 @@ const getInduClassCodeList = function (topJobCode) {
 			console.log("indu?", indu);
 			let induClassNo = indu.induClassNo.match(/\d$/)[0];
 			let induClassName = indu.induClassName;
-			setInduClassCodeList(induClassNo, induClassName);  //indu/하위직업 선택 값 채우기
+			setInduClassCodeList(induClassNo, induClassName);  //산업 코드 선택 값 채우기
 		})		
 	  })
    })
 };
 
+//산업 코드 값 채우기
 const setInduClassCodeList = function(induClassNo, induClassName){
 	html = `<li>
 			    <button type="button" id="sp_industry_1depth_${induClassNo}" 
