@@ -189,4 +189,27 @@
     WHERE USER_ID = #{userId}
     ORDER BY code_detail_no, salary_id
 </select>
+
+
+<select id="selectSalaryListAllCompany" resultType="hashMap">
+		SELECT 
+		    C.INDUSTRY_TYPE AS INDUSTRY_TYPE,
+		    C.COM_NAME AS COM_NAME,
+		    C.COM_MEM AS COM_MEM,
+		    C.COM_LOGO AS COM_LOGO,
+		    C.USER_ID AS USER_ID,
+		    ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2), 0) AS SALARY_AVG
+		FROM COMPANY C
+		LEFT JOIN SALARY S 
+		    ON C.USER_ID = S.USER_ID
+		    AND TO_NUMBER(SUBSTR(code_detail_no, 6)) BETWEEN 1 AND 6
+		GROUP BY 
+		    C.INDUSTRY_TYPE,
+		    C.COM_NAME,
+		    C.COM_MEM,
+		    C.COM_LOGO,
+		    C.USER_ID
+		ORDER BY 
+		    C.COM_NAME
+	</select>
 </mapper>

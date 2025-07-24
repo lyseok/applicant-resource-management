@@ -24,4 +24,5 @@ public interface SalaryMapper {
 	public int deleteSalary(String salaryId);
 	
 	public List<CompanySalaryDTO> selectSalaryStatisticsById(String userId);
+	public List<Map<String, Object>> selectSalaryListAllCompany();
 }
