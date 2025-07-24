@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.ddit.dto.PaginationDTO;
 import kr.or.ddit.mapper.resume.IntroductionMapper;
 import kr.or.ddit.mapper.resume.introductionQuestionMapper;
 import kr.or.ddit.vo.resume.IntroductionVO;
@@ -53,11 +54,14 @@ public class introductionServiceImpl implements introductionService {
 	@Override
 	public int editIntroduction(IntroductionVO vo) {
 		int result = mapper.updateIntroduction(vo);
+		
+		
 		// 하위 항목이 있을경우
 		if (vo.getIntroductionQuestionList() != null) {
+			questionMapper.removeIntroductionQuestion(vo.getIntroductionNo());	// 삭제 먼저 진행
 			for (IntroductionQuestionVO question : vo.getIntroductionQuestionList()) {
 				question.setIntroductionNo(vo.getIntroductionNo());
-				questionMapper.editIntroductionQuestion(question);
+				questionMapper.createIntroductionQuestion(question);
 			}
 		}
 		return result;
@@ -81,4 +85,23 @@ public class introductionServiceImpl implements introductionService {
 		return mapper.selectIntroductionSearch(name);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public int getTotalCount(String userId) {
+	    return mapper.selectIntroductionCount(userId);
+	}
+
+	@Override
+	public List<IntroductionVO> getIntroductionPagingList(String userId, int offset, int limit) {
+	    return mapper.selectIntroductionPagingList(userId, offset, limit);
+	}
 }

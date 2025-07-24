@@ -30,7 +30,7 @@
 	</div>
 	
 	<div class="border-bottom d-flex justify-content-between align-items-end pb-2">
-		<p class="fs-14">총 ${introductionList.size() }건</p>
+		<p class="fs-14">총 ${totalCount}건</p>
 		<div class="TypoBox searchBar">
 			<div class="searchBarWrap">
 				<label class="searchBarLabel" for="listKeyword">검색어</label>
@@ -45,22 +45,23 @@
 	
 	<c:if test="${not empty introductionList}">
 		<div class="">
-			<c:forEach items="${introductionList }" var="introduction">
-				<ul>
-					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
+			<ul>
+				<c:forEach items="${introductionList }" var="introduction">
+					<li class="py-4 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
 							<a class="d-block h4 fw-bold" href="/mypage/introduction/edit/${introduction.introductionNo}">${introduction.introductionName}</a>
 							<p class="text-truncate w800">${introduction.introductionQuestionList.introductionContent}</p>
 						</div>
 						<div class="d-flex gap-1">
 							<a class="btn btn_violet_line fw-normal" href="<c:url value="/mypage/introduction/edit/${introduction.introductionNo}"/>">수정</a>
-							<a class="btn btn_red_line fw-normal" data-bs-toggle="modal" data-bs-target="#deleteIntroductionModal${introduction.introductionNo}">삭제</a> <!-- onclick="return confirmDelete();" -->
+							<a class="btn btn_red_line fw-normal btn-delete" data-bs-toggle="modal" data-bs-target="#deleteIntroductionModal"  data-intro-no="${introduction.introductionNo}">삭제</a>
 						</div>
 					</li>
-				</ul>
+				</c:forEach>
+			</ul>
 				
 				<!-- 삭제 확인 모달 -->
-				<div class="modal fade" id="deleteIntroductionModal${introduction.introductionNo}" tabindex="-1" aria-labelledby="deleteIntroductionModalLabel${introduction.introductionNo}" aria-hidden="true">
+				<div class="modal fade" id="deleteIntroductionModal" tabindex="-1" aria-labelledby="deleteIntroductionModalLabel${introduction.introductionNo}" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header border-0">
@@ -81,27 +82,34 @@
 							</div>
 							<div class="modal-footer border-0 justify-content-center">
 								<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-								<a class="btn btn-danger px-4" href="<c:url value="/mypage/introduction/delete/${introduction.introductionNo}"/>" >삭제</a>
+								<a class="btn btn-danger px-4" id="confirmDeleteBtn">삭제</a>
 							</div>
 						</div>
 					</div>
 				</div>
-			</c:forEach>
 			
 			
-			<div class="PageBox">
-	            <span class="BtnType SizeS active">1</span>
-	            <button class="BtnType SizeS page" data-page="2">2</button>
-	            <button class="BtnType SizeS page" data-page="3">3</button>
-	            <button class="BtnType SizeS page" data-page="4">4</button>
-	            <button class="BtnType SizeS page" data-page="5">5</button>
-	            <button class="BtnType SizeS page" data-page="6">6</button>
-	            <button class="BtnType SizeS page" data-page="7">7</button>
-	            <button class="BtnType SizeS page" data-page="8">8</button>
-	            <button class="BtnType SizeS page" data-page="9">9</button>
-	            <button class="BtnType SizeS page" data-page="10">10</button>
-	            <button data-page="11" class="BtnType SizeS BtnNext btnNext">다음</button>
-	        </div>
+			<c:if test="${not empty totalPages}">
+				<div class="PageBox">
+				    <c:if test="${currentPage > 1}">
+				        <a class="BtnType SizeS BtnPrev" href="?page=${currentPage - 1}">이전</a>
+				    </c:if>
+				    <c:forEach begin="1" end="${totalPages}" var="i">
+		    	    <c:choose>
+				        <c:when test="${i == currentPage}">
+			            <span class="BtnType SizeS active">${i}</span>
+				        </c:when>
+				        <c:otherwise>
+				            <a href="?page=${i}" class="BtnType SizeS page">${i}</a>
+				        </c:otherwise>
+				    	</c:choose>
+				    </c:forEach>
+				    <c:if test="${currentPage < totalPages}">
+				        <a class="BtnType SizeS BtnNext btnNext" href="?page=${currentPage + 1}">다음</a>
+				    </c:if>
+				</div>
+			</c:if>
+
 		</div>
 	</c:if>
 	

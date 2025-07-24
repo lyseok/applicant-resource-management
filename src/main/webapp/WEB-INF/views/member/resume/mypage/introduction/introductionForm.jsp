@@ -50,7 +50,7 @@
 					</div>
 				</div>
 				<c:if test="${not empty introdCreate }">
-					<div class="introduct_area" id="introduct01">
+					<div class="introduct_area" id="introduct1">
 						<div class="mb-3">
 							<label for="question1" class="form-label h5 fw-bold">문항1</label>
 							<form:input
@@ -124,6 +124,34 @@
 			
 					</c:if>
 			</div>		
+	</div>
+	
+	<!-- 삭제 확인 모달 -->
+	<div class="modal fade" id="deleteItroductionModal" tabindex="-1" aria-labelledby="deleteItroductionModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header border-0">
+					<h1 class="modal-title fs-5 fw-bold text-danger" id="deleteModalLabel">
+						<i class="bi bi-exclamation-triangle-fill me-1"></i> 자소서 문항 삭제
+					</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center py-4">
+					<div style="font-size:2.4rem; color:#dc3545; margin-bottom:10px;">❗</div>
+					<p class="fs-5 mb-2 fw-semibold" style="color:#c82333;">
+						해당 자소서 문항을 <span style="color:#dc3545;">정말 삭제</span>하시겠습니까?
+					</p>
+					<p class="text-secondary mb-0" style="font-size:1.08rem;">
+						삭제된 데이터는 복구할 수 없습니다.<br>
+						실행 전 반드시 다시 한 번 확인해 주세요.
+					</p>
+				</div>
+				<div class="modal-footer border-0 justify-content-center">
+					<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-danger px-4">삭제하기</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </body>

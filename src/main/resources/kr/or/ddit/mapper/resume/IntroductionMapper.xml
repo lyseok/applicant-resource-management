@@ -68,11 +68,6 @@
 		   AND USER_ID = #{userId}
 	</update>
 	
-	<!-- <delete id="deleteIntroduction">
-		DELETE FROM INTRODUCTION 
-		 WHERE INTRODUCTION_NO = #{introductionNo}
-		   AND USER_ID = #{userId}
-	</delete> -->
 	
 	<update id="deleteIntroduction">
 		UPDATE INTRODUCTION 
@@ -88,4 +83,31 @@
            AND INTRODUCTION_NAME LIKE '%'||#{introductionName}||'%'
 	</select>
 	
+	
+	
+	
+	
+	
+	<select id="selectIntroductionCount" resultType="int">
+		SELECT COUNT(*)
+		FROM INTRODUCTION
+		WHERE USER_ID = #{userId}
+		  AND INTRODUCTION_DELETE_DATE IS NULL
+	</select>
+	
+	<select id="selectIntroductionPagingList" resultType="kr.or.ddit.vo.resume.IntroductionVO">
+		SELECT *
+		FROM (
+			SELECT A.*, ROWNUM rnum
+			FROM (
+				SELECT *
+				FROM INTRODUCTION
+				WHERE USER_ID = #{userId}
+				  AND INTRODUCTION_DELETE_DATE IS NULL
+				ORDER BY INTRODUCTION_NO DESC
+			) A
+			WHERE ROWNUM &lt;= #{offset} + #{limit}
+		)
+		WHERE rnum &gt; #{offset}
+	</select>
 </mapper>

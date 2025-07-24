@@ -55,14 +55,28 @@ public class introductionController {
 	@GetMapping("/list")
 	public String getintroduction(
 		@AuthenticationPrincipal UserDetails userDetails 
+		, @RequestParam(defaultValue = "1") int page
 		, Model model
 	) {
 		if(userDetails == null) {
 			return "redirect:/login";
 		}
-		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기		
-		List<IntroductionVO> introductionList = service.readIntroductionList(userId);
+		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기	
+		
+		int pageSize = 4;
+	    int offset = (page - 1) * pageSize;
+	    int totalCount = service.getTotalCount(userId);
+
+	    List<IntroductionVO> introductionList = service.getIntroductionPagingList(userId, offset, pageSize);
+
+	    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+		//List<IntroductionVO> introductionList = service.readIntroductionList(userId);
 		model.addAttribute("introductionList", introductionList);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("totalPages", totalPages);
+
 		return "member/resume/mypage/introduction/introductionList";
 	}
 	
@@ -167,50 +181,6 @@ public class introductionController {
 		return "redirect:/mypage/introduction/list";
 	}
 	
-
-	/*
-	// 자소서 수정 페이지 이동
-	@GetMapping("edit/{no}")
-	public String getintroductionEditForm (
-		Model model
-		, @PathVariable String no
-	) {
-		log.info("=====>{}", no);
-		model.addAttribute(MODELNAME, service.readIntroductionDetail(no));
-		model.addAttribute("introdEdit", true);
-		return "member/resume/mypage/introduction/introductionEdit";
-	}	
-	
-	// 자소서 수정 로직 수행
-	@PostMapping("edit/{no}")
-	public String getintroductionEdit (
-		@AuthenticationPrincipal UserDetails userDetails 
-		, @PathVariable String no 
-		, @Validated(UpdateGroup.class) @ModelAttribute IntroductionVO itrdVO 
-		, BindingResult errors
-		, RedirectAttributes redirectAttributes			
-	) {
-		String userId = userDetails.getUsername();
-		String lvn = "";
-		if(!errors.hasErrors()) {
-			itrdVO.setUserId(userId);
-			itrdVO.setIntroductionNo(no);
-			log.info("자소서번호  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", no);
-			service.editIntroduction(itrdVO);
-			lvn = "redirect:/mypage/introduction/" + no;
-		} else {
-			log.info("유효성 검사 실패!!!");
-			String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
-	        redirectAttributes.addFlashAttribute(errorsName, errors); 
-
-	        // 입력 데이터 유지용 add FlashAttribute
-	        redirectAttributes.addFlashAttribute(MODELNAME, itrdVO);
-	        lvn = "redirect:/mypage/introduction/edit/" + no;
-		}		
-		return lvn;
-	}
-	*/
-
 	
 	
 	
