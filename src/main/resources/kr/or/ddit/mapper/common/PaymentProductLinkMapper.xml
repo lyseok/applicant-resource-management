@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.or.ddit.mapper.common.PaymentProductLinkMapper">
+
+	<select id="selectToPaymentNo">
+		SELECT
+		USAGE_ALLOWED
+		,USAGE_REMAINING
+		,USAGE_CYCLE
+		,PERIOD_START
+		,PERIOD_END
+		FROM
+		PAYMENT_PRODUCT_LINK
+		WHERE PAYMENT_NO = #{paymentNo}
+	</select>
+
+	<update id="minusRemaining">
+		UPDATE PAYMENT_PRODUCT_LINK
+		SET usage_remaining =
+		usage_remaining - 1
+		WHERE
+		PAYMENT_NO = #{paymentNo}
+		AND product_no = #{productNo}
+		AND usage_remaining > 0
+	</update>
+
+	<insert id="">
+		INSERT INTO usage_log (payment_no, product_no, used_count)
+		VALUES (#{paymentNO}, #{productNo}, 1)
+	</insert>
+
+	<select id="selectLinkList">
+		SELECT
+		PAYMENT_PRODUCT_LINK_ID
+		, PAYMENT_NO
+		, PRODUCT_NO
+		, USAGE_ALLOWED
+		, USAGE_REMAINING
+		FROM PAYMENT_PRODUCT_LINK
+	</select>
+
+
+	<select id="selectLinkById">
+		SELECT
+		PAYMENT_PRODUCT_LINK_ID
+		, PAYMENT_NO
+		, PRODUCT_NO
+		, USAGE_ALLOWED
+		, USAGE_REMAINING
+		FROM PAYMENT_PRODUCT_LINK
+		WHERE
+		PAYMENT_PRODUCT_LINK_ID = #{paymentProductLinkId}
+	</select>
+
+	<insert id="insertLink">
+		<selectKey resultType="string"
+			keyProperty="paymentProductLinkId" order="BEFORE">
+			SELECT
+			'LINK'||
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_PRODUCT_LINK_ID), LENGTH('LINK'
+			)
+			+ 1)), 0) + 1, 6, '0')
+			FROM PAYMENT_PRODUCT_LINK
+		</selectKey>
+		INSERT INTO PAYMENT_PRODUCT_LINK (
+		PAYMENT_PRODUCT_LINK_ID
+		, PAYMENT_NO
+		, PRODUCT_NO
+		, USAGE_ALLOWED
+		, USAGE_REMAINING
+		, PERIOD_START
+		, PERIOD_END
+		) VALUES (
+		#{paymentProductLinkId}
+		, #{paymentNo}
+		, #{productNo}
+		,
+		#{usageAllowed}
+		, #{usageRemaining}
+		,TO_CHAR(SYSDATE,
+		'YYYYMMDD')
+		,TO_CHAR(ADD_MONTHS(SYSDATE, 1), 'YYYYMMDD')
+		)
+	</insert>
+
+
+	<update id="updateLink">
+		UPDATE PAYMENT_PRODUCT_LINK
+		SET
+		PAYMENT_NO =
+		#{paymentNo}
+		, PRODUCT_NO = #{productNo}
+		, USAGE_ALLOWED =
+		#{usageAllowed}
+		, USAGE_REMAINING = #{usageRemaining}
+		WHERE
+		PAYMENT_PRODUCT_LINK_ID = #{paymentProductLinkId}
+	</update>
+
+	<delete id="deleteLink">
+		DELETE FROM PAYMENT_PRODUCT_LINK
+		WHERE
+		PAYMENT_PRODUCT_LINK_ID = #{paymentProductLinkId}
+	</delete>
+
+</mapper>
