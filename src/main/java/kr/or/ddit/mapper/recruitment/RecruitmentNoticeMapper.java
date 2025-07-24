@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.ddit.dto.RecruitmentNoticeDTO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 
 @Mapper
@@ -36,4 +37,6 @@ public interface RecruitmentNoticeMapper {
  public int updateRecruitDeadLine(String recruitmentNo);
  
  public List<RecruitmentNoticeVO> selectRecruitNoticeByUserId(String userId);
+ 
+ public List<RecruitmentNoticeDTO> selectRecruitNoticeDtoList(Map<String, Object> params);
 }
