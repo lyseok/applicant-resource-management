@@ -1,10 +1,7 @@
 /**
  * 
  */
-const first_cityopt = document.querySelector('#first_cityopt > ul');
-const second_cityopt = document.querySelector('#second_cityopt');
-const add_keyword = document.querySelector('.add_keyword');
-const search_btn = document.querySelector('#search_btn');  //검색하기 버튼 클릭후 콘솔에 찍히는 params 값 보기->axios로 넘기기만 하면됨
+//보낼 값 객체(axios로 바꿔서)
 let params = {
     page: 1,
     pageSize: 20,
@@ -12,6 +9,12 @@ let params = {
     jobCode: ['1800', '1957'],
     keyword: '프론트엔드'
   }
+  
+//------------------------지역선택 옵션생성-------------------------------------------
+const first_cityopt = document.querySelector('#first_cityopt > ul');
+const second_cityopt = document.querySelector('#second_cityopt');
+const add_keyword = document.querySelector('.add_keyword');
+const search_btn = document.querySelector('#search_btn');  //검색하기 버튼 클릭후 콘솔에 찍히는 params 값 보기->axios로 넘기기만 하면됨
 
 //도시 선택 값 불러옴
 const getCityCodeList = function () {
@@ -85,7 +88,7 @@ const setDistrictCodeList = function(districtCodeNo, cityCodeNo, districtName){
 
 getCityCodeList();  //도시 선택 값 호출
 
-//-------------------------------------------------------------------------------------------------------
+//--------------------- 지역 선택 동적클래스--------------------------------------------------------------------
 
 //도시 선택 중첩
 function selectCity(button) {
@@ -166,11 +169,5 @@ function toggleKeywordDisplay() {
         previewWrapper.classList.add('resetting'); // 조건 없음
     }
 }
-
-
-
-//----------------------------------------------------------------------------------------------------------
-
-
 
 

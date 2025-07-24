@@ -354,6 +354,7 @@
 	                        </div>
 	                        <!-- //end 여기가 내가 할 부분인 지역 검색 -->
 	                        
+	                        <!-- 여기가 내가 할 부분인 직업 검색 -->
 	                        <div class="option_content job_category_section">
 	                            <h2 class="blind">직업 선택</h2>
 	                            <div class="select_keyword">
@@ -404,7 +405,9 @@
                                                 <button type="button" class="btn_job" data-mcls_cd_no="{{mclsCdNo}}">{{mclsCdNm}}</button>
                                             {{/hasCountInJobCategory}}
                                         {{/mclsList}}
-                                    </script><button type="button" class="btn_job" data-mcls_cd_no="16">기획·전략</button>
+                                    	</script>
+                                    	<%--
+                                    	<button type="button" class="btn_job" data-mcls_cd_no="16">기획·전략</button>
 	                                    <button type="button" class="btn_job" data-mcls_cd_no="14">마케팅·홍보·조사</button>
 	                                    <button type="button" class="btn_job" data-mcls_cd_no="3">회계·세무·재무</button>
 	                                    <button type="button" class="btn_job" data-mcls_cd_no="5">인사·노무·HRD</button>
@@ -425,6 +428,7 @@
 	                                    <button type="button" class="btn_job" data-mcls_cd_no="13">미디어·문화·스포츠</button>
 	                                    <button type="button" class="btn_job" data-mcls_cd_no="17">금융·보험</button>
 	                                    <button type="button" class="btn_job" data-mcls_cd_no="20">공공·복지</button>
+	                                     --%>
 	                                </div>
 	
 	                                <div class="box_detail_jobs" style="display:none;">
@@ -584,6 +588,8 @@
 	                                </div>
 	                            </div>
 	                        </div>
+	                        <!-- //end 여기가 내가 할 부분인 직업 검색 -->
+	                        <!-- 여기가 내가 할 부분인 검색창 검색 -->
 	                        <div class="option_content keyword_section">
 	                            <h2 class="blind">검색어 입력</h2>
 	                            <div class="layer_search_keyword no_suggest" id="keywordAutoComplete">
@@ -630,6 +636,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
+	                        <!-- //end 여기가 내가 할 부분인 검색창 검색 -->
 	                        <div class="option_content detail_option_section detail_section ">
 	                            <h2 class="blind">상세조건</h2>
 	                            <div id="sp_optional_wrapper" class="search_wrap wrap_detail_panel">
@@ -2161,4 +2168,5 @@
 	                        
 
 <script src="/js/member/recruitment/searchnotice/citynotice/cnoticeList.js"></script>
+<script src="/js/member/recruitment/searchnotice/citynotice/jnoticeList.js"></script> <!-- 일단 넣어둠, 추후 합침 -->
 </body>
