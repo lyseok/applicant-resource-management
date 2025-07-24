@@ -7,11 +7,9 @@ const productName = PproductName;
 
 
 // 데이터셋에서 받는 값
-const productNo = PproductNo;
-const oldPaymentNo = PoldPaymentNo;
-let newProductNo = document.body.dataset.productNo;
+
+let newProductNo = btn.dataset.productNo;
 /*let billingKey = PbillingKey; // 초기에 JSP에서 넘어온 값*/
-console.log("oldPaymentNo", oldPaymentNo);
 console.log(document.body.dataset.oldPaymentNo);
 // 만약 billingKey가 쿼리스트링으로 전달된 경우라면 갱신
 window.addEventListener("DOMContentLoaded", () => {
@@ -29,15 +27,23 @@ window.addEventListener("DOMContentLoaded", () => {
 /*document.querySelector("#change-btn").addEventListener('click', e => {
 	console.log("e.target",e.target.dataset.productNo);
 })*/
-async function doChangeBilling(btn) {
+async function doChangeBilling(event, btn) {
+	event.preventDefault();
+	const oldproduct = document.getElementById("oldProduct");
+	const oldProductNo = oldproduct.dataset.productNo;      // 현재 사용 중인 상품 번호
+	const newProductNo = btn.dataset.productNo;                // 새로 선택한 상품 번호
+
+	console.log("현재 상품 번호 (oldProductNo):", oldProductNo );
+	console.log("바꿀 상품 번호 (newProductNo):", newProductNo);
 	const productName = btn.dataset.productName;
 	const billingKey = btn.dataset.billingKey;
 	const amount = Number(btn.dataset.amount);
-	const newProductNo = btn.dataset.productNo;
+	const oldPaymentNo = oldproduct.dataset.paymentNo;
 	const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
 	
 	console.log("빌링키 값 :",billingKey);
 	alert("여기까진 문제없음");
+	console.log("oldPaymentNo값 :",oldPaymentNo);
 	console.log("newProductno", newProductNo);
 	console.log("커스터키값 : {}", customerKey);
 	alert("설마여기서?");
@@ -57,23 +63,27 @@ async function doChangeBilling(btn) {
 	console.log("amount",Number(amount));
 	console.log("orderName",productName);
 	alert("여기까진 문제없음5");
-	const res = await fetch("/company/toss/api/billing/execute", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({
-			billingKey,
-			customerKey,
-			amount,
-			orderName: productName
-		})
+	 const billingRes = await fetch("/company/toss/api/billing/execute", {
+	method: "POST",
+	headers: { "Content-Type": "application/json" },
+	body: JSON.stringify({
+		billingKey,
+		customerKey,
+		amount,
+		orderName: productName
 	})
-	.then(res => res.json())
-.then(data => {
-  console.log("결제 성공 ! ", data);
-})
-.catch(err => {
-  console.error("결제 실패 !", err);
 });
+
+const rawText = await billingRes.text(); // MIME type이 text/plain이기 때문
+let billingData;
+try {
+	billingData = JSON.parse(rawText); // text → JSON 객체로 변환
+} catch (err) {
+	console.error("JSON 파싱 오류:", err);
+	alert("결제 응답이 잘못되었습니다.");
+	return;
+}
+
 	/*console.log("결제 요청 응답 :",res);
 	alert("res", res);
 	const data = await res.json();
@@ -84,26 +94,27 @@ async function doChangeBilling(btn) {
 		return;
 	}*/
 	
+	
+	const confirmRes = await fetch("/company/payment/product/change/confirm", {
+	method: "POST",
+	headers: { "Content-Type": "application/json" },
+	body: JSON.stringify({
+		oldProductNo,
+		oldPaymentNo,
+		newProductNo,
+		billingKey,
+		paymentKey: billingData.paymentKey
+	})
+});
 
-	const confirmRes = await fetch("/company/payment/product/change/confirm",
-		{
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				oldPaymentNo,
-				ProductNo: productNo,
-				billingKey,
-				paymentKey: data.paymentKey
-			})
+if (confirmRes.ok) {
+	alert("요금제 변경 완료!");
+	window.location.href = "/company/payment/main";
+} else {
+	const errText = await confirmRes.text();
+	alert("요금제 변경 실패\n" + errText);
+}
 
-		});
-
-	if (confirmRes.ok) {
-		alert("요금제 변경 완료!");
-		window.location.href = "/company/payment/main";
-	} else {
-		alert("요금제 변경 실패");
-	}
 }
 
 async function requestBillingAuth() {

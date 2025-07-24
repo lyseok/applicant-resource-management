@@ -55,4 +55,10 @@ public class CompanyServiceImpl implements CompanyService {
 		companyMapper.insertCompany(company);
 	}
 
+	@Override
+	public CompanyVO selectCompanyById(String userId) {
+		// TODO Auto-generated method stub
+		return companyMapper.selectCompanyById(userId);
+	}
+
 }

@@ -16,3 +16,18 @@ document.querySelector('.searchBarBtn').addEventListener('click', function(e) {
     const keyword = document.getElementById('listKeyword').value;
     window.location.href = '/mypage/introduction/search?keyword=' + encodeURIComponent(keyword);
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const deleteButtons = document.querySelectorAll(".btn-delete");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const introNo = this.getAttribute("data-intro-no");
+            const deleteUrl = `/mypage/introduction/delete/${introNo}`;
+            console.log(introNo);
+            confirmDeleteBtn.setAttribute("href", deleteUrl);
+        });
+    });
+});

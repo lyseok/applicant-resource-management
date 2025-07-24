@@ -12,9 +12,11 @@ import kr.or.ddit.dto.CompanySalesDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.CompanyOpProfitMapper;
 import kr.or.ddit.mapper.common.CompanySalesMapper;
+import kr.or.ddit.mapper.common.FileMapper;
 import kr.or.ddit.mapper.common.SalaryMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.FilesVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +29,7 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	private final CompanyOpProfitMapper companyOpProfitMapper;
 	private final RecruitmentNoticeMapper recruitmentNoticeMapper;
 	private final SalaryMapper salaryMapper;
+	private final FileMapper fileMapper;
 	
 
 	@Override
@@ -40,6 +43,10 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 		String sizeName = codeMapProvider.getCodeName(company.getComSize());
 		company.setComType(typeName);
 		company.setComSize(sizeName);
+		
+		String sourceNo = company.getUserId();
+		List<FilesVO> fileList = readCompanyImageFileListBySourceNo(sourceNo);
+		company.setFileList(fileList);	
 		return company;
 	}
 
@@ -87,8 +94,12 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 		return salaries;
 		
 	}
-	
-	
+
+
+	@Override
+	public List<FilesVO> readCompanyImageFileListBySourceNo(String sourceNo) {
+		return	fileMapper.selectFileListBySourceNo(sourceNo);
+	}
 	
 	
 	

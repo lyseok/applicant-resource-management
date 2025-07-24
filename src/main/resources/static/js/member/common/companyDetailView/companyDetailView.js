@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		.then((resp) => {
 			const company = resp.data;
 			console.log(company);
-			
+			bindingCompanyImage(company.fileList);
 			console.log('체크',document.getElementById('head-com-name'));
             console.log('체크',document.getElementById('head-com-indu'));
 			
@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('head-com-name').textContent = company.comName;
 			document.getElementById('head-com-indu').textContent = company.industryType;
 			document.getElementById('salaryCompanyName').textContent = company.comName + '의 평균 연봉';
+			document.getElementById('company_bg').src = company.comBackgroundImg;
+			document.getElementById('logoImg').src = company.comLogo;
 			
 			const addr = company.comAddr || '';
 			document.getElementById('comAddr').textContent = addr;
@@ -58,8 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		const labels = sales.map((s) => s.comSalesYear);
 		const data = sales.map((s) => s.comSalesAmount / 100_000_000); // 억 원
 		const avgData = sales.map((s) => s.avgSalesAmount / 100_000_000); // 억 원
+		
+		
 
 		const latest = sales[sales.length - 1];
+		console.log('킄큭큭', latest);
+		document.getElementById('comSales').textContent = formatKRW(latest.comSalesAmount) + '(전년도 기준)'
 
 		new Chart(document.getElementById('salesChart').getContext('2d'), {
 			type: 'line',
@@ -313,23 +319,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-	axios.get(`/ajax/member/company_view/salary/${userId}`)
-		 .then(resp => {
-			const salaries = resp.data;
-			console.log('연봉', salaries);
-		
-			const salaryAvgExclExec = salaries[0].salaryAvgExclExec;
-			document.getElementById('salaryAvgGross').textContent = formatKRW(salaryAvgExclExec);
+axios.get(`/ajax/member/company_view/salary/${userId}`)
+  .then(resp => {
+    const salaries = resp.data;
+    console.log('연봉', salaries);
 
-		// 1) DOM 준비
-		  const section = document.querySelector('.tab-content[data-section="salary"]');
-		  const ctx = document.getElementById('salaryChart').getContext('2d');
+    const salaryAvgExclExec = salaries[0].salaryAvgExclExec;
+    document.getElementById('salaryAvgGross').textContent = formatKRW(salaryAvgExclExec);
+    document.getElementById('salary-avg').textContent = formatKRW(salaryAvgExclExec) + '(임원제외)';
 
-		  // 2) 차트용 데이터 가공 (만원 단위)
-		  const labels    = salaries.map(s => s.codeName);                              // ["사원","주임",...]
-		  const avgData   = salaries.map(s => parseInt(s.avgByRank, 10)   / 10000);     // ex: 25000000 → 2500(만원)
-		  const minData   = salaries.map(s => parseInt(s.salaryMin,  10)   / 10000);
-		  const maxData   = salaries.map(s => parseInt(s.salaryMax,  10)   / 10000);
+    // 1) DOM 준비
+    const section = document.querySelector('.tab-content[data-section="salary"]');
+    const ctx = document.getElementById('salaryChart').getContext('2d');
+
+    // 2) 차트용 데이터 가공 (만원 단위)
+    const labels = salaries.map(s => s.codeName);
+    const avgData = salaries.map(s => parseInt(s.avgByRank, 10) / 10000);
+    const minData = salaries.map(s => parseInt(s.salaryMin, 10) / 10000);
+    const maxData = salaries.map(s => parseInt(s.salaryMax, 10) / 10000);
 
 		  // 3) 차트 생성
 		 new Chart(ctx, {
@@ -645,5 +652,42 @@ new Chart(barCtx, {
 	    });
 	  });
 
+
+
+
+	function bindingCompanyImage(fileList) {
+  const galleryList = document.getElementById('companyGalleryList');
+  
+  
+  
+  if (!galleryList || !Array.isArray(fileList)) return;
+
+  // 파일명 기반으로 마스킹 이름 추출 (예: d1.jpg → d1, d2 → d2)
+  const makeTitle = (realFile) => {
+    const name = realFile?.split('.')[0] || '';
+    switch (name.toLowerCase()) {
+      case 'd1': return '회사 외관';
+      case 'd2': return '사무실 내부';
+      case 'd3': return '직원 근무 모습';
+      default: return '회사 이미지';
+    }
+  };
+
+  // 이미지 리스트 생성
+  galleryList.innerHTML = fileList
+    .map((file, idx) => {
+      const title = makeTitle(file.realFile);
+      return `
+        <li class="company-gallery-list-item thumbnail js-lazy-img">
+          <a href="#company-gallery-viewer" data-category="company" data-index="${idx + 1}" class="js-lazy-img__inner">
+            <img class="attatched" src="${file.filePath}" alt="${title}" onerror="Company.Gallery.fileOnerror(this);">
+            <div class="mask">
+              <div class="mask-header">${title}</div>
+            </div>
+          </a>
+        </li>`;
+    })
+    .join('');
+}
 
 });

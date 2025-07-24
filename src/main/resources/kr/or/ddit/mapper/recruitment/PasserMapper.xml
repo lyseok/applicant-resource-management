@@ -87,6 +87,13 @@
 	WHERE PASSER_NO = #{passerNo}
 	</update>
 	
+	<update id="updateAccept">
+	UPDATE PASSER SET 
+		RECRUIT_ACCEPT_YN = 'Y'
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUITMENT_NO = #{recruitmentNo}
+	</update>
+	
 	<delete id="deletePasser">
 	DELETE FROM PASSER 
 	WHERE PASSER_NO = #{passerNo}

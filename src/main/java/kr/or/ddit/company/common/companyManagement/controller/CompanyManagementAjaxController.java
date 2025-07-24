@@ -1,17 +1,27 @@
 package kr.or.ddit.company.common.companyManagement.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
+import kr.or.ddit.common.file.S3Uploader;
 import kr.or.ddit.company.common.companyManagement.service.CompanyManagementService;
 import kr.or.ddit.dto.CompanyInfoDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
@@ -27,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyManagementAjaxController {
 	private final CompanyManagementService companyManagementService;
 	private final ErrorsUtils errorsUtils; 
+	private final S3Uploader s3Uploader;
 	
 	@GetMapping
 	public ResponseEntity<CompanyVO> companyDetail() {
@@ -36,10 +47,13 @@ public class CompanyManagementAjaxController {
 		
 	}
 	
-	@PutMapping("/edit")
+	@PostMapping(value = "/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> editCompany(
-		@Valid @RequestBody CompanyInfoDTO company
+		@RequestPart("company") @Valid CompanyInfoDTO company
 		,BindingResult bindingResult
+		,@RequestPart(value = "comLogoFile",         required = false) MultipartFile comLogoFile
+	    ,@RequestPart(value = "comBackgroundImgFile",required = false) MultipartFile comBackgroundImgFile
+	    ,@RequestPart(value = "extraFiles",          required = false) List<MultipartFile> extraFiles
 	){
 		log.info("{}---------", company);
 		
@@ -48,7 +62,7 @@ public class CompanyManagementAjaxController {
 			return ResponseEntity.badRequest().body(errors);
 		}
 		
-		int updateCount = companyManagementService.editCompanyInfo(company);
+		int updateCount = companyManagementService.editCompanyInfo(company, comLogoFile, comBackgroundImgFile, extraFiles);
 		if(updateCount > 0) {
 			return ResponseEntity.ok("ok");
 		}else {
@@ -57,6 +71,7 @@ public class CompanyManagementAjaxController {
 		
 		
 	}
+	
 	
 	
 	

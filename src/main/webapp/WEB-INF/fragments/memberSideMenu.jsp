@@ -124,7 +124,7 @@
 
       <li class="menu-header small text-uppercase"><span class="menu-header-text">지원내역</span></li>
       <li class="menu-item">
-        <a href="/mypage" class="menu-link">
+        <a href="/mypage/applicatedList" class="menu-link">
           <i class="menu-icon tf-icons bx bx-list-ul-square"></i>
           <div data-i18n="Basic">지원 목록</div>
         </a>
