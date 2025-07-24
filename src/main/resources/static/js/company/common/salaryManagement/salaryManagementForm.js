@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				const maxInput = document.querySelector(`input[name="maxSalary"][data-code="${salary.codeDetailNo}"]`);
 
 				if (minInput && maxInput) {
-					minInput.value = parseInt(salary.salaryMin, 10) / 10000;
-					maxInput.value = parseInt(salary.salaryMax, 10) / 10000;
+					minInput.value = salary.salaryMin; // 그대로 넣기
+					maxInput.value = salary.salaryMax;
 				}
 			});
 		})
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (minInput.value && maxInput.value) {
 				payload.push({
 					codeDetailNo: codeDetailNo,
-					salaryMin: parseInt(minInput.value, 10) * 10000,
-					salaryMax: parseInt(maxInput.value, 10) * 10000
+					salaryMin: minInput.value,  // 문자열 그대로
+					salaryMax: maxInput.value
 				});
 			}
 		});
