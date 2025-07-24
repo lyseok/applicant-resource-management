@@ -59,19 +59,33 @@ public class ResumeController {
 
 	// 개인 리스트 조회
 	@GetMapping("list")
-	public String getResumeList(Model model) {
+	public String getResumeList(
+		Model model
+		, @RequestParam(defaultValue = "1") int page
+	) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
+		int pageSize = 5;
+	    int offset = (page - 1) * pageSize;
 
-		List<Map<String, Object>> resumeList = service.readResumeList(userId);
+	    int totalCount = service.getResumeTotalCount(userId);
+	    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+	    List<Map<String, Object>> resumeList = service.getResumePagingList(userId, offset, pageSize);
+
+		// List<Map<String, Object>> resumeList = service.readResumeList(userId); 기존 이력서 목록
 		log.info("{}", resumeList);
 		model.addAttribute(MODELNAME, resumeList);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("totalCount", totalCount);
+
 		return "member/resume/mypage/resume/resumeList";
 	}
 
 	// 상세조회
 	@GetMapping("{no}")
-	public String getResumeDetail(Model model, @PathVariable String no) {
+	public String getResumeDetail(Model model, @PathVariable String no) throws JsonProcessingException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 
@@ -80,7 +94,18 @@ public class ResumeController {
 		vo.setResumeNo(no);
 		ResumeVO resume = service.readResumeDetail(vo);
 		log.info("{}", resume);
+		
+		// 이력서 안에 자소서 없을경우 ( 구조 변경 전 자소서 선택되어있을 경우)
+		IntroductionVO intro = resume.getIntroduction();
+		if (intro != null) {
+			String questionList = new ObjectMapper().writeValueAsString(intro.getIntroductionQuestionList());
+			model.addAttribute("questionList", questionList);
+		} else {
+		    model.addAttribute("questionJson", "[]"); // 빈 리스트 넘김
+		}
+
 		model.addAttribute(MODELNAME, resume);
+
 		return "member/resume/mypage/resume/resumeDetail";
 	}
 	

@@ -11,7 +11,7 @@ import kr.or.ddit.vo.common.PaymentVO;
 public interface PaymentMapper {
 	public List<PaymentVO> selectPaymentList();
 
-	public PaymentVO selectPaymentByPk(String userId);
+	public PaymentVO selectPaymentByPk(String paymentNo);
 
 	public int insertPayment(PaymentVO vo);
 
@@ -31,5 +31,9 @@ public interface PaymentMapper {
 	
 	public int checkPayment(String userId);
 	
-	public int updateComPaymentStatus(PaymentVO vo);
+	public int updateComPaymentStatus(String userId);
+	
+	public String getPaymentNo(String userId);
+	
+	
 }

@@ -596,6 +596,24 @@ public class ResumeServiceImpl implements ResumeService {
 	}
 	
 	
+	
+	
+	// 이력서 페이징 처리
+	@Override
+	public int getResumeTotalCount(String userId) {
+	    return resumeMapper.selectResumeTotalCount(userId);
+	}
+
+	@Override
+	public List<Map<String, Object>> getResumePagingList(String userId, int offset, int limit) {
+	    return resumeMapper.selectResumePagingList(userId, offset, limit);
+	}
+
+	
+	
+	
+	
+	
 	// 공통 코드 한글 맵핑
 	private void setCodeName(ResumeVO resumeVO) {
 		// 리스트 꺼내기

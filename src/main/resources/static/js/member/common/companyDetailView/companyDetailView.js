@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('comMem').textContent = company.comMem + '명';
 			document.getElementById('comType').textContent = company.comType || '-';
 			document.getElementById('comCreateYear').textContent = company.comCreateYear || '-';
-			document.getElementById('comCapital').textContent = formatKRW(company.comCapital) || '-';
+			document.getElementById('comCapital').textContent = formatSalary(company.comCapital) || '-';
 			document.getElementById('ceoName').textContent = company.ceoName || '-';
 			document.getElementById('comMainBiz').textContent = company.comMainBiz || '-';
 			document.getElementById('insuranceYn').textContent = company.insuranceYn === 'Y'
@@ -325,8 +325,8 @@ axios.get(`/ajax/member/company_view/salary/${userId}`)
     console.log('연봉', salaries);
 
     const salaryAvgExclExec = salaries[0].salaryAvgExclExec;
-    document.getElementById('salaryAvgGross').textContent = formatKRW(salaryAvgExclExec);
-    document.getElementById('salary-avg').textContent = formatKRW(salaryAvgExclExec) + '(임원제외)';
+	document.getElementById('salaryAvgGross').textContent = formatSalary(salaryAvgExclExec);
+	document.getElementById('salary-avg').textContent = formatSalary(salaryAvgExclExec) + '(임원제외)';
 
     // 1) DOM 준비
     const section = document.querySelector('.tab-content[data-section="salary"]');
@@ -334,9 +334,9 @@ axios.get(`/ajax/member/company_view/salary/${userId}`)
 
     // 2) 차트용 데이터 가공 (만원 단위)
     const labels = salaries.map(s => s.codeName);
-    const avgData = salaries.map(s => parseInt(s.avgByRank, 10) / 10000);
-    const minData = salaries.map(s => parseInt(s.salaryMin, 10) / 10000);
-    const maxData = salaries.map(s => parseInt(s.salaryMax, 10) / 10000);
+	const avgData = salaries.map(s => Math.round(parseInt(s.avgByRank, 10)));
+	const minData = salaries.map(s => Math.round(parseInt(s.salaryMin, 10)));
+	const maxData = salaries.map(s => Math.round(parseInt(s.salaryMax, 10)));
 
 		  // 3) 차트 생성
 		 new Chart(ctx, {
@@ -366,30 +366,30 @@ axios.get(`/ajax/member/company_view/salary/${userId}`)
 							size: 11,
 							weight: 'bold',
 						},
-						formatter: (value) => formatKRW(value * 10000),
+						 formatter: (value) => formatSalary(value), // ×10000 제거
 						color: '#333',
 					},
 					tooltip: {
 						callbacks: {
 							label(ctx) {
 								const val = ctx.raw * 10000;
-								return `${ctx.dataset.label}: ${formatKRW(val)}`;
+								return `${ctx.dataset.label}: ${formatSalary(val)}`;
 							}
 						}
 					},
 					legend: {
-					position: 'top',     // 상단에 표시
-			align: 'start',      // 왼쪽 정렬 (start: 좌측, center: 가운데, end: 우측)
-			labels: { usePointStyle: true }
+						position: 'top',     // 상단에 표시
+						align: 'start',      // 왼쪽 정렬 (start: 좌측, center: 가운데, end: 우측)
+						labels: { usePointStyle: true }
 					}
 				},
 				scales: {
 					y: {
-						beginAtZero: true,
-						title: { display: true, text: '만원' }
-					}
-				}
-			},
+				           beginAtZero: true,
+				           title: { display: true, text: '만원' } // 그대로 만원 단위
+					  }
+			       }
+			     },
 			plugins: [ChartDataLabels]
 
 		});
@@ -398,51 +398,48 @@ axios.get(`/ajax/member/company_view/salary/${userId}`)
 
 		 const barCtx = document.getElementById('salaryRangeChart').getContext('2d');
 
-new Chart(barCtx, {
-  type: 'bar',
-  data: {
-    labels, // 직급 라벨 (ex. 사원, 주임, 대리, ...)
-    datasets: [
-      {
-        label: '최소 연봉',
-        data: minData,
-        backgroundColor: 'rgba(248, 115, 171, 0.6)',
-      },
-      {
-        label: '최대 연봉',
-        data: maxData,
-        backgroundColor: 'rgba(124, 58, 237, 0.6)',
-      }
-    ]
-  },
-  options: {
-    responsive: false,
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label(ctx) {
-            const val = ctx.raw * 10000;
-            return `${ctx.dataset.label}: ${formatKRW(val)}`;
-          }
-        }
-      },
-      legend: {
-        position: 'top',
-        align: 'start',
-        labels: { usePointStyle: true }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: '만원'
-        }
-      }
-    }
-  }
-});
+		new Chart(barCtx, {
+		  type: 'bar',
+		  data: {
+		    labels, // 직급 라벨 (ex. 사원, 주임, 대리, ...)
+		    datasets: [
+		      {
+		        label: '최소 연봉',
+		        data: minData,
+		        backgroundColor: 'rgba(248, 115, 171, 0.6)',
+		      },
+		      {
+		        label: '최대 연봉',
+		        data: maxData,
+		        backgroundColor: 'rgba(124, 58, 237, 0.6)',
+		      }
+		    ]
+		  },
+		  options: {
+		    responsive: false,
+		    plugins: {
+		      tooltip: {
+		        callbacks: {
+		          label(ctx) {
+					const val = Math.round(ctx.raw);
+					return `${ctx.dataset.label}: ${formatSalary(val)}`;
+		          }
+		        }
+		      },
+		      legend: {
+		        position: 'top',
+		        align: 'start',
+		        labels: { usePointStyle: true }
+		      }
+		    },
+			scales: {
+			      y: {
+			        beginAtZero: true,
+			        title: { display: true, text: '만원' } // 단위 그대로 만원
+			      }
+			    }
+			  }
+			});
 
 		  // 4) (선택) 최신 데이터 기준 업데이트 문구
 		  const latest = salaries[salaries.length-1];
@@ -476,6 +473,18 @@ new Chart(barCtx, {
 
 	function formatDate(dtStr) {
 		return dtStr?.slice(0, 10) || '-';
+	}
+	
+	
+	function formatSalary(salary) {
+	  salary = Number(salary);
+	  if (isNaN(salary) || salary === 0) return '면접 후 결정';
+	  if (salary < 10000) {
+	    return `${salary.toString()}만원`;
+	  }
+	  const eok = Math.floor(salary / 10000);
+	  const man = salary % 10000;
+	  return man > 0 ? `${eok}억 ${man.toString()}만원` : `${eok}억원`;
 	}
 
 

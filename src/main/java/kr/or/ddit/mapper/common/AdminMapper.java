@@ -8,6 +8,7 @@ import kr.or.ddit.vo.common.AdminVO;
 
 @Mapper
 public interface AdminMapper {	
+	
 	public List<AdminVO> selectAdminList();
 	public AdminVO selectAdminById(String userId);
 	public int insertAdmin(AdminVO admin);
