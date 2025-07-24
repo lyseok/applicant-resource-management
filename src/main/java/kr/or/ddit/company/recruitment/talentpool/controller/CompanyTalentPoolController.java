@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.or.ddit.company.common.company.service.CompanyService;
 import kr.or.ddit.company.recruitment.talentpool.service.CompanyTalentService;
 import kr.or.ddit.vo.common.CityCodeVO;
+import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.JobVO;
 import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.EducationVO;
-import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,14 +34,25 @@ public class CompanyTalentPoolController {
 	@Autowired
 	private CompanyTalentService CTservice;
 
+	@Autowired
+	private CompanyService cservice;
+
+	
 	@GetMapping("/list")
-	public String talentpoolList(Model model) {
+	public String talentpoolList(@AuthenticationPrincipal UserDetails principal, Model model) {
 		List<ResumeVO> talentpoolList = CTservice.selectTalentPoolList();
 		List<CareerVO> careerList = CTservice.selectCareer();
 		List<TopJobVO> tjobList = CTservice.selectTopJob();
 		List<JobVO> jobList = CTservice.selectJob();
 		List<CityCodeVO> cityList = CTservice.selectlocation();
 		List<EducationVO> eduList = CTservice.selecteducation();
+		 String userId = principal.getUsername();  // 실제 로그인된 ID
+		    CompanyVO vo = cservice.selectCompanyById(userId);
+		log.info("vo값 : {}", vo);
+		if(vo.getComPayment().equals("N")) {
+			model.addAttribute("message","접근권한이 없습니다");
+			return "/company/main";
+		}
 		
 		model.addAttribute("talentpoolList", talentpoolList);
 		model.addAttribute("tjobList", tjobList);
