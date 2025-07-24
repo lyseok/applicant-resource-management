@@ -20,4 +20,6 @@ public interface PaymentLogMapper {
 	public int deleteLog(String logId);
 	
 	public List<PaymentLogVO> selectLoghistory(String paymentNo);
+	
+	public List<PaymentLogVO> filterLogHistory(String key, String keyword);
 }

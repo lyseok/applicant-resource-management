@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.ddit.company.payment.log.service.PaymentLogService;
 import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
@@ -26,6 +27,16 @@ public class PaymentLogController {
 	
 	@Autowired
 	PaymentLogService service;
+	
+	@GetMapping("/selectlog")
+	@ResponseBody
+	public List<PaymentLogVO> selectFormUI(
+		@RequestParam String key
+		, @RequestParam String keyword
+			) {
+		return service.filterLogHistory(key, keyword);
+	}
+	
 
 	@GetMapping("/list")
 	public String listFormUI(

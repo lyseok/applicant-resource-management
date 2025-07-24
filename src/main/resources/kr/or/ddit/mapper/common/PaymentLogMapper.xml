@@ -1,13 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.PaymentLogMapper">
+
+	<select id="filterLogHistory" resultType="kr.or.ddit.vo.common.PaymentLogVO">
+    SELECT
+      used_at      AS usedAt,
+      used_count   AS usedCount,
+      email_address   AS emailAddress,
+      subject,
+      message_body    AS messageBody
+    FROM payment_log
+    <where>
+      <choose>
+        <!-- 전체 검색: 3개 컬럼 모두 OR 검색 -->
+        <when test="key == 'all'">
+          (email_address   LIKE #{kw}
+           OR subject         LIKE #{kw}
+           OR message_body    LIKE #{kw})
+        </when>
+        <!-- 이메일만 -->
+        <when test="key == 'emailAddress'">
+          email_address LIKE #{kw}
+        </when>
+        <!-- 제목만 -->
+        <when test="key == 'subject'">
+          subject LIKE #{kw}
+        </when>
+        <!-- 내용만 -->
+        <when test="key == 'messageBody'">
+          message_body LIKE #{kw}
+        </when>
+        <!-- 기타: 전체 조회 -->
+        <otherwise>
+          1 = 1
+        </otherwise>
+      </choose>
+    </where>
+    ORDER BY used_at DESC
+  </select>
+  
+
+
+
 	<select id="selectLog">
 		SELECT
 		LOG_ID
 		, PAYMENT_NO
 		, PRODUCT_NO
 		, USED_COUNT
-		, USED_AT
+		,
+		USED_AT
 		, EMAIL_ADDRESS
 		, SUBJECT
 		, MESSAGE_BODY
@@ -32,7 +74,8 @@
 		, PAYMENT_NO
 		, PRODUCT_NO
 		, USED_COUNT
-		, USED_AT
+		,
+		USED_AT
 		, EMAIL_ADDRESS
 		, SUBJECT
 		, MESSAGE_BODY
@@ -46,7 +89,8 @@
 			order="BEFORE">
 			SELECT
 			'PLOG'||
-			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(LOG_ID), LENGTH('PLOG' ) + 1)), 0) + 1, 6, '0')
+			LPAD(NVL(TO_NUMBER(SUBSTR(MAX(LOG_ID),
+			LENGTH('PLOG' ) + 1)), 0) + 1, 6, '0')
 			FROM PAYMENT_LOG
 		</selectKey>
 		INSERT INTO PAYMENT_LOG (
@@ -54,18 +98,21 @@
 		, PAYMENT_NO
 		, PRODUCT_NO
 		, USED_COUNT
-		, USED_AT
+		,
+		USED_AT
 		, EMAIL_ADDRESS
 		, SUBJECT
 		, MESSAGE_BODY
 		) VALUES (
 		#{logId}
-		, #{paymentNo}
+		,
+		#{paymentNo}
 		, #{productNo}
 		, #{usedCount}
 		, SYSDATE
 		, #{emailAddress}
-		, #{subject}
+		,
+		#{subject}
 		, #{messageBody}
 		)
 	</insert>
