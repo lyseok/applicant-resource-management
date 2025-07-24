@@ -394,7 +394,6 @@
 	    <id property="recruitmentNo" column="RECRUITMENT_NO"/>
 	    <result property="recruitmentTitle" column="RECRUITMENT_TITLE"/>
 	    <result property="userId" column="USER_ID"/>
-	    <result property="noticeCnt" column="NOTICE_CNT"/>
 	    <result property="viewCnt" column="VIEW_CNT"/>	    
 	    <result property="scrabCnt" column="SCRAB_CNT"/>	    
 	    <result property="comName" column="COM_NAME"/>
@@ -432,65 +431,8 @@
 	        <result property="recruitSkillName" column="RECRUIT_SKILL_NAME"/>
 	    </collection>
 	</resultMap>
-
-	<!-- <select id="selectRecruitNoticeDtoList" resultMap="recruitmentNoticeDtoMap">
-		SELECT
-		    (SELECT COUNT(*) FROM RECRUITMENT_NOTICE WHERE RECRUITMENT_DEL_DATE IS NULL) AS NOTICE_CNT
-    		, RN.RECRUITMENT_NO
-		    , RN.RECRUITMENT_TITLE
-		    , RN.USER_ID
-		    , (SELECT COM_NAME FROM COMPANY WHERE USER_ID = RN.USER_ID) AS COM_NAME
-		    
-		    , RN.JOB_CODE
-		    , (SELECT JOB_NAME FROM JOB WHERE JOB_CODE = RN.JOB_CODE) AS JOB_NAME
-		    
-		    , RN.YEAR_CODE
-		    , (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = RN.YEAR_CODE) AS YEAR_CODE_NAME
-		    
-		    , RN.PREFERENTIAL
-		    , RN.CITY_CODE
-		    , (SELECT CITY_NAME FROM CITY_CODE WHERE CITY_CODE_NO = RN.CITY_CODE) AS CITY_NAME
-		    
-		    , RN.DISTRICT_CODE
-		    , (SELECT DISTRICT_NAME FROM DISTRICT_CODE WHERE DISTRICT_CODE_NO = RN.DISTRICT_CODE) AS DISTRICT_NAME
-		    
-		    , RN.RECRUITMENT_SALARY
-		    , RN.RECRUITMENT_IMG
-		    , RN.RECRUITMENT_STARTDATE
-		    , RN.RECRUITMENT_FINISH_DATE
-		    , RN.RECRUIT_FINISH_YN
-		    
-		    , RP.RECRUITMENT_POSITION_CODE
-		    , RP.CODE_DETAIL_NO
-		    , (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = RP.CODE_DETAIL_NO) AS RECRUITMENT_POSITION_CODE_NAME
-		
-		    , RE.RECRUITMENT_EDUCATION_CODE
-		    , RE.CODE_DETAIL_NO
-		    , (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = RE.CODE_DETAIL_NO) AS RECRUITMENT_EDUCATION_CODE_NAME
-		    
-		    , RS.RECRUIT_SKILL_CODE
-		    , RS.RECRUIT_SKILL_NAME
-		    
-		    , RN.REC_CONTENT
-		FROM RECRUITMENT_NOTICE RN
-		
-		LEFT OUTER JOIN RECRUITMENT_POSITION RP
-		ON RN.RECRUITMENT_NO = RP.RECRUITMENT_NO
-		AND RP.RECRUITMENT_POSITION_DEL_DATE IS NULL
-		
-		LEFT OUTER JOIN RECRUITMENT_EDUCATION RE
-		ON RN.RECRUITMENT_NO = RE.RECRUITMENT_NO
-		AND RE.RECRUITMENT_EDU_DEL_DATE IS NULL
-		
-		LEFT OUTER JOIN RECRUITMENT_SKILL RS
-		ON RN.RECRUITMENT_NO = RS.RECRUITMENT_NO
-		AND RS.RECRUIT_SKILL_DEL_DATE IS NULL
-		
-		WHERE RN.RECRUITMENT_DEL_DATE IS NULL
-		ORDER BY RN.RECRUITMENT_STARTDATE DESC
-	</select> -->
 	
-	<select id="selectRecruitNoticeDtoList" resultMap="recruitmentNoticeDtoMap">
+	<select id="searchRecruitNoticeDtoList" resultMap="recruitmentNoticeDtoMap">
 		SELECT b.*
 			, RP.RECRUITMENT_POSITION_CODE
 			, RP.CODE_DETAIL_NO AS POSITION_CODE_DETAIL_NO
@@ -507,8 +449,7 @@
 			FROM (
 		  
 				SELECT
-				    (SELECT COUNT(*) FROM RECRUITMENT_NOTICE WHERE RECRUITMENT_DEL_DATE IS NULL AND RECRUIT_FINISH_YN = 'N') AS NOTICE_CNT
-				    , (SELECT COUNT(*) FROM RECRUIT_VIEW WHERE RECRUITMENT_NO = RN.RECRUITMENT_NO) AS VIEW_CNT
+				    (SELECT COUNT(*) FROM RECRUIT_VIEW WHERE RECRUITMENT_NO = RN.RECRUITMENT_NO) AS VIEW_CNT
 				    , (SELECT COUNT(*) FROM SCRAB_RECRUITMENT WHERE RECRUITMENT_NO = RN.RECRUITMENT_NO) AS SCRAB_CNT
 				  	, RN.RECRUITMENT_NO
 				    , RN.RECRUITMENT_TITLE
@@ -538,6 +479,38 @@
 				FROM RECRUITMENT_NOTICE RN
 				WHERE RN.RECRUITMENT_DEL_DATE IS NULL
 				AND RN.RECRUIT_FINISH_YN = 'N'
+				<!-- yearCode가 넘어온 경우 -->
+			    <if test="yearCode != null and yearCode != ''">
+			      AND RN.YEAR_CODE = #{yearCode}
+			    </if>
+			    
+			    <!-- cityCode가 하나 이상 넘어온 경우 -->
+			    <if test="districtCode != null and districtCode.size > 0">
+			      AND RN.DISTRICT_CODE IN
+			      <foreach item="code" collection="districtCode" open="(" separator="," close=")">
+			        #{code}
+			      </foreach>
+			    </if>
+			    
+			    <!-- jobCode가 하나 이상 넘어온 경우 -->
+			    <if test="jobCode != null and jobCode.size > 0">
+			      AND RN.JOB_CODE IN
+			      <foreach item="code" collection="jobCode" open="(" separator="," close=")">
+			        #{code}
+			      </foreach>
+			    </if>
+			    
+			    <!-- keyword가 넘어온 경우: 제목 또는 회사명에 포함 -->
+			    <if test="keyword != null and keyword != ''">
+			      AND (RN.RECRUITMENT_TITLE LIKE '%' || #{keyword} || '%'
+			           OR EXISTS (
+			               SELECT 1 FROM COMPANY C 
+			               WHERE C.USER_ID = RN.USER_ID 
+			                 AND C.COM_NAME LIKE '%' || #{keyword} || '%'
+			           )
+			      )
+			    </if>
+				
 				<if test="sort != null">
 					ORDER BY
 					<choose>
@@ -545,10 +518,11 @@
 						<when test="sort == 'EA'"> RN.RECRUITMENT_FINISH_DATE ASC </when>
 						<when test="sort == 'RL'"> SCRAB_CNT DESC </when>
 						<when test="sort == 'RE'"> VIEW_CNT DESC </when>
+						<when test="sort == 'SALARY'"> TO_NUMBER(RN.RECRUITMENT_SALARY) DESC </when>
 						<otherwise> RN.RECRUITMENT_STARTDATE DESC </otherwise>
 					</choose>
 			    </if>
-				) a
+			) a
 			WHERE ROWNUM &lt;= #{endRow}
 		) b
 		LEFT OUTER JOIN RECRUITMENT_POSITION RP
@@ -563,6 +537,45 @@
 		ON b.RECRUITMENT_NO = RS.RECRUITMENT_NO
 		AND RS.RECRUIT_SKILL_DEL_DATE IS NULL
 		WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<select id="countRecruitmentNotice" resultType="int">
+	  SELECT COUNT(*) 
+	  FROM RECRUITMENT_NOTICE RN
+	  WHERE RN.RECRUITMENT_DEL_DATE IS NULL
+	    AND RN.RECRUIT_FINISH_YN = 'N'
+	    
+	    <!-- yearCode가 넘어온 경우 -->
+	    <if test="yearCode != null and yearCode != ''">
+	      AND RN.YEAR_CODE = #{yearCode}
+	    </if>
+	    
+	    <!-- cityCode가 하나 이상 넘어온 경우 -->
+	    <if test="districtCode != null and districtCode.size > 0">
+	      AND RN.DISTRICT_CODE IN
+	      <foreach item="code" collection="districtCode" open="(" separator="," close=")">
+	        #{code}
+	      </foreach>
+	    </if>
+	    
+	    <!-- jobCode가 하나 이상 넘어온 경우 -->
+	    <if test="jobCode != null and jobCode.size > 0">
+	      AND RN.JOB_CODE IN
+	      <foreach item="code" collection="jobCode" open="(" separator="," close=")">
+	        #{code}
+	      </foreach>
+	    </if>
+	    
+	    <!-- keyword가 넘어온 경우: 제목 또는 회사명에 포함 -->
+	    <if test="keyword != null and keyword != ''">
+	      AND (RN.RECRUITMENT_TITLE LIKE '%' || #{keyword} || '%'
+	           OR EXISTS (
+	               SELECT 1 FROM COMPANY C 
+	               WHERE C.USER_ID = RN.USER_ID 
+	                 AND C.COM_NAME LIKE '%' || #{keyword} || '%'
+	           )
+	      )
+	    </if>
 	</select>
 
 </mapper>

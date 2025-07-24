@@ -8,13 +8,14 @@ let currentSort = 'RD';
 let myCompanyList;
 let myRecruitList;
 
-function fetchRecruitData(page = 1, pageSize = 20, sort = 'RD') {
+function fetchRecruitData(page = 1, pageSize = 20) {
   axios
     .get('/ajax/recruit/search', {
       params: {
         page: page,
         pageSize: pageSize,
-        sort: sort,
+        sort: 'SALARY',
+        yearCode: 'YEXP-Y0',
       },
     })
     .then((res) => {
@@ -32,8 +33,6 @@ function fetchRecruitData(page = 1, pageSize = 20, sort = 'RD') {
       totalPage = Math.ceil(resp.noticeCnt / pageSize);
       console.log(totalPage, page);
       renderPager(totalPage, page); // 페이저 렌더링
-
-      renderTopNoticeSlide(resp.data);
     });
 }
 fetchRecruitData();
@@ -213,14 +212,7 @@ function renderPager(totalPages, page) {
 document.getElementById('page_count').addEventListener('change', function () {
   currentPageSize = parseInt(this.value, 10);
   currentPage = 1; // 페이지 초기화
-  fetchRecruitData(currentPage, currentPageSize, currentSort);
-});
-
-// sort 변경
-document.getElementById('sort').addEventListener('change', function () {
-  currentSort = this.value;
-  currentPage = 1;
-  fetchRecruitData(currentPage, currentPageSize, currentSort);
+  fetchRecruitData(currentPage, currentPageSize);
 });
 
 // 페이저 클릭 (이벤트 위임)
@@ -228,10 +220,10 @@ document.querySelector('.PageBox').addEventListener('click', function (e) {
   if (e.target.classList.contains('page')) {
     const page = Number(e.target.dataset.page);
     currentPage = page;
-    fetchRecruitData(currentPage, currentPageSize, currentSort);
+    fetchRecruitData(currentPage, currentPageSize);
   } else if (e.target.classList.contains('BtnNext')) {
     currentPage += 1;
-    fetchRecruitData(currentPage, currentPageSize, currentSort);
+    fetchRecruitData(currentPage, currentPageSize);
   }
   // 필요시 이전(Prev) 버튼도 처리
 });
@@ -245,123 +237,6 @@ listBody.addEventListener('click', (e) => {
     window.location.href = itemDiv.dataset.url;
   }
 });
-
-// ====================================== Swiper Data ======================================
-
-function renderTopNoticeSlide(data, myScrabRecruit) {
-  // 최대 6개만 보여주려면 .slice(0, 6) 등 사용
-  slideList.innerHTML = data
-    .filter((item) => item.yearCode === 'YEXP-Y0')
-    .slice(0, 10)
-    .map((item) => {
-      // D-day 계산
-      const finishDate = new Date(item.recruitmentFinishDate);
-      const now = new Date();
-      const diffMs = finishDate - now;
-      const diffDay = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-      const dday = diffDay > 0 ? `D-${diffDay}` : '마감';
-
-      // 지역명
-      const location = `${item.cityName || ''} ${
-        item.districtName || ''
-      }`.trim();
-
-      // 북마크(스크랩) on/off
-      const isScrab = myRecruitList.includes(item.recruitmentNo) ? ' on' : '';
-
-      // 템플릿 리턴
-      return `
-      <li class="swiper-slide swiper-slide-visible" style="margin-right: 15px;">
-        <a href="/recruit_notice/${
-          item.recruitmentNo
-        }" class="newcomer_link_view ga_data_layer">
-          <div class="sub_curation_slide">
-            <div class="tag_line">
-              <span class="tag d-day">${dday}</span>
-              <span class="tag theme major">${location || '-'}</span>
-            </div>
-            <span class="company_name">${item.comName || '-'}</span>
-            <span class="announcement">${item.recruitmentTitle || '-'}</span>
-          </div>
-        </a>
-        <button type="button" 
-          class="newcomer_book_mark like_btn${isScrab}" 
-          data-recruitment-no="${item.recruitmentNo}">
-          <span class="blind">북마크</span>
-        </button>
-      </li>
-    `;
-    })
-    .join('');
-
-  slideList.addEventListener('click', async (e) => {
-    const btn = e.target.closest('button');
-    if (!btn) return;
-
-    // 스크랩 버튼
-    if (btn.classList.contains('like_btn')) {
-      const recruitmentNo = btn.dataset.recruitmentNo;
-      if (btn.classList.contains('on')) {
-        // 스크랩 취소
-        await axios.delete('/ajax/member/scrab_recruit/' + recruitmentNo);
-        btn.classList.remove('on');
-      } else {
-        // 스크랩 등록
-        await axios.post('/ajax/member/scrab_recruit/' + recruitmentNo);
-        btn.classList.add('on');
-      }
-    }
-  });
-}
-
-// ====================================== Swiper ======================================
-
-function swiperInit() {
-  // 1) .priority_top_list 컨테이너 선택
-  const target = document.querySelector('.priority_top_list');
-  if (!target) return; // 요소 없으면 종료
-
-  // 2) 모든 링크·버튼 요소 수집
-  const subCurationLinks = Array.from(
-    target.querySelectorAll(
-      '.sub_curation_swiper .swiper-slide a, .sub_curation_swiper .swiper-slide button'
-    )
-  );
-
-  // 3) Swiper 컨테이너 요소
-  const swiperContainer = target.querySelector('.sub_curation_swiper');
-  if (!swiperContainer) return;
-
-  // 4) Swiper 인스턴스 생성
-  const swiper = new Swiper(swiperContainer, {
-    slidesPerGroup: 5,
-    slidesPerView: 5,
-    spaceBetween: 15,
-    watchSlidesVisibility: true,
-    navigation: {
-      nextEl: target.querySelector('.sub_curation_swiper .swiper-next'),
-      prevEl: target.querySelector('.sub_curation_swiper .swiper-prev'),
-    },
-    width: 1260,
-    on: {
-      slideChange: () => {
-        // a) 모든 링크·버튼 tabindex="-1"
-        subCurationLinks.forEach((el) => el.setAttribute('tabindex', '-1'));
-
-        // b) 보이는 슬라이드 안 요소만 tabindex="0"
-        const visibleSlides = target.querySelectorAll(
-          '.sub_curation_swiper .swiper-slide-visible'
-        );
-        visibleSlides.forEach((slide) => {
-          slide
-            .querySelectorAll('a, button')
-            .forEach((el) => el.setAttribute('tabindex', '0'));
-        });
-      },
-    },
-  });
-}
-swiperInit();
 
 function getTimeAgo(dateString) {
   const now = new Date();
