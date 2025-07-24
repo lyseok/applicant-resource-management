@@ -17,22 +17,21 @@
 		<h2 class="mb-4">🧾 내가 구매한 상품</h2>
 
 		<!-- ✅ 필터 폼 -->
+
 		<form method="get" class="mb-3 d-flex">
-			<form method="get" class="mb-3 d-flex">
-				<select name="filter" class="form-select w-auto me-2">
-					<option value="" ${empty selectedFilter ? 'selected' : ''}>전체
-						보기</option>
-					<option value="A" ${selectedFilter == 'A' ? 'selected' : ''}>현재
-						사용 중</option>
-					<option value="E" ${selectedFilter == 'E' ? 'selected' : ''}>사용기간
-						만료</option>
-					<option value="S" ${selectedFilter == 'S' ? 'selected' : ''}>다음결제일부터
-						사용가능</option>
-					<option value="C" ${selectedFilter == 'C' ? 'selected' : ''}>다음결제일부터
-						사용불가</option>
-				</select>
-				<button type="submit" class="btn btn-primary">필터 적용</button>
-			</form>
+			<select name="filter" class="form-select w-auto me-2">
+				<option value="" ${empty selectedFilter ? 'selected' : ''}>전체
+					보기</option>
+				<option value="A" ${selectedFilter == 'A' ? 'selected' : ''}>현재
+					사용 중</option>
+				<option value="E" ${selectedFilter == 'E' ? 'selected' : ''}>사용기간
+					만료</option>
+				<option value="S" ${selectedFilter == 'S' ? 'selected' : ''}>다음결제일부터
+					사용가능</option>
+				<option value="C" ${selectedFilter == 'C' ? 'selected' : ''}>다음결제일부터
+					사용불가</option>
+			</select>
+
 			<button type="submit" class="btn btn-primary">필터 적용</button>
 		</form>
 

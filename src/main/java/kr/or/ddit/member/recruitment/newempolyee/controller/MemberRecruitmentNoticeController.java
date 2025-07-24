@@ -18,12 +18,20 @@ public class MemberRecruitmentNoticeController {
 	@Autowired
 	private MemberRecruitmentNoticeService service;
 
+//	@GetMapping("/realTimeRecruitment")
+//	public String ListRecruitmentNotice(Model model) {
+//		List<RecruitmentNoticeVO> recruitmentList = service.readRecruitmentNoticeList();
+//		model.addAttribute("recruitmentList", recruitmentList);
+////		model.addAttribute("boardCss",true);
+//		return "member/recruitment/realTimeRecruitment";
+//	}
+	
+	
 	@GetMapping("/realTimeRecruitment")
 	public String ListRecruitmentNotice(Model model) {
-		List<RecruitmentNoticeVO> recruitmentList = service.readRecruitmentNoticeList();
-		model.addAttribute("recruitmentList", recruitmentList);
-//		model.addAttribute("boardCss",true);
-		return "member/recruitment/realTimeRecruitment";
+		model.addAttribute("boardCss", true);
+		//model.addAttribute("searchBar", true);
+		return "recruitNotice/realTimeNotice";
 	}
 
 	@GetMapping("/newEmployee")
