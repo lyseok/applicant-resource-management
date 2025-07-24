@@ -1,6 +1,7 @@
 package kr.or.ddit.ajax.recruitment.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,26 @@ import lombok.RequiredArgsConstructor;
 public class AjaxRecruitmentNoticeController {
 	private final AjaxRecruitmentNoticeService service;
 	
-	@GetMapping("/realtime")
-	public ResponseEntity<?> getAllRecruitmentNotice(@RequestParam int page, @RequestParam int pageSize, @RequestParam String sort){
+	@GetMapping("/search")
+	public ResponseEntity<?> searchRecruitmentNotice(
+		@RequestParam int page,
+	    @RequestParam int pageSize,
+	    @RequestParam(required = false) List<String> districtCode,   
+	    @RequestParam(required = false) List<String> jobCode,
+	    @RequestParam(required = false) String yearCode,
+	    @RequestParam(required = false) String keyword
+    ){
 		Map<String, Object> params = new HashMap<String, Object>();		
 		params.put("startRow", (page - 1) * pageSize);
 		params.put("endRow", page * pageSize);
-		params.put("sort", sort);
+		params.put("districtCode", districtCode);
+		params.put("jobCode", jobCode);
+		params.put("yearCode", yearCode);
+		params.put("keyword", keyword);
 		
-		Map<String, Object> resp = service.readRecruitmentNoticeDtoList(params);
+		Map<String, Object> resp = service.searchRecruitmentNoticeList(params);
 		
 		return ResponseEntity.ok(resp);
 	}
+	
 }
