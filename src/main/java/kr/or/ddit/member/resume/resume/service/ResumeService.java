@@ -36,4 +36,10 @@ public interface ResumeService {
 	// 이력서 제목으로 검색
 	public List<Map<String, Object>> readResumeSearch(ResumeVO vo);
 	
+	
+	// 이력서 페이징
+	public int getResumeTotalCount(String userId);
+	public List<Map<String, Object>> getResumePagingList(String userId, int offset, int limit);
+
+	
 }
