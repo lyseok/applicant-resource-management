@@ -43,4 +43,10 @@ public class PaymentLogServiceImpl implements PaymentLogService {
 		return mapper.deleteLog(logId);
 	}
 
+	@Override
+	public List<PaymentLogVO> selectLoghistory(String paymentNo) {
+		// TODO Auto-generated method stub
+		return mapper.selectLoghistory(paymentNo);
+	}
+
 }

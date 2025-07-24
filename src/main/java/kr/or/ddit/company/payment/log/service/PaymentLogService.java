@@ -17,4 +17,6 @@ public interface PaymentLogService {
 	public int updateLog(PaymentLogVO vo);
 	
 	public int deleteLog(String logId);
+	
+	public List<PaymentLogVO> selectLoghistory(String paymentNo);
 }

@@ -7,12 +7,23 @@
 		, PAYMENT_NO
 		, PRODUCT_NO
 		, USED_COUNT
-		,
-		USED_AT
+		, USED_AT
 		, EMAIL_ADDRESS
 		, SUBJECT
 		, MESSAGE_BODY
 		FROM PAYMENT_LOG
+	</select>
+
+	<select id="selectLoghistory">
+		SELECT
+		PAYMENT_NO
+		, USED_COUNT
+		, USED_AT
+		, EMAIL_ADDRESS
+		, SUBJECT
+		, MESSAGE_BODY
+		FROM PAYMENT_LOG
+		WHERE PAYMENT_NO = #{paymentNo}
 	</select>
 
 	<select id="selectLogByPk">
@@ -21,8 +32,7 @@
 		, PAYMENT_NO
 		, PRODUCT_NO
 		, USED_COUNT
-		,
-		USED_AT
+		, USED_AT
 		, EMAIL_ADDRESS
 		, SUBJECT
 		, MESSAGE_BODY
@@ -53,7 +63,7 @@
 		, #{paymentNo}
 		, #{productNo}
 		, #{usedCount}
-		, #{usedAt}
+		, SYSDATE
 		, #{emailAddress}
 		, #{subject}
 		, #{messageBody}
