@@ -26,7 +26,6 @@ public class CompanyVO extends UsersVO implements Serializable {
 	private String comUrl;
 	@NotBlank
 	private String comCreateYear;
-	@NotNull
 	private Integer comMem;
 	private String comLogo;
 	private String comBackgroundImg;
