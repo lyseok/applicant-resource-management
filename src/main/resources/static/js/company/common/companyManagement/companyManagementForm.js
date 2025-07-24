@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ceoName:          form.elements.ceoName.value,
       comAddr:          form.elements.comAddr.value,
       insuranceYn:      form.elements.insuranceYn.value,
-      comCapital:       parseInt(form.elements.comCapital.value, 10) || null,
+      comCapital:       form.elements.comCapital.value,
       comMainBiz:       form.elements.comMainBiz.value,
       industryType:     form.elements.industryType.value,
       comType:          form.elements.comType.value,
