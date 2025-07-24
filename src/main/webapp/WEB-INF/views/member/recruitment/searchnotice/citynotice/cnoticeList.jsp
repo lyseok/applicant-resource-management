@@ -275,7 +275,7 @@
 	                                        		<%-- 
 	                                                <ul class="list_check" id="sp_area_lastDepth_117000" style="display: none;">
 	                                                    <li>
-	                                                        <div class="inpChk">
+	                                                        <div class="inpChk" id="second_divopt_117000">
 	                                                            <input type="checkbox" id="loc_mcd_117000" name="loc_mcd[]" value="117000" data-is_representative="n" data-representative="" data-mcode="117000" data-check-type="all">
 	                                                            <label for="loc_mcd_117000" class="lbl"><span class="txt">전국</span></label>
 	                                                        </div>
@@ -316,7 +316,9 @@
 	                                                    <li>
 	                                                        <div class="inpChk">
 	                                                            <input type="checkbox" id="loc_mcd_101000" name="loc_mcd[]" value="101000" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="all">
-	                                                            <label for="loc_mcd_101000" class="lbl"><span class="txt">서울전체</span></label>
+	                                                            <label for="loc_mcd_101000" class="lbl">
+	                                                            	<span class="txt">서울전체</span>
+	                                                            </label>
 	                                                        </div>
 	                                                    </li>
 	                                                    <li>
@@ -325,6 +327,15 @@
 	                                                            <label for="loc_cd_101010" class="lbl">
 		                                                            <span class="txt">강남구</span>
 		                                                            <span class="count"> (18,448)</span>
+	                                                            </label>
+	                                                        </div>
+	                                                    </li>
+	                                                    <li>
+	                                                        <div class="inpChk">
+	                                                            <input type="checkbox" id="loc_cd_101020" name="loc_cd[]" value="101020" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
+	                                                            <label for="loc_cd_101020" class="lbl">
+		                                                            <span class="txt">강동구</span>
+		                                                            <span class="count"> (1,988)</span>
 	                                                            </label>
 	                                                        </div>
 	                                                    </li>

@@ -2,6 +2,36 @@
  * 
  */
 const ulcity1 = document.querySelector('#first_cityopt > ul');  //첫번째 옵션 생성시 쓰일 ul태그
+const divcity2 = document.querySelector('#second_cityopt');  //두번째 옵션 생성용 div
+
+//지역 초기화 & 펼쳐보기 버튼 생성
+const recityOpt = function(){
+	console.log("여러번 생성?");
+	
+	let divcity__2 = document.createElement('div');
+	divcity__2.className = 'area_btn';
+	divcity2.appendChild(divcity__2);
+	
+	if(divcity2 && divcity2.querySelector(`.area_btn`)){
+		let btncity2 = document.createElement('button');
+		btncity2.type = 'button';
+		btncity2.className = 'btn_all_category';
+		btncity2.setAttribute('data-logging-flow', 'area');
+		btncity2.textContent = '지역 펼쳐보기';
+		
+		let btncity_2 = document.createElement('button');
+		btncity_2.type = 'button';
+		btncity_2.className = 'btn_reset';
+		btncity_2.textContent = '지역 초기화';
+		
+		btncity_2.onclick = function(){
+			ulcity1.querySelectorAll('li').forEach(li => li.classList.remove('on'));
+		}
+		
+		divcity__2.appendChild(btncity2);
+		divcity__2.appendChild(btncity_2);
+	}
+}
 
 //첫번째 옵션 생성 시작
 const cityData1 = function () {
@@ -15,6 +45,7 @@ const cityData1 = function () {
 		li1(codeno, name);
 	  })
    });
+   //recityOpt();  //생성해두면 알아서 before after로 조절, 처음과 이후 클릭시 생성
 };
 
 //첫번째 옵션 li 생성
@@ -67,91 +98,78 @@ const sp1 = function(codeno, name){
 	    this.classList.add('on');
 
 	    // ✅ 기존 열린 모든 2차 ul 닫기
-	    /*
 	    document.querySelectorAll('#second_cityopt .list_check').forEach(ul => {
 	      console.log("닫기");
 	      ul.style.display = 'none';
 	    });
-		*/
-
-		cityData2(codeno);  //두번째 옵션도 클릭시 생성
+	    
+	    //ul 생성
+	    ul2(codeno);
+	    
+	    
+		//cityData2(codeno);  //두번째 옵션도 클릭시 생성
+		//recityOpt();  //생성해두면 알아서 before after로 조절
 	}
-
 }
 
-cityData1();  //첫번째 옵션 생성 호출
-
-//---------------------------------------------------------------------
-
-const divcity2 = document.querySelector('#second_cityopt');  //두번째 옵션 생성용 div
-
-
-//두번째 옵션 생성 시작
-const cityData2 = function (code) {
-  //console.log("url?", `/ajax/admin/cityCode/CICO${code}`);
-  
-  divcity2.innerHTML = '';  //div 비움
-  fetch(`/ajax/admin/cityCode/CICO${code}`)
-    .then(resp => resp.json())
-    .then(data => {
-	  data.forEach(city =>{
-		let codeno = city.districtCodeNo;
-		let name = city.districtName;
-		ul2(codeno, name);
-	  })
-    });
-};
-
 //두번째 옵션 ul 생성
-const ul2 = function(codeno, name){
-	console.log("블록");
+const ul2 = function(codeno){
 	
 	let ulDepth = document.createElement('ul');
 	ulDepth.className = 'list_check';
-	ulDepth.id = `sp_area_lastDepth_${codeno}`;
+	ulDepth.id = `sp_area_lastDepth_${code}`;
 	ulDepth.style.display = 'block';  //클릭시 기본적으로 생성되자마자 block이고 다른 게 클릭되면 none이 되게
 	divcity2.appendChild(ulDepth);
+	
+	console.log(divcity2.innerHTML);
 	
 	if(divcity2 && divcity2.querySelector('.list_check')){  //해당 div가 있고 그 안에 ul이 있으면
 		let li2 = document.createElement('li');  //빈 li 생성 그냥 여기서
 		ulDepth.appendChild(li2);  //방금 만든 ul에 li 추가
 		
-		div2(codeno, name);
+		cityData2(codeno);  //클릭시 생기는 두번째 옵션의 div들 여기서 호출, codeno = 107000
 	}
-	
-	let depth1btn = document.querySelector(`.depth1_btn_${codeno}`);
-	
-	//있는데 클릭시 기존 게 none되게
-	depth1btn.onclick = function(){
-		console.log(`닫히는 지역 클릭됨: ${codeno} / ${name}`);
-	
-	    // ✅ 클릭한 li에만 on 클래스 추가 (중첩 허용이면 제거하지 않음)
-	    this.classList.add('on');
-
-	    // ✅ 기존 열린 모든 2차 ul 닫기
-	    /*
-	    document.querySelectorAll('#second_cityopt .list_check').forEach(ul => {
-	      console.log("닫기");
-	      ul.style.display = 'none';
-	    });
-		*/
-		
-		if (ulDepth) {  //클릭시만 ulDepth가 있으니 ulDepth가 있단 건 클릭돼있단 거
-		  console.log("논");
-	      ulDepth.style.display = 'none';
-	    }
-	}
-	    
 }
 
+cityData1();  //첫번째 옵션 생성 호출
+recityOpt();  //생성해두면 알아서 before after로 조절
+
+//---------------------------------------------------------------------
+
+
+//두번째 옵션 생성 시작
+const cityData2 = function (code) {  //code = 107000
+  //console.log("url?", `/ajax/admin/cityCode/CICO${code}`);
+  
+  divcity2.innerHTML = '';  //div 비움
+  fetch(`/ajax/admin/cityCode/CICO${code}`)
+    .then(resp => {resp.json()
+    .then((data) => {
+		/*
+		for(i=0; i<data.length; i++){
+			ul2(data[i].cityCodeNo.slice(4), data[i].districtCodeNo, data[i].districtName);
+		}
+		*/
+		data.forEach((city)=>{
+			let code = city.cityCodeNo.slice(4);
+			let codeno = city.districtCodeNo;
+			let name = city.districtName;
+			div2(code, codeno, name);  //div가 반복적으로 생성!
+		})		
+	  })
+   })
+};
+
 //두번째 옵션 div 생성
-const div2 = function(codeno, name){
-	let licity2 = document.querySelector(`#sp_area_lastDepth_${codeno} > li`);  //아까 만든 ul의 li
+const div2 = function(code, codeno, name){
+	let licity2 = document.querySelector(`#sp_area_lastDepth_${code} > li`);  //아까 만든 ul의 li
 	
 	let divDepth = document.createElement('div');
 	divDepth.className = 'inpChk';
 	divDepth.id = `second_divopt_${codeno}`;
 	licity2.appendChild(divDepth);
+	
+	//console.log(licity2.innerHTML);
 	
 	input2(codeno, name);
 }
@@ -174,9 +192,6 @@ const input2 = function(codeno, name){
 		inputDepth.name = `loc_mcd[]`;
 	}
 	divcity_2.appendChild(inputDepth);
-	
-	//console.log("인풋 만들고", divcity_2.innerHTML);
-	
 	label2(codeno, name);
 }
 
@@ -205,52 +220,6 @@ const label2 = function(codeno, name){
 	}
 }
 
-//지역 초기화 버튼 생성
-const recityOpt = function(){
-	console.log("가장 마지막에 호출");  //z-index 밀려나지 않게 차라리 마지막에 생성
-	
-	let divcity__2 = document.createElement('div');
-	divcity__2.className = 'area_btn';
-	divcity2.appendChild(divcity__2);
-	
-	if(divcity2 && divcity2.querySelector(`.area_btn`)){
-		let btncity2 = document.createElement('button');
-		btncity2.type = 'button';
-		btncity2.className = 'btn_all_category';
-		btncity2.setAttribute('data-logging-flow', 'area');
-		btncity2.textContent = '지역 펼쳐보기';
-		
-		let btncity_2 = document.createElement('button');
-		btncity_2.type = 'button';
-		btncity_2.className = 'btn_reset';
-		btncity_2.textContent = '지역 초기화';
-		
-		btncity_2.onclick = function(){
-			ulcity1.querySelectorAll('li').forEach(li => li.classList.remove('on'));
-		}
-		
-		divcity__2.appendChild(btncity2);
-		divcity__2.appendChild(btncity_2);
-	}
-}
-
-//'지역 선택' 탭 열면 on으로 바뀜, 감지해서 초기화 버튼 생성
-const observeAreaSectionClassChange = function () {
-  const citySelect = document.querySelector('.area_section');
-  if (!citySelect) return;
-
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-      if (
-        mutation.attributeName === 'class' &&
-        citySelect.classList.contains('on')
-      ) {
-        recityOpt();  //초기화 버튼 호출
-      }
-    });
-  });
-  observer.observe(citySelect, { attributes: true });
-};
 
 
 //----------------------------------------------------------------
