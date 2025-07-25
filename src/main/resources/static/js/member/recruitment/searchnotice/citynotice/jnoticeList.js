@@ -115,33 +115,55 @@ const depth = function(topJobCode, topJobName){
 	                </div>
 	            </div>`;
 	box_detail_jobs.innerHTML += html;  //내부에 값 추가해야 제목끼리 안 겹침 주의
-	
-	
+}
+
+// 전역으로 카테고리별 sort 카운터 저장
+const sortCounters = {};  
+
+// 카운터 반환 및 증가
+const getSortCounter = function (categoryKey) {
+    if (!sortCounters.hasOwnProperty(categoryKey)) {
+        sortCounters[categoryKey] = 0;  // 처음이면 초기화
+    }
+    return sortCounters[categoryKey]++;  // 현재값 반환 후 증가
 }
 
 //하위직업 선택 값 채우기
 const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName){
-	//console.log("jobCode?", jobCode, "jobName?", jobName, "topJobCode?", topJobCode, "topJobName?", topJobName);
-	const overview = document.querySelector('#sp_job_category_subDepth_17 .overview');
-	const rowItems = overview.querySelectorAll('.row_item'); // 모든 형제 dl
-	
-	// 공통으로 들어가는 html
-	let html = `<dd class="area_list">
-			    	<button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-			   		 data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="0" data-count="0">
-			        ${jobName}
-			        	<span class="count">(0)</span>
-			    	</button>
-			     </dd>`;
-    
-	//예) 12..로 시작하면 직무직업으로
-	if(jobCode.startsWith(topJobCode-1)){
-		rowItems[0].innerHTML += html;
-	}else{
-	//예) 13으로 시작하면 전문분야로
-		rowItems[1].innerHTML += html;
-	}
+	const overview = document.querySelector(`#sp_job_category_subDepth_${topJobCode} .overview`);
+    const rowItems = overview.querySelectorAll('.row_item'); // 0: 직무·직업, 1: 전문분야
 
+    // 카테고리 결정
+    let targetIndex, categoryKey;
+    if (jobCode.startsWith(String(topJobCode - 1))) {  //예) 12..로 시작하면 직무직업으로
+        targetIndex = 0;  //첫번째 카테고리
+        categoryKey = `${topJobCode}_job`;
+    } else {    //예) 13으로 시작하면 전문분야로
+        targetIndex = 1;  //두번째 카테고리
+        categoryKey = `${topJobCode}_specialty`;
+    }
+
+    // 순번 가져오기
+    let sortValue = getSortCounter(categoryKey);
+
+    // 공통 HTML
+    let html = `
+        <dd class="area_list">
+            <button type="button" name="cat_kewd[]" class="btn_three_depth" 
+                data-code="${jobCode}" 
+                data-mcls_cd_no="${topJobCode}" 
+                data-mcls_cd_nm="${topJobName}" 
+                data-kewd_cd_no="${jobCode}" 
+                data-kewd_cd_nm="${jobName}" 
+                data-sort="${sortValue}" 
+                data-count="0">
+                ${jobName}
+                <span class="count">(0)</span>
+            </button>
+        </dd>`;
+
+    // 해당 row_item에 추가
+    rowItems[targetIndex].innerHTML += html;
 
     /*
     <!-- <dl class="row_item">
