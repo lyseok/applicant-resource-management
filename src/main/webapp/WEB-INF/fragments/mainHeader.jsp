@@ -325,9 +325,11 @@
 
                     // 외부 클릭시 닫기 (버튼/레이어 아닌 부분 클릭시)
                     document.addEventListener('click', function (event) {
-                        if (!memberBtn.contains(event.target) && !memberLayer.contains(event.target)) {
-                            memberLayer.style.display = 'none';
-                        }
+                    	if(memberBtn){
+	                        if (!memberBtn.contains(event.target) && !memberLayer.contains(event.target)) {
+	                            memberLayer.style.display = 'none';
+	                        }
+                    	}
                     });
                     axios.get('/ajax/userinfo')
                         .then(res => {
