@@ -29,9 +29,10 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header .bi .frame {
     display: block;
     overflow: hidden;
-    width: 134px;
-    height: 34px;
-    background: url("/dist/assets/images/logo.png") no-repeat 0 0 / 134px;
+    width: 184px;
+    height: 43px;
+    background: url("/dist/assets/images/logo.png") no-repeat 0 0 / 164px;
+    margin-left:-30px;
 }
 
 /* family service logo */
@@ -648,7 +649,6 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header .navigation .btn_menu {
     display: grid;
     position: relative;
-    padding-left: 14px;
     height: 40px;
     box-sizing: border-box;
     color: #373f57;
@@ -1176,7 +1176,7 @@ body::-webkit-scrollbar-thumb:hover {
     align-items: center;
     grid-area: navigation;
     grid-template-areas: "total gnb familysite";
-    grid-template-columns: 50px 1fr auto
+    grid-template-columns: 20px 1fr auto
 }
 
 /* normal fixed */
@@ -1224,7 +1224,8 @@ body::-webkit-scrollbar-thumb:hover {
 
 #sri_header.fixed .bi .frame, #sri_header.simple.bubble .bi .frame {
     width: 36px;
-    background:url("/dist/assets/images/home_violet30.png") 0 50% no-repeat
+    background:url("/dist/assets/images/home_violet30.png") 0 50% no-repeat;
+    margin-left:0;
 }
 
 #sri_header.fixed .search {
@@ -1484,15 +1485,15 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .wing ul li button.on {
-    color: #02c6ff
+    color:var(--violet80);
 }
 
 .wing ul li button.on:before {
-    background: #02c6ff
+    background: var(--violet80);
 }
 
 .wing ul li a:hover, .wing ul li button:hover {
-    color: #02c6ff
+    color: var(--violet80);
 }
 
 .wing>.btn_top {
