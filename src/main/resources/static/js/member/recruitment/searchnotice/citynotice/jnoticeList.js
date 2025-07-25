@@ -17,6 +17,8 @@ const selectTopJob = function(topJobCode, topJobName){
 	details.style.maxHeight = '202px';
 	box_jobs.style.display = 'none';
 	box_detail_jobs.style.display = 'block';
+
+	depth(topJobCode, topJobName);  //전체선택 부분만 미리 생성
 }
 
 //-----------------------데이터 호출---------------------------------------------
@@ -56,6 +58,7 @@ const getJobCodeListByTopJob = function (topJobCode, topJobName) {
     .then(resp => {resp.json()
     .then((data) => {
 		data.forEach((job)=>{
+			//console.log("job???", job);
 			let jobCode = job.jobCode;
 			let jobName = job.jobName;
 			let topJobCode = job.topJobCode;
@@ -66,9 +69,9 @@ const getJobCodeListByTopJob = function (topJobCode, topJobName) {
    })
 };
 
-//하위직업 선택 값 채우기
-const setJobCodeListByTopJob = function(jobCode, topJobCode, jobName, topJobName){
-	console.log("jobCode?", jobCode, "jobName?", jobName, "topJobCode?", topJobCode, "topJobName?", topJobName);
+// 하위직업 카테고리 제목, 전체선택 부분 생성
+const depth = function(topJobCode, topJobName){
+	
 	let html = `<div class="box_detail_depth on" id="sp_job_category_subDepth_${topJobCode}" style="display: block;">
 			        <div class="row row_all_select">
 			            <input type="checkbox" id="all_check_onedepth_${topJobCode}" name="cat_mcls[]" 
@@ -98,39 +101,6 @@ const setJobCodeListByTopJob = function(jobCode, topJobCode, jobName, topJobName
 	                                    <dt>
 	                                        <span class="txt">직무·직업</span>
 	                                    </dt>
-	                                    <dd class="area_list">
-	                                    	<button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-	                                   		 data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="0" data-count="581">
-		                                    ${jobName}
-		                                    	<span class="count">(581)</span>
-	                                    	</button>
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" 
-		                                     data-mcls_cd_no="${topJobCode}" data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" 
-		                                    data-sort="1" data-count="387">
-		                                    ${jobName}
-		                                    	<span class="count">(387)</span>
-		                                    </button>
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-		                                    data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="2" data-count="201">
-		                                     ${jobName}
-		                                    	<span class="count">(201)</span>
-		                                    </button>
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-		                                    data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="3" data-count="431">
-		                                     ${jobName}
-		                                    	<span class="count">(431)</span>
-		                                    </button>
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-		                                    data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="4" data-count="58">
-		                                     ${jobName}
-		                                    	<span class="count">(58)</span>
-		                                    </button>
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}"
-		                                     data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="5" data-count="365">
-		                                      ${jobName}
-		                                     	<span class="count">(365)</span>
-		                                    </button>
-		                                 </dd>
 	                                </dl>
 	                                <dl class="row_item">
 	                                    <dt>
@@ -138,47 +108,54 @@ const setJobCodeListByTopJob = function(jobCode, topJobCode, jobName, topJobName
 	                                        	<span class="txt">전문분야</span>
 	                                        </button>
 	                                    </dt>
-	                                    <dd class="area_list">
-		                           ${topJobName}       <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-		                                     data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="0" data-count="207">
-		                                    ${jobName}
-		                                    	<span class="count">(207)</span>
-		                                    </button>
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-		                                     data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="1" data-count="96">
-		                                    ${jobName}
-		                                    	<span class="count">(96)</span>
-		                                    </button>
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-		                                     data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="2" data-count="82">
-		                                    ${jobName}
-		                                    	<span class="count">(82)</span>
-		                                    </button>
-	                                    </dd>
-	                                </dl>
-	                                <dl class="row_item">
-	                                    <dt>
-	                                        <span class="txt">{businessTypeName}</span>
-	                                    </dt>
-	                                    <dd class="area_list">
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-		                                     data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="0" data-count="15">
-		                                    ${jobName}
-		                                    	<span class="count">(15)</span>
-	                                    </button>
-		                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-		                                     data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="1" data-count="73">
-		                                     ${jobName}
-		                                     	<span class="count">(73)</span>
-		                                     </button>
-	                                    </dd>
 	                                </dl>
 	                            </div>
 	                        </div>
 	                    </div>
 	                </div>
 	            </div>`;
-	box_detail_jobs.innerHTML += html;
+	box_detail_jobs.innerHTML += html;  //내부에 값 추가해야 제목끼리 안 겹침 주의
+	
+	
+}
+
+//하위직업 선택 값 채우기
+const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName){
+	//console.log("jobCode?", jobCode, "jobName?", jobName, "topJobCode?", topJobCode, "topJobName?", topJobName);
+	const overview = document.querySelector('#sp_job_category_subDepth_17 .overview');
+	const rowItems = overview.querySelectorAll('.row_item'); // 모든 형제 dl
+	
+	// 공통으로 들어가는 html
+	let html = `<dd class="area_list">
+			    	<button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
+			   		 data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="0" data-count="0">
+			        ${jobName}
+			        	<span class="count">(0)</span>
+			    	</button>
+			     </dd>`;
+    
+	//예) 12..로 시작하면 직무직업으로
+	if(jobCode.startsWith(topJobCode-1)){
+		rowItems[0].innerHTML += html;
+	}else{
+	//예) 13으로 시작하면 전문분야로
+		rowItems[1].innerHTML += html;
+	}
+
+
+    /*
+    <!-- <dl class="row_item">
+        <dt>
+            <span class="txt">{businessTypeName}</span>
+        </dt>
+        <dd class="area_list">
+            <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
+             data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="0" data-count="0">
+            ${jobName}
+            <span class="count">(0)</span>
+        </dd>
+    </dl> -->
+    */
 }
 
 getTopJobCodeList();  //상위직업 선택 값 호출
