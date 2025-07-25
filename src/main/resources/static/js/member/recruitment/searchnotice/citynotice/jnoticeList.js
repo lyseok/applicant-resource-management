@@ -101,6 +101,8 @@ const depth = function(topJobCode, topJobName){
 	                                    <dt>
 	                                        <span class="txt">직무·직업</span>
 	                                    </dt>
+	                                    <dd class="area_list">
+	                                    </dd>
 	                                </dl>
 	                                <dl class="row_item">
 	                                    <dt>
@@ -108,6 +110,8 @@ const depth = function(topJobCode, topJobName){
 	                                        	<span class="txt">전문분야</span>
 	                                        </button>
 	                                    </dt>
+	                                    <dd class="area_list">
+	                                    </dd>
 	                                </dl>
 	                            </div>
 	                        </div>
@@ -131,7 +135,7 @@ const getSortCounter = function (categoryKey) {
 //하위직업 선택 값 채우기
 const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName){
 	const overview = document.querySelector(`#sp_job_category_subDepth_${topJobCode} .overview`);
-    const rowItems = overview.querySelectorAll('.row_item'); // 0: 직무·직업, 1: 전문분야
+    const areaItems = overview.querySelectorAll('.area_list'); // 0: 직무·직업, 1: 전문분야
 
     // 카테고리 결정
     let targetIndex, categoryKey;
@@ -148,7 +152,6 @@ const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName
 
     // 공통 HTML
     let html = `
-        <dd class="area_list">
             <button type="button" name="cat_kewd[]" class="btn_three_depth" 
                 data-code="${jobCode}" 
                 data-mcls_cd_no="${topJobCode}" 
@@ -159,11 +162,10 @@ const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName
                 data-count="0">
                 ${jobName}
                 <span class="count">(0)</span>
-            </button>
-        </dd>`;
+            </button>`;
 
     // 해당 row_item에 추가
-    rowItems[targetIndex].innerHTML += html;
+    areaItems[targetIndex].innerHTML += html;
 
     /*
     <!-- <dl class="row_item">
