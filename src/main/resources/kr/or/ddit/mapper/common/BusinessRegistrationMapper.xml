@@ -22,7 +22,12 @@
 		ORDER BY BR_NUMBER
 	</select>
 	
-	
+	<select id="duplicatedBusinessregistration">
+		SELECT 
+			COUNT(BR_NUMBER)
+		FROM BUSINESSREGISTRATION
+		WHERE BR_NUMBER = #{brNumber}
+	</select>
 	  
 	
 	<insert id="insertBusinessregistration">
