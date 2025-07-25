@@ -91,7 +91,7 @@ getCityCodeList();  //도시 선택 값 호출
 //--------------------- 지역 선택 동적클래스--------------------------------------------------------------------
 
 //도시 선택 중첩
-function selectCity(button) {
+const selectCity = function (button) {
     const currentLi = button.closest('li');
 
     // 1. 모든 li의 on 제거 (selected는 유지)
@@ -115,7 +115,7 @@ function selectCity(button) {
 const selectedContainer = add_keyword.querySelector('#sp_preview_selected');
 const previewWrapper = document.getElementById('sp_preview'); // 패널 래퍼
 
-function selectDistrict(checkbox, mcode) {
+const selectDistrict = function (checkbox, mcode) {
     if (checkbox.dataset.checkType === "all") {
         // 1. 하위 구군 체크박스 모두 해제
         const subDistricts = document.querySelectorAll(`input[name="loc_cd[]"][data-mcode="${mcode}"]`);
@@ -134,7 +134,7 @@ function selectDistrict(checkbox, mcode) {
 }
 
 // 선택된 지역 span 갱신
-function updateSelectedRegions() {
+const updateSelectedRegions = function () {
     // 기존 span 초기화
     selectedContainer.innerHTML = "";
 
@@ -150,7 +150,7 @@ function updateSelectedRegions() {
 
 
 // span 추가
-function addKeywordSpan(cityName, districtName, districtCodeNo) {
+const addKeywordSpan = function (cityName, districtName, districtCodeNo) {
     // 중복 추가 방지
     if (document.querySelector(`#sp_preview_area_${districtCodeNo}`)) return;
 
@@ -178,13 +178,13 @@ function addKeywordSpan(cityName, districtName, districtCodeNo) {
 }
 
 // span 제거
-function removeKeywordSpan(districtCodeNo) {
+const removeKeywordSpan = function (districtCodeNo) {
     const btn = document.getElementById(`sp_preview_area_${districtCodeNo}`);
     if (btn) btn.closest('.selected_keyword').remove();
 }
 
 // 선택된 값이 없으면 숨김 + 클래스 토글
-function toggleKeywordDisplay() {
+const toggleKeywordDisplay = function () {
     const hasKeywords = selectedContainer.children.length > 0;
     selectedContainer.style.display = hasKeywords ? 'block' : 'none';
 
@@ -199,7 +199,7 @@ function toggleKeywordDisplay() {
 //--------------------------선택된 지역코드 객체에 넣기------------------------------------------
 
 // 선택된 districtCode를 params에 반영
-function updateDistrictCodes() {
+const updateDistrictCodes = function () {
     const selectedButtons = document.querySelectorAll('.selected_keyword .remove-btn');
     const codes = Array.from(selectedButtons).map(btn => btn.dataset.code); 
     params.districtCode = codes;  // params 객체 갱신
