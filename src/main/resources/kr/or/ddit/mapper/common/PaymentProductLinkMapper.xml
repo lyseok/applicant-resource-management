@@ -13,6 +13,7 @@
 		FROM
 		PAYMENT_PRODUCT_LINK
 		WHERE PAYMENT_NO = #{paymentNo}
+		AND ROWNUM = 1
 	</select>
 
 	<update id="minusRemaining">

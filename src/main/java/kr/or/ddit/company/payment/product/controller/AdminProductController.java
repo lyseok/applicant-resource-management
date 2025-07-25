@@ -27,6 +27,11 @@ public class AdminProductController {
 	@Autowired
 	PaymentProductService service;
 	
+	@GetMapping("/select/product")
+	public String selectFormUI() {
+		return "admin/payment/SellingProduct";
+	}
+	
 	@GetMapping("/delete/product")
 	public String deleteProduct(
 			@RequestParam String productNo		
