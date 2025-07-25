@@ -16,14 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.or.ddit.company.common.company.service.CompanyService;
-import kr.or.ddit.company.payment.link.service.PaymentProductLinkService;
-import kr.or.ddit.company.payment.payment.service.PaymentService;
-import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.recruitment.talentpool.service.CompanyTalentService;
 import kr.or.ddit.vo.common.CityCodeVO;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.JobVO;
-import kr.or.ddit.vo.common.PaymentVO;
 import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.EducationVO;
@@ -41,7 +37,10 @@ public class CompanyTalentPoolController {
 	@Autowired
 	private CompanyService cservice;
 
-	
+	@GetMapping
+	public String talentpoolPage() {
+		return "company/recruitment/talentpool/talentPoolList";
+	}
 	
 	@GetMapping("/list")
 	public String talentpoolList(

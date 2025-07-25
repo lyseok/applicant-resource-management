@@ -11,12 +11,22 @@ import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.EducationVO;
+import kr.or.ddit.vo.resume.LanguageSkillVO;
+import kr.or.ddit.vo.resume.MyLicenseVO;
 import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
+import kr.or.ddit.vo.resume.SpecialtyVO;
 @Mapper
 public interface TalentPoolMapper {
 	public List<ResumeVO> selectResumeByFilter(Map<String, Object> params);
+	public int selectResumeCountByFilter(Map<String, Object> params);
 	
+	public CareerVO selectCareerListByResumeNo(String resumeNo);
+	public List<MyLicenseVO> selectLicenseListByResumeNo(String resumeNo);
+	public List<MySkillVO> selectSkillListByResumeNo(String resumeNo);
+	public List<LanguageSkillVO> selectLanguageListByResumeNo(String resumeNo);
+	public EducationVO selectHighestEducationByResumeNo(String resumeNo);
+	public SpecialtyVO selectSpecialtyListByResumeNo(String resumeNo);
 	public int insertMember(MemberVO member);
 	
 	/**
@@ -52,6 +62,8 @@ public interface TalentPoolMapper {
 	public List<ResumeVO> selectSearchSkillAndLicense(Map<String, String> paramMap);
 	
 	public List<CareerVO> selectCareer();
+	
+	
 
 }
 

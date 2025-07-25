@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.ddit.company.recruitment.talentpool.service.TalentPoolService;
-import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -21,7 +20,9 @@ public class AjaxTalentPoolController {
 	private final TalentPoolService poolService;
 	
 	@GetMapping("/filter")
-	public ResponseEntity<List<ResumeVO>> getFilterResumeList(
+	public ResponseEntity<Map<String, Object>> getFilterResumeList(
+		@RequestParam int page,
+	    @RequestParam int pageSize,
 		@RequestParam(required = false) List<String> careerJobCodeList,
 		@RequestParam(required = false) List<String> careerYearList,
 		@RequestParam(required = false) List<String> careerGradeList,
@@ -30,9 +31,12 @@ public class AjaxTalentPoolController {
 		@RequestParam(required = false) String languageName,
 		@RequestParam(required = false) Integer languageScoreMin,
 		@RequestParam(required = false) String educationCode,
-		@RequestParam(required = false) String majorName	
+		@RequestParam(required = false) String majorName,
+		@RequestParam(required = false) String keyWord
 	){
 		Map<String, Object> params = new HashMap<>();
+		params.put("startRow", (page - 1) * pageSize);
+		params.put("endRow", page * pageSize);
 		params.put("careerJobCodeList", careerJobCodeList);
 		params.put("careerYearList", careerYearList);
 		params.put("careerGradeList", careerGradeList);
@@ -43,7 +47,7 @@ public class AjaxTalentPoolController {
 		params.put("majorName", majorName);
 		params.put("skillCodeList", skillCodeList);
 		
-		List<ResumeVO> resp = poolService.readResumeByFilter(params);
+		Map<String, Object> resp = poolService.readResumeByFilter(params);
 		return ResponseEntity.ok(resp);
 	}
 }

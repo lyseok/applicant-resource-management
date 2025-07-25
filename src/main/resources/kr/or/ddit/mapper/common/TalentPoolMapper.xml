@@ -2,86 +2,355 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.TalentPoolMapper">
 
-	<select id="selectResumeByFilter" resultType="ResumeVO">
-		SELECT *
-		FROM RESUME R
-		WHERE 1=1
-	  <!-- 경력 -->
-	  <if test="careerJobCodeList != null and careerJobCodeList.size() > 0">
-	    AND EXISTS (
-	      SELECT 1 FROM CAREER C
-	      WHERE C.RESUME_NO = R.RESUME_NO
-	      AND C.JOB_CODE IN
-	      <foreach collection="careerJobCodeList" item="job" open="(" close=")" separator=",">
-	        #{job}
-	      </foreach>
-	      <if test="careerYearMin != null">
-	        AND C.CAREER_YEAR &gt;= #{careerYearMin}
-	      </if>
-	      <if test="careerYearMax != null">
-	        AND C.CAREER_YEAR &lt;= #{careerYearMax}
-	      </if>
-	      <if test="careerGradeList != null and careerGradeList.size() > 0">
-	        AND C.POSITION_GRADE_CODE IN
-	        <foreach collection="careerGradeList" item="grade" open="(" close=")" separator=",">
-	          #{grade}
-	        </foreach>
-	      </if>
-	    )
-	  </if>
+	<resultMap id="ResumeMap" type="ResumeVO">
+	    <!-- 상위 이력서 정보 -->
+	    <id property="resumeNo" column="RESUME_NO"/>
+	    <result property="userId" column="USER_ID"/>
+	    <result property="userName" column="USER_NAME"/>
+	    <result property="email" column="EMAIL"/>
+	    <result property="tel" column="TEL"/>
+	    <result property="photo" column="PHOTO"/>
+	    <result property="birth" column="BIRTH"/>
+	    <result property="resumeMainYn" column="RESUME_MAIN_YN"/>
+	    <result property="resumeName" column="RESUME_NAME"/>
 	
-	  <!-- 자격증: 모두 보유한 경우만 -->
-	  <if test="licenseCodeList != null and licenseCodeList.size() > 0">
-	    AND (
-	      SELECT COUNT(DISTINCT L.LICENSE_CODE)
-	      FROM MY_LICENSE L
-	      WHERE L.RESUME_NO = R.RESUME_NO
-	      AND L.LICENSE_CODE IN
-	      <foreach collection="licenseCodeList" item="code" open="(" close=")" separator=",">
-	        #{code}
-	      </foreach>
-	    ) = ${licenseCodeList.size()}
-	  </if>
-	
-	  <!-- 보유기술: 모두 보유한 경우만 -->
-	  <if test="skillCodeList != null and skillCodeList.size() > 0">
-	    AND (
-	      SELECT COUNT(DISTINCT S.MY_SKILL_CODE)
-	      FROM MY_SKILL S
-	      WHERE S.RESUME_NO = R.RESUME_NO
-	      AND UPPER(S.MY_SKILL_NAME) IN
-	      <foreach collection="skillCodeList" item="code" open="(" close=")" separator=",">
-	         UPPER(#{code})
-	      </foreach>
-	    ) = ${skillCodeList.size()}
-	  </if>
-	
-	  <!-- 어학: 이름/점수 (토익 등) -->
-	  <if test="languageName != null and languageScoreMin != null">
-	    AND EXISTS (
-	      SELECT 1 FROM LANGUAGE_SKILL LS
-	      WHERE LS.RESUME_NO = R.RESUME_NO
-	      AND LS.LANGUAGE_EXAM_NAME = #{languageName}
-	      AND LS.LANGUAGE_EXAM_SCORE &gt;= #{languageScoreMin}
-	    )
-	  </if>
-	
-	  <!-- 학력: 최종학력/전공 -->
-	  <if test="educationCode != null">
-	    AND EXISTS (
-	      SELECT 1 FROM EDUCATION E
-	      WHERE E.RESUME_NO = R.RESUME_NO
-	      AND E.HIGHEST_EDUCATION_CODE = #{educationCode}
-	    )
-	  </if>
-	  <if test="majorName != null">
-	    AND EXISTS (
-	      SELECT 1 FROM EDUCATION E
-	      WHERE E.RESUME_NO = R.RESUME_NO
-	      AND (E.MAIN_MAJOR LIKE '%' || #{majorName} || '%' OR E.SUB_MAJOR LIKE '%' || #{majorName} || '%')
-	    )
-	  </if>
+	    <!-- 학력(최종 1건) -->
+	    <association property="education" javaType="EducationVO"
+	        select="selectHighestEducationByResumeNo" column="RESUME_NO"/>
+	    <!-- 경력 리스트 -->
+	    <collection property="careerList" ofType="CareerVO" 
+	        select="selectCareerListByResumeNo" column="RESUME_NO"/>
+	    <!-- 자격증 리스트 -->
+	    <collection property="myLicenseList" ofType="MyLicenseVO" 
+	        select="selectLicenseListByResumeNo" column="RESUME_NO"/>
+	    <!-- 보유기술 리스트 -->
+	    <collection property="mySkillList" ofType="MySkillVO"
+	        select="selectSkillListByResumeNo" column="RESUME_NO"/>
+	    <!-- 어학 리스트 -->
+	    <collection property="languageSkillList" ofType="LanguageSkillVO"
+	        select="selectLanguageListByResumeNo" column="RESUME_NO"/>
+	    <!-- 전공 리스트 -->
+<!-- 	    <collection property="specialtyList" ofType="SpecialtyVO"
+	        select="selectSpecialtyListByResumeNo" column="RESUME_NO"/> -->
+	</resultMap>
+
+	<select id="selectResumeByFilter" resultMap="ResumeMap">
+		SELECT * FROM (
+		  SELECT ROWNUM rnum, A.* FROM (
+		    SELECT R.*
+		    FROM RESUME R
+		    JOIN MEMBER M ON M.RESUME_NO = R.RESUME_NO
+		    WHERE 1=1
+		      AND M.RESUME_NO IS NOT NULL
+		      <!-- 경력 필터 -->
+		      <if test="careerJobCodeList != null and careerJobCodeList.size() > 0">
+		        AND EXISTS (
+		          SELECT 1 FROM CAREER C
+		          WHERE C.RESUME_NO = R.RESUME_NO
+		          AND C.JOB_CODE IN
+		          <foreach collection="careerJobCodeList" item="job" open="(" close=")" separator=",">
+		            #{job}
+		          </foreach>
+		          <if test="careerYearMin != null">
+		            AND C.CAREER_YEAR &gt;= #{careerYearMin}
+		          </if>
+		          <if test="careerYearMax != null">
+		            AND C.CAREER_YEAR &lt;= #{careerYearMax}
+		          </if>
+		          <if test="careerGradeList != null and careerGradeList.size() > 0">
+		            AND C.POSITION_GRADE_CODE IN
+		            <foreach collection="careerGradeList" item="grade" open="(" close=")" separator=",">
+		              #{grade}
+		            </foreach>
+		          </if>
+		        )
+		      </if>
+		      <!-- 자격증 -->
+		      <if test="licenseCodeList != null and licenseCodeList.size() > 0">
+		        AND (
+		          SELECT COUNT(DISTINCT L.LICENSE_CODE)
+		          FROM MY_LICENSE L
+		          WHERE L.RESUME_NO = R.RESUME_NO
+		          AND L.LICENSE_CODE IN
+		          <foreach collection="licenseCodeList" item="code" open="(" close=")" separator=",">
+		            #{code}
+		          </foreach>
+		        ) = ${licenseCodeList.size()}
+		      </if>
+		      <!-- 보유기술 -->
+		      <if test="skillCodeList != null and skillCodeList.size() > 0">
+		        AND (
+		          SELECT COUNT(DISTINCT S.MY_SKILL_CODE)
+		          FROM MY_SKILL S
+		          WHERE S.RESUME_NO = R.RESUME_NO
+		          AND UPPER(S.MY_SKILL_NAME) IN
+		          <foreach collection="skillCodeList" item="code" open="(" close=")" separator=",">
+		             UPPER(#{code})
+		          </foreach>
+		        ) = ${skillCodeList.size()}
+		      </if>
+		      <!-- 어학 -->
+		      <if test="languageName != null and languageScoreMin != null">
+		        AND EXISTS (
+		          SELECT 1 FROM LANGUAGE_SKILL LS
+		          WHERE LS.RESUME_NO = R.RESUME_NO
+		          AND LS.LANGUAGE_EXAM_NAME = #{languageName}
+		          AND LS.LANGUAGE_EXAM_SCORE &gt;= #{languageScoreMin}
+		        )
+		      </if>
+		      <!-- 학력 -->
+		      <if test="educationCode != null">
+		        AND EXISTS (
+		          SELECT 1 FROM EDUCATION E
+		          WHERE E.RESUME_NO = R.RESUME_NO
+		          AND E.HIGHEST_EDUCATION_CODE = #{educationCode}
+		        )
+		      </if>
+		      <if test="majorName != null">
+		        AND EXISTS (
+		          SELECT 1 FROM SPECIALTY S
+		          WHERE S.RESUME_NO = R.RESUME_NO
+		          AND (S.MAIN_MAJOR LIKE '%' || #{majorName} || '%' OR S.SUB_MAJOR LIKE '%' || #{majorName} || '%')
+		        )
+		      </if>
+				<if test="careerYearList != null and careerYearList.size() > 0">
+				  AND (
+				    <!-- 1) careerYearList에 신입('YEXP-Y0')만 있는 경우 -->
+				    <if test="careerYearList.size() == 1 and careerYearList[0] == 'YEXP-Y0'">
+				      NOT EXISTS (
+				        SELECT 1 FROM CAREER C
+				        WHERE C.RESUME_NO = R.RESUME_NO
+				      )
+				    </if>
+				    <!-- 2) 신입 + 경력코드가 함께 있으면, CAREER가 없거나 or 경력코드 매칭 -->
+				    <if test="careerYearList.contains('YEXP-Y0') and !(careerYearList.size() == 1 and careerYearList[0] == 'YEXP-Y0')">
+				      (
+				        NOT EXISTS (
+				          SELECT 1 FROM CAREER C
+				          WHERE C.RESUME_NO = R.RESUME_NO
+				        )
+				        OR
+				        EXISTS (
+				          SELECT 1 FROM CAREER C
+				          WHERE C.RESUME_NO = R.RESUME_NO
+				          AND C.CAREER_YEAR IN
+				          <foreach collection="careerYearList" item="year" open="(" close=")" separator=",">
+				            #{year}
+				          </foreach>
+				        )
+				      )
+				    </if>
+				    <!-- 3) 신입 없이 경력코드만 있으면, 해당 연차 매칭만 -->
+				    <if test="!careerYearList.contains('YEXP-Y0')">
+				      EXISTS (
+				        SELECT 1 FROM CAREER C
+				        WHERE C.RESUME_NO = R.RESUME_NO
+				        AND C.CAREER_YEAR IN
+				        <foreach collection="careerYearList" item="year" open="(" close=")" separator=",">
+				          #{year}
+				        </foreach>
+				      )
+				    </if>
+				  )
+				</if>
+		    ORDER BY R.RESUME_NO DESC  <!-- 필요시 정렬 기준 변경 -->
+		  ) A
+		  WHERE ROWNUM &lt;= #{endRow}
+		)
+		WHERE rnum &gt; #{startRow}
 	</select>
+	
+	<!-- 경력 -->
+	<select id="selectCareerListByResumeNo" parameterType="string" resultType="CareerVO">
+	    SELECT 
+	    	CA.JOB_CODE
+	    	, (SELECT J.JOB_NAME FROM JOB J WHERE J.JOB_CODE = CA.JOB_CODE) AS JOB_CODE_NAME
+	    	, CA.CAREER_YEAR
+	    	, (SELECT C.CODE_NAME FROM CMN_CODE C WHERE C.CODE_DETAIL_NO = CA.CAREER_YEAR) AS CAREER_YEAR_NAME
+	    	, CA.JOB_GRADE_CODE
+	    	, (SELECT C.CODE_NAME FROM CMN_CODE C WHERE C.CODE_DETAIL_NO = CA.JOB_GRADE_CODE) AS JOB_GRADE_CODE_NAME
+	    	, CA.POSITION_CODE
+	    	, (SELECT C.CODE_NAME FROM CMN_CODE C WHERE C.CODE_DETAIL_NO = CA.POSITION_CODE) AS POSITION_CODE_NAME
+	    	, CA.COM_ID
+	    	, (SELECT COM_NAME FROM COMPANY WHERE USER_ID = CA.COM_ID) AS COM_NAME
+	    FROM CAREER CA WHERE CA.RESUME_NO = #{resumeNo}
+	</select>
+	
+	<!-- 자격증 -->
+	<select id="selectLicenseListByResumeNo" parameterType="string" resultType="MyLicenseVO">
+	    SELECT LICENSE_CODE
+	    	, (SELECT C.CODE_NAME FROM CMN_CODE C WHERE C.CODE_DETAIL_NO = LICENSE_CODE) AS LICENSE_CODE_NAME
+	    FROM MY_LICENSE WHERE RESUME_NO = #{resumeNo}
+	</select>
+	
+	<!-- 보유기술 -->
+	<select id="selectSkillListByResumeNo" parameterType="string" resultType="MySkillVO">
+	    SELECT MY_SKILL_NAME
+	    FROM MY_SKILL WHERE RESUME_NO = #{resumeNo}
+	</select>
+	
+	<!-- 어학 -->
+	<select id="selectLanguageListByResumeNo" parameterType="string" resultType="LanguageSkillVO">
+	    SELECT 
+	    	LANGUAGE_EXAM_CODE
+	    	, (SELECT C.CODE_NAME FROM CMN_CODE C WHERE C.CODE_DETAIL_NO = LANGUAGE_EXAM_CODE) AS LANGUAGE_EXAM_CODE_NAME
+	    	, LANGUAGE_EXAM_NAME
+	    	, LANGUAGE_EXAM_SCORE
+	    	, LANGUAGE_EXAM_LEVEL_CODE
+	    	, (SELECT C.CODE_NAME FROM CMN_CODE C WHERE C.CODE_DETAIL_NO = LANGUAGE_EXAM_LEVEL_CODE) AS LANGUAGE_EXAM_LEVEL_CODE_NAME
+	    FROM LANGUAGE_SKILL WHERE RESUME_NO = #{resumeNo}
+	</select>
+	
+	<!-- 학력(최종 한 건) -->
+	<select id="selectHighestEducationByResumeNo" parameterType="string" resultType="EducationVO">
+	    SELECT 
+	    	HIGHEST_EDUCATION_CODE
+	    	, (SELECT C.CODE_NAME FROM CMN_CODE C WHERE C.CODE_DETAIL_NO = HIGHEST_EDUCATION_CODE) AS HIGHEST_EDUCATION_CODE_NAME
+	    	, SCHOOL_NAME
+	    	, DEPARTMENT_CODE
+	    FROM EDUCATION 
+	    WHERE RESUME_NO = #{resumeNo}
+	    ORDER BY HIGHEST_EDUCATION_CODE DESC
+	    FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<!-- 전공(여러 건) -->
+	<select id="selectSpecialtyListByResumeNo" parameterType="string" resultType="SpecialtyVO">
+	    SELECT MAIN_MAJOR, SUB_MAJOR
+	    FROM SPECIALTY WHERE RESUME_NO = #{resumeNo}
+	</select>
+	 
+	<select id="selectResumeCountByFilter" resultType="int">
+		SELECT COUNT(*)
+		FROM RESUME R
+		JOIN MEMBER M ON M.RESUME_NO = R.RESUME_NO
+		WHERE 1=1
+	      AND M.RESUME_NO IS NOT NULL
+	      <!-- 경력 필터 -->
+	      <if test="careerJobCodeList != null and careerJobCodeList.size() > 0">
+	        AND EXISTS (
+	          SELECT 1 FROM CAREER C
+	          WHERE C.RESUME_NO = R.RESUME_NO
+	          AND C.JOB_CODE IN
+	          <foreach collection="careerJobCodeList" item="job" open="(" close=")" separator=",">
+	            #{job}
+	          </foreach>
+	          <if test="careerYearMin != null">
+	            AND C.CAREER_YEAR &gt;= #{careerYearMin}
+	          </if>
+	          <if test="careerYearMax != null">
+	            AND C.CAREER_YEAR &lt;= #{careerYearMax}
+	          </if>
+	          <if test="careerGradeList != null and careerGradeList.size() > 0">
+	            AND C.POSITION_GRADE_CODE IN
+	            <foreach collection="careerGradeList" item="grade" open="(" close=")" separator=",">
+	              #{grade}
+	            </foreach>
+	          </if>
+	        )
+	      </if>
+	      <!-- 자격증 -->
+	      <if test="licenseCodeList != null and licenseCodeList.size() > 0">
+	        AND (
+	          SELECT COUNT(DISTINCT L.LICENSE_CODE)
+	          FROM MY_LICENSE L
+	          WHERE L.RESUME_NO = R.RESUME_NO
+	          AND L.LICENSE_CODE IN
+	          <foreach collection="licenseCodeList" item="code" open="(" close=")" separator=",">
+	            #{code}
+	          </foreach>
+	        ) = ${licenseCodeList.size()}
+	      </if>
+	      <!-- 보유기술 -->
+	      <if test="skillCodeList != null and skillCodeList.size() > 0">
+	        AND (
+	          SELECT COUNT(DISTINCT S.MY_SKILL_CODE)
+	          FROM MY_SKILL S
+	          WHERE S.RESUME_NO = R.RESUME_NO
+	          AND UPPER(S.MY_SKILL_NAME) IN
+	          <foreach collection="skillCodeList" item="code" open="(" close=")" separator=",">
+	             UPPER(#{code})
+	          </foreach>
+	        ) = ${skillCodeList.size()}
+	      </if>
+	      <!-- 어학 -->
+	      <if test="languageName != null and languageScoreMin != null">
+	        AND EXISTS (
+	          SELECT 1 FROM LANGUAGE_SKILL LS
+	          WHERE LS.RESUME_NO = R.RESUME_NO
+	          AND LS.LANGUAGE_EXAM_NAME = #{languageName}
+	          AND LS.LANGUAGE_EXAM_SCORE &gt;= #{languageScoreMin}
+	        )
+	      </if>
+	      <!-- 학력 -->
+	      <if test="educationCode != null">
+	        AND EXISTS (
+	          SELECT 1 FROM EDUCATION E
+	          WHERE E.RESUME_NO = R.RESUME_NO
+	          AND E.HIGHEST_EDUCATION_CODE = #{educationCode}
+	        )
+	      </if>
+	      <if test="majorName != null">
+	        AND EXISTS (
+	          SELECT 1 FROM SPECIALTY S
+	          WHERE S.RESUME_NO = R.RESUME_NO
+	          AND (S.MAIN_MAJOR LIKE '%' || #{majorName} || '%' OR S.SUB_MAJOR LIKE '%' || #{majorName} || '%')
+	        )
+	      </if>
+	      <if test="careerYearList != null and careerYearList.size() > 0">
+			  AND (
+			    <!-- 1) careerYearList에 신입('YEXP-Y0')만 있는 경우 -->
+			    <if test="careerYearList.size() == 1 and careerYearList[0] == 'YEXP-Y0'">
+			      NOT EXISTS (
+			        SELECT 1 FROM CAREER C
+			        WHERE C.RESUME_NO = R.RESUME_NO
+			      )
+			    </if>
+			    <!-- 2) 신입 + 경력코드가 함께 있으면, CAREER가 없거나 or 경력코드 매칭 -->
+			    <if test="careerYearList.contains('YEXP-Y0') and !(careerYearList.size() == 1 and careerYearList[0] == 'YEXP-Y0')">
+			      (
+			        NOT EXISTS (
+			          SELECT 1 FROM CAREER C
+			          WHERE C.RESUME_NO = R.RESUME_NO
+			        )
+			        OR
+			        EXISTS (
+			          SELECT 1 FROM CAREER C
+			          WHERE C.RESUME_NO = R.RESUME_NO
+			          AND C.CAREER_YEAR IN
+			          <foreach collection="careerYearList" item="year" open="(" close=")" separator=",">
+			            #{year}
+			          </foreach>
+			        )
+			      )
+			    </if>
+			    <!-- 3) 신입 없이 경력코드만 있으면, 해당 연차 매칭만 -->
+			    <if test="!careerYearList.contains('YEXP-Y0')">
+			      EXISTS (
+			        SELECT 1 FROM CAREER C
+			        WHERE C.RESUME_NO = R.RESUME_NO
+			        AND C.CAREER_YEAR IN
+			        <foreach collection="careerYearList" item="year" open="(" close=")" separator=",">
+			          #{year}
+			        </foreach>
+			      )
+			    </if>
+			  )
+			</if>
+	    ORDER BY R.RESUME_NO DESC  <!-- 필요시 정렬 기준 변경 -->
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<select id="selectSearchSkillAndLicense"
 		resultMap="resumeResultMap" parameterType="map">
