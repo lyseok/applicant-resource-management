@@ -57,8 +57,5 @@ public class SalaryManagementServiceImpl implements SalaryManagementService{
 	}
 
 	
-
-	
-
 	
 }

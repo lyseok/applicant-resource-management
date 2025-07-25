@@ -1,42 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <head>
 <meta charset="UTF-8">
 <title>이력서 등록</title>
 <link rel="stylesheet" href="/css/member/resume/resume.css">
-<script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
-<c:if test="${not empty hasIntrod }">
-		<script>
-			alert("${hasIntrod}");
-			location.href="/mypage/introduction/create";
-		</script>
+<c:if test="${mode eq 'update'}">
+	<script>
+	  const mode = '${mode}'; // "update"로 들어옴
+	  console.log(mode);
+	  const resumeFromServer = ${resumeJson};
+	</script>
 </c:if>
+<c:if test="${mode eq 'create'}">
+	<script>
+	  const mode = '${mode}'; // "update"로 들어옴
+	</script>
+</c:if>
+<script type="text/javascript" src="/js/member/resume/resumeForm.js" defer></script>
 </head>
-<body>
-	<div class="d-flex align-items-start">
-		<div id="quick_menu">
-			<a href="#resumeInfoView" class="on"><i class='bx  bx-hashtag'></i> 기본정보</a>
-			<a href="#section-educationList"><i class='bx  bx-hashtag'></i> 학력</a>
-			<a href="#section-introduction"><i class='bx  bx-hashtag'></i> 자기소개서</a>
-			<a href="#section-portfolioList"><i class='bx  bx-hashtag'></i> 포트폴리오</a>
-			<a href="#section-careerList"><i class='bx  bx-hashtag'></i> 경력</a>
-			<a href="#section-mySkillList"><i class='bx  bx-hashtag'></i> 보유기술</a>
-			<a href="#section-myExperienceList"><i class='bx  bx-hashtag'></i> 보유경험</a>
-			<a href="#section-supportList"><i class='bx  bx-hashtag'></i> 고용지원 정보</a>
-			<a href="#section-myLicenseList"><i class='bx  bx-hashtag'></i> 보유자격</a>
-			<a href="#section-languageSkillList"><i class='bx  bx-hashtag'></i> 어학</a>
-			<a href="#section-awardList"><i class='bx  bx-hashtag'></i> 수상</a>
-			<a href="#section-militaryList"><i class='bx  bx-hashtag'></i> 병역</a>
-		</div>
+<body class="aos_frans_none">
+	<div class="d-flex align-items-start gap-4 resume_form_bg">
 		<div class="resume-wrap resume_form_wrap">
-	
 			<!-- Header -->
 			<div class="resume-header-wrap" id="resumeInfoView">
 				<div class="resume-header">
-					<div class="profile-img">${memberInfo.memImg }</div>
+					<div class="profile-img-wrap">
+						<c:if test="${not empty memberInfo.memImg }">
+							<img src="${memberInfo.memImg }" alt="" class="profile-img">
+						</c:if>
+						<c:if test="${not empty resumeVO.photo }">
+							<img src="${resumeVO.photo }" alt="" class="profile-img" >
+						</c:if>
+						<c:if test="${empty memberInfo.memImg and empty resumeVO.photo}">
+							<img src="https://placehold.co/120x150" alt="" class="profile-img">
+						</c:if>
+					</div>
 					<div class="header-info">
 						<div class="d-flex align-items-end">
 							<span class="name lh1" id="viewName">${memberInfo.memName }</span>
@@ -102,10 +103,26 @@
 		  data-birth="${memberInfo.memBir}"
 		  data-email="${memberInfo.memEmail}"
 		  data-tel="${memberInfo.memTel}"
+		  data-photo="${memberInfo.memTel}"
 		  data-address="${memberInfo.memAdd1}||${memberInfo.memAdd2}">
 		</div>
 			<form action="post" id="resume_form">
 	
+				<!-- 스킬 -->
+				<!-- 보유기술 (MY_SKILL) 입력폼 -->
+				<div class="section" id="section-mySkillList">
+					<div class="section-title">
+						<h6>나의스킬</h6>
+						<button class="add-btn" type="button" id="btn-mySkillList">+
+							추가</button>
+					</div>
+					<div class="section-content" style="color: #b8bfc9;">주요 보유기술,
+						툴, 언어 등을 입력해주세요.</div>
+					<div class="formContainer"></div>
+					<div class="listContainer"></div>
+				</div>
+				
+				
 				<!-- 학력 -->
 				<!-- 학력 (EDUCATION) 입력폼 -->
 				<div class="section" id="section-educationList">
@@ -121,8 +138,8 @@
 					<div class="formContainer"></div>
 					<div class="listContainer"></div>
 				</div>
-				
-	
+
+
 				<!-- 자기소개서 (INTRODUCTION) 입력폼 -->
 				<div class="section" id="section-introduction">
 					<div class="section-title">
@@ -167,6 +184,7 @@
 					<div class="listContainer"></div>
 				</div>
 	
+	
 				<!-- 경력 (CAREER) 입력폼 -->
 				<div class="section" id="section-careerList">
 					<div class="section-title">
@@ -181,16 +199,30 @@
 				</div>
 	
 	
-				<!-- 스킬 -->
-				<!-- 보유기술 (MY_SKILL) 입력폼 -->
-				<div class="section" id="section-mySkillList">
+				<!-- 포트폴리오 (PORTFOLIO) 입력폼 -->
+				<div class="section" id="section-portfolioList">
 					<div class="section-title">
-						<h6>보유기술</h6>
-						<button class="add-btn" type="button" id="btn-mySkillList">+
+						<h6>포트폴리오</h6>
+						<button class="add-btn" type="button" id="btn-portfolioList">+
 							추가</button>
 					</div>
-					<div class="section-content" style="color: #b8bfc9;">주요 보유기술,
-						툴, 언어 등을 입력해주세요.</div>
+					<div class="section-content" style="color: #b8bfc9;">주요 프로젝트,
+						작업 포트폴리오 정보를 입력해주세요.</div>
+					<div class="formContainer"></div>
+					<div class="listContainer"></div>
+				</div>
+	
+	
+	
+				<!-- 보유자격 (MY_LICENSE) 입력폼 -->
+				<div class="section" id="section-myLicenseList">
+					<div class="section-title">
+						<h6>자격증</h6>
+						<button class="add-btn" type="button" id="btn-myLicenseList">+
+							추가</button>
+					</div>
+					<div class="section-content" style="color: #b8bfc9;">보유한 자격증
+						정보를 입력해주세요.</div>
 					<div class="formContainer"></div>
 					<div class="listContainer"></div>
 				</div>
@@ -208,39 +240,10 @@
 				</div>
 	
 	
-				<!-- 활동 - 고용지원 (SUPPORT) 입력폼 -->
-				<div class="section" id="section-supportList">
-					<div class="section-title">
-						<h6>고용지원 정보</h6>
-						<button class="add-btn" type="button" id="btn-supportList">+
-							추가</button>
-					</div>
-					<div class="section-content" style="color: #b8bfc9;">장애 등 고용지원
-						대상 정보를 입력해주세요.</div>
-					<div class="formContainer"></div>
-					<div class="listContainer"></div>
-				</div>
-	
-	
-	
-				<!-- 보유자격 (MY_LICENSE) 입력폼 -->
-				<div class="section" id="section-myLicenseList">
-					<div class="section-title">
-						<h6>보유자격</h6>
-						<button class="add-btn" type="button" id="btn-myLicenseList">+
-							추가</button>
-					</div>
-					<div class="section-content" style="color: #b8bfc9;">보유한 자격증
-						정보를 입력해주세요.</div>
-					<div class="formContainer"></div>
-					<div class="listContainer"></div>
-				</div>
-	
-	
 				<!-- 어학 (LANGUAGE_SKILL) 입력폼 -->
 				<div class="section" id="section-languageSkillList">
 					<div class="section-title">
-						<h6>어학</h6>
+						<h6>어학 자격증</h6>
 						<button class="add-btn" type="button" id="btn-languageSkillList">+
 							추가</button>
 					</div>
@@ -264,20 +267,6 @@
 					<div class="listContainer"></div>
 				</div>
 	
-	
-				<!-- 포트폴리오 (PORTFOLIO) 입력폼 -->
-				<div class="section" id="section-portfolioList">
-					<div class="section-title">
-						<h6>포트폴리오</h6>
-						<button class="add-btn" type="button" id="btn-portfolioList">+
-							추가</button>
-					</div>
-					<div class="section-content" style="color: #b8bfc9;">주요 프로젝트,
-						작업 포트폴리오 정보를 입력해주세요.</div>
-					<div class="formContainer"></div>
-					<div class="listContainer"></div>
-				</div>
-	
 				<!-- 병역 (MILITARY) 입력폼 -->
 				<div class="section" id="section-militaryList">
 					<div class="section-title">
@@ -289,6 +278,21 @@
 					<div class="formContainer"></div>
 					<div class="listContainer"></div>
 				</div>
+				
+	
+				<!-- 활동 - 고용지원 (SUPPORT) 입력폼 -->
+				<div class="section" id="section-supportList">
+					<div class="section-title">
+						<h6>취업우대사항</h6>
+						<button class="add-btn" type="button" id="btn-supportList">+
+							추가</button>
+					</div>
+					<div class="section-content" style="color: #b8bfc9;">장애 등 고용지원
+						대상 정보를 입력해주세요.</div>
+					<div class="formContainer"></div>
+					<div class="listContainer"></div>
+				</div>
+	
 	
 				<div class="" id="form-resume">
 					<input type="hidden" name="resumeName" id="hiddenResumeName" value="${memberInfo.memName }님의 이력서 ${resumeCnt + 1}">
@@ -296,6 +300,7 @@
 					<input type="hidden" name="birth" id="hiddenBirth">
 					<input type="hidden" name="email" id="hiddenEmail">
 					<input type="hidden" name="tel" id="hiddenTel">
+					<input type="hidden" name="photo" id="hiddenPhoto">
 					<input type="hidden" name="address" id="hiddenAddress">
 					<input type="hidden" name="userId" value="${memberInfo.userId}">
 					<input type="hidden" name="resumeSubmitYn" value="N">
@@ -303,17 +308,33 @@
 						<div class="inner">
 							<div class="section-form-row">
 								<label class="required h3 m-0">이력서 제목</label>
-								<input type="text" name="resumeName" value="" placeholder="이력서 제목을 입력해주세요.(미입력 시 기본 제목으로 등록.)" class="h50">
+								<input type="text" name="resumeName" id="resumeNameInput" placeholder="이력서 제목을 입력해주세요.(미입력 시 기본 제목으로 등록.)" class="h50">
 							</div>
 	
 							<div class="section-form-btns">
-								<a href="/mypage/resume/list" class="btn btn_red_line" onclick="showLoading()">취소</a>
-								<button type="submit" class="btn btn_violet">등록</button>
+								<a href="/mypage/resume/list" class="btn btn_red_line h50" onclick="showLoading()">취소</a>
+								<button type="submit" class="btn btn_violet h50 justify-content-center w140">등록</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</form>
+		</div>
+	
+		
+		<div id="quick_menu">
+			<a href="#resumeInfoView" class="on">기본정보</a>
+			<a href="#section-educationList">학력</a>
+			<a href="#section-introduction">자기소개서</a>
+			<a href="#section-portfolioList">포트폴리오</a>
+			<a href="#section-careerList">경력</a>
+			<a href="#section-mySkillList">보유기술</a>
+			<a href="#section-myExperienceList">보유경험</a>
+			<a href="#section-supportList">고용지원 정보</a>
+			<a href="#section-myLicenseList">보유자격</a>
+			<a href="#section-languageSkillList">어학</a>
+			<a href="#section-awardList">수상</a>
+			<a href="#section-militaryList">병역</a>
 		</div>
 	</div>
 	<!-- 삭제 확인 모달 -->

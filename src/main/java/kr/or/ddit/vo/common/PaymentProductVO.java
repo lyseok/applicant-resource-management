@@ -16,7 +16,13 @@ public class PaymentProductVO implements Serializable{
 	private String productPrice;
 	private String productImg;
 	private String productPeriod;
-	private String productType;
+	private String productStatus;
+	private String ProductType;
+	
+	private int daysRemaining;
 	
 	private MultipartFile productImgFile;
+	
+	private Integer productLimit;
+    private String limitCycle;
 }

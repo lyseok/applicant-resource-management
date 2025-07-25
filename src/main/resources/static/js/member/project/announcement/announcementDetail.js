@@ -1,12 +1,27 @@
 // 모달 데이터(MOCK)
 const mockResumes = [
-  {id: "1", title: "이훈석의 이력서 입니다", createdAt: "2025.06.04 (수) 19:57 작성", hasAttachment: false},
-  {id: "2", title: "프론트엔드 개발자 이력서", createdAt: "2025.05.15 (월) 14:30 작성", hasAttachment: true},
-  {id: "3", title: "백엔드 개발자 포트폴리오", createdAt: "2025.04.20 (목) 10:15 작성", hasAttachment: true},
+  {
+    id: '1',
+    title: '이훈석의 이력서 입니다',
+    createdAt: '2025.06.04 (수) 19:57 작성',
+    hasAttachment: false,
+  },
+  {
+    id: '2',
+    title: '프론트엔드 개발자 이력서',
+    createdAt: '2025.05.15 (월) 14:30 작성',
+    hasAttachment: true,
+  },
+  {
+    id: '3',
+    title: '백엔드 개발자 포트폴리오',
+    createdAt: '2025.04.20 (목) 10:15 작성',
+    hasAttachment: true,
+  },
 ];
-const applicationFields = ["기획", "디자인", "프론트엔드"];
+const applicationFields = ['기획', '디자인', '프론트엔드'];
 
-let selectedField = "";
+let selectedField = '';
 let selectedResume = mockResumes[0];
 
 const selectField = document.getElementById('selectField');
@@ -16,88 +31,64 @@ const btnShowResumeList = document.getElementById('btnShowResumeList');
 const btnSaveApplication = document.getElementById('btnSaveApplication');
 const modalProjectTitle = document.getElementById('modalProjectTitle');
 
+function formatTextWithLineBreaks(text) {
+  if (!text) return '';
+  return text
+    .split('\n')
+    .map((line) => escapeHtml(line))
+    .join('<br/>');
+}
+
+// 간단한 HTML 이스케이프 처리 (보안용)
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 // 필드 옵션 채우기
-selectField.innerHTML += applicationFields.map(field => `<option value="${field}">${field}</option>`).join('');
+selectField.innerHTML += applicationFields
+  .map((field) => `<option value="${field}">${field}</option>`)
+  .join('');
 
 // 필드 선택
-selectField.onchange = function() {
+selectField.onchange = function () {
   selectedField = this.value;
 };
-
-// // 이력서 카드 렌더
-// function renderSelectedResumeCard() {
-//   selectedResumeCard.innerHTML = `
-//     <div class="card mb-0 selected-card">
-//       <div class="card-body py-2 px-3">
-//         <p class="mb-1 text-secondary" style="font-size: .92em;">${selectedResume.createdAt}</p>
-//         <h6 class="mb-1">${selectedResume.title}</h6>
-//         <div class="d-flex align-items-center gap-2 text-secondary" style="font-size:.96em;">
-//           <i class="bi bi-file-earmark-text"></i>
-//           <span>${selectedResume.hasAttachment ? "첨부파일이 있습니다" : "첨부파일이 없습니다"}</span>
-//         </div>
-//       </div>
-//     </div>
-//   `;
-// }
-// renderSelectedResumeCard();
-
-// // 이력서 목록 렌더
-// function renderResumeList() {
-//   resumeList.innerHTML = mockResumes.map(resume => `
-//     <div class="card mb-2 resume-card ${selectedResume.id === resume.id ? 'selected-card' : ''}" data-id="${resume.id}">
-//       <div class="card-body py-2 px-3">
-//         <p class="mb-1 text-secondary" style="font-size: .92em;">${resume.createdAt}</p>
-//         <h6 class="mb-1">${resume.title}</h6>
-//         <div class="d-flex align-items-center gap-2 text-secondary" style="font-size:.96em;">
-//           <i class="bi bi-file-earmark-text"></i>
-//           <span>${resume.hasAttachment ? "첨부파일이 있습니다" : "첨부파일이 없습니다"}</span>
-//         </div>
-//       </div>
-//     </div>
-//   `).join('');
-//   // 카드 클릭시 이력서 선택
-//   resumeList.querySelectorAll('.resume-card').forEach(card => {
-//     card.onclick = function() {
-//       const rid = this.getAttribute('data-id');
-//       selectedResume = mockResumes.find(r => r.id === rid);
-//       renderSelectedResumeCard();
-//       resumeList.style.display = 'none';
-//     };
-//   });
-// }
-
-// // 이력서 변경 버튼
-// btnShowResumeList.onclick = function() {
-//   renderResumeList();
-//   resumeList.style.display = resumeList.style.display === 'none' ? 'block' : 'none';
-// };
 
 // 모달 열기용 예시 (프로젝트 제목 넘기기)
 function openApplicationModal(title) {
   modalProjectTitle.textContent = title;
-  const modal = new bootstrap.Modal(document.getElementById('applicationModal'));
+  const modal = new bootstrap.Modal(
+    document.getElementById('applicationModal')
+  );
   modal.show();
 }
 
-
 // ================================ 게시판 랜더링 ================================
 
-let renderData = { }
+let renderData = {};
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const params = new URLSearchParams(window.location.search);
   const prjAnncNo = params.get('prjAnncNo');
-  
+
   // renderAnnouncementDetail(renderData);
-  axios.get('/ajax/board/project/' + prjAnncNo)
-    .then(res => {
+  axios
+    .get('/ajax/board/project/' + prjAnncNo)
+    .then((res) => {
       console.log(res); // <- 실제 응답 확인
       renderData = res.data;
       renderAnnouncementDetail(renderData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err); // <- catch에 들어온 실제 원인 확인
-      document.querySelector('.card-body').innerHTML = `<div class="text-danger py-5">게시글을 불러올 수 없습니다.</div>`;
+      document.querySelector(
+        '.card-body'
+      ).innerHTML = `<div class="text-danger py-5">게시글을 불러올 수 없습니다.</div>`;
     });
 });
 
@@ -105,60 +96,95 @@ function renderAnnouncementDetail(data) {
   // 상태 변환
   const statusText = data.anncEndYn === 'Y' ? '모집완료' : '모집중';
   const statusClass = data.anncEndYn === 'Y' ? 'bg-secondary' : 'badge-recruit';
-  
+  data.prjAnncContent = formatTextWithLineBreaks(data.prjAnncContent);
   // 팀 구성 (모집 팀원)
   const teamListHtml = (data.prjRcrtPsncntList || [])
-    .filter(r => !!r.jobCodeName && r.rcrtPsncnt)
-    .map(r => `<li><span class="dot"></span>${r.jobCodeName} - ${r.rcrtPsncnt}명</li>`)
+    .filter((r) => !!r.jobCodeName && r.rcrtPsncnt)
+    .map(
+      (r) =>
+        `<li><span class="dot"></span>${r.jobCodeName} - ${r.rcrtPsncnt}명</li>`
+    )
     .join('');
 
   // 모집 중인 역할 강조
   const recruitNow = (data.prjRcrtPsncntList || [])
-    .filter(r => r.jobCodeName === '백엔드')
-    .map(r => `<span class="fw-bold text-dark">${r.jobCodeName} ${r.rcrtPsncnt}명</span>`).join(', ');
+    .filter((r) => r.jobCodeName === '백엔드')
+    .map(
+      (r) =>
+        `<span class="fw-bold text-dark">${r.jobCodeName} ${r.rcrtPsncnt}명</span>`
+    )
+    .join(', ');
 
   // 기술 스택 (태그)
   const techListHtml = (data.prjAnncBoardTagList || [])
-    .map(t => t.tag && t.tag.tagName ? `<span class="badge bg-secondary-subtle me-1">${t.tag.tagName}</span>` : '')
+    .map((t) =>
+      t.tag && t.tag.tagName
+        ? `<span class="badge bg-secondary-subtle me-1">${t.tag.tagName}</span>`
+        : ''
+    )
     .join('');
 
   // 내용 삽입
-  document.querySelector('.card-body').innerHTML = /* html */`
+  document.querySelector('.card-body').innerHTML = /* html */ `
     <!-- 제목/상태 -->
     <div class="d-flex flex-wrap align-items-start justify-content-between mb-2">
-      <h2 class="fw-bold mb-0 text-dark" style="font-size:1.7rem;">${data.prjEmpTitle}</h2>
+      <h2 class="fw-bold mb-0 text-dark" style="font-size:1.7rem;">${
+        data.prjEmpTitle
+      }</h2>
       <span class="badge ${statusClass} text-white fs-6 py-2 px-4">${statusText}</span>
     </div>
 
     <!-- 작성자 정보 -->
     <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap">
       <div>
-        <div class="fw-medium" style="font-size:1.1rem;">작성자 : ${data.memName || '익명'}</div>
+        <div class="fw-medium" style="font-size:1.1rem;">작성자 : ${
+          data.memName || '익명'
+        }</div>
         <div class="text-secondary small mt-1 d-flex align-items-center gap-3 flex-wrap">
           <span>작성일 ${data.anncCreateDate || '-'}</span>
-          <span>수정일 ${data.updateDate || '-'}</span>
-          <span class="d-flex align-items-center gap-1"><i class="bi bi-eye"></i>조회수 ${data.view || 0}</span>
+          <span class="d-flex align-items-center gap-1"><i class="bi bi-eye"></i>조회수 ${
+            data.prjAnncHit || 0
+          }</span>
         </div>
         <div class="small text-secondary" style="font-size:1.01em;">
           <span class="me-4">
             <i class="bi bi-calendar-event me-1"></i>
             <b>시작 예정일:</b>
-            ${data.prjStartPlanDate
-              ? `${data.prjStartPlanDate.slice(0,4)}-${data.prjStartPlanDate.slice(4,6)}-${data.prjStartPlanDate.slice(6,8)}`
-              : '-'}
+            ${
+              data.prjStartPlanDate
+                ? `${data.prjStartPlanDate.slice(
+                    0,
+                    4
+                  )}-${data.prjStartPlanDate.slice(
+                    4,
+                    6
+                  )}-${data.prjStartPlanDate.slice(6, 8)}`
+                : '-'
+            }
           </span>
           <span>
             <i class="bi bi-calendar-check me-1"></i>
             <b>마감 예정일:</b>
-            ${data.prjEndPlanDate
-              ? `${data.prjEndPlanDate.slice(0,4)}-${data.prjEndPlanDate.slice(4,6)}-${data.prjEndPlanDate.slice(6,8)}`
-              : '-'}
+            ${
+              data.prjEndPlanDate
+                ? `${data.prjEndPlanDate.slice(
+                    0,
+                    4
+                  )}-${data.prjEndPlanDate.slice(
+                    4,
+                    6
+                  )}-${data.prjEndPlanDate.slice(6, 8)}`
+                : '-'
+            }
           </span>
         </div>
       </div>
       <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-1"><i class="bi bi-share"></i>공유</button>
-        <button class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-1"><i class="bi bi-heart"></i>${data.like || 0}</button>
+        <button class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-1">
+          <span class="material-symbols-outlined">
+            favorite
+          </span>
+          ${data.like || 0}</button>
       </div>
     </div>
     
@@ -169,7 +195,11 @@ function renderAnnouncementDetail(data) {
       <ul class="list-unstyled list-dot mb-2">
         ${teamListHtml}
       </ul>
-      ${recruitNow ? `<div class="mt-3 text-secondary">→ 현재 ${recruitNow}을 새로이 모십니다!</div>` : ''}
+      ${
+        recruitNow
+          ? `<div class="mt-3 text-secondary">→ 현재 ${recruitNow}을 새로이 모십니다!</div>`
+          : ''
+      }
     </div>
     <hr />
 
@@ -203,14 +233,11 @@ function renderAnnouncementDetail(data) {
 
   const btn = document.getElementById('btnShowPMResume');
   if (btn) {
-    btn.onclick = function() {
+    btn.onclick = function () {
       openApplicationModal(data.prjEmpTitle || '프로젝트 지원');
     };
   }
 }
-
-
-
 
 // ================================ 모달 랜더링 ================================
 
@@ -221,16 +248,17 @@ function openApplicationModal(projectTitle, prjRcrtPsncntList) {
   // 지원부문 select 채우기
   const select = document.getElementById('selectField');
   select.innerHTML = `<option value="">지원 부문을 선택해주세요</option>`;
-  (prjRcrtPsncntList || []).forEach(item => {
+  (prjRcrtPsncntList || []).forEach((item) => {
     // 중복 방지용 value로 jobCode 사용 (jobCodeName이 중복일 수 있으니)
     select.innerHTML += `<option value="${item.jobCode}">${item.jobCodeName} (${item.rcrtPsncnt}명)</option>`;
   });
 
   // 모달 띄우기 (부트스트랩)
-  const modal = new bootstrap.Modal(document.getElementById('applicationModal'));
+  const modal = new bootstrap.Modal(
+    document.getElementById('applicationModal')
+  );
   modal.show();
 }
-
 
 // ================================ 이력서 랜더링 ================================
 
@@ -265,33 +293,53 @@ btnShowResumeList.onclick = function () {
   }
 
   // 카드 UI 렌더링
-  resumeListDiv.innerHTML = resumeList.map(resume => `
-    <div class="card mb-2 resume-card ${selectedResume && selectedResume.resumeNo === resume.resumeNo ? 'selected-card' : ''}" data-id="${resume.resumeNo}">
+  resumeListDiv.innerHTML = resumeList
+    .map(
+      (resume) => `
+    <div class="card mb-2 resume-card ${
+      selectedResume && selectedResume.RESUME_NO === resume.RESUME_NO
+        ? 'selected-card'
+        : ''
+    }" data-id="${resume.RESUME_NO}">
       <div class="card-body py-2 px-3">
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <p class="mb-1 text-secondary" style="font-size: .92em;">
-              ${resume.updateDate ? `수정일: ${resume.updateDate}` : ''}
+              ${resume.UPDATE_DATE ? `수정일: ${resume.UPDATE_DATE}` : ''}
             </p>
-            <h6 class="mb-1">${resume.resumeName || resume.resumeNo}</h6>
+            <h6 class="mb-1">${resume.RESUME_NAME || resume.RESUME_NO}</h6>
             <div class="text-secondary" style="font-size:.96em;">
-              ${resume.resumeMainYn === 'Y' ? `<span class="badge bg-purple">대표 이력서</span>` : ''}
-              ${resume.resumeSubmitYn === 'Y' ? `<span class="badge bg-success">제출됨</span>` : ''}
+              ${
+                resume.RESUME_MAIN_YN === 'Y'
+                  ? `<span class="badge bg-purple">대표 이력서</span>`
+                  : ''
+              }
+              ${
+                resume.RESUME_SUBMIT_YN === 'Y'
+                  ? `<span class="badge bg-success">제출됨</span>`
+                  : ''
+              }
             </div>
           </div>
           <div>
-            ${resume.photo ? `<img src="${resume.photo}" alt="증명사진" style="width:38px; height:38px; border-radius:50%;">` : ''}
+            ${
+              resume.photo
+                ? `<img src="${resume.photo}" alt="증명사진" style="width:38px; height:38px; border-radius:50%;">`
+                : ''
+            }
           </div>
         </div>
       </div>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 
   // 카드 클릭 이벤트로 선택
-  resumeListDiv.querySelectorAll('.resume-card').forEach(card => {
+  resumeListDiv.querySelectorAll('.resume-card').forEach((card) => {
     card.onclick = function () {
       const rid = this.getAttribute('data-id');
-      selectedResume = resumeList.find(r => r.resumeNo === rid);
+      selectedResume = resumeList.find((r) => r.RESUME_NO === rid);
       renderSelectedResumeCard();
       selectedResumeCard.style.display = 'block';
       resumeListDiv.style.display = 'none';
@@ -311,8 +359,14 @@ function renderSelectedResumeCard() {
   div.innerHTML = `
     <div class="card mb-0 selected-card">
       <div class="card-body py-2 px-3">
-        <p class="mb-1 text-secondary" style="font-size: .92em;">${selectedResume.updateDate ? `수정일: ${selectedResume.updateDate}` : ''}</p>
-        <h6 class="mb-1">${selectedResume.resumeName || selectedResume.resumeNo}</h6>
+        <p class="mb-1 text-secondary" style="font-size: .92em;">${
+          selectedResume.UPDATE_DATE
+            ? `수정일: ${selectedResume.UPDATE_DATE}`
+            : ''
+        }</p>
+        <h6 class="mb-1">${
+          selectedResume.RESUME_NAME || selectedResume.RESUME_NO
+        }</h6>
       </div>
     </div>
   `;
@@ -321,33 +375,35 @@ function renderSelectedResumeCard() {
 // ================================= 지원 로직 ==================================
 btnSaveApplication.onclick = async function () {
   if (!selectedField) {
-    alert("지원 부문을 선택해주세요!");
+    alert('지원 부문을 선택해주세요!');
     selectField.focus();
     return;
   }
   if (!selectedResume) {
-    alert("이력서를 선택해주세요!");
+    alert('이력서를 선택해주세요!');
     return;
   }
 
   // prjAnncNo (현재 공고 번호)
   const prjAnncNo = renderData.prjAnncNo;
   // 모집인원 번호: 지원부문 select의 value (jobCode)로 모집인원 목록에서 찾기
-  const rcrt = (renderData.prjRcrtPsncntList || []).find(r => r.jobCode === selectedField);
+  const rcrt = (renderData.prjRcrtPsncntList || []).find(
+    (r) => r.jobCode === selectedField
+  );
   const rcrtPsncntNo = rcrt ? rcrt.rcrtPsncntNo : null;
   if (!rcrtPsncntNo) {
-    alert("모집 인원 정보가 없습니다. 새로고침 후 다시 시도해주세요.");
+    alert('모집 인원 정보가 없습니다. 새로고침 후 다시 시도해주세요.');
     return;
   }
 
   // 이력서 번호
-  const resumeNo = selectedResume.resumeNo;
+  const resumeNo = selectedResume.RESUME_NO;
 
   // 서버로 전송할 객체
   const applyData = {
-    prjAnncNo,      // 게시글 번호
-    rcrtPsncntNo,   // 모집인원 번호
-    resumeNo        // 이력서 번호
+    prjAnncNo, // 게시글 번호
+    rcrtPsncntNo, // 모집인원 번호
+    resumeNo, // 이력서 번호
   };
 
   try {
@@ -356,7 +412,9 @@ btnSaveApplication.onclick = async function () {
     if (res.data === 'ok') {
       alert('지원이 완료되었습니다!');
       // 모달 닫기
-      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('applicationModal'));
+      const modal = bootstrap.Modal.getOrCreateInstance(
+        document.getElementById('applicationModal')
+      );
       modal.hide();
     } else {
       alert(res.data.msg || '지원에 실패했습니다. 다시 시도해 주세요.');

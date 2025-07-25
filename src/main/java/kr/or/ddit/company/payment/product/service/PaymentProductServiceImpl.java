@@ -44,7 +44,19 @@ public class PaymentProductServiceImpl implements PaymentProductService {
 		return mapper.deletePaymentProduct(productNo);
 	}
 
+	@Override
+	public PaymentProductVO selectPaymentProductByName(String productName) {
+		// TODO Auto-generated method stub
+		return mapper.selectPaymentProductByName(productName);
+	}
 
+	public List<PaymentProductVO> selectPaymentProductListByPk(String productNo) {
+		
+		return mapper.selectPaymentProductListByPk(productNo);
+	}
+
+
+	
 
 
 

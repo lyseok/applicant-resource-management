@@ -22,14 +22,16 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public PaymentVO selectPaymentByPk(PaymentVO vo) {
+	public PaymentVO selectPaymentByPk(String paymentNo) {
 		// TODO Auto-generated method stub
-		return mapper.selectPaymentByPk(vo);
+		return mapper.selectPaymentByPk(paymentNo);
 	}
 
 	@Override
 	public int insertPayment(PaymentVO vo) {
 		vo.setUserId(getUserId());
+		
+		
 		return mapper.insertPayment(vo);
 	}
 
@@ -52,16 +54,47 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public PaymentVO checkbilling(String userId) {
+	public String checkbilling(String userId) {
 		
 		return mapper.checkbilling(userId);
 	}
 	
+	@Override
+	public int cancelPayment(String oldPaymentNo) {
+		// TODO Auto-generated method stub
+		return mapper.cancelPayment(oldPaymentNo);
+	}
+
 	public String getUserId() {
 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	return authentication.getName();		// 기업 ID 
 	}
 
+	@Override
+	public int comePayment(PaymentVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.comePayment(vo);
+	}
+
+	@Override
+	public int checkPayment(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.checkPayment(userId);
+	}
+
+	@Override
+	public int updateComPaymentStatus(String userId) {
+			
+		return mapper.updateComPaymentStatus(userId);
+	}
+
+	@Override
+	public String getPaymentNo(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.getPaymentNo(userId);
+	}
+
+	
 
 	
 }

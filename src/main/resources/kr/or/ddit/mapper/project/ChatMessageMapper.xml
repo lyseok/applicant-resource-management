@@ -34,18 +34,18 @@
 	</selectKey>
 	INSERT INTO CHAT_MESSAGE (
 		MESSAGE_NO
-		, MESSAGE
-		, CREATE_DATE
 		, CHATROOM_NO
 		, PRJ_NO
 		, USER_ID
+		, MESSAGE
+		, CREATE_DATE
 	) VALUES (
 		#{messageNo}
-		, #{message}
-		, SYSDATE
 		, #{chatroomNo}
 		, #{prjNo}
 		, #{userId}
+		, #{message}
+		, SYSDATE
 	)
 </insert>
 
@@ -54,4 +54,35 @@
 	WHERE MESSAGE_NO = #{messageNo}
 </delete>
 
+<select id="selectChatMessages">
+	SELECT
+	    MESSAGE_NO as messageNo,
+	    CHATROOM_NO as chatroomNo,
+	    PRJ_NO as prjNo,
+	    USER_ID as userId,
+	    MESSAGE as message,
+	    CREATE_DATE as createDate
+	FROM CHAT_MESSAGE
+	WHERE CHATROOM_NO = #{chatroomNo}
+	ORDER BY CREATE_DATE ASC
+</select>
+
+<select id="selectChatMessage">
+	SELECT
+	    MESSAGE_NO as messageNo,
+	    CHATROOM_NO as chatroomNo,
+	    PRJ_NO as prjNo,
+	    USER_ID as userId,
+	    MESSAGE as message,
+	    CREATE_DATE as createDate
+	FROM CHAT_MESSAGE
+	WHERE MESSAGE_NO = #{messageNo}
+</select>
+
+<update id="updateReadStatus">
+	UPDATE CHATROOM_MEM
+	SET READ_MESSAGE_NO = #{readMessageNo}
+	WHERE CHATROOM_NO = #{chatroomNo}
+	AND USER_ID = #{userId}
+</update>
 </mapper>

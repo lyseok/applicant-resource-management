@@ -54,7 +54,6 @@ public class ResumeVO implements Serializable {
 	@Size(max = 200)
 	private String veteranReason; // 보훈 대상 사유
 
-	@PastString(message = "수정일자는 과거 날짜여야 합니다.")
 	private String updateDate; // 최종 수정일
 
 	@Pattern(regexp = "Y|N")
@@ -94,5 +93,7 @@ public class ResumeVO implements Serializable {
 	private MemberVO member;
 	private List<JobVO> joblist;
 	private List<TopJobVO> topjoblist;
+	
+	private String applicantId;   // 지원자 id
 
 }

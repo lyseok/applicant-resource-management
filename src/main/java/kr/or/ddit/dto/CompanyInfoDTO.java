@@ -1,7 +1,10 @@
 package kr.or.ddit.dto;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import kr.or.ddit.vo.common.FilesVO;
 import lombok.Data;
 
 @Data
@@ -38,12 +41,13 @@ public class CompanyInfoDTO {
 	
 	@NotBlank(message = "기업의 규모를 선택해주세요")
 	private String comSize;
+
 	private String ceoName;
 	private String comAddr;
-	private Integer comCapital;
+	private String comCapital;
 	private String comMainBiz;
+	private String comLogo;
+	private String comBackgroundImg;
 	
-
-	
-	
+	private List<FilesVO> fileList;
 }

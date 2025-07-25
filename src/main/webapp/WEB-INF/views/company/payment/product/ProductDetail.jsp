@@ -1,5 +1,7 @@
+<%@page import="jakarta.mail.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -14,10 +16,11 @@
 
 
 <script>
-const ProductNo = "${product.productNo}";
-const BillingKey = "${param.billingKey}";
-const Amount = "${product.productPrice}";
-const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
+	window.PRODUCT_NO = "${product.productNo}";
+	const BillingKey = "${sessionScope.billingKey}";
+	const Amount = "${product.productPrice}";
+	/* const customerKey = "${sessionScope.customerKey}"; */
+	const orderName = "${product.productName}";
 </script>
 </head>
 <body class="container my-5" data-billing-key="${param.billingKey}"
@@ -44,12 +47,15 @@ const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
 							<c:otherwise>${product.productType}</c:otherwise>
 						</c:choose>
 					</p>
+
 					<p>
 						<strong>이용기간:</strong> ${product.productPeriod}
 					</p>
 					<p>productNo: ${product.productNo}</p>
 
-					<button class="btn btn-primary" onclick="requestbillingPayment()">구독하기</button>
+					<button class="btn btn-primary" onclick="subscribe(event, this)"
+						id="sub-btn" data-product-no="${product.productNo}"
+						data-billing-key="${payment.paymentBillingKey}">구독하기</button>
 				</div>
 				<button onclick="history.back()">뒤로가기</button>
 			</div>
@@ -71,25 +77,28 @@ const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<a href="/company/toss/billing" class="btn btn-primary">카드 등록하러
-						가기</a>
-					<button onclick="requestBillingAuth()">카드 등록하기</button>
+					<!-- <a href="/company/toss/billing" class="btn btn-primary">카드 등록하러
+						가기</a> -->
+					<button id="card-btn" data-product-no="${product.productNo}"
+						onclick="requestBillingAuth(event, this)">카드 등록하기</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script src="/js/company/payment/ProductDetail.js"></script>
-	<script>
+	<script src="/js/company/payment/TossBillingCard.js"></script>
+	<!-- <script>
       // ------  SDK 초기화 ------
       // @docs https://docs.tosspayments.com/sdk/v2/js#토스페이먼츠-초기화
       const clientKey = "test_ck_Gv6LjeKD8a9wXO9o7lLw8wYxAdXy";
-      const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
-      const productNo = cmProductNo;
-      const tossPayments = TossPayments(clientKey);
+ 	  /* const customerKey = "${sessionScope.customerKey}";  */
+ 	  const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
+      const productNo = ProductNo;
+      const tossPayments = TossPaym ents(clientKey);
       const currentUrl = "http://localhost/company/payment/product/detail?productNo=" + productNo;
       // 회원 결제
       // @docs https://docs.tosspayments.com/sdk/v2/js#tosspaymentspayment
-      const payment = tossPayments.payment({ customerKey });
+      const payment = tossPayments.payment({customerKey});
       const successUrl = window.location.origin + "/company/toss/success?productNo=" + productNo;
       // 비회원 결제
       // const payment = tossPayments.payment({customerKey: TossPayments.ANONYMOUS})
@@ -102,8 +111,8 @@ const CustomerKey = "h5hXSJ-WPK8sZQpXQUJUA";
           failUrl: window.location.origin + "/fail", // 요청이 실패하면 리다이렉트되는 URL
           customerEmail: "dhfjdhfj@naver.com",
           customerName: "김철민",
-        });
-      }
-    </script>
+        })
+      };
+    </script> -->
 </body>
 </html>

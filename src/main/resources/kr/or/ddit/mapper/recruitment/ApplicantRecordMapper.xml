@@ -4,7 +4,7 @@
 	<select id="selectApplicantRecordList" resultType="ApplicantRecordVO">
 	SELECT 
 		APPLICANT_RECORD_NO
-		, RECRUITMENT_NO
+		, RECRUIT_PROCESS_NO
 		, APPLICANT_ID
 		, RECRUIT_PROCESS_STEP
 		, STEP_PASS_YN
@@ -15,7 +15,7 @@
 	<select id="selectApplicantRecord" resultType="ApplicantRecordVO">
 	SELECT 
 		APPLICANT_RECORD_NO
-		, RECRUITMENT_NO
+		, RECRUIT_PROCESS_NO
 		, APPLICANT_ID
 		, STEP_PASS_YN
 		, STEP_APPLICATION_YN
@@ -32,6 +32,136 @@
 		WHERE APPLICANT_RECORD_NO = #{applicantRecordNo}
 	</select>
 	
+	<select id="getApplicantByRecruitment" resultType="map">
+	WITH exam_cte (
+	    ex_applicant_id,
+	    ex_score
+	) AS (
+	    SELECT
+	        applicant_id,
+	        SUM(applicant_score) AS ex_score
+	    FROM
+	        applicant_answer
+	    GROUP BY
+	        applicant_id
+	), interview_cte (
+	    int_applicant_id,
+	    int_score
+	) AS (
+	    SELECT
+	        iscore.applicant_id,
+	        AVG(iscore.applicant_rating) AS int_score
+	    FROM
+	             interview_score iscore
+	        JOIN interview i ON iscore.interview_no = i.interview_no
+	    GROUP BY
+	        iscore.applicant_id
+	)
+	SELECT
+	    rp.recruitment_no        AS recruitment_no,
+	    rp.recruit_process_no    AS process_no,
+	    rp.recruit_process_step  AS step,
+	    rp.recruit_process_type  AS step_type,
+	    rp.recruit_process_final AS final,
+	    ar.applicant_id          AS applicant_id,
+	    ar.applicant_name        AS applicant_name,
+	    ar.step_application_yn   AS attend,
+	    ar.step_pass_yn          AS pass,
+	    ap.user_id               AS userid,
+	    exam_cte.ex_score        AS exam_score,
+	    interview_cte.int_score  AS interview_score
+	FROM
+	    recruit_process  rp
+	    LEFT JOIN applicant_record ar ON rp.recruit_process_no = ar.recruit_process_no
+	    LEFT JOIN applicant        ap ON ap.applicant_id = ar.applicant_id
+	    LEFT JOIN exam_cte ON ar.applicant_id = exam_cte.ex_applicant_id
+	    LEFT JOIN interview_cte ON ar.applicant_id = interview_cte.int_applicant_id
+	WHERE
+	    rp.recruitment_no = #{ RECRUITMENTNO } ORDER BY STEP , APPLICANT_ID
+	</select>
+	
+	<select id="selectDuplicateRecord">
+	SELECT 
+		APPLICANT_RECORD_NO
+		, RECRUIT_PROCESS_NO
+		, APPLICANT_ID
+		, STEP_PASS_YN
+		, STEP_APPLICATION_YN
+		, INTERVIEW_URL
+		, EVALUATION_START_TIME
+		, APPLICANT_NAME
+	FROM APPLICANT_RECORD 
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
+	</select>
+	
+	<select id="selectMyApplicatedStep">
+	WITH base_user AS (
+	  SELECT #{userId} AS user_id FROM DUAL
+	),
+	base_applicants AS (
+	  SELECT applicant_id
+	  FROM applicant
+	  WHERE user_id = (SELECT user_id FROM base_user)
+	),
+	exam_cte AS (
+	  SELECT applicant_id, SUM(applicant_score) AS ex_score
+	  FROM applicant_answer
+	  WHERE applicant_id IN (SELECT applicant_id FROM base_applicants)
+	  GROUP BY applicant_id
+	),
+	interview_cte AS (
+	  SELECT iscore.applicant_id, AVG(iscore.applicant_rating) AS int_score
+	  FROM interview_score iscore
+	  JOIN interview i ON iscore.interview_no = i.interview_no
+	  WHERE iscore.applicant_id IN (SELECT applicant_id FROM base_applicants)
+	  GROUP BY iscore.applicant_id
+	),
+	process_cte AS (
+	  SELECT ar.applicant_id, rp.recruitment_no, MAX(rp.recruit_process_step) AS max_step
+	  FROM recruit_process rp
+	  JOIN applicant_record ar
+	    ON rp.recruit_process_no = ar.recruit_process_no
+	  WHERE ar.applicant_id IN (SELECT applicant_id FROM base_applicants)
+	  GROUP BY ar.applicant_id, rp.recruitment_no
+	),
+	latest_step AS (
+	  SELECT
+	    ar.applicant_id,
+	    rp.recruitment_no,
+	    rp.recruit_process_step AS step,
+	    rp.recruit_process_type AS step_type,
+	    ar.STEP_PASS_YN AS pass,
+	    rp.recruit_process_final AS final
+	  FROM recruit_process rp
+	  JOIN applicant_record ar
+	    ON rp.recruit_process_no = ar.recruit_process_no
+	  JOIN process_cte pc
+	    ON rp.recruitment_no = pc.recruitment_no
+	   AND rp.recruit_process_step = pc.max_step
+	   AND ar.applicant_id = pc.applicant_id
+	)
+	SELECT
+	  ls.applicant_id,
+	  ls.recruitment_no,
+	  ls.step,
+	  ls.step_type,
+	  ls.pass,
+	  ls.final,
+	  ec.ex_score,
+	  ic.int_score,
+	  p.PASS_ALARM_YN,
+	  p.RECRUIT_ACCEPT_YN,
+	  p.HIRE_DATE
+	FROM latest_step ls
+	LEFT JOIN exam_cte ec ON ec.applicant_id = ls.applicant_id
+	LEFT JOIN interview_cte ic ON ic.applicant_id = ls.applicant_id
+	LEFT JOIN PASSER p
+	  ON p.APPLICANT_ID = ls.applicant_id
+	 AND p.RECRUITMENT_NO = ls.recruitment_no
+	ORDER BY ls.recruitment_no
+	</select>
+	
 	<insert id="insertApplicantRecord">
 		<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
 	    SELECT
@@ -41,16 +171,16 @@
 	 	</selectKey>
 		INSERT INTO APPLICANT_RECORD (
 			APPLICANT_RECORD_NO
-			, RECRUITMENT_NO
+			, RECRUIT_PROCESS_NO
 			, APPLICANT_ID
-			, RECRUIT_PROCESS_STEP
+			, APPLICANT_NAME
 			, STEP_PASS_YN
 			, STEP_APPLICATION_YN
 		) VALUES (
 			#{applicantRecordNo}
-			, #{recruitmentNo}
+			, #{recruitProcessNo}
 			, #{applicantId}
-			, #{recruitProcessStep}
+			, #{applicantName}
 			, 'N'
 			, 'N'
 		)
@@ -68,7 +198,8 @@
 		UPDATE APPLICANT_RECORD 
 		SET 
 			STEP_APPLICATION_YN = 'Y'
-		WHERE APPLICANT_ID = #{applicantId}
+		WHERE RECRUIT_PROCESS_NO = #{processNo}
+		AND APPLICANT_ID = #{applicantId}
 	</update>
 	
 	<update id="updateApplicantRecord">
@@ -79,7 +210,12 @@
 	WHERE APPLICANT_RECORD_NO =	#{applicantRecordNo}
 	</update>
 	
-	
+	<update id="updateApplicantPass">
+	UPDATE APPLICANT_RECORD SET
+		STEP_PASS_YN = 'Y'
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
+	</update>
 	
 	<delete id="deleteApplicantRecord">
 	DELETE FROM APPLICANT_RECORD 

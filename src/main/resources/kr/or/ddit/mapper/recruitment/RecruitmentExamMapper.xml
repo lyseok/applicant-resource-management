@@ -98,32 +98,58 @@
 	
 
 	  <select id="selectMyRecruitExams" parameterType="string" resultType="kr.or.ddit.dto.MyRecruitExamDTO">
-		  SELECT
-		    e.RECRUIT_EXAM_NO         AS recruitExamNo,
-		    e.RECRUIT_EXAM_NAME       AS recruitExamName,
-		    TO_CHAR(e.RECRUIT_EXAM_START_DATE,'YYYY-MM-DD HH24:MI') AS recruitExamStartDate,
-		    e.RECRUIT_EXAM_TIME       AS recruitExamTime,
-		    a.APPLICANT_ID            AS applicantId,
-				    
-		     CASE 
-			      WHEN EXISTS (
-			        SELECT 1
-			        FROM APPLICANT_ANSWER aa
-			        WHERE aa.APPLICANT_ID = a.APPLICANT_ID
-			          AND aa.RECRUIT_EXAM_NO = e.RECRUIT_EXAM_NO
-			      ) THEN 1 ELSE 0
-			 END AS taken
-		  FROM APPLICANT a
-		  JOIN RECRUIT_PROCESS p
-		    ON a.RECRUITMENT_NO = p.RECRUITMENT_NO
-		   AND p.RECRUIT_PROCESS_TYPE = 'RERP-001'
-		   AND p.RECRUIT_PROCESS_DEL_DATE IS NULL
-		  JOIN RECRUITMENT_EXAM e
-		    ON p.RECRUIT_PROCESS_NO = e.PROCESS_NO
-		   AND e.RECRUIT_EXAM_DEL_DATE IS NULL
-		  WHERE a.USER_ID = #{userId}
-		    AND a.APPLICANT_DEL_DATE IS NULL
-		  ORDER BY e.RECRUIT_EXAM_START_DATE
+			SELECT
+				e.RECRUIT_EXAM_NO AS recruitExamNo,
+				e.RECRUIT_EXAM_NAME AS recruitExamName,
+				TO_CHAR(e.RECRUIT_EXAM_START_DATE, 'YYYY-MM-DD HH24:MI') AS recruitExamStartDate,
+				e.RECRUIT_EXAM_TIME AS recruitExamTime,
+				ar.APPLICANT_ID AS applicantId,
+				exam_proc.COMPANY_NAME AS companyName,
+                rn.RECRUITMENT_TITLE AS recruitmentTitle,
+		
+			CASE
+			WHEN EXISTS (
+			SELECT 1
+			FROM APPLICANT_ANSWER aa
+			WHERE aa.APPLICANT_ID = ar.APPLICANT_ID
+			AND aa.RECRUIT_EXAM_NO = e.RECRUIT_EXAM_NO
+			) THEN 1 ELSE 0
+			END AS taken
+		
+			FROM APPLICANT_RECORD ar
+		
+			JOIN APPLICANT a
+			ON ar.APPLICANT_ID = a.APPLICANT_ID
+			AND a.USER_ID = #{userId}
+			AND a.APPLICANT_DEL_DATE IS NULL
+		
+			JOIN RECRUIT_PROCESS exam_proc
+			ON ar.RECRUIT_PROCESS_NO = exam_proc.RECRUIT_PROCESS_NO
+			AND exam_proc.RECRUIT_PROCESS_TYPE = 'RERP-001'
+			AND exam_proc.RECRUIT_PROCESS_DEL_DATE IS NULL
+		
+			JOIN RECRUITMENT_EXAM e
+			ON exam_proc.RECRUIT_PROCESS_NO = e.PROCESS_NO
+			AND e.RECRUIT_EXAM_DEL_DATE IS NULL
+			
+			JOIN RECRUITMENT_NOTICE rn
+		    ON exam_proc.RECRUITMENT_NO = rn.RECRUITMENT_NO
+		   AND rn.RECRUITMENT_DEL_DATE IS NULL
+		
+			WHERE NOT EXISTS (
+			SELECT 1
+			FROM RECRUIT_PROCESS prev_proc
+			JOIN APPLICANT_RECORD prev_ar
+			ON prev_proc.RECRUIT_PROCESS_NO = prev_ar.RECRUIT_PROCESS_NO
+			AND prev_ar.APPLICANT_ID = ar.APPLICANT_ID
+			WHERE prev_proc.RECRUITMENT_NO = exam_proc.RECRUITMENT_NO
+			AND prev_proc.RECRUIT_PROCESS_DEL_DATE IS NULL
+			AND prev_proc.RECRUIT_PROCESS_NO != exam_proc.RECRUIT_PROCESS_NO
+			AND prev_ar.STEP_APPLICATION_YN = 'Y'
+			AND (prev_ar.STEP_PASS_YN IS NULL OR prev_ar.STEP_PASS_YN != 'Y')
+			)
+		
+			ORDER BY e.RECRUIT_EXAM_START_DATE
 	</select>
   
   <select id="selectRecruitExamQuestionWithOptionByNo" resultMap="examWithQuestionsMap">
@@ -153,12 +179,15 @@
   
 <update id="updateStepApplicationYN">
 
-UPDATE TEAM1_202501F.APPLICANT_RECORD
+
+UPDATE APPLICANT_RECORD
 SET STEP_APPLICATION_YN = 'Y'
-WHERE RECRUITMENT_NO = (SELECT RECRUITMENT_NO 
+WHERE RECRUIT_PROCESS_NO = (SELECT PROCESS_NO
                         FROM RECRUITMENT_EXAM
                         WHERE RECRUIT_EXAM_NO = #{recruitExamNo}) 
   AND APPLICANT_ID = #{applicantId}
+
+
 </update>
 	
 	

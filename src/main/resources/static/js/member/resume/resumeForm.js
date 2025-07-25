@@ -1,16 +1,16 @@
 const quickMenuList = document.querySelectorAll("#quick_menu a");
-quickMenuList.forEach(a =>{
-	a.addEventListener("click", function(e){
+quickMenuList.forEach(a => {
+	a.addEventListener("click", function(e) {
 		quickMenuList.forEach(link => link.classList.remove("on"));
 		e.target.classList.add("on")
 	})
 })
 // 로딩 show/hide 함수
 function showLoading() {
-  document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
+	document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
 }
 function hideLoading() {
-  document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
+	document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
 }
 
 // 각 form 몇개 추가 됐는지 카운트
@@ -35,6 +35,12 @@ const templateMap = {
 				<h6>이력서 기본정보<span class="must">필수</span></h6>
 			</div>
 	    <div id="form-basicInfo" class="section-form-wrap">
+	    	
+	    	<div class="section-form-row">   
+          <label for="inputphoto" class="form-label">프로필</label>
+          <input type="file" class="form-control" id="inputphoto" name="photo" placeholder="주소 전체">
+         </div>
+	    	
 	      <div class="section-form-row">
 	        <label for="inputUserName" class="form-label required">이름</label>
 	        <input type="text" class="form-control" id="inputUserName" name="userName" placeholder="이름">
@@ -60,7 +66,7 @@ const templateMap = {
 	        <input type="text" class="form-control" id="inputAddress" name="address" placeholder="주소 전체">
 	      </div>
 
-	      <div class="section-form-row d-flex justify-content-end gap-2 mt-3">
+	      <div class="section-form-row d-flex justify-content-end gap-2 mt-3 w100p">
 	        <button type="button" class="btn btn_red_line" id="cancelBasicBtn">취소</button>
 	        <button type="button" class="btn btn_violet" id="saveBasicBtn">확인</button>
 	      </div>
@@ -156,7 +162,7 @@ const templateMap = {
         <div class="d-flex w-100 flex-column">
   				<div class="d-flex position-relative gap-2">
   					<div class="flex-fill">
-		          <input type="text" name="resumeVO.careerList[${idx}].comId" class="w-100 h-100" placeholder="예: NAVER" maxlength="100" id="comId" >
+		          <input type="text" name="resumeVO.careerList[${idx}].comId" class="w-100 h-100" placeholder="예: NAVER" maxlength="100" id="comId" value="">
 		          <ul id="comSuggestions" class="list-group position-absolute w-100 shadow" style="z-index: 2000; max-width:301px">
 							</ul>
 						</div>
@@ -478,7 +484,7 @@ const templateMap = {
 // ♥♥♥♥ 여기 작업해야됌 ~~
 const listItemMap = {
 	educationList: (idx, data, type = "educationList") => `
-    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}"  data-type="${type}">
+    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
       <div class="d-flex">
 	      <div>
 	      	<strong>${data.schoolName}</strong>
@@ -490,18 +496,18 @@ const listItemMap = {
 	      <button type="button" class="btn_edit">
 	      	<span class="material-symbols-outlined fs-3">stylus</span>
 	      </button>
-	      <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="educationList" data-idx="${idx}" >
+	      <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="educationList" data-idx="${idx}"  data-type="${type}" >
 	      	<span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
 	     </button>
       </div>
     </div>
   `,
-	careerList: (idx, data) => `
-    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	careerList: (idx, data, type = "careerList") => `
+    <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}"  data-type="${type}">
       <div class="d-flex flex-column">
-        <strong>${data.comId || '회사명 미입력'}</strong>
+        <strong>${data.comName || data.company.comName || '회사명 미입력'}</strong>
         <span>${data.startWorkDate || '입사일 없음'} ~ ${data.retireDate || '재직중'}</span>
-        <small>${data.department || ''} / ${data.responsibility || ''}</small>
+        <small>${data.department || ''} ${data.responsibility ? ' / ' + data.responsibility : ''}</small>
       </div>      
       <div class="d-flex gap-2">
         <button type="button" class="btn_edit">
@@ -513,8 +519,8 @@ const listItemMap = {
       </div>
     </div>
   `,
-	mySkillList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	mySkillList: (idx, data, type = "mySkillList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <strong>${data.mySkillName || '기술명 없음'}</strong>
         <div class="d-flex gap-2">
           <button type="button" class="btn_edit">
@@ -526,8 +532,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	myExperienceList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	myExperienceList: (idx, data, type = "myExperienceList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.expName || '경험명 없음'}</strong>
           <span>${data.expStartDate || ''} ~ ${data.expEndDate || '진행중'}</span>
@@ -543,8 +549,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	myLicenseList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	myLicenseList: (idx, data, type = "myLicenseList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.licenseCode || '자격증명 없음'}</strong>
           <span>${data.licensePassDate || ''}</span>
@@ -559,8 +565,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	supportList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	supportList: (idx, data, type = "supportList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <p><strong>${codeLabelMap.VULN[data.disabilityCode] || ''}</strong> (${codeLabelMap.DSBL[data.disabilityLevelCode] || ''})</p>
         <div class="d-flex gap-2">
           <button type="button" class="btn_edit">
@@ -572,8 +578,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	awardList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	awardList: (idx, data, type = "awardList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.awardName || '수상명 없음'}</strong>
           <span>${data.awardDate || ''}</span>
@@ -589,8 +595,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	languageSkillList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	languageSkillList: (idx, data, type = "languageSkillList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.languageExamName || '시험명 없음'}</strong>
           <span>${data.passDate || ''}</span>
@@ -606,8 +612,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	portfolioList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	portfolioList: (idx, data, type = "portfolioList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div class="d-flex flex-column">
           <strong>${data.porName || '포트폴리오 제목'}</strong>
           <span>${data.porStartDate || ''} ~ ${data.porEndDate || '진행중'}</span>
@@ -623,8 +629,8 @@ const listItemMap = {
         </div>
       </div>
     `,
-	militaryList: (idx, data) => `
-      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}">
+	militaryList: (idx, data, type = "militaryList") => `
+      <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2" data-idx="${idx}" data-type="${type}">
         <div>
         	<strong>${codeLabelMap.SRVC[data.serviceCategoryCode] || ''} / ${codeLabelMap.MILT[data.militaryTypeCode] || ''}</strong>
         	<small>${data.militaryReason || ''}</small>
@@ -1196,21 +1202,7 @@ document.addEventListener("change", function(e) {
 });
 
 
-
-
-
-// ---- JS 추가 바인딩 부분 ----
-document.addEventListener("DOMContentLoaded", function() {
-	// DOM 로드 되자마자 Company 정보 불러오기
-	axios.get("/ajax/career/company/list")
-		.then(resp => {
-			console.log(resp.data);
-			companyList = resp.data;
-		})
-		.catch(err => {
-			console.error(err)
-		})
-
+function bindListContainerEvents() {
 
 	document.querySelectorAll(".listContainer").forEach(container => {
 		container.addEventListener("click", async function(e) {
@@ -1219,10 +1211,21 @@ document.addEventListener("DOMContentLoaded", function() {
 				const idx = itemWrap.dataset.idx;
 				const type = itemWrap.dataset.type;
 				const section = document.querySelector(`#section-${type}`);
-				const formContainer = section.querySelector('.formContainer');
+				let formContainer = null;
+				if (section) {
+					formContainer = section.querySelector('.formContainer'); // 여기서 할당만
+					if (!formContainer) return;
+				} else {
+					console.warn("⚠️ section-introduction DOM 요소를 찾을 수 없습니다.");
+					return;
+				}
 				const formId = `form-${type}${idx}`;
 				let formEl = document.getElementById(formId);
 
+				console.log("listContainer 객체 반복문 돌릴 떄 resume 객체 확인!! ", resume)
+				console.log("listContainer 객체 반복문 돌릴 떄 formId 확인!! ", formId)
+				console.log("listContainer 객체 반복문 돌릴 떄 list-item 확인!! ", itemWrap)
+				console.log("listContainer 객체 반복문 돌릴 떄 resume[type][idx] 확인!! ", resume[type])
 				const data = resume[type][idx];
 
 				// 기존 리스트 숨기기
@@ -1240,32 +1243,84 @@ document.addEventListener("DOMContentLoaded", function() {
 					formEl.dataset.idx = idx;
 					formEl.dataset.edit = "true";
 
+
+					// 👉 라디오 먼저 처리 (빠르게 반응시킴, select 처럼 비동기 요청 보낼 필요 없기 떄문에 !! )
+					for (const [key, val] of Object.entries(data)) {
+						const input = formEl.querySelector(`[name$='.${key}']`);
+						if (input && input.type === "radio") {
+							const radio = formEl.querySelector(`[name$='.${key}'][value="${val}"]`);
+							if (radio) {
+								radio.checked = true;
+								radio.dispatchEvent(new Event("change", { bubbles: true }));
+							}
+						}
+					}
 					// select 세팅
 					await setDynamicSelects(type, formEl);
 
 					// 값 바인딩
-					setTimeout(() => {
-						for (const [key, val] of Object.entries(data)) {
-							const input = formEl.querySelector(`[name$='.${key}']`);
+					for (const [key, val] of Object.entries(data)) {
+						const input = formEl.querySelector(`[name$='.${key}']`);
+						if (input) {
+							if (input.tagName === "SELECT") {
+								// 옵션이 존재할 때만 value 세팅
+								const hasOption = input.querySelector(`option[value="${val}"]`);
+								console.log("🔍 option 있음?", hasOption, val, input);
+								if (hasOption) {
+									input.value = val;
+									input.dispatchEvent(new Event("change", { bubbles: true }));
+
+								}
+							} else if (input.type !== "radio") {
+								// radio는 이미 위에서 처리함
+								input.value = val;
+							}
+						}
+					}
+					// specialtyList 바인딩 추가
+					if (data.specialtyList && data.specialtyList.length > 0) {
+						const specialty = data.specialtyList[0];
+
+						for (const [key, val] of Object.entries(specialty)) {
+							const input = formEl.querySelector(`[name$='.specialtyList[0].${key}']`);
 							if (input) {
 								if (input.tagName === "SELECT") {
 									const hasOption = input.querySelector(`option[value="${val}"]`);
 									if (hasOption) {
 										input.value = val;
-										input.dispatchEvent(new Event("change"));
+										input.dispatchEvent(new Event("change", { bubbles: true }));
 									}
 								} else {
 									input.value = val;
 								}
 							}
 						}
-					}, 50);
+					}
+
+
 				}
 				return;
 			}
 
 		});
 	});
+}
+
+// ---- JS 추가 바인딩 부분 ----
+document.addEventListener("DOMContentLoaded", function() {
+	// DOM 로드 되자마자 Company 정보 불러오기
+	axios.get("/ajax/career/company/list")
+		.then(resp => {
+			console.log(resp.data);
+			companyList = resp.data;
+		})
+		.catch(err => {
+			console.error(err)
+		})
+
+	bindListContainerEvents();
+	bindFormContainerEvents(); // ✅ 최초 로딩 시 한 번 바인딩
+
 	document.querySelectorAll(".add-btn").forEach(btn => {
 		btn.addEventListener("click", async function() {
 			// 1. section, type 등 기본 변수 셋업
@@ -1292,13 +1347,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			if (addBtn.closest("#section-careerList")) {
 				// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-				document.querySelector("#comId").addEventListener("input", function() {
-					const inputVal = this.value.trim();
+				// 동적으로 생성된 input에도 적용됨
+				document.addEventListener("input", function(e) {
+					console.log("INPUT 발생!", e.target);
+
+					const inputEl = e.target;
+					if (inputEl.id !== "comId") return;
+
+					const inputVal = inputEl.value.trim();
 					const suggestionBox = document.querySelector("#comSuggestions");
 					suggestionBox.innerHTML = ""; // 초기화
 
 					if (!inputVal) {
-						this.removeAttribute("data-userid"); // 입력값 없을 때 속성 제거
+						inputEl.removeAttribute("data-userid");
 						return;
 					}
 
@@ -1313,64 +1374,70 @@ document.addEventListener("DOMContentLoaded", function() {
 						li.innerText = c.comName;
 						li.dataset.userid = c.userId;
 						li.classList.add("list-group-item", "list-group-item-action");
-						li.style.maxWidth = "301px"
+						li.style.maxWidth = "301px";
 
-						// 클릭 시 input 값과 data 설정
 						li.addEventListener("click", () => {
-							const inputEl = document.querySelector("#comId");
 							inputEl.value = c.comName;
-							inputEl.dataset.userid = c.userId; // userId 설정
+							inputEl.dataset.userid = c.userId;
 							suggestionBox.innerHTML = "";
+
+							// 📌 상위 .section-form-wrap 에 있는 data-idx 가져오기
+							const parentWrap = inputEl.closest(".section-form-wrap");
+							if (!parentWrap) return;
+
+							const idx = parentWrap.dataset.idx;
+							console.log("회사명 idx 확인", idx)
+							console.log("comid  확인", c.userId)
+							console.log("리슘 몇번쨰에 들어갈건지 확인", resume.careerList[idx].comId)
+
+							if (!isNaN(idx)) {
+								// 해당 idx가 아직 없는 경우, 미리 빈 객체로 생성
+								if (!resume.careerList[idx]) resume.careerList[idx] = {};
+								resume.careerList[idx].comId = c.userId;
+								resume.careerList[idx].comName = c.comName; // ✅ 꼭 추가!
+								console.log("아직도 안돼?????????????????", resume.careerList[idx].comId)
+							}
 						});
 
 						suggestionBox.appendChild(li);
-
-						// 입력값이 정확히 일치하는 항목 확인
 						if (c.comName === inputVal) {
-							this.dataset.userid = c.userId;
+							inputEl.dataset.userid = c.userId;
 							exactMatchFound = true;
 						}
 					});
 
-					// 정확히 일치하는 항목이 없는 경우 userId 속성 제거
 					if (!exactMatchFound) {
-						this.removeAttribute("data-userid");
+						inputEl.removeAttribute("data-userid");
 					}
 				});
 			}
 
 			// 경력 - 회사명 DB에 등록된 회사인지 확인 후 VO에 SET 해줌
-			document.addEventListener("DOMContentLoaded", function() {
-				const searchButton = document.querySelector(".search_com_btn");
-				if (searchButton) {
-					const searchButton = document.querySelector(".search_com_btn");
-					searchButton.addEventListener("click", function(e) {
-						const comId = document.querySelector("#comId");
-						const userId = comId.dataset.userid;
-						const userName = comId.value;
-						console.log(userId)
-						console.log(userName)
-						axios.get(`/ajax/career/company/${userId}`)
-							.then(resp => {
-								const comSearchMsg = document.querySelector("#comSearchMsg");
-								console.log(resp.data)
-								if (resp.data.success == true) {
-									comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
-									comSearchMsg.classList.remove("text-danger")
-									comSearchMsg.classList.add("text-primary", "fs-14")
-								} else {
-									comId.value = "";
-									comSearchMsg.innerHTML = `${resp.data.message}`;
-									comSearchMsg.classList.remove("text-primary")
-									comSearchMsg.classList.add("text-danger")
-								}
-							})
-							.catch(err => {
-								console.error(err);
-							})
-					})
-				} else {
-					console.warn("search_com_btn 버튼을 찾을 수 없습니다.");
+			document.addEventListener("click", function(e) {
+				if (e.target.classList.contains("search_com_btn")) {
+					const comId = document.querySelector("#comId");
+					const userId = comId.dataset.userid;
+					const userName = comId.value;
+					console.log(userId)
+					console.log(userName)
+					axios.get(`/ajax/career/company/${userId}`)
+						.then(resp => {
+							const comSearchMsg = document.querySelector("#comSearchMsg");
+							console.log(resp.data)
+							if (resp.data.success == true) {
+								comSearchMsg.innerHTML = `${userName}는 입력 가능한 회사입니다.`;
+								comSearchMsg.classList.remove("text-danger")
+								comSearchMsg.classList.add("text-primary", "fs-14")
+							} else {
+								comId.value = "";
+								comSearchMsg.innerHTML = `${resp.data.message}`;
+								comSearchMsg.classList.remove("text-primary")
+								comSearchMsg.classList.add("text-danger")
+							}
+						})
+						.catch(err => {
+							console.error(err);
+						})
 				}
 			})
 
@@ -1425,10 +1492,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						// JS JSON 객체에 넘기기 위한 반복문 코드
 						formWrap.querySelectorAll("input, select, textarea").forEach(input => {
-							const fromDataName = input.name.split('.').pop().replace(/\[\d+\]/, '');
-							data[fromDataName] = input.value;
-						});
+							const name = input.name;
+							if (!name) return;
 
+							const key = name.split('.').pop().replace(/\[\d+\]/, '');
+							// ❗ comId는 2차 루프에서 처리하므로 건너뜀
+							if (key === "comId") return;
+						});
 						// 위에서 만든 변수들을 vo 형태에 맞게 세팅할 수 있게 미리만들어둔 함수에 넘겨줌
 						const vo = makeVO(thisType, data);
 						const key = arrayKey[thisType];
@@ -1508,6 +1578,38 @@ document.addEventListener("DOMContentLoaded", function() {
 // ↓↓↓ listContainer 영역에서 삭제 버튼클릭 이벤트
 // 모달 열릴 때 삭제할 타입/idx를 삭제 버튼에 세팅
 document.addEventListener("DOMContentLoaded", function() {
+	document.addEventListener("change", function(e) {
+		if (e.target.id === "inputphoto" && e.target.files.length > 0) {
+			const file = e.target.files[0];
+
+			// 1. profile-img-wrap 안에 기존 이미지가 있으면 삭제
+			const wrapper = document.querySelector(".profile-img-wrap");
+			if (!wrapper) return;
+			const oldImg = wrapper.querySelector(".profile-img");
+			if (oldImg) {
+				wrapper.removeChild(oldImg);
+			}
+
+			// 2. 새 img 태그 생성
+			const img = document.createElement("img");
+			img.className = "profile-img";
+
+			// 3. FileReader로 이미지 읽어서 넣기
+			if (file.type.startsWith("image/")) {
+				const reader = new FileReader();
+				reader.onload = function(event) {
+					img.src = event.target.result;
+					
+					wrapper.appendChild(img);
+				};
+				reader.readAsDataURL(file);
+			}
+
+			// 4. resume객체에 임시 보관, 밑에서 formData에 다시 추가할 용도로 없는 필드명 붙여줌
+			resume._temp_PhotoFile = file;
+
+		}
+	});
 
 	// 모달 내 삭제 버튼 클릭 시 진짜 삭제 실행
 	document.querySelector("#deleteResumeList .btn-danger").addEventListener("click", function() {
@@ -1586,18 +1688,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // 이력서 기본정보 수정로직 ====================================================================================================================
 // 공통 필드 배열
-const basicFields = [
-	{ key: "userName", inputId: "inputUserName", hiddenId: "hiddenUserName", viewId: "viewName" },
-	{ key: "birth", inputId: "inputBirth", hiddenId: "hiddenBirth", viewId: "viewBirth" },
-	{ key: "email", inputId: "inputEmail", hiddenId: "hiddenEmail", viewId: "viewEmail" },
-	{ key: "tel", inputId: "inputTel", hiddenId: "hiddenTel", viewId: "viewTel" },
-	{
-		key: "address",
-		inputId: "inputAddress",
-		hiddenId: "hiddenAddress",
-		viewId: "viewAddress"
-	}
-];
+const basicFields = mode === "update"
+	? [
+		{ key: "userName", inputId: "inputUserName", viewId: "viewName", hiddenId: "hiddenUserName" },
+		{ key: "birth", inputId: "inputBirth", viewId: "viewBirth", hiddenId: "hiddenBirth" },
+		{ key: "email", inputId: "inputEmail", viewId: "viewEmail", hiddenId: "hiddenEmail" },
+		{ key: "tel", inputId: "inputTel", viewId: "viewTel", hiddenId: "hiddenTel" },
+		{ key: "address", inputId: "inputAddress", viewId: "viewAddress", hiddenId: "hiddenAddress" }
+	]
+	: [
+		{ key: "memName", inputId: "inputUserName", viewId: "viewName", hiddenId: "hiddenUserName" },
+		{ key: "memBir", inputId: "inputBirth", viewId: "viewBirth", hiddenId: "hiddenBirth" },
+		{ key: "memEmail", inputId: "inputEmail", viewId: "viewEmail", hiddenId: "hiddenEmail" },
+		{ key: "memTel", inputId: "inputTel", viewId: "viewTel", hiddenId: "hiddenTel" },
+		{ key: "memAddress", inputId: "inputAddress", viewId: "viewAddress", hiddenId: "hiddenAddress" }
+	];
+
+
 
 // ✅ 초기 바인딩
 window.addEventListener("DOMContentLoaded", () => {
@@ -1617,6 +1724,17 @@ window.addEventListener("DOMContentLoaded", () => {
 		const address2 = addressParts[1] || "";
 		resume.address = `${address1} ${address2}`.trim();
 	}
+	if (mode === "create") {
+		const resumeData = document.getElementById("resumeData")?.dataset;
+		if (resumeData) {
+			resume.memName = resumeData.userName;   // 🔁 이름을 memName 으로
+			resume.memBir = resumeData.birth;
+			resume.memEmail = resumeData.email;
+			resume.memTel = resumeData.tel;
+			const [addr1, addr2] = resumeData.address.split("||");
+			resume.memAddress = `${addr1 || ""} ${addr2 || ""}`.trim();
+		}
+	}
 
 	// input 요소에 resume 값 세팅
 	basicFields.forEach(field => {
@@ -1633,8 +1751,11 @@ window.addEventListener("DOMContentLoaded", () => {
 			document.getElementById(field.inputId).value = value;
 		}
 	});
+
+
 	// 버튼 이벤트 등록
 	const editBtn = document.getElementById("resumeEditBtn");
+
 
 
 	editBtn.addEventListener("click", () => {
@@ -1853,19 +1974,19 @@ function removeEmptyStrings(obj) {
 
 // resume 기본정보로 insert 하기!
 function setBasicResumeInfo() {
-  const resumeForm = document.querySelector("#form-resume");
-  if (!resumeForm) return;
+	const resumeForm = document.querySelector("#form-resume");
+	if (!resumeForm) return;
 
-  const resumeInputs = resumeForm.querySelectorAll("input");
-  resumeInputs.forEach(input => {
-    const resumeName = input.name;
-    const resumeValue = input.value;
+	const resumeInputs = resumeForm.querySelectorAll("input");
+	resumeInputs.forEach(input => {
+		const resumeName = input.name;
+		const resumeValue = input.value;
 
-    // 값이 ""인 경우는 무시하고 덮어쓰지 않도록!
-    if (resumeName && resumeValue !== "") {
-      resume[resumeName] = resumeValue;
-    }
-  });
+		// 값이 ""인 경우는 무시하고 덮어쓰지 않도록!
+		if (resumeName && resumeValue !== "") {
+			resume[resumeName] = resumeValue;
+		}
+	});
 }
 
 
@@ -1899,27 +2020,37 @@ document.addEventListener("submit", function(e) {
 	}));
 
 	// photo가 File 타입일 때만 첨부
-	if (resume.photo instanceof File) {
-		formData.append("photo", resume.photo);
+	if (resume._temp_PhotoFile instanceof File) {
+		formData.append("photo", resume._temp_PhotoFile);
 	}
 
 	if (resume.company?.comImage instanceof File) {
 		formData.append("comImage", resume.company.comImage);
 	}
 
-console.log(resume)
+	console.log("resume 객체 확인 >>>> ", resume)
+	function safeStringify(obj) {
+		const seen = new WeakSet();
+		return JSON.stringify(obj, function(key, value) {
+			if (typeof value === "object" && value !== null) {
+				if (seen.has(value)) return "[Circular]";
+				seen.add(value);
+			}
+			return value;
+		}, 2);
+	}
 
+	console.log("resume >>>", safeStringify(resume));
 	// axios 비동기 전송
-	axios.post("/mypage/resume/create", formData, {
-		headers: {
-			"Content-Type": "multipart/form-data"
-		}
-	})
+	axios.post("/mypage/resume/create", formData)
 		.then(resp => {
 			console.log(resp.data);
-			if (resp.data === "ok") {
+			if (mode == "create" && resp.data === "ok") {
 				alert("정상적으로 등록되었습니다.");
 				window.location.href = "/mypage/resume/list";
+			} else if (mode == "update" && resp.data === "ok") {
+				alert("정상적으로 수정되었습니다.");
+				window.location.href = "/mypage/resume/" + resume.resumeNo;
 			} else {
 				alert("이력서 등록에 실패했습니다. 다시 시도해주세요.");
 				console.error("서버로부터 받은 응답", resp.data);
@@ -1973,18 +2104,20 @@ console.log(resume)
 					if (formEl) {
 						const inputEl = formEl.querySelector(`[name$='.${fieldName}']`);
 						if (inputEl) {
-							// ✅ inputEl 감싸는 새로운 div 생성
-							const wrapper = document.createElement('div');
-							wrapper.classList.add('input-wrapper', 'w-100'); // 필요한 class 있으면 추가
 
-							// ✅ inputEl을 div (wrapper)로 감싸기
-							inputEl.parentElement.insertBefore(wrapper, inputEl);
-							wrapper.appendChild(inputEl);
-							inputEl.classList.add("w-100")
+							// wrapper 선택, 없을경우 ✅ inputEl 감싸는 새로운 div 생성
+							let wrapper = inputEl.closest(".input-wrapper");
+							if (!wrapper) {
+								wrapper = document.createElement("div");
+								wrapper.classList.add("input-wrapper", "w-100");
+								inputEl.parentElement.insertBefore(wrapper, inputEl);
+								wrapper.appendChild(inputEl);
+							}
 
 							// 기존 에러 제거
-							const existingError = wrapper.querySelector(`.${fieldName}-error`);
-							if (existingError) existingError.remove();
+							const safeField = field.replace(/\[.*?\]/g, "").replace(/\./g, "-");
+							const oldError = wrapper.querySelector(`.${safeField}-error`);
+							if (oldError) oldError.remove();
 
 							// 새 에러 span 추가
 							const errorSpan = document.createElement('span');
@@ -2011,18 +2144,19 @@ console.log(resume)
 					// 단일 필드 처리 (userId 등)
 					const inputEl = document.querySelector(`[name='${field}']:not([type="hidden"])`);
 					if (inputEl) {
-						// ✅ inputEl 감싸는 새로운 div 생성
-						const wrapper = document.createElement('div');
-						wrapper.classList.add('input-wrapper', 'w-100'); // 필요한 class 있으면 추가
-
-						// ✅ inputEl을 div (wrapper)로 감싸기
-						inputEl.parentElement.insertBefore(wrapper, inputEl);
-						wrapper.appendChild(inputEl);
-						inputEl.classList.add("w-100")
+						// wrapper 선택, 없을경우 ✅ inputEl 감싸는 새로운 div 생성
+						let wrapper = inputEl.closest(".input-wrapper");
+						if (!wrapper) {
+							wrapper = document.createElement("div");
+							wrapper.classList.add("input-wrapper", "w-100");
+							inputEl.parentElement.insertBefore(wrapper, inputEl);
+							wrapper.appendChild(inputEl);
+						}
 
 						// 기존 에러 제거
-						const existingError = inputEl.parentElement.querySelector(`.${field}-error`);
-						if (existingError) existingError.remove();
+						const safeField = field.replace(/\[.*?\]/g, "").replace(/\./g, "-");
+						const oldError = wrapper.querySelector(`.${safeField}-error`);
+						if (oldError) oldError.remove();
 
 						const errorSpan = document.createElement('span');
 						errorSpan.className = `${field}-error text-danger d-block mt-1 fs-14`;
@@ -2049,3 +2183,198 @@ console.log(resume)
 			});
 		});
 });
+
+
+// 수정모드일 때 사용할 공통코드들!
+async function preloadCodeGroups(groups = []) {
+	await Promise.all(groups.map(async group => {
+		const url = `/ajax/code/cmncodegroup/${group}`;
+		try {
+			const resp = await axios.get(url);
+			const list = resp.data.cmnCodeList || [];
+			codeLabelMap[group] = {};
+			list.forEach(i => {
+				codeLabelMap[group][i.codeDetailNo] = i.codeName;
+			});
+		} catch (err) {
+			console.warn(`[${group}] 코드 로딩 실패`, err);
+		}
+	}));
+}
+
+
+
+window.addEventListener("DOMContentLoaded", async () => {
+	if (typeof mode !== "undefined" && mode === "update" && typeof resumeFromServer !== "undefined") {
+
+		// ✅ 여기서 먼저 코드 그룹 로딩이 끝날 때까지 기다리기
+		await preloadCodeGroups(["GRAD", "EDUC", "SPEC", "VULN", "DSBL", "LANG", "MILT", "SRVC"]);
+		Object.assign(resume, resumeFromServer);
+
+
+		// 수정 모드일 이력서 제목을 바인딩
+		const resumeNameInput = document.getElementById("resumeNameInput");
+		if (resumeNameInput && resume.resumeName) {
+			resumeNameInput.value = resume.resumeName;
+		}
+
+		// ✅ 자기소개서 존재 여부 체크
+		if (resume.introductionNo && !resume.introduction) {
+			alert("연결된 자기소개서가 삭제되었습니다. 다시 선택해 주세요.");
+			// 예: 자소서 영역 리셋 or 비우기
+			const introContainer = document.querySelector("#section-introduction .listContainer");
+			if (introContainer) {
+				introContainer.innerHTML = "";
+				introContainer.classList.add("d-none");
+			}
+			const introSection = document.querySelector("#section-introduction");
+			if (introSection) {
+				introSection.querySelector(".section-content")?.classList.add("d-none");
+				introSection.querySelector(".btn-introduction")?.classList.add("d-none");
+			}
+			// → 사용자에게 다시 선택하게 하기
+		} else if (resume.introductionNo && resume.introduction) {
+			// ✅ 자소서가 존재하면 렌더링
+			const introContainer = document.querySelector("#section-introduction .listContainer");
+			introContainer.classList.remove("d-none");
+			introContainer.innerHTML = `
+        <div class="list-item d-flex justify-content-between align-items-center border-bottom py-2 w-100">
+          <div>
+            <strong>${resume.introduction?.introductionName || '자기소개서'}</strong>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn_edit" data-type="introduction">
+              <span class="material-symbols-outlined fs-3">stylus</span>
+            </button>
+            <button type="button" class="btn_del" data-bs-toggle="modal" data-bs-target="#deleteResumeList" data-type="introduction" data-idx="0">
+              <span class="material-symbols-outlined fs-3 text-Secondary">delete</span>
+            </button>
+          </div>
+        </div>
+      `;
+			const introSection = document.querySelector("#section-introduction");
+			if (introSection) {
+				introSection.querySelector(".section-content")?.classList.add("d-none");
+				introSection.querySelector(".btn-introduction")?.classList.add("d-none");
+			}
+		}
+
+		// 기본정보 바인딩
+		basicFields.forEach(field => {
+			const value = resume[field.key] || "";
+			const input = document.getElementById(field.inputId);
+			const view = document.getElementById(field.viewId);
+			if (input) input.value = value;
+			if (view) view.textContent = value;
+		});
+
+		// 리스트 타입 항목들 렌더링
+		for (const [key, arr] of Object.entries(resume)) {
+			if (!Array.isArray(arr)) continue;
+			const listType = key;
+			const container = document.querySelector(`#section-${listType} .listContainer`);
+			if (!container) continue;
+			container.innerHTML = '';
+			container.classList.remove("d-none");
+
+			arr.forEach((item, idx) => {
+				const html = listItemMap[listType]?.(idx, item, listType);
+				if (html) container.insertAdjacentHTML("beforeend", html);
+			});
+
+			typeCounters[listType] = arr.length;
+
+			const secCont = document.querySelector(`#section-${listType} .section-content`);
+			const addBtn = document.querySelector(`#section-${listType} .add-btn`);
+			if (secCont) secCont.style.display = 'none';
+			if (addBtn) addBtn.style.display = '';
+		}
+
+	}
+});
+
+
+function bindFormContainerEvents() {
+	document.querySelectorAll('.formContainer').forEach(formContainer => {
+		if (formContainer.hasAttribute('data-bound')) return; // 중복 방지
+
+		formContainer.setAttribute('data-bound', 'true');
+
+		formContainer.addEventListener("click", async function(e) {
+			const formWrap = e.target.closest('.section-form-wrap');
+			if (!formWrap) return;
+
+			const matches = formWrap.id.match(/^form-([a-zA-Z]+)(\d+)$/);
+			if (!matches) return;
+			const thisType = matches[1];
+			const idx = parseInt(matches[2], 10);
+
+			const section = formWrap.closest('.section');
+			const addBtn = section.querySelector('.add-btn');
+			const listContainer = section.querySelector('.listContainer');
+			const secCont = section.querySelector('.section-content');
+
+			// ✅ 확인 버튼 클릭
+			if (e.target.classList.contains('save_btn')) {
+				let data = {};
+				formWrap.querySelectorAll("input, select, textarea").forEach(input => {
+					const key = input.name?.split('.').pop().replace(/\[\d+\]/, '');
+					if (key === "comId") {
+						if (input.dataset.userid) {
+							data[key] = input.dataset.userid;
+							data["comName"] = input.value;         // 보여주기용 comName ← ✅ 이것만 추가해도 충분
+						} else {
+							alert("회사명을 자동완성 리스트에서 선택해 주세요.");
+							input.focus();
+							throw new Error("comId는 반드시 자동완성으로 선택된 userId여야 함");
+						}
+					} else {
+						data[key] = input.value;
+					}
+
+				});
+
+				const vo = makeVO(thisType, data);
+				const key = arrayKey[thisType];
+				const isEdit = formWrap.dataset.edit === "true";
+
+				if (isEdit) {
+					resume[key][idx] = vo;
+				} else {
+					resume[key].push(vo);
+					typeCounters[thisType] = resume[key].length;
+				}
+
+				const listItemHtml = listItemMap[thisType](idx, data, thisType);
+				const listItem = listContainer.querySelector(`[data-idx="${idx}"]`);
+
+				if (isEdit && listItem) {
+					listItem.outerHTML = listItemHtml;
+				} else {
+					listContainer.insertAdjacentHTML('beforeend', listItemHtml);
+				}
+
+				formWrap.style.display = 'none';
+				if (addBtn) addBtn.style.display = '';
+				listContainer.classList.remove('d-none');
+				if (secCont) secCont.style.display = 'none';
+			}
+
+			// ✅ 취소 버튼 클릭
+			if (e.target.classList.contains('btn_red_line')) {
+				formWrap.remove();
+				typeCounters[thisType] = Math.max((typeCounters[thisType] || 1) - 1, 0);
+
+				const hasList = listContainer.querySelectorAll('.list-item').length > 0;
+				if (hasList) {
+					listContainer.classList.remove('d-none');
+					if (secCont) secCont.style.display = 'none';
+				} else {
+					listContainer.classList.add('d-none');
+					if (secCont) secCont.style.display = '';
+				}
+				if (addBtn) addBtn.style.display = '';
+			}
+		});
+	});
+}

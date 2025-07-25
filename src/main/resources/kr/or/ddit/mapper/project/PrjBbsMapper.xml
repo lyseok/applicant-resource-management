@@ -35,37 +35,107 @@
 	    FROM PRJ_BBS
 	</selectKey>
 	INSERT INTO PRJ_BBS (
-		PRJ_POST_NO
-		, PRJ_NO
-		, USER_ID
-		, TITLE
-		, CREATE_DATE
-		, CONTENT
-	) VALUES (
-		#{prjPostNo}
-		, #{prjNo}
-		, #{userId}
-		, #{title}
-		, SYSDATE
-		, #{content}
-	)
+        PRJ_POST_NO,
+        PRJ_NO,
+        USER_ID,
+        TITLE,
+        CONTENT,
+        CREATE_DATE
+    ) VALUES (
+        #{prjPostNo},
+        #{prjNo},
+        #{userId},
+        #{title},
+        #{content},
+        SYSDATE
+    )
 </insert>
 
 <update id="updatePrjBbs">
-	UPDATE PRJ_BBS
-	SET 
-		PRJ_NO = #{prjNo}
-		, USER_ID = #{userId}
-		, TITLE = #{title}
-		, CREATE_DATE = #{createDate}
-		, CONTENT = #{content}
-		, DELETE_DATE = #{deleteDate}
-	WHERE PRJ_POST_NO = #{prjPostNo}
+ 	UPDATE PRJ_BBS
+    SET
+        TITLE = #{title},
+        CONTENT = #{content}
+    WHERE PRJ_POST_NO = #{prjPostNo}
 </update>
 
-<delete id="deletePrjBbs">
-	DELETE FROM PRJ_BBS
-	WHERE PRJ_POST_NO = #{prjPostNo}
-</delete>
+<update id="deletePrjBbs" parameterType="string">
+    UPDATE PRJ_BBS
+    SET DELETE_DATE = SYSDATE
+    WHERE PRJ_POST_NO = #{prjPostNo}
+</update>
+
+
+<select id="selectProjectPosts" resultMap="PrjBbsWithCommentMap">
+    SELECT 
+	    pbb.PRJ_POST_NO
+	    , pbb.PRJ_NO
+	    , pbb.USER_ID
+	    , pbb.TITLE
+	    , pbb.CREATE_DATE
+	    , pbb.CONTENT
+	    , pbb.DELETE_DATE
+	
+	    , mem.USER_NAME
+	    , mem.USER_POSITION
+	    , mem.AUTHORITY_CODE
+	    , mem.DELETE_DATE AS memDeleteDate
+	
+	    , cmt.COMMENT_NO
+	    , cmt.COMMENT_CONTENT
+	    , cmt.CREATE_DATE AS commentCreateDate
+	    , cmt.DELETE_DATE AS commentDeleteDate
+	    , cmt.USER_ID AS commentUserId
+	FROM PRJ_BBS pbb
+	LEFT JOIN PRJ_MEM mem ON pbb.PRJ_NO = mem.PRJ_NO AND pbb.USER_ID = mem.USER_ID
+	LEFT JOIN PRJ_BBS_COMMENT cmt ON pbb.PRJ_POST_NO = cmt.PRJ_POST_NO AND cmt.DELETE_DATE IS NULL
+	WHERE pbb.PRJ_NO = #{prjNo}
+	  AND pbb.DELETE_DATE IS NULL
+</select>
+
+<select id="selectPrjBbsWithComments" parameterType="string" resultMap="PrjBbsWithCommentMap">
+    SELECT
+        b.PRJ_POST_NO, b.PRJ_NO, b.USER_ID, b.TITLE, b.CREATE_DATE, b.CONTENT, b.DELETE_DATE,
+        mem.USER_NAME, mem.USER_POSITION, mem.AUTHORITY_CODE, mem.DELETE_DATE AS memDeleteDate,
+        c.COMMENT_NO, c.COMMENT_CONTENT, c.CREATE_DATE AS commentCreateDate, c.DELETE_DATE AS commentDeleteDate,
+        c.USER_ID AS commentUserId
+    FROM PRJ_BBS b
+    LEFT JOIN PRJ_MEM mem
+        ON b.PRJ_NO = mem.PRJ_NO AND b.USER_ID = mem.USER_ID
+    LEFT JOIN PRJ_BBS_COMMENT c
+        ON b.PRJ_POST_NO = c.PRJ_POST_NO
+    WHERE b.PRJ_POST_NO = #{prjPostNo}
+    ORDER BY b.CREATE_DATE DESC, c.CREATE_DATE ASC
+</select>
+
+<!-- 게시글 + 댓글 + 작성자 계층구조 매핑 -->
+<resultMap id="PrjBbsWithCommentMap" type="kr.or.ddit.vo.project.PrjBbsVO">
+    <id property="prjPostNo" column="PRJ_POST_NO"/>
+    <result property="prjNo" column="PRJ_NO"/>
+    <result property="userId" column="USER_ID"/>
+    <result property="title" column="TITLE"/>
+    <result property="createDate" column="CREATE_DATE"/>
+    <result property="content" column="CONTENT"/>
+    <result property="deleteDate" column="DELETE_DATE"/>
+    <!-- 작성자 -->
+	<association property="prjMem" javaType="kr.or.ddit.vo.project.PrjMemVO">
+	    <result property="userId" column="USER_ID"/>
+	    <result property="prjNo" column="PRJ_NO"/>
+	    <result property="userName" column="USER_NAME"/>
+	    <result property="userPosition" column="USER_POSITION"/>
+	    <result property="authorityCode" column="AUTHORITY_CODE"/>
+	    <result property="deleteDate" column="memDeleteDate"/>
+	</association>
+	<!-- 댓글 리스트 -->
+    <collection property="bbsCommentList" ofType="kr.or.ddit.vo.project.PrjBbsCommentVO">
+        <result property="commentNo" column="COMMENT_NO"/>
+        <result property="prjPostNo" column="PRJ_POST_NO"/>
+        <result property="prjNo" column="PRJ_NO"/>
+        <result property="userId" column="commentUserId"/>
+        <result property="commentContent" column="COMMENT_CONTENT"/>
+        <result property="createDate" column="commentCreateDate"/>
+        <result property="deleteDate" column="commentDeleteDate"/>
+    </collection>
+</resultMap>
 
 </mapper>

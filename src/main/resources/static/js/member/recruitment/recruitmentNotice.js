@@ -1,6 +1,17 @@
 /**
  * 
  */
+
+//================================= 예솔 - 최근본 공고 인서트 ===========================================
+document.addEventListener('DOMContentLoaded', function() {
+	const recruitmentNo = document.getElementById('recruitNo').dataset.no;
+	console.log("비동기 요청 전 스트립트 동작 확인", recruitmentNo)
+	axios.post(`/ajax/recruit_view/${recruitmentNo}`)
+	.then(resp => {
+		console.log("최근본 공고 insert 확인", resp.data);
+	});
+});
+
 console.log(document.getElementById('recruitNo').dataset.no);
 const mockResumes = [
   
@@ -13,6 +24,7 @@ const btnShowResumeList = document.getElementById('btnShowResumeList');
 const btnSaveApplication = document.getElementById('btnSaveApplication');
 
 const btn = document.getElementById('applyBtn');
+const deadLineBtn = document.getElementById('deadLineBtn');
   if (btn) {
     btn.onclick = function() {
 	  const title = btn.dataset.title || '입사 지원';
@@ -68,21 +80,21 @@ btnShowResumeList.onclick = function () {
 
   // 카드 UI 렌더링
   resumeListDiv.innerHTML = resumeList.map(resume => `
-    <div class="card mb-2 resume-card ${selectedResume && selectedResume.resumeNo === resume.resumeNo ? 'selected-card' : ''}" data-id="${resume.resumeNo}">
+    <div class="card mb-2 resume-card ${selectedResume && selectedResume.RESUME_NO === resume.RESUME_NO ? 'selected-card' : ''}" data-id="${resume.RESUME_NO}">
       <div class="card-body py-2 px-3">
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <p class="mb-1 text-secondary" style="font-size: .92em;">
-              ${resume.updateDate ? `수정일: ${resume.updateDate}` : ''}
+              ${resume.UPDATE_DATE ? `수정일: ${resume.UPDATE_DATE}` : ''}
             </p>
-            <h6 class="mb-1">${resume.resumeName || resume.resumeNo}</h6>
+            <h6 class="mb-1">${resume.RESUME_NAME || resume.RESUME_NAME}</h6>
             <div class="text-secondary" style="font-size:.96em;">
-              ${resume.resumeMainYn === 'Y' ? `<span class="badge bg-purple">대표 이력서</span>` : ''}
-              ${resume.resumeSubmitYn === 'Y' ? `<span class="badge bg-success">제출됨</span>` : ''}
+              ${resume.RESUME_MAIN_YN === 'Y' ? `<span class="badge bg-purple">대표 이력서</span>` : ''}
+              ${resume.RESUME_SUBMIT_YN === 'Y' ? `<span class="badge bg-success">제출됨</span>` : ''}
             </div>
           </div>
           <div>
-            ${resume.photo ? `<img src="${resume.photo}" alt="증명사진" style="width:38px; height:38px; border-radius:50%;">` : ''}
+            ${resume.PHOTO ? `<img src="${resume.PHOTO}" alt="증명사진" style="width:38px; height:38px; border-radius:50%;">` : ''}
           </div>
         </div>
       </div>
@@ -93,7 +105,7 @@ btnShowResumeList.onclick = function () {
   resumeListDiv.querySelectorAll('.resume-card').forEach(card => {
     card.onclick = function () {
       const rid = this.getAttribute('data-id');
-      selectedResume = resumeList.find(r => r.resumeNo === rid);
+      selectedResume = resumeList.find(r => r.RESUME_NO === rid);
       renderSelectedResumeCard();
       selectedResumeCard.style.display = 'block';
       resumeListDiv.style.display = 'none';
@@ -113,8 +125,8 @@ function renderSelectedResumeCard() {
   div.innerHTML = `
     <div class="card mb-0 selected-card">
       <div class="card-body py-2 px-3">
-        <p class="mb-1 text-secondary" style="font-size: .92em;">${selectedResume.updateDate ? `수정일: ${selectedResume.updateDate}` : ''}</p>
-        <h6 class="mb-1">${selectedResume.resumeName || selectedResume.resumeNo}</h6>
+        <p class="mb-1 text-secondary" style="font-size: .92em;">${selectedResume.UPDATE_DATE ? `수정일: ${selectedResume.UPDATE_DATE}` : ''}</p>
+        <h6 class="mb-1">${selectedResume.RESUME_NAME || selectedResume.RESUME_NO}</h6>
       </div>
     </div>
   `;
@@ -132,7 +144,7 @@ btnSaveApplication.onclick = async function () {
   const recruitmentNo = document.getElementById('recruitNo').dataset.no;
 
   // 이력서 번호
-  const resumeNo = selectedResume.resumeNo;
+  const resumeNo = selectedResume.RESUME_NO;
 
   // 서버로 전송할 객체
   const applyData = {
@@ -155,3 +167,24 @@ btnSaveApplication.onclick = async function () {
     alert('서버 오류가 발생했습니다.\n' + (err.response?.data?.message || ''));
   }
 };
+
+//================================= 공고 마감 ===========================================
+deadLineBtn.onclick = async function(){	
+	
+	const recruitmentNo = document.getElementById('recruitNo').dataset.no;
+	try{
+		const res = await axios.post(`/ajax/recruit/${recruitmentNo}`);
+		if(res.data === 'ok'){
+			// 버튼 disabled로 만들기 회색 만들기
+			alert("공고가 마감되었습니다.");
+			deadLineBtn.disabled = true;
+	        deadLineBtn.classList.remove('btn_violet');
+	        deadLineBtn.classList.add('btn-secondary');
+	        deadLineBtn.innerHTML = `<span id="dDayCounter">-</span><br>마감 완료`;
+		}
+		
+	}catch(err){
+		alert('서버 오류가 발생했습니다.\n' + (err.response?.data?.message || ''));
+	}
+}
+

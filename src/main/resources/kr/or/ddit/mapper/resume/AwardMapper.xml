@@ -54,6 +54,6 @@
 	
 	<delete id="deleteAward">
 		DELETE FROM AWARD
-		 WHERE AWARD_CODE = #{awardCode}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>

@@ -9,34 +9,70 @@
 <title>나의 결제상품</title>
 </head>
 <body>
-	현재 살아있는 유료상품 내용 : (구현예정)
 	<a href="/company/payment/product/list"><button>상품 보러가기</button></a>
-	<a href="/company/payment/product/add"><button>상품 등록하기</button></a>
+
 	<div class="container my-5">
 		<h2 class="mb-4">🧾 내가 구매한 상품</h2>
-		<div class="row gy-4">
-			<c:forEach var="item" items="${purchaseList}">
-				<div class="col-md-6">
-					<c:forEach var="product" items="${item.paymentProductList }">
-						<div class="card shadow-sm flex-row">
-							<div class="card-body">
-								<h5 class="card-title">${item.productName}</h5>
-								<p class="card-text mb-1">
-									<strong>결제수단:</strong> ${item.paymentMethod}
-								</p>
-								<p class="card-text mb-1">
-									<strong>결제금액:</strong> ₩
-									<fmt:formatNumber value="${item.paymentPay}" pattern="#,##0" />
-								</p>
-								<p class="card-text">
-									<small class="text-muted">결제일시: ${item.paymentDate}</small>
-								</p>
-							</div>
-						</div>
-						</c:forEach> 
-				</div>
-			</c:forEach>
-		</div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>상품명</th>
+					<th>결제금액</th>
+					<th>결제일시</th>
+					<th>남은기간</th>
+					<th>결제수단</th>
+					<th>잔여메일발송횟수</th>>
+					<th>메일발송초기화일</th>
+				</tr>
+			</thead>
+			<%-- <tbody>
+				<c:forEach var="item" items="${purchaseList}">
+					<tr>
+						<td>
+						<c:forEach var="product" items="${item.paymentProductList}" >
+                       <a href="/company/payment/buydetail?paymentNo=${item.paymentNo}&productNo=${product.productNo}">
+                        ${product.productName} </a><br />
+						</c:forEach>
+						</td>
+						<td>${item.paymentPay}원</td>
+						<td>${item.paymentDate}</td>
+						<td>
+						 <c:forEach var="product" items="${item.paymentProductList}">
+                <c:if test="${product.daysRemaining >= 0}">
+                    ${product.productName} 의 남은기간은 ${product.daysRemaining}일 입니다<br/>
+                </c:if>
+            </c:forEach>
+						</td>
+						<td>${item.paymentMethod}</td>
+					</tr>
+				</c:forEach>
+			</tbody> --%>
+			<tbody>
+				<c:forEach var="item" items="${purchaseList}">
+					<tr>
+						<td><c:forEach var="product"
+								items="${item.paymentProductList}">
+								<a
+									href="/company/payment/buydetail?paymentNo=${item.paymentNo}&productNo=${product.productNo}">
+									${product.productName} </a>
+								<br />
+							</c:forEach></td>
+						<td>${item.paymentPay}원</td>
+						<td>${item.paymentDate}</td>
+						<td><c:forEach var="product"
+								items="${item.paymentProductList}">
+								<c:if test="${product.daysRemaining >= 0}">
+                    ${product.productName} 의 남은기간은 ${product.daysRemaining}일 입니다<br />
+								</c:if>
+							</c:forEach></td>
+						<td>${item.paymentMethod}</td>
+
+						<td>${linkList.usageRemaining}회</td>
+						<td>${linkList.periodEnd}</td>
+
+					</tr>
+				</c:forEach>
+			</tbody>
 	</div>
 
 </body>

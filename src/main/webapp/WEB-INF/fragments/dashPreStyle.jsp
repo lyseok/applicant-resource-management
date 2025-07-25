@@ -9,7 +9,11 @@
     
     <!-- fonts -->
     <link rel="stylesheet" href="/dist/assets/css/fonts/pretendard.css" >
-
+		
+		<!-- aos 애니메이션 -->
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		
+		
     <!-- Core CSS -->
     <link rel="stylesheet" href="/dist/dashboard/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="/dist/dashboard/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />

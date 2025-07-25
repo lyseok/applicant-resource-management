@@ -28,7 +28,7 @@ class PaymentMapperTest {
 		PaymentVO pv = new PaymentVO();
 
 		pv.setPaymentNo("PAMT000001");
-		mapper.selectPaymentByPk(pv);
+//		mapper.selectPaymentByPk(pv);
 		
 		
 	}

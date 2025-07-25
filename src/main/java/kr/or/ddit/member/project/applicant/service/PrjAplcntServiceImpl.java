@@ -34,4 +34,17 @@ public class PrjAplcntServiceImpl implements PrjAplcntService {
 		}
 	}
 
+	@Override
+	public void modifyAgreeApplicantStatusCode(Map<String, String> reqData) {
+		String prjAplcntNo = reqData.get("prjAplcntNo");
+		PrjAplcntVO vo = new PrjAplcntVO();
+		vo.setPrjAplcntNo(prjAplcntNo);
+		vo.setAplcntStatusCode(String.valueOf(reqData.get("status")));
+		int res = prjAplcntMapper.updateStatusCode(vo);
+		if(res == 0) {
+			throw new DataUpdateException("상태 코드 변경에 실패했습니다");
+		}
+		
+	}
+
 }

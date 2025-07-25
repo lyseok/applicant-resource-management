@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	const tbodyEl = document.getElementById('salaryTableBody')
 	const noDataText = document.getElementById('noDataText');
 	const actionBtnBox = document.getElementById('actionBtnBox');
-
 	axios.get('/ajax/company/salary_management')
 		.then(resp => {
 			const salaryList = resp.data;
@@ -19,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				salaryList.forEach(salary => {
 					const tr = document.createElement('tr');
-					const min = formatSmartSalary(salary.salaryMin);
-					const max = formatSmartSalary(salary.salaryMax);
+					const min = formatSalary(salary.salaryMin);
+					const max = formatSalary(salary.salaryMax);
 
 					tr.innerHTML = `
                         <td>${salary.codeName}</td>
@@ -37,23 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 
 
-	function formatToManWon(value) {
-		const num = parseInt(value, 10);
-		if (isNaN(num)) return '-';
-		const man = Math.floor(num / 10000);
-		return `${man.toLocaleString()}만 원`;
-	}
-
-
-	function formatSmartSalary(value) {
-		const num = parseInt(value, 10);
-		if (isNaN(num)) return '-';
-
-		const eok = Math.floor(num / 100000000);
-		const man = Math.floor((num % 100000000) / 10000);
-
-		if (eok > 0 && man > 0) return `${eok}억 ${man.toLocaleString()}만 원`;
-		if (eok > 0) return `${eok}억 원`;
-		return `${man.toLocaleString()}만 원`;
-	}
+		// 포맷 함수
+		   function formatSalary(salary) {
+		       salary = Number(salary);
+		       if (isNaN(salary) || salary === 0) return '면접 후 결정';
+		       if (salary < 10000) {
+		           return `${salary}만원`;
+		       }
+		       const eok = Math.floor(salary / 10000);
+		       const man = salary % 10000;
+		       return man > 0 ? `${eok}억 ${man}만원` : `${eok}억원`;
+		   }
+	
+	
+	
 });

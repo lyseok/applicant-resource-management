@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import kr.or.ddit.common.exception.AlreadyTakenExamException;
+import kr.or.ddit.common.exception.StepApplicationUpdateException;
 import kr.or.ddit.dto.MyRecruitExamDTO;
 import kr.or.ddit.dto.RecruitmentExamAnswerDTO;
 import kr.or.ddit.mapper.recruitment.ApplicantAnswerMapper;
@@ -57,7 +58,7 @@ public class RecruitmentExamServiceImpl implements RecruitmentExamService {
 		for(RecruitmentExamAnswerDTO dto : answers) {
 			String selectedOption = dto.getSelectedOptionNo();
 			int score = 0;
-			if(!"X".equals(selectedOption)) {
+			if(!"0".equals(selectedOption)) {
 				boolean correct = "Y".equals(
 					recruitmentExamOptionMapper.selectOptionCorrectYn(selectedOption)
 				);
@@ -73,9 +74,14 @@ public class RecruitmentExamServiceImpl implements RecruitmentExamService {
 			applicantAnswerMapper.insertApplicantAnswer(vo);
 			
 		}
-		
-		editStepApplicationYN(recruitExamNo, applicantId);
-		
+	
+		boolean updated = editStepApplicationYN(recruitExamNo, applicantId);
+		if (!updated) {
+		    throw new StepApplicationUpdateException(
+		        String.format("응시여부 업데이트 실패: applicantId=%s, recruitExamNo=%s",
+		                      applicantId, recruitExamNo)
+		    );
+		}
 		RecruitmentExamScoreResultVO result = new RecruitmentExamScoreResultVO();
 		result.setExamTotalScore(totalScore);
 		return result;

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.ddit.admin.common.users.service.AdminUsersService;
@@ -29,11 +30,14 @@ public class AdminUsersAjaxController {
 	private final AdminUsersService service;
 	
 	@GetMapping
-	public List<UsersVO> getAll(){
+	public List<UsersVO> getAll(
+		@RequestParam(required = false) String userRole  //역할 조회시 /users?userRole=ROLE_COMPANY
+		, @RequestParam(required = false) String userId
+	){  
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    String username = authentication.getName(); // 아이디
 	    log.info("🔐 요청자: {}", username);
-		return service.readUsersList();
+		return service.readUsersList(userRole, userId);
 	}
 	
 	@GetMapping("/{userId}")

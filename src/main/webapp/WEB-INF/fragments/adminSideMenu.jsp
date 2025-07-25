@@ -49,19 +49,19 @@
      <li class="menu-header small text-uppercase"><span class="menu-header-text">회원관리</span></li>
      
      <li class="menu-item">
-       <a href="/admin/common/users?userRole=ROLE_USER" class="menu-link">
+       <a href="/admin/common/users/list?userRole=ROLE_USER" class="menu-link">
          <i class="menu-icon tf-icons bx bx-user"></i>
          <div data-i18n="Basic">일반회원</div>
        </a>
      </li>
      <li class="menu-item">
-       <a href="/admin/common/users?userRole=ROLE_COMPANY" class="menu-link">
+       <a href="/admin/common/users/list?userRole=ROLE_COMPANY" class="menu-link">
          <i class="menu-icon tf-icons bx bx-building"></i>
          <div data-i18n="Basic">기업회원</div>
        </a>
      </li>
      <li class="menu-item">
-       <a href="/admin/common/users?userRole=ROLE_ADMIN" class="menu-link">
+       <a href="/admin/common/users/list?userRole=ROLE_ADMIN" class="menu-link">
          <i class="menu-icon tf-icons bx bx-lock-keyhole-open"></i>
          <div data-i18n="Basic">관리자</div>
        </a>
@@ -175,12 +175,25 @@
      </li>
      
      <li class="menu-item">
-       <a href="/company/payment/product/list" class="menu-link">
-         <i class="menu-icon tf-icons bx bx-collection"></i>
-         <div data-i18n="Basic">구독상품 관리</div>
-       </a>
-     </li>
-     
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <div data-i18n="Account Settings">상품 관리</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/admin/product/list" class="menu-link">
+            <div data-i18n="Account">상품 목록</div>
+          </a>
+        </li>
+      </ul>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/admin/select/product" class="menu-link">
+            <div data-i18n="Account">판매내역 보기</div>
+          </a>
+        </li>
+      </ul>
+    </li>
      
 	<!-- 여기까지 사이드바 작업하는 곳 -->
      <span id="logoutBtn">로그아웃</span>

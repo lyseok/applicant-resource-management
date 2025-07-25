@@ -1,7 +1,7 @@
  // ------  SDK 초기화 ------
       // @docs https://docs.tosspayments.com/sdk/v2/js#토스페이먼츠-초기화
       const clientKey = "test_ck_Gv6LjeKD8a9wXO9o7lLw8wYxAdXy";
-      const customerKey = "test_sk_vZnjEJeQVxG2jBWev45D3PmOoBN0";
+      const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
       const tossPayments = TossPayments(clientKey);
       const payment = tossPayments.payment({ customerKey });
       // 회원 결제
@@ -27,9 +27,9 @@
 			"Content-Type" : "application/json"
 		},
 		body : JSON.stringify({
-			billingKey : "빌링키",
-			customerKey : "user_123",
-			amount : 10000
+			billingKey : "${sessionScope.billingKey}",
+			customerKey : customerKey,
+			amount : "${product.productPrice}"
 		})
 	  })
 	  .then(res => res.json())

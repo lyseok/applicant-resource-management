@@ -7,12 +7,35 @@
 <title>이력서 상세페이지</title>
 <link rel="stylesheet" href="/css/member/resume/resume.css">
 <script type="text/javascript" src="/js/member/resume/resumeList.js" defer></script>
+<c:if test="${not empty questionList }">
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+		  const questionList = ${questionList };
+		  const contentAreas = document.querySelectorAll(".introduction_content_area");
+		  
+		  questionList.forEach((list, i) =>{
+			  const raw = list.content || "";
+			    const html = raw.replace(/\n/g, "<br/>");
+			    if (contentAreas[i]) {
+			      contentAreas[i].innerHTML = html;
+			    }
+		  })
+		})
+	</script>
+</c:if>
 </head>
 <body>
 	<div class="resume-main-wrap resume_detail_wrap">
 		<!-- Header -->
 		<div class="resume-header">
-			<div class="profile-img">🙍‍♂️</div>
+			<div class="profile-img-wrap">
+				<c:if test="${not empty resumeList.photo }">
+					<img src="${resumeList.photo }" alt="" class="profile-img">
+				</c:if>
+				<c:if test="${empty resumeList.photo }">
+					<img src="https://placehold.co/120x150?text=No Image" alt="" class="profile-img ddit-bg">
+				</c:if>
+			</div>
 			<div class="header-info">
 				<div class="d-flex align-items-center">
 					<span class="name lh1">${resumeList.userName }</span> <span
@@ -69,6 +92,39 @@
 		</c:if>
 
 
+		<!-- 자기소개서 -->
+		<c:if test="${not empty resumeList.introduction}">
+			<div class="section">
+				<div class="section-title">자기소개서</div>
+				<ul class="section-list">
+					<li class="w100p">
+						<div class="list-content">
+							<div class="tit_wrap mb-3">
+								<b class="h5 fw-bold text-dark">${resumeList.introduction.introductionName }</b>
+								<!-- 제목 -->
+								<span class="text-secondary fs-14 ms-2">${resumeList.introduction.introductionCreateDate}</span>
+							</div>
+							<div class="d-flex flex-wrap gap-3">
+								<c:forEach items="${resumeList.introduction.introductionQuestionList}" var="question" varStatus="i">
+									<div class=" p-4 border rounded introduction_list">
+										<!-- 문항 -->
+										<div class="mb-3">
+											<b class="d-block question_tit">0${i.index + 1}</b>
+											<b>${question.question }</b>
+										</div>
+										<!-- 내용 -->
+										<div class="introduction_content_area" data-content="${i.index + 1}">
+											${question.content }
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</c:if>
+
 
 		<!-- 경력 -->
 		<c:if test="${not empty resumeList.careerList}">
@@ -79,22 +135,23 @@
 						<li>
 							<div class="list-content">
 								<div class="">
-									<b>${career.company.comName }</b>
 									<!-- 회사명 -->
-									<span class="text-secondary fs-14">(${career.startWorkDate }
-										~ ${career.retireDate })</span>
+									<b>${career.company.comName }</b>
 									<!-- 기간 -->
-									<div>${career.department }/ ${career.responsibility }</div>
+									<span class="text-secondary fs-14">(${career.startWorkDate } ~ ${career.retireDate })</span>
+									<div>${career.freelancer == 'Y' ? '프리랜서' : '정규직/계약직'}</div>
 									<!-- 부서/직무 -->
-								</div>
-								<div>경력: ${career.careerYearName }</div>
+									<div><c:if test="${career.department}">${career.department }/</c:if> ${career.responsibility }</div>
+								</div>								
 								<!-- 경력기간 -->
+								<div>경력: ${career.careerYearName }</div>
 							</div>
 						</li>
 					</c:forEach>
 				</ul>
 			</div>
 		</c:if>
+
 
 
 		<!-- 포트폴리오 및 기타문서 -->
@@ -117,54 +174,6 @@
 				</ul>
 			</div>
 		</c:if>
-
-
-
-		<!-- 자기소개서 -->
-		<c:if test="${not empty resumeList.introduction}">
-			<div class="section">
-				<div class="section-title">자기소개서</div>
-				<ul class="section-list">
-					<li>
-						<div class="list-content">
-							<b class="h5 fw-bold text-dark">${resumeList.introduction.introductionName }</b>
-							<!-- 제목 -->
-							<span class="text-secondary fs-14 ms-2">
-								${resumeList.introduction.introductionCreateDate}</span>
-							<div class="my-3">${resumeList.introduction.introductionQuestion }</div>
-							<!-- 문항 -->
-							<div>${resumeList.introduction.introductionContent }</div>
-							<!-- 내용 -->
-						</div>
-					</li>
-				</ul>
-			</div>
-		</c:if>
-
-
-
-		<!-- 경험 -->
-		<c:if test="${not empty resumeList.myExperienceList}">
-			<div class="section">
-				<div class="section-title">경험</div>
-				<ul class="section-list">
-					<c:forEach items="${resumeList.myExperienceList }" var="exp">
-						<li>
-							<div class="list-content">
-								<b>${exp.expName }</b>
-								<!-- 활동명 -->
-								<span>(${exp.expCodeName })</span>
-								<!-- 활동 구분 -->
-								<div class="text-secondary fs-14">${exp.expStartDate }~
-									${exp.expEndDate }</div>
-								<!-- 활동기간 -->
-							</div>
-						</li>
-					</c:forEach>
-				</ul>
-			</div>
-		</c:if>
-
 
 		<!-- 자격 -->
 		<c:if test="${not empty resumeList.myLicenseList}">
@@ -192,6 +201,29 @@
 			</div>
 		</c:if>
 
+		<!-- 경험 -->
+		<c:if test="${not empty resumeList.myExperienceList}">
+			<div class="section">
+				<div class="section-title">보유경험</div>
+				<ul class="section-list">
+					<c:forEach items="${resumeList.myExperienceList }" var="exp">
+						<li>
+							<div class="list-content">
+								<b>${exp.expName }</b>
+								<!-- 활동명 -->
+								<span>(${exp.expCodeName })</span>
+								<!-- 활동 구분 -->
+								<div class="text-secondary fs-14">${exp.expStartDate }~
+									${exp.expEndDate }</div>
+								<!-- 활동기간 -->
+							</div>
+						</li>
+					</c:forEach>
+				</ul>
+			</div>
+		</c:if>
+
+
 		<!-- 어학자격증 -->
 		<c:if test="${not empty resumeList.languageSkillList}">
 			<div class="section">
@@ -200,11 +232,12 @@
 					<c:forEach items="${resumeList.languageSkillList }" var="lang">
 						<li>
 							<div class="list-content">
-								<b>${lang.languageExamName }</b>
+								<b>${lang.languageExamCodeName} - ${lang.languageExamName }</b>
 								<!-- 어학 자격명 -->
-								<span>(${lang.languageExamLevelCode }) <-- - 바인딩 잘 되는지
-									확인필요</span>
-								<!--  -->
+								<div>
+									<c:if test="${not empty lang.languageExamLevelCode }"><span>(${lang.languageExamLevelCode } / ${lang.languageCodeName })</span></c:if>
+									<c:if test="${not empty lang.languageExamScore }"><span>(${lang.languageExamScore } / ${lang.languageCodeName })</span></c:if>
+								</div>
 								<div class="text-secondary fs-14">${lang.passDate }</div>
 								<!-- 어학 자격증 취득기간 -->
 							</div>
@@ -236,26 +269,6 @@
 		</c:if>
 
 
-
-		<!-- 취업우대사항 -->
-		<c:if test="${not empty resumeList.supportList}">
-			<div class="section">
-				<div class="section-title">취업우대사항</div>
-				<ul class="section-list col50">
-					<li class="border-0 lh1"><b class="list-content">고용지원대상</b></li>
-					<li class="border-0 lh1 "><b class="list-content">장애 등급</b></li>
-					<c:forEach items="${resumeList.supportList }" var="sup">
-						<li class="py-1">
-							<div class="list-content">${sup.disabilityCodeName }</div>
-						</li>
-						<li class="py-1">
-							<div class="list-content">${sup.disabilityLevelCodeName }</div>
-						</li>
-					</c:forEach>
-				</ul>
-			</div>
-		</c:if>
-
 		<!-- 병역 -->
 		<c:if test="${not empty resumeList.militaryList}">
 			<div class="section">
@@ -284,12 +297,60 @@
 				</ul>
 			</div>
 		</c:if>
+		
+		
+		<!-- 취업우대사항 -->
+		<c:if test="${not empty resumeList.supportList}">
+			<div class="section">
+				<div class="section-title">취업우대사항</div>
+				<ul class="section-list col50">
+					<li class="border-0 lh1"><b class="list-content">고용지원대상</b></li>
+					<li class="border-0 lh1 "><b class="list-content">장애 등급</b></li>
+					<c:forEach items="${resumeList.supportList }" var="sup">
+						<li class="py-1">
+							<div class="list-content">${sup.disabilityCodeName }</div>
+						</li>
+						<li class="py-1">
+							<div class="list-content">${sup.disabilityLevelCodeName }</div>
+						</li>
+					</c:forEach>
+				</ul>
+			</div>
+		</c:if>
 	</div>
 	<div class="d-flex justify-content-between">
 		<a href="/mypage/resume/list" class="btn btn_gray_line" onclick="showLoading()">목록</a>
 		<div class="d-flex gap-1">
-			<a href="" class="btn btn_red_line">삭제</a> <a href=""
-				class="btn btn_violet_line">수정</a>
+			<button type="button" class="btn btn_red_line" data-bs-toggle="modal" data-bs-target="#deleteResumeModal">삭제</button>
+			<a href="/mypage/resume/edit/${resumeList.resumeNo }" class="btn btn_violet_line">수정</a>
+		</div>
+	</div>
+	
+	<!-- 삭제 확인 모달 -->
+	<div class="modal fade" id="deleteResumeModal" tabindex="-1" aria-labelledby="deleteResumeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header border-0">
+					<h1 class="modal-title fs-5 fw-bold text-danger" id="deleteModalLabel">
+						<i class="bi bi-exclamation-triangle-fill me-1"></i> 이력서 정보 삭제
+					</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center py-4">
+					<div style="font-size:2.4rem; color:#dc3545; margin-bottom:10px;">❗</div>
+					<p class="fs-5 mb-2 fw-semibold" style="color:#c82333;">
+						해당 이력서 정보를 <span style="color:#dc3545;">정말 삭제</span>하시겠습니까?
+					</p>
+					<p class="text-secondary mb-0" style="font-size:1.08rem;">
+						삭제된 데이터는 복구할 수 없습니다.<br>
+						실행 전 반드시 다시 한 번 확인해 주세요.
+					</p>
+				</div>
+				<div class="modal-footer border-0 justify-content-center">
+					<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
+					<a class="btn btn-danger px-4" href="/mypage/resume/delete/${resumeList.resumeNo}">삭제</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

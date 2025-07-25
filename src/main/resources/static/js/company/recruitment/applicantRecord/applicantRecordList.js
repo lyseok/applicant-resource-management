@@ -1,225 +1,129 @@
 let currentStep = 'step1'; // 초기 단계
 
+// 로딩 show/hide 함수
+function showLoading() {
+  document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
+}
+function hideLoading() {
+  document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
+}
+
 // 컬럼 정보(스텝별로 다르면 이렇게 관리)
-const columns = {
-  step1: [
-    { key: 'id', label: '지원자ID' },
-    { key: 'name', label: '이름' },
-    { key: 'resumeUrl', label: '이력서' },
-    { key: 'career', label: '경력' },
-    { key: 'language', label: '어학' },
-    { key: 'major', label: '전공' },
-    { key: 'cert', label: '자격증' },
-    { key: 'skill', label: '기술' },
-    { key: 'attend', label: '응시' },
-    { key: 'pass', label: '합격' },
-    { key: 'score', label: '점수' },
-    { key: 'passSelect', label: '합격선택' }
-  ],
-  step2: [
-    // 시험점수 등 step2 컬럼 맞게
-    { key: 'id', label: '지원자ID' },
-    { key: 'name', label: '이름' },
-    { key: 'resumeUrl', label: '이력서' },
-    { key: 'career', label: '경력' },
-    { key: 'language', label: '어학' },
-    { key: 'major', label: '전공' },
-    { key: 'cert', label: '자격증' },
-    { key: 'skill', label: '기술' },
-    { key: 'attend', label: '응시' },
-    { key: 'pass', label: '합격' },
-    { key: 'score', label: '시험점수' },
-    { key: 'passSelect', label: '합격선택' }
-  ],
-  step3: [
-    // 면접점수 등 step3 컬럼 맞게
-    { key: 'id', label: '지원자ID' },
-    { key: 'name', label: '이름' },
-    { key: 'resumeUrl', label: '이력서' },
-    { key: 'career', label: '경력' },
-    { key: 'language', label: '어학' },
-    { key: 'major', label: '전공' },
-    { key: 'cert', label: '자격증' },
-    { key: 'skill', label: '기술' },
-    { key: 'attend', label: '응시' },
-    { key: 'pass', label: '합격' },
-    { key: 'score', label: '면접점수' },
-    { key: 'passSelect', label: '합격선택' }
-  ]
+const columns = {};
+
+const STEP_TYPE_LABELS ={
+	'RERP-001' : '시험',
+	'RERP-002' : '면접',
+	'RERP-003' : '서류'
 };
 
-let applicantData = {
-  step1: [
-    {
-      id: "APPL1001",
-      name: "김지원",
-      resumeUrl: "resume/1001.pdf",
-      career: 5,
-      language: 900,
-      major: "컴퓨터공학",
-      cert: ["정보처리기사", "산업안전기사"],
-      skill: ["Java", "Python", "React"],
-      attend: "Y",
-      pass: "Y",
-      score: null
-    },
-    {
-      id: "APPL1002",
-      name: "이서류",
-      resumeUrl: "resume/1002.pdf",
-      career: 2,
-      language: 800,
-      major: "산업공학",
-      cert: ["정보처리기사"],
-      skill: ["Python"],
-      attend: "Y",
-      pass: "N",
-      score: null
-    },
-    {
-      id: "APPL1003",
-      name: "박기계",
-      resumeUrl: "resume/1003.pdf",
-      career: 4,
-      language: 700,
-      major: "기계공학",
-      cert: ["정보처리기능사"],
-      skill: ["Java"],
-      attend: "Y",
-      pass: "Y",
-      score: null
-    },
-    {
-      id: "APPL1004",
-      name: "최경력",
-      resumeUrl: "resume/1004.pdf",
-      career: 8,
-      language: 850,
-      major: "산업공학",
-      cert: ["정보처리기사"],
-      skill: ["Java", "React"],
-      attend: "Y",
-      pass: "Y",
-      score: null
-    },
-    {
-      id: "APPL1005",
-      name: "유신입",
-      resumeUrl: "resume/1005.pdf",
-      career: 1,
-      language: 750,
-      major: "컴퓨터공학",
-      cert: [],
-      skill: ["Python", "HTML"],
-      attend: "Y",
-      pass: "N",
-      score: null
-    }
-  ],
-  step2: [
-    {
-      id: "APPL1001",
-      name: "김지원",
-      resumeUrl: "resume/1001.pdf",
-      career: 5,
-      language: 900,
-      major: "컴퓨터공학",
-      cert: ["정보처리기사", "산업안전기사"],
-      skill: ["Java", "Python", "React"],
-      attend: "Y",
-      pass: "Y",
-      score: 88
-    },
-    {
-      id: "APPL1003",
-      name: "박기계",
-      resumeUrl: "resume/1003.pdf",
-      career: 4,
-      language: 700,
-      major: "기계공학",
-      cert: ["정보처리기능사"],
-      skill: ["Java"],
-      attend: "Y",
-      pass: "N",
-      score: 74
-    },
-    {
-      id: "APPL1004",
-      name: "최경력",
-      resumeUrl: "resume/1004.pdf",
-      career: 8,
-      language: 850,
-      major: "산업공학",
-      cert: ["정보처리기사"],
-      skill: ["Java", "React"],
-      attend: "Y",
-      pass: "Y",
-      score: 93
-    }
-  ],
-  step3: [
-    {
-      id: "APPL1001",
-      name: "김지원",
-      resumeUrl: "resume/1001.pdf",
-      career: 5,
-      language: 900,
-      major: "컴퓨터공학",
-      cert: ["정보처리기사", "산업안전기사"],
-      skill: ["Java", "Python", "React"],
-      attend: "Y",
-      pass: "",
-      score: 92
-    },
-    {
-      id: "APPL1004",
-      name: "최경력",
-      resumeUrl: "resume/1004.pdf",
-      career: 8,
-      language: 850,
-      major: "산업공학",
-      cert: ["정보처리기사"],
-      skill: ["Java", "React"],
-      attend: "Y",
-      pass: "",
-      score: 85
-    }
-  ]
-};
+const FINAL_STEP_KEY = 'final';
 
+function generateColumns(step, type) {
+  const baseCols = [
+    { key: 'bir', label: '생년월일' },
+    { key: 'name', label: '이름' },
+    { key: 'resumeNo', label: '이력서' },
+    { key: 'career', label: '경력' },
+    { key: 'language', label: '어학' },
+    { key: 'major', label: '전공' },
+    { key: 'cert', label: '자격증' },
+    { key: 'skill', label: '기술' }
+  ];
 
+  if(step === FINAL_STEP_KEY){
+	baseCols.push({key : 'alarm', label : '합격 알림 여부'});
+	baseCols.push({key : 'accept', label : '채용 수락 여부'});
+	baseCols.push({key : 'hireDate', label : '입사 예정일'});
+	baseCols.push({key : 'passSelect', label : '메일 발송'});
+  }else{
+	baseCols.push({key : 'attend', label : '응시 여부'});
+	baseCols.push({key : 'pass', label : '합격 여부'});
+	const scoreLabel = type === 'RERP-001' ? '시험점수'
+					: type === 'RERP-002' ? '면접점수'
+					: '점수';
+	baseCols.push({key : 'score', label: scoreLabel});
+	baseCols.push({key : 'passSelect', label: '합격선택'});
+  }
+  columns[step === FINAL_STEP_KEY ? FINAL_STEP_KEY : "step" + step] = baseCols;
+}
+
+function formatCellValue(key, value, applicant) {
+  if (key === 'resumeNo' ) {
+    return `<button class="btn btn-outline-primary btn-sm resume-link" 
+    		data-resume-no="${value}" data-user-id="${applicant._userId}" data-applicant-id="${applicant._applicantId}">상세</button>`;
+  }
+  if (key === 'passSelect') {
+    const checked = applicant.pass === 'Y' ? 'checked' : '';
+    return `<input type="checkbox" class="form-check-input passCheck" ${checked} />`;
+  }
+  if (Array.isArray(value)) {
+    return value.join(', ');
+  }
+  if (value === null || value === undefined || value === '') {
+    return '-';
+  }
+  return key === 'career' ? `${value}` : value;
+}
+
+function generateRowDataAttributes(applicant) {
+  return `
+    data-career="${applicant.career}"
+    data-language="${applicant.language}"
+    data-major="${applicant.major}"
+    data-cert="${(applicant.cert || []).join(',')}"
+    data-skill="${(applicant.skill || []).join(',')}"
+    data-applicant-id="${applicant._applicantId}"
+    data-recruitment-no="${applicant._recruitmentNo}"
+    data-applicant-name="${applicant.name}"
+    data-process-no="${applicant._processNo}"
+    data-step="${applicant._step}"
+    data-final="${applicant._final}"
+  `;
+}
+
+let applicantData = {};
 
 // ======================= 테이블랜더 ========================
 
 // 테이블 렌더링 함수
 function renderApplicantTable() {
+	console.log("render", currentStep, columns[currentStep], applicantData[currentStep]);
   const tableHead = document.querySelector('#mainTable thead tr');
   const tableBody = document.querySelector('#mainTable tbody');
+  
+  const columnSet = columns[currentStep];
+  const dataList = applicantData[currentStep];
+  
+  // 컬럼 정의 안 된 경우 안전 처리
+  if (!columnSet) {
+    tableHead.innerHTML = '<th colspan="100%" class="text-center text-danger">이 단계에 대한 컬럼 정보가 없습니다</th>';
+    tableBody.innerHTML = '<tr><td colspan="100%">해당 단계에 대한 컬럼 설정이 필요합니다</td></tr>';
+    return;
+  }
+  
   // 헤더 렌더링
-  tableHead.innerHTML = columns[currentStep].map(col => `<th class="text-center">${col.label}</th>`).join('');
+  tableHead.innerHTML = columnSet.map(col => `<th class="text-center">${col.label}</th>`).join('');
+  
+  
+  // "지원자 ID"가 없는 행 제외
+  const validDataList = Array.isArray(dataList) ? dataList.filter(row => row.name): [];
+  if (validDataList.length === 0) {
+    tableBody.innerHTML = ''; // 아무 행도 안 만듦
+    return;
+  }
+  
   // 바디 렌더링
-  tableBody.innerHTML = applicantData[currentStep].map(a => {
-    return `<tr data-career="${a.career}" data-language="${a.language}" data-major="${a.major}"
-          data-cert="${a.cert.join(',')}" data-skill="${a.skill.join(',')}">
-        <td>${a.id}</td>
-        <td>${a.name}</td>
-        <td><a href="${a.resumeUrl}" target="_blank" class="btn btn-outline-primary btn-sm">상세</a></td>
-        <td>${a.career}년</td>
-        <td>${a.language}</td>
-        <td>${a.major}</td>
-        <td>${a.cert.join(', ')}</td>
-        <td>${a.skill.join(', ')}</td>
-        <td>${a.attend && a.attend.trim() ? a.attend : '-'}</td>
-        <td>${a.pass && a.pass.trim() ? a.pass : '-'}</td>
-        <td>${a.score !== null ? a.score : '-'}</td>
-        <td>
-          <input type="checkbox" class="form-check-input passCheck"
-            ${a.pass === 'Y' ? 'checked' : ''}
-            ${(a.pass === 'Y' || a.pass === 'N') ? 'disabled' : ''}>
-        </td>
-      </tr>`;
-  }).join('');
-  applyFilters();
+  tableBody.innerHTML = validDataList.map(applicant => {
+	return `<tr ${generateRowDataAttributes(applicant)}>
+	      ${columnSet.map(col => {
+	        const value = applicant[col.key];
+	        return `<td>${formatCellValue(col.key, value, applicant)}</td>`;
+	      }).join('')}
+	    </tr>`;
+	  }).join('');
+
+	  applyFilters();
 }
 
 // 탭 버튼 클릭시 active 변경 및 스텝 변경
@@ -250,6 +154,29 @@ document.getElementById('resetFilters').addEventListener('click', function(){
   applyFilters();
 });
 
+// 필터링 초기화
+document.getElementById('resetFilters').addEventListener('click', function(){
+  // 슬라이더 초기화
+  const slider = document.getElementById('careerSlider');
+  if (slider && slider.noUiSlider) {
+    slider.noUiSlider.set([0, 10]); // 초기범위로 다시 설정
+  }
+
+  // 드롭다운 초기화
+  document.getElementById('languageFilter').value = "";
+  document.getElementById('majorFilter').value = "";
+  document.getElementById('certFilter').value = "";
+
+  // 기술 태그 체크박스 초기화
+  Array.from(document.querySelectorAll('#skillTagFilter input')).forEach(cb => cb.checked = false);
+
+  // 이름 검색 input 초기화
+  document.getElementById('searchInput').value = "";
+
+  // 필터 적용
+  applyFilters();
+});
+
 // 합격자 직접 체크 후 저장
 function savePassStatus(){
   const activeTable = document.querySelector('.tab-pane.active table');
@@ -263,17 +190,50 @@ function savePassStatus(){
 // 단계 마감(합격자 일괄적용)
 function closeStep(){
     const activeTable = document.querySelector('.tab-pane.active table');
-    let cnt=0;
+    let selectedApplicants = [];
     activeTable.querySelectorAll('tbody tr').forEach(tr => {
       const check = tr.querySelector('.passCheck');
       if(check && check.checked){
+		const applicantId = tr.dataset.applicantId;
+      	const applicantName = tr.dataset.applicantName;
+      	const recruitmentNo = tr.dataset.recruitmentNo;
+      	const recruitProcessNo = tr.dataset.processNo;
+      	const recruitProcessFinal = tr.dataset.final;
+      	const recruitProcessStep = tr.dataset.step;
+      	
+      	selectedApplicants.push({
+			applicantId,
+			applicantName,
+			recruitmentNo,
+			recruitProcessNo,
+			recruitProcessStep,
+			recruitProcessFinal
+		});
+		
         tr.children[9].innerText = 'Y';
-        cnt++;
       }else{
         tr.children[9].innerText = 'N';
       }
     });
-    alert('마감 완료, 합격자 '+cnt+'명 반영(프론트)');
+    
+    if(selectedApplicants.length === 0){
+		alert('선택된 지원자가 없습니다.');
+		return;
+	}
+	
+	axios.post(`/applicant/record/pass`, selectedApplicants)
+		.then(res=>{
+			/*alert(`마감 완료, ${selectedApplicants.length}명 반영됨`);*/
+			fetchApplicantData(recruitmentNo);
+		})
+		.catch(err=>{
+			console.error('단계 마감 실패', err);
+			alert('단계 마감 중 오류가 발생했습니다.');
+		})
+		.finally(() => {
+			
+		});
+   	
   }
   
   renderApplicantTable();
@@ -401,3 +361,283 @@ window.addEventListener('DOMContentLoaded', function() {
     applyFilters();
   });
 });
+
+async function fetchApplicantData(recruitmentNo, desiredStep = null) {
+  try {
+    const response = await axios.get(`/applicant/record/${recruitmentNo}`);
+    const result = response.data;
+	
+	const stepMetaList = result.map(r => ({
+      step: r.STEP,
+      step_type: r.STEP_TYPE
+    })).filter((v, i, arr) =>
+      v.step && arr.findIndex(d => d.step === v.step) === i);
+    
+    stepMetaList.forEach(info => generateColumns(info.step, info.step_type));
+	renderStepTabs(stepMetaList); // 여기에 탭 생성 추가
+
+    const applicantDataTemp = {};
+    result.forEach(row => {
+      const stepKey = "step" + row.STEP;
+      if (!applicantDataTemp[stepKey]) applicantDataTemp[stepKey] = [];
+      
+      
+		let score = null;
+		if (row.STEP_TYPE === 'RERP-001') score = row.EXAM_SCORE;
+		else if (row.STEP_TYPE === 'RERP-002') score = row.INTERVIEW_SCORE;
+
+      
+        applicantDataTemp[stepKey].push({
+        bir: row.bir,
+        name: row.APPLICANT_NAME,
+        career: row.career ?? 0,
+        language: row.language ?? 0,
+        major: row.major ?? "",
+        cert: row.cert ?? [],
+        skill: row.skill ?? [],
+        attend: row.ATTEND ?? "-",
+        pass: row.PASS ?? "-",
+        score: score,
+        
+        _recruitmentNo : row.RECRUITMENT_NO,
+        _applicantId : row.APPLICANT_ID,
+        _processNo : row.PROCESS_NO,
+        _step : row.STEP,
+        _final : row.FINAL,
+      });
+    });
+
+    applicantData = applicantDataTemp;
+    await fetchFinalPassers(recruitmentNo);
+    generateColumns(FINAL_STEP_KEY);
+    await fetchResumeDetail();
+    currentStep = desiredStep || 'step' + stepMetaList[0]?.step;
+    updateStepActionButton();
+    renderApplicantTable();
+    fillFilterOptions();
+  } catch (error) {
+    console.error('지원자 데이터 가져오기 실패:', error);
+  }
+}
+
+fetchApplicantData(recruitmentNo);
+console.log(applicantData);
+
+function renderStepTabs(stepMetaList){
+	const $nav = document.querySelector('.nav-tabs');
+	$nav.innerHTML = '';
+	
+	stepMetaList.forEach((stepInfo, idx)=>{
+		const step = stepInfo.step;
+		const type = STEP_TYPE_LABELS[stepInfo.step_type] || '단계';
+		const isActive = idx === 0 ? 'active' : '';
+		const li = document.createElement('li');
+		li.className = 'nav-item';
+		li.innerHTML = `<button class="nav-link ${isActive}" data-step="step${step}">${step}차 ${type}</button>`;
+		$nav.appendChild(li);
+	});
+	
+	// 최종 합격자
+	const finalTab = document.createElement('li');
+	finalTab.className = 'nav-item';
+	finalTab.innerHTML = `<button class="nav-link" data-step="${FINAL_STEP_KEY}">최종 합격자</button>`;
+	$nav.appendChild(finalTab);
+	
+	document.querySelectorAll('.nav-link[data-step]').forEach(btn =>{
+		btn.addEventListener('click', function (){
+			document.querySelectorAll('.nav-link[data-step]').forEach(b=>b.classList.remove('active'));
+			this.classList.add('active');
+			currentStep = this.getAttribute('data-step');
+			updateStepActionButton();
+			renderApplicantTable();
+		});
+	});
+}
+
+function updateStepActionButton(){
+	const $btn = document.getElementById('stepActionBtn');
+	if (!$btn) return; // 버튼이 없으면 무시
+	
+	if(currentStep === FINAL_STEP_KEY){
+		$btn.textContent = '입사일 변경';
+		$btn.onclick = () =>{
+			const modal = new bootstrap.Modal(document.getElementById('hireDateModal'));
+			const overlay = document.getElementById('overlay');
+			if (overlay) overlay.style.display = 'none';
+			modal.show();
+		};
+	}else{
+		$btn.textContent = '단계 마감';
+		$btn.onclick = closeStep;
+	}
+}
+
+document.getElementById('confirmHireDateBtn').addEventListener('click', ()=>{
+	const date = document.getElementById('hireDatePicker').value;
+	const formatDate = date.replace(/-/g, '');
+	if(!date){
+		alert('입사일을 선택해 주세요.');
+		return;
+	}
+	
+	const finalApplicants = applicantData[FINAL_STEP_KEY] || [];
+	const payload = finalApplicants.map(a=>({
+		applicantId : a._applicantId,
+		recruitmentNo : a._recruitmentNo,
+		hireDate : formatDate
+	}));
+	
+	if(payload.length === 0){
+		alert("최종합격자 데이터가 없습니다.");
+		return;
+	}
+	
+	showLoading();
+	axios.post('/applicant/record/hiredate', payload)
+		.then(()=>{
+			alert("입사 예정일이 변경되었습니다.");
+			fetchApplicantData(payload[0].recruitmentNo, FINAL_STEP_KEY);
+			bootstrap.Modal.getInstance(document.getElementById('hireDateModal')).hide();
+		})
+		.catch(err=>{
+			console.error('입사일 업데이트 실패', err);
+			alert("입사 예정일 변경 실패");
+		})
+		.finally(()=>{
+			hideLoading();
+		})
+})
+
+async function fetchFinalPassers(recruitmentNo){
+	try{
+		const response = await axios.get(`/applicant/record/passer/${recruitmentNo}`);
+		const result = response.data;
+		
+		generateColumns(FINAL_STEP_KEY);
+		
+		const mergedFinalList = [];
+		
+		// 모든 step에서 지원자 데이터 하나의 배열로 flatten
+		const allApplicants = Object.values(applicantData).flat();
+		
+		result.forEach(passer => {
+			const base = allApplicants.find(a => a._applicantId === passer.applicantId);
+			if (!base) return;
+
+			mergedFinalList.push({
+				...base, // 기존 applicant 정보
+				alarm: passer.passAlarmYn,
+				accept: passer.recruitAcceptYn,
+				hireDate: passer.hireDate ?? "-",
+				passSelect: true,
+				_passerNo: passer.passerNo,
+				_recruitmentNo : base._recruitmentNo ?? passer.recruitmentNo ?? recruitmentNo
+			});
+		});
+
+		applicantData[FINAL_STEP_KEY] = mergedFinalList;
+	} catch (e) {
+		console.error('최종합격자 조회 실패:', e);
+	}
+}
+
+function mergeResumeDetail(resumeDetailList){
+	console.log('병합 대상 resume array:', resumeDetailList);
+	const allApplicants = Object.values(applicantData).flat();
+
+	resumeDetailList.forEach(resume => {
+		const applicantId = resume.applicantId;
+		if (!applicantId || !resume) return;
+
+		const targets = allApplicants.filter(app => app._applicantId === applicantId);
+		if (targets.length === 0) return;
+
+		targets.forEach(app => {
+			app.bir = app.bir || resume.birth;
+			app.career = app.career || getHighestCareerYear(resume.careerList);
+			app.language = app.language || (resume.languageSkillList?.map(l => l.languageExamScore).join(', ') || '');
+			app.cert = app.cert?.length ? app.cert : (resume.myLicenseList?.map(l => l.licenseCode) || []);
+			app.skill = app.skill?.length ? app.skill : (resume.mySkillList?.map(s => s.mySkillName) || []);
+			app.major = app.major || (resume.educationList?.[0]?.departmentCode || '');
+			
+			app.resumeNo = resume.resumeNo || "";
+			app._userId = resume.userId || app._userId;
+		});
+	});
+}
+
+async function fetchResumeDetail(){
+	const allApplicants = Object.values(applicantData).flat();
+
+	const targetIds = [...new Set(
+		allApplicants
+			.filter(a => a._applicantId && (!a.bir || !a.career || !a.language || !a.major || !a.cert?.length || !a.skill?.length))
+			.map(a => a._applicantId)
+	)];
+
+	if (targetIds.length === 0) return;
+
+	try {
+		const response = await axios.post('/applicant/record/resume', targetIds); // 서버에서 applicantId로 처리
+		const resumeDetailList = response.data;
+
+		mergeResumeDetail(resumeDetailList); // applicantId 기준 병합
+		renderApplicantTable();
+	} catch (err) {
+		console.error("상세 이력서 정보 가져오기 실패", err);
+	}
+}
+
+document.addEventListener('click', function(e) {
+  const $target = e.target.closest('.resume-link');
+  if (!$target) return;
+
+  const resumeNo = $target.dataset.resumeNo;
+  const userId = $target.dataset.userId;
+  const applicantId = $target.dataset.applicantId;
+
+  if (!resumeNo || !userId) {
+    alert('이력서 정보가 부족합니다.');
+    return;
+  }
+  
+  axios.post(`/applicant/record/${applicantId}`)
+  	.then(()=>{
+		console.log('이력서 열람');
+	})
+	.catch(err=>{
+		console.error('이력서 열람 실패');
+	})
+
+  const popupUrl = `/mypage/resume/${resumeNo}/${userId}`;
+  const width = 1000;
+  const height = 800;
+  const left = (window.innerWidth - width) / 2;
+  const top = (window.innerHeight - height) / 2;
+
+  window.open(
+    popupUrl,
+    'resumePopup',
+    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+  );
+});
+
+function getHighestCareerYear(careerList) {
+  if (!Array.isArray(careerList) || careerList.length === 0) return 0;
+
+  const extractYear = (name) => {
+    if (!name) return 0;
+    const match = name.match(/(\d+)(년)/g);
+    if (!match) return 0;
+
+    // 예: "6년 ~ 7년" → 7 추출
+    const nums = match.map(m => parseInt(m.replace('년', ''), 10));
+    return Math.max(...nums);
+  };
+
+  const sorted = careerList
+    .filter(c => c.careerYearName)
+    .sort((a, b) => extractYear(b.careerYearName) - extractYear(a.careerYearName));
+
+  return sorted[0]?.careerYearName || 0;
+}

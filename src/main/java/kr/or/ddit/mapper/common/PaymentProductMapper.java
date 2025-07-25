@@ -16,4 +16,10 @@ public interface PaymentProductMapper {
 	public int updatePaymentProduct(PaymentProductVO vo);
 
 	public int deletePaymentProduct(String productNo);
+	
+	public PaymentProductVO selectPaymentProductByName(String productName);
+	
+	public List<PaymentProductVO> selectPaymentProductListByPk(String productNo);
+
+	public int minusLimit(String userId);
 }

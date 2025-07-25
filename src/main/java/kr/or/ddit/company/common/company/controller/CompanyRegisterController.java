@@ -62,7 +62,7 @@ public class CompanyRegisterController {
 			redirectAttributes.addFlashAttribute("company", company);
 			String errorName = BindingResult.MODEL_KEY_PREFIX+MODELNAME;
 			redirectAttributes.addFlashAttribute(errorName, errors);
-			lvn = "redirect:/company/signup";
+			lvn = "redirect:/companysignup";
 		}
 		return lvn;
 	}

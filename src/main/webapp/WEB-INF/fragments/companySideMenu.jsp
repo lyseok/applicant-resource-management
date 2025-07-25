@@ -146,13 +146,28 @@
     <li class="menu-header small text-uppercase"><span class="menu-header-text">상품관리</span></li>
 
     <li class="menu-item">
-      <a href="/company/payment/main" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-shopping-bag-alt"></i>
-        <div data-i18n="Basic">상품이용관리</div>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <div data-i18n="Account Settings">상품이용관리</div>
       </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/company/payment/main" class="menu-link">
+            <div data-i18n="Account">나의 상품보기</div>
+          </a>
+        </li>
+      </ul>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/company/log/list" class="menu-link">
+            <div data-i18n="Account">사용내역 보기</div>
+          </a>
+        </li>
+      </ul>
     </li>
+    
     <li class="menu-item">
-      <a href="/company" class="menu-link">
+      <a href="/company/payment/done/products" class="menu-link">
         <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
         <div data-i18n="Basic">결제내역조회</div>
       </a>

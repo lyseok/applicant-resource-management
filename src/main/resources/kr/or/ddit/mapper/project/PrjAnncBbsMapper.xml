@@ -134,6 +134,49 @@
     ORDER BY B.ANNC_CREATE_DATE DESC
 </select>
 
+<select id="selectMyApplicantPrjAnncBbsList" resultMap="PrjAnncBbsVOMap">
+	SELECT 
+	    AP.PRJ_APLCNT_NO
+	    , AP.RESUME_NO
+	    , AP.USER_ID
+	    , AP.APLCNT_STATUS_CODE
+	    , AP.APLCNT_DATE
+	    , AP.RCRT_PSNCNT_NO
+	    , AP.PRJ_ANNC_NO
+	    
+	    , RC.RCRT_PSNCNT_NO
+	    , RC.PRJ_ANNC_NO
+	    , RC.JOB_CODE
+	    , RC.RCRT_PSNCNT
+	    
+	    , AN.PRJ_ANNC_NO
+	    , AN.USER_ID
+	    , AN.PRJ_EMP_TITLE
+	    , AN.PRJ_TOPIC
+	    , AN.ANNC_CREATE_DATE
+	    , AN.PRJ_START_PLAN_DATE
+	    , AN.PRJ_END_PLAN_DATE
+	    , AN.PRJ_ANNC_HIT
+	    , AN.PRJ_ANNC_CONTENT
+	    , AN.ANNC_END_PLAN_DATE
+	    , AN.ANNC_END_YN
+	
+	    , TAG.TAG_NAME
+	    
+	FROM PRJ_APLCNT AP
+	LEFT OUTER JOIN PRJ_RCRT_PSNCNT RC
+	    ON AP.RCRT_PSNCNT_NO = RC.RCRT_PSNCNT_NO
+	    AND AP.PRJ_ANNC_NO = RC.PRJ_ANNC_NO
+	LEFT OUTER JOIN PRJ_ANNC_BBS AN
+	    ON RC.PRJ_ANNC_NO = AN.PRJ_ANNC_NO
+	LEFT OUTER JOIN PRJ_ANNC_BOARD_TAG TA
+	    ON TA.PRJ_ANNC_NO = AN.PRJ_ANNC_NO
+	LEFT OUTER JOIN TAG
+	    ON TA.TAG_NO = TAG.TAG_NO
+	WHERE AP.USER_ID = #{userId}
+	ORDER BY ANNC_CREATE_DATE DESC
+</select>
+
 <select id="selectPrjAnncBbsByPk" resultMap="PrjAnncBbsVOMap">
 	SELECT
 	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
@@ -238,5 +281,19 @@
 	DELETE FROM PRJ_ANNC_BBS
 	WHERE PRJ_ANNC_NO = #{prjAnncNo}
 </delete>
+
+<update id="updateHitCnt">
+ 	UPDATE PRJ_ANNC_BBS
+	SET 
+		PRJ_ANNC_HIT = (SELECT (PRJ_ANNC_HIT + 1) FROM PRJ_ANNC_BBS WHERE PRJ_ANNC_NO = #{prjAnncNo})
+	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+</update>
+
+<update id="updateAnncEndYn">
+ 	UPDATE PRJ_ANNC_BBS
+	SET 
+		ANNC_END_YN = 'Y'
+	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+</update>
 
 </mapper>

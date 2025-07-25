@@ -15,11 +15,39 @@
 	SELECT 
 		PASSER_NO
 		, APPLICANT_ID
+		, RECRUITMENT_NO
 		, PASS_ALARM_YN
 		, RECRUIT_ACCEPT_YN
 		, HIRE_DATE 
 	FROM PASSER 
 	WHERE PASSER_NO = #{passerNo}
+	</select>
+	
+	<select id="selectDuplicatePasser">
+	SELECT 
+		PASSER_NO
+		, APPLICANT_ID
+		, RECRUITMENT_NO
+		, PASS_ALARM_YN
+		, RECRUIT_ACCEPT_YN
+		, HIRE_DATE 
+	FROM PASSER 
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUITMENT_NO = #{recruitmentNo}
+		
+	</select>
+	
+	<select id="selectpasserByRecruit">
+	SELECT
+	PASSER_NO
+	, APPLICANT_ID
+	, RECRUITMENT_NO
+	, PASS_ALARM_YN
+	, RECRUIT_ACCEPT_YN
+	, HIRE_DATE
+	FROM PASSER
+	WHERE RECRUITMENT_NO = #{recruitmentNo}
+	AND PASSER_DEL_DATE IS NULL
 	</select>
 	
 	<insert id="insertPasser">
@@ -32,12 +60,14 @@
 	INSERT INTO PASSER (
 		PASSER_NO
 		, APPLICANT_ID
+		, RECRUITMENT_NO
 		, PASS_ALARM_YN
 		, RECRUIT_ACCEPT_YN
 		, HIRE_DATE
 	) VALUES (
 	#{passerNo}
 	, #{applicantId}
+	, #{recruitmentNo}
 	, 'N'
 	, 'N'
 	, #{hireDate}
@@ -46,10 +76,22 @@
 	
 	<update id="updatePasser">
 	UPDATE PASSER SET 
-		PASS_ALARM_YN = #{passAlarmYn}
-		, RECRUIT_ACCEPT_YN = #{recruitAcceptYn}
-		, HIRE_DATE = #{hireDate} 
+		HIRE_DATE = #{hireDate} 
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUITMENT_NO = #{recruitmentNo}
+	</update>
+	
+	<update id="updateAlarm">
+	UPDATE PASSER SET
+		PASS_ALARM_YN = 'Y'
 	WHERE PASSER_NO = #{passerNo}
+	</update>
+	
+	<update id="updateAccept">
+	UPDATE PASSER SET 
+		RECRUIT_ACCEPT_YN = 'Y'
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUITMENT_NO = #{recruitmentNo}
 	</update>
 	
 	<delete id="deletePasser">

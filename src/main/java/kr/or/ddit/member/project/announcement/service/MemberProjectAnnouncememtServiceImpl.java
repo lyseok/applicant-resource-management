@@ -37,6 +37,7 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 	
 	@Override
 	public PrjAnncBbsVO readPrjAnncBbs(String prjAnncNo) {
+		prjAnncBbsMapper.updateHitCnt(prjAnncNo);
 		PrjAnncBbsVO prjAnncBbs = prjAnncBbsMapper.selectPrjAnncBbsByPk(prjAnncNo);
 		for(PrjRcrtPsncntVO prscnt: prjAnncBbs.getPrjRcrtPsncntList()) {
 			prscnt.setJobCodeName(codeMapProvider.getJobName(prscnt.getJobCode()));
@@ -99,6 +100,14 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 		String username = authentication.getName();
 		
 		return prjAnncBbsMapper.selectMyPrjAnncBbsList(username);
+	}
+
+	@Override
+	public List<PrjAnncBbsVO> myApplicantPrjAnncBbsList() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		return prjAnncBbsMapper.selectMyApplicantPrjAnncBbsList(username);
 	}
 
 }

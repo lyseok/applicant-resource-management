@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class InterviewQuestionScoreListDTO {
 	private String applicantId;
+	private String processNo;
     @Valid
     private List<InterviewQuestionScoreVO> interviewQuestionScoreList;
 }

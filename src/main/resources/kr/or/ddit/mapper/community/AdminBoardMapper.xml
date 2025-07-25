@@ -6,34 +6,120 @@
 		<id property="boardNo" column="BOARD_NO"/>		
 		<association property="users" javaType="UsersVO" autoMapping="true"/>
 		<collection property="adminCommentList" javaType="list" ofType="AdminCommentVO">
-			<id property="boardCommentNo" column="BOARD_COMMENT_NO"/>  <!-- 같은 이름 컬럼이 있어 둘다 id 넣어줌 -->
-			<result property="userId" column="USER_ID"/>  <!-- result엔 다른 VO와 중복되지 않고, 가져올 컬럼만 적음 -->
+			<id property="boardCommentNo" column="BOARD_COMMENT_NO"/>
+			<result property="userId" column="COMMENT_USER_ID"/>
+			<result property="boardNo" column="COMMENT_BOARD_NO"/>
 			<result property="boardCommentContent" column="BOARD_COMMENT_CONTENT"/>
+			<result property="boardWriteDate" column="COMMENT_BOARD_WRITE_DATE"/>
+			<result property="boardDeleteDate" column="COMMENT_BOARD_DELETE_DATE"/>
 			<result property="boardCommentStatus" column="BOARD_COMMENT_STATUS"/>
 		</collection>
 	</resultMap>
 
 	<select id="selectAdminBoardByPk" resultMap="adminBoardMap">
-		WITH ADMIN_BOARD_VIEW AS (
-            SELECT 
-				  BOARD_NO
-				, USER_ID
-				, BOARD_TYPE_CODE
-				, BOARD_TITLE
-				, BOARD_WRITE_DATE
-				, BOARD_CONTENT
-				, BOARD_DELETE_DATE
-				, BOARD_POST_HIT
-				, BOARD_STATUS 
-			FROM ADMIN_BOARD NATURAL JOIN USERS
-	        WHERE BOARD_NO = #{boardNo}
+		WITH A AS (
+		    SELECT 
+		          BOARD_NO
+		        , USER_ID
+		        , BOARD_TYPE_CODE
+		        , BOARD_TITLE
+		        , BOARD_WRITE_DATE
+		        , BOARD_CONTENT
+		        , BOARD_DELETE_DATE
+		        , BOARD_POST_HIT
+		        , BOARD_STATUS 
+		    FROM ADMIN_BOARD
+		    NATURAL JOIN USERS
+		    WHERE BOARD_NO = #{boardNo}
+		    AND BOARD_STATUS != 'D'
 		)
 		SELECT
-            ADMIN_BOARD_VIEW.*
-            , BOARD_COMMENT_CONTENT
-            , BOARD_COMMENT_STATUS
-		FROM ADMIN_BOARD_VIEW LEFT OUTER JOIN ADMIN_COMMENT 
-        ON (ADMIN_BOARD_VIEW.BOARD_NO = ADMIN_COMMENT.BOARD_NO)
+		      A.*
+		    , B.BOARD_COMMENT_NO
+		    , B.USER_ID AS COMMENT_USER_ID
+		    , B.BOARD_NO AS COMMENT_BOARD_NO
+		    , B.BOARD_COMMENT_CONTENT
+		    , B.BOARD_WRITE_DATE AS COMMENT_BOARD_WRITE_DATE
+		    , B.BOARD_DELETE_DATE AS COMMENT_BOARD_DELETE_DATE
+		    , B.BOARD_COMMENT_STATUS
+		FROM A
+		LEFT OUTER JOIN ADMIN_COMMENT B 
+		  ON A.BOARD_NO = B.BOARD_NO
+		  AND B.BOARD_COMMENT_STATUS != 'D'
+	</select>
+	
+	<select id="selectDelAboardList">
+		SELECT 
+		       BOARD_NO
+		     , USER_ID
+		     , BOARD_TYPE_CODE
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_STATUS
+		FROM ADMIN_BOARD
+		WHERE BOARD_STATUS = 'D'
+	</select>
+	
+	<select id="selectAdminBoardListByTypeAndUserRole" resultType="AdminBoardVO">
+		SELECT 
+			B.BOARD_NO,
+			B.BOARD_TYPE_CODE,
+			B.USER_ID,
+			B.BOARD_TITLE,
+			B.BOARD_WRITE_DATE,
+			B.BOARD_DELETE_DATE,
+			B.BOARD_POST_HIT,
+			B.BOARD_STATUS,
+			U.USER_ROLE
+		FROM ADMIN_BOARD B
+		JOIN USERS U ON B.USER_ID = U.USER_ID
+		WHERE B.BOARD_TYPE_CODE = #{boardTypeCode}
+			AND B.BOARD_STATUS != 'D'
+		<if test="userRole != null and userRole != ''">
+			AND U.USER_ROLE = #{userRole}
+		</if>
+	</select>
+
+	<select id="selectCmnGroupList">
+		WITH UPPER_CODE_VIEW AS (    
+		    SELECT 
+		          B.CODE_DETAIL_NO
+			    , B.CODE_GROUP_NO
+			    , B.UPPER_CODE_NO
+			    , B.CODE_NAME
+			    , B.SORT_ORDER
+			    , B.USE_YN
+		        , C.BOARD_TYPE_CODE
+			FROM CMN_CODE B
+			LEFT OUTER JOIN ADMIN_BOARD C
+		        ON C.BOARD_TYPE_CODE = B.UPPER_CODE_NO)
+		SELECT 
+		      A.CODE_GROUP_NO
+		    , A.CODE_GROUP_NAME
+		    , A.DESCRIPTION
+		    , A.USE_YN
+		    , B.CODE_DETAIL_NO
+		    , B.UPPER_CODE_NO
+		    , B.CODE_NAME
+		    , B.SORT_ORDER
+	    FROM UPPER_CODE_VIEW B
+	    LEFT OUTER JOIN CMN_CODE_GROUP A
+	        ON A.CODE_GROUP_NO = B.CODE_GROUP_NO
+	    WHERE B.UPPER_CODE_NO = #{upperCodeNo}
+	</select>
+	
+	<select id="selectCmnList" resultType="CmnCodeVO">
+		SELECT 
+	        CODE_DETAIL_NO
+	        , CODE_GROUP_NO
+	        , UPPER_CODE_NO
+	        , CODE_NAME
+	        , SORT_ORDER
+	        , USE_YN
+	        , CREATE_DATE
+	        , UPDATE_DATE
+	    FROM CMN_CODE
+	    WHERE CODE_GROUP_NO = #{codeGroupNo}
 	</select>
 
 	<select id="selectAdminBoardListByType">
@@ -45,7 +131,54 @@
 		     , BOARD_CONTENT
 		     , BOARD_STATUS
 		FROM ADMIN_BOARD
-		WHERE BOARD_TYPE_CODE = #{boardTypeCode}
+		<where>
+		BOARD_STATUS != 'D'
+		<if test='boardTypeCode!=null and boardTypeCode!=""'>
+			<choose>
+				<when test='boardTypeCode=="BRDD-002"'>
+					AND BOARD_TYPE_CODE = #{cmnCodeGroupVOList[0].cmnCodeList[0].codeDetailNo}
+				</when>
+				<when test='boardTypeCode=="BRDD-003"'>
+					AND BOARD_TYPE_CODE = #{cmnCodeGroupVOList[0].codeGroupNo}
+				</when>
+				<otherwise>
+					AND BOARD_TYPE_CODE = #{boardTypeCode}
+				</otherwise>
+			</choose>
+		</if>
+		</where>
+	</select>
+
+	<select id="selectAFaqListByCgn">
+		SELECT 
+		       BOARD_NO
+		     , USER_ID
+		     , BOARD_TYPE_CODE
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_STATUS
+		FROM ADMIN_BOARD
+		<where>
+		BOARD_STATUS != 'D'
+		  <if test="boardTypeCode != null and boardTypeCode != ''">
+			AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+		  </if>
+		</where>
+	</select>
+	
+	<select id="selectAFaqListByUcn">
+		SELECT 
+		  	   A.BOARD_NO
+		     , A.USER_ID
+		     , A.BOARD_TYPE_CODE
+		     , A.BOARD_TITLE
+		     , A.BOARD_CONTENT
+		     , A.BOARD_STATUS
+		FROM ADMIN_BOARD A
+			JOIN CMN_CODE C 
+			ON A.BOARD_TYPE_CODE = C.CODE_DETAIL_NO
+		WHERE C.UPPER_CODE_NO = #{upperCodeNo}
+			AND A.BOARD_STATUS != 'D'
 	</select>
 
 	<select id="selectAdminBoardList" resultMap="adminBoardMap">
@@ -60,6 +193,24 @@
 		INNER JOIN USERS U 
 			ON A.USER_ID = U.USER_ID
 		WHERE A.USER_ID = #{userId}
+			AND A.BOARD_STATUS != 'D'
+	</select>
+	
+	<select id="selectBoardTypeName" resultType="string">
+		SELECT CODE_NAME
+		FROM CMN_CODE
+		<where>
+			<if test='boardTypeCode!=null and boardTypeCode!=""'>
+				<choose>
+					<when test='boardTypeCode.contains("NTC")'>
+						CODE_GROUP_NO = #{boardTypeCode}
+					</when>
+					<otherwise>
+						CODE_DETAIL_NO = #{boardTypeCode}
+					</otherwise>
+				</choose>
+			</if>
+		</where>
 	</select>
 	
 	<!-- 
@@ -96,10 +247,13 @@
 		) VALUES (
 			  #{boardNo}
 			, #{userId}
-			<if test="boardTypeCode!=null and boardTypeCode!=''">
+			<if test='boardTypeCode!=null and boardTypeCode!=""'>
 				<choose>
 					<when test='boardTypeCode=="BRDD-002"'>
 						, #{cmnCodeGroupVOList[0].cmnCodeList[0].codeDetailNo}
+					</when>
+					<when test='boardTypeCode=="BRDD-003"'>
+						, #{cmnCodeGroupVOList[0].codeGroupNo}
 					</when>
 					<otherwise>
 						, #{boardTypeCode}
@@ -122,8 +276,24 @@
 			, BOARD_TITLE = #{boardTitle}
 			, BOARD_CONTENT = #{boardContent}
 			, BOARD_DELETE_DATE = #{boardDeleteDate}
-			, BOARD_POST_HIT = #{boardPostHit}
 			, BOARD_STATUS = 'U'
+		WHERE 
+			BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateABoardPostHit">
+		UPDATE ADMIN_BOARD 
+		SET 
+			BOARD_POST_HIT = BOARD_POST_HIT + 1 
+		WHERE 
+			BOARD_NO = #{boardNo}
+	</update>
+
+	<update id="upDeleteAdminBoard" parameterType="AdminBoardVO">
+		UPDATE ADMIN_BOARD 
+		SET 
+			  BOARD_DELETE_DATE = #{boardDeleteDate}
+			, BOARD_STATUS = 'D'
 		WHERE 
 			BOARD_NO = #{boardNo}
 	</update>
