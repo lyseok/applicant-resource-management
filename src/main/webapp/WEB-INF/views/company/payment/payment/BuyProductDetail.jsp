@@ -23,5 +23,6 @@
 <a href="/company/payment/change/product?productNo=${product.productNo}&paymentNo=${payment.paymentNo}"><button>요금제변경하기</button></a>
 </c:forEach>
 된다면 여기에 PDF 출력 버튼도 해보자
+<a href="/company/payment/cancel/payment?productNo=${product.productNo}&paymentNo=${payment.paymentNo}"><button>정기결제 해지</button></a>
 </body>
 </html>

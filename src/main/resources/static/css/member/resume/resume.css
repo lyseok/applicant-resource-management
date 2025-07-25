@@ -405,6 +405,18 @@
 .material-symbols-outlined {
 	font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 40
 }
+.resume_detail_wrap .introduction_list{
+	position:relative;
+	width:calc(50% - 1rem);
+	border-radius:10px;
+}
+.resume_detail_wrap .introduction_list .question_tit{
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    opacity: 0.3;
+    font-size: 30px;
+}
 
 .resume_ft {
 	position: fixed;
@@ -460,6 +472,8 @@
 	margin-top: 0;
 	width: auto;
 }
+
+
 
 /* 등록 폼 */
 #section-mySkillList .list-item strong{

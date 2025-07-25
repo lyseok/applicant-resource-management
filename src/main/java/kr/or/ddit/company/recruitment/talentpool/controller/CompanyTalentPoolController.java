@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.or.ddit.company.common.company.service.CompanyService;
+import kr.or.ddit.company.payment.link.service.PaymentProductLinkService;
+import kr.or.ddit.company.payment.payment.service.PaymentService;
+import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.recruitment.talentpool.service.CompanyTalentService;
 import kr.or.ddit.vo.common.CityCodeVO;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.JobVO;
+import kr.or.ddit.vo.common.PaymentVO;
 import kr.or.ddit.vo.common.TopJobVO;
 import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.EducationVO;
@@ -38,8 +42,12 @@ public class CompanyTalentPoolController {
 	private CompanyService cservice;
 
 	
+	
 	@GetMapping("/list")
-	public String talentpoolList(@AuthenticationPrincipal UserDetails principal, Model model) {
+	public String talentpoolList(
+			@AuthenticationPrincipal UserDetails principal
+			, Model model
+			) {
 		List<ResumeVO> talentpoolList = CTservice.selectTalentPoolList();
 		List<CareerVO> careerList = CTservice.selectCareer();
 		List<TopJobVO> tjobList = CTservice.selectTopJob();
@@ -49,9 +57,13 @@ public class CompanyTalentPoolController {
 		 String userId = principal.getUsername();  // 실제 로그인된 ID
 		    CompanyVO vo = cservice.selectCompanyById(userId);
 		log.info("vo값 : {}", vo);
+		
+		
+		
+		
 		if(vo.getComPayment().equals("N")) {
-			model.addAttribute("message","접근권한이 없습니다");
-			return "/company/main";
+			 model.addAttribute("message", "접근 권한이 없습니다.");
+		        return "redirect:/company";
 		}
 		
 		model.addAttribute("talentpoolList", talentpoolList);

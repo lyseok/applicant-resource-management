@@ -10,7 +10,7 @@ let myRecruitList;
 
 function fetchRecruitData(page = 1, pageSize = 20, sort = 'RD') {
   axios
-    .get('/ajax/recruit/realtime', {
+    .get('/ajax/recruit/search', {
       params: {
         page: page,
         pageSize: pageSize,
@@ -23,8 +23,13 @@ function fetchRecruitData(page = 1, pageSize = 20, sort = 'RD') {
       myCompanyList = resp.myScrabCompany;
       myRecruitList = resp.myScrabRecruit;
 
+      const noticeCntEl = document.querySelector('#notice_cnt');
+      if (noticeCntEl && resp.data.length > 0 && resp.noticeCnt !== undefined) {
+        noticeCntEl.innerHTML = resp.noticeCnt;
+      }
+
       recruitNoticeInit(resp.data); // 목록 그리기 함수
-      totalPage = Math.ceil(resp.data[0].noticeCnt / pageSize);
+      totalPage = Math.ceil(resp.noticeCnt / pageSize);
       console.log(totalPage, page);
       renderPager(totalPage, page); // 페이저 렌더링
 
@@ -35,11 +40,6 @@ fetchRecruitData();
 
 function recruitNoticeInit(data) {
   if (!listBody) return;
-
-  const noticeCntEl = document.querySelector('#notice_cnt');
-  if (noticeCntEl && data.length > 0 && data[0].noticeCnt !== undefined) {
-    noticeCntEl.innerHTML = data[0].noticeCnt;
-  }
 
   listBody.innerHTML = data
     .map((item) => {
@@ -120,7 +120,9 @@ function recruitNoticeInit(data) {
                 }</p>
               </li>
               <li>
-                <p class="salary">${item.recruitmentSalary || '-'}</p>
+                <p class="salary">${
+                  formatSalary(item.recruitmentSalary) || '-'
+                }</p>
               </li>
             </ul>
           </div>
@@ -374,4 +376,15 @@ function getTimeAgo(dateString) {
   if (diffMin < 60) return `${diffMin}분 전`;
   if (diffHour < 24) return `${diffHour}시간 전`;
   return `${diffDay}일 전`;
+}
+
+function formatSalary(salary) {
+  salary = Number(salary);
+  if (isNaN(salary) || salary === 0) return '면접 후 결정';
+  if (salary < 10000) {
+    return `${salary.toString()}만원`;
+  }
+  const eok = Math.floor(salary / 10000);
+  const man = salary % 10000;
+  return man > 0 ? `${eok}억 ${man.toString()}만원` : `${eok}억원`;
 }

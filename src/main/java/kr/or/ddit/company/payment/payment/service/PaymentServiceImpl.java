@@ -22,14 +22,16 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public PaymentVO selectPaymentByPk(String userId) {
+	public PaymentVO selectPaymentByPk(String paymentNo) {
 		// TODO Auto-generated method stub
-		return mapper.selectPaymentByPk(userId);
+		return mapper.selectPaymentByPk(paymentNo);
 	}
 
 	@Override
 	public int insertPayment(PaymentVO vo) {
 		vo.setUserId(getUserId());
+		
+		
 		return mapper.insertPayment(vo);
 	}
 
@@ -81,12 +83,18 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public int updateComPaymentStatus(PaymentVO vo) {
-		// TODO Auto-generated method stub
-		return mapper.updateComPaymentStatus(vo);
+	public int updateComPaymentStatus(String userId) {
+			
+		return mapper.updateComPaymentStatus(userId);
 	}
 
+	@Override
+	public String getPaymentNo(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.getPaymentNo(userId);
+	}
 
+	
 
 	
 }

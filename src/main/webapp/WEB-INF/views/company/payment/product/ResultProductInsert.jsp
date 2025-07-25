@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <th>이용기간</th>
-            <td>${productVO.productPeriod}</td>
+            <td>구매일로 부터 1달</td>
         </tr>
         <tr>
             <th>유형</th>
