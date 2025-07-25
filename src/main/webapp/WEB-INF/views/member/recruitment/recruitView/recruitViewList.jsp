@@ -11,10 +11,13 @@
 </head>
 
 <body>
-	<p class="h1 mb-3 fw-bold">최근 본 공고</p>
+	<h1 class=" mb-3">
+		<b class="h1 fw-bold">최근 본 공고</b>
+		<span class="d-block mt-1 fs-14 text-muted">최대 10건까지 확인 가능합니다.</span>
+	</h1>
 	
 	<div class="border-bottom d-flex justify-content-between align-items-end pb-2">
-		<p class="fs-14">총 <span id="list-count"></span>건</p>
+		<p class="fs-14">총 <span id="list-count" class="fw-bold"></span>건</p>
 		<div class="TypoBox searchBar">
 			<div class="searchBarWrap">
 				<label class="searchBarLabel" for="listKeyword">검색어</label>

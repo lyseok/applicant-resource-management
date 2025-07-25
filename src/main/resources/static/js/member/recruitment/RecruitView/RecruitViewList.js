@@ -76,7 +76,7 @@ function renderIntroductionList(list) {
         		</div>
 						<div class="d-flex align-items-center">
 							<span class="material-symbols-outlined">money_bag</span>
-							<span class="num_line">${data.recruitmentSalary || ''}</span>
+							<span class="num_line">${data.recruitmentSalary === '0' ?  '협의 후 결정':(data.recruitmentSalary + '만원' ?? '')}</span>
 						</div>
 						<div class="d-flex align-items-center">
 							<span class="material-symbols-outlined">business_center</span>
@@ -85,9 +85,11 @@ function renderIntroductionList(list) {
           </div>
         </div>
         <div class="d-flex flex-column align-items-center gap-2 " >
-          <a class="btn btn_violet review-btn w140 justify-content-center fw-light fs-14" href="/recruit_notice/${data.recruitmentNo}">
-            공고보기
-          </a>
+        ${
+          data.recruitmentFinishDate > 0 
+            ? `<a class="btn btn_violet review-btn w140 justify-content-center fw-light fs-14" href="/recruit_notice/${data.recruitmentNo}">공고보기</a>`
+            : `<a class="btn btn_violet review-btn w140 justify-content-center fw-light fs-14 disabled" href="javascript:void(0)">공고마감</a>`
+        }
 					<div class="text-end w-100 ">
 						<span class="fs-12 text-muted">${data.recruitmentFinishDate > 0 ? "D-"+data.recruitmentFinishDate : "접수마감"}</span>
 					</div>
