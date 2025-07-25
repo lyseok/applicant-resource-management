@@ -48,6 +48,22 @@
 		)
 	</insert>
 	
+	<insert id="insertCompanyUser">
+		INSERT INTO USERS (
+			USER_ID
+			, USER_PASSWORD
+			, USER_ROLE
+			, USER_STATUS
+			, USER_ENABLED
+		) VALUES (
+			#{userId}
+			, #{userPassword}
+			, 'ROLE_COMPANY'
+			, 'N'
+			, 'Y'
+		)
+	</insert>
+	
 	<update id="updateUser">
 		UPDATE USERS
 		SET 
