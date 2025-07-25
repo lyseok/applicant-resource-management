@@ -2,33 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.RecruitViewMapper">
 
-	<select id="selectRecruitViewList" resultType="kr.or.ddit.dto.RecruitViewDTO">
-		SELECT * FROM (
-			SELECT 
-			    RV.RECRUIT_VIEW_NO as RECRUIT_VIEW_NO
-			    , RV.USER_ID as USER_ID
-			    , RV.RECRUITMENT_NO as RECRUITMENT_NO
-			    , CASE
-				        WHEN (CAST(SYSTIMESTAMP AS DATE) - CAST(RV.VIEW_AT AS DATE)) * 24 >= 24 THEN
-				            FLOOR((CAST(SYSTIMESTAMP AS DATE) - CAST(RV.VIEW_AT AS DATE)) * 24 / 24)
-				        ELSE
-				            ROUND((CAST(SYSTIMESTAMP AS DATE) - CAST(RV.VIEW_AT AS DATE)) * 24)
-				    END AS VIEW_AT
-			    , RN.RECRUITMENT_TITLE as RECRUITMENT_TITLE
-			    , RN.RECRUITMENT_SALARY as RECRUITMENT_SALARY
-			    , RN.WELFARE as WELFARE
-	        , RN.CITY_CODE AS CITY_CODE
-	        , RN.DISTRICT_CODE AS DISTRICT_CODE
-	        , RN.YEAR_CODE AS YEAR_CODE
-	        , ROUND(RN.RECRUITMENT_FINISH_DATE - SYSDATE) AS RECRUITMENT_FINISH_DATE
-	        , C.COM_NAME as COM_NAME
-			FROM RECRUIT_VIEW RV 
-	        LEFT JOIN RECRUITMENT_NOTICE RN ON RV.RECRUITMENT_NO = RN.RECRUITMENT_NO
-	        LEFT JOIN COMPANY C ON C.USER_ID = RN.USER_ID
-			WHERE RV.USER_ID = #{userId}
-			ORDER BY VIEW_AT, RECRUITMENT_TITLE
+	<select id="selectRecruitViewList" resultType="kr.or.ddit.dto.RecruitViewDTO">	
+	SELECT *
+		FROM (
+		    SELECT 
+		        RV.RECRUIT_VIEW_NO,
+		        RV.USER_ID,
+		        RV.RECRUITMENT_NO,
+		        CASE
+		            WHEN (CAST(SYSTIMESTAMP AS DATE) - CAST(RV.VIEW_AT AS DATE)) * 24 >= 24 THEN
+		                FLOOR((CAST(SYSTIMESTAMP AS DATE) - CAST(RV.VIEW_AT AS DATE)) * 24 / 24)
+		            ELSE
+		                ROUND((CAST(SYSTIMESTAMP AS DATE) - CAST(RV.VIEW_AT AS DATE)) * 24)
+		        END AS VIEW_AT,
+		        RN.RECRUITMENT_TITLE,
+		        RN.RECRUITMENT_SALARY,
+		        RN.WELFARE,
+		        RN.CITY_CODE,
+		        RN.DISTRICT_CODE,
+		        RN.YEAR_CODE,
+		        ROUND(RN.RECRUITMENT_FINISH_DATE - SYSDATE) AS RECRUITMENT_FINISH_DATE,
+		        C.COM_NAME,
+		        ROW_NUMBER() OVER (PARTITION BY RV.RECRUITMENT_NO ORDER BY RV.VIEW_AT DESC) AS RNK
+		    FROM RECRUIT_VIEW RV
+		    LEFT JOIN RECRUITMENT_NOTICE RN 
+		        ON RV.RECRUITMENT_NO = RN.RECRUITMENT_NO
+		    LEFT JOIN COMPANY C 
+		        ON C.USER_ID = RN.USER_ID
+		    WHERE RV.USER_ID = #{userId}
 		)
-	WHERE ROWNUM &lt;= 10		
+		WHERE RNK = 1
+		AND ROWNUM &lt;= 10
+		ORDER BY VIEW_AT, RECRUITMENT_TITLE		
 	</select>
 	
 	
@@ -80,6 +85,6 @@
 	  WHERE RN.RECRUITMENT_TITLE LIKE '%' || #{keyword} || '%'
 	  ORDER BY VIEW_AT, RECRUITMENT_TITLE
 	)
-	WHERE ROWNUM &lt;= 10			
+	WHERE ROWNUM &lt;= 10	
 	</select>
 </mapper>

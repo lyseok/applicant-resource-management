@@ -76,7 +76,7 @@ function renderIntroductionList(list) {
         		</div>
 						<div class="d-flex align-items-center">
 							<span class="material-symbols-outlined">money_bag</span>
-							<span class="num_line">${data.recruitmentSalary || ''}</span>
+							<span class="num_line">${data.recruitmentSalary === '0' ?  '협의 후 결정':(data.recruitmentSalary + '만원' ?? '')}</span>
 						</div>
 						<div class="d-flex align-items-center">
 							<span class="material-symbols-outlined">business_center</span>
