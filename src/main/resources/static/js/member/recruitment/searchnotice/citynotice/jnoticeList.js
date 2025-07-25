@@ -248,63 +248,17 @@ const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName
 
 getTopJobCodeList();  //상위직업 선택 값 호출
 
+//--------------------------선택된 지역코드 객체에 넣기------------------------------------------
+
+// 선택된 jobCode를 params에 반영
+const updateJobCodes = function () {
+    const selectedButtons = document.querySelectorAll('.selected_keyword .remove-btn');
+    const codes = Array.from(selectedButtons).map(btn => btn.dataset.code); 
+    params.jobCode = codes;  // params 객체 갱신
+    console.log('갱신된 jobCode:', params.jobCode);
+}
+
 
 //-----------------------내부 스크롤 동작-----------------------------------------
 
-function initCustomScroll(wrapperSelector) {
-    const wrappers = document.querySelectorAll(wrapperSelector);
-    wrappers.forEach(wrapper => {
-        const viewport = wrapper.querySelector('.viewport');
-        const content = wrapper.querySelector('.overview');
-        const track = wrapper.querySelector('.track');
-        const thumb = wrapper.querySelector('.thumb');
 
-        const updateThumb = () => {
-            const viewportHeight = viewport.clientHeight;
-            const contentHeight = content.scrollHeight;
-            const trackHeight = track.clientHeight;
-            const thumbHeight = Math.max((viewportHeight / contentHeight) * trackHeight, 20);
-            thumb.style.height = `${thumbHeight}px`;
-
-            const maxScroll = contentHeight - viewportHeight;
-            const maxThumbMove = trackHeight - thumbHeight;
-            const thumbTop = (viewport.scrollTop / maxScroll) * maxThumbMove;
-            thumb.style.top = `${thumbTop}px`;
-        };
-
-        // viewport 스크롤 시 thumb 이동
-        viewport.addEventListener('scroll', updateThumb);
-
-        // 드래그로 스크롤
-        let isDragging = false, startY, startTop;
-        thumb.addEventListener('mousedown', e => {
-            isDragging = true;
-            startY = e.clientY;
-            startTop = parseInt(thumb.style.top) || 0;
-            e.preventDefault();
-        });
-
-        document.addEventListener('mousemove', e => {
-            if (!isDragging) return;
-            const delta = e.clientY - startY;
-            const trackHeight = track.clientHeight;
-            const thumbHeight = thumb.clientHeight;
-            let newTop = Math.max(0, Math.min(startTop + delta, trackHeight - thumbHeight));
-            thumb.style.top = `${newTop}px`;
-
-            const scrollRatio = newTop / (trackHeight - thumbHeight);
-            const contentHeight = content.scrollHeight;
-            const viewportHeight = viewport.clientHeight;
-            viewport.scrollTop = scrollRatio * (contentHeight - viewportHeight);
-        });
-
-        document.addEventListener('mouseup', () => isDragging = false);
-
-        // 초기화
-        updateThumb();
-        window.addEventListener('resize', updateThumb);
-    });
-}
-
-// 실행
-initCustomScroll('.wrap_scroll');

@@ -6,7 +6,7 @@ let params = {
     page: 1,
     pageSize: 20,
     districtCode: [],
-    jobCode: ['1800', '1957'],
+    jobCode: [],
     keyword: '프론트엔드'
   }
   
