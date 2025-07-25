@@ -15,8 +15,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true) 
 public class CompanyVO extends UsersVO implements Serializable {
 	@NotBlank
-	private String userId;
-	@NotBlank
 	private String comName;
 	private String comInfo;
 	@NotBlank
@@ -51,6 +49,8 @@ public class CompanyVO extends UsersVO implements Serializable {
 	private String comMainBiz;   // 기업 주요 사업
 
 	private List<FilesVO> fileList;
+	
+	private BusinessregistrationVO business;
 
 	public String getMemName() {
 		return comName;
