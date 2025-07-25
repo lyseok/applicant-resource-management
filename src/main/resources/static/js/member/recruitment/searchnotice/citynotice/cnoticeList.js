@@ -115,18 +115,39 @@ function selectCity(button) {
 const selectedContainer = add_keyword.querySelector('#sp_preview_selected');
 const previewWrapper = document.getElementById('sp_preview'); // 패널 래퍼
 
-// 체크박스 클릭 시 호출
-function selectDistrict(checkbox, cityCodeNo, districtName) {
-    const cityName = document.querySelector(`#depth1_btn_${cityCodeNo} .txt`).innerText;
-    const districtCodeNo = checkbox.value;
-
-    if (checkbox.checked) {
-        addKeywordSpan(cityName, districtName, districtCodeNo);
+function selectDistrict(checkbox, mcode) {
+    if (checkbox.dataset.checkType === "all") {
+        // 1. 하위 구군 체크박스 모두 해제
+        const subDistricts = document.querySelectorAll(`input[name="loc_cd[]"][data-mcode="${mcode}"]`);
+        subDistricts.forEach(cb => {
+            cb.checked = false;
+            removeKeywordSpan(cb.value); // 선택 키워드에서도 제거
+        });
     } else {
-        removeKeywordSpan(districtCodeNo);
+        // 2. 하위 단위 클릭 시 시도 전체 체크 해제
+        const allCheckbox = document.querySelector(`input[name="loc_mcd[]"][data-mcode="${mcode}"]`);
+        if (allCheckbox) allCheckbox.checked = false;
     }
-    toggleKeywordDisplay();
+
+    // 선택된 지역 span 갱신
+    updateSelectedRegions();
 }
+
+// 선택된 지역 span 갱신
+function updateSelectedRegions() {
+    // 기존 span 초기화
+    selectedContainer.innerHTML = "";
+
+    // 현재 체크된 모든 지역코드 가져오기
+    const checked = document.querySelectorAll('input[name="loc_cd[]"]:checked, input[name="loc_mcd[]"]:checked');
+    checked.forEach(cb => {
+        const label = cb.closest('.inpChk').querySelector('.txt').innerText;
+        addKeywordSpan("시도명", label, cb.value); // 시도명은 필요하면 cb.dataset에 넣어두고 처리
+    });
+
+    updateDistrictCodes(); // params 갱신
+}
+
 
 // span 추가
 function addKeywordSpan(cityName, districtName, districtCodeNo) {
