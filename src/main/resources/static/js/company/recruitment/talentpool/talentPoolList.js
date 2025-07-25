@@ -1,10 +1,85 @@
-// 가정: 받은 데이터는 talentList임
+const skillInput = document.querySelector('.skill-input');
+const licenseInput = document.querySelector('.license-input');
+const majorInput = document.querySelector('.major-input');
+// 1. 페이지 로드 시 데이터 불러오기
+axios.get('/ajax/company/talentpool/setupdata').then((res) => {
+  const { skiList = [], licList = [], eduList = [] } = res.data;
+  createAutocomplete(skillInput, skiList);
+  createAutocomplete(licenseInput, licList);
+  createAutocomplete(majorInput, eduList);
+});
+
+// 2. 자동완성 생성 함수
+function createAutocomplete(inputEl, dataList) {
+  // 컨테이너 생성
+  const container = document.createElement('div');
+  container.className = 'autocomplete-list';
+  container.style.position = 'absolute';
+  container.style.background = '#fff';
+  container.style.border = '1px solid #ddd';
+  container.style.width = inputEl.offsetWidth + 'px';
+  container.style.maxHeight = '150px';
+  container.style.overflowY = 'auto';
+  container.style.zIndex = '1000';
+  container.style.display = 'none';
+  inputEl.parentElement.style.position = 'relative';
+  inputEl.parentElement.appendChild(container);
+
+  // input 이벤트 처리
+  inputEl.addEventListener('input', function () {
+    const query = this.value.trim().toLowerCase();
+    container.innerHTML = '';
+    if (!query) {
+      container.style.display = 'none';
+      return;
+    }
+    // 필터링
+    const filtered = dataList.filter(
+      (item) => item && item.toLowerCase().includes(query)
+    );
+    if (filtered.length === 0) {
+      container.style.display = 'none';
+      return;
+    }
+    // 목록 렌더링
+    filtered.forEach((item) => {
+      const option = document.createElement('div');
+      option.textContent = item;
+      option.style.padding = '8px';
+      option.style.cursor = 'pointer';
+      option.addEventListener('click', () => {
+        const tag = document.createElement('span');
+        tag.className = 'skill-tag';
+        tag.style.marginRight = '5px';
+        tag.style.marginBottom = '5px';
+        tag.style.display = 'inline-block';
+        tag.innerHTML =
+          item +
+          ' <span style="cursor:pointer;margin-left:5px;" onclick="this.parentElement.remove()">×</span>';
+        inputEl.parentElement.appendChild(tag);
+        inputEl.value = '';
+        container.style.display = 'none';
+      });
+      container.appendChild(option);
+    });
+    container.style.display = 'block';
+  });
+
+  // focus out 시 닫기
+  document.addEventListener('click', function (e) {
+    if (!container.contains(e.target) && e.target !== inputEl) {
+      container.style.display = 'none';
+    }
+  });
+}
+
 function renderTalentPoolTable(talentList) {
   const tbody = document.querySelector('table tbody');
   tbody.innerHTML = ''; // 기존 행 삭제
 
   talentList.forEach((item) => {
     // (1) 회원
+    const userId = item.userId || '';
     const userName = item.userName || '';
     const email = item.email || '';
     const tel = item.tel || '';
@@ -67,7 +142,7 @@ function renderTalentPoolTable(talentList) {
     // (8) 테이블 row 만들기
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="checkbox" class="checkbox"></td>
+      <td><input type="checkbox" class="checkbox" data-user-id="${userId}"></td>
       <td>
         <div class="candidate-info">
           <div class="candidate-name">${userName}</div>
@@ -137,6 +212,7 @@ function fetchData() {
       totalPage = Math.ceil(resp.totalCnt / params.pageSize);
       console.log(totalPage, params.page);
       renderPager(totalPage, params.page); // 페이저 렌더링
+      applyCheckboxStates();
     })
     .catch((err) => {
       alert('데이터를 불러오는 데 실패했습니다.');
@@ -380,5 +456,64 @@ const paramsSerializer = function (params) {
   return query.join('&');
 };
 
+// ============================== 체크박스 상태 관리 ==============================
+let savedTalentList = []; // 서버에서 처음 받아온 기존 인재풀
+let talentList = []; // 현재 체크된 인재풀
+
+// 1. 페이지 로드 시 기존 저장된 리스트 불러오기
+function loadSavedTalentList() {
+  axios.get('/ajax/company/talentpool/savelist').then((res) => {
+    savedTalentList = res.data || [];
+    talentList = [...savedTalentList]; // 초기 선택 상태 복사
+    applyCheckboxStates();
+  });
+}
+
+// 2. 체크박스 상태 반영
+function applyCheckboxStates() {
+  document.querySelectorAll('tbody .checkbox').forEach((checkbox) => {
+    const userId = checkbox.dataset.userId;
+    checkbox.checked = talentList.includes(userId);
+  });
+}
+
+// 3. 체크박스 변경 시 talentList 갱신
+document.addEventListener('change', function (e) {
+  if (e.target.classList.contains('checkbox') && e.target.closest('tbody')) {
+    const userId = e.target.dataset.userId;
+    if (e.target.checked) {
+      if (!talentList.includes(userId)) talentList.push(userId);
+    } else {
+      talentList = talentList.filter((id) => id !== userId);
+    }
+    console.log('현재 선택된 인재:', talentList);
+  }
+});
+
+// 4. 증분 저장 (추가/삭제만)
+document.getElementById('addTalent').addEventListener('click', function () {
+  // 추가된 리스트
+  const addList = talentList.filter((id) => !savedTalentList.includes(id));
+  // 삭제된 리스트
+  const removeList = savedTalentList.filter((id) => !talentList.includes(id));
+
+  if (addList.length === 0 && removeList.length === 0) {
+    alert('변경 사항이 없습니다.');
+    return;
+  }
+  console.log('추가할 인재:', addList);
+  console.log('삭제할 인재:', removeList);
+  axios
+    .post('/ajax/company/talentpool/savelist', { addList, removeList })
+    .then(() => {
+      alert('변경 사항이 저장되었습니다.');
+      savedTalentList = [...talentList]; // 저장 후 현재 상태를 최신 상태로 업데이트
+    })
+    .catch(() => {
+      alert('저장 중 오류가 발생했습니다.');
+    });
+});
+
 // init
 fetchData();
+loadSavedTalentList();

@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,4 +53,29 @@ public class AjaxTalentPoolController {
 		Map<String, Object> resp = poolService.readResumeByFilter(params);
 		return ResponseEntity.ok(resp);
 	}
+	
+	@GetMapping("savelist")
+	public List<String> getSavedTalentList() {
+        return poolService.getSavedTalentList();
+    }
+	
+	@PostMapping("savelist")
+	public ResponseEntity<Void> postTalentpoolSaveList(@RequestBody Map<String, Object> reqData) {
+
+	    // 요청 데이터에서 리스트 추출
+	    List<String> addList = (List<String>) reqData.getOrDefault("addList", List.of());
+	    List<String> removeList = (List<String>) reqData.getOrDefault("removeList", List.of());
+
+	    poolService.updateTalentList(addList, removeList);
+
+	    return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("setupdata")
+	public ResponseEntity<Map<String, Object>> getSetupDataList() {
+		Map<String, Object> resp = poolService.readSetupList();
+		return ResponseEntity.ok(resp);
+	}
+	
+	
 }

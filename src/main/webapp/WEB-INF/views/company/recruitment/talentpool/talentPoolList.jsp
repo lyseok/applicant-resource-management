@@ -356,7 +356,7 @@
 				<div class="button-group">
 					<button class="btn">필터</button>
 					<!-- <button class="btn">정렬: 최신순</button> -->
-					<button class="btn">정보 수정 반영</button>
+					<button class="btn" id="addTalent">관심 인재 등록</button>
 					<button class="btn btn_violet_line">필터링</button>
 				</div>
 			</div>
@@ -446,58 +446,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><input type="checkbox" class="checkbox"></td>
-						<td>
-							<div class="candidate-info">
-								<div class="candidate-name">박진성</div>
-								<div class="candidate-email">js.park@gmail.com</div>
-							</div>
-						</td>
-						<td>
-							<div class="experience-status">
-								<div class="status-text">
-									확인
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="data-info">
-								<div class="data-name">카이스트</div>
-								<div class="data-sub">컴퓨터공학</div>
-							</div>
-						</td>
-						<td>
-							<div class="data-info">
-								<div class="data-name">TOEIC</div>
-								<div class="data-sub">850</div>
-							</div>
-						</td>
-						<td>010-1234-5678</td>
-						<td>
-							<div class="data-info">
-								<div class="data-name">(주) 네이버</div>
-								<div class="data-sub">백엔드개발자</div>
-							</div>
-						</td>
-						<td>5년</td>
-						<td>
-							<div class="my-list">
-								<span class="skill-tag">정보처리기사</span>
-								<span class="skill-tag">정보보안기사</span>
-							</div>
-						</td>
-						<td>
-							<div class="my-list">
-								<span class="skill-tag">Spring</span>
-								<span class="skill-tag">Oracle</span>
-								<span class="skill-tag">Oracle</span>
-								<span class="skill-tag">Oracle</span>
-								<span class="skill-tag">Oracle</span>
-							</div>
-						</td>
-					</tr>
-
 
 				</tbody>
 			</table>
