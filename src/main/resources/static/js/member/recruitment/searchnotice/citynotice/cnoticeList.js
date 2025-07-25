@@ -212,3 +212,5 @@ const updateDistrictCodes = function () {
     params.districtCode = codes;  // params 객체 갱신
     console.log('갱신된 districtCode:', params.districtCode);
 }
+
+//-----------------------내부 스크롤 동작-----------------------------------------
