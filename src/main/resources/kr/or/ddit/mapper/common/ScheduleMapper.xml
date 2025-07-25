@@ -30,11 +30,15 @@
 			, USER_ID
 			, SCHEDULE_NAME
 			, SCHEDULE_CONTENT
+			, SCHEDULE_START_DATE
+			, SCHEDULE_END_DATE
 		) VALUES (
 			#{scheduleNo}
 			, #{userId}
 			, #{scheduleName}
 			, #{scheduleContent}
+			, #{scheduleStartDate}
+			, #{scheduleEndDate}
 		)
 	</insert>
 	<update id="updateSchedule">
