@@ -442,7 +442,7 @@
 	                                                </div>
 	                                            </div>
 	                                            <div class="viewport">
-	                                                <ul class="list overview">
+	                                                <ul class="list overview" id="box_jobs_btn">  <!-- 내가 부여한 아이디 -->
 	                                                    <script id="sp_job_category_oneDepth_template" type="text/x-handlebars-template">
                                                         {{#mclsList}}
                                                             {{#hasCountInJobCategory count}}
@@ -454,7 +454,7 @@
                                                                 </li>
                                                             {{/hasCountInJobCategory}}
                                                         {{/mclsList}}
-                                                    </script>
+                                                    	</script>
                                                     	<%--
 	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_16">
 	                                                        <button type="button" data-mcls_cd_no="16" class="first_depth depth1_btn_16">
@@ -587,6 +587,118 @@
 	                                            </div>
 	                                        </div>
 	                                    </div>
+	                                    <%-- 사람인의 경우 여기 <script>(css용)</script> 있음 --%>
+	                                    <!-- 비동기로 미리 만들어지는 하위직업 선택 -->
+	                                    <div class="box_detail_depth on" id="sp_job_category_subDepth_17" style="display: block;">
+							                <div class="row row_all_select">
+							                    <input type="checkbox" id="all_check_onedepth_17" name="cat_mcls[]" 
+							                    class="select_all" data-code="17" data-mcls_cd_no="17" data-mcls_cd_nm="금융·보험">
+							                    <label for="all_check_onedepth_17">
+							                    	<span>금융·보험 전체선택</span>
+							                    </label>
+							                    <span class="inpSel">
+							                        <select class="select_sort" title="정렬방법">
+							                            <option value="default">가나다순</option>
+							                            <option value="favor">공고많은순</option>
+							                        </select>
+							                    </span>
+							                </div>
+							                <div class="row list" style="height: 243px;">
+							                    <div class="wrap_scroll">
+							                        <div class="scrollbar disable" style="height: 243px;">
+								                        <div class="track" style="height: 243px;">
+									                        <div class="thumb" style="height: 243px;">
+									                        	<div class="end"></div>
+									                        </div>
+								                        </div>
+							                        </div>
+							                        <div class="viewport">
+							                            <div class="overview" style="top: 0px;">
+							                                <dl class="row_item">
+							                                    <dt>
+							                                        <span class="txt">직무·직업</span>
+							                                    </dt>
+							                                    <dd class="area_list">
+							                                    	<button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1698" data-mcls_cd_no="17" 
+							                                   		 data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1698" data-kewd_cd_nm="금융사무" data-sort="0" data-count="581">
+								                                    금융사무
+								                                    	<span class="count">(581)</span>
+							                                    	</button>
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1699" 
+								                                     data-mcls_cd_no="17" data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1699" data-kewd_cd_nm="금융상품영업" 
+								                                    data-sort="1" data-count="387">
+								                                    금융상품영업
+								                                    	<span class="count">(387)</span>
+								                                    </button>
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1691" data-mcls_cd_no="17" 
+								                                    data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1691" data-kewd_cd_nm="대출상담사" data-sort="2" data-count="201">
+								                                     대출상담사
+								                                    	<span class="count">(201)</span>
+								                                    </button>
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1700" data-mcls_cd_no="17" 
+								                                    data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1700" data-kewd_cd_nm="보험상담" data-sort="3" data-count="431">
+								                                     보험상담
+								                                    	<span class="count">(431)</span>
+								                                    </button>
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1701" data-mcls_cd_no="17" 
+								                                    data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1701" data-kewd_cd_nm="보험상품개발" data-sort="4" data-count="58">
+								                                     보험상품개발
+								                                    	<span class="count">(58)</span>
+								                                    </button>
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1692" data-mcls_cd_no="17"
+								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1692" data-kewd_cd_nm="보험설계사" data-sort="5" data-count="365">
+								                                      보험설계사
+								                                     	<span class="count">(365)</span>
+								                                    </button>
+								                                 </dd>
+							                                </dl>
+							                                <dl class="row_item">
+							                                    <dt>
+							                                        <button type="button" class="btn_expand" data-scls_cd_no="65">
+							                                        	<span class="txt">전문분야</span>
+							                                        </button>
+							                                    </dt>
+							                                    <dd class="area_list">
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1703" data-mcls_cd_no="17" 
+								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1703" data-kewd_cd_nm="기업금융" data-sort="0" data-count="207">
+								                                    기업금융
+								                                    	<span class="count">(207)</span>
+								                                    </button>
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1704" data-mcls_cd_no="17" 
+								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1704" data-kewd_cd_nm="기업분석" data-sort="1" data-count="96">
+								                                    기업분석
+								                                    	<span class="count">(96)</span>
+								                                    </button>
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1705" data-mcls_cd_no="17" 
+								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1705" data-kewd_cd_nm="기업심사" data-sort="2" data-count="82">
+								                                    기업심사
+								                                    	<span class="count">(82)</span>
+								                                    </button>
+							                                    </dd>
+							                                </dl>
+							                                <dl class="row_item">
+							                                    <dt>
+							                                        <span class="txt">금융기관</span>
+							                                    </dt>
+							                                    <dd class="area_list">
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1738" data-mcls_cd_no="17" 
+								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1738" data-kewd_cd_nm="공제기관" data-sort="0" data-count="15">
+								                                    공제기관
+								                                    	<span class="count">(15)</span>
+							                                    </button>
+								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1739" data-mcls_cd_no="17" 
+								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1739" data-kewd_cd_nm="사금융권" data-sort="1" data-count="73">
+								                                     사금융권
+								                                     	<span class="count">(73)</span>
+								                                     </button>
+							                                    </dd>
+							                                </dl>
+							                            </div>
+							                        </div>
+							                    </div>
+							                </div>
+							            </div>
+							            <!-- //end 비동기로 미리 만들어지는 하위직업 선택 -->
 	                                </div>
 	                            </div>
 	                        </div>
