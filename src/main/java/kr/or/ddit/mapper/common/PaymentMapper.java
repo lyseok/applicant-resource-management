@@ -47,4 +47,5 @@ public interface PaymentMapper {
 	
 	public int activateSubscription(int usageRemaining, String paymentNo);
 	
+	public PaymentVO selectScheduledByUserId(String userId);
 }

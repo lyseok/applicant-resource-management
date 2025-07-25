@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import kr.or.ddit.admin.common.payment.service.AdminSubscriptionService;
 
 @Component
-public class BatchScheduler {
+public class AdminBatchSchedulerController {
 	@Autowired
     private AdminSubscriptionService service;
 

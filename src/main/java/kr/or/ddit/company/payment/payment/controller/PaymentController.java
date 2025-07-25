@@ -69,11 +69,6 @@ public class PaymentController {
 		return "company/payment/payment/CancelPayment";
 	}
 
-	@Scheduled(cron = " 0 0 0 1 * *")
-	@Transactional
-	public void refreshSubscriptions() {
-
-	}
 
 	@PostMapping("/product/change/confirm")
 	@ResponseBody
@@ -86,7 +81,13 @@ public class PaymentController {
 		log.info("/product/change/confirm 의 oldPaymentNo : {}", oldPaymentNo);
 		log.info("/product/change/confirm 의 payload :{} ", payload);
 		log.info("newProductNo의 값 : {}", newProductNo);
-
+		
+		PaymentVO scheduled = service.selectScheduledByUserId(service.getUserId());
+		log.info("scheduled : {}", scheduled);
+		if(scheduled != null) {
+			throw new IllegalStateException("이미 구매한 상품이 있습니다. 관리자에게 문의하세요");
+		}
+		
 		PaymentVO oldPayment = service.selectPaymentByPk(oldPaymentNo);
 		LocalDate nextStart = LocalDate.parse(oldPayment.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
 				.plusDays(1);
@@ -222,7 +223,7 @@ public class PaymentController {
 		List<Long> pageCumulativeAmounts = cumulativeAmounts.subList(offset,
 				Math.min(offset + pageSize, cumulativeAmounts.size()));
 
-		// 모델에 데이터 추가
+		
 		model.addAttribute("purchaseList", pageList); // ⬅️ 페이징된 리스트
 		model.addAttribute("cumulativeList", pageCumulativeAmounts); // ⬅️ 순차 누적 금액
 		model.addAttribute("productCountMap", productCountMap); // ⬅️ 상품별 수량

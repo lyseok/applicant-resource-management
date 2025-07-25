@@ -38,6 +38,13 @@
 		#{usageRemaining}
 		)
 	</insert>
+	
+	<select id="selectScheduledByUserId" resultType="PaymentVO">
+    SELECT *
+    FROM PAYMENT
+    WHERE USER_ID = #{userId}
+      AND STATUS = 'S'
+</select>
 
 	<insert id="comePayment">
 		<selectKey resultType="string" keyProperty="paymentNo"

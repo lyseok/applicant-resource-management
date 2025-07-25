@@ -112,10 +112,16 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public void monthlySubscriptionRefresh() {
-		
-		
+	public PaymentVO selectScheduledByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.selectScheduledByUserId(userId);
 	}
+
+	@Override
+	public void monthlySubscriptionRefresh() {
+	
+	}
+
 
 
 	

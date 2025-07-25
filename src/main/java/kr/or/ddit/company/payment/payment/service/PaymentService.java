@@ -37,5 +37,5 @@ public interface PaymentService {
 	
 	public void monthlySubscriptionRefresh();
 	
-	
+	public PaymentVO selectScheduledByUserId(String userId);
 }
