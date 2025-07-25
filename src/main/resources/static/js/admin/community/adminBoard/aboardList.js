@@ -5,7 +5,7 @@ const formBtn = document.querySelector("#formBtn");
 const detTitle = document.querySelector("#detTitle");
 const listTitle = document.querySelector("#listTitle");
 const allBtns = document.querySelector("#allBtns");
-const userId = document.querySelector("#userIdHidden")?.value;
+window.userId = document.querySelector("#userIdHidden")?.value;
 const aboardform = document.querySelector("#aboardForm");
 const modalElement = document.querySelector('#deleteModal');
 

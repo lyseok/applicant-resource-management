@@ -196,6 +196,23 @@
 			AND A.BOARD_STATUS != 'D'
 	</select>
 	
+	<select id="selectBoardTypeName" resultType="string">
+		SELECT CODE_NAME
+		FROM CMN_CODE
+		<where>
+			<if test='boardTypeCode!=null and boardTypeCode!=""'>
+				<choose>
+					<when test='boardTypeCode.contains("NTC")'>
+						CODE_GROUP_NO = #{boardTypeCode}
+					</when>
+					<otherwise>
+						CODE_DETAIL_NO = #{boardTypeCode}
+					</otherwise>
+				</choose>
+			</if>
+		</where>
+	</select>
+	
 	<!-- 
 		boardTypeCode
 		BRDD-001(문의사항) => BOARD_TYPE_CODE : null

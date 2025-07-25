@@ -121,4 +121,5 @@
 <script src="/js/admin/community/adminBoard/aboardList.js"></script>
 <script src="/js/admin/community/adminBoard/aboardDetail.js"></script>
 <script src="/js/admin/community/adminBoard/aboardForm.js"></script>
+<script>window.userId = '${userId}';</script>
 </body>

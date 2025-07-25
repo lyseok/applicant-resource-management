@@ -28,6 +28,8 @@ public interface AdminBoardMapper {
 	public List<AdminBoardVO> selectAFaqListByUcn(String upperCodeNo);	 //FAQ 전체 게시글 목록조회
 	public List<AdminBoardVO> selectAdminBoardList();  //전체 게시글 목록조회
 	
+	public String selectBoardTypeName(String boardTypeCode);  //유형이름 출력시 매핑용
+	
 	public int insertAdminBoard(AdminBoardVO board);
 	public int updateAdminBoard(AdminBoardVO board);
 	public int updateABoardPostHit(AdminBoardVO board);

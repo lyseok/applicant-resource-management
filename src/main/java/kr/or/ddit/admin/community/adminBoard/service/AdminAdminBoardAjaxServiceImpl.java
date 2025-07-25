@@ -9,10 +9,14 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.mapper.common.CompanyMapper;
+import kr.or.ddit.mapper.common.MemberMapper;
 import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.mapper.community.AdminBoardMapper;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CmnCodeVO;
+import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.common.UsersVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,8 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	private final AdminBoardMapper mapper;
 	private final CodeMapProvider codeMapProvider;
 	private final UserMapper userMapper;
+	private final MemberMapper memberMapper;
+	private final CompanyMapper companyMapper;
 	
 	@Override
 	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo) {
@@ -120,6 +126,21 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	@Override
 	public List<AdminBoardVO> readDelAboardList() {
 		return mapper.selectDelAboardList();
+	}
+
+	@Override
+	public MemberVO readMemName(String userId) {
+		return memberMapper.selectMemberById(userId);
+	}
+
+	@Override
+	public CompanyVO readComName(String userId) {
+		return companyMapper.selectCompanyById(userId);
+	}
+
+	@Override
+	public String readBoardTypeName(String boardTypeCode) {
+		return mapper.selectBoardTypeName(boardTypeCode);
 	}
 
 }

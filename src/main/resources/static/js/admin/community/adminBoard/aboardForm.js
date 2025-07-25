@@ -2,6 +2,7 @@ const boardTypeCode = document.querySelector("#boardTypeCode");
 const codeGroup = document.querySelector("#codeGroup");
 const memType = document.querySelector("#memType");
 let updateNo = null;  // 전역으로 선언
+//let userId = window.userId;
 
 // 무조건 처음 한번 실행 되는 부분
 //1차 옵션 추가

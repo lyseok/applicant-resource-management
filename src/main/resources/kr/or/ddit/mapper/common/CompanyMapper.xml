@@ -96,7 +96,7 @@
 			, #{comMem}
 			, #{comLogo}
 			, #{comBackgroundImg}
-			, #{comPayment}
+			, 'N'
 			, #{industryType}
 			, #{comType}
 			, #{comSize}
