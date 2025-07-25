@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('테이블 요소를 찾을 수 없습니다: #logTable tbody');
         return;
       }
+      
 
       // 로드된 로그로 테이블 갱신
       tableBody.innerHTML = '';

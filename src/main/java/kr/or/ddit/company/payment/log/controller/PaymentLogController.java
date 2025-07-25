@@ -34,6 +34,9 @@ public class PaymentLogController {
 		@RequestParam String key
 		, @RequestParam String keyword
 			) {
+		log.info("keyword: {}",keyword);
+		log.info("key: {}",key);
+		log.info("리턴값 : {}", service.filterLogHistory(key, keyword)); 
 		return service.filterLogHistory(key, keyword);
 	}
 	

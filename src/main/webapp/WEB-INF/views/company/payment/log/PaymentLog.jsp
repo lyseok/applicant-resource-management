@@ -89,6 +89,27 @@
         </c:if>
       </tbody>
     </table>
+    <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <!-- 이전 버튼 -->
+        <li class="page-item <c:if test='${currentPage == 1}'>disabled</c:if>'">
+            <a class="page-link" href="?page=${currentPage - 1}" tabindex="-1">이전</a>
+        </li>
+
+        <!-- 페이지 번호 -->
+        <c:forEach var="i" begin="1" end="${totalPages}">
+            <li class="page-item <c:if test='${i == currentPage}'>active</c:if>'">
+                <a class="page-link" href="?page=${i}">${i}</a>
+            </li>
+        </c:forEach>
+
+        <!-- 다음 버튼 -->
+        <li class="page-item <c:if test='${currentPage == totalPages}'>disabled</c:if>'">
+            <a class="page-link" href="?page=${currentPage + 1}">다음</a>
+        </li>
+    </ul>
+</nav>
+    
   </div>
 
   <div class="mt-4">

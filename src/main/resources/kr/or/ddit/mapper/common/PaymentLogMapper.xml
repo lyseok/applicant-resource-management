@@ -11,24 +11,25 @@
       message_body    AS messageBody
     FROM payment_log
     <where>
+    
       <choose>
         <!-- 전체 검색: 3개 컬럼 모두 OR 검색 -->
         <when test="key == 'all'">
-          (email_address   LIKE #{kw}
-           OR subject         LIKE #{kw}
-           OR message_body    LIKE #{kw})
+          (email_address   LIKE #{keyword}
+           OR subject         LIKE #{keyword}
+           OR message_body    LIKE #{keyword})
         </when>
         <!-- 이메일만 -->
         <when test="key == 'emailAddress'">
-          email_address LIKE #{kw}
+          email_address LIKE #{keyword}
         </when>
         <!-- 제목만 -->
         <when test="key == 'subject'">
-          subject LIKE #{kw}
+          subject LIKE #{keyword}
         </when>
         <!-- 내용만 -->
         <when test="key == 'messageBody'">
-          message_body LIKE #{kw}
+          message_body LIKE #{keyword}
         </when>
         <!-- 기타: 전체 조회 -->
         <otherwise>
