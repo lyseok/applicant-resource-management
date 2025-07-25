@@ -73,6 +73,7 @@ async function doChangeBilling(event, btn) {
 		orderName: productName
 	})
 });
+	alert("돌아왔니 ?!");
 
 const rawText = await billingRes.text(); // MIME type이 text/plain이기 때문
 let billingData;
@@ -94,7 +95,7 @@ try {
 		return;
 	}*/
 	
-	
+	alert("여기까진 오니?");
 	const confirmRes = await fetch("/company/payment/product/change/confirm", {
 	method: "POST",
 	headers: { "Content-Type": "application/json" },
@@ -106,6 +107,7 @@ try {
 		paymentKey: billingData.paymentKey
 	})
 });
+	alert("돌아왔니 ?! 2");
 
 if (confirmRes.ok) {
 	alert("요금제 변경 완료!");

@@ -40,6 +40,13 @@
     ORDER BY used_at DESC
   </select>
   
+<select id="selectLoghistoryByUserId" resultType="PaymentLogVO">
+    SELECT l.*
+    FROM PAYMENT_LOG l
+    JOIN PAYMENT p ON l.PAYMENT_NO = p.PAYMENT_NO
+    WHERE p.USER_ID = #{userId}
+    ORDER BY l.USED_AT DESC
+</select>
 
 
 

@@ -35,5 +35,16 @@ public interface PaymentMapper {
 	
 	public String getPaymentNo(String userId);
 	
+	public PaymentVO selectStauts(String userId);
+	
+	public int minuseaining(String paymentNo);
+	
+	public String newPaymentNo(String userId);
+	
+	public PaymentVO expireCancelledSubscriptions();
+
+	public List<PaymentVO> selectScheduledSubscriptions();
+	
+	public int activateSubscription(int usageRemaining, String paymentNo);
 	
 }

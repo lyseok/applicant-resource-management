@@ -5,7 +5,8 @@
 	<insert id="insertPayment">
 		<selectKey resultType="string" keyProperty="paymentNo"
 			order="BEFORE">
-			SELECT 'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO), LENGTH('PAMT')
+			SELECT 'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO),
+			LENGTH('PAMT')
 			+ 1)), 0) + 1, 6, '0')
 			FROM PAYMENT
 		</selectKey>
@@ -19,7 +20,9 @@
 		PAYMENT_BILLING_KEY,
 		START_DATE,
 		END_DATE,
-		STATUS
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING
 		) VALUES (
 		#{paymentNo},
 		#{userId},
@@ -30,14 +33,17 @@
 		#{paymentBillingKey},
 		TO_CHAR(SYSDATE, 'YYYYMMDD'),
 		TO_CHAR(ADD_MONTHS(SYSDATE, 1), 'YYYYMMDD'),
-		'A'
+		'A',
+		#{usageAllowed},
+		#{usageRemaining}
 		)
 	</insert>
 
 	<insert id="comePayment">
 		<selectKey resultType="string" keyProperty="paymentNo"
 			order="BEFORE">
-			SELECT 'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO), LENGTH('PAMT')
+			SELECT 'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO),
+			LENGTH('PAMT')
 			+ 1)), 0) + 1, 6, '0')
 			FROM PAYMENT
 		</selectKey>
@@ -51,7 +57,9 @@
 		PAYMENT_BILLING_KEY,
 		START_DATE,
 		END_DATE,
-		STATUS
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING
 		) VALUES (
 		#{paymentNo},
 		#{userId},
@@ -62,38 +70,83 @@
 		#{paymentBillingKey},
 		#{startDate},
 		TO_CHAR(ADD_MONTHS(TO_DATE(#{startDate}, 'YYYYMMDD'), 1), 'YYYYMMDD'),
-		'S'
+		'S',
+		#{usageAllowed},
+		#{usageRemaining}
 		)
 	</insert>
-	
+
 	<select id="getPaymentNo">
-	SELECT PAYMENT_NO
-	FROM PAYMENT
-	WHERE USER_ID = #{userId}
+		SELECT PAYMENT_NO
+		FROM PAYMENT
+		WHERE USER_ID =
+		#{userId}
 	</select>
 
 	<update id="updateComPaymentStatus" parameterType="String">
-    UPDATE company c
-    SET c.com_payment = 
-      CASE
-        WHEN EXISTS (
-          SELECT 1
-          FROM payment p
-          WHERE p.user_id   = #{userId}
-            AND p.start_date &lt;= TO_CHAR(SYSDATE, 'YYYYMMDD')
-            AND p.end_date   &gt;= TO_CHAR(SYSDATE, 'YYYYMMDD')
-            AND p.status     = 'A'
-            AND p.user_id = #{userId}
-        ) THEN 'Y'
-        ELSE 'N'
-      END
-    WHERE c.user_id = #{userId}
-  </update>
+		UPDATE company
+		c
+		SET c.com_payment =
+		CASE
+		WHEN EXISTS (
+		SELECT 1
+		FROM payment p
+		WHERE
+		p.user_id = #{userId}
+		AND p.start_date &lt;= TO_CHAR(SYSDATE,
+		'YYYYMMDD')
+		AND p.end_date &gt;= TO_CHAR(SYSDATE, 'YYYYMMDD')
+		AND
+		p.status = 'A'
+		AND p.user_id = #{userId}
+		) THEN 'Y'
+		ELSE 'N'
+		END
+		WHERE
+		c.user_id = #{userId}
+	</update>
+
+	<update id="expireCancelledSubscriptions">
+		UPDATE PAYMENT
+		SET STATUS = 'E'
+		WHERE STATUS = 'C'
+	</update>
+
+	<select id="selectScheduledSubscriptions" resultType="PaymentVO">
+		SELECT *
+		FROM PAYMENT
+		WHERE STATUS = 'S'
+	</select>
+
+	<update id="activateSubscription">
+		UPDATE PAYMENT
+		SET STATUS = 'A',
+		USAGE_REMAINING = #{usageRemaining},
+		START_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		END_DATE = TO_CHAR(ADD_MONTHS(SYSDATE, 1)-1, 'YYYYMMDD')
+		WHERE PAYMENT_NO = #{paymentNo}
+	</update>
+
+
+
+
+	<select id="newPaymentNo" resultType="String">
+		SELECT PAYMENT_NO
+		FROM (
+		SELECT PAYMENT_NO
+		FROM PAYMENT
+		WHERE USER_ID = #{userId}
+		ORDER BY
+		PAYMENT_DATE DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
 
 	<update id="cancelPayment">
 		UPDATE PAYMENT
 		SET STATUS = 'C'
-		WHERE PAYMENT_NO = #{paymentNo}
+		WHERE PAYMENT_NO =
+		#{paymentNo}
 	</update>
 
 	<resultMap id="paymentResultMap" type="PaymentVO">
@@ -116,6 +169,13 @@
 		</collection>
 	</resultMap>
 
+	<update id="minuseaining">
+		UPDATE PAYMENT
+		SET USAGE_REMAINING = USAGE_REMAINING -
+		1
+		WHERE PAYMENT_NO = #{paymentNo}
+	</update>
+
 	<!-- ✅ 수정됨: PAYMENT_BILLING_KEY, STATUS 추가 -->
 	<select id="selectMyPaymentList" resultMap="paymentResultMap">
 		SELECT
@@ -123,7 +183,8 @@
 		p.USER_ID,
 		p.PRODUCT_NO,
 		p.PAYMENT_METHOD,
-		TO_CHAR(p.PAYMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS PAYMENT_DATE,
+		TO_CHAR(p.PAYMENT_DATE,
+		'YYYY-MM-DD HH24:MI:SS') AS PAYMENT_DATE,
 		p.PAYMENT_PAY,
 		p.PAYMENT_BILLING_KEY,
 		p.START_DATE,
@@ -131,7 +192,8 @@
 		p.STATUS,
 		pr.PRODUCT_NAME
 		FROM PAYMENT p
-		JOIN PAYMENT_PRODUCT pr ON p.PRODUCT_NO = pr.PRODUCT_NO
+		JOIN PAYMENT_PRODUCT pr ON p.PRODUCT_NO =
+		pr.PRODUCT_NO
 		WHERE p.USER_ID = #{userId}
 		ORDER BY p.PAYMENT_DATE DESC
 	</select>
@@ -147,14 +209,17 @@
 		PAYMENT_BILLING_KEY,
 		START_DATE,
 		END_DATE,
-		STATUS
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING
 		FROM PAYMENT
 	</select>
 
 	<select id="checkbilling">
 		SELECT PAYMENT_BILLING_KEY
 		FROM PAYMENT
-		WHERE USER_ID = #{userId}
+		WHERE USER_ID =
+		#{userId}
 	</select>
 
 	<select id="selectPaymentByPk" resultType="PaymentVO">
@@ -168,23 +233,59 @@
 		PAYMENT_BILLING_KEY,
 		START_DATE,
 		END_DATE,
-		STATUS
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING
 		FROM PAYMENT
 		WHERE PAYMENT_NO = #{paymentNo}
+	</select>
+
+	<select id="selectStauts" resultType="PaymentVO">
+		SELECT *
+		FROM (
+		SELECT
+		PAYMENT_NO,
+		USER_ID,
+		PRODUCT_NO,
+		PAYMENT_METHOD,
+		PAYMENT_DATE,
+		PAYMENT_PAY,
+		PAYMENT_BILLING_KEY,
+		START_DATE,
+		END_DATE,
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING
+		FROM PAYMENT
+		WHERE user_id = #{userId}
+		AND
+		STATUS IN ('A','C')
+		ORDER BY
+		CASE STATUS WHEN 'A' THEN 1
+		WHEN 'C' THEN 2
+		ELSE 3 END
+		)
+		WHERE ROWNUM = 1
 	</select>
 
 	<update id="updatePayment">
 		UPDATE PAYMENT
 		SET
 		USER_ID = #{userId},
-		PRODUCT_NO = #{productNo},
+		PRODUCT_NO =
+		#{productNo},
 		PAYMENT_METHOD = #{paymentMethod},
-		PAYMENT_DATE = #{paymentDate},
+		PAYMENT_DATE =
+		#{paymentDate},
 		PAYMENT_PAY = #{paymentPay},
-		PAYMENT_BILLING_KEY = #{paymentBillingKey},
+		PAYMENT_BILLING_KEY =
+		#{paymentBillingKey},
 		START_DATE = #{startDate},
 		END_DATE = #{endDate},
 		STATUS = #{status}
+		USAGE_ALLOWED = #{usageAllowed}
+		USAGE_REMAINING =
+		#{usageRemaining}
 		WHERE PAYMENT_NO = #{paymentNo}
 	</update>
 

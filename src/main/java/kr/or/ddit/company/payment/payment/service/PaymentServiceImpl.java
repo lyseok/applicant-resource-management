@@ -94,6 +94,30 @@ public class PaymentServiceImpl implements PaymentService {
 		return mapper.getPaymentNo(userId);
 	}
 
+	@Override
+	public PaymentVO selectStauts(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.selectStauts(userId);
+	}
+
+	@Override
+	public int minuseaining(String paymentNo) {
+		return mapper.minuseaining(paymentNo);
+	}
+
+	@Override
+	public String newPaymentNo(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.newPaymentNo(userId);
+	}
+
+	@Override
+	public void monthlySubscriptionRefresh() {
+		
+		
+	}
+
+
 	
 
 	

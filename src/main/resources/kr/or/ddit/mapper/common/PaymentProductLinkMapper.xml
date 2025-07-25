@@ -26,10 +26,6 @@
 		AND usage_remaining > 0
 	</update>
 
-	<insert id="">
-		INSERT INTO usage_log (payment_no, product_no, used_count)
-		VALUES (#{paymentNO}, #{productNo}, 1)
-	</insert>
 
 	<select id="selectLinkList">
 		SELECT

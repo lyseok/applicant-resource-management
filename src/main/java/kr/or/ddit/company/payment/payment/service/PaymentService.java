@@ -28,4 +28,14 @@ public interface PaymentService {
 	public int updateComPaymentStatus(String userId);
 	
 	public String getPaymentNo(String userId);
+	
+	public PaymentVO selectStauts(String userId);
+	
+	public int minuseaining(String paymentNo);
+	
+	public String newPaymentNo(String userId);
+	
+	public void monthlySubscriptionRefresh();
+	
+	
 }
