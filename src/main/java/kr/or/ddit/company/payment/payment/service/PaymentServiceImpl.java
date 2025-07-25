@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.common.PaymentMapper;
+import kr.or.ddit.vo.common.AdminPaymentVO;
 import kr.or.ddit.vo.common.PaymentVO;
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -120,6 +121,12 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public void monthlySubscriptionRefresh() {
 	
+	}
+
+	@Override
+	public List<AdminPaymentVO> selectPaymentStatistics() {
+		// TODO Auto-generated method stub
+		return mapper.selectPaymentStatistics();
 	}
 
 

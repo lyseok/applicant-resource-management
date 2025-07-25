@@ -38,13 +38,46 @@
 		#{usageRemaining}
 		)
 	</insert>
-	
+
 	<select id="selectScheduledByUserId" resultType="PaymentVO">
-    SELECT *
-    FROM PAYMENT
-    WHERE USER_ID = #{userId}
-      AND STATUS = 'S'
-</select>
+		SELECT *
+		FROM PAYMENT
+		WHERE USER_ID = #{userId}
+		AND STATUS = 'S'
+	</select>
+
+	<select id="selectPaymentStatistics"
+		resultType="kr.or.ddit.vo.common.AdminPaymentVO"> <!-- 관리자 페이지 매출용 -->
+		SELECT
+		pp.PRODUCT_NAME AS productName,
+		pp.PRODUCT_TYPE AS productType,
+		SUM(
+		CASE
+		WHEN TO_CHAR(p.PAYMENT_DATE, 'YYYYMM') = TO_CHAR(SYSDATE, 'YYYYMM')
+		THEN TO_NUMBER(p.PAYMENT_PAY)
+		ELSE 0
+		END
+		) AS monthlySalesAmount,
+		SUM(TO_NUMBER(p.PAYMENT_PAY)) AS totalSalesAmount,
+		SUM(
+		CASE
+		WHEN TO_CHAR(p.PAYMENT_DATE, 'YYYYMM') = TO_CHAR(SYSDATE, 'YYYYMM')
+		THEN 1
+		ELSE 0
+		END
+		) AS monthlySalesCount,
+		COUNT(*) AS totalSalesCount
+		FROM
+		PAYMENT p
+		JOIN
+		PAYMENT_PRODUCT pp ON p.PRODUCT_NO = pp.PRODUCT_NO
+		WHERE
+		p.STATUS = 'A'
+		GROUP BY
+		pp.PRODUCT_NAME, pp.PRODUCT_TYPE
+		ORDER BY
+		pp.PRODUCT_NAME
+	</select>
 
 	<insert id="comePayment">
 		<selectKey resultType="string" keyProperty="paymentNo"
@@ -113,6 +146,7 @@
 		c.user_id = #{userId}
 	</update>
 
+	<!-- 여기서부터 -->
 	<update id="expireCancelledSubscriptions">
 		UPDATE PAYMENT
 		SET STATUS = 'E'
@@ -128,11 +162,15 @@
 	<update id="activateSubscription">
 		UPDATE PAYMENT
 		SET STATUS = 'A',
-		USAGE_REMAINING = #{usageRemaining},
+		USAGE_REMAINING =
+		#{usageRemaining},
 		START_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD'),
-		END_DATE = TO_CHAR(ADD_MONTHS(SYSDATE, 1)-1, 'YYYYMMDD')
-		WHERE PAYMENT_NO = #{paymentNo}
-	</update>
+		END_DATE =
+		TO_CHAR(ADD_MONTHS(SYSDATE, 1)-1, 'YYYYMMDD')
+		WHERE PAYMENT_NO =
+		#{paymentNo}
+	</update>	
+	<!-- 여기까지가 횟수자동으로채워주기 -->
 
 
 

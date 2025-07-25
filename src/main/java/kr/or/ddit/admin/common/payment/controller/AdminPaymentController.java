@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.or.ddit.company.payment.payment.service.PaymentService;
 import kr.or.ddit.company.payment.product.service.PaymentProductService;
+import kr.or.ddit.vo.common.AdminPaymentVO;
 import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +39,37 @@ public class AdminPaymentController {
 			) {
 		List<PaymentVO> pvo = pservice.selectPaymentList();
 		List<PaymentProductVO> vo = service.selectPaymentProductList();
+		log.info("pvo : {}", pvo);
+		log.info("vo : {}", vo );
 		model.addAttribute("vo",vo);
 		model.addAttribute("pvo", pvo);
 		return "admin/payment/SellingProduct";
 	}
 	
 	@GetMapping("/select/product")
-	public String selectFormUI() {
+	public String selectFormUI(
+			Model model
+			) {
+		List<AdminPaymentVO> getPaymentStatistics = pservice.selectPaymentStatistics();
+
+//		List<PaymentVO> pvo = pservice.selectPaymentList();
+//		List<PaymentProductVO> vo = service.selectPaymentProductList();
+//		log.info("pvo : {}", pvo);
+//		log.info("vo : {}", vo );
+//		model.addAttribute("vo",vo);
+//		model.addAttribute("pvo", pvo);
+		
+		 // 구독자 데이터 (예시 값, 실제 서비스에서 가져오기)
+	    model.addAttribute("newSubs", 120);
+	    model.addAttribute("activeSubs", 850);
+	    model.addAttribute("churnedSubs", 45);
+	    log.info("getPaymentStatistics", getPaymentStatistics);
+	    // 전년도/올해 매출 (예시 데이터)
+	    model.addAttribute("lastYearSales", List.of(100, 200, 150, 180, 220, 250, 270, 300, 310, 290, 330, 400));
+	    model.addAttribute("thisYearSales", List.of(120, 230, 170, 200, 240, 280, 300, 320, 340, 310, 350, 420));
+
+		model.addAttribute("getPaymentStatistics",getPaymentStatistics);
+			
 		return "admin/payment/SellingProduct";
 	}
 	

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.ddit.vo.common.AdminPaymentVO;
 import kr.or.ddit.vo.common.PaymentListVO;
 import kr.or.ddit.vo.common.PaymentVO;
 @Mapper
@@ -48,4 +49,6 @@ public interface PaymentMapper {
 	public int activateSubscription(int usageRemaining, String paymentNo);
 	
 	public PaymentVO selectScheduledByUserId(String userId);
+	
+	public List<AdminPaymentVO> selectPaymentStatistics();
 }

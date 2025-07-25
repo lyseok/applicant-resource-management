@@ -51,7 +51,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PaymentController {
 
 	@Autowired
-	private TossPaymentService tossPaymentSerice;
+	private TossPaymentService tossPaymentService;
 
 	@Autowired
 	private PaymentServiceImpl service;
@@ -61,14 +61,44 @@ public class PaymentController {
 
 	@Autowired
 	private PaymentProductLinkService lservice;
+	
+	 @PostMapping("/cancel/subscription")
+	    public String cancelSubscription(
+	    		@RequestParam String paymentNo
+	    		, Model model) throws Exception {
+	        // 1. DB에서 billingKey 가져오기
+	        String billingKey = service.checkbilling(service.getUserId());
+	        
+	        if (billingKey == null) {
+	            throw new RuntimeException("BillingKey를 찾을 수 없습니다.");
+	        }
 
-	@GetMapping("/cancel/payment")
-	public String cancleFormUI(@RequestParam String productNo, @RequestParam String paymentNo, Model model) {
-		log.info("paymentNo : {}", paymentNo);
-		log.info("paymentNo : {}", paymentNo);
-		return "company/payment/payment/CancelPayment";
-	}
+	        // 2. Toss로 해지 요청
+	        String result = tossPaymentService.deactivateBillingKey(billingKey);
 
+	        // 3. DB 상태 업데이트 (선택)
+	        service.cancelPayment(paymentNo);
+
+	        return result; // Toss 응답 그대로 반환
+	    }
+	 
+
+	@PostMapping("/cancel/payment")
+	public String cancelPayment(
+			@RequestParam String paymentNo,
+            @RequestParam String productNo,
+            Model model) throws Exception {
+// DB에서 paymentKey 조회 (paymentNo로 Toss paymentKey 매핑)
+		String paymentKey = service.getPaymentNo(service.getUserId());
+
+// Toss 결제 취소 호출
+		String result = tossPaymentService.cancelPayment(paymentKey, "사용자 요청: 정기결제 해지");
+
+// 성공 메시지 모델에 담기
+			model.addAttribute("cancelResult", result);
+			return "company/payment/payment/CanclePayment";  // 취소 결과 페이지
+}
+		
 
 	@PostMapping("/product/change/confirm")
 	@ResponseBody
@@ -81,13 +111,13 @@ public class PaymentController {
 		log.info("/product/change/confirm 의 oldPaymentNo : {}", oldPaymentNo);
 		log.info("/product/change/confirm 의 payload :{} ", payload);
 		log.info("newProductNo의 값 : {}", newProductNo);
-		
+
 		PaymentVO scheduled = service.selectScheduledByUserId(service.getUserId());
 		log.info("scheduled : {}", scheduled);
-		if(scheduled != null) {
-			throw new IllegalStateException("이미 구매한 상품이 있습니다. 관리자에게 문의하세요");
-		}
-		
+//		if(scheduled != null) {
+//			throw new IllegalStateException("이미 구매한 상품이 있습니다. 관리자에게 문의하세요");
+//		}
+
 		PaymentVO oldPayment = service.selectPaymentByPk(oldPaymentNo);
 		LocalDate nextStart = LocalDate.parse(oldPayment.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
 				.plusDays(1);
@@ -223,7 +253,6 @@ public class PaymentController {
 		List<Long> pageCumulativeAmounts = cumulativeAmounts.subList(offset,
 				Math.min(offset + pageSize, cumulativeAmounts.size()));
 
-		
 		model.addAttribute("purchaseList", pageList); // ⬅️ 페이징된 리스트
 		model.addAttribute("cumulativeList", pageCumulativeAmounts); // ⬅️ 순차 누적 금액
 		model.addAttribute("productCountMap", productCountMap); // ⬅️ 상품별 수량

@@ -1,6 +1,10 @@
 package kr.or.ddit.company.payment.payment.service;
 
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,5 +48,39 @@ public class TossPaymentService {
 		}
 		
 	}
+	
+	 public String deactivateBillingKey(String billingKey) throws Exception {
+	        String authHeader = "Basic " + Base64.getEncoder().encodeToString((secretKey + ":").getBytes());
+
+	        HttpRequest request = HttpRequest.newBuilder()
+	                .uri(URI.create("https://api.tosspayments.com/v1/billing/" + billingKey))
+	                .header("Authorization", authHeader)
+	                .DELETE()
+	                .build();
+
+	        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+	        return response.body(); // Toss 응답 그대로 반환
+	    }
+	
+	 public String cancelPayment(String paymentKey, String cancelReason) throws Exception {
+	        String authHeader = "Basic " + Base64.getEncoder().encodeToString((secretKey + ":").getBytes());
+
+	        String requestBody = String.format("""
+	            {
+	                "cancelReason": "%s"
+	            }
+	        """, cancelReason);
+	       
+	        HttpRequest request = HttpRequest.newBuilder()
+	                .uri(URI.create("https://api.tosspayments.com/v1/payments/" + paymentKey + "/cancel"))
+	                .header("Authorization", authHeader)
+	                .header("Content-Type", "application/json")
+	                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                .build();
+
+	        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+	        return response.body();
+	    }
 	
 }

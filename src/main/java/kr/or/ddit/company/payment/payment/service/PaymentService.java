@@ -2,6 +2,7 @@ package kr.or.ddit.company.payment.payment.service;
 
 import java.util.List;
 
+import kr.or.ddit.vo.common.AdminPaymentVO;
 import kr.or.ddit.vo.common.PaymentVO;
 
 public interface PaymentService {
@@ -38,4 +39,6 @@ public interface PaymentService {
 	public void monthlySubscriptionRefresh();
 	
 	public PaymentVO selectScheduledByUserId(String userId);
+	
+	public List<AdminPaymentVO> selectPaymentStatistics();
 }
