@@ -55,11 +55,6 @@ public class RecruitViewServiceImpl implements RecruitViewService {
 		vo.setCityCodeName(provider.getCityName(vo.getCityCode()));
 		vo.setDistrictCodeName(provider.getDistrictName(vo.getDistrictCode()));
 		vo.setYearCodeName(provider.getCodeName(vo.getYearCode()));
-		
-		
-		log.info("{}", vo.getCityCodeName());
-		log.info("{}", vo.getDistrictCodeName());
-		log.info("{}", vo.getYearCodeName());
 	}
 
 }
