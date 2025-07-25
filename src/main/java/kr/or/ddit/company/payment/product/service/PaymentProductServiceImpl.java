@@ -2,40 +2,50 @@ package kr.or.ddit.company.payment.product.service;
 
 import java.util.List;
 
-import kr.or.ddit.company.payment.paymentlist.service.PaymentListService;
-import kr.or.ddit.vo.common.PaymentListVO;
-import kr.or.ddit.vo.common.PaymentVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class PaymentProductServiceImpl implements PaymentListService {
+import kr.or.ddit.mapper.common.PaymentProductMapper;
+import kr.or.ddit.vo.common.PaymentProductVO;
 
+@Service
+public class PaymentProductServiceImpl implements PaymentProductService {
+
+	@Autowired
+	PaymentProductMapper mapper;
+	
 	@Override
-	public List<PaymentVO> selectPaymentList() {
+	public List<PaymentProductVO> selectPaymentProductList() {
 		// TODO Auto-generated method stub
-		return null;
+		return mapper.selectPaymentProductList();
 	}
 
 	@Override
-	public PaymentVO selectPaymentByPk(PaymentListVO vo) {
+	public PaymentProductVO selectPaymentProductByPk(String productNo) {
 		// TODO Auto-generated method stub
-		return null;
+		return mapper.selectPaymentProductByPk(productNo);
 	}
 
 	@Override
-	public int insertPayment(PaymentListVO plv) {
+	public int insertPaymentProduct(PaymentProductVO vo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.insertPaymentProduct(vo);
 	}
 
 	@Override
-	public int updatePayment(PaymentListVO vo) {
+	public int updatePaymentProduct(PaymentProductVO vo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.updatePaymentProduct(vo);
 	}
 
 	@Override
-	public int deletePayment(PaymentListVO vo) {
+	public int deletePaymentProduct(String productNo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.deletePaymentProduct(productNo);
 	}
+
+
+
+
 
 }

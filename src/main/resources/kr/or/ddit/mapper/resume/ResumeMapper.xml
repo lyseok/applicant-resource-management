@@ -33,24 +33,25 @@
   
   
 	<select id="selectResumeList">
-	  	SELECT  RESUME_NO
-		      , RESUME_MAIN_YN
-		      , INTRODUCTION_NO
-		      , USER_ID
-		      , USER_NAME
-		      , PHOTO
-		      , TO_CHAR(TO_DATE(BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
-		      , EMAIL
-		      , TEL
-		      , ADDRESS
-		      , VETERAN_REASON
-		      , TO_CHAR(TO_DATE(UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
-		      , RESUME_SUBMIT_YN
-		      , RESUME_DELETE_DATE
-		      , RESUME_NAME
+	  	SELECT RESUME_NO
+		       , RESUME_MAIN_YN
+		       , INTRODUCTION_NO
+		       , USER_ID
+		       , USER_NAME
+		       , PHOTO
+		       , TO_CHAR(TO_DATE(BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
+		       , EMAIL
+	      	   , TEL
+		       , ADDRESS
+		       , VETERAN_REASON
+		       , TO_CHAR(TO_DATE(UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
+		       , RESUME_SUBMIT_YN
+		       , RESUME_DELETE_DATE
+		       , RESUME_NAME
 		  FROM resume
 		 WHERE USER_ID = #{userId}
 		   AND RESUME_DELETE_DATE IS NULL
+	       AND RESUME_SUBMIT_YN = 'N'
 
 	</select>
 	<resultMap id="resumeDetailtMap" type="kr.or.ddit.vo.resume.ResumeVO">
@@ -136,6 +137,7 @@
 			, UPDATE_DATE
 			, RESUME_SUBMIT_YN
 			, RESUME_DELETE_DATE
+			, INTRODUCTION_NO
 		) VALUES (
 			#{resumeNo}
 			, #{resumeName}
@@ -150,6 +152,7 @@
 			, TO_CHAR(SYSDATE, 'YYYYMMDD')
 			, #{resumeSubmitYn}
 			, #{resumeDeleteDate}
+			, #{introductionNo}
 		)
 	</insert>
 	<update id="updateResume">
@@ -206,5 +209,11 @@
 		    ORDER BY
 		      r.UPDATE_DATE DESC
   </select>
-  <select id=""></select>
+  
+  <select id="selectUserResumeNoCount">
+  	SELECT count(RESUME_NO)
+	  FROM RESUME
+		WHERE USER_ID = #{userId}
+  </select>
+  
 </mapper>

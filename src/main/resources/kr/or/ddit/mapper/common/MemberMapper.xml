@@ -12,7 +12,7 @@
 	      , B.USER_ENABLED     
 	      , A.MEM_NAME         
 	      , A.MEM_EMAIL        
-	      , A.MEM_BIR          
+	      , TO_CHAR(TO_DATE(A.MEM_BIR, 'YYYYMMDD'), 'YYYY-MM-DD') AS MEM_BIR          
 	      , A.MEM_TEL          
 	      , A.MEM_ADD1         
 	      , A.MEM_ADD2         
@@ -35,7 +35,7 @@
 	      , B.USER_ENABLED     
 	      , A.MEM_NAME         
 	      , A.MEM_EMAIL        
-	      , A.MEM_BIR          
+	      , TO_CHAR(TO_DATE(A.MEM_BIR, 'YYYYMMDD'), 'YYYY-MM-DD') AS MEM_BIR          
 	      , A.MEM_TEL          
 	      , A.MEM_ADD1         
 	      , A.MEM_ADD2         

@@ -3,7 +3,7 @@
 <mapper namespace="kr.or.ddit.mapper.recruitment.RecruitmentEducationMapper">
 	<select id="selectRecruitmentEduList" resultType="RecruitmentEducationVO">
 	SELECT 
-		RECRUITMENT_EDCUCATION_CODE
+		RECRUITMENT_EDUCATION_CODE
 		, CODE_DETAIL_NO
 		, RECRUITMENT_NO 
 	FROM RECRUITMENT_EDUCATION
@@ -11,26 +11,26 @@
 	
 	<select id="selectRecruitmentEdu" resultType="RecruitmentEducationVO">
 	SELECT 
-		RECRUITMENT_EDCUCATION_CODE
+		RECRUITMENT_EDUCATION_CODE
 		, CODE_DETAIL_NO
 		, RECRUITMENT_NO 
 	FROM RECRUITMENT_EDUCATION 
-	WHERE RECRUITMENT_EDCUCATION_CODE = #{recruitmentEdcucationCode}
+	WHERE RECRUITMENT_EDUCATION_CODE = #{recruitmentEducationCode}
 	</select>
 	
 	<insert id="insertRecruitmentEducation">
-	<selectKey resultType="string" keyProperty="recruitmentEdcucationCode" order="BEFORE">
+	<selectKey resultType="string" keyProperty="recruitmentEducationCode" order="BEFORE">
     SELECT
         'REED'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUITMENT_EDCUCATION_CODE), LENGTH('REED' ) + 1)), 0) + 1, 6, '0')
+        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(RECRUITMENT_EDUCATION_CODE), LENGTH('REED' ) + 1)), 0) + 1, 6, '0')
     FROM RECRUITMENT_EDUCATION
 	</selectKey>
 	INSERT INTO RECRUITMENT_EDUCATION (
-		RECRUITMENT_EDCUCATION_CODE
+		RECRUITMENT_EDUCATION_CODE
 		, CODE_DETAIL_NO
 		, RECRUITMENT_NO
 	) VALUES (
-		#{recruitmentEdcucationCode}
+		#{recruitmentEducationCode}
 		, #{codeDetailNo}
 		, #{recruitmentNo}
 	)
@@ -39,12 +39,12 @@
 	<update id="updateRecruitmentEducation">
 	UPDATE RECRUITMENT_EDUCATION SET 
 		CODE_DETAIL_NO = #{codeDetailNo}
-	WHERE RECRUITMENT_EDCUCATION_CODE = #{recruitmentEdcucationCode}
+	WHERE RECRUITMENT_EDUCATION_CODE = #{recruitmentEducationCode}
 	</update>
 	
 	<delete id="deleteRecruitmentEducation">
 	UPDATE RECRUITMENT_EDUCATION SET
 	RECRUITMENT_EDU_DEL_DATE = SYSDATE 
-	WHERE RECRUITMENT_EDCUCATION_CODE = #{recruitmentEdcucationCode}
+	WHERE RECRUITMENT_EDUCATION_CODE = #{recruitmentEducationCode}
 	</delete>
 </mapper>

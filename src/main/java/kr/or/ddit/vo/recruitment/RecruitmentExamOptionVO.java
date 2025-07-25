@@ -13,11 +13,8 @@ public class RecruitmentExamOptionVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
 	private String recruitOptionNo;
-	@NotBlank
 	private String recruitExamQuestNo;
-	@NotBlank
 	private String recruitExamOptionContent;
-	@NotBlank
 	private String recruitExamOptionCorrectYn;
 	private String recruitExamOptionDelDate;
 }

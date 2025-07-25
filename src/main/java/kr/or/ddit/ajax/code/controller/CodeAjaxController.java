@@ -11,6 +11,7 @@ import kr.or.ddit.ajax.code.service.CodeService;
 import kr.or.ddit.vo.common.BusinessTypeCodeVO;
 import kr.or.ddit.vo.common.CityCodeVO;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.DistrictCodeVO;
 import kr.or.ddit.vo.common.InduClassCodeVO;
 import kr.or.ddit.vo.common.InduCodeVO;
@@ -63,5 +64,11 @@ public class CodeAjaxController {
     @GetMapping("/cmncodegroup/{no}")
     public CmnCodeGroupVO cmnCodeGroup(@PathVariable("no") String no) {
         return service.readCmnCodeGroupByPk(no);
+    }
+    
+    // upperCodeNo 파라미터를 받아 리스트 조회
+    @GetMapping("/cmncode/{no}")
+    public List<CmnCodeVO> cmnCodeList(@PathVariable("no") String no) {
+    	return service.readCmnCodeListByUc(no);
     }
 }

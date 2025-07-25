@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -41,11 +44,10 @@ public class RecruitNoticeAjaxController {
 		return ResponseEntity.ok(notice.getRecruitmentNo());
 	}
 	
-	@GetMapping("/list/{userId}") // 로그인 정보 안쓰고 일단 pathvariable
-	public List<Map<String, Object>> myNotice(
-		@PathVariable String userId
-	){
-		List<Map<String, Object>> data = service.readMyNotice(userId);
+	
+	@GetMapping("/list") // 로그인 정보 안쓰고 일단 pathvariable
+	public List<Map<String, Object>> myNotice(){
+		List<Map<String, Object>> data = service.readMyNotice();
 		return data;
 	}
 }

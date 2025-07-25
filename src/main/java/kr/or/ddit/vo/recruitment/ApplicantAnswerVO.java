@@ -14,5 +14,6 @@ public class ApplicantAnswerVO implements Serializable{
 	private String recruitQuestionsNo;
 	private String applicantId;
 	private Integer applicantScore;
+	private String applicantOptionNo;
 	private String applicantAnswerDelDate;
 }
