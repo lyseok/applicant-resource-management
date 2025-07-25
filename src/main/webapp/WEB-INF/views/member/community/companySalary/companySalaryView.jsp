@@ -192,6 +192,13 @@
     .salary {
       font-weight: bold;
     }
+    
+    .no-item {
+  padding: 1rem;
+  text-align: center;
+  color: var(--gray500);
+  font-size: 0.95rem;
+}
   </style>
 </head>
 <body>

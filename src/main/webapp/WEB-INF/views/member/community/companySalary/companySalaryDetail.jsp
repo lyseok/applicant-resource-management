@@ -109,18 +109,24 @@ keyframes movePerson { 0% {
 100
 
 
+
+
 %
 {
 left
 
 
+
+
 :
 
 
+
+
 52
+
+
 %; /* 그래프의 평균 연봉 위치에 맞추어 이동 */
-
-
 }
 }
 
@@ -163,7 +169,6 @@ left
 
 .section-title {
 	font-size: 1.25rem;
-	color: var(--violet70);
 	margin-bottom: 0.75rem;
 	display: flex;
 	align-items: center;
@@ -197,6 +202,7 @@ left
 .compare-table th, .compare-table td {
 	padding: 0.75rem 1rem;
 	border: var(--border);
+	text-align: center;
 }
 
 .compare-table thead th {
@@ -214,78 +220,179 @@ left
 }
 
 .compare-table .selected {
-	border: 2px solid var(--violet70) !important;
-	background: rgba(124, 58, 237, 0.1);
+	/* border: 5px solid var(--violet70) !important; */
+	background: rgba(124, 58, 237, 0.2);
 }
 
-.compare-table .selected.salary {
+.compare-table  .selected.salary {
 	font-size: 1.1rem;
 	color: var(--violet70);
+}
+
+.salary-summary-box {
+	display: flex;
+	justify-content: space-around;
+	padding: 1rem 0;
+	border-bottom: 1px solid #eee;
+	margin-bottom: 1rem;
+}
+
+.salary-summary-box .summary-item {
+	flex: 1;
+	text-align: center;
+}
+
+.salary-summary-box .summary-value {
+	font-size: 2rem;
+	font-weight: bold;
+	color: var(--violet70);
+}
+
+.salary-summary-box .summary-label {
+	margin-top: .25rem;
+	color: #666;
+	font-size: .9rem;
+}
+
+.salary-summary-box .summary-sub {
+	margin-top: .25rem;
+	color: #999;
+	font-size: .8rem;
+}
+
+.salary-summary-box .summary-monthly {
+	margin-top: .5rem;
+	font-size: .9rem;
+	color: #333;
+}
+
+
+
+
+.chart-cell {
+  position: relative;
+  padding-top: 1.5rem; /* 레이블 공간 확보 */
+}
+
+/* 레이블만 위에 올려줄 때 */
+.chart-labels {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 1rem;
+  pointer-events: none;
+}
+
+.salary-label {
+  position: absolute;
+  top: 0;
+  font-size: 0.75rem;
+  color: var(--gray500);
+  white-space: nowrap;
+   transition: left 2s ease-out;
+}
+
+/* 좌우로 붙여줄 transform */
+.salary-label.min {   transform: translateX( calc(-100% - 8px) ); }
+.salary-label.max {transform: translateX( 8px );}
+
+/* salary-bar: 그래프 영역 */
+.salary-bar {
+  position: relative;
+  margin-top: 1.5rem; /* 레이블 띄우기 */
+  height: 30px;
+  background: var(--gray200);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* 평균 아이콘 */
+.person-icon {
+  position: absolute;
+  top: 50%;           /* salary-bar 높이 기준 중앙 */
+  transform: translate(-50%, -50%);
+  transition: left 2s ease-out;
+  font-size: 1.2rem;
+  width: 24px; height: 24px;
+  background: var(--violet50);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* 평균 바 */
+.salary-bar-inner {
+  position: absolute;
+  top: 0; left: 0;
+  height:100%;
+  width:0;
+  background: var(--violet50);
+  border-radius: var(--radius);
+  transition: width 2s ease-out;
+}
+
+/* 회색 구간 */
+.range-bar-inner {
+  position: absolute;
+  top:0;
+  height:100%;
+  background: #e5e5e5;
 }
 </style>
 </head>
 <body>
 	<div class="container">
 
-		<div class="similar-companies">
-			<h2 class="section-title">
-				유사기업 비교 <span class="tooltip">?</span>
-			</h2>
-			<div class="table-wrapper">
-				<table class="compare-table">
-					<thead>
-						<tr>
-							<th>기업명</th>
-							<th class="selected">에스케이하이닉스</th>
-							<th>엘지전자(주)</th>
-							<th>삼성SDI</th>
-							<th>삼성전자(주)</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>평균연봉</td>
-							<td class="selected salary">11,391만원</td>
-							<td class="salary">8,497만원</td>
-							<td class="salary">8,989만원</td>
-							<td class="salary">10,376만원</td>
-						</tr>
-						<tr>
-							<td>신입초봉</td>
-							<td class="selected">5,559만원</td>
-							<td>4,963만원</td>
-							<td>4,693만원</td>
-							<td>5,233만원</td>
-						</tr>
-						<tr>
-							<td>매출액</td>
-							<td class="selected">55조 7천억원</td>
-							<td>28조 7천억원</td>
-							<td>4조 4,228억원</td>
-							<td>–</td>
-						</tr>
-						<tr>
-							<td>평균근속연수</td>
-							<td class="selected">13년 4개월</td>
-							<td>11년 8개월</td>
-							<td>12년 2개월</td>
-							<td>12년 1개월</td>
-						</tr>
-						<tr>
-							<td>사원수</td>
-							<td class="selected">32,390명</td>
-							<td>36,924명</td>
-							<td>9,145명</td>
-							<td>–명</td>
-						</tr>
-					</tbody>
-				</table>
+		<div class="company-infomation-row" data-section="salary">
+			<div class="salary-summary-box">
+				<div class="summary-item">
+					<div id="salaryCompanyName" class="salary-company-name"></div>
+					<div class="summary-value" id="salaryAvgGross">-- 만원</div>
+					<div class="summary-label">전체 평균 연봉</div>
+					<div class="summary-sub">(임원 제외)</div>
+					<div class="summary-monthly" id="salaryAvgNet"></div>
+				</div>
+				<div class="summary-item">
+					<div class="summary-value" id="salaryNewhireGross">-- 만원</div>
+					<div class="summary-label">신입사원 초봉</div>
+					<div class="summary-monthly" id="salaryNewhireNet"></div>
+				</div>
 			</div>
 		</div>
-
-		
 	</div>
-
+	
+	<div class="salary-chart">
+	<h2 class="section-title">직급별 비교 <span class="tooltip">?</span></h2>
+    <table id="salaryTable" class="salary-table">
+    
+     <colgroup>
+    <col style="width: 10%;">  <!-- 직급 -->
+    <col style="width: 10%;">  <!-- 평균연봉 -->
+    <col style="width: 60%;">  <!-- 최저‑최고 구간 -->
+  </colgroup>
+      <thead>
+        <tr>
+          <th>직급</th>
+          <th>평균연봉</th>
+          <th>최저‑최고 구간</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  
+  
+	<div class="similar-companies">
+		<h2 class="section-title">유사기업 비교 <span class="tooltip">?</span></h2>
+		<div class="table-wrapper">
+			<table id="similarTable" class="compare-table">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
 
 
 </body>

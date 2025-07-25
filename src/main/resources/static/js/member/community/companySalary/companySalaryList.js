@@ -14,7 +14,7 @@
   const maxHandle = document.getElementById('max-handle');
   const sliderRangeEl = document.getElementById('slider-range');
   const minLabelEl = document.getElementById('min-label');
-  const maxLabelEl = document.getElementById('min-label');
+  const maxLabelEl = document.getElementById('max-label');
   
   const SALARY_MAX = 10000; 
   let data = [];
@@ -48,7 +48,7 @@
 			.forEach(name => {
 				const li = document.createElement('li');
 				li.textContent = name;
-				lo.onMouseDown = () => {
+				li.onmousedown = () => {
 					searchEl.value = name;
 					autoEl.innerHTML = '';
 					applyFilter();
@@ -122,16 +122,24 @@
 
 	function applyFilter(){
 		const filterAvg = searchEl.value.trim().toLowerCase();
-		filtered = data.filter(c => {
-			c.COM_NAME.toLowerCase().includes(filterAvg);
-			c.avg >= minVal && c.avg <= maxVal
-		});
+		filtered = data.filter(c => 
+			c.COM_NAME.toLowerCase().includes(filterAvg) &&
+			c.salaryAvg >= minVal && c.salaryAvg  <= maxVal
+		);
 		renderList();
 	}
 
 	function renderList(){
 		salaryTitleEl.textContent = `${filtered.length}개 기업의 연봉이 등록되어 있습니다.`;
 		salaryListEL.innerHTML = '';
+		
+		if(filtered.length === 0 ){
+			const li = document.createElement('li');
+			li.className = 'no-item';
+			li.textContent = '조건에 맞는 기업이 없습니다.';
+			salaryListEL.appendChild(li);
+			return;
+		}
 
 		filtered.forEach(c => {
 		const li = document.createElement('li');
@@ -147,16 +155,14 @@
 			<div class="text">
 				<div class="name">
 				${c.COM_NAME}
-				${c.IS_OPEN === 'Y'
-					? `<span style="color:var(--violet70);font-size:.8rem;">(채용중)</span>`
-					: ''}
+					<span style="color:var(--violet70);font-size:.8rem;">(채용중)</span>
 				</div>
 				<div class="meta">
 				${c.INDU_NAME || ''} | 사원수 ${c.COM_MEM || 0}명
 				</div>
 			</div>
 			</div>
-			<div class="salary">${formatSalary(c.avg)}</div>
+			<div class="salary">${formatSalary(c.salaryAvg)}</div>
 		`;
 			salaryListEL.append(li);
 		});

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.mapper.common.SalaryMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -26,5 +27,27 @@ public class CompanySalaryServiceImpl implements CompanySalaryService{
 		
 		return salaryList;
 	}
+
+	@Override
+	public List<CompanySalaryDTO> readSalaryStatisticsById(String userId) {
+		
+		List<CompanySalaryDTO> sList =  salaryMapper.selectSalaryStatisticsById(userId);
+		
+		for (CompanySalaryDTO s : sList) {
+			String codeName = codeMapProvider.getCodeName(s.getCodeDetailNo());
+			s.setCodeName(codeName);
+		}
+		return sList;
+	}
+
+	@Override
+	public List<Map<String, Object>> readSimilarCompanySalariesList(String industryType) {
+		return salaryMapper.selectSimilarCompanySalariesList(industryType);
+	}
+
+	
+
+
+	
 
 }
