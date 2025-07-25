@@ -313,13 +313,15 @@
                     const memberBtn = document.querySelector('.member_btn');
                     const memberLayer = document.querySelector('.layer_member');
 
-                    // 멤버 버튼 클릭 이벤트
-                    memberBtn.addEventListener('click', function (event) {
-                        event.stopPropagation();
-                        const isOpen = memberLayer.style.display === 'block';
-                        // 토글
-                        memberLayer.style.display = isOpen ? 'none' : 'block';
-                    });
+                    if(memberBtn){
+                        // 멤버 버튼 클릭 이벤트
+                        memberBtn.addEventListener('click', function (event) {
+                            event.stopPropagation();
+                            const isOpen = memberLayer.style.display === 'block';
+                            // 토글
+                            memberLayer.style.display = isOpen ? 'none' : 'block';
+                        });                    	
+                    }
 
                     // 외부 클릭시 닫기 (버튼/레이어 아닌 부분 클릭시)
                     document.addEventListener('click', function (event) {
@@ -334,7 +336,9 @@
                             if (data.userType === 'company') name = data.userName;
                             else if (data.userType === 'admin') name = '관리자';
                             else if (data.userType === 'member') name = data.userName;
-                            document.getElementById('user_name').textContent = name;
+                            if(document.getElementById('user_name')){
+                                document.getElementById('user_name').textContent = name;                            	
+                            }
                         });
                 });
 
