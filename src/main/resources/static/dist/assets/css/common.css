@@ -75,6 +75,15 @@
 .btn.btn_gray_line{background-color:#fff; border-color:var(--gray60); color:var(--gray80); font-weight:bold;}
 .btn.btn_red_line{background-color:#fff; border-color:#b70000; color:#b70000; font-weight:bold;}
 
+/* 버튼 hover 스타일 */
+.btn:hover{
+	transform:translateY(-1px);
+}
+.btn:disabled:hover,
+.btn.disabled:hover{
+	transform:translateY(0);	
+}
+
 
 /* 말줄임 2줄 */
 .text-truncate.text-truncate2 {
@@ -134,7 +143,8 @@
 .layout-demo-wrapper{
 	position: relative;
   top: -100px;
-  transition:top 0.5s ease !important;;
+  transition:top 0.5s ease !important;
+  min-height:calc(100vh - 220px);
 }
 .layout-demo-wrapper.aos-animate{
   top:0px;
