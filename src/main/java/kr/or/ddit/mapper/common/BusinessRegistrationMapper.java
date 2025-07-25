@@ -10,6 +10,7 @@ import kr.or.ddit.vo.common.BusinessregistrationVO;
 public interface BusinessRegistrationMapper {
 	public BusinessregistrationVO selectBusinessRegistrationByPk(String brNumber);
 	public List<BusinessregistrationVO> selectBusinessRegistrationList();
+	public int duplicatedBusinessregistration(String brNumber);
 	public int insertBusinessregistration(BusinessregistrationVO businessregistration);
 	public int updateBusinessregistration(BusinessregistrationVO businessregistration);
 	public int deleteBusinessregistration(String brNumber);

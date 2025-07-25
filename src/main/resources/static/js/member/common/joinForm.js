@@ -32,10 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
 
-	// 약관 체크박스
-	const agreeAll = document.getElementById("agreeAllPersonal");
-	const individualChecks = document.querySelectorAll(".agree_article.depth2 input[type='checkbox']");
-
 	signupBtn.disabled = true;
 
 	id.addEventListener("input", () => {

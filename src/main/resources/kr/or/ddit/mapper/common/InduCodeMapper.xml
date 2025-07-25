@@ -10,6 +10,16 @@
 	FROM INDU_CODE
 </select>
 
+<select id="selectInduCodeAndClassCode">
+	SELECT 
+	    INDU_CLASS_NO as induClassCode
+	    , INDU_CLASS_NAME as induClassName
+	    , INDU_NO as induNo
+	    , INDU_NAME as induName
+	FROM INDU_CODE 
+	NATURAL JOIN INDU_CLASS_CODE
+</select>
+
 <select id="selectInduCodeByPk">
 	SELECT 
 		INDU_NO
