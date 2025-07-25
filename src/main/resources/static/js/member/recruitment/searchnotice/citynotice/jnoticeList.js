@@ -9,16 +9,67 @@ const box_jobs_btn = document.querySelector('#box_jobs_btn');
 const details = document.querySelector('.details');
 const option_list_depth1_wrapper = document.querySelector('.option_list depth1_wrapper > ul');
 
+
 //-----------------------클릭 이벤트---------------------------------------------
 
 const selectTopJob = function(topJobCode, topJobName){
-	getJobCodeListByTopJob(topJobCode, topJobName);  // 하위직업 값 채움
+	console.log("살살이~");
+	
+	//getJobCodeListByTopJob(topJobCode, topJobName);  // 하위직업 값 채움
 	
 	details.style.maxHeight = '202px';
 	box_jobs.style.display = 'none';
 	box_detail_jobs.style.display = 'block';
 
 	depth(topJobCode, topJobName);  //전체선택 부분만 미리 생성
+}
+
+const nextTopJob = function(topJobCode, topJobName){
+	console.log("클릭됨!");
+	
+	const depth1_btn_ = document.querySelector(`#depth1_btn_${topJobCode}`);
+	const li_wrapper = depth1_btn_.closest('li');
+	
+	//처음에는 wrapper on이 아니면 on을 붙인다
+	//다른 wrapper에는 on을 뗀다
+	
+	//하위선택이 될 때 wrapper에 selected가 붙는다
+	//selected가 붙은 wrapper는 클릭시 selected on 이 된다
+	//selected가 붙은 wrapper는 해당 li를 클릭하지 않으면 selected로만 남는다
+	
+	//하위선택이 떨어지면 해당 wrapper는 selected를 뗀다
+	
+	
+	if (!li_wrapper.classList.contains('on')) {
+	  	// 이미 선택된 상태가 아니면
+		// 현재 클릭한 li에 'on' 추가
+		li_wrapper.classList.add('on');
+		//다른 li들의 'on'을 제거
+		document.querySelectorAll('#box_jobs_btn li').forEach(otherli=>{
+			if (otherli !== li_wrapper) {
+		      otherli.classList.remove('on');
+		    }
+		})
+	}
+	
+	// 하위직업 상세 div 처리
+	
+	// nextTopJob() : 클릭 시 활성화
+	let sp_job_category_subDepth_ = document.querySelector(`#sp_job_category_subDepth_${topJobCode}`);
+	if (!sp_job_category_subDepth_) {
+	    depth(topJobCode, topJobName);
+	    sp_job_category_subDepth_ = document.querySelector(`#sp_job_category_subDepth_${topJobCode}`);
+	}
+	
+	// 모든 박스 비활성화
+	document.querySelectorAll('.box_detail_depth').forEach(div => {
+	    div.classList.remove('on');
+	    div.style.display = 'none';
+	});
+	
+	// 클릭한 것만 활성화
+	sp_job_category_subDepth_.classList.add('on');
+	sp_job_category_subDepth_.style.display = 'block';
 }
 
 //-----------------------데이터 호출---------------------------------------------
@@ -38,13 +89,15 @@ const getTopJobCodeList = function () {
 
 // 상위직업 선택 값 채우기
 const setTopJobCodeList = function (topJobCode, topJobName) {
-  let html = `<button type="button" class="btn_job" data-mcls_cd_no="${topJobCode}" onclick="selectTopJob('${topJobCode}', '${topJobName}')">
+  let html = `<button type="button" class="btn_job" data-mcls_cd_no="${topJobCode}" 
+  				onclick="selectTopJob('${topJobCode}', '${topJobName}')">
                 ${topJobName}
               </button>`;
   box_jobs.innerHTML += html;  // 상위직업 버튼
 
   html = `<li class="item_job depth1_btn_wrapper" id="depth1_btn_${topJobCode}">
-            <button type="button" data-mcls_cd_no="${topJobCode}" class="first_depth depth1_btn_${topJobCode}" onclick="selectJob(this)">
+            <button type="button" data-mcls_cd_no="${topJobCode}" class="first_depth depth1_btn_${topJobCode}" 
+            onclick="nextTopJob('${topJobCode}', '${topJobName}')">
               <span class="txt">${topJobName}</span>
               <span class="count">(4,056)</span>
             </button>
@@ -58,12 +111,10 @@ const getJobCodeListByTopJob = function (topJobCode, topJobName) {
     .then(resp => {resp.json()
     .then((data) => {
 		data.forEach((job)=>{
-			//console.log("job???", job);
 			let jobCode = job.jobCode;
 			let jobName = job.jobName;
 			let topJobCode = job.topJobCode;
 			setJobCodeListByTopJob(jobCode, jobName, topJobCode, topJobName);  //하위직업 선택 값 채우기
-			//console.log("jobCode?", jobCode, "jobName?", jobName, "topJobCode?", topJobCode, "topJobName?", topJobName);
 		})		
 	  })
    })
@@ -71,8 +122,8 @@ const getJobCodeListByTopJob = function (topJobCode, topJobName) {
 
 // 하위직업 카테고리 제목, 전체선택 부분 생성
 const depth = function(topJobCode, topJobName){
-	
-	let html = `<div class="box_detail_depth on" id="sp_job_category_subDepth_${topJobCode}" style="display: block;">
+	console.log("전체선택 생성!");
+	let html = `<div class="box_detail_depth" id="sp_job_category_subDepth_${topJobCode}" style="display: none;">
 			        <div class="row row_all_select">
 			            <input type="checkbox" id="all_check_onedepth_${topJobCode}" name="cat_mcls[]" 
 			            class="select_all" data-code="${topJobCode}" data-mcls_cd_no="${topJobCode}" data-mcls_cd_nm="${topJobName}">
@@ -99,7 +150,7 @@ const depth = function(topJobCode, topJobName){
 	                            <div class="overview" style="top: 0px;">
 	                                <dl class="row_item">
 	                                    <dt>
-	                                        <span class="txt">직무·직업</span>
+	                                        <span class="txt" style="font-weight: normal;">직무·직업</span>
 	                                    </dt>
 	                                    <dd class="area_list">
 	                                    </dd>
@@ -107,7 +158,7 @@ const depth = function(topJobCode, topJobName){
 	                                <dl class="row_item">
 	                                    <dt>
 	                                        <button type="button" class="btn_expand" data-scls_cd_no="65">
-	                                        	<span class="txt">전문분야</span>
+	                                        	<span class="txt" style="font-weight: normal;">전문분야</span>
 	                                        </button>
 	                                    </dt>
 	                                    <dd class="area_list">
@@ -119,6 +170,9 @@ const depth = function(topJobCode, topJobName){
 	                </div>
 	            </div>`;
 	box_detail_jobs.innerHTML += html;  //내부에 값 추가해야 제목끼리 안 겹침 주의
+	
+	//DOM이 구성되었으니 거기에 넣을 하위직업 호출
+	getJobCodeListByTopJob(topJobCode, topJobName);  // 하위직업 값 채움
 }
 
 // 전역으로 카테고리별 sort 카운터 저장
@@ -134,6 +188,8 @@ const getSortCounter = function (categoryKey) {
 
 //하위직업 선택 값 채우기
 const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName){
+	console.log("카테고리 분기!");
+	
 	const overview = document.querySelector(`#sp_job_category_subDepth_${topJobCode} .overview`);
     const areaItems = overview.querySelectorAll('.area_list'); // 0: 직무·직업, 1: 전문분야
 

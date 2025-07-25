@@ -194,7 +194,7 @@
 	                                <span class="input_text"></span>
 	                            </button>
 	                        </li>
-	                        <li class="detail_section"><button type="button" class="btn_detail_option"><span>상세조건</span></button></li>
+	                        <%-- <li class="detail_section"><button type="button" class="btn_detail_option"><span>상세조건</span></button></li> --%>
 	                    </ul>
 	                    <div class="wrap_section_contents">
 	                    

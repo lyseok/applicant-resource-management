@@ -99,7 +99,7 @@ getCityCodeList();  //도시 선택 값 호출
 
 //도시 선택 중첩
 const selectCity = function (button) {
-    const currentLi = button.closest('li');
+    let currentLi = button.closest('li');
 
     // 1. 모든 li의 on 제거 (selected는 유지)
     document.querySelectorAll('#first_cityopt li').forEach(li => {
@@ -116,12 +116,10 @@ const selectCity = function (button) {
     document.querySelector(`#sp_area_lastDepth_${button.dataset.code}`).style.display = 'block';
 }
 
-
-//구군 선택 중첩
-// 미리 선언된 add_keyword 활용
 const selectedContainer = add_keyword.querySelector('#sp_preview_selected');
 const previewWrapper = document.getElementById('sp_preview'); // 패널 래퍼
 
+//구군 선택 중첩
 const selectDistrict = function (checkbox, mcode) {
     if (checkbox.dataset.checkType === "all") {
         // 1. 하위 구군 체크박스 모두 해제
