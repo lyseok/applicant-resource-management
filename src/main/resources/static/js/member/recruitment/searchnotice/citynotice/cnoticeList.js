@@ -16,17 +16,21 @@ const second_cityopt = document.querySelector('#second_cityopt');
 const add_keyword = document.querySelector('.add_keyword');
 const search_btn = document.querySelector('#search_btn');  //검색하기 버튼 클릭후 콘솔에 찍히는 params 값 보기->axios로 넘기기만 하면됨
 
-//도시 선택 값 불러옴
-const getCityCodeList = function () {
-  fetch('/ajax/admin/cityCode')
-    .then(resp => resp.json())
-    .then(data => {
-	  data.forEach(city =>{
-		let cityCodeNo = city.cityCodeNo.slice(4);
-		let cityName = city.cityName;
-		setCityCodeList(cityCodeNo, cityName);  //시 선택 값 채우기
-	  })
-   });
+// 도시 선택 값 불러옴 (axios + async/await)
+const getCityCodeList = async function () {
+  try {
+    const response = await axios.get('/ajax/admin/cityCode');
+    const data = response.data;
+
+    data.forEach(city => {
+      let cityCodeNo = city.cityCodeNo.slice(4);
+      let cityName = city.cityName;
+      setCityCodeList(cityCodeNo, cityName);  // 시 선택 값 채우기
+    });
+
+  } catch (error) {
+    console.error("도시 데이터 로드 실패:", error);
+  }
 };
 
 //도시 선택 값 채우기
@@ -46,19 +50,22 @@ const setCityCodeList = function(cityCodeNo, cityName){
 	getDistrictCodeList(cityCodeNo);  //구군 선택 값 호출
 }
 
-//구군 선택 값 불러옴
-const getDistrictCodeList = function (cityCodeNo) {
-  fetch(`/ajax/admin/cityCode/CICO${cityCodeNo}`)  //CICO115000
-    .then(resp => {resp.json()
-    .then((data) => {
-		data.forEach((district)=>{
-			let districtCodeNo = district.districtCodeNo;
-			let cityCodeNo = district.cityCodeNo.slice(4);
-			let districtName = district.districtName;
-			setDistrictCodeList(districtCodeNo, cityCodeNo, districtName);  //구군 선택 값 채우기
-		})		
-	  })
-   })
+// 구군 선택 값 불러옴 (axios + async/await)
+const getDistrictCodeList = async function (cityCodeNo) {
+  try {
+    const response = await axios.get(`/ajax/admin/cityCode/CICO${cityCodeNo}`);  // 예: CICO115000
+    const data = response.data;
+
+    data.forEach(district => {
+      let districtCodeNo = district.districtCodeNo;
+      let cityCodeNo = district.cityCodeNo.slice(4);
+      let districtName = district.districtName;
+      setDistrictCodeList(districtCodeNo, cityCodeNo, districtName);  // 구군 선택 값 채우기
+    });
+
+  } catch (error) {
+    console.error("구군 데이터 로드 실패:", error);
+  }
 };
 
 //구군 선택 값 채우기

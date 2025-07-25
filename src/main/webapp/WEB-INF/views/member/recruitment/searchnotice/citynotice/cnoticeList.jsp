@@ -2284,7 +2284,7 @@
   <!-- JS가 여기에 채용 리스트를 동적으로 넣음 -->
 </div>
 	                        
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/js/member/recruitment/searchnotice/citynotice/cnoticeList.js"></script>
 <script src="/js/member/recruitment/searchnotice/citynotice/jnoticeList.js"></script> <!-- 일단 넣어둠, 추후 합침 -->
 </body>
