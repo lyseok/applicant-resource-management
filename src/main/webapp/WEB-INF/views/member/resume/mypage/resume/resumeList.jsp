@@ -33,8 +33,8 @@
 	<div class="border-bottom d-flex justify-content-between align-items-end pb-2">
 		<p class="fs-14">
 			총 
-				<c:if test="${not empty resumeList}">${resumeList.size() }</c:if>
-				<c:if test="${empty resumeList}">0</c:if>
+				<c:if test="${not empty totalCount}">${totalCount }</c:if>
+				<c:if test="${empty totalCount}">0</c:if>
 			건
 		</p>
 		<div class="TypoBox searchBar">
@@ -121,19 +121,26 @@
 					</li>
 				</c:forEach>
 			</ul>
-			<div class="PageBox">
-        <span class="BtnType SizeS active">1</span>
-        <button class="BtnType SizeS page" data-page="2">2</button>
-        <button class="BtnType SizeS page" data-page="3">3</button>
-        <button class="BtnType SizeS page" data-page="4">4</button>
-        <button class="BtnType SizeS page" data-page="5">5</button>
-        <button class="BtnType SizeS page" data-page="6">6</button>
-        <button class="BtnType SizeS page" data-page="7">7</button>
-        <button class="BtnType SizeS page" data-page="8">8</button>
-        <button class="BtnType SizeS page" data-page="9">9</button>
-        <button class="BtnType SizeS page" data-page="10">10</button>
-        <button data-page="11" class="BtnType SizeS BtnNext btnNext">다음</button>
-      </div>
+			<c:if test="${not empty totalPages}">
+				<div class="PageBox">
+				    <c:if test="${currentPage > 1}">
+				        <a class="BtnType SizeS BtnPrev" href="?page=${currentPage - 1}">이전</a>
+				    </c:if>
+				    <c:forEach begin="1" end="${totalPages}" var="i">
+		    	    <c:choose>
+				        <c:when test="${i == currentPage}">
+			            <span class="BtnType SizeS active">${i}</span>
+				        </c:when>
+				        <c:otherwise>
+				            <a href="?page=${i}" class="BtnType SizeS page">${i}</a>
+				        </c:otherwise>
+				    	</c:choose>
+				    </c:forEach>
+				    <c:if test="${currentPage < totalPages}">
+				        <a class="BtnType SizeS BtnNext btnNext" href="?page=${currentPage + 1}">다음</a>
+				    </c:if>
+				</div>
+			</c:if>
 		</div>
 		
 	</c:if>

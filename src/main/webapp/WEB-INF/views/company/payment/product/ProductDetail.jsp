@@ -1,7 +1,7 @@
 <%@page import="jakarta.mail.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -16,11 +16,11 @@
 
 
 <script>
-const ProductNo = "${product.productNo}";
-const BillingKey = "${sessionScope.billingKey}";
-const Amount = "${product.productPrice}";
-/* const customerKey = "${sessionScope.customerKey}"; */
-const orderName = "${product.productName}";
+	window.PRODUCT_NO = "${product.productNo}";
+	const BillingKey = "${sessionScope.billingKey}";
+	const Amount = "${product.productPrice}";
+	/* const customerKey = "${sessionScope.customerKey}"; */
+	const orderName = "${product.productName}";
 </script>
 </head>
 <body class="container my-5" data-billing-key="${param.billingKey}"
@@ -52,8 +52,10 @@ const orderName = "${product.productName}";
 						<strong>이용기간:</strong> ${product.productPeriod}
 					</p>
 					<p>productNo: ${product.productNo}</p>
-					
-					<button class="btn btn-primary" onclick="subscribe()">구독하기</button>
+
+					<button class="btn btn-primary" onclick="subscribe(event, this)"
+						id="sub-btn" data-product-no="${product.productNo}"
+						data-billing-key="${payment.paymentBillingKey}">구독하기</button>
 				</div>
 				<button onclick="history.back()">뒤로가기</button>
 			</div>
@@ -77,7 +79,8 @@ const orderName = "${product.productName}";
 						data-bs-dismiss="modal">취소</button>
 					<!-- <a href="/company/toss/billing" class="btn btn-primary">카드 등록하러
 						가기</a> -->
-					<button onclick="requestBillingAuth()">카드 등록하기</button>
+					<button id="card-btn" data-product-no="${product.productNo}"
+						onclick="requestBillingAuth(event, this)">카드 등록하기</button>
 				</div>
 			</div>
 		</div>

@@ -27,6 +27,11 @@ public class AdminProductController {
 	@Autowired
 	PaymentProductService service;
 	
+	@GetMapping("/select/product")
+	public String selectFormUI() {
+		return "admin/payment/SellingProduct";
+	}
+	
 	@GetMapping("/delete/product")
 	public String deleteProduct(
 			@RequestParam String productNo		
@@ -84,30 +89,34 @@ public class AdminProductController {
 	}
 	
 	@PostMapping("/insert")
-	public String insertProduct(@ModelAttribute PaymentProductVO productVO, Model model) {
+	public String insertProduct(
+			@ModelAttribute PaymentProductVO productVO
+			,@RequestParam String productType
+			, Model model
+			) {
 
-		String type = productVO.getProductType();
+		
+		log.info("productType: {}", productType);
+		
 
-		LocalDate productPeriod = LocalDate.now();
-
-		if ("정기권".equals(type)) {
-
-			productPeriod = productPeriod.plusDays(30); // 적용됨
-
-			String formattedPeriod = productPeriod.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-
-			productVO.setProductPeriod(formattedPeriod);
-			productVO.setProductType("L");
-
-		} else if ("단건".equals(type)) {
-
-			productPeriod = productPeriod.plusDays(7);
-
-			String formattedPeriod = productPeriod.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-			productVO.setProductType("S");
-			productVO.setProductPeriod(formattedPeriod);
-
-		}
+//		if ("정기권".equals(type)) {
+//
+////			productPeriod = productPeriod.plusDays(30); // 적용됨
+////
+////			String formattedPeriod = productPeriod.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+////
+////			productVO.setProductPeriod(formattedPeriod);
+//			productVO.setProductType("L");
+//
+//		} else if ("단건".equals(type)) {
+//
+////			productPeriod = productPeriod.plusDays(7);
+////
+////			String formattedPeriod = productPeriod.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+//			productVO.setProductType("S");
+////			productVO.setProductPeriod(formattedPeriod);
+//
+//		}
 
 //		MultipartFile file = productVO.getProductImgFile();
 //		if (file != null && !file.isEmpty()) {

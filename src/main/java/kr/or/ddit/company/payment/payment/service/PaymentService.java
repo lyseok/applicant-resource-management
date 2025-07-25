@@ -7,7 +7,7 @@ import kr.or.ddit.vo.common.PaymentVO;
 public interface PaymentService {
 	public List<PaymentVO> selectPaymentList();
 
-	public PaymentVO selectPaymentByPk(String userId);
+	public PaymentVO selectPaymentByPk(String paymentNo);
 
 	public int insertPayment(PaymentVO vo);
 
@@ -25,5 +25,7 @@ public interface PaymentService {
 	
 	public int checkPayment(String userId);
 	
-	public int updateComPaymentStatus(PaymentVO vo);
+	public int updateComPaymentStatus(String userId);
+	
+	public String getPaymentNo(String userId);
 }

@@ -175,11 +175,25 @@
      </li>
      
      <li class="menu-item">
-       <a href="/admin/product/list" class="menu-link">
-         <i class="menu-icon tf-icons bx bx-collection"></i>
-         <div data-i18n="Basic">구독상품 관리</div>
-       </a>
-     </li>
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <div data-i18n="Account Settings">상품 관리</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/admin/product/list" class="menu-link">
+            <div data-i18n="Account">상품 목록</div>
+          </a>
+        </li>
+      </ul>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/admin/select/product" class="menu-link">
+            <div data-i18n="Account">판매내역 보기</div>
+          </a>
+        </li>
+      </ul>
+    </li>
      
 	<!-- 여기까지 사이드바 작업하는 곳 -->
      <span id="logoutBtn">로그아웃</span>

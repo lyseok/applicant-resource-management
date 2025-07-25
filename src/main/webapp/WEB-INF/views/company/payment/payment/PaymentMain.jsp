@@ -21,6 +21,8 @@
 					<th>결제일시</th>
 					<th>남은기간</th>
 					<th>결제수단</th>
+					<th>잔여메일발송횟수</th>>
+					<th>메일발송초기화일</th>
 				</tr>
 			</thead>
 			<%-- <tbody>
@@ -48,22 +50,26 @@
 			<tbody>
 				<c:forEach var="item" items="${purchaseList}">
 					<tr>
-						<td>
-						<c:forEach var="product" items="${item.paymentProductList}">
-                       <a href="/company/payment/buydetail?paymentNo=${item.paymentNo}&productNo=${product.productNo}">
-                        ${product.productName} </a><br />
-						</c:forEach>
-						</td>
+						<td><c:forEach var="product"
+								items="${item.paymentProductList}">
+								<a
+									href="/company/payment/buydetail?paymentNo=${item.paymentNo}&productNo=${product.productNo}">
+									${product.productName} </a>
+								<br />
+							</c:forEach></td>
 						<td>${item.paymentPay}원</td>
 						<td>${item.paymentDate}</td>
-						<td>
-						 <c:forEach var="product" items="${item.paymentProductList}">
-                <c:if test="${product.daysRemaining >= 0}">
-                    ${product.productName} 의 남은기간은 ${product.daysRemaining}일 입니다<br/>
-                </c:if>
-            </c:forEach>
-						</td>
+						<td><c:forEach var="product"
+								items="${item.paymentProductList}">
+								<c:if test="${product.daysRemaining >= 0}">
+                    ${product.productName} 의 남은기간은 ${product.daysRemaining}일 입니다<br />
+								</c:if>
+							</c:forEach></td>
 						<td>${item.paymentMethod}</td>
+
+						<td>${linkList.usageRemaining}회</td>
+						<td>${linkList.periodEnd}</td>
+
 					</tr>
 				</c:forEach>
 			</tbody>

@@ -452,7 +452,7 @@ textarea.Invalid {border-color:var(--coral110)}
 .TblBox .TxtRight {text-align:right}
 .TblBox .TxtTop {vertical-align:top}
 /* Pagination */
-.PageBox {display:flex;margin:40px 0 80px;justify-content:center;}
+.PageBox {display:flex;margin:40px 0 0px;justify-content:center;}
 .PageBox .BtnType {display:flex;position:relative;width:32px;border:0;color:var(--gray80);background:none;align-items:center;justify-content:center;}
 .PageBox .BtnType:nth-last-child(2) {margin:0}
 .PageBox span.BtnType {border:1px solid var(--gray60);font-weight:bold;}

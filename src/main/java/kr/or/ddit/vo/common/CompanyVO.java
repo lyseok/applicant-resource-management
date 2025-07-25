@@ -26,7 +26,6 @@ public class CompanyVO extends UsersVO implements Serializable {
 	private String comUrl;
 	@NotBlank
 	private String comCreateYear;
-	@NotNull
 	private Integer comMem;
 	private String comLogo;
 	private String comBackgroundImg;
@@ -42,7 +41,12 @@ public class CompanyVO extends UsersVO implements Serializable {
 	private String comSize;      // 기업 규모
 	private String insuranceYn;  // 4대보험 여부
 	private String ceoName;      // 대표자 이름
+	
 	private String comAddr;      // 기업 주소
+	// 회원가입 때 바인딩할 주소
+	private String comAddr1;
+	private String comAddr2;
+	
 	private String comCapital;   // 기업 자본금
 	private String comMainBiz;   // 기업 주요 사업
 
