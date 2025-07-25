@@ -1201,15 +1201,14 @@ body.search_on #srch_wrap.on .box_search .btn_search {
 }
 
 /* layout - footer */
-/*.sri_footer *:focus-visible {outline:2px solid #3157dd;outline-offset:2px;border-radius:4px}*/
+
 .sri_footer {
     display: block;
     clear: both;
     position: relative;
-    z-index: 1;
-    margin-top: 110px;
+    z-index: 10;
     width: 100%;
-    min-width: 960px;
+    min-width: 960px
 }
 
 .sri_footer .wrap_award {
@@ -1221,7 +1220,8 @@ body.search_on #srch_wrap.on .box_search .btn_search {
     min-width: 960px;
     border: solid #d7dce5;
     border-width: 1px 0;
-    background: #f8fafc
+    background: #f8fafc;
+    margin-top:100px;
 }
 
 .sri_footer .award ul {
@@ -1267,63 +1267,6 @@ body.search_on #srch_wrap.on .box_search .btn_search {
     font-size: 11px
 }
 
-.sri_footer .banners {
-    width: 100%;
-    font-size: 0
-}
-
-.sri_footer .banners a {
-    display: inline-block;
-    position: relative;
-    width: 50%;
-    height: 60px
-}
-
-.sri_footer .banners a:before, .sri_footer .banners a:after {
-    display: inline-block;
-    position: absolute;
-    bottom: 0;
-    z-index: 5;
-    background: url(//www.saraminimage.co.kr/sri/common/layout/footer/spr_footer_banners.png) no-repeat;
-    content: ""
-}
-
-.sri_footer .banners a.banner_bluebird {
-    background: #4876ef
-}
-
-.sri_footer .banners a.banner_bluebird:before {
-    right: 40px;
-    width: 303px;
-    height: 61px;
-    background-position: -5px -112px
-}
-
-.sri_footer .banners a.banner_bluebird:after {
-    right: 383px;
-    width: 128px;
-    height: 97px;
-    background-position: -5px -5px
-}
-
-.sri_footer .banners a.banner_welounge {
-    background: #0ccca4
-}
-
-.sri_footer .banners a.banner_welounge:before {
-    left: 40px;
-    width: 276px;
-    height: 60px;
-    background: url(//www.saraminimage.co.kr/sri/common/layout/footer/img_footer_banner_txt.png) no-repeat
-}
-
-.sri_footer .banners a.banner_welounge:after {
-    left: 356px;
-    width: 128px;
-    height: 96px;
-    background-position: -143px -5px
-}
-
 .sri_footer .links ul {
     display: flex;
     margin: 24px auto 0;
@@ -1347,6 +1290,44 @@ body.search_on #srch_wrap.on .box_search .btn_search {
     font-weight: bold
 }
 
+/*WMG-41462 추가*/
+.sri_footer .address, .sri_footer .legal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    color: var(--gray90);
+    font-size: 12px;
+    line-height: 18px
+}
+
+.sri_footer .address {
+    margin-top: 25px
+}
+
+.sri_footer .address p {
+    text-align: center
+}
+
+.sri_footer .address button {
+    display: inline-block;
+    zoom:1;width: 80px;
+    height: 20px;
+    border: 1px solid var(--gray70);
+    box-sizing: border-box;
+    color: var(--gray90);
+    font-size: 11px;
+    line-height: 16px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: top
+}
+
+.sri_footer .legal {
+    margin-top: 8px
+}
+
+/*//WMG-41462 추가*/
 .sri_footer .affiliates {
     height: 44px;
     border-top: 1px solid #e7e7e8
@@ -1389,8 +1370,6 @@ body.search_on #srch_wrap.on .box_search .btn_search {
 .sri_footer .inner {
     position: relative;
     margin: 0 auto;
-    padding: 30px 0 21px 0;
-    max-width: 790px;
     box-sizing: border-box
 }
 
@@ -1441,15 +1420,14 @@ body.search_on #srch_wrap.on .box_search .btn_search {
 }
 
 .sri_footer .copyright {
-	display:block;
-    margin: 23px auto 0;
-    padding-bottom: 38px;
-    max-width: 960px;
+    display: flex;
+    margin: 35px auto 38px;
+    width: 960px;
     color: var(--color_secondary);
-    font-size: 12px;
-    line-height: 18px;
-    text-align: left;
-    padding-bottom:0;
+    font-size: 13px;
+    line-height: 24px;
+    text-align: center;
+    flex-flow: column nowrap
 }
 
 .sri_footer .copyright a {
@@ -1473,7 +1451,8 @@ body.search_on #srch_wrap.on .box_search .btn_search {
 }
 
 .sri_footer .copyright .help_list dl dt {
-    margin-right: 5px
+    margin-right: 5px;
+    font-weight:600;
 }
 
 .sri_footer .copyright dl:before {
@@ -1489,95 +1468,13 @@ body.search_on #srch_wrap.on .box_search .btn_search {
     display: none
 }
 
-.sri_footer .copyright .link_channel {
-    margin-top: 10px;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center
+.sri_footer .copyright .ft_logo{
+	max-width: 150px;
+  margin: 20px auto 0;
+  filter: grayscale(1);
+  opacity: 0.3;
 }
 
-.sri_footer .copyright .link_channel .link_cont {
-    display: inline-flex;
-    line-height: 24px;
-    align-items: center
-}
-
-.sri_footer .copyright .link_channel .link_cont:after {
-    display: inline-block;
-    margin-left: 3px;
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-    background: url(//www.saraminimage.co.kr/sri/common/layout/footer/spr_ico_2212.png) -90px -10px no-repeat;
-    content: ""
-}
-
-.sri_footer .copyright .link_channel dl {
-    display: inline-flex;
-    align-items: center;
-    flex-flow: row nowrap
-}
-
-.sri_footer .copyright .link_channel dl dt {
-    margin-right: 10px
-}
-
-.sri_footer .copyright .link_channel dl dd {
-    margin-right: 8px;
-    width: 24px;
-    height: 24px
-}
-
-.sri_footer .copyright .link_channel dl dd a {
-    display: inline-flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center
-}
-
-.sri_footer .copyright .link_channel dl dd a:after {
-    width: 20px;
-    height: 20px;
-    background: url(//www.saraminimage.co.kr/sri/common/layout/footer/spr_ico_2212.png) -90px -10px no-repeat;
-    background-size: 120px auto;
-    content: ""
-}
-
-.sri_footer .copyright .link_channel dl dd:nth-of-type(1) a:after {
-    background-position: -50px -10px
-}
-
-.sri_footer .copyright .link_channel dl dd:nth-of-type(2) a:after {
-    background-position: -10px -10px
-}
-
-.sri_footer .copyright .link_channel dl dd:nth-of-type(3) a:after {
-    background-position: -50px -50px
-}
-
-.sri_footer .copyright .link_channel dl dd:nth-of-type(4) a:after {
-    background-position: -10px -50px
-}
-
-.sri_footer .copyright .link_channel dl dd:nth-of-type(5) a:after {
-    background-position: -90px -50px
-}
-
-.sri_footer .btn_mobile_view {
-    display: block;
-    margin: 30px auto 0 auto;
-    width: 960px;
-    height: 40px;
-    border: #e2e2e2 1px solid;
-    box-sizing: border-box;
-    color: #444;
-    font-size: 16px;
-    line-height: 38px;
-    text-align: center;
-    text-decoration: none;
-    background: #f1f1f1
-}
 
 /* content bottom googlead */
 #content .wrap_nest.doctype {

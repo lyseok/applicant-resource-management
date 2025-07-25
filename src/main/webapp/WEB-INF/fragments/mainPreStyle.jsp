@@ -7,6 +7,8 @@
 <!-- plugins  -->
 <link rel="stylesheet" href="/dist/assets/css/plugins/bootstrap.min.css" >
 <link rel="stylesheet" href="/dist/assets/css/plugins/swiper.min.css" >
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" defer>
+
 
 <!-- fonts -->
 <link rel="stylesheet" href="/dist/assets/css/fonts/pretendard.css" >
