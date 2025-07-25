@@ -2502,6 +2502,18 @@ body .chips {
     grid-auto-flow: row;
     gap: 24px
 }
+.cont_product .z-index1{
+	position:relative;
+	z-index:1;
+}
+.cont_product .z-index2{
+	position:relative;
+	z-index:2;
+}
+.cont_product .z-index3{
+	position:relative;
+	z-index:3;
+}
 
 .cont_product .inner_cont>ul {
     position: relative
@@ -4698,7 +4710,7 @@ header.fixed+#search {
 }
 
 .main_product .prd_list.plus li a {
-    border-color: var(--violet110)
+    border-color: var(--violet70)
 }
 
 .main_product .prd_list.plus li:not(.option):hover a {
@@ -5115,6 +5127,22 @@ header.fixed+#search {
 
 .main_product .prd_prime .prd_list .btn_scrap {
     bottom: 24px
+}
+.main_product .prd_prime .prd_list .btn_scrap .material-symbols-outlined{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24;
+  color:#ddd;
+}
+.main_product .prd_prime .prd_list .btn_scrap.on .material-symbols-outlined{
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24;
+  background:#ffe002;
 }
 
 .main_product .prd_prime .prd_list .logo {
@@ -5728,14 +5756,14 @@ header.fixed+#search {
 #MainSuper .goodsBox:before,
 #MainSuper .goodsBox:after {display:block;line-height:0;content:''}
 #MainSuper .goodsBox:after {clear:both}
-#MainSuper .goodsBox {display:block}
+#MainSuper .goodsBox {display:block;}
 #MainSuper .goodsBox li {overflow:unset;float:left}
 #MainSuper .goodsBox li .goodsBox-info {border-radius:12px}
 #MainSuper .goodsBox li:nth-child(4n-1) {margin-right:0}
 #MainSuper .goodsBox li:nth-child(3) {margin-right:20px}
 #MainSuper .goodsBox li:nth-child(4) {margin-right:0}
 #MainSuper .goodsBox li.superTop {height:500px}
-#MainSuper .goodsBox li.superTop .goodsBox-info {padding-top:178px;border-radius:12px;background:#fff url('//image.alba.kr/e/goods/202403/supertop_default.png') 50% 0 /auto 220px no-repeat; border:1px solid var(--violet110);}
+#MainSuper .goodsBox li.superTop .goodsBox-info {padding-top:178px;border-radius:12px;background:#fff url('//image.alba.kr/e/goods/202403/supertop_default.png') 50% 0 /auto 220px no-repeat; border:1px solid var(--violet60);}
 #MainSuper .goodsBox li.superTop .goodsBox-info .logo {display:flex;align-items:flex-end;justify-content:center;width:224px;height:80px;margin:0 auto 26px;border-radius:12px;background-color:#fff}
 #MainSuper .goodsBox li.superTop .goodsBox-info .logo img {width:auto;height:61px}
 #MainSuper .goodsBox li.superTop .goodsBox-info .logo>.text {max-height:62px;padding-bottom:12px}
@@ -5749,10 +5777,10 @@ header.fixed+#search {
 #MainSuper .goodsBox li.superTop .date{padding-right:0;}
 
 /* 슈퍼POWER 채용정보 */
-#MainSuper .goodsBox li.superpower {border:1px solid var(--violet110)}
+#MainSuper .goodsBox li.superpower {border:1px solid var(--violet70)}
 #MainSuper .goodsBox li.superpower>.goodsBox-info>.ani {display:none}
 #MainSuper .goodsBox li.superpower:hover {z-index:3}
-#MainSuper .goodsBox li.superpower:hover>.goodsBox-info>.ani {overflow:hidden;display:block;position:absolute;top:230px;left:-1px;width:calc(100% + 2px);height:270px;border-radius:0 0 12px 12px;border:1px solid var(--violet110);box-shadow:0 10px 16px -8px rgba(0, 0, 0, .5);border-top:0 none;background-color:#fff}
+#MainSuper .goodsBox li.superpower:hover>.goodsBox-info>.ani {overflow:hidden;display:block;position:absolute;top:230px;left:-1px;width:calc(100% + 2px);height:270px;border-radius:0 0 12px 12px;border:1px solid var(--violet70);box-shadow:0 10px 16px -8px rgba(0, 0, 0, .5);border-top:0 none;background-color:#fff}
 #MainSuper .goodsBox li.superpower:hover>.goodsBox-info>.ani>img {position:absolute;top:auto;bottom:0;left:0;width:100%}
 #MainSuper .goodsBox li.superpower .date{padding-right:0;}
 
