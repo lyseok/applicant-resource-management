@@ -148,22 +148,6 @@ const depth = function(topJobCode, topJobName){
 	                        </div>
 	                        <div class="viewport">
 	                            <div class="overview" style="top: 0px;">
-	                                <dl class="row_item">
-	                                    <dt>
-	                                        <span class="txt" style="font-weight: normal;">직무·직업</span>
-	                                    </dt>
-	                                    <dd class="area_list">
-	                                    </dd>
-	                                </dl>
-	                                <dl class="row_item">
-	                                    <dt>
-	                                        <button type="button" class="btn_expand" data-scls_cd_no="65">
-	                                        	<span class="txt" style="font-weight: normal;">전문분야</span>
-	                                        </button>
-	                                    </dt>
-	                                    <dd class="area_list">
-	                                    </dd>
-	                                </dl>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -174,6 +158,24 @@ const depth = function(topJobCode, topJobName){
 	//DOM이 구성되었으니 거기에 넣을 하위직업 호출
 	getJobCodeListByTopJob(topJobCode, topJobName);  // 하위직업 값 채움
 }
+
+/*
+count가 길면 버튼 추가되게 나중 처리
+
+<dl class="row_item">
+    <dt>
+        <button type="button" class="btn_expand" data-scls_cd_no="65">
+        	<span class="txt" style="font-weight: normal;">전문분야</span>
+        </button>
+    </dt>
+    <dd class="area_list">
+    </dd>
+</dl>`;
+*/
+
+//카테고리 생성
+
+
 
 // 전역으로 카테고리별 sort 카운터 저장
 const sortCounters = {};  
@@ -187,56 +189,62 @@ const getSortCounter = function (categoryKey) {
 }
 
 //하위직업 선택 값 채우기
+// 전역에서 카테고리 세팅을 한 번만 하도록 제어
+//const categoryInitialized = new Set();
+
 const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName){
-	console.log("카테고리 분기!");
-	
 	const overview = document.querySelector(`#sp_job_category_subDepth_${topJobCode} .overview`);
-    const areaItems = overview.querySelectorAll('.area_list'); // 0: 직무·직업, 1: 전문분야
+	if (!overview) return;
 
-    // 카테고리 결정
-    let targetIndex, categoryKey;
-    if (jobCode.startsWith(String(topJobCode - 1))) {  //예) 12..로 시작하면 직무직업으로
-        targetIndex = 0;  //첫번째 카테고리
-        categoryKey = `${topJobCode}_job`;
-    } else {    //예) 13으로 시작하면 전문분야로
-        targetIndex = 1;  //두번째 카테고리
-        categoryKey = `${topJobCode}_specialty`;
-    }
+	let targetSelector = '', categoryKey = '', categoryClass = '', categoryLabel = '';
 
-    // 순번 가져오기
-    let sortValue = getSortCounter(categoryKey);
+	// 카테고리 조건 분기
+	if (jobCode.startsWith(String(topJobCode - 1))) {
+		categoryClass = 'job_category';
+		categoryLabel = '직무·직업';
+		categoryKey = `${topJobCode}_job`;
+	} else if (jobCode.startsWith(topJobCode)) {
+		categoryClass = 'specialty_category';
+		categoryLabel = '전문분야';
+		categoryKey = `${topJobCode}_specialty`;
+	} else {
+		categoryClass = 'etc_category';
+		categoryLabel = '기타';
+		categoryKey = `${topJobCode}_etc`;
+	}
 
-    // 공통 HTML
-    let html = `
-            <button type="button" name="cat_kewd[]" class="btn_three_depth" 
-                data-code="${jobCode}" 
-                data-mcls_cd_no="${topJobCode}" 
-                data-mcls_cd_nm="${topJobName}" 
-                data-kewd_cd_no="${jobCode}" 
-                data-kewd_cd_nm="${jobName}" 
-                data-sort="${sortValue}" 
-                data-count="0">
-                ${jobName}
-                <span class="count">(0)</span>
-            </button>`;
+	// 카테고리가 없으면 동적 생성
+	let categoryDl = overview.querySelector(`.${categoryClass}`);
+	if (!categoryDl) {
+		const html = `
+			<dl class="row_item ${categoryClass}">
+				<dt><span class="txt" style="font-weight: normal;">${categoryLabel}</span></dt>
+				<dd class="area_list"></dd>
+			</dl>`;
+		overview.insertAdjacentHTML('beforeend', html);
+		categoryDl = overview.querySelector(`.${categoryClass}`);
+	}
 
-    // 해당 row_item에 추가
-    areaItems[targetIndex].innerHTML += html;
+	const targetDl = categoryDl.querySelector('.area_list');
+	if (!targetDl) return;
 
-    /*
-    <!-- <dl class="row_item">
-        <dt>
-            <span class="txt">{businessTypeName}</span>
-        </dt>
-        <dd class="area_list">
-            <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="${jobCode}" data-mcls_cd_no="${topJobCode}" 
-             data-mcls_cd_nm="${topJobName}" data-kewd_cd_no="${jobCode}" data-kewd_cd_nm="${jobName}" data-sort="0" data-count="0">
-            ${jobName}
-            <span class="count">(0)</span>
-        </dd>
-    </dl> -->
-    */
-}
+	const sortValue = getSortCounter(categoryKey);
+
+	const html = `
+		<button type="button" name="cat_kewd[]" class="btn_three_depth" 
+			data-code="${jobCode}" 
+			data-mcls_cd_no="${topJobCode}" 
+			data-mcls_cd_nm="${topJobName}" 
+			data-kewd_cd_no="${jobCode}" 
+			data-kewd_cd_nm="${jobName}" 
+			data-sort="${sortValue}" 
+			data-count="0">
+			${jobName}
+			<span class="count">(0)</span>
+		</button>`;
+
+	targetDl.innerHTML += html;
+};
 
 getTopJobCodeList();  //상위직업 선택 값 호출
 
