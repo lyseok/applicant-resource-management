@@ -2,7 +2,87 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.TalentPoolMapper">
 
-
+	<select id="selectResumeByFilter" resultType="ResumeVO">
+		SELECT *
+		FROM RESUME R
+		WHERE 1=1
+	  <!-- 경력 -->
+	  <if test="careerJobCodeList != null and careerJobCodeList.size() > 0">
+	    AND EXISTS (
+	      SELECT 1 FROM CAREER C
+	      WHERE C.RESUME_NO = R.RESUME_NO
+	      AND C.JOB_CODE IN
+	      <foreach collection="careerJobCodeList" item="job" open="(" close=")" separator=",">
+	        #{job}
+	      </foreach>
+	      <if test="careerYearMin != null">
+	        AND C.CAREER_YEAR &gt;= #{careerYearMin}
+	      </if>
+	      <if test="careerYearMax != null">
+	        AND C.CAREER_YEAR &lt;= #{careerYearMax}
+	      </if>
+	      <if test="careerGradeList != null and careerGradeList.size() > 0">
+	        AND C.POSITION_GRADE_CODE IN
+	        <foreach collection="careerGradeList" item="grade" open="(" close=")" separator=",">
+	          #{grade}
+	        </foreach>
+	      </if>
+	    )
+	  </if>
+	
+	  <!-- 자격증: 모두 보유한 경우만 -->
+	  <if test="licenseCodeList != null and licenseCodeList.size() > 0">
+	    AND (
+	      SELECT COUNT(DISTINCT L.LICENSE_CODE)
+	      FROM MY_LICENSE L
+	      WHERE L.RESUME_NO = R.RESUME_NO
+	      AND L.LICENSE_CODE IN
+	      <foreach collection="licenseCodeList" item="code" open="(" close=")" separator=",">
+	        #{code}
+	      </foreach>
+	    ) = ${licenseCodeList.size()}
+	  </if>
+	
+	  <!-- 보유기술: 모두 보유한 경우만 -->
+	  <if test="skillCodeList != null and skillCodeList.size() > 0">
+	    AND (
+	      SELECT COUNT(DISTINCT S.MY_SKILL_CODE)
+	      FROM MY_SKILL S
+	      WHERE S.RESUME_NO = R.RESUME_NO
+	      AND UPPER(S.MY_SKILL_NAME) IN
+	      <foreach collection="skillCodeList" item="code" open="(" close=")" separator=",">
+	         UPPER(#{code})
+	      </foreach>
+	    ) = ${skillCodeList.size()}
+	  </if>
+	
+	  <!-- 어학: 이름/점수 (토익 등) -->
+	  <if test="languageName != null and languageScoreMin != null">
+	    AND EXISTS (
+	      SELECT 1 FROM LANGUAGE_SKILL LS
+	      WHERE LS.RESUME_NO = R.RESUME_NO
+	      AND LS.LANGUAGE_EXAM_NAME = #{languageName}
+	      AND LS.LANGUAGE_EXAM_SCORE &gt;= #{languageScoreMin}
+	    )
+	  </if>
+	
+	  <!-- 학력: 최종학력/전공 -->
+	  <if test="educationCode != null">
+	    AND EXISTS (
+	      SELECT 1 FROM EDUCATION E
+	      WHERE E.RESUME_NO = R.RESUME_NO
+	      AND E.HIGHEST_EDUCATION_CODE = #{educationCode}
+	    )
+	  </if>
+	  <if test="majorName != null">
+	    AND EXISTS (
+	      SELECT 1 FROM EDUCATION E
+	      WHERE E.RESUME_NO = R.RESUME_NO
+	      AND (E.MAIN_MAJOR LIKE '%' || #{majorName} || '%' OR E.SUB_MAJOR LIKE '%' || #{majorName} || '%')
+	    )
+	  </if>
+	</select>
+	
 	<select id="selectSearchSkillAndLicense"
 		resultMap="resumeResultMap" parameterType="map">
 		SELECT

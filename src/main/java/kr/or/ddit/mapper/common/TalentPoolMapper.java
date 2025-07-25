@@ -15,7 +15,9 @@ import kr.or.ddit.vo.resume.MySkillVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 @Mapper
 public interface TalentPoolMapper {
-public int insertMember(MemberVO member);
+	public List<ResumeVO> selectResumeByFilter(Map<String, Object> params);
+	
+	public int insertMember(MemberVO member);
 	
 	/**
 	 * 한사람의 회원 정보 조회
