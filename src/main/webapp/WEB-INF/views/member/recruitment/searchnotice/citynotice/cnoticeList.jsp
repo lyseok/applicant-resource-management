@@ -589,6 +589,7 @@
 	                                    </div>
 	                                    <%-- 사람인의 경우 여기 <script>(css용)</script> 있음 --%>
 	                                    <!-- 비동기로 미리 만들어지는 하위직업 선택 -->
+	                                    <%--
 	                                    <div class="box_detail_depth on" id="sp_job_category_subDepth_17" style="display: block;">
 							                <div class="row row_all_select">
 							                    <input type="checkbox" id="all_check_onedepth_17" name="cat_mcls[]" 
@@ -699,6 +700,7 @@
 							                </div>
 							            </div>
 							            <!-- //end 비동기로 미리 만들어지는 하위직업 선택 -->
+	                                	--%>
 	                                </div>
 	                            </div>
 	                        </div>

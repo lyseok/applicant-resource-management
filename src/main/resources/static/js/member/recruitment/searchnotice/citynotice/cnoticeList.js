@@ -5,7 +5,7 @@
 let params = {
     page: 1,
     pageSize: 20,
-    districtCode: ['113100'],
+    districtCode: [],
     jobCode: ['1800', '1957'],
     keyword: '프론트엔드'
   }
@@ -142,12 +142,17 @@ function addKeywordSpan(cityName, districtName, districtCodeNo) {
         </button>
     `;
     selectedContainer.appendChild(span);
+    
+    // params 갱신
+    updateDistrictCodes();
+    toggleKeywordDisplay();
 
     // 삭제 버튼 이벤트
     span.querySelector('.remove-btn').addEventListener('click', function () {
         document.querySelector(`input[value="${districtCodeNo}"]`).checked = false;
         removeKeywordSpan(districtCodeNo);
         toggleKeywordDisplay();
+        updateDistrictCodes(); // 삭제 후 갱신
     });
 }
 
@@ -170,4 +175,12 @@ function toggleKeywordDisplay() {
     }
 }
 
+//--------------------------선택된 지역코드 객체에 넣기------------------------------------------
 
+// 선택된 districtCode를 params에 반영
+function updateDistrictCodes() {
+    const selectedButtons = document.querySelectorAll('.selected_keyword .remove-btn');
+    const codes = Array.from(selectedButtons).map(btn => btn.dataset.code); 
+    params.districtCode = codes;  // params 객체 갱신
+    console.log('갱신된 districtCode:', params.districtCode);
+}
