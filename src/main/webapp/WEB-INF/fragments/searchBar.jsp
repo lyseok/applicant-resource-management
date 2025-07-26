@@ -163,7 +163,7 @@
 	                <!-- // end default_option 영역 / 경력, 학력, 메일관리 -->
 	                
 	                
-	                
+	                <!-- 검색 메인 -->
 	                <div class="main_option ">
 	                    <ul class="tab_section">
 	                        <li class="area_section">
@@ -237,41 +237,9 @@
 	                                        </div>
 	                                    </div>
 	                                    <div class="viewport">
-	                                        <div class="overview" style="top: -10px;">
+	                                        <div class="overview" style="top: -10px;" id="first_cityopt">  <!-- 따로 부여한 아이디 -->
 	                                            <ul>
-	                                                <li class="depth1_btn_wrapper on" id="depth1_btn_101000"><button type="button" class="depth1_btn_101000" data-code="101000"><span class="txt">서울 </span><span class="count">(58,664)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_102000"><button type="button" class="depth1_btn_102000" data-code="102000"><span class="txt">경기 </span><span class="count">(50,134)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_108000"><button type="button" class="depth1_btn_108000" data-code="108000"><span class="txt">인천 </span><span class="count">(8,877)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_106000"><button type="button" class="depth1_btn_106000" data-code="106000"><span class="txt">부산 </span><span class="count">(12,797)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_104000"><button type="button" class="depth1_btn_104000" data-code="104000"><span class="txt">대구 </span><span class="count">(7,799)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_103000"><button type="button" class="depth1_btn_103000" data-code="103000"><span class="txt">광주 </span><span class="count">(3,275)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_105000"><button type="button" class="depth1_btn_105000" data-code="105000"><span class="txt">대전 </span><span class="count">(4,584)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_107000"><button type="button" class="depth1_btn_107000" data-code="107000"><span class="txt">울산 </span><span class="count">(3,291)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_118000"><button type="button" class="depth1_btn_118000" data-code="118000"><span class="txt">세종 </span><span class="count">(1,353)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_109000"><button type="button" class="depth1_btn_109000" data-code="109000"><span class="txt">강원 </span><span class="count">(1,750)</span></button></li>
-	                                                <li class="depth1_btn_wrapper" id="depth1_btn_110000"><button type="button" class="depth1_btn_110000" data-code="110000"><span class="txt">경남 </span><span class="count">(11,501)</span></button></li>
-	                                                <li class="depth1_btn_wrapper" id="depth1_btn_111000"><button type="button" class="depth1_btn_111000" data-code="111000"><span class="txt">경북 </span><span class="count">(8,003)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_112000"><button type="button" class="depth1_btn_112000" data-code="112000"><span class="txt">전남 </span><span class="count">(3,607)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_113000"><button type="button" class="depth1_btn_113000" data-code="113000"><span class="txt">전북 </span><span class="count">(4,509)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_115000"><button type="button" class="depth1_btn_115000" data-code="115000"><span class="txt">충남 </span><span class="count">(8,219)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_114000"><button type="button" class="depth1_btn_114000" data-code="114000"><span class="txt">충북 </span><span class="count">(6,608)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_116000"><button type="button" class="depth1_btn_116000" data-code="116000"><span class="txt">제주 </span><span class="count">(1,594)</span></button></li>
-	                                                <li class="depth1_btn_wrapper" id="depth1_btn_117000"><button type="button" class="depth1_btn_117000" data-code="117000"><span class="txt">전국 </span><span class="count">(564)</span></button></li>
-	
 	                                            </ul>
-	                                            <!-- <ul class="list_overseas">
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_220200"><button type="button" class="depth1_btn_220200" data-code="220200"><span class="txt">미국 </span><span class="count">(129)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_211200"><button type="button" class="depth1_btn_211200" data-code="211200"><span class="txt">일본 </span><span class="count">(144)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_211300"><button type="button" class="depth1_btn_211300" data-code="211300"><span class="txt">중국·홍콩 </span><span class="count">(103)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_210000"><button type="button" class="depth1_btn_210000" data-code="210000"><span class="txt">아시아·중동 </span><span class="count">(697)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_220000"><button type="button" class="depth1_btn_220000" data-code="220000"><span class="txt">북·중미 </span><span class="count">(190)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_230000"><button type="button" class="depth1_btn_230000" data-code="230000"><span class="txt">남미 </span><span class="count">(17)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_240000"><button type="button" class="depth1_btn_240000" data-code="240000"><span class="txt">유럽 </span><span class="count">(75)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_250000"><button type="button" class="depth1_btn_250000" data-code="250000"><span class="txt">오세아니아 </span><span class="count">(4)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_260000"><button type="button" class="depth1_btn_260000" data-code="260000"><span class="txt">아프리카 </span><span class="count">(21)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_270000"><button type="button" class="depth1_btn_270000" data-code="270000"><span class="txt">남극대륙 </span><span class="count">(0)</span></button></li>
-	                                                <li class="depth1_btn_wrapper " id="depth1_btn_280000"><button type="button" class="depth1_btn_280000" data-code="280000"><span class="txt">기타해외 </span><span class="count">(6)</span></button></li>
-	                                            </ul> -->
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -285,481 +253,8 @@
 	                                    </div>
 	                                    <div class="viewport">
 	                                        <div class="overview" style="top: 0px;">
-	                                            <div class="wrap_list_check">
-	                                                <ul class="list_check" id="sp_area_lastDepth_117000" style="display: none;">
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_mcd_117000" name="loc_mcd[]" value="117000" data-is_representative="n" data-representative="" data-mcode="117000" data-check-type="all">
-	                                                            <label for="loc_mcd_117000" class="lbl"><span class="txt">전국</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                </ul>
-	
-	                                                <ul class="list_check" id="sp_area_lastDepth_111000" style="display: none;">
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_mcd_111000" name="loc_mcd[]" value="111000" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="all">
-	                                                            <label for="loc_mcd_111000" class="lbl"><span class="txt">경북전체</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111010" name="loc_cd[]" value="111010" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111010" class="lbl"><span class="txt">경산시</span><span class="count"> (1,180)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111020" name="loc_cd[]" value="111020" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111020" class="lbl"><span class="txt">경주시</span><span class="count"> (1,150)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111030" name="loc_cd[]" value="111030" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111030" class="lbl"><span class="txt">고령군</span><span class="count"> (188)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111040" name="loc_cd[]" value="111040" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111040" class="lbl"><span class="txt">구미시</span><span class="count"> (1,620)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111050" name="loc_cd[]" value="111050" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111050" class="lbl"><span class="txt">군위군</span><span class="count"> (0)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111060" name="loc_cd[]" value="111060" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111060" class="lbl"><span class="txt">김천시</span><span class="count"> (436)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111070" name="loc_cd[]" value="111070" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111070" class="lbl"><span class="txt">문경시</span><span class="count"> (186)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111080" name="loc_cd[]" value="111080" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111080" class="lbl"><span class="txt">봉화군</span><span class="count"> (36)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111090" name="loc_cd[]" value="111090" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111090" class="lbl"><span class="txt">상주시</span><span class="count"> (166)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111100" name="loc_cd[]" value="111100" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111100" class="lbl"><span class="txt">성주군</span><span class="count"> (284)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111110" name="loc_cd[]" value="111110" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111110" class="lbl"><span class="txt">안동시</span><span class="count"> (389)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111120" name="loc_cd[]" value="111120" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111120" class="lbl"><span class="txt">영덕군</span><span class="count"> (80)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111130" name="loc_cd[]" value="111130" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111130" class="lbl"><span class="txt">영양군</span><span class="count"> (22)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111140" name="loc_cd[]" value="111140" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111140" class="lbl"><span class="txt">영주시</span><span class="count"> (218)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111150" name="loc_cd[]" value="111150" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111150" class="lbl"><span class="txt">영천시</span><span class="count"> (490)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111160" name="loc_cd[]" value="111160" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111160" class="lbl"><span class="txt">예천군</span><span class="count"> (94)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111170" name="loc_cd[]" value="111170" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111170" class="lbl"><span class="txt">울릉군</span><span class="count"> (16)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111180" name="loc_cd[]" value="111180" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111180" class="lbl"><span class="txt">울진군</span><span class="count"> (49)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111190" name="loc_cd[]" value="111190" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111190" class="lbl"><span class="txt">의성군</span><span class="count"> (76)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111200" name="loc_cd[]" value="111200" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111200" class="lbl"><span class="txt">청도군</span><span class="count"> (116)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111210" name="loc_cd[]" value="111210" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111210" class="lbl"><span class="txt">청송군</span><span class="count"> (29)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111220" name="loc_cd[]" value="111220" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111220" class="lbl"><span class="txt">칠곡군</span><span class="count"> (721)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111230" name="loc_cd[]" value="111230" data-is_representative="y" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111230" class="lbl"><span class="txt">포항시</span><span class="count"> (124)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111240" name="loc_cd[]" value="111240" data-is_representative="n" data-representative="111230" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111240" class="lbl"><span class="txt">포항시 남구</span><span class="count"> (618)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111250" name="loc_cd[]" value="111250" data-is_representative="n" data-representative="111230" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111250" class="lbl"><span class="txt">포항시 북구</span><span class="count"> (594)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                </ul>
-	
-	                                                <ul class="list_check" id="sp_area_lastDepth_110000" style="display: none;">
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_mcd_110000" name="loc_mcd[]" value="110000" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="all">
-	                                                            <label for="loc_mcd_110000" class="lbl"><span class="txt">경남전체</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110010" name="loc_cd[]" value="110010" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110010" class="lbl"><span class="txt">거제시</span><span class="count"> (443)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110020" name="loc_cd[]" value="110020" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110020" class="lbl"><span class="txt">거창군</span><span class="count"> (102)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110030" name="loc_cd[]" value="110030" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110030" class="lbl"><span class="txt">고성군</span><span class="count"> (184)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110040" name="loc_cd[]" value="110040" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110040" class="lbl"><span class="txt">김해시</span><span class="count"> (2,972)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110050" name="loc_cd[]" value="110050" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110050" class="lbl"><span class="txt">남해군</span><span class="count"> (57)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110070" name="loc_cd[]" value="110070" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110070" class="lbl"><span class="txt">밀양시</span><span class="count"> (338)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110080" name="loc_cd[]" value="110080" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110080" class="lbl"><span class="txt">사천시</span><span class="count"> (380)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110090" name="loc_cd[]" value="110090" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110090" class="lbl"><span class="txt">산청군</span><span class="count"> (102)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110100" name="loc_cd[]" value="110100" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110100" class="lbl"><span class="txt">양산시</span><span class="count"> (1,680)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110110" name="loc_cd[]" value="110110" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110110" class="lbl"><span class="txt">의령군</span><span class="count"> (74)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110120" name="loc_cd[]" value="110120" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110120" class="lbl"><span class="txt">진주시</span><span class="count"> (1,046)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110140" name="loc_cd[]" value="110140" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110140" class="lbl"><span class="txt">창녕군</span><span class="count"> (306)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110150" name="loc_cd[]" value="110150" data-is_representative="y" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110150" class="lbl"><span class="txt">창원시</span><span class="count"> (2,126)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110055" name="loc_cd[]" value="110055" data-is_representative="n" data-representative="110150" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110055" class="lbl"><span class="txt">창원시 마산합포구</span><span class="count"> (287)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110053" name="loc_cd[]" value="110053" data-is_representative="n" data-representative="110150" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110053" class="lbl"><span class="txt">창원시 마산회원구</span><span class="count"> (343)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110057" name="loc_cd[]" value="110057" data-is_representative="n" data-representative="110150" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110057" class="lbl"><span class="txt">창원시 성산구</span><span class="count"> (595)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110059" name="loc_cd[]" value="110059" data-is_representative="n" data-representative="110150" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110059" class="lbl"><span class="txt">창원시 의창구</span><span class="count"> (608)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110130" name="loc_cd[]" value="110130" data-is_representative="n" data-representative="110150" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110130" class="lbl"><span class="txt">창원시 진해구</span><span class="count"> (324)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110160" name="loc_cd[]" value="110160" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110160" class="lbl"><span class="txt">통영시</span><span class="count"> (234)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110170" name="loc_cd[]" value="110170" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110170" class="lbl"><span class="txt">하동군</span><span class="count"> (79)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110180" name="loc_cd[]" value="110180" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110180" class="lbl"><span class="txt">함안군</span><span class="count"> (560)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110190" name="loc_cd[]" value="110190" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110190" class="lbl"><span class="txt">함양군</span><span class="count"> (85)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110200" name="loc_cd[]" value="110200" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110200" class="lbl"><span class="txt">합천군</span><span class="count"> (93)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                </ul>
-	
-	                                                <ul class="list_check" id="sp_area_lastDepth_101000" style="display: block;">
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_mcd_101000" name="loc_mcd[]" value="101000" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="all">
-	                                                            <label for="loc_mcd_101000" class="lbl"><span class="txt">서울전체</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101010" name="loc_cd[]" value="101010" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101010" class="lbl"><span class="txt">강남구</span><span class="count"> (18,448)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101020" name="loc_cd[]" value="101020" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101020" class="lbl"><span class="txt">강동구</span><span class="count"> (1,988)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101030" name="loc_cd[]" value="101030" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101030" class="lbl"><span class="txt">강북구</span><span class="count"> (710)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101040" name="loc_cd[]" value="101040" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101040" class="lbl"><span class="txt">강서구</span><span class="count"> (3,553)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101050" name="loc_cd[]" value="101050" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101050" class="lbl"><span class="txt">관악구</span><span class="count"> (2,133)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101060" name="loc_cd[]" value="101060" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101060" class="lbl"><span class="txt">광진구</span><span class="count"> (1,586)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101070" name="loc_cd[]" value="101070" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101070" class="lbl"><span class="txt">구로구</span><span class="count"> (3,432)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101080" name="loc_cd[]" value="101080" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101080" class="lbl"><span class="txt">금천구</span><span class="count"> (4,377)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101090" name="loc_cd[]" value="101090" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101090" class="lbl"><span class="txt">노원구</span><span class="count"> (873)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101100" name="loc_cd[]" value="101100" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101100" class="lbl"><span class="txt">도봉구</span><span class="count"> (455)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101110" name="loc_cd[]" value="101110" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101110" class="lbl"><span class="txt">동대문구</span><span class="count"> (1,257)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101120" name="loc_cd[]" value="101120" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101120" class="lbl"><span class="txt">동작구</span><span class="count"> (1,272)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101130" name="loc_cd[]" value="101130" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101130" class="lbl"><span class="txt">마포구</span><span class="count"> (4,326)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101140" name="loc_cd[]" value="101140" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101140" class="lbl"><span class="txt">서대문구</span><span class="count"> (1,188)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101150" name="loc_cd[]" value="101150" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101150" class="lbl"><span class="txt">서초구</span><span class="count"> (7,529)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101160" name="loc_cd[]" value="101160" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101160" class="lbl"><span class="txt">성동구</span><span class="count"> (3,464)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101170" name="loc_cd[]" value="101170" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101170" class="lbl"><span class="txt">성북구</span><span class="count"> (754)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101180" name="loc_cd[]" value="101180" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101180" class="lbl"><span class="txt">송파구</span><span class="count"> (5,346)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101190" name="loc_cd[]" value="101190" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101190" class="lbl"><span class="txt">양천구</span><span class="count"> (1,281)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101200" name="loc_cd[]" value="101200" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101200" class="lbl"><span class="txt">영등포구</span><span class="count"> (4,921)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101210" name="loc_cd[]" value="101210" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101210" class="lbl"><span class="txt">용산구</span><span class="count"> (2,256)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101220" name="loc_cd[]" value="101220" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101220" class="lbl"><span class="txt">은평구</span><span class="count"> (854)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101230" name="loc_cd[]" value="101230" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101230" class="lbl"><span class="txt">종로구</span><span class="count"> (2,099)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101240" name="loc_cd[]" value="101240" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101240" class="lbl"><span class="txt">중구</span><span class="count"> (3,640)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101250" name="loc_cd[]" value="101250" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101250" class="lbl"><span class="txt">중랑구</span><span class="count"> (689)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                </ul>
-	
+	                                            <div class="wrap_list_check" id="second_cityopt">  <!-- 따로 부여한 아이디 -->
+	                                              <!-- 비동기로 들어갈 지역구 부분 -->  
 	                                                <div class="area_btn">
 	                                                    <button type="button" class="btn_all_category" data-logging-flow="area">지역 펼쳐보기</button>
 	                                                    <button type="button" class="btn_reset">지역 초기화</button>
@@ -820,27 +315,8 @@
                                                 <button type="button" class="btn_job" data-mcls_cd_no="{{mclsCdNo}}">{{mclsCdNm}}</button>
                                             {{/hasCountInJobCategory}}
                                         {{/mclsList}}
-                                    </script><button type="button" class="btn_job" data-mcls_cd_no="16">기획·전략</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="14">마케팅·홍보·조사</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="3">회계·세무·재무</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="5">인사·노무·HRD</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="4">총무·법무·사무</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="2">IT개발·데이터</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="15">디자인</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="8">영업·판매·무역</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="21">고객상담·TM</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="18">구매·자재·물류</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="12">상품기획·MD</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="7">운전·운송·배송</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="10">서비스</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="11">생산</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="22">건설·건축</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="6">의료</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="9">연구·R&amp;D</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="19">교육</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="13">미디어·문화·스포츠</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="17">금융·보험</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="20">공공·복지</button>
+                                    </script>
+                                    <!-- 비동기로 상위직업 버튼 들어갈 부분 -->
 	                                </div>
 	
 	                                <div class="box_detail_jobs" style="display:none;">
@@ -854,7 +330,7 @@
 	                                                </div>
 	                                            </div>
 	                                            <div class="viewport">
-	                                                <ul class="list overview">
+	                                                <ul class="list overview" id="box_jobs_btn">  <!-- 내가 부여한 아이디 -->
 	                                                    <script id="sp_job_category_oneDepth_template" type="text/x-handlebars-template">
                                                         {{#mclsList}}
                                                             {{#hasCountInJobCategory count}}
@@ -867,136 +343,12 @@
                                                             {{/hasCountInJobCategory}}
                                                         {{/mclsList}}
                                                     </script>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_16">
-	                                                        <button type="button" data-mcls_cd_no="16" class="first_depth depth1_btn_16">
-	                                                            <span class="txt">기획·전략 </span>
-	                                                            <span class="count">(11,640)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_14">
-	                                                        <button type="button" data-mcls_cd_no="14" class="first_depth depth1_btn_14">
-	                                                            <span class="txt">마케팅·홍보·조사 </span>
-	                                                            <span class="count">(11,678)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_3">
-	                                                        <button type="button" data-mcls_cd_no="3" class="first_depth depth1_btn_3">
-	                                                            <span class="txt">회계·세무·재무 </span>
-	                                                            <span class="count">(9,965)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_5">
-	                                                        <button type="button" data-mcls_cd_no="5" class="first_depth depth1_btn_5">
-	                                                            <span class="txt">인사·노무·HRD </span>
-	                                                            <span class="count">(4,056)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_4">
-	                                                        <button type="button" data-mcls_cd_no="4" class="first_depth depth1_btn_4">
-	                                                            <span class="txt">총무·법무·사무 </span>
-	                                                            <span class="count">(14,139)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_2">
-	                                                        <button type="button" data-mcls_cd_no="2" class="first_depth depth1_btn_2">
-	                                                            <span class="txt">IT개발·데이터 </span>
-	                                                            <span class="count">(12,061)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_15">
-	                                                        <button type="button" data-mcls_cd_no="15" class="first_depth depth1_btn_15">
-	                                                            <span class="txt">디자인 </span>
-	                                                            <span class="count">(8,447)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_8">
-	                                                        <button type="button" data-mcls_cd_no="8" class="first_depth depth1_btn_8">
-	                                                            <span class="txt">영업·판매·무역 </span>
-	                                                            <span class="count">(24,889)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_21">
-	                                                        <button type="button" data-mcls_cd_no="21" class="first_depth depth1_btn_21">
-	                                                            <span class="txt">고객상담·TM </span>
-	                                                            <span class="count">(6,340)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_18">
-	                                                        <button type="button" data-mcls_cd_no="18" class="first_depth depth1_btn_18">
-	                                                            <span class="txt">구매·자재·물류 </span>
-	                                                            <span class="count">(11,046)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_12">
-	                                                        <button type="button" data-mcls_cd_no="12" class="first_depth depth1_btn_12">
-	                                                            <span class="txt">상품기획·MD </span>
-	                                                            <span class="count">(6,538)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_7">
-	                                                        <button type="button" data-mcls_cd_no="7" class="first_depth depth1_btn_7">
-	                                                            <span class="txt">운전·운송·배송 </span>
-	                                                            <span class="count">(6,924)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_10">
-	                                                        <button type="button" data-mcls_cd_no="10" class="first_depth depth1_btn_10">
-	                                                            <span class="txt">서비스 </span>
-	                                                            <span class="count">(25,266)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_11">
-	                                                        <button type="button" data-mcls_cd_no="11" class="first_depth depth1_btn_11">
-	                                                            <span class="txt">생산 </span>
-	                                                            <span class="count">(38,961)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_22">
-	                                                        <button type="button" data-mcls_cd_no="22" class="first_depth depth1_btn_22">
-	                                                            <span class="txt">건설·건축 </span>
-	                                                            <span class="count">(18,119)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_6">
-	                                                        <button type="button" data-mcls_cd_no="6" class="first_depth depth1_btn_6">
-	                                                            <span class="txt">의료 </span>
-	                                                            <span class="count">(21,535)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_9">
-	                                                        <button type="button" data-mcls_cd_no="9" class="first_depth depth1_btn_9">
-	                                                            <span class="txt">연구·R&amp;D </span>
-	                                                            <span class="count">(7,184)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_19">
-	                                                        <button type="button" data-mcls_cd_no="19" class="first_depth depth1_btn_19">
-	                                                            <span class="txt">교육 </span>
-	                                                            <span class="count">(8,811)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_13">
-	                                                        <button type="button" data-mcls_cd_no="13" class="first_depth depth1_btn_13">
-	                                                            <span class="txt">미디어·문화·스포츠 </span>
-	                                                            <span class="count">(5,932)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_17">
-	                                                        <button type="button" data-mcls_cd_no="17" class="first_depth depth1_btn_17">
-	                                                            <span class="txt">금융·보험 </span>
-	                                                            <span class="count">(2,066)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_20">
-	                                                        <button type="button" data-mcls_cd_no="20" class="first_depth depth1_btn_20">
-	                                                            <span class="txt">공공·복지 </span>
-	                                                            <span class="count">(4,617)</span>
-	                                                        </button>
-	                                                    </li>
+	                                                <!-- 비동기로 데이터 들어옴 -->
 	                                                </ul>
 	                                            </div>
 	                                        </div>
 	                                    </div>
+	                                    <!-- 비동기로 미리 만들어지는 하위직업 선택 -->
 	                                </div>
 	                            </div>
 	                        </div>
@@ -2542,6 +1894,9 @@
 	                    </div>
 	                </div>
 	                <div class="bg"></div>
+	                <!-- //end 검색 메인 -->
+	                
+	                <!-- 검색창 초기화 -->
 	                <div id="sp_preview" class="wrap_search_result preview_v2 resetting" style="">
 	                    <div class="add_keyword">
 	                        <div id="sp_preview_selected" class="keywords" style="display: none;"></div>
@@ -2560,9 +1915,12 @@
 	                        <span class="ripple"></span>
 	                    </button>
 	                </div>
-	
+					<!-- //end 검색창 초기화 -->
 	            </div>
 	        </fieldset>
 	    </form>
 	</div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/member/recruitment/searchnotice/citynotice/cnoticeList.js"></script>

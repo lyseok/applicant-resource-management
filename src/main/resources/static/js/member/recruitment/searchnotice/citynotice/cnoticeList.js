@@ -51,11 +51,11 @@ const addTextKeywordSpan = function (keyword) {
 //====================================================================================
 //------------------------지역선택 옵션생성-------------------------------------------
 
+const btn_reset = document.querySelector('#sp_preview .btn_reset');
 const first_cityopt = document.querySelector('#first_cityopt > ul');
 const second_cityopt = document.querySelector('#second_cityopt');
 const add_keyword = document.querySelector('.add_keyword');
 const search_btn = document.querySelector('#search_btn');  //검색하기 버튼 클릭후 콘솔에 찍히는 params 값 보기->axios로 넘기기만 하면됨
-const btn_reset = document.querySelector('.btn_reset');
 
 // 도시 선택 값 불러옴 (axios + async/await)
 const getCityCodeList = async function () {
@@ -249,14 +249,14 @@ const removeKeywordSpan = function (code) {
 const toggleKeywordDisplay = function () {
     const hasKeywords = selectedContainer.children.length > 0;
     selectedContainer.style.display = hasKeywords ? 'block' : 'none';
-    //초기화 버튼도 생기게
-    btn_reset.style.display = hasKeywords ? 'block' : 'none';
 
     // 검색조건 여부에 따라 resetting 클래스 토글
     if (hasKeywords) {
-        previewWrapper.classList.remove('resetting'); // 조건 있음
+        previewWrapper.classList.remove('resetting'); // 조건 있음, 토글 확인함
+    	btn_reset.style.display = 'inline-block';  //초기화 버튼도 생기게
     } else {
         previewWrapper.classList.add('resetting'); // 조건 없음
+        btn_reset.style.display = 'none';
     }
 }
 
@@ -623,6 +623,37 @@ const addJobKeywordSpan = function (topJobName, jobName, jobCode) {  //topJobCod
 //----------------------- 공통 함수------------------------------------------
 
 
+
+//일괄 검색조건 초기화 버튼
+const clearAllFilters = function () {
+  // 🔹 1. 모든 선택된 span 제거
+  document.querySelectorAll('.selected_keyword').forEach(span => span.remove());
+
+  // 🔹 2. 모든 체크박스 해제 (지역)
+  document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.checked = false;
+  });
+
+  // 🔹 3. 모든 직업 버튼 'on' 클래스 제거
+  document.querySelectorAll('.btn_three_depth.on').forEach(btn => {
+    btn.classList.remove('on');
+  });
+
+  // 🔹 4. params 초기화
+  params.page = 1;
+  params.districtCode = [];
+  params.jobCode = [];
+  params.keyword = '';
+
+  // 🔹 5. UI 업데이트
+  toggleKeywordDisplay(); // -> span 없으므로 자동으로 display: none + resetting 클래스 적용
+  updateAllCodes();       // -> params 다시 동기화
+
+  // 🔹 6. 결과 콘솔
+  console.log('🔄 모든 검색 조건이 초기화되었습니다.');
+};
+
+btn_reset.addEventListener('click', clearAllFilters);
 
 
 // 초기화 버튼 클릭 시(현재는 직업만 됨)
