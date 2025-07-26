@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.ddit.company.recruitment.talentpool.service.TalentPoolService;
+import kr.or.ddit.dto.MailDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/ajax/company/talentpool")
 @RequiredArgsConstructor
@@ -63,7 +66,7 @@ public class AjaxTalentPoolController {
 			params.put("startRow", (page - 1) * pageSize);
 			params.put("endRow", page * pageSize);
 			
-			Map<String, Object> resp = poolService.readResumeByFilter(params);
+			Map<String, Object> resp = poolService.readResumeByMyScrab(params);
 			return ResponseEntity.ok(resp);
 		}
 	
@@ -90,5 +93,12 @@ public class AjaxTalentPoolController {
 		return ResponseEntity.ok(resp);
 	}
 	
-	
+	@PostMapping("/joboffer")
+	public ResponseEntity<?> postMailByTalentList(@RequestBody List<MailDTO> reqData){
+		log.info("========> {}", reqData);
+		
+		poolService.postMailLogic(reqData);
+
+		return ResponseEntity.ok("ok");
+	}
 }
