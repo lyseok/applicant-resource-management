@@ -23,18 +23,18 @@
     <h3 class="text-center mb-4">상품 유형 선택</h3>
     <div class="row justify-content-center mb-5">
         <div class="col-md-4">
-            <div class="card type-card" id="card-regular"  onclick="selectType('정기권')">
+            <div class="card type-card" id="card-regular"  onclick="selectType('Premium')">
                 <div class="card-body text-center">
-                    <h5 class="card-title">정기권</h5>
-                    <p class="card-text">기간설정가능</p>
+                    <h5 class="card-title">Premium</h5>
+                    <p class="card-text">무제한사용가능</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card type-card" id="card-single" onclick="selectType('단건')">
+            <div class="card type-card" id="card-single" onclick="selectType('Business')">
                 <div class="card-body text-center">
-                    <h5 class="card-title">단건</h5>
-                    <p class="card-text">구매일로부터 1달이용가능</p>
+                    <h5 class="card-title">Business</h5>
+                    <p class="card-text">제한적사용가능</p>
                 </div>
             </div>
         </div>

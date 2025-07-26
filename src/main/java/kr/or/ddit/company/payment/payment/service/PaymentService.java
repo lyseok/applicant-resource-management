@@ -2,6 +2,7 @@ package kr.or.ddit.company.payment.payment.service;
 
 import java.util.List;
 
+import kr.or.ddit.vo.common.AdminPaymentVO;
 import kr.or.ddit.vo.common.PaymentVO;
 
 public interface PaymentService {
@@ -28,4 +29,28 @@ public interface PaymentService {
 	public int updateComPaymentStatus(String userId);
 	
 	public String getPaymentNo(String userId);
+	
+	public PaymentVO selectStauts(String userId);
+	
+	public int minuseaining(String paymentNo);
+	
+	public String newPaymentNo(String userId);
+	
+	public void monthlySubscriptionRefresh();
+	
+	public PaymentVO selectScheduledByUserId(String userId);
+	
+	public List<AdminPaymentVO> selectPaymentStatistics();
+	
+	public PaymentVO cancleSub(String userId);
+	
+	public List<String> allcompanyName();
+	
+	public List<String> selectNewSubscribers();			// 2달이내 신규 구독자
+	
+	public List<String> selectChurnedSubscribers();		// 이번달 해지한사람
+
+	public List<String> selectLeftSubscribers();
+	
+	
 }
