@@ -9,7 +9,9 @@ import kr.or.ddit.vo.resume.CareerVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 
 public interface MemberCompanyReviewService {
-	public List<CompanyVO> readCompanyList();
+	
+	public List<CompanyVO> readCompanyInfoList();
+	
 	public CompanyVO readCompany(String id);
 	
 	public List<CompanyReviewVO> readCompanyReviewList();
@@ -19,18 +21,12 @@ public interface MemberCompanyReviewService {
 	public boolean updateRemoveStatusMyCompanyReview(CompanyReviewVO companyReview);
 	
 	public List<CompanyReviewVO> readMyCompanyReviewList(String userId);
-	
-	public List<CmnCodeVO> readCmnCodeGroupQuestionList(String cmnGroupNo);
-	
+		
 	public List<CompanyReviewVO> readReivewQAList(String comId);
 	
 	public MemberVO readMemberById(String id);
 	
-	
-	
-	public List<ResumeVO> readResumeWithCareers(String userId);
-	
-	
+	public List<ResumeVO> readResumeWithCareers();
 	public CareerVO readCareerDetail(String careerNo);
 	
 	

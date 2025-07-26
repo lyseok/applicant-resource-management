@@ -40,7 +40,7 @@ public class MemberCompanyReviewController {
 	  
 
 	 @GetMapping("/form")
-	 public String reviewFormUI(@PathVariable String careerNo, Model model) {
+	 public String reviewFormUI() {
 	    	return "member/community/companyReview/companyReviewForm";
 	 }
 	 
