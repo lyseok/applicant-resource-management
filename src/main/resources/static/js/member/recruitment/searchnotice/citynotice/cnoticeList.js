@@ -97,6 +97,9 @@ getCityCodeList();  //도시 선택 값 호출
 
 //--------------------- 지역 선택 동적클래스--------------------------------------------------------------------
 
+const selectedContainer = add_keyword.querySelector('#sp_preview_selected');
+const previewWrapper = document.getElementById('sp_preview'); // 패널 래퍼
+
 //도시 선택 중첩
 const selectCity = function (button) {
     let currentLi = button.closest('li');
@@ -115,9 +118,6 @@ const selectCity = function (button) {
     // 4. 클릭한 li의 하위 영역만 표시
     document.querySelector(`#sp_area_lastDepth_${button.dataset.code}`).style.display = 'block';
 }
-
-const selectedContainer = add_keyword.querySelector('#sp_preview_selected');
-const previewWrapper = document.getElementById('sp_preview'); // 패널 래퍼
 
 //구군 선택 중첩
 const selectDistrict = function (checkbox, mcode) {
@@ -140,19 +140,21 @@ const selectDistrict = function (checkbox, mcode) {
 
 // 선택된 지역 span 갱신
 const updateSelectedRegions = function () {
-    // 기존 span 초기화
-    selectedContainer.innerHTML = "";
+    // 기존 지역 관련 span만 제거
+    document.querySelectorAll('#sp_preview_selected .selected_keyword button[id^="sp_preview_area_"]').forEach(btn => {
+        const span = btn.closest('.selected_keyword');
+        if (span) span.remove();
+    });
 
     // 현재 체크된 모든 지역코드 가져오기
     const checked = document.querySelectorAll('input[name="loc_cd[]"]:checked, input[name="loc_mcd[]"]:checked');
     checked.forEach(cb => {
         const label = cb.closest('.inpChk').querySelector('.txt').innerText;
-        addKeywordSpan("시도명", label, cb.value); // 시도명은 필요하면 cb.dataset에 넣어두고 처리
+        addKeywordSpan("시도명", label, cb.value); // 시도명은 필요하면 cb.dataset에서 꺼내도 됨
     });
 
-    updateDistrictCodes(); // params 갱신
+    updateAllCodes(); // params 갱신
 }
-
 
 // span 추가
 const addKeywordSpan = function (cityName, districtName, districtCodeNo) {
@@ -170,7 +172,6 @@ const addKeywordSpan = function (cityName, districtName, districtCodeNo) {
     selectedContainer.appendChild(span);
     
     // params 갱신
-    updateDistrictCodes();
     toggleKeywordDisplay();
 
     // 삭제 버튼 이벤트
@@ -178,7 +179,7 @@ const addKeywordSpan = function (cityName, districtName, districtCodeNo) {
         document.querySelector(`input[value="${districtCodeNo}"]`).checked = false;
         removeKeywordSpan(districtCodeNo);
         toggleKeywordDisplay();
-        updateDistrictCodes(); // 삭제 후 갱신
+        updateAllCodes(); // 삭제 후 갱신
     });
 }
 
@@ -195,8 +196,6 @@ const removeKeywordSpan = function (code) {
     }
 };
 
-
-
 // 선택된 값이 없으면 숨김 + 클래스 토글
 const toggleKeywordDisplay = function () {
     const hasKeywords = selectedContainer.children.length > 0;
@@ -212,13 +211,32 @@ const toggleKeywordDisplay = function () {
 
 //--------------------------선택된 지역코드 객체에 넣기------------------------------------------
 
-// 선택된 districtCode를 params에 반영
-const updateDistrictCodes = function () {
+// 선택된 districtCode와 jobCode를 params에 반영
+const updateAllCodes = function () {
     const selectedButtons = document.querySelectorAll('.selected_keyword .remove-btn');
-    const codes = Array.from(selectedButtons).map(btn => btn.dataset.code); 
-    params.districtCode = codes;  // params 객체 갱신
-    console.log('갱신된 districtCode:', params.districtCode);
-}
+
+    // 지역코드와 직업코드 구분
+    const districtCodes = [];
+    const jobCodes = [];
+
+    selectedButtons.forEach(btn => {
+        const code = btn.dataset.code;
+        const id = btn.id;
+
+        if (id.startsWith('sp_preview_area_')) {
+            districtCodes.push(code);
+        } else if (id.startsWith('sp_preview_job_category_')) {
+            jobCodes.push(code);
+        }
+    });
+
+    params.districtCode = districtCodes;
+    params.jobCode = jobCodes;
+
+    console.log('✅ 갱신된 districtCode:', districtCodes);
+    console.log('✅ 갱신된 jobCode:', jobCodes);
+};
+
 
 //-----------------------내부 스크롤 동작-----------------------------------------
 
@@ -497,7 +515,7 @@ const addJobKeywordSpan = function (topJobName, jobName, jobCode) {
     `;
     selectedContainer.appendChild(span);
 
-    updateJobCodes();
+    updateAllCodes();
     toggleKeywordDisplay();
 
     // 삭제 버튼 이벤트
@@ -506,19 +524,9 @@ const addJobKeywordSpan = function (topJobName, jobName, jobCode) {
         if (targetBtn) targetBtn.classList.remove('on');
         removeKeywordSpan(jobCode);
         toggleKeywordDisplay();
-        updateJobCodes();
+        updateAllCodes();
     });
 };
-
-
-
-// 선택된 jobCode를 params에 반영
-const updateJobCodes = function () {
-    const selectedButtons = document.querySelectorAll('.selected_keyword .remove-btn');
-    const codes = Array.from(selectedButtons).map(btn => btn.dataset.code); 
-    params.jobCode = codes;  // params 객체 갱신
-    console.log('갱신된 jobCode:', params.jobCode);
-}
 
 
 //-----------------------내부 스크롤 동작-----------------------------------------
