@@ -1923,4 +1923,4 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="/js/member/recruitment/searchnotice/citynotice/cnoticeList.js"></script>
+<script src="/js/member/recruitment/searchnotice/searchBar.js"></script>
