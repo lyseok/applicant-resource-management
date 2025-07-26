@@ -18,6 +18,76 @@
 			, SCHEDULE_CONTENT
 		FROM SCHEDULE
 	</select>
+	
+	<select id="findmemberRecruitSchedule">
+		 WITH base_applicants AS (
+            SELECT applicant_id
+            FROM applicant
+            WHERE user_id = #{userId}
+        )
+        SELECT
+            ar.applicant_id,
+            rp.recruitment_no,
+            rn.recruitment_title,
+            rp.recruit_process_step AS step,
+            rp.recruit_process_type AS step_type,
+            ar.STEP_PASS_YN AS pass,
+            rp.recruit_process_final AS final,
+            re.recruit_exam_name,
+            TO_CHAR(re.recruit_exam_start_date, 'YYYY-MM-DD HH24:MI') AS exam_datetime,
+            i.interview_location,
+            i.interview_type,
+            CASE
+                WHEN i.interview_type = 'VIDEO' THEN TO_CHAR(ar.evaluation_start_time, 'YYYY-MM-DD HH24:MI')
+                ELSE TO_CHAR(i.interview_date, 'YYYY-MM-DD HH24:MI')
+            END AS interview_datetime
+        FROM applicant_record ar
+        JOIN recruit_process rp 
+            ON ar.recruit_process_no = rp.recruit_process_no
+        JOIN recruitment_notice rn
+            ON rp.recruitment_no = rn.recruitment_no
+        LEFT JOIN recruitment_exam re 
+            ON rp.recruit_process_no = re.process_no
+        LEFT JOIN interview i 
+            ON rp.recruit_process_no = i.process_no
+        WHERE ar.applicant_id IN (SELECT applicant_id FROM base_applicants)
+	</select>
+	
+	<select id="selectCompanyScrab">
+	SELECT 
+	    c.RECRUITMENT_NO
+	    , c.RECRUITMENT_TITLE
+	    , c.RECRUITMENT_STARTDATE
+	    , c.RECRUITMENT_FINISH_DATE
+	FROM scrab_company sc
+	JOIN RECRUITMENT_NOTICE c
+	ON sc.company_id = c.user_id
+	WHERE sc.USER_ID = #{userId}
+	</select>
+	
+	<select id="selectRecruitScrab">
+	SELECT 
+	    c.RECRUITMENT_NO
+	    , c.RECRUITMENT_TITLE
+	    , c.RECRUITMENT_STARTDATE
+	    , c.RECRUITMENT_FINISH_DATE
+	FROM scrab_recruitment sr
+	JOIN RECRUITMENT_NOTICE c
+	ON sr.RECRUITMENT_NO = c.RECRUITMENT_NO
+	WHERE sr.USER_ID = #{userId}
+	</select>
+	
+	<select id="selectMyScheduleById">
+	SELECT 
+	    SCHEDULE_NO
+	    , SCHEDULE_NAME
+	    , SCHEDULE_CONTENT
+	    , TO_CHAR(SCHEDULE_START_DATE, 'YYYY-MM-DD HH24:MI')
+	    , TO_CHAR(SCHEDULE_END_DATE, 'YYYY-MM-DD HH24:MI')
+	FROM SCHEDULE
+	WHERE USER_ID = #{userId}
+	</select>
+	
 	<insert id="insertSchedule">
 		<selectKey resultType="string" keyProperty="scheduleNo" order="BEFORE">
 		    SELECT
@@ -30,11 +100,15 @@
 			, USER_ID
 			, SCHEDULE_NAME
 			, SCHEDULE_CONTENT
+			, SCHEDULE_START_DATE
+			, SCHEDULE_END_DATE
 		) VALUES (
 			#{scheduleNo}
 			, #{userId}
 			, #{scheduleName}
 			, #{scheduleContent}
+			, #{scheduleStartDate}
+			, #{scheduleEndDate}
 		)
 	</insert>
 	<update id="updateSchedule">
@@ -43,6 +117,8 @@
 			USER_ID = #{userId}
 				, SCHEDULE_NAME = #{scheduleName}
 				, SCHEDULE_CONTENT = #{scheduleContent}
+				, SCHEDULE_START_DATE = #{scheduleStartDate}
+				, SCHEDULE_END_DATE = #{scheduleEndDate}
 			WHERE SCHEDULE_NO = #{scheduleNo}
 	</update>
 	<delete id="deleteSchedule">
