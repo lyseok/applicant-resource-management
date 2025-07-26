@@ -55,7 +55,8 @@
 
 					<button class="btn btn-primary" onclick="subscribe(event, this)"
 						id="sub-btn" data-product-no="${product.productNo}"
-						data-billing-key="${payment.paymentBillingKey}">구독하기</button>
+						data-billing-key="${payment.paymentBillingKey}"
+						>구독하기</button>
 				</div>
 				<button onclick="history.back()">뒤로가기</button>
 			</div>

@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.ddit.member.community.companyReview.service.MemberCompanyReviewService;
 import kr.or.ddit.vo.common.CmnCodeVO;
+import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,22 +23,30 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/ajax/member/company_review")
 public class MemberCompanyReviewAjaxController {
 	private final MemberCompanyReviewService companyReviewService;
-
 	
-	   @GetMapping("/detail/{id}")
+	
+	   @GetMapping
+	   public List<CompanyVO> reviewPage(){
+		   List<CompanyVO> company = companyReviewService.readCompanyInfoList();
+		   return company;
+	   }
+	   
+	   @GetMapping("/my_career")
+	   public List<ResumeVO> myCareer(){
+		   List<ResumeVO> careers = companyReviewService.readResumeWithCareers();
+		   return careers;
+	   }
+	
+	   @GetMapping("/detail")
 	    public List<CompanyReviewVO> reviewDetail(@PathVariable String id){
 	    	List<CompanyReviewVO> reviewInfo = companyReviewService.readReivewQAList(id);
 	    	log.info("{}", reviewInfo);
 	    	return reviewInfo;
 	    }
+	   
+	   
 	
-	  @GetMapping("/review_question")
-	    public List<CmnCodeVO> reviewQ(){
-	    	String no = "REVU";
-	    	List<CmnCodeVO> qList = companyReviewService.readCmnCodeGroupQuestionList(no);
-	    	log.info("{}",qList);
-			return qList;
-	    }
+	
 	  
 	  @GetMapping("/my_review/delete/{reviewNo}")
 	  public ResponseEntity<String> deleteMyReview(@PathVariable("reviewNo") String reviewNO) {

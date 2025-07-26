@@ -347,59 +347,15 @@
 	<body>
 
 		<div class="container">
-			<p class="h1 mb-3 fw-bold">인재 탐색</p>
+			<p class="h1 mb-3 fw-bold">인재 관리</p>
 			<!-- Search Bar -->
 			<div class="search-bar">
 				<div class="search-input-container">
 					<!-- <input type="text" class="search-input" placeholder="이름 또는 이메일, 연락처로 검색"> -->
 				</div>
 				<div class="button-group">
-					<button class="btn">필터</button>
 					<!-- <button class="btn">정렬: 최신순</button> -->
-					<button class="btn" id="addTalent">관심 인재 등록</button>
-					<button class="btn btn_violet_line">필터링</button>
-				</div>
-			</div>
-
-			<!-- Filter Section -->
-			<div class="filter-container">
-				<div class="filter-column">
-					<div class="filter-group">
-						<div class="filter-label">경력 (년)</div>
-						<div class="range-slider">
-							<div class="slider-track"></div>
-							<div class="slider-range" style="left: 0%; right: 0%"></div>
-							<div class="slider-thumb" style="left: 0%"></div>
-							<div class="slider-thumb" style="left: 100%"></div>
-						</div>
-						<div class="range-values">
-							<span>0년</span>
-							<span>10년</span>
-						</div>
-					</div>
-
-					<div class="filter-group">
-						<div class="filter-label">보유기술</div>
-						<input type="text" class="input-field skill-input" placeholder="기술을 입력하고 Enter를 누르세요">
-					</div>
-
-				</div>
-
-				<div class="filter-column">
-					<div class="filter-group">
-						<div class="filter-label">학력</div>
-						<div class="education-options">
-						</div>
-					</div>
-					<div class="filter-group">
-						<div class="filter-label">자격증</div>
-						<input type="text" class="input-field license-input" placeholder="자격증을 입력하고 Enter를 누르세요">
-					</div>
-
-					<div class="filter-group">
-						<div class="filter-label">학과</div>
-						<input type="text" class="input-field major-input" placeholder="학과를 입력하고 Enter를 누르세요">
-					</div>
+					<button class="btn" id="job-offer">입사제안</button>
 				</div>
 			</div>
 

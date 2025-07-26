@@ -115,7 +115,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="/company" class="menu-link">
+            <a href="/company/mail/template" class="menu-link">
               <div data-i18n="Account">메일 템플릿</div>
             </a>
           </li>

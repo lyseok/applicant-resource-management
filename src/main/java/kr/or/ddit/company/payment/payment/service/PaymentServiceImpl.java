@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.mapper.common.PaymentMapper;
+import kr.or.ddit.vo.common.AdminPaymentVO;
 import kr.or.ddit.vo.common.PaymentVO;
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -93,6 +94,72 @@ public class PaymentServiceImpl implements PaymentService {
 		// TODO Auto-generated method stub
 		return mapper.getPaymentNo(userId);
 	}
+
+	@Override
+	public PaymentVO selectStauts(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.selectStauts(userId);
+	}
+
+	@Override
+	public int minuseaining(String paymentNo) {
+		return mapper.minuseaining(paymentNo);
+	}
+
+	@Override
+	public String newPaymentNo(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.newPaymentNo(userId);
+	}
+
+	@Override
+	public PaymentVO selectScheduledByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.selectScheduledByUserId(userId);
+	}
+
+	@Override
+	public void monthlySubscriptionRefresh() {
+	
+	}
+
+	@Override
+	public List<AdminPaymentVO> selectPaymentStatistics() {
+		// TODO Auto-generated method stub
+		return mapper.selectPaymentStatistics();
+	}
+
+	@Override
+	public PaymentVO cancleSub(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.cancleSub(userId);
+	}
+
+	@Override
+	public List<String> allcompanyName() {
+		// TODO Auto-generated method stub
+		return mapper.allcompanyName();
+	}
+
+	@Override
+	public List<String> selectNewSubscribers() {
+		// TODO Auto-generated method stub
+		return mapper.selectNewSubscribers();
+	}
+
+	@Override
+	public List<String> selectChurnedSubscribers() {
+		// TODO Auto-generated method stub
+		return mapper.selectChurnedSubscribers();
+	}
+
+	@Override
+	public List<String> selectLeftSubscribers() {
+		// TODO Auto-generated method stub
+		return mapper.selectLeftSubscribers();
+	}
+
+
 
 	
 
