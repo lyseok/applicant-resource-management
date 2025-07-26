@@ -129,6 +129,36 @@ public class PaymentServiceImpl implements PaymentService {
 		return mapper.selectPaymentStatistics();
 	}
 
+	@Override
+	public PaymentVO cancleSub(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.cancleSub(userId);
+	}
+
+	@Override
+	public List<String> allcompanyName() {
+		// TODO Auto-generated method stub
+		return mapper.allcompanyName();
+	}
+
+	@Override
+	public List<String> selectNewSubscribers() {
+		// TODO Auto-generated method stub
+		return mapper.selectNewSubscribers();
+	}
+
+	@Override
+	public List<String> selectChurnedSubscribers() {
+		// TODO Auto-generated method stub
+		return mapper.selectChurnedSubscribers();
+	}
+
+	@Override
+	public List<String> selectLeftSubscribers() {
+		// TODO Auto-generated method stub
+		return mapper.selectLeftSubscribers();
+	}
+
 
 
 	

@@ -2,9 +2,11 @@ package kr.or.ddit.company.payment.payment.controller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,16 +16,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,12 +33,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.or.ddit.company.common.company.service.CompanyServiceImpl;
 import kr.or.ddit.company.payment.link.service.PaymentProductLinkService;
 import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.payment.payment.service.TossPaymentService;
 import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
-import kr.or.ddit.vo.common.PaymentProductLinkVO;
 import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
@@ -63,47 +59,42 @@ public class PaymentController {
 	private PaymentProductLinkService lservice;
 	
 	 @PostMapping("/cancel/subscription")
+	 @ResponseBody
 	    public String cancelSubscription(
 	    		@RequestParam String paymentNo
 	    		, Model model) throws Exception {
+		 			
+		 
 	        // 1. DB에서 billingKey 가져오기
-	        String billingKey = service.checkbilling(service.getUserId());
-	        
-	        if (billingKey == null) {
-	            throw new RuntimeException("BillingKey를 찾을 수 없습니다.");
+		 	String PN = service.getPaymentNo(service.getUserId());
+		 	PaymentVO vo = service.selectPaymentByPk(PN);
+		 
+		 	log.info("취소시 vo 값 : {}" , vo);
+	             
+	        if (vo == null) {
+	            throw new RuntimeException("정보 를 찾을 수 없습니다.");
 	        }
-
+	        
+	        String billingKey = vo.getPaymentBillingKey();
+	        String paymentKey = vo.getPaymentKey();
+	        String orderId = vo.getPaymentOrderId();
+	        String customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
+	        
+	        log.info("취소시 billinbKey의 값 : {}",vo );
 	        // 2. Toss로 해지 요청
-	        String result = tossPaymentService.deactivateBillingKey(billingKey);
-
+	        String result = tossPaymentService.deactivateBillingKey(billingKey ,orderId, paymentKey , customerKey);
+	        log.info("resutl : {}", result);
 	        // 3. DB 상태 업데이트 (선택)
 	        service.cancelPayment(paymentNo);
 
 	        return result; // Toss 응답 그대로 반환
 	    }
-	 
-
-	@PostMapping("/cancel/payment")
-	public String cancelPayment(
-			@RequestParam String paymentNo,
-            @RequestParam String productNo,
-            Model model) throws Exception {
-// DB에서 paymentKey 조회 (paymentNo로 Toss paymentKey 매핑)
-		String paymentKey = service.getPaymentNo(service.getUserId());
-
-// Toss 결제 취소 호출
-		String result = tossPaymentService.cancelPayment(paymentKey, "사용자 요청: 정기결제 해지");
-
-// 성공 메시지 모델에 담기
-			model.addAttribute("cancelResult", result);
-			return "company/payment/payment/CanclePayment";  // 취소 결과 페이지
-}
-		
+	
 
 	@PostMapping("/product/change/confirm")
 	@ResponseBody
 	public ResponseEntity<?> changeProduct(@RequestBody Map<String, String> payload) {
-
+		String orderId = payload.get("orderId");
 		String oldPaymentNo = payload.get("oldPaymentNo");
 		String newProductNo = payload.get("newProductNo");
 		String billingKey = payload.get("billingKey");
@@ -141,7 +132,7 @@ public class PaymentController {
 		newPayment.setStartDate(nextStart.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 		newPayment.setEndDate(nextEnd.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 		newPayment.setStatus("S");
-
+		newPayment.setPaymentOrderId(orderId);
 		log.info("newPayment: {}", newPayment);
 		service.comePayment(newPayment);
 
@@ -158,7 +149,7 @@ public class PaymentController {
 		log.info("productList의 값 : {}", productList);
 		payment.setPaymentProductList(productList);
 		log.debug("payment의 값 : {}", payment);
-
+		
 		model.addAttribute("payment", payment);
 		List<PaymentProductVO> allProducts = pservice.selectPaymentProductList();
 		List<PaymentProductVO> changeableProducts = allProducts.stream()
@@ -306,15 +297,21 @@ public class PaymentController {
 	}
 
 	@GetMapping("/success/executebilling")
-	String successBuy(@RequestParam("billingKey") String billingKey, @RequestParam("amount") String amount,
-			@RequestParam("orderName") String orderName, @RequestParam("paymentKey") String paymentKey, Model model) {
+	String successBuy(@RequestParam("billingKey") String billingKey
+			, @RequestParam("amount") String amount
+			,@RequestParam("orderName") String orderName
+			,@RequestParam("paymentKey") String paymentKey
+			,@RequestParam("orderId") String orderId
+			, Model model
+					) {
+		log.info("orderId : {}", orderId);
 		log.info("billingKey: {}", billingKey);
 		log.info("amount: {}", amount);
 		log.info("orderName: {}", orderName);
 		log.info("paymentKey: {}", paymentKey);
 		PaymentVO vo = new PaymentVO();
 		PaymentProductVO product = pservice.selectPaymentProductByName(orderName);
-
+		vo.setPaymentKey(paymentKey);
 		vo.setUserId(service.getUserId());
 		vo.setProductNo(product.getProductNo());
 		vo.setPaymentMethod("카드");
@@ -325,7 +322,7 @@ public class PaymentController {
 		List<PaymentProductVO> productList = new ArrayList<>();
 		productList.add(product);
 		vo.setPaymentProductList(productList);
-
+		vo.setPaymentOrderId(orderId);
 		log.info("어 이게 뭐지 : {}", vo);
 		service.insertPayment(vo);
 		service.updateComPaymentStatus(vo.getUserId());

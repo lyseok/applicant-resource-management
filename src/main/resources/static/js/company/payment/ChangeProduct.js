@@ -32,11 +32,12 @@ async function doChangeBilling(event, btn) {
 	const oldproduct = document.getElementById("oldProduct");
 	const oldProductNo = oldproduct.dataset.productNo;      // 현재 사용 중인 상품 번호
 	const newProductNo = btn.dataset.productNo;                // 새로 선택한 상품 번호
-
+	
 	console.log("현재 상품 번호 (oldProductNo):", oldProductNo );
 	console.log("바꿀 상품 번호 (newProductNo):", newProductNo);
 	const productName = btn.dataset.productName;
 	const billingKey = btn.dataset.billingKey;
+	const orderId = btn.dataset.orderId;
 	const amount = Number(btn.dataset.amount);
 	const oldPaymentNo = oldproduct.dataset.paymentNo;
 	const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
@@ -70,7 +71,8 @@ async function doChangeBilling(event, btn) {
 		billingKey,
 		customerKey,
 		amount,
-		orderName: productName
+		orderName: productName,
+		orderId
 	})
 });
 	alert("돌아왔니 ?!");
@@ -104,7 +106,8 @@ try {
 		oldPaymentNo,
 		newProductNo,
 		billingKey,
-		paymentKey: billingData.paymentKey
+		paymentKey: billingData.paymentKey,
+		orderId
 	})
 });
 	alert("돌아왔니 ?! 2");

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.or.ddit.company.payment.payment.service.PaymentService;
 import kr.or.ddit.company.payment.product.service.PaymentProductService;
 import kr.or.ddit.vo.common.AdminPaymentVO;
+import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
@@ -51,22 +52,24 @@ public class AdminPaymentController {
 			Model model
 			) {
 		List<AdminPaymentVO> getPaymentStatistics = pservice.selectPaymentStatistics();
-
-//		List<PaymentVO> pvo = pservice.selectPaymentList();
-//		List<PaymentProductVO> vo = service.selectPaymentProductList();
-//		log.info("pvo : {}", pvo);
-//		log.info("vo : {}", vo );
-//		model.addAttribute("vo",vo);
-//		model.addAttribute("pvo", pvo);
+		List<String> allcompany = pservice.allcompanyName();
+		List<String> newSubscribers = pservice.selectNewSubscribers();
+		List<String> ChurnedSubscribers = pservice.selectChurnedSubscribers();
+		List<String> LeftSubscribers = pservice.selectLeftSubscribers();
 		
-		 // 구독자 데이터 (예시 값, 실제 서비스에서 가져오기)
-	    model.addAttribute("newSubs", 120);
-	    model.addAttribute("activeSubs", 850);
-	    model.addAttribute("churnedSubs", 45);
+		log.info("이건 뭐라 나오나 보자 : {}", allcompany);
+		
+	
+	    model.addAttribute("newSubs", newSubscribers.size());			// 신규 구독자
+	    model.addAttribute("activeSubs", allcompany.size());			// 회원수
+	    model.addAttribute("churnedSubs", ChurnedSubscribers.size());	// 해지 구독자
+	    model.addAttribute("leftSubscribers", LeftSubscribers);			// 최근 해지
+	    
 	    log.info("getPaymentStatistics", getPaymentStatistics);
-	    // 전년도/올해 매출 (예시 데이터)
-	    model.addAttribute("lastYearSales", List.of(100, 200, 150, 180, 220, 250, 270, 300, 310, 290, 330, 400));
-	    model.addAttribute("thisYearSales", List.of(120, 230, 170, 200, 240, 280, 300, 320, 340, 310, 350, 420));
+	
+	    // 전년도 올해 매출
+	    model.addAttribute("lastYearSales", List.of(100, 200, 150, 180, 220, 250, 270, 300, 310, 290, 330, 400));	// 작년 매출	
+	    model.addAttribute("thisYearSales", List.of(120, 230, 170, 200, 240, 280, 300, 320, 340, 310, 350, 420));	// 올해 매출 	
 
 		model.addAttribute("getPaymentStatistics",getPaymentStatistics);
 			

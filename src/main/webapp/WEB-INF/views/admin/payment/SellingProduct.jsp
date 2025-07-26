@@ -10,6 +10,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+<form class="row g-2 mb-4" method="get" action="/admin/payment/select/product">
+  <div class="col-auto">
+    <label for="startDate" class="form-label">시작일</label>
+    <input type="date" class="form-control" name="startDate" id="startDate" value="${param.startDate}">
+  </div>
+  <div class="col-auto">
+    <label for="endDate" class="form-label">종료일</label>
+    <input type="date" class="form-control" name="endDate" id="endDate" value="${param.endDate}">
+  </div>
+  <div class="col-auto align-self-end">
+    <button type="submit" class="btn btn-primary">📆 기간 필터 적용</button>
+  </div>
+</form>
+
 <div class="container my-5">
     <h2 class="mb-4">📊 상품별 매출 현황</h2>
 
@@ -32,33 +46,44 @@
     </div>
 
     <!-- 상품별 매출 상세 테이블 -->
-    <div class="mt-5">
-        <h4>상품별 상세 매출 내역</h4>
-        <table class="table table-bordered table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>상품명</th>
-                    <th>상품타입</th>
-                    <th>당월 매출액</th>
-                    <th>총 매출액</th>
-                    <th>당월 판매수</th>
-                    <th>총 판매수</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="row" items="${getPaymentStatistics}">
-                    <tr>
-                        <td>${row.productName}</td>
-                        <td>${row.productType}</td>
-                        <td><fmt:formatNumber value="${row.monthlySalesAmount}" type="currency" currencySymbol="₩"/></td>
-                        <td><fmt:formatNumber value="${row.totalSalesAmount}" type="currency" currencySymbol="₩"/></td>
-                        <td>${row.monthlySalesCount}</td>
-                        <td>${row.totalSalesCount}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
+  <div class="mt-5">
+  <h4 class="fw-bold mb-4">📦 상품별 상세 매출 내역</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-secondary text-center">
+        <tr>
+          <th>상품명</th>
+          <th>상품타입</th>
+          <th>당월 매출액</th>
+          <th>총 매출액</th>
+          <th>당월 판매수</th>
+          <th>총 판매수</th>
+        </tr>
+      </thead>
+      <tbody>
+        <c:forEach var="row" items="${getPaymentStatistics}">
+          <tr>
+            <td class="fw-semibold">${row.productName}</td>
+            <td class="text-center">
+              <c:choose>
+                <c:when test="${row.productType == 'L'}">정기권</c:when>
+                <c:when test="${row.productType == 'S'}">단건</c:when>
+                <c:otherwise>${row.productType}</c:otherwise>
+              </c:choose>
+            </td>
+            <td class="text-end">
+              <fmt:formatNumber value="${row.monthlySalesAmount}" type="currency" currencySymbol="₩" />
+            </td>
+            <td class="text-end">
+              <fmt:formatNumber value="${row.totalSalesAmount}" type="currency" currencySymbol="₩" />
+            </td>
+            <td class="text-center">${row.monthlySalesCount}</td>
+            <td class="text-center">${row.totalSalesCount}</td>
+          </tr>
+        </c:forEach>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- JS로 전달할 데이터 -->
