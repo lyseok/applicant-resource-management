@@ -29,6 +29,7 @@
             ar.applicant_id,
             rp.recruitment_no,
             rn.recruitment_title,
+            rn.user_id,
             rp.recruit_process_step AS step,
             rp.recruit_process_type AS step_type,
             ar.STEP_PASS_YN AS pass,
@@ -38,7 +39,7 @@
             i.interview_location,
             i.interview_type,
             CASE
-                WHEN i.interview_type = 'VIDEO' THEN TO_CHAR(ar.evaluation_start_time, 'YYYY-MM-DD HH24:MI')
+                WHEN i.interview_type = 'Y' THEN TO_CHAR(ar.evaluation_start_time, 'YYYY-MM-DD HH24:MI')
                 ELSE TO_CHAR(i.interview_date, 'YYYY-MM-DD HH24:MI')
             END AS interview_datetime
         FROM applicant_record ar
@@ -51,11 +52,13 @@
         LEFT JOIN interview i 
             ON rp.recruit_process_no = i.process_no
         WHERE ar.applicant_id IN (SELECT applicant_id FROM base_applicants)
+        AND rn.recruitment_del_date is null
 	</select>
 	
 	<select id="selectCompanyScrab">
 	SELECT 
 	    c.RECRUITMENT_NO
+	    , c.USER_ID
 	    , c.RECRUITMENT_TITLE
 	    , c.RECRUITMENT_STARTDATE
 	    , c.RECRUITMENT_FINISH_DATE
@@ -68,6 +71,7 @@
 	<select id="selectRecruitScrab">
 	SELECT 
 	    c.RECRUITMENT_NO
+	    , c.USER_ID
 	    , c.RECRUITMENT_TITLE
 	    , c.RECRUITMENT_STARTDATE
 	    , c.RECRUITMENT_FINISH_DATE
@@ -80,10 +84,11 @@
 	<select id="selectMyScheduleById">
 	SELECT 
 	    SCHEDULE_NO
+	    , USER_ID
 	    , SCHEDULE_NAME
 	    , SCHEDULE_CONTENT
-	    , TO_CHAR(SCHEDULE_START_DATE, 'YYYY-MM-DD HH24:MI')
-	    , TO_CHAR(SCHEDULE_END_DATE, 'YYYY-MM-DD HH24:MI')
+	    , TO_CHAR(SCHEDULE_START_DATE, 'YYYY-MM-DD HH24:MI') as scheduleStartDate
+	    , TO_CHAR(SCHEDULE_END_DATE, 'YYYY-MM-DD HH24:MI') as scheduleEndDate
 	FROM SCHEDULE
 	WHERE USER_ID = #{userId}
 	</select>
@@ -114,11 +119,9 @@
 	<update id="updateSchedule">
 		UPDATE SCHEDULE
 			SET 
-			USER_ID = #{userId}
-				, SCHEDULE_NAME = #{scheduleName}
-				, SCHEDULE_CONTENT = #{scheduleContent}
-				, SCHEDULE_START_DATE = #{scheduleStartDate}
-				, SCHEDULE_END_DATE = #{scheduleEndDate}
+				SCHEDULE_NAME = #{scheduleName}
+				, SCHEDULE_START_DATE = #{scheduleStartTimestamp}
+				, SCHEDULE_END_DATE = #{scheduleEndTimestamp}
 			WHERE SCHEDULE_NO = #{scheduleNo}
 	</update>
 	<delete id="deleteSchedule">

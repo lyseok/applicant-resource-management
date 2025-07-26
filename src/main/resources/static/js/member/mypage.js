@@ -1,85 +1,116 @@
-/**
- * 
- */
 document.addEventListener("DOMContentLoaded", function () {
-	var calendarEl = document.getElementById('calendar');
-	
-	var calendar = new FullCalendar.Calendar(calendarEl, {
-	        initialView: 'dayGridMonth',
-	        locale: 'ko',
-	        timeZone: 'local',
-	        editable: true,  // 드래그 & 수정 가능
-	        selectable: true, // 드래그로 새 일정 선택 가능
-	        headerToolbar: {
-	            left: 'prev,next today',
-	            center: 'title',
-	            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-	        },
-	        eventSources: [
-	            {
-	                url: '/ajax/schedule/recruitAll',
-	                method: 'GET',
-	                color: '#4e73df',
-	                editable: false  // 읽기 전용
-	            },
-	            {
-	                url: '/ajax/schedule/custom',
-	                method: 'GET',
-	                color: '#f6c23e',
-	                editable: true  // 사용자 일정은 수정 가능
-	            }
-	        ],
+  var calendarEl = document.getElementById('calendar');
+  let selectedEvent = null;
 
-	        // 일정 등록
-	        select: function(info) {
-	            var title = prompt('일정 제목을 입력하세요:');
-	            if (title) {
-	                fetch('/ajax/schedule/custom', {
-	                    method: 'POST',
-	                    headers: { 'Content-Type': 'application/json' },
-	                    body: JSON.stringify({
-	                        title: title,
-	                        start: info.startStr,
-	                        end: info.endStr
-	                    })
-	                }).then(() => calendar.refetchEvents());
-	            }
-	        },
+  const modal = new bootstrap.Modal(document.getElementById('eventViewModal'));
 
-	        // 일정 클릭 시 수정/삭제
-	        eventClick: function(info) {
-	            if (info.event.source.url.includes('/custom')) {  // 개인 일정만 수정 가능
-	                var choice = confirm('이 일정을 삭제하시겠습니까? (취소 시 수정)');
-	                if (choice) {
-	                    fetch('/ajax/schedule/custom/' + info.event.id, { method: 'DELETE' })
-	                        .then(() => calendar.refetchEvents());
-	                } else {
-	                    var newTitle = prompt('새 일정 제목을 입력하세요:', info.event.title);
-	                    if (newTitle) {
-	                        fetch('/ajax/schedule/custom/' + info.event.id, {
-	                            method: 'PUT',
-	                            headers: { 'Content-Type': 'application/json' },
-	                            body: JSON.stringify({ title: newTitle })
-	                        }).then(() => calendar.refetchEvents());
-	                    }
-	                }
-	            }
-	        },
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'ko',
+    timeZone: 'local',
+    editable: true,
+    selectable: true,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    eventSources: [
+      {
+        url: '/ajax/schedule/recruit',
+        method: 'GET',
+        color: '#4e73df',
+        editable: false
+      },
+      {
+        url: '/ajax/schedule/custom',
+        method: 'GET',
+        color: '#f6c23e',
+        editable: true
+      }
+    ],
+    select: function(info) {
+      const title = prompt("일정 제목을 입력하세요:");
+      if (title) {
+        fetch('/ajax/schedule/custom', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scheduleName: title,
+            scheduleStartDate: info.startStr,
+            scheduleEndDate: info.endStr
+          })
+        }).then(() => calendar.refetchEvents());
+      }
+    },
+    eventClick: function(info) {
+      selectedEvent = info.event;
 
-	        // 드래그로 날짜 변경
-	        eventDrop: function(info) {
-	            if (info.event.source.url.includes('/custom')) {
-	                fetch('/ajax/schedule/custom/' + info.event.id, {
-	                    method: 'PUT',
-	                    headers: { 'Content-Type': 'application/json' },
-	                    body: JSON.stringify({
-	                        start: info.event.start.toISOString(),
-	                        end: info.event.end ? info.event.end.toISOString() : null
-	                    })
-	                });
-	            }
-	        }
-	    });
+      // 값 세팅
+		document.getElementById('modalTitleInput').value = selectedEvent.title;
+		document.getElementById('modalStartInput').value = selectedEvent.start.toISOString().slice(0, 16);
+		document.getElementById('modalEndInput').value = selectedEvent.end ? selectedEvent.end.toISOString().slice(0, 16) : '';
 
-	    calendar.render();
-	});
+      // 사용자 일정만 수정/삭제 버튼 보이게
+      const customControls = document.getElementById('customControls');
+      if (selectedEvent.source.url.includes('/custom')) {
+        customControls.style.display = 'flex';
+      } else {
+        customControls.style.display = 'none';
+      }
+
+      modal.show();
+    },
+    eventDrop: function(info) {
+      if (info.event.source.url.includes('/custom')) {
+        fetch('/ajax/schedule/custom/update/' + info.event.id, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+			scheduleNo: info.event.id,
+			scheduleName: info.event.title,
+            scheduleStartDate: info.event.start.toISOString(),
+            scheduleEndDate: info.event.end ? info.event.end.toISOString() : null
+          })
+        });
+      }
+    }
+  });
+
+  document.getElementById('editBtn').addEventListener('click', function () {
+  const newTitle = document.getElementById('modalTitleInput').value;
+  const newStart = document.getElementById('modalStartInput').value;
+  const newEnd = document.getElementById('modalEndInput').value;
+
+  if (newTitle && newStart) {
+    fetch('/ajax/schedule/custom/update/' + selectedEvent.id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        scheduleNo: selectedEvent.id,
+        scheduleName: newTitle,
+        scheduleStartDate: newStart,
+        scheduleEndDate: newEnd || null
+      })
+    }).then(() => {
+      modal.hide();
+      calendar.refetchEvents();
+    });
+  } else {
+    alert('제목과 시작 시간은 필수입니다!');
+  }
+});
+
+  // 삭제 버튼
+  document.getElementById('deleteBtn').addEventListener('click', function () {
+    if (confirm("정말 삭제하시겠습니까?")) {
+      fetch('/ajax/schedule/custom/' + selectedEvent.id, { method: 'DELETE' })
+        .then(() => {
+          modal.hide();
+          calendar.refetchEvents();
+        });
+    }
+  });
+
+  calendar.render();
+});

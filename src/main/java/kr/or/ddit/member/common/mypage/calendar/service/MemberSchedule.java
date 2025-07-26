@@ -8,7 +8,7 @@ import kr.or.ddit.vo.common.ScheduleVO;
 public interface MemberSchedule {
 	
 	public List<Map<String, Object>> getRecruitCalendar();
-	public List<ScheduleVO> getMyPersonalSchedule();
+	public List<Map<String, Object>> getMyPersonalSchedule();
 	public void addSchedule(ScheduleVO vo);
 	public void updateSchedule(ScheduleVO vo);
 	public void deleteSchedule(String scheduleNo);
