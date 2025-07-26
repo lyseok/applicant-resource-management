@@ -52,6 +52,7 @@ public class RecruitmentNoticeVO implements Serializable{
 	private String recruitmentDelDate;
 	
 	
+	private String comName;
 	@Valid
 	private List<RecruitmentPositionVO> positionList;
 	@Valid
