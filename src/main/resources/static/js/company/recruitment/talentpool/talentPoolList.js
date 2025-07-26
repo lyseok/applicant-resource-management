@@ -457,19 +457,19 @@ const paramsSerializer = function (params) {
 };
 
 // ============================== 체크박스 상태 관리 ==============================
-let savedTalentList = []; // 서버에서 처음 받아온 기존 인재풀
-let talentList = []; // 현재 체크된 인재풀
+let savedTalentList = []; //  기존 인재풀
+let talentList = []; // 수정 인재풀
 
-// 1. 페이지 로드 시 기존 저장된 리스트 불러오기
+// 페이지 로드 시 기존 저장된 리스트 불러오기
 function loadSavedTalentList() {
   axios.get('/ajax/company/talentpool/savelist').then((res) => {
     savedTalentList = res.data || [];
-    talentList = [...savedTalentList]; // 초기 선택 상태 복사
+    talentList = [...savedTalentList];
     applyCheckboxStates();
   });
 }
 
-// 2. 체크박스 상태 반영
+// 체크박스 상태 반영
 function applyCheckboxStates() {
   document.querySelectorAll('tbody .checkbox').forEach((checkbox) => {
     const userId = checkbox.dataset.userId;
@@ -477,7 +477,7 @@ function applyCheckboxStates() {
   });
 }
 
-// 3. 체크박스 변경 시 talentList 갱신
+// 체크박스 변경 시 talentList 갱신
 document.addEventListener('change', function (e) {
   if (e.target.classList.contains('checkbox') && e.target.closest('tbody')) {
     const userId = e.target.dataset.userId;
@@ -490,7 +490,7 @@ document.addEventListener('change', function (e) {
   }
 });
 
-// 4. 증분 저장 (추가/삭제만)
+// 증분 저장
 document.getElementById('addTalent').addEventListener('click', function () {
   // 추가된 리스트
   const addList = talentList.filter((id) => !savedTalentList.includes(id));
