@@ -45,10 +45,11 @@
 	
 	<select id="selectApplicantMail">
 	SELECT
-	M.MEM_EMAIL
-	FROM APPLICANT A
-	NATURAL JOIN MEMBER M
-	WHERE APPLICANT_ID = #{applicantId}
+	    MEM_EMAIL
+	FROM APPLICANT a 
+	JOIN MEMBER m
+	ON a.user_id = m.user_id
+	WHERE APPLICANT_ID = #{applicant_id}
 	</select>
 	
 	<insert id="insertApplicant">

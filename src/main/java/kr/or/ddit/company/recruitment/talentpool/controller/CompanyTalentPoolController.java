@@ -14,4 +14,8 @@ public class CompanyTalentPoolController {
 	public String talentpoolPage() {
 		return "company/recruitment/talentpool/talentPoolList";
 	}	
+	@GetMapping("/scrab")
+	public String myTalentpoolPage() {
+		return "company/recruitment/talentpool/myTalentPoolList";
+	}	
 }
