@@ -1,12 +1,16 @@
-/**
+
+					/**
  * 
  */
 const searchInput = document.getElementById('search-title');
 const filterSelect = document.getElementById('filter-period');
 const sortSelect = document.getElementById('sort-date');
+const totalCount = document.getElementById('exam-count');
 
 let recruitmentData = [];
 let filteredData = [];
+let currentPage = 1;
+
 
 function truncateText(text, maxLength) {
     if (!text) return '공고 내용 없음';
@@ -86,17 +90,76 @@ function renderPagination(totalItems) {
     paginationContainer.innerHTML = '';
     const itemsPerPage = 5;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+     // ✅ 이전 버튼
+    const prevBtn = document.createElement('a');
+    prevBtn.className = 'BtnType SizeS BtnPrev';
+    prevBtn.textContent = '이전';
+    prevBtn.href = 'javascript:void(0)';
+    // ❗ 첫 페이지면 비활성화
+		if (currentPage === 1) {
+		    prevBtn.classList.add('disabled');
+		} else {
+		    prevBtn.addEventListener('click', (e) => {
+		        e.preventDefault();
+		        currentPage--; // ✅ 이전 페이지로 이동
+		        renderPage(currentPage);
+		        renderPagination(totalItems);
+		    });
+		}
+    paginationContainer.appendChild(prevBtn);
 
     for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'btn btn-sm btn-outline-secondary mx-1';
-        btn.textContent = i;
-        btn.addEventListener('click', () => renderPage(i));
-        paginationContainer.appendChild(btn);
+			if (i === currentPage) {
+            // ✅ 현재 페이지는 <span>
+            const span = document.createElement('span');
+            span.className = 'BtnType SizeS page active';
+            span.textContent = i;
+            paginationContainer.appendChild(span);
+        } else{
+	        const btn = document.createElement('button');
+	        btn.className = 'BtnType SizeS page';
+	        btn.textContent = i;	        
+          btn.addEventListener('click', () => {
+              currentPage = i; // 페이지 업데이트
+              renderPage(currentPage);
+              renderPagination(totalItems); // 페이지 다시 그림
+          });
+	        paginationContainer.appendChild(btn);
+        }
     }
+    
+     // ✅ 다음 버튼
+    const nextBtn = document.createElement('a');
+    nextBtn.className = 'BtnType SizeS BtnNext';
+    nextBtn.textContent = '다음';
+    nextBtn.href = 'javascript:void(0)';
+    nextBtn.disabled = currentPage === totalPages; // 마지막 페이지면 비활성화
+    
+		// 마지막 페이지면 disabled 클래스만 추가
+		if (currentPage === totalPages) {
+		    nextBtn.classList.add('disabled');
+		}		
+		// 클릭 이벤트
+		nextBtn.addEventListener('click', (e) => {
+		    e.preventDefault();
+		
+		    // disabled 클래스가 있으면 무시
+		    if (nextBtn.classList.contains('disabled')) return;
+		
+		    currentPage++;
+		    renderPage(currentPage);
+		    renderPagination(totalItems);
+		});
+
+    paginationContainer.appendChild(nextBtn);
 }
 
 function renderPage(page) {
+		// 총 갯수 표시
+		totalCount.innerHTML = `${filteredData.length}`;
+		
+		currentPage = page;
     const listContainer = document.getElementById('recruitment-list');
     const itemsPerPage = 5;
     listContainer.innerHTML = '';
@@ -105,11 +168,10 @@ function renderPage(page) {
     const paginatedItems = filteredData.slice(start, end);
 
     paginatedItems.forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'd-flex align-items-center justify-content-between border rounded p-3 mb-3 bg-white shadow-sm';
+        const row = document.createElement('ul');
 
         const statusDiv = document.createElement('div');
-        statusDiv.className = 'text-end small text-muted';
+        statusDiv.className = 'd-flex gap-1 flex-column align-items-center lh1 w100p';
 
         const isPassedFinal = item.PASS === 'Y' && item.FINAL === 'Y';
         const accepted = item.RECRUIT_ACCEPT_YN === 'Y';
@@ -117,21 +179,24 @@ function renderPage(page) {
 
         let label = '';
         if (accepted) {
-            label = '🎉 최종 합격 • 수락 완료';
+            label = '🎉 최종 합격';
         } else if (isPassedFinal) {
             label = `${item.STEP}단계 ${mapStepType(item.STEP_TYPE)} 합격`;
         } else {
             label = `${item.STEP}단계 ${mapStepType(item.STEP_TYPE)} 심사중`;
         }
 
-        statusDiv.innerHTML = `<div>${label}</div>`;
+        statusDiv.innerHTML = `<div class="fs-14 fw-bold">${label}</div>`;
 
         // PASSER 정보 표시
         if (isPassedFinal && hasPasser) {
             statusDiv.innerHTML += `
-                <div class="mt-1 small">
-                    📥 수락여부: ${item.RECRUIT_ACCEPT_YN === 'Y' ? '✔ 수락 완료' : '❗ 수락 대기'}<br/>
-                    🗓 채용일자: ${item.HIRE_DATE ?? '-'}
+                <div class="d-flex align-items-center fs-12 text-center my-2 gap-2">
+	                <div class="d-flex align-items-center gap-1">
+		                <span class="material-symbols-outlined fs-5">calendar_today</span>
+		                <span class="text-muted fw-bold">입사일자</span>
+	                </div> 
+	                <p>${item.HIRE_DATE ?? '협의'}</p>
                 </div>
             `;
         }
@@ -139,7 +204,7 @@ function renderPage(page) {
         // 채용 수락 버튼
         if (isPassedFinal && !accepted) {
             const acceptBtn = document.createElement('button');
-            acceptBtn.className = 'btn btn-sm btn-success mt-1';
+            acceptBtn.className = 'btn btn-sm  btn_violet mt-1';
             acceptBtn.innerText = '채용 수락하기';
             acceptBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
@@ -154,7 +219,21 @@ function renderPage(page) {
                     if (res.status === 200) {
                         acceptBtn.disabled = true;
                         acceptBtn.innerText = '수락 완료';
-                        statusDiv.innerHTML = `<div>🎉 최종 합격 • 수락 완료</div>`;
+                        if (item.HIRE_DATE) {
+											    statusDiv.innerHTML = `
+											    	<div class="fs-14 fw-bold">🎉 최종 합격</div>
+										        <div class="d-flex align-items-center fs-12 text-center my-2 gap-2">
+									            <div class="d-flex align-items-center gap-1">
+								                <span class="material-symbols-outlined fs-5">calendar_today</span>
+								                <span class="text-muted fw-bold">입사일자</span>
+									            </div> 
+									            <p>${item.HIRE_DATE}</p>
+										        </div>
+											    `;
+												} else{
+	      									statusDiv.innerHTML = `<div class="fs-14 fw-bold">🎉 최종 합격</div>`;													
+												}
+
                     } else {
                         alert('수락 실패');
                     }
@@ -165,22 +244,67 @@ function renderPage(page) {
             });
             statusDiv.appendChild(acceptBtn);
         }
+        
+        
+        if (item.RECRUITMENTFINISHDATE) {
+			    const endDate = new Date(item.RECRUITMENTFINISHDATE); // 마감일
+					console.log(endDate);
+			    const today = new Date();
+					const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+					const todayWeekdayKor = weekDays[today.getDay()]; // 0: 일요일 ~ 6: 토요일
+			
+			    // 시간은 비교에서 제외하고, 날짜만 비교 (연-월-일 기준)
+			    const endYMD = endDate.toISOString().split('T')[0];
+			    const todayYMD = today.toISOString().split('T')[0];
+			
+			    if (endYMD > todayYMD) {
+						const [_, mm, dd] = endYMD.split('-');              // ["2025", "09", "09"]
+			      finishDateText = `~${mm}-${dd}(${todayWeekdayKor})`;
+			    } else {
+			        finishDateText = '공고 마감';
+			    }
+				}
+
 
         row.innerHTML = `
-            <div class="flex-grow-1" style="cursor:pointer;" onclick="location.href='/recruit_notice/${item.RECRUITMENTNO}'">
-                <h5 class="fw-bold mb-1">${item.RECRUITMENTTITLE || '(제목 없음)'}</h5>
-                <div class="text-muted small">
-                    <strong>지역:</strong> ${item.cityCodeName || '-'} ${item.districtCodeName || '-'} |
-                    <strong>직무:</strong> ${item.jobCodeName || '-'} |
-                    <strong>경력:</strong> ${item.yearCodeName || '-'} |
-                    <strong>급여:</strong> ${item.SALARY || '-'}<br/>
-                    <strong>등록일:</strong> ${item.RECRUITMENTSTARTDATE?.substring(0, 10) || '-'} |
-                    <strong>마감일:</strong> ${item.RECRUITMENTFINISHDATE?.substring(0, 10) || '-'}
-                </div>
-            </div>
-        `;
+        <li class="p-4 border-bottom d-flex justify-content-between align-items-center recruit_list gap-5">
+        	<div class="d-flex flex-fill align-items-start">
+	        	<div class="com_name_box viewat_box">
+							<h6 class="recruit_comName mb-1 text-muted">${item.COM_NAME || '-'}</h6>
+							<div class="label">${finishDateText}</div>
+						</div>
+						<div class="recruit_tit"> 
+	          	<a class="d-block fs16 fw-bold m-0" href="/recruit_notice/${item.RECRUITMENTNO}">${item.RECRUITMENTTITLE || '(제목 없음)'}</a>     	
+							<div class="d-flex align-items-center">
+								<span class="fs-14 text-muted">${item.jobCodeName || '-'}</span>
+							</div>
+							<span class="fs-14 text-secondary d-block mt-2">${item.RECRUITMENTSTARTDATE?.substring(0, 10) || '-'}</span>
+						</div>
+	          <div class="recruit_info">
+	          	<div class="d-flex align-items-center">
+	          		<span class="material-symbols-outlined">distance</span>
+	          		<span class="">${item.cityCodeName || '-'} ${item.districtCodeName || '-'}</span>
+	        		</div>
+							<div class="d-flex align-items-center">
+								<span class="material-symbols-outlined">money_bag</span>
+								<span class="num_line">${item.SALARY === '0'? '협의 후 결정': item.SALARY + '만원' || '-'}</span>
+							</div> 
+							<div class="d-flex align-items-center">
+								<span class="material-symbols-outlined">business_center</span>
+								<span class="num_line">${item.yearCodeName || '-'}</span>
+							</div>
+	          </div>
+	        </div>
 
-        row.appendChild(statusDiv);
+						<div class="d-flex gap-1" id="btn_wrap">
+							
+						</div>
+					</li>
+        `;
+				const btnWrap = row.querySelector('#btn_wrap');
+				btnWrap.appendChild(statusDiv);
+
+        // row.appendChild(statusDiv);
         listContainer.appendChild(row);
     });
 }

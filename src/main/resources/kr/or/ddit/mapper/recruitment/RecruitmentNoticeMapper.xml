@@ -111,6 +111,8 @@
 	<select id="selectApplicatedNotice">
 	SELECT
 		R.RECRUITMENT_NO AS recruitmentNo,
+        R.USER_ID AS userId,
+        (SELECT COM_NAME FROM COMPANY WHERE USER_ID = R.USER_ID) AS COM_NAME, 
 		R.RECRUITMENT_TITLE AS recruitmentTitle,
 		R.JOB_CODE AS jobCode,
 		R.YEAR_CODE as yearCode,
@@ -128,6 +130,7 @@
 	WHERE A.USER_ID = #{userId}
 	GROUP BY
 		R.RECRUITMENT_NO,
+        R.USER_ID,
 		R.RECRUITMENT_TITLE,
 		R.JOB_CODE,
 		R.YEAR_CODE,
