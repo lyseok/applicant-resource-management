@@ -249,7 +249,7 @@
 	                                        </div>
 	                                    </div>
 	                                    <div class="viewport">
-	                                        <div class="overview" id="first_cityopt">
+	                                        <div class="overview" style="top: -10px;" id="first_cityopt">
 	                                            <ul>
 	                                            </ul>
 	                                        </div>
@@ -265,7 +265,8 @@
 	                                    </div>
 	                                    <div class="viewport">
 	                                        <div class="overview" style="top: 0px;">
-	                                            <div class="wrap_list_check" id="second_cityopt">
+	                                            <div class="wrap_list_check" id="second_cityopt">  <!-- 따로 부여한 아이디 -->
+	                                            <!-- 비동기로 들어갈 지역구 부분 -->    
 	                                                <div class="area_btn">
 	                                                    <button type="button" class="btn_all_category" data-logging-flow="area">지역 펼쳐보기</button>
 	                                                    <button type="button" class="btn_reset">지역 초기화</button>
@@ -329,13 +330,14 @@
                                             {{/hasCountInJobCategory}}
                                         {{/mclsList}}
                                     	</script>
+                                    	<!-- 비동기로 상위직업 버튼 들어갈 부분 -->
 	                                </div>
 	                                <div class="box_detail_jobs" style="display:none;">
-	                                    <div class="box_onedepth" style="height: 202px;">
+	                                    <div class="box_onedepth">
 	                                        <div class="wrap_scroll">
-	                                            <div class="scrollbar" style="height: 202px;">
-	                                                <div class="track" style="height: 202px;">
-	                                                    <div class="thumb" style="top: 0px; height: 48px;">
+	                                            <div class="scrollbar">
+	                                                <div class="track">
+	                                                    <div class="thumb">
 	                                                        <div class="end"></div>
 	                                                    </div>
 	                                                </div>
