@@ -55,20 +55,22 @@ function renderIntroductionList(list) {
   area.innerHTML = list.map(data => `
     <ul>
       <li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center" data-interview="${data.INTR_INTERVIEW_NO}">
-        <div>
+                <div>
           <p class="d-block h4 fw-bold">${data.RENO_RECRUITMENT_TITLE}</p>
-          <p class="text-truncate w800">${data.RENO_REC_CONTENT}</p>
-          <p class="text-truncate w800">면접 방식 : ${data.INTR_INTERVIEW_TYPE === 'Y' ? '화상면접' : '대면면접'}</p>
-          <p class="text-truncate w800">면접 일시 : ${formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)}</p>
-          ${data.INTR_INTERVIEW_TYPE === 'Y'
-            ? `<p class="text-truncate w800">화상면접일시 : 
-                ${
-                  data.APRE_EVALUATION_START_TIME 
-                    ? formatIsoDateToDatetime(data.APRE_EVALUATION_START_TIME) 
-                    : '- 미정 -'
-                }</p>`
-            : ''
+          <p class="text-truncate">${data.RENO_REC_CONTENT}</p>
+          <p class="text-truncate"><b>${
+            data.INTR_INTERVIEW_TYPE === 'Y' ? '화상면접' : '대면면접'
           }
+          </b>
+          /
+          ${
+            data.APRE_EVALUATION_START_TIME
+              ? formatIsoDateToDatetime(data.APRE_EVALUATION_START_TIME)
+              : formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)?
+               formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)
+               	: '면접 일시 등록 대기 중'
+          }
+          </p>
         </div>
         <div class="d-flex flex-column align-items-center gap-2 " >
 			   <a class="btn btn_violet_line fw-normal review-btn w-review"

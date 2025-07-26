@@ -2979,7 +2979,8 @@
     border-bottom: 1px solid #eaeaea;
     box-sizing: border-box;
     color: #222;
-    font-size: 13px
+    font-size: 13px;
+    margin-left:0;
 }
 
 .box_detail_depth .row_all_select .inpSel {
