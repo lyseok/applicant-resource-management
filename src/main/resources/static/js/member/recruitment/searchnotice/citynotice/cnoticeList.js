@@ -7,10 +7,50 @@ let params = {
     pageSize: 20,
     districtCode: [],
     jobCode: [],
-    keyword: '프론트엔드'
+    keyword: ''
   }
   
+//------------------------키워드 검색 데이터------------------------------------------
+
+const keywordInput = document.querySelector('#total_ipt_keyword');
+
+keywordInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const keyword = keywordInput.value.trim();
+        if (keyword) {
+            addTextKeywordSpan(keyword); // span 추가 함수 호출
+            keywordInput.value = ''; // 입력창 초기화
+        }
+    }
+});
+
+const addTextKeywordSpan = function (keyword) {
+    // 중복 방지
+    if (document.querySelector(`#sp_preview_keyword_${keyword}`)) return;
+
+    const span = document.createElement('span');
+    span.className = 'selected_keyword';
+    span.innerHTML = `
+        검색어 &gt; ${keyword}
+        <button type="button" id="sp_preview_keyword_${keyword}" data-code="${keyword}" class="btn_del remove-btn">삭제</button>
+    `;
+    selectedContainer.appendChild(span);
+
+    toggleKeywordDisplay();
+    updateAllCodes();
+
+    // 삭제 이벤트
+    span.querySelector('.remove-btn').addEventListener('click', function () {
+        span.remove();
+        toggleKeywordDisplay();
+        updateAllCodes();
+    });
+};
+  
+//====================================================================================
 //------------------------지역선택 옵션생성-------------------------------------------
+
 const first_cityopt = document.querySelector('#first_cityopt > ul');
 const second_cityopt = document.querySelector('#second_cityopt');
 const add_keyword = document.querySelector('.add_keyword');
@@ -156,7 +196,7 @@ const updateSelectedRegions = function () {
         const cityButton = document.querySelector(`.depth1_btn_${cityCode}`);
         const cityName = cityButton?.querySelector('.txt')?.innerText.trim() || "시도명";
 
-        addKeywordSpan(cityName, districtName, cb.value);
+        addCityKeywordSpan(cityName, districtName, cb.value);
     });
 
     updateAllCodes();
@@ -164,7 +204,7 @@ const updateSelectedRegions = function () {
 
 
 // span 추가
-const addKeywordSpan = function (cityName, districtName, districtCodeNo) {
+const addCityKeywordSpan = function (cityName, districtName, districtCodeNo) {
     // 중복 추가 방지
     if (document.querySelector(`#sp_preview_area_${districtCodeNo}`)) return;
 
@@ -229,6 +269,7 @@ const updateAllCodes = function () {
     // 지역코드와 직업코드 구분
     const districtCodes = [];
     const jobCodes = [];
+    let keyword = '';
 
     selectedButtons.forEach(btn => {
         const code = btn.dataset.code;
@@ -237,25 +278,25 @@ const updateAllCodes = function () {
         if (id.startsWith('sp_preview_area_')) {
             districtCodes.push(code);
         } else if (id.startsWith('sp_preview_job_category_')) {
-			if(code.startsWith('all_')){
-				jobCodes.push(code.replace('all_', ''));				
-			}else{
-	            jobCodes.push(code);
-			}
+			jobCodes.push(code);
+        } else if (id.startsWith('sp_preview_keyword_')) {
+            keyword = code; // 검색어는 하나만
         }
     });
-
     params.districtCode = districtCodes;
     params.jobCode = jobCodes;
+    params.keyword = keyword;
 
     console.log('✅ 갱신된 districtCode:', districtCodes);
     console.log('✅ 갱신된 jobCode:', jobCodes);
+    console.log('✅ 갱신된 keyword:', keyword);
 };
-
 
 //-----------------------내부 스크롤 동작-----------------------------------------
 
-//--------------------------------직업선택 옵션생성----------------------------------------------
+//==========================================================================================
+//-----------------------직업선택 옵션생성-----------------------------------------
+
 const box_jobs = document.querySelector('.box_jobs');
 const box_detail_jobs = document.querySelector('.box_detail_jobs');
 const box_jobs_btn = document.querySelector('#box_jobs_btn');
@@ -266,9 +307,8 @@ const option_list_depth1_wrapper = document.querySelector('.option_list depth1_w
 //-----------------------클릭 이벤트---------------------------------------------
 
 const selectTopJob = function(topJobCode, topJobName){
-	//getJobCodeListByTopJob(topJobCode, topJobName);  // 하위직업 값 채움
 	
-	details.style.maxHeight = '202px';
+	details.style.maxHeight = '202px';  //일단 하드코딩
 	box_jobs.style.display = 'none';
 	box_detail_jobs.style.display = 'block';
 
@@ -279,16 +319,6 @@ const nextTopJob = function(topJobCode, topJobName){
 	
 	const depth1_btn_ = document.querySelector(`#depth1_btn_${topJobCode}`);
 	const li_wrapper = depth1_btn_.closest('li');
-	
-	//처음에는 wrapper on이 아니면 on을 붙인다
-	//다른 wrapper에는 on을 뗀다
-	
-	//하위선택이 될 때 wrapper에 selected가 붙는다
-	//selected가 붙은 wrapper는 클릭시 selected on 이 된다
-	//selected가 붙은 wrapper는 해당 li를 클릭하지 않으면 selected로만 남는다
-	
-	//하위선택이 떨어지면 해당 wrapper는 selected를 뗀다
-	
 	
 	if (!li_wrapper.classList.contains('on')) {
 	  	// 이미 선택된 상태가 아니면
@@ -425,9 +455,7 @@ count가 길면 버튼 추가되게 나중 처리
 </dl>`;
 */
 
-//카테고리 생성
-
-
+//---------------------------카테고리 생성----------------------------------------------
 
 // 전역으로 카테고리별 sort 카운터 저장
 const sortCounters = {};  
@@ -520,18 +548,14 @@ const onClickJobCategory = function (btn) {
 	}
 	
     // 중복 추가 방지
-    
     if (document.querySelector(`#sp_preview_job_category_${jobCode}`)||
     document.querySelector(`#sp_preview_job_category_${topJobCode}`)) return;
-    
    
     // 클래스 추가
     btn.classList.add('on');
 
     // span 추가
     addJobKeywordSpan(topJobName, jobName, jobCode, topJobCode);
-    
-    
 };
 
 // ✅ 직업 전체 선택 시 하위 해제 + "전체" span 추가
@@ -552,7 +576,6 @@ const onClickJobAllCheck = function (checkbox) {
 		//다시 누르면 해당 span 제거
         removeKeywordSpan(`${topJobCode}`);
     }
-
     updateAllCodes();
     toggleKeywordDisplay();
 };
