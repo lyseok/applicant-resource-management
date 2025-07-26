@@ -54,6 +54,19 @@ public class AjaxTalentPoolController {
 		return ResponseEntity.ok(resp);
 	}
 	
+	@GetMapping("company-scrab")
+	public ResponseEntity<Map<String, Object>> getScrabResumeList(
+			@RequestParam int page,
+		    @RequestParam int pageSize
+		){
+			Map<String, Object> params = new HashMap<>();
+			params.put("startRow", (page - 1) * pageSize);
+			params.put("endRow", page * pageSize);
+			
+			Map<String, Object> resp = poolService.readResumeByFilter(params);
+			return ResponseEntity.ok(resp);
+		}
+	
 	@GetMapping("savelist")
 	public List<String> getSavedTalentList() {
         return poolService.getSavedTalentList();

@@ -16,6 +16,8 @@ import kr.or.ddit.vo.resume.SpecialtyVO;
 public interface TalentPoolMapper {
 	public List<ResumeVO> selectResumeByFilter(Map<String, Object> params);
 	public int selectResumeCountByFilter(Map<String, Object> params);
+	public List<ResumeVO> selectScrabResume(Map<String, Object> params);
+	public int selectCountScrabResume(Map<String, Object> params);
 	
 	public CareerVO selectCareerListByResumeNo(String resumeNo);
 	public List<MyLicenseVO> selectLicenseListByResumeNo(String resumeNo);

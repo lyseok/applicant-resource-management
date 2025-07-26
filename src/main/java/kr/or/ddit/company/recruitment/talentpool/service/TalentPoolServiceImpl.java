@@ -70,4 +70,19 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 		return resp;
 	}
 
+	@Override
+	public Map<String, Object> readResumeByMyScrab(Map<String, Object> params) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String companyId = authentication.getName();
+    	params.put("comId", companyId);
+    	
+		List<ResumeVO> resumeList = mapper.selectScrabResume(params);
+		int totalCnt = mapper.selectCountScrabResume(params); 
+		Map<String, Object> resp = new HashMap<String, Object>();
+		resp.put("data", resumeList);
+		resp.put("totalCnt", totalCnt);
+		
+		return resp;
+	}
+
 }
