@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.mapper.common.BusinessTypeCodeMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
+import kr.or.ddit.vo.common.BusinessTypeCodeVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberSearchCityNoticeAjaxServiceImpl implements MemberSearchCityNoticeAjaxService {
 	
 	private final RecruitmentNoticeMapper noticeMapper;
+	private final BusinessTypeCodeMapper businessMapper;
 	private final CodeMapProvider codeMapProvider;
 
 	@Override
@@ -30,6 +33,11 @@ public class MemberSearchCityNoticeAjaxServiceImpl implements MemberSearchCityNo
 
         return list;
     }
+
+	@Override
+	public BusinessTypeCodeVO readBusinessTypeCode(String no) {
+		return businessMapper.selectBusinessTypeCode(no);
+	}
 
 }
 
