@@ -469,10 +469,9 @@ getTopJobCodeList();  //상위직업 선택 값 호출
 
 //하위직업 선택 감지
 const onClickJobCategory = function (btn) {
-    const jobCode = btn.dataset.code;
-    const jobName = btn.dataset.kewdCdNm;
-    const topJobName = btn.dataset.mclsCdNm;
-
+    let jobCode = btn.dataset.code;
+	let jobName = btn.getAttribute('data-kewd_cd_nm');      // ✅ 직접 속성 읽기
+	let topJobName = btn.getAttribute('data-mcls_cd_nm');   // ✅ 직접 속성 읽기
     console.log('🟢 onClickJobCategory 호출됨:', jobCode, jobName, topJobName);
 
     // 중복 추가 방지
