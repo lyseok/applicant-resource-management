@@ -15,6 +15,7 @@ const first_cityopt = document.querySelector('#first_cityopt > ul');
 const second_cityopt = document.querySelector('#second_cityopt');
 const add_keyword = document.querySelector('.add_keyword');
 const search_btn = document.querySelector('#search_btn');  //검색하기 버튼 클릭후 콘솔에 찍히는 params 값 보기->axios로 넘기기만 하면됨
+const btn_reset = document.querySelector('.btn_reset');
 
 // 도시 선택 값 불러옴 (axios + async/await)
 const getCityCodeList = async function () {
@@ -200,12 +201,16 @@ const removeKeywordSpan = function (code) {
         const span = btn.closest('.selected_keyword');
         if (span) span.remove();
     }
+    
+    toggleKeywordDisplay();
 };
 
 // 선택된 값이 없으면 숨김 + 클래스 토글
 const toggleKeywordDisplay = function () {
     const hasKeywords = selectedContainer.children.length > 0;
     selectedContainer.style.display = hasKeywords ? 'block' : 'none';
+    //초기화 버튼도 생기게
+    btn_reset.style.display = hasKeywords ? 'block' : 'none';
 
     // 검색조건 여부에 따라 resetting 클래스 토글
     if (hasKeywords) {
@@ -232,7 +237,11 @@ const updateAllCodes = function () {
         if (id.startsWith('sp_preview_area_')) {
             districtCodes.push(code);
         } else if (id.startsWith('sp_preview_job_category_')) {
-            jobCodes.push(code);
+			if(code.startsWith('all_')){
+				jobCodes.push(code.replace('all_', ''));				
+			}else{
+	            jobCodes.push(code);
+			}
         }
     });
 
@@ -370,12 +379,15 @@ const depth = function(topJobCode, topJobName){
 			            <label for="all_check_onedepth_${topJobCode}">
 			            	<span>${topJobName} 전체선택</span>
 			            </label>
+			            <!--
+			            정렬 못 쓸 거 같고 css 깨짐
 			            <span class="inpSel">
 			                <select class="select_sort" title="정렬방법">
 			                    <option value="default">가나다순</option>
 			                    <option value="favor">공고많은순</option>
 			                </select>
 			            </span>
+			            -->
 			        </div>
 					<div class="row list" style="height: 243px;">
 	                    <div class="wrap_scroll">
@@ -497,22 +509,29 @@ const onClickJobCategory = function (btn) {
 	let jobName = btn.getAttribute('data-kewd_cd_nm');      // ✅ 직접 속성 읽기
 	let topJobName = btn.getAttribute('data-mcls_cd_nm');   // ✅ 직접 속성 읽기
 	let topJobCode = btn.getAttribute('data-mcls_cd_no');
-    console.log('🟢 onClickJobCategory 호출됨:', jobCode, jobName, topJobName);
+    console.log('🟢 onClickJobCategory 호출됨:', jobCode, jobName, topJobName, topJobCode);
 
+    //전체선택이 체크되어 있었으면    
+    let topJobAll = document.querySelector(`#all_check_onedepth_${topJobCode}`);
+	if (topJobAll && topJobAll.checked) {
+		console.log("체크해제?", topJobCode);
+	    topJobAll.checked = false;
+	    removeKeywordSpan(topJobCode)
+	}
+	
     // 중복 추가 방지
-    if (document.querySelector(`#sp_preview_job_category_${jobCode}`)) return;
-
+    
+    if (document.querySelector(`#sp_preview_job_category_${jobCode}`)||
+    document.querySelector(`#sp_preview_job_category_${topJobCode}`)) return;
+    
+   
     // 클래스 추가
     btn.classList.add('on');
 
     // span 추가
-    addJobKeywordSpan(topJobName, jobName, jobCode);
+    addJobKeywordSpan(topJobName, jobName, jobCode, topJobCode);
     
-    //전체선택이 체크되어 있었으면
-    let topJobAll = document.querySelector(`#all_check_onedepth_${topJobCode}`);
-	if (topJobAll && topJobAll.checked) {
-	    topJobAll.checked = false;
-	}
+    
 };
 
 // ✅ 직업 전체 선택 시 하위 해제 + "전체" span 추가
@@ -521,27 +540,17 @@ const onClickJobAllCheck = function (checkbox) {
     const topJobName = checkbox.dataset.mcls_cd_nm;
 
     if (checkbox.checked) {
-        // ✅ 1. 하위 직업 초기화 (선택 해제 + span 제거)
-        //clearJobCategoryByTopCode(topJobCode);
-        
         let subButtons = document.querySelectorAll(`.btn_three_depth[data-mcls_cd_no="${topJobCode}"]`);
 	    subButtons.forEach(btn => {
 	        let jobCode = btn.dataset.code;
 	        btn.classList.remove('on');
 	        removeKeywordSpan(jobCode);
 	    });
-
         // ✅ 2. "전체" 선택 span 추가 (선택 상태 표시용)
-        addJobKeywordSpan(topJobName, '전체', `all_${topJobCode}`);
-        
-        //하위클릭시 전체가 풀리게
-        /* 얜 쓸거야!!!
-        if(onClickJobCategory(checkbox)){
-			document.querySelector(`#all_check_onedepth_${topJobCode}`).checked = false;
-		}'*/
+        addJobKeywordSpan(topJobName, '전체', `${topJobCode}`);
     } else {
-        // ✅ 3. 전체 선택 해제 시 해당 span 제거
-        removeKeywordSpan(`all_${topJobCode}`);
+		//다시 누르면 해당 span 제거
+        removeKeywordSpan(`${topJobCode}`);
     }
 
     updateAllCodes();
@@ -550,13 +559,11 @@ const onClickJobAllCheck = function (checkbox) {
 
 
 // ✅ 전체 선택 span도 처리할 수 있도록 수정
-const addJobKeywordSpan = function (topJobName, jobName, jobCode) {
+const addJobKeywordSpan = function (topJobName, jobName, jobCode) {  //topJobCode여도 jobCode로 들어가고 그냥 jobCode는 jobCode로 들어감
     if (document.querySelector(`#sp_preview_job_category_${jobCode}`)) return;
 
     const span = document.createElement('span');
     span.className = 'selected_keyword';
-    
-    console.log("jobName이 널?", jobName);
     
     span.innerHTML = `
         ${topJobName} &gt; ${jobName}
@@ -570,29 +577,31 @@ const addJobKeywordSpan = function (topJobName, jobName, jobCode) {
     toggleKeywordDisplay();
 
     span.querySelector('.remove-btn').addEventListener('click', function () {
-        if (jobCode.startsWith('all_')) {
-            // ✅ 전체 선택 span 삭제 시 checkbox도 해제
-            const topJobCode = jobCode.replace('all_', '');
-            const allCheckbox = document.querySelector(`#all_check_onedepth_${topJobCode}`);
+		let all_check_onedepth_ = document.querySelector(`#sp_preview_job_category_${jobCode}`);
+		
+		if(all_check_onedepth_.getAttribute('data-code') === `${jobCode}`){
+			const allCheckbox = document.querySelector(`#all_check_onedepth_${jobCode}`);
             if (allCheckbox) allCheckbox.checked = false;
-        } else {
-            const targetBtn = document.querySelector(`button[data-code="${jobCode}"].btn_three_depth`);
+			const targetBtn = document.querySelector(`button[data-code="${jobCode}"].btn_three_depth`);
             if (targetBtn) targetBtn.classList.remove('on');
-        }
-
+		}
         removeKeywordSpan(jobCode);
         toggleKeywordDisplay();
         updateAllCodes();
     });
 };
 
-//-----------------------검색 공통 함수------------------------------------------
+//----------------------- 공통 함수------------------------------------------
+
+
+
 
 // 초기화 버튼 클릭 시(현재는 직업만 됨)
-/*const clearJobCategoryByTopCode = function (topJobCode) {
+/*
+const clearJobCategoryByTopCode = function (topJobCode) {
     // 1. 전체선택 체크박스 상태 해제
-    //const allCheckbox = document.querySelector(`#all_check_onedepth_${topJobCode}`);
-    //if (allCheckbox) allCheckbox.checked = false;
+    const allCheckbox = document.querySelector(`#all_check_onedepth_${topJobCode}`);
+    if (allCheckbox) allCheckbox.checked = false;
 
     // 2. 하위 직업 버튼들 초기화
     const subButtons = document.querySelectorAll(`.btn_three_depth[data-mcls_cd_no="${topJobCode}"]`);
@@ -607,19 +616,20 @@ const addJobKeywordSpan = function (topJobName, jobName, jobCode) {
 };
 
 // 초기화 함수 생성 이후에 해당 버튼에 추가
-document.addEventListener('DOMContentLoaded', function () {
-    document.addEventListener('click', function (e) {
-        if (e.target.classList.contains('btn_reset')) {
-            const jobTab = document.querySelector('.tab_job.on'); // 예시: 활성 탭의 topJobCode
-            if (!jobTab) return;
+btn_reset.addEventListener('click', function (e) {
+	
+    //if (e.target.classList.contains('btn_reset')) {
+	if(btn_reset){
+        const jobTab = document.querySelector('.tab_job.on'); // 예시: 활성 탭의 topJobCode
+        if (!jobTab) return;
 
-            const topJobCode = jobTab.dataset.mclsCdNo || e.target.dataset.topjobcode;
-            if (topJobCode) {
-                clearJobCategoryByTopCode(topJobCode);
-            }
+        const topJobCode = jobTab.dataset.mclsCdNo || e.target.dataset.topjobcode;
+        if (topJobCode) {
+            clearJobCategoryByTopCode(topJobCode);
         }
-    });
+    }
 });
 */
+
 //-----------------------내부 스크롤 동작-----------------------------------------
 
