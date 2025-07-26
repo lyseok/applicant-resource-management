@@ -33,6 +33,27 @@
 <!-- 	    <collection property="specialtyList" ofType="SpecialtyVO"
 	        select="selectSpecialtyListByResumeNo" column="RESUME_NO"/> -->
 	</resultMap>
+	
+	<select id="selectScrabResume" resultMap="ResumeMap">
+		SELECT * FROM (
+			SELECT ROWNUM rnum, A.* FROM (
+				SELECT * 
+				FROM SCRAB_USER S
+				LEFT OUTER JOIN MEMBER M ON M.USER_ID = S.USER_ID
+				LEFT OUTER JOIN RESUME R ON M.RESUME_NO = R.RESUME_NO
+				WHERE COMPANY_ID = #{comId}
+			    ORDER BY M.MEM_NAME ASC 
+		  ) A
+		  WHERE ROWNUM &lt;= #{endRow}
+		)
+		WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<select id="selectCountScrabResume">
+		SELECT COUNT(*)
+		FROM SCRAB_USER S
+		WHERE COMPANY_ID = #{comId}
+	</select>
 
 	<select id="selectResumeByFilter" resultMap="ResumeMap">
 		SELECT * FROM (
