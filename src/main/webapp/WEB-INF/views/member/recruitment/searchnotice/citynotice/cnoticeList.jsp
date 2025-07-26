@@ -2288,5 +2288,5 @@
 	                        
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/js/member/recruitment/searchnotice/citynotice/cnoticeList.js"></script>
-<script src="/js/member/recruitment/searchnotice/citynotice/jnoticeList.js"></script> <!-- 일단 넣어둠, 추후 합침 -->
+<%-- <script src="/js/member/recruitment/searchnotice/citynotice/jnoticeList.js"></script> --%>
 </body>

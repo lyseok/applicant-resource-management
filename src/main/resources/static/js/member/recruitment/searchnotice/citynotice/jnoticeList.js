@@ -13,8 +13,6 @@ const option_list_depth1_wrapper = document.querySelector('.option_list depth1_w
 //-----------------------클릭 이벤트---------------------------------------------
 
 const selectTopJob = function(topJobCode, topJobName){
-	console.log("살살이~");
-	
 	//getJobCodeListByTopJob(topJobCode, topJobName);  // 하위직업 값 채움
 	
 	details.style.maxHeight = '202px';
@@ -25,7 +23,6 @@ const selectTopJob = function(topJobCode, topJobName){
 }
 
 const nextTopJob = function(topJobCode, topJobName){
-	console.log("클릭됨!");
 	
 	const depth1_btn_ = document.querySelector(`#depth1_btn_${topJobCode}`);
 	const li_wrapper = depth1_btn_.closest('li');
@@ -122,7 +119,6 @@ const getJobCodeListByTopJob = function (topJobCode, topJobName) {
 
 // 하위직업 카테고리 제목, 전체선택 부분 생성
 const depth = function(topJobCode, topJobName){
-	console.log("전체선택 생성!");
 	let html = `<div class="box_detail_depth" id="sp_job_category_subDepth_${topJobCode}" style="display: none;">
 			        <div class="row row_all_select">
 			            <input type="checkbox" id="all_check_onedepth_${topJobCode}" name="cat_mcls[]" 
@@ -248,7 +244,10 @@ const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName
 
 getTopJobCodeList();  //상위직업 선택 값 호출
 
-//--------------------------선택된 지역코드 객체에 넣기------------------------------------------
+//--------------------------선택된 직업코드 객체에 넣기------------------------------------------
+
+const selectedContainer = add_keyword.querySelector('#sp_preview_selected');
+const previewWrapper = document.getElementById('sp_preview'); // 패널 래퍼
 
 // 선택된 jobCode를 params에 반영
 const updateJobCodes = function () {
