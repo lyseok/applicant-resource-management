@@ -294,6 +294,7 @@ const updateAllCodes = function () {
 
 //-----------------------내부 스크롤 동작-----------------------------------------
 
+
 //==========================================================================================
 //-----------------------직업선택 옵션생성-----------------------------------------
 
@@ -308,7 +309,6 @@ const option_list_depth1_wrapper = document.querySelector('.option_list depth1_w
 
 const selectTopJob = function(topJobCode, topJobName){
 	
-	details.style.maxHeight = '202px';  //일단 하드코딩
 	box_jobs.style.display = 'none';
 	box_detail_jobs.style.display = 'block';
 
@@ -321,10 +321,9 @@ const nextTopJob = function(topJobCode, topJobName){
 	const li_wrapper = depth1_btn_.closest('li');
 	
 	if (!li_wrapper.classList.contains('on')) {
-	  	// 이미 선택된 상태가 아니면
 		// 현재 클릭한 li에 'on' 추가
 		li_wrapper.classList.add('on');
-		//다른 li들의 'on'을 제거
+		// 다른 li들의 'on'을 제거
 		document.querySelectorAll('#box_jobs_btn li').forEach(otherli=>{
 			if (otherli !== li_wrapper) {
 		      otherli.classList.remove('on');
@@ -356,14 +355,17 @@ const nextTopJob = function(topJobCode, topJobName){
 
 // 상위직업 선택 값 불러옴
 const getTopJobCodeList = function () {
-  fetch('/ajax/admin/jobCode')
-    .then(resp => resp.json())
-    .then(data => {
+  axios.get('/ajax/admin/jobCode')
+    .then(response => {
+      const data = response.data;
       data.forEach(topjob => {
         let topJobCode = topjob.topJobCode;
         let topJobName = topjob.topJobName;
         setTopJobCodeList(topJobCode, topJobName);
       });
+    })
+    .catch(error => {
+      console.error('상위직업 코드 불러오기 실패:', error);
     });
 };
 
@@ -385,19 +387,21 @@ const setTopJobCodeList = function (topJobCode, topJobName) {
   box_jobs_btn.innerHTML += html;  // 상위직업 버튼(리스트)
 };
 
-//하위직업 선택 값 불러옴
+// 하위직업 선택 값 불러옴
 const getJobCodeListByTopJob = function (topJobCode, topJobName) {
-  fetch(`/ajax/admin/jobCode/${topJobCode}`)
-    .then(resp => {resp.json()
-    .then((data) => {
-		data.forEach((job)=>{
-			let jobCode = job.jobCode;
-			let jobName = job.jobName;
-			let topJobCode = job.topJobCode;
-			setJobCodeListByTopJob(jobCode, jobName, topJobCode, topJobName);  //하위직업 선택 값 채우기
-		})		
-	  })
-   })
+  axios.get(`/ajax/admin/jobCode/${topJobCode}`)
+    .then(response => {
+      const data = response.data;
+      data.forEach(job => {
+        let jobCode = job.jobCode;
+        let jobName = job.jobName;
+        let topJobCode = job.topJobCode;
+        setJobCodeListByTopJob(jobCode, jobName, topJobCode, topJobName);  // 하위직업 선택 값 채우기
+      });
+    })
+    .catch(error => {
+      console.error('하위직업 코드 불러오기 실패:', error);
+    });
 };
 
 // 하위직업 카테고리 제목, 전체선택 부분 생성
@@ -442,11 +446,9 @@ const depth = function(topJobCode, topJobName){
 }
 
 /*
-count가 길면 버튼 추가되게 나중 처리
-
 <dl class="row_item">
     <dt>
-        <button type="button" class="btn_expand" data-scls_cd_no="65">
+        <button type="button" class="btn_expand" data-scls_cd_no="65">   <!-- count가 길면 버튼 추가되게 -->
         	<span class="txt" style="font-weight: normal;">전문분야</span>
         </button>
     </dt>
@@ -469,9 +471,6 @@ const getSortCounter = function (categoryKey) {
 }
 
 //하위직업 선택 값 채우기
-// 전역에서 카테고리 세팅을 한 번만 하도록 제어
-//const categoryInitialized = new Set();
-
 const setJobCodeListByTopJob = function(jobCode, jobName, topJobCode, topJobName){
 	const overview = document.querySelector(`#sp_job_category_subDepth_${topJobCode} .overview`);
 	if (!overview) return;
@@ -539,10 +538,17 @@ const onClickJobCategory = function (btn) {
 	let topJobCode = btn.getAttribute('data-mcls_cd_no');
     console.log('🟢 onClickJobCategory 호출됨:', jobCode, jobName, topJobName, topJobCode);
 
+	//하위직업이 체크되어 있었으면
+	if (btn.classList.contains('on')) {
+		btn.classList.remove('on');
+		removeKeywordSpan(jobCode);
+		updateAllCodes();
+		return; // 선택 해제 후 종료
+	}
+
     //전체선택이 체크되어 있었으면    
     let topJobAll = document.querySelector(`#all_check_onedepth_${topJobCode}`);
 	if (topJobAll && topJobAll.checked) {
-		console.log("체크해제?", topJobCode);
 	    topJobAll.checked = false;
 	    removeKeywordSpan(topJobCode)
 	}

@@ -249,7 +249,7 @@
 	                                        </div>
 	                                    </div>
 	                                    <div class="viewport">
-	                                        <div class="overview" style="top: -10px;" id="first_cityopt">
+	                                        <div class="overview" id="first_cityopt">
 	                                            <ul>
 	                                            </ul>
 	                                        </div>
@@ -331,17 +331,17 @@
                                     	</script>
 	                                </div>
 	                                <div class="box_detail_jobs" style="display:none;">
-	                                    <div class="box_onedepth">
+	                                    <div class="box_onedepth" style="height: 202px;">
 	                                        <div class="wrap_scroll">
-	                                            <div class="scrollbar">
-	                                                <div class="track">
-	                                                    <div class="thumb">
+	                                            <div class="scrollbar" style="height: 202px;">
+	                                                <div class="track" style="height: 202px;">
+	                                                    <div class="thumb" style="top: 0px; height: 48px;">
 	                                                        <div class="end"></div>
 	                                                    </div>
 	                                                </div>
 	                                            </div>
 	                                            <div class="viewport">
-	                                                <ul class="list overview" id="box_jobs_btn">  <!-- 내가 부여한 아이디 -->
+	                                                <ul class="list overview" style="top: 0px;" id="box_jobs_btn">  <!-- 내가 부여한 아이디 -->
 	                                                    <script id="sp_job_category_oneDepth_template" type="text/x-handlebars-template">
                                                         {{#mclsList}}
                                                             {{#hasCountInJobCategory count}}
