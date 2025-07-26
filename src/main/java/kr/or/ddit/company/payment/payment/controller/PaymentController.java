@@ -105,9 +105,9 @@ public class PaymentController {
 
 		PaymentVO scheduled = service.selectScheduledByUserId(service.getUserId());
 		log.info("scheduled : {}", scheduled);
-//		if(scheduled != null) {
-//			throw new IllegalStateException("이미 구매한 상품이 있습니다. 관리자에게 문의하세요");
-//		}
+		if(scheduled != null) {
+			throw new IllegalStateException("이미 구매한 상품이 있습니다. 관리자에게 문의하세요");
+		}
 
 		PaymentVO oldPayment = service.selectPaymentByPk(oldPaymentNo);
 		LocalDate nextStart = LocalDate.parse(oldPayment.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
