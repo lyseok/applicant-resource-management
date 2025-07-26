@@ -1,16 +1,24 @@
 package kr.or.ddit.company.recruitment.talentpool.service;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.ddit.company.email.talentpool.service.JoboffSendService;
+import kr.or.ddit.dto.MailDTO;
 import kr.or.ddit.mapper.common.ScrabUserMapper;
 import kr.or.ddit.mapper.common.TalentPoolMapper;
+import kr.or.ddit.mapper.recruitment.ComMailTemMapper;
+import kr.or.ddit.vo.recruitment.ComMailTemVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 public class TalentPoolServiceImpl implements TalentPoolService {
 	private final TalentPoolMapper mapper;
 	private final ScrabUserMapper scrabUserMapper;
+	private final JavaMailSender mailSender;
+	private final ComMailTemMapper comMailTemMapper;
 	
 	@Override
 	public Map<String, Object> readResumeByFilter(Map<String, Object> params) {
@@ -85,4 +95,34 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 		return resp;
 	}
 
+	@Override
+	public int postMailLogic(List<MailDTO> mailList) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		ComMailTemVO comMailTem = new ComMailTemVO();
+		comMailTem.setUserId(username);
+		
+		for(MailDTO mail : mailList) {
+			comMailTem.setTemNo(mail.getTemplate());
+			ComMailTemVO data = comMailTemMapper.selectComMailTem(comMailTem);
+			log.info("메일데이터 : {}, {}" , mail, data);
+			String subject = data.getComName() + "에서 " + mail.getJob() + " 입사제안드립니다.";
+			
+			sendOfferMail(mail.getUserId(), subject, data.getTemContent());
+		}
+		return 0;
+	}
+
+	@Value("${spring.mail.username}")
+	private String from;
+	
+    public void sendOfferMail(String toEmail, String subject, String content) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject(subject);
+        message.setText(content);
+        message.setFrom(from);
+
+        mailSender.send(message);
+    }
 }

@@ -27,7 +27,7 @@ function doBilling() {
 	})
 		.then(res => {
 			console.log("res :", res);
-			console.log("orderName",orderName)
+			console.log("orderName", orderName)
 			alert("로그확인시간");
 			return res.json();
 		})
@@ -40,7 +40,8 @@ function doBilling() {
 			const amount = Pamount;
 			const orderName = PproductName;
 			const billingKey = PbillingKey;
-
+			const orderId = data.orderId;
+			console.log("paymentKey :", paymentKey);
 			console.log("billingKey:", billingKey);
 			console.log("amount:", amount);
 			console.log("orderName:", orderName);
@@ -49,7 +50,10 @@ function doBilling() {
 
 			window.location.href =
 				`/company/payment/success/executebilling?billingKey=${billingKey}` +
-				`&amount=${amount}&orderName=${encodeURIComponent(orderName)}` +
+				`&amount=${amount}` +
+				`&orderName=${encodeURIComponent(orderName)}` +
+				`&paymentKey=${paymentKey}` +
+				`&orderId=${orderId}` +
 				`&paymentKey=${paymentKey}`;
 		})
 		.catch(err => {

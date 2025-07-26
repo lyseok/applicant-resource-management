@@ -18,4 +18,5 @@ public class CompanyTalentPoolController {
 	public String myTalentpoolPage() {
 		return "company/recruitment/talentpool/myTalentPoolList";
 	}	
+	
 }

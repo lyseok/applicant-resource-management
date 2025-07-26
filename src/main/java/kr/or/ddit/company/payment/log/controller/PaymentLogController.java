@@ -46,9 +46,8 @@ public class PaymentLogController {
 		Model model
 		 ,@RequestParam(defaultValue ="1") int page
 			) {
-		String PaymentNo = pservice.getPaymentNo(pservice.getUserId());
 		
-		List<PaymentLogVO> history = service.selectLoghistory(PaymentNo);
+		List<PaymentLogVO> history = service.selectLoghistoryByUserId(pservice.getUserId());
 		
 		int totalItems = history.size();
 		int itemsPerPage = 10;

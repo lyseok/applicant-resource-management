@@ -56,3 +56,51 @@ document.addEventListener('DOMContentLoaded', () => {
     return s.length > len ? s.slice(0, len) + '…' : s;
   }
 });
+
+const params = {
+  page: 1,       // 시작 페이지, 
+  pageSize: 10,  // 리스트에 몇개씩 보여줄건지
+};
+
+// 1. 출력할 리스트 가져오기
+function fetchData() {
+  showLoading();
+  const paramsString = paramsSerializer(params);
+  console.log('필터링 요청:', paramsString);
+  axios
+    .get('/ajax/company/talentpool/company-scrab?' + paramsString)
+    .then((res) => {
+      // res.data가 배열이면 바로 사용
+      const resp = res.data;
+      renderTalentPoolTable(resp.data);
+
+      totalPage = Math.ceil(resp.totalCnt / params.pageSize);
+      console.log(totalPage, params.page);
+      renderPager(totalPage, params.page); // 페이저 렌더링
+      applyCheckboxStates();
+    })
+    .catch((err) => {
+      alert('데이터를 불러오는 데 실패했습니다.');
+    })
+    .finally(() => {
+      hideLoading();
+    });
+}
+
+// 2. 가져온 리스트에 페이저 찍기
+function renderPager(totalPages, page) {
+  let pagerHtml = '';
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === page) {
+      pagerHtml += `<span class="BtnType SizeS active">${i}</span>`;
+    } else {
+      pagerHtml += `<button class="BtnType SizeS page" data-page="${i}">${i}</button>`;
+    }
+  }
+  if (page < totalPages) {
+    pagerHtml += `<button data-page="${
+      page + 1
+    }" class="BtnType SizeS BtnNext btnNext">다음</button>`;
+  }
+  document.querySelector('.PageBox').innerHTML = pagerHtml;
+}

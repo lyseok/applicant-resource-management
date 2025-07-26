@@ -22,4 +22,6 @@ public interface CompanyMapper {
 	public int updateCompanyInfoById(CompanyVO company);
 	
 	public List<CompanyVO> selectCompanyWithResumeCareer();
+	
+	public List<CompanyVO> selectCompanyInfoList();
 }

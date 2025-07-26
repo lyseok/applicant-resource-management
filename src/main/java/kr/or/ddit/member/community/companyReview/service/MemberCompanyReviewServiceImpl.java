@@ -4,9 +4,12 @@ import java.lang.reflect.Member;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.common.CmnCodeGroupMapper;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.MemberMapper;
@@ -30,16 +33,25 @@ import lombok.RequiredArgsConstructor;
 public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewService {
 	private final CompanyMapper companyMapper;
 	private final CompanyReviewMapper companyReviewMapper;
-	private final CmnCodeGroupMapper cmnCodeGroupMapper;
 	private final MemberMapper memberMapper;
 	private final ResumeMapper resumeMapper;
 	private final CareerMapper careerMapper;
 	private final  CompanyReivewQuestionMapper companyReivewQuestionMapper; 
+	private final CodeMapProvider codeMapProvider;
+
+	
+
 
 	@Override
-	public List<CompanyVO> readCompanyList() {
-		return companyReviewMapper.selectCompanyList();
+	public List<CompanyVO> readCompanyInfoList() {
+		List<CompanyVO> companies = companyMapper.selectCompanyInfoList();
+		for (CompanyVO company : companies) {
+			String induName = codeMapProvider.getInduName(company.getIndustryType());
+			company.setInduName(induName);
+		}
+		return companies;
 	}
+
 
 	@Override
 	public List<CompanyReviewVO> readCompanyReviewList() {
@@ -69,13 +81,7 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 		return companyReviewMapper.selectCompanyReviewListById(userId);
 	}
 
-	@Override
-	public List<CmnCodeVO> readCmnCodeGroupQuestionList(String codeGroupNo) {
-        CmnCodeGroupVO groupVo = cmnCodeGroupMapper.selectCmnCodeGroupByPk(codeGroupNo);
-        return (groupVo != null && groupVo.getCmnCodeList() != null)
-               ? groupVo.getCmnCodeList()
-               : Collections.emptyList();
-	}
+	
 
 	@Override
 	public List<CompanyReviewVO> readReivewQAList(String comId) {
@@ -93,13 +99,32 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	}
 
 	@Override
-	public List<ResumeVO> readResumeWithCareers(String userId) {
-		return resumeMapper.selectResumeWithCareers(userId);
+	public List<ResumeVO> readResumeWithCareers() {
+		List<ResumeVO> resumes = resumeMapper.selectResumeWithCareers(getUserId());
+		for (ResumeVO resume : resumes) {
+			for (CareerVO career : resume.getCareerList()) {
+				String jobName = codeMapProvider.getJobName(career.getJobCode());
+				String jobGradeName = codeMapProvider.getCodeName(career.getJobGradeCode());
+				String positionName = codeMapProvider.getCodeName(career.getPositionCode());
+				String yearName = codeMapProvider.getCodeName(career.getCareerYear());
+				
+				career.setJobCodeName(jobName);
+				career.setJobGradeCodeName(jobGradeName);
+				career.setPositionCodeName(positionName);
+				career.setCareerYearName(yearName);
+			}
+		}
+		return resumes;
 	}
 
 	@Override
 	public CareerVO readCareerDetail(String careerNo) {
 		return careerMapper.selectCareerDetail(careerNo);
+	}
+	
+	public String getUserId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	return authentication.getName();
 	}
 
 	
