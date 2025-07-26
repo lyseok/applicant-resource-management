@@ -15,8 +15,13 @@ public interface ScheduleMapper {
 	public int insertSchedule(ScheduleVO schedule);
 	public int updateSchedule(ScheduleVO schedule);
 	public int deleteSchedule(String scheduleNo);
+	
+	// 개인회원 캘린더
 	public List<Map<String, Object>> findmemberRecruitSchedule(String userId);
 	public List<Map<String, Object>> selectCompanyScrab(String userId);
 	public List<Map<String, Object>> selectRecruitScrab(String userId);
 	public List<ScheduleVO> selectMyScheduleById(String userId);
+	
+	// 기업 캘린더
+	public List<Map<String, Object>> selectCompanySchedule(String companyId);
 }
