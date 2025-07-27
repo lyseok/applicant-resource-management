@@ -23,5 +23,5 @@ public interface CompanyDetailViewService {
 	
 	public List<FilesVO> readCompanyImageFileListBySourceNo(String sourceNo);
 	
-	
+	public List<Map<String, Object>> readTopFiveJobNotice(String userId);
 }

@@ -2,6 +2,7 @@ package kr.or.ddit.member.common.companyDetailView.service;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -99,6 +100,12 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	@Override
 	public List<FilesVO> readCompanyImageFileListBySourceNo(String sourceNo) {
 		return	fileMapper.selectFileListBySourceNo(sourceNo);
+	}
+
+
+	@Override
+	public List<Map<String, Object>> readTopFiveJobNotice(String userId) {
+		return recruitmentNoticeMapper.selectTopFiveJobNotice(userId);
 	}
 	
 	
