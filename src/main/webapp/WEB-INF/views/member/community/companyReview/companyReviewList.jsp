@@ -261,11 +261,6 @@ body {
 				<div class="tab active">전체</div>
 				<div class="tab">산업별</div>
 				<div class="tab">직무별</div>
-				<select>
-					<option>1차분류 선택</option>
-					<option>전기·전자·제어</option>
-					<option>게임·애니메이션</option>
-				</select>
 			</div>
 			<!-- 검색창 -->
 			<div class="search-box">
