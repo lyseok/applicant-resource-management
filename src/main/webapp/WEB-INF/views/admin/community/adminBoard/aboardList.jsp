@@ -18,8 +18,21 @@
 	<!-- 회원 탭 버튼 -->
 	<div id="memTypeBtn"></div><br>
 	
+	<div class="d-flex justify-content-between align-items-end pb-2">
 	<!-- 새 글 등록 버튼 -->
 	<div id="formBtn"></div><br>
+	<!-- 검색 바 -->
+		<div class="TypoBox searchBar" style="display: block;">
+			<div class="searchBarWrap">
+				<label class="searchBarLabel" for="listKeyword">검색어</label> 
+				<input type="text" id="listKeyword" class="searchBarInput" 
+				placeholder="제목으로 검색하세요." maxlength="24" autocomplete="off" value="">
+			</div>
+			<button type="button" class="searchBarBtn">
+				<span class="material-symbols-outlined">search</span>
+			</button>
+		</div>
+	</div>
 
 	<!-- 게시글 리스트 -->
 	<div id="detTitle"></div>
@@ -29,6 +42,7 @@
 	
 	<!-- 게시글 상세 -->
 	<div id="aboardDetail"></div>
+	<div style="height:8px;"></div>
 	<div id="allBtns"></div>
 	<br>
 	

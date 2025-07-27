@@ -32,6 +32,7 @@ const abhit = async function (no) {
 const abno = function (no) {
   listTitle.style.display = "none";
   aboardform.style.display = "none";
+  TypoBox_searchBar.style.display = "none";
   memTypeBtn.innerHTML = "";
   formBtn.innerHTML = "";
   aboardList.innerHTML = "";

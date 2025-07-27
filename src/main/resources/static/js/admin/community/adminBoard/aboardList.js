@@ -8,6 +8,7 @@ const allBtns = document.querySelector("#allBtns");
 window.userId = document.querySelector("#userIdHidden")?.value;
 const aboardform = document.querySelector("#aboardForm");
 const modalElement = document.querySelector('#deleteModal');
+const TypoBox_searchBar = document.querySelector('.TypoBox.searchBar');
 
 // ✅ 게시글 상세 제목 설정
 const pageTitle = function () {
@@ -56,6 +57,7 @@ function setActiveTab(e) {
 const bhtml = function (rslt) {
 	listTitle.style.display = "block";
 	aboardform.style.display = "none";
+	TypoBox_searchBar.style.display = "block";
 
 	let html = '<div class="list_body">';
 	rslt.forEach((item) => {
@@ -100,26 +102,6 @@ const asklist = function (type, activeTab = 'all') {
 	memTypeBtn.innerHTML = html;
 };
 
-// ✅ FAQ 탭 렌더링
-/*
-const flist = function (activeTab = 'all') {
-	let html = `
-		<p class="h4">자주 묻는 질문 탭 선택</p>
-		<ul class="nav nav-underline" id="faqTabs">
-			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="faqUser(event)">일반회원</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="faqCorp(event)">기업회원</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="faqAll(event)">전체</a>
-			</li>
-		</ul>`;
-	memTypeBtn.innerHTML = html;
-};
-*/
-
 // ✅ 드롭다운 항목을 동적으로 생성하는 함수
 const loadFaqDropdownItems = function(groupCode, containerId, userType) {
 	fetch(`/ajax/admin/board/admin_board/cmn/${groupCode}`)
@@ -148,7 +130,7 @@ const faqDetail = function(codeDetailNo, event, userType = 'all') {
 		});
 };
 
-// ✅ 자주 묻는 질문 탭 UI 생성
+// ✅ FAQ 탭 렌더링
 const flist = function (activeTab = 'all') {
 	let html = `
 		<p class="h4">자주 묻는 질문 탭 선택</p>
@@ -184,9 +166,6 @@ const flist = function (activeTab = 'all') {
 	loadFaqDropdownItems('UFAQ', 'userFaqDropdownMenu', 'user');
 	loadFaqDropdownItems('CFAQ', 'corpFaqDropdownMenu', 'corp');
 };
-
-
-
 
 // ✅ 공지사항 탭 렌더링
 const nlist = function (activeTab = 'user') {
