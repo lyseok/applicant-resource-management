@@ -39,8 +39,8 @@
 					<p>
 						<strong>유형:</strong>
 						<c:choose>
-							<c:when test="${product.productType == 'L'}">정기권</c:when>
-							<c:when test="${product.productType == 'S'}">단건</c:when>
+							<c:when test="${product.productType == 'Premium'}">Premium</c:when>
+							<c:when test="${product.productType == 'Business'}">Business</c:when>
 							<c:otherwise>${product.productType}</c:otherwise>
 						</c:choose>
 					</p>

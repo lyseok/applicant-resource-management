@@ -2,6 +2,8 @@ package kr.or.ddit.company.payment.payment.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import kr.or.ddit.vo.common.AdminPaymentVO;
 import kr.or.ddit.vo.common.PaymentVO;
 
@@ -51,6 +53,12 @@ public interface PaymentService {
 	public List<String> selectChurnedSubscribers();		// 이번달 해지한사람
 
 	public List<String> selectLeftSubscribers();
+	
+	public List<Integer> selectMonthlySalesCompare(int year);
+
+	List<Integer> selectMonthlySales(@Param("year") int year);
+
+	
 	
 	
 }

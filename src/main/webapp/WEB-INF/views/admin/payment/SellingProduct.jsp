@@ -10,19 +10,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<form class="row g-2 mb-4" method="get" action="/admin/payment/select/product">
-  <div class="col-auto">
-    <label for="startDate" class="form-label">시작일</label>
-    <input type="date" class="form-control" name="startDate" id="startDate" value="${param.startDate}">
-  </div>
-  <div class="col-auto">
-    <label for="endDate" class="form-label">종료일</label>
-    <input type="date" class="form-control" name="endDate" id="endDate" value="${param.endDate}">
-  </div>
-  <div class="col-auto align-self-end">
-    <button type="submit" class="btn btn-primary">📆 기간 필터 적용</button>
-  </div>
-</form>
+<div class="row mb-4">
+    <div class="col-md-3">
+        <label for="yearSelect" class="form-label">비교할 연도 선택</label>
+        <select id="yearSelect" class="form-select">
+            <c:forEach var="y" begin="2020" end="2025">
+                <option value="${y}" <c:if test="${y == currentYear}">selected</c:if>>${y}</option>
+            </c:forEach>
+        </select>
+    </div>
+</div>
 
 <div class="container my-5">
     <h2 class="mb-4">📊 상품별 매출 현황</h2>

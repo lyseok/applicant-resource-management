@@ -18,8 +18,8 @@
     <form class="d-flex" method="get" action="">
         <select class="form-select me-2" name="filterType">
     <option value="" ${empty param.filterType ? "selected" : ""}>전체</option>
-    <option value="S" ${param.filterType == 'S' ? "selected" : ""}>단건</option>
-    <option value="L" ${param.filterType == 'L' ? "selected" : ""}>정기권</option>
+    <option value="S" ${param.filterType == 'BUSINESS' ? "selected" : ""}>Business</option>
+    <option value="L" ${param.filterType == 'PREMIUM' ? "selected" : ""}>Premium</option>
 </select>
         <button type="submit" class="btn btn-primary">검색</button>
     </form>
@@ -40,8 +40,8 @@
                     <p class="card-text mb-1">
                         <strong>유형:</strong>
                         <c:choose>
-                            <c:when test="${product.productType == 'L'}">정기권</c:when>
-                            <c:when test="${product.productType == 'S'}">단건</c:when>
+                            <c:when test="${product.productType == 'PREMIUM'}">PREMIUM</c:when>
+                            <c:when test="${product.productType == 'BUSINESS'}">BUSINESS</c:when>
                             <c:otherwise>${product.productType}</c:otherwise>
                         </c:choose>
                     </p>

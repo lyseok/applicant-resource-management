@@ -52,7 +52,7 @@
 		AND STATUS = 'S'
 	</select>
 
-	<!-- 관리자 페이지 매출용 -->
+	<!-- 관리자 페이지 통계용 -->
 	<select id="selectPaymentStatistics"
 		resultType="kr.or.ddit.vo.common.AdminPaymentVO">
 		SELECT
@@ -94,6 +94,37 @@
 		pp.PRODUCT_NAME
 
 	</select>
+	<!-- 얘는 매출 조회용 -->
+	<select id="selectMonthlySalesCompare" resultType="map">
+		SELECT
+		TO_CHAR(p.PAYMENT_DATE, 'MM') AS month,
+		SUM(CASE WHEN TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{thisYear}
+		THEN TO_NUMBER(p.PAYMENT_PAY) ELSE 0 END) AS thisYearSales,
+		SUM(CASE WHEN TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{lastYear}
+		THEN TO_NUMBER(p.PAYMENT_PAY) ELSE 0 END) AS lastYearSales
+		FROM PAYMENT p
+		WHERE TO_CHAR(p.PAYMENT_DATE, 'YYYY') IN (#{thisYear}, #{lastYear})
+		AND p.STATUS = 'A'
+		GROUP BY TO_CHAR(p.PAYMENT_DATE, 'MM')
+		ORDER BY TO_CHAR(p.PAYMENT_DATE, 'MM')
+	</select>
+
+	<!-- 월별 총액 -->
+<select id="selectMonthlySales" parameterType="int" resultType="int">
+    SELECT NVL(SUM(p.PAYMENT_PAY),0) AS month_total
+    FROM (
+        SELECT LEVEL AS month
+        FROM dual
+        CONNECT BY LEVEL &lt;= 12
+    ) months
+    LEFT JOIN PAYMENT p
+      ON TO_CHAR(p.PAYMENT_DATE, 'MM') = LPAD(months.month,2,'0')
+     AND TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{year}
+     AND p.STATUS = 'A'
+    GROUP BY months.month
+    ORDER BY months.month
+</select>
+
 
 	<select id="allcompanyName">
 		SELECT
@@ -115,11 +146,12 @@
 	<select id="selectChurnedSubscribers">
 		SELECT DISTINCT c.COM_NAME
 		FROM PAYMENT p
-		JOIN COMPANY c ON p.USER_ID = c.USER_ID
+		JOIN COMPANY
+		c ON p.USER_ID = c.USER_ID
 		WHERE p.STATUS = 'D'
 		OR p.STATUS = 'E'
 	</select>
-	
+
 	<!-- 2달이내 끊은사람 -->
 	<select id="selectLeftSubscribers">
 		SELECT DISTINCT c.COM_NAME
