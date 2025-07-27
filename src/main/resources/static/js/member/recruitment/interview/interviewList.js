@@ -37,6 +37,14 @@ async function loadIntroductionList(page = 1, keyword = '') {
   }
 }
 
+// 빈 html 코드 제거
+function cleanContent(html) {
+  if (!html) return '';
+  const trimmed = html.replace(/\s/g, '').toLowerCase();
+  return (trimmed === '<p><br></p>' || trimmed === '<p></p>' || trimmed === '<p>&nbsp;</p>') ? '' : html;
+}
+
+
 // 리스트 DOM 렌더 함수
 function renderIntroductionList(list) {
   const area = document.getElementById('interviewListArea');
@@ -52,47 +60,57 @@ function renderIntroductionList(list) {
     `;
     return;
   }
-  area.innerHTML = list.map(data => `
+  area.innerHTML = list.map(data => {
+		const content = cleanContent(data.RENO_REC_CONTENT);
+		/* ${content != null? `<div class="text-muted mt-2">${content}</div>` : ''} */
+		return `
     <ul>
-      <li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center" data-interview="${data.INTR_INTERVIEW_NO}">
-                <div>
-          <p class="d-block h4 fw-bold">${data.RENO_RECRUITMENT_TITLE}</p>
-          <p class="text-truncate">${data.RENO_REC_CONTENT}</p>
-          <p class="text-truncate"><b>${
-            data.INTR_INTERVIEW_TYPE === 'Y' ? '화상면접' : '대면면접'
-          }
-          </b>
-          /
-          ${
-            data.APRE_EVALUATION_START_TIME
-              ? formatIsoDateToDatetime(data.APRE_EVALUATION_START_TIME)
-              : formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)?
-               formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)
-               	: '면접 일시 등록 대기 중'
-          }
-          </p>
+      <li class="py-4 border-bottom d-flex justify-content-between align-items-center" data-interview="${data.INTR_INTERVIEW_NO}">
+        <div>
+					<p class="text-truncate mb-2">
+						<b>${
+						  data.INTR_INTERVIEW_TYPE === 'Y' ? '화상면접' : '대면면접'
+						}
+						</b>
+						/
+						${
+						  data.APRE_EVALUATION_START_TIME
+						    ? formatIsoDateToDatetime(data.APRE_EVALUATION_START_TIME)
+						    : formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)?
+						     formatIsoDateToDatetime(data.INTR_INTERVIEW_DATE)
+						     	: '-'
+						}
+					</p>
+          <p class="d-block h4 mb-0 fw-bold">${data.RENO_RECRUITMENT_TITLE}</p>
+          
         </div>
-        <div class="d-flex flex-column align-items-center gap-2 " >
-			   <a class="btn btn_violet_line fw-normal review-btn w-review"
-		         href="${data.APRE_STEP_APPLICATION_YN === 'Y' 
-		                 ? '/mypage/interview/review/write?intr_interview_no=' + data.INTR_INTERVIEW_NO 
-		                 : 'javascript:void(0);'}"
-		         data-record-no="${data.APRE_APPLICANT_RECORD_NO}">
-		         면접 리뷰작성
-		       </a>
-          ${data.INTR_INTERVIEW_TYPE === 'Y'
-            ? `<a class="btn btn_violet_line fw-normal w-review" 
-                  href="/mypage/introduction/edit/${data.INTR_INTERVIEW_NO}" 
-                  data-record-no="${data.APRE_APPLICANT_RECORD_NO}" 
-                  data-bs-toggle="modal" data-bs-target="#joinInterviewModal">
-                면접 접속
-              </a>`
-            : ''
-          }
+        <div class="d-flex flex-column align-items-center gap-2 w140">
+				${data.APRE_STEP_APPLICATION_YN === 'Y'
+				  ? `<a class="btn btn_violet_line fw-normal review-btn w-review"
+				          href="/mypage/interview/review/write?intr_interview_no=${data.INTR_INTERVIEW_NO}"
+				          data-record-no="${data.APRE_APPLICANT_RECORD_NO}">
+				        면접 리뷰작성
+				     </a>`
+				  : (data.INTR_INTERVIEW_TYPE === 'Y'
+				      ? `<a class="btn btn_violet_line fw-normal w-review" 
+				             href="/mypage/introduction/edit/${data.INTR_INTERVIEW_NO}" 
+				             data-record-no="${data.APRE_APPLICANT_RECORD_NO}" 
+				             data-bs-toggle="modal" data-bs-target="#joinInterviewModal">
+				           면접 접속
+				         </a>`
+				      : `
+							<div class="d-block text-center lh1-2">
+								<span class="material-symbols-outlined fw-300 d-block mb-2 text-violet60 fs-5">hourglass_empty</span>
+								<span class="fs-14 text-black-50 fw-500">기업의 면접평가<br> 작성 대기중</span>
+							</div>
+					`)
+				}
+
         </div>
       </li>
     </ul>
-  `).join('');
+  `;
+	}).join('');
 
   // 리뷰작성 버튼 클릭 제어
   document.querySelectorAll('.review-btn').forEach(btn => {

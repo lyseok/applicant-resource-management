@@ -55,6 +55,7 @@
 			li.textContent = job.jobName;
 			li.dataset.jobCode = job.jobCode;
 			suggestEl.appendChild(li);
+			suggestEl.style.border = "1px solid #dbdbdb";
 		});
 	});
 
@@ -63,6 +64,7 @@
 			jobInput.value = e.target.textContent;
 			jobCodeHidden.value = e.target.dataset.jobCode;
 			suggestEl.innerHTML = '';
+			suggestEl.style.border = "none";
 		}
 	})
 
@@ -114,13 +116,32 @@
 						const errors = err.response.data;
 
 						Object.entries(errors).forEach(([field, messages]) => {
-							const inputEl = form.querySelector(`[name="${field}"], #${field}`);
+							let inputEl = form.querySelector(`[name="${field}"], #${field}`);
 							if (inputEl) {
-								const parent = inputEl.closest('.section-form-row');
-								const span = document.createElement('span');
-								span.className = 'text-danger small';
-								span.textContent = messages.join(', ');
-								parent.appendChild(span);
+								// wrapper 선택, 없을경우 ✅ inputEl 감싸는 새로운 div 생성
+								let wrapper = inputEl.closest(".input-wrapper");
+
+								if (field === "jobCode") {
+					        inputEl = form.querySelector('#jobNameInput');
+						    }
+								
+								if (!wrapper) {
+									wrapper = document.createElement("div");
+									wrapper.classList.add("input-wrapper", "w-100", "d-flex", "flex-column");
+									inputEl.parentElement.insertBefore(wrapper, inputEl);
+									wrapper.appendChild(inputEl);
+								}
+
+								// 기존 에러 제거
+								const oldError = wrapper.querySelector(`.error`);
+								if (oldError) oldError.remove();
+
+								// 새 에러 span 추가
+								const errorSpan = document.createElement('span');
+								errorSpan.className = `error text-danger d-block mt-1 fs-14`;
+								errorSpan.innerText = messages.join(', ');
+
+								wrapper.appendChild(errorSpan);
 							}
 						});
 					}
