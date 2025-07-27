@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
@@ -19,8 +21,11 @@ import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.common.UsersVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxService{
@@ -141,6 +146,42 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	@Override
 	public String readBoardTypeName(String boardTypeCode) {
 		return mapper.selectBoardTypeName(boardTypeCode);
+	}
+
+	@Override
+	public Map<String, Object> readAboardWithComments(Map<String, Object> params) {
+		
+		List<AdminBoardVO> aboardList = mapper.selectAdminBoardWithComments(params);
+		int totalCnt = mapper.selectCountAdminBoard(params); 
+		Map<String, Object> resp = new HashMap<String, Object>();
+		resp.put("data", aboardList);
+		resp.put("totalCnt", totalCnt);
+		
+		return resp;
+	}
+	
+	@Override
+	public Map<String, Object> readAboardPage(Map<String, Object> params) {
+    	
+		List<AdminBoardVO> aboardList = mapper.selectAdminBoard(params);
+		int totalCnt = mapper.selectCountAdminBoard(params); 
+		Map<String, Object> resp = new HashMap<String, Object>();
+		resp.put("data", aboardList);
+		resp.put("totalCnt", totalCnt);
+		
+		return resp;
+	}
+	
+	@Override
+	public Map<String, Object> readAboardByFilter(Map<String, Object> params) {
+		List<AdminBoardVO> aboardList = mapper.selectAboardByFilter(params);
+		int totalCnt = mapper.selectAboardCountByFilter(params); 
+		Map<String, Object> resp = new HashMap<String, Object>();
+		resp.put("data", aboardList);
+		resp.put("totalCnt", totalCnt);
+		log.info("{}", params);
+		
+		return resp;
 	}
 
 }

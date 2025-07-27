@@ -19,6 +19,10 @@ public interface AdminAdminBoardAjaxService {
 	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode, String userRole);
 	public List<AdminBoardVO> readAdminBoardList();
 	
+	public Map<String, Object> readAboardWithComments(Map<String, Object> params);
+	public Map<String, Object> readAboardPage(Map<String, Object> params);
+	public Map<String, Object> readAboardByFilter(Map<String, Object> params);
+	
 	public List<CmnCodeVO> readCmnList(String codeGroupNo);
 	public List<CmnCodeGroupVO> readCmnGroupList(String upperCodeNo);
 	public List<AdminBoardVO> readAFaqListByCgn(String groupPrefix);	 //FAQ 회원별 게시글 목록조회
