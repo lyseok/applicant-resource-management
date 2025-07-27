@@ -1,8 +1,8 @@
 package kr.or.ddit.member.community.companyReview.service;
 
-import java.lang.reflect.Member;
-import java.util.Collections;
+
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.conf.CodeMapProvider;
-import kr.or.ddit.mapper.common.CmnCodeGroupMapper;
+import kr.or.ddit.dto.CompanyReviewDTO;
+import kr.or.ddit.dto.CompanyReviewStatsDTO;
+
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.MemberMapper;
 import kr.or.ddit.mapper.community.CompanyReivewQuestionMapper;
 import kr.or.ddit.mapper.community.CompanyReviewMapper;
 import kr.or.ddit.mapper.resume.CareerMapper;
 import kr.or.ddit.mapper.resume.ResumeMapper;
-import kr.or.ddit.vo.common.CmnCodeGroupVO;
-import kr.or.ddit.vo.common.CmnCodeVO;
+
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewQuestionVO;
@@ -36,7 +37,7 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	private final MemberMapper memberMapper;
 	private final ResumeMapper resumeMapper;
 	private final CareerMapper careerMapper;
-	private final  CompanyReivewQuestionMapper companyReivewQuestionMapper; 
+	private final CompanyReivewQuestionMapper companyReivewQuestionMapper; 
 	private final CodeMapProvider codeMapProvider;
 
 	
@@ -62,12 +63,28 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	
 	@Transactional
 	@Override
-	public void createCompanyReview(CompanyReviewVO companyReview) {
-		 companyReviewMapper.insertCompanyReview(companyReview);
-		 for(CompanyReviewQuestionVO q : companyReview.getCompanyReviewQuestion()) {
-			 q.setCompanyReviewNo(companyReview.getCompanyReviewNo());
-			 companyReivewQuestionMapper.insertCompanyReviewQuestionWithAnswer(q);
-		 }
+	public void createCompanyReview(CompanyReviewDTO companyReview) {
+		CareerVO career = readCareerDetail(companyReview.getCareerNo());
+		CompanyReviewVO review = new CompanyReviewVO();
+		review.setUserId(getUserId());
+		review.setJobCode(career.getJobCode());
+		review.setComId(career.getComId());
+		review.setCompanyReviewOneLine(companyReview.getCompanyReviewOneLine());
+		review.setCompanyReviewQuestion(companyReview.getCompanyReviewQuestion());
+		if(career.getRetireDate() != null && career.getTenure() == "Y") {
+			review.setWorkingYn("Y");
+		}else {
+			review.setWorkingYn("N");
+		}
+		
+		companyReviewMapper.insertCompanyReview(review);
+		for (CompanyReviewQuestionVO q : review.getCompanyReviewQuestion()) {
+			q.setCompanyReviewNo(review.getCompanyReviewNo());
+			companyReivewQuestionMapper.insertCompanyReviewQuestionWithAnswer(q);
+		}
+		
+		
+		
 	}
 
 	@Override
@@ -119,12 +136,55 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 
 	@Override
 	public CareerVO readCareerDetail(String careerNo) {
-		return careerMapper.selectCareerDetail(careerNo);
+		CareerVO career = careerMapper.selectCareerDetailWithCom(careerNo);
+		String jobName = codeMapProvider.getJobName(career.getJobCode());
+		String jobGradeName = codeMapProvider.getCodeName(career.getJobGradeCode());
+		String positionName = codeMapProvider.getCodeName(career.getPositionCode());
+		String yearName = codeMapProvider.getCodeName(career.getCareerYear());
+		career.setJobCodeName(jobName);
+		career.setJobGradeCodeName(jobGradeName);
+		career.setPositionCodeName(positionName);
+		career.setCareerYearName(yearName);
+		return career;
+		
 	}
 	
 	public String getUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	return authentication.getName();
+	}
+
+
+	@Override
+	public CompanyReviewStatsDTO readCompanyReviewStats(String comId) {
+		CompanyReviewStatsDTO dto = new CompanyReviewStatsDTO();
+		
+		dto.setTotalReviewCount(companyReviewMapper.selectTotalReviewCount(comId));
+	    dto.setReviewUserCount(companyReviewMapper.selectReviewUserCount(comId));
+		
+		dto.setOverallAvg(companyReviewMapper.selectOverallAvg(comId));
+		dto.setQuestionAvgList(companyReviewMapper.selectQuestionAvg(comId));
+
+		List<CompanyReviewStatsDTO.TopJobStatsDTO> topJobOverallList = companyReviewMapper.selectTopJobOverallList(comId);
+		List<CompanyReviewStatsDTO.QuestionAvgDTO> topJobQuestionList = companyReviewMapper.selectTopJobQuestionAvgList(comId);
+		
+		  for (CompanyReviewStatsDTO.TopJobStatsDTO topJob : topJobOverallList) {
+	            List<CompanyReviewStatsDTO.QuestionAvgDTO> questionListForTopJob = topJobQuestionList.stream()
+	                    .filter(q -> q.getTopJobCode().equals(topJob.getTopJobCode()))
+	                    .toList();
+	            topJob.setQuestionAvgList(questionListForTopJob);
+	        }
+	        dto.setTopJobStatsList(topJobOverallList);
+													
+		
+		return dto;
+	}
+
+
+	@Override
+	public Map<String, Object> readCompanyWithReviewInfo(String comId) {
+		Map<String, Object> companyReviewInfo = companyReviewMapper.selectCompanyWithReviewInfo(comId);
+		return companyReviewInfo;
 	}
 
 	
