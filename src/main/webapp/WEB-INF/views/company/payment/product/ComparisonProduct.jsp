@@ -53,13 +53,14 @@
 							name="newProductNo" value="${product.productNo}" /> <input
 							type="hidden" name="billingKey"
 							value="${payment.paymentBillingKey}" />
+							
 						<button id="change-btn"
 								class="btn btn-success"
 								data-billing-key="${payment.paymentBillingKey}"
 								data-product-no="${product.productNo}"
 								data-product-name="${product.productName}"
 								data-amount="${product.productPrice}"
-							onclick="doChangeBilling(event, btn)">이 요금제로 변경하기
+							onclick="doChangeBilling(event, this)">이 요금제로 변경하기
 							</button>
 
 					</form>
@@ -72,6 +73,6 @@
 	
 	<script src="/js/company/payment/ChangeProduct.js"></script>
 	<script src="/js/company/payment/ProductDetail.js"></script>
-	<script src="/js/company/payment/ComparsionProduct.js"></script>
+	<!-- <script src="/js/company/payment/ComparsionProduct.js"></script> -->
 </body>
 </html>

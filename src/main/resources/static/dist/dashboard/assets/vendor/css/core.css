@@ -15259,6 +15259,7 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: space-between;
+  background:var(--violet10);
 }
 
 .content-backdrop {

@@ -21,6 +21,7 @@ public class CareerVO implements Serializable {
 
 	@NotBlank(message = "회사명은 필수 입력 항목입니다.")
     private String comId;
+	private String comName;
 
 	@NotBlank(message = "직무는 필수 입력 항목입니다.")
     private String jobCode;

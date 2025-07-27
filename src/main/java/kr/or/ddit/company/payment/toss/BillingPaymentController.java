@@ -80,6 +80,7 @@ public class BillingPaymentController {
 		String customerKey = (String) session.getAttribute("customerKey");
 		if(billingKey == null || billingKey == "") {
 			billingKey = Pservice.checkbilling(Pservice.getUserId());		
+			log.info("여기서 빌링키가 나온다고요 ?? : {}", billingKey);
 			map.put("billingKey", billingKey);
 		}
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
@@ -232,12 +233,12 @@ public class BillingPaymentController {
 		body.put("authKey", authKey);
 		body.put("customerKey", customerKey);
 
-	
+		log.info("body 의 값 :{}",body);
 		HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
 		RestTemplate restTemplate = new RestTemplate();
 
 		String url = "https://api.tosspayments.com/v1/billing/authorizations/issue";
-
+		
 		try {
 			ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 			return ResponseEntity.ok(response.getBody());

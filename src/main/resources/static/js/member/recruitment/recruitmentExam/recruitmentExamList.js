@@ -23,7 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch((err) => {
       console.error('에러 체킁', err);
       examListEl.innerHTML = `
-        <div class="list-group-item text-center text-muted">시험이 존재하지 않습니다.</div>
+        <div class="p-6 d-flex flex-column align-items-center gap-2">
+        <span>응시한 시험 내역이 존재하지 않아요 !</span>
+        <a class="fw-bold d-flex" href="/write/new">
+          채용공고 보러가기
+          <span class="material-symbols-outlined">chevron_right</span>
+        </a>
+      </div>
         `;
     });
 	

@@ -4,8 +4,15 @@
 }
 /* 폰트사이즈 */
 .fs-12{font-size:12px !important;}
+.fs-13{font-size:13px !important;}
 .fs-14{font-size:14px !important;}
 .fs-16{font-size:16px !important;}
+.fs-18{font-size:18px !important;}
+
+/* 폰트 굵기 */
+.fw-500{
+	font-weight:500 !important;
+}
 
 /* padding */
 .p-6{padding:6rem !important;}
@@ -41,6 +48,44 @@
 .bg-violet10{
 	background-color:#5a00fa !important;
 }
+
+/* 폰트 색상  */
+.text-violet10{
+	color:var(--violet10);
+}
+.text-violet20{
+	color:var(--violet20);
+}
+.text-violet30{
+	color:var(--violet30);
+}
+.text-violet40{
+	color:var(--violet40);
+}
+.text-violet50{
+	color:var(--violet50);
+}
+.text-violet60{
+	color:var(--violet60);
+}
+.text-violet70{
+	color:var(--violet70);
+}
+.text-violet80{
+	color:var(--violet80);
+}
+.text-violet90{
+	color:var(--violet90);
+}
+.text-violet100{
+	color:var(--violet100);
+}
+.text-violet110{
+	color:var(--violet110);
+}
+.text-violet120{
+	color:var(--violet120);
+}
 /* % 넓이 - width */
 .w100p{width:100% !important;}
 .w95p{width:95% !important;}
@@ -64,6 +109,10 @@
 /* line-height */
 .lh_normal{line-height:normal !important;}
 .lh1{line-height:1 !important;}
+.lh1-2{line-height:1.2 !important;}
+.lh1-4{line-height:1.4 !important;}
+.lh1-6{line-height:1.6 !important;}
+.lh1-8{line-height:1.8 !important;}
 .lh40{line-height:40px !important;}
 .lh50{line-height:50px !important;}
 
@@ -100,6 +149,21 @@
 }
 
 
+/* 구글아이콘 두께 */
+.material-symbols-outlined.fw-200{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24
+}
+.material-symbols-outlined.fw-300{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 24
+}
 
 /* 체크박스 커스텀 */
 .form-check{
@@ -159,6 +223,78 @@
 	color: var(--violet80) !important;
 }
 .modal-dialog-centered{min-height:100vh}
+
+
+
+
+
+/* 채용공고 공통 스타일 */
+.recruit_list span{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24;
+  color:var(--violet80);
+}
+
+.recruit_list .viewat_box,
+.recruit_list .com_name_box{	
+    flex: 0 0 202px;
+    overflow: hidden;
+    max-width: 136px;
+    width:202px;
+}
+.recruit_list .viewAt{	
+    color: var(--gray120);
+    line-height: 24px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left:10px;
+    font-size:14px;
+}
+
+.recruit_list .recruit_tit{
+    margin-left: 64px;
+    padding: 0;
+    flex-basis: 492px;
+}
+
+.recruit_info span{
+  color:#a1a1a1;
+}
+.recruit_list .recruit_info span:last-child {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    padding-left: 12px;
+    color: var(--gray100);
+    font-size: 13px;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.recruit_list .recruit_info span.num_line{
+	margin-top:2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* popover/tooltip */
 .toolTipWrap {

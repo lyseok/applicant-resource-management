@@ -55,7 +55,7 @@ public class introductionController {
 	@GetMapping("/list")
 	public String getintroduction(
 		@AuthenticationPrincipal UserDetails userDetails 
-		, @RequestParam(defaultValue = "1") int page
+		, @RequestParam(defaultValue = "1") int page	// 프론트에서 받음,
 		, Model model
 	) {
 		if(userDetails == null) {
@@ -63,6 +63,7 @@ public class introductionController {
 		}
 		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기	
 		
+		// 페이징 처리를 위한 설정
 		int pageSize = 4;
 	    int offset = (page - 1) * pageSize;
 	    int totalCount = service.getTotalCount(userId);
@@ -76,6 +77,7 @@ public class introductionController {
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalCount", totalCount);
 	    model.addAttribute("totalPages", totalPages);
+		// 페이징 처리를 위한 설정 end
 
 		return "member/resume/mypage/introduction/introductionList";
 	}

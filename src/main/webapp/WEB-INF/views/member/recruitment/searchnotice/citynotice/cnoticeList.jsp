@@ -251,14 +251,6 @@
 	                                    <div class="viewport">
 	                                        <div class="overview" style="top: -10px;" id="first_cityopt">
 	                                            <ul>
-	                                            	<%-- 
-	                                                <li class="depth1_btn_wrapper on" id="depth1_btn_101000">
-	                                                	<button type="button" class="depth1_btn_101000" data-code="101000">
-			                                                <span class="txt">서울 </span>
-			                                                <span class="count">(58,664)</span>
-		                                                </button>
-	                                                </li>
-	                                                --%>
 	                                            </ul>
 	                                        </div>
 	                                    </div>
@@ -273,77 +265,8 @@
 	                                    </div>
 	                                    <div class="viewport">
 	                                        <div class="overview" style="top: 0px;">
-	                                            <div class="wrap_list_check" id="second_cityopt">
-	                                        		<%-- 
-	                                                <ul class="list_check" id="sp_area_lastDepth_117000" style="display: none;">
-	                                                    <li>
-	                                                        <div class="inpChk" id="second_divopt_117000">
-	                                                            <input type="checkbox" id="loc_mcd_117000" name="loc_mcd[]" value="117000" data-is_representative="n" data-representative="" data-mcode="117000" data-check-type="all">
-	                                                            <label for="loc_mcd_117000" class="lbl"><span class="txt">전국</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                </ul>
-	
-	                                                <ul class="list_check" id="sp_area_lastDepth_111000" style="display: none;">
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_mcd_111000" name="loc_mcd[]" value="111000" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="all">
-	                                                            <label for="loc_mcd_111000" class="lbl"><span class="txt">경북전체</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_111010" name="loc_cd[]" value="111010" data-is_representative="n" data-representative="" data-mcode="111000" data-check-type="">
-	                                                            <label for="loc_cd_111010" class="lbl"><span class="txt">경산시</span><span class="count"> (1,180)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                </ul>
-	
-	                                                <ul class="list_check" id="sp_area_lastDepth_110000" style="display: none;">
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_mcd_110000" name="loc_mcd[]" value="110000" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="all">
-	                                                            <label for="loc_mcd_110000" class="lbl"><span class="txt">경남전체</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_110010" name="loc_cd[]" value="110010" data-is_representative="n" data-representative="" data-mcode="110000" data-check-type="">
-	                                                            <label for="loc_cd_110010" class="lbl"><span class="txt">거제시</span><span class="count"> (443)</span></label>
-	                                                        </div>
-	                                                    </li>
-	                                                </ul>
-	
-	                                                <ul class="list_check" id="sp_area_lastDepth_101000" style="display: block;">
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_mcd_101000" name="loc_mcd[]" value="101000" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="all">
-	                                                            <label for="loc_mcd_101000" class="lbl">
-	                                                            	<span class="txt">서울전체</span>
-	                                                            </label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101010" name="loc_cd[]" value="101010" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101010" class="lbl">
-		                                                            <span class="txt">강남구</span>
-		                                                            <span class="count"> (18,448)</span>
-	                                                            </label>
-	                                                        </div>
-	                                                    </li>
-	                                                    <li>
-	                                                        <div class="inpChk">
-	                                                            <input type="checkbox" id="loc_cd_101020" name="loc_cd[]" value="101020" data-is_representative="n" data-representative="" data-mcode="101000" data-check-type="">
-	                                                            <label for="loc_cd_101020" class="lbl">
-		                                                            <span class="txt">강동구</span>
-		                                                            <span class="count"> (1,988)</span>
-	                                                            </label>
-	                                                        </div>
-	                                                    </li>
-	                                                </ul>
-		                                    		--%>
-	
+	                                            <div class="wrap_list_check" id="second_cityopt">  <!-- 따로 부여한 아이디 -->
+	                                            <!-- 비동기로 들어갈 지역구 부분 -->    
 	                                                <div class="area_btn">
 	                                                    <button type="button" class="btn_all_category" data-logging-flow="area">지역 펼쳐보기</button>
 	                                                    <button type="button" class="btn_reset">지역 초기화</button>
@@ -399,7 +322,6 @@
 	                            <div class="details">
 	                                <!-- wrap_depth_category -->
 	                                <h4 class="blind">카테고리 선택</h4>
-	
 	                                <div class="box_jobs">
 	                                    <script id="sp_job_category_home_template" type="text/x-handlebars-template">
                                         {{#mclsList}}
@@ -408,31 +330,8 @@
                                             {{/hasCountInJobCategory}}
                                         {{/mclsList}}
                                     	</script>
-                                    	<%--
-                                    	<button type="button" class="btn_job" data-mcls_cd_no="16">기획·전략</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="14">마케팅·홍보·조사</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="3">회계·세무·재무</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="5">인사·노무·HRD</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="4">총무·법무·사무</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="2">IT개발·데이터</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="15">디자인</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="8">영업·판매·무역</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="21">고객상담·TM</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="18">구매·자재·물류</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="12">상품기획·MD</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="7">운전·운송·배송</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="10">서비스</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="11">생산</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="22">건설·건축</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="6">의료</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="9">연구·R&amp;D</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="19">교육</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="13">미디어·문화·스포츠</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="17">금융·보험</button>
-	                                    <button type="button" class="btn_job" data-mcls_cd_no="20">공공·복지</button>
-	                                     --%>
+                                    	<!-- 비동기로 상위직업 버튼 들어갈 부분 -->
 	                                </div>
-	
 	                                <div class="box_detail_jobs" style="display:none;">
 	                                    <div class="box_onedepth">
 	                                        <div class="wrap_scroll">
@@ -444,7 +343,7 @@
 	                                                </div>
 	                                            </div>
 	                                            <div class="viewport">
-	                                                <ul class="list overview" id="box_jobs_btn">  <!-- 내가 부여한 아이디 -->
+	                                                <ul class="list overview" style="top: 0px;" id="box_jobs_btn">  <!-- 내가 부여한 아이디 -->
 	                                                    <script id="sp_job_category_oneDepth_template" type="text/x-handlebars-template">
                                                         {{#mclsList}}
                                                             {{#hasCountInJobCategory count}}
@@ -457,252 +356,13 @@
                                                             {{/hasCountInJobCategory}}
                                                         {{/mclsList}}
                                                     	</script>
-                                                    	<%--
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_16">
-	                                                        <button type="button" data-mcls_cd_no="16" class="first_depth depth1_btn_16">
-	                                                            <span class="txt">기획·전략 </span>
-	                                                            <span class="count">(11,640)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_14">
-	                                                        <button type="button" data-mcls_cd_no="14" class="first_depth depth1_btn_14">
-	                                                            <span class="txt">마케팅·홍보·조사 </span>
-	                                                            <span class="count">(11,678)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_3">
-	                                                        <button type="button" data-mcls_cd_no="3" class="first_depth depth1_btn_3">
-	                                                            <span class="txt">회계·세무·재무 </span>
-	                                                            <span class="count">(9,965)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_5">
-	                                                        <button type="button" data-mcls_cd_no="5" class="first_depth depth1_btn_5">
-	                                                            <span class="txt">인사·노무·HRD </span>
-	                                                            <span class="count">(4,056)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_4">
-	                                                        <button type="button" data-mcls_cd_no="4" class="first_depth depth1_btn_4">
-	                                                            <span class="txt">총무·법무·사무 </span>
-	                                                            <span class="count">(14,139)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_2">
-	                                                        <button type="button" data-mcls_cd_no="2" class="first_depth depth1_btn_2">
-	                                                            <span class="txt">IT개발·데이터 </span>
-	                                                            <span class="count">(12,061)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_15">
-	                                                        <button type="button" data-mcls_cd_no="15" class="first_depth depth1_btn_15">
-	                                                            <span class="txt">디자인 </span>
-	                                                            <span class="count">(8,447)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_8">
-	                                                        <button type="button" data-mcls_cd_no="8" class="first_depth depth1_btn_8">
-	                                                            <span class="txt">영업·판매·무역 </span>
-	                                                            <span class="count">(24,889)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_21">
-	                                                        <button type="button" data-mcls_cd_no="21" class="first_depth depth1_btn_21">
-	                                                            <span class="txt">고객상담·TM </span>
-	                                                            <span class="count">(6,340)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_18">
-	                                                        <button type="button" data-mcls_cd_no="18" class="first_depth depth1_btn_18">
-	                                                            <span class="txt">구매·자재·물류 </span>
-	                                                            <span class="count">(11,046)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_12">
-	                                                        <button type="button" data-mcls_cd_no="12" class="first_depth depth1_btn_12">
-	                                                            <span class="txt">상품기획·MD </span>
-	                                                            <span class="count">(6,538)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_7">
-	                                                        <button type="button" data-mcls_cd_no="7" class="first_depth depth1_btn_7">
-	                                                            <span class="txt">운전·운송·배송 </span>
-	                                                            <span class="count">(6,924)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_10">
-	                                                        <button type="button" data-mcls_cd_no="10" class="first_depth depth1_btn_10">
-	                                                            <span class="txt">서비스 </span>
-	                                                            <span class="count">(25,266)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_11">
-	                                                        <button type="button" data-mcls_cd_no="11" class="first_depth depth1_btn_11">
-	                                                            <span class="txt">생산 </span>
-	                                                            <span class="count">(38,961)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_22">
-	                                                        <button type="button" data-mcls_cd_no="22" class="first_depth depth1_btn_22">
-	                                                            <span class="txt">건설·건축 </span>
-	                                                            <span class="count">(18,119)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_6">
-	                                                        <button type="button" data-mcls_cd_no="6" class="first_depth depth1_btn_6">
-	                                                            <span class="txt">의료 </span>
-	                                                            <span class="count">(21,535)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_9">
-	                                                        <button type="button" data-mcls_cd_no="9" class="first_depth depth1_btn_9">
-	                                                            <span class="txt">연구·R&amp;D </span>
-	                                                            <span class="count">(7,184)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_19">
-	                                                        <button type="button" data-mcls_cd_no="19" class="first_depth depth1_btn_19">
-	                                                            <span class="txt">교육 </span>
-	                                                            <span class="count">(8,811)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_13">
-	                                                        <button type="button" data-mcls_cd_no="13" class="first_depth depth1_btn_13">
-	                                                            <span class="txt">미디어·문화·스포츠 </span>
-	                                                            <span class="count">(5,932)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_17">
-	                                                        <button type="button" data-mcls_cd_no="17" class="first_depth depth1_btn_17">
-	                                                            <span class="txt">금융·보험 </span>
-	                                                            <span class="count">(2,066)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    <li class="item_job depth1_btn_wrapper" id="depth1_btn_20">
-	                                                        <button type="button" data-mcls_cd_no="20" class="first_depth depth1_btn_20">
-	                                                            <span class="txt">공공·복지 </span>
-	                                                            <span class="count">(4,617)</span>
-	                                                        </button>
-	                                                    </li>
-	                                                    --%>
 	                                                </ul>
 	                                            </div>
 	                                        </div>
 	                                    </div>
 	                                    <%-- 사람인의 경우 여기 <script>(css용)</script> 있음 --%>
 	                                    <!-- 비동기로 미리 만들어지는 하위직업 선택 -->
-	                                    <%--
-	                                    <div class="box_detail_depth on" id="sp_job_category_subDepth_17" style="display: block;">
-							                <div class="row row_all_select">
-							                    <input type="checkbox" id="all_check_onedepth_17" name="cat_mcls[]" 
-							                    class="select_all" data-code="17" data-mcls_cd_no="17" data-mcls_cd_nm="금융·보험">
-							                    <label for="all_check_onedepth_17">
-							                    	<span>금융·보험 전체선택</span>
-							                    </label>
-							                    <span class="inpSel">
-							                        <select class="select_sort" title="정렬방법">
-							                            <option value="default">가나다순</option>
-							                            <option value="favor">공고많은순</option>
-							                        </select>
-							                    </span>
-							                </div>
-							                <div class="row list" style="height: 243px;">
-							                    <div class="wrap_scroll">
-							                        <div class="scrollbar disable" style="height: 243px;">
-								                        <div class="track" style="height: 243px;">
-									                        <div class="thumb" style="height: 243px;">
-									                        	<div class="end"></div>
-									                        </div>
-								                        </div>
-							                        </div>
-							                        <div class="viewport">
-							                            <div class="overview" style="top: 0px;">
-							                                <dl class="row_item">
-							                                    <dt>
-							                                        <span class="txt">직무·직업</span>
-							                                    </dt>
-							                                    <dd class="area_list">
-							                                    	<button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1698" data-mcls_cd_no="17" 
-							                                   		 data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1698" data-kewd_cd_nm="금융사무" data-sort="0" data-count="581">
-								                                    금융사무
-								                                    	<span class="count">(581)</span>
-							                                    	</button>
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1699" 
-								                                     data-mcls_cd_no="17" data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1699" data-kewd_cd_nm="금융상품영업" 
-								                                    data-sort="1" data-count="387">
-								                                    금융상품영업
-								                                    	<span class="count">(387)</span>
-								                                    </button>
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1691" data-mcls_cd_no="17" 
-								                                    data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1691" data-kewd_cd_nm="대출상담사" data-sort="2" data-count="201">
-								                                     대출상담사
-								                                    	<span class="count">(201)</span>
-								                                    </button>
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1700" data-mcls_cd_no="17" 
-								                                    data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1700" data-kewd_cd_nm="보험상담" data-sort="3" data-count="431">
-								                                     보험상담
-								                                    	<span class="count">(431)</span>
-								                                    </button>
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1701" data-mcls_cd_no="17" 
-								                                    data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1701" data-kewd_cd_nm="보험상품개발" data-sort="4" data-count="58">
-								                                     보험상품개발
-								                                    	<span class="count">(58)</span>
-								                                    </button>
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1692" data-mcls_cd_no="17"
-								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1692" data-kewd_cd_nm="보험설계사" data-sort="5" data-count="365">
-								                                      보험설계사
-								                                     	<span class="count">(365)</span>
-								                                    </button>
-								                                 </dd>
-							                                </dl>
-							                                <dl class="row_item">
-							                                    <dt>
-							                                        <button type="button" class="btn_expand" data-scls_cd_no="65">
-							                                        	<span class="txt">전문분야</span>
-							                                        </button>
-							                                    </dt>
-							                                    <dd class="area_list">
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1703" data-mcls_cd_no="17" 
-								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1703" data-kewd_cd_nm="기업금융" data-sort="0" data-count="207">
-								                                    기업금융
-								                                    	<span class="count">(207)</span>
-								                                    </button>
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1704" data-mcls_cd_no="17" 
-								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1704" data-kewd_cd_nm="기업분석" data-sort="1" data-count="96">
-								                                    기업분석
-								                                    	<span class="count">(96)</span>
-								                                    </button>
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1705" data-mcls_cd_no="17" 
-								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1705" data-kewd_cd_nm="기업심사" data-sort="2" data-count="82">
-								                                    기업심사
-								                                    	<span class="count">(82)</span>
-								                                    </button>
-							                                    </dd>
-							                                </dl>
-							                                <dl class="row_item">
-							                                    <dt>
-							                                        <span class="txt">금융기관</span>
-							                                    </dt>
-							                                    <dd class="area_list">
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1738" data-mcls_cd_no="17" 
-								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1738" data-kewd_cd_nm="공제기관" data-sort="0" data-count="15">
-								                                    공제기관
-								                                    	<span class="count">(15)</span>
-							                                    </button>
-								                                    <button type="button" name="cat_kewd[]" class="btn_three_depth" data-code="1739" data-mcls_cd_no="17" 
-								                                     data-mcls_cd_nm="금융·보험" data-kewd_cd_no="1739" data-kewd_cd_nm="사금융권" data-sort="1" data-count="73">
-								                                     사금융권
-								                                     	<span class="count">(73)</span>
-								                                     </button>
-							                                    </dd>
-							                                </dl>
-							                            </div>
-							                        </div>
-							                    </div>
-							                </div>
-							            </div>
 							            <!-- //end 비동기로 미리 만들어지는 하위직업 선택 -->
-	                                	--%>
 	                                </div>
 	                            </div>
 	                        </div>
@@ -755,6 +415,8 @@
 	                            </div>
 	                        </div>
 	                        <!-- //end 여기가 내가 할 부분인 검색창 검색 -->
+	                        <!-- 상세조건은 일단 안 씀 -->
+	                        <%--
 	                        <div class="option_content detail_option_section detail_section ">
 	                            <h2 class="blind">상세조건</h2>
 	                            <div id="sp_optional_wrapper" class="search_wrap wrap_detail_panel">
@@ -811,7 +473,6 @@
 	                                        <h2 class="option_title">업종</h2>
 	                                        <div class="option_list depth1_wrapper">
 	                                            <ul>
-	                                            	<%-- 
 	                                                <li>
 	                                                    <button type="button" id="sp_industry_1depth_1" class="btn_option job_category01 depth1" data-code="1">서비스업</button>
 	                                                </li>
@@ -839,7 +500,6 @@
 	                                                <li>
 	                                                    <button type="button" id="sp_industry_1depth_4" class="btn_option job_category09 depth1" data-code="4">은행·금융업</button>
 	                                                </li>
-	                                                --%>
 	                                            </ul>
 	                                            <ul>
 	                                                <li>
@@ -2250,6 +1910,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
+	                        --%>
 	                    </div>
 	                </div>
 	                <div class="bg"></div>
@@ -2287,6 +1948,5 @@
 </div>
 	                        
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="/js/member/recruitment/searchnotice/citynotice/cnoticeList.js"></script>
-<script src="/js/member/recruitment/searchnotice/citynotice/jnoticeList.js"></script> <!-- 일단 넣어둠, 추후 합침 -->
+<script src="/js/member/recruitment/searchnotice/searchBar.js"></script>
 </body>

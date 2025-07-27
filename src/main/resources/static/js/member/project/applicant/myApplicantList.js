@@ -80,16 +80,36 @@ function renderPostList() {
   }
   area.innerHTML = posts.map(post => `
     <li class="board-list-item" data-id="${post.postId}" style="cursor:pointer;">
-      <div class="card card-post mb-4 border-0">
-        <div class="card-body py-4 px-4">
-          <div class="d-flex align-items-center gap-3 mb-2">
-            <span class="badge badge-recruit">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
-            <div class="post-title flex-grow-1">${post.title}</div>
-          </div>
-          <div class="post-content mb-2">
+      <div class="card card-post mb-4">
+        <div class="card-body p-4">
+					<div class="d-flex justify-content-between align-items-center">
+	          <div class="d-flex align-items-center gap-3 mb-2">
+	            <span class="badge badge-recruit">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
+	            <div class="post-title flex-grow-1 fs-18">${post.title}</div>
+	          </div>
+						<div class="d-flex align-items-center gap-1">
+						  <div class="d-flex align-items-center gap-2 bg-violet02 py-2 px-5 rounded fw-bold">
+								${
+								  post.myStatus === 'PRST-002' 
+								    ? `<span class="material-symbols-outlined fw-300 text-violet80">arrow_circle_right</span>${STATUS_MAP[post.myStatus]}` 
+								    : post.myStatus === 'PRST-000' 
+								      ? `<span class="material-symbols-outlined fw-300 text-danger">cancel</span>${STATUS_MAP[post.myStatus]}` 
+								      : `<span class="material-symbols-outlined fw-300 text-violet80">check_circle</span></span>${STATUS_MAP[post.myStatus] || '상태없음'}`
+								}
+						  </div>
+							
+						  ${post.myStatus === 'PRST-002' ? `
+						    <div class="btn btn_violet btn-accept"
+						      data-aplcnt-no="${post.prjAplcntNo}">
+						      참여수락
+						    </div>
+						  ` : ''}
+						</div>
+					</div>
+          <div class="post-content text-truncate text-truncate2 mb-2 fs-16 text-muted">
             ${post.content.length > 80 ? post.content.slice(0, 80) + '...' : post.content}
           </div>
-          <div class="mb-2">
+          <div class="d-flex gap-2 my-3">
             ${post.job ? `<span class="badge badge-tag">${post.job}</span>` : ''}
             ${(post.tags || []).map(tag =>
               `<span class="badge badge-tag">${tag}</span>`
@@ -97,25 +117,14 @@ function renderPostList() {
           </div>
           <div class="d-flex justify-content-between align-items-center mt-2">
             <div class="d-flex align-items-center gap-2 text-secondary">
-              <span class="fw-semibold">${post.nickname || '익명'}</span>
+              <span class="fw-semibold fs-13">${post.nickname || '익명'}</span>
               <span style="font-size:1.05em;">·</span>
               <span style="font-size:.99em;">${post.date}</span>
             </div>
-            <div class="d-flex align-items-center gap-3 text-secondary" style="font-size:1.07em;">
-              <span><i class="bi bi-heart"></i>좋아요 ${post.like}</span>
-              <span><i class="bi bi-eye"></i>조회수 ${post.view}</span>
-            </div>
-          </div>
-          <div class="mt-3 d-flex align-items-center gap-2">
-            <span class="btn btn_gray_line ${post.myStatus === 'PRST-002' ? 'bg-warning' : 'bg-light'}">
-              ${STATUS_MAP[post.myStatus] || '상태없음'}
-            </span>
-            ${post.myStatus === 'PRST-002' ? `
-              <div class="btn btn_violet_line btn-accept"
-                data-aplcnt-no="${post.prjAplcntNo}">
-                참여수락
-              </div>
-            ` : ''}
+							<div class="d-flex align-items-center gap-3 text-secondary fs-13">
+								<span>좋아요 <strong>${post.like}</strong></span>
+								<span>조회수 <strong>${post.view}</strong></span>
+							</div>
           </div>
         </div>
       </div>

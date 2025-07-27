@@ -88,6 +88,8 @@ public class ResumeVO implements Serializable {
 	@Valid
 	private List<EducationVO> educationList; // 학력
 	
+	private EducationVO education;
+	
 
 	private CompanyVO company;						// 기업정보
 	private MemberVO member;
