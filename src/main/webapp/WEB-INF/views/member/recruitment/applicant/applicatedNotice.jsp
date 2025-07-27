@@ -29,7 +29,7 @@ display:inline-block;
 }
 
 #btn_wrap{
-	width:130px;
+	width:150px;
 }
 
 </style>

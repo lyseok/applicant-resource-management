@@ -101,17 +101,15 @@
 	</div>
 
 	<!-- 시험 기간 아닐 때 경고 모달 -->
-	<div class="modal fade" id="notAvailableModal" tabindex="-1"
-		aria-labelledby="notAvailableLabel" aria-hidden="true">
+	<div class="modal fade" id="notAvailableModal" tabindex="-1"aria-labelledby="notAvailableLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content text-center">
 				<div class="modal-header border-0">
 					<h5 class="modal-title fw-bold text-warning fs-5" id="notAvailableLabel">⚠️ 응시 불가</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="닫기"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
 				</div>
 				<div class="modal-body">
-					<p class="fs-5 mb-0">시험 응시 기간이 아닙니다.</p>
+					<p class="fs-5 mb-0 fw-bold">시험 응시 기간이 아닙니다.</p>
 				</div>
 				<div class="modal-footer border-0 justify-content-center">
 					<button type="button" class="btn btn_gray_line"

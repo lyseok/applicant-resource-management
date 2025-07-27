@@ -155,6 +155,23 @@ function renderPagination(totalItems) {
     paginationContainer.appendChild(nextBtn);
 }
 
+// 날짜 데이터 변환 (YYYY-MM-DD 형식으로)
+function formatHireDate(hireDate) {
+  if (!hireDate || hireDate === '-') return '협의';
+
+  // 8자리 문자열이면 가공
+  if (/^\d{8}$/.test(hireDate)) {
+    const yyyy = hireDate.slice(0, 4);
+    const mm = hireDate.slice(4, 6);
+    const dd = hireDate.slice(6, 8);
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  // 예외 처리
+  return hireDate;
+}
+
+
 function renderPage(page) {
 		// 총 갯수 표시
 		totalCount.innerHTML = `${filteredData.length}`;
@@ -190,13 +207,14 @@ function renderPage(page) {
 
         // PASSER 정보 표시
         if (isPassedFinal && hasPasser) {
+						const formattedHireDate = formatHireDate(item.HIRE_DATE);
             statusDiv.innerHTML += `
                 <div class="d-flex align-items-center fs-12 text-center my-2 gap-2">
 	                <div class="d-flex align-items-center gap-1">
 		                <span class="material-symbols-outlined fs-5">calendar_today</span>
 		                <span class="text-muted fw-bold">입사일자</span>
 	                </div> 
-	                <p>${item.HIRE_DATE ?? '협의'}</p>
+	                <p>${formattedHireDate}</p>
                 </div>
             `;
         }
@@ -220,6 +238,7 @@ function renderPage(page) {
                         acceptBtn.disabled = true;
                         acceptBtn.innerText = '수락 완료';
                         if (item.HIRE_DATE) {
+													const formattedHireDate = formatHireDate(item.HIRE_DATE);
 											    statusDiv.innerHTML = `
 											    	<div class="fs-14 fw-bold">🎉 최종 합격</div>
 										        <div class="d-flex align-items-center fs-12 text-center my-2 gap-2">
@@ -227,7 +246,7 @@ function renderPage(page) {
 								                <span class="material-symbols-outlined fs-5">calendar_today</span>
 								                <span class="text-muted fw-bold">입사일자</span>
 									            </div> 
-									            <p>${item.HIRE_DATE}</p>
+									            <p>${formattedHireDate}</p>
 										        </div>
 											    `;
 												} else{
