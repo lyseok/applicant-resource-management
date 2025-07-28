@@ -23,6 +23,7 @@ public class AjaxRecruitmentNoticeController {
 	public ResponseEntity<?> searchRecruitmentNotice(
 		@RequestParam int page,
 	    @RequestParam int pageSize,
+	    @RequestParam String sort,
 	    @RequestParam(required = false) List<String> districtCode,   
 	    @RequestParam(required = false) List<String> jobCode,
 	    @RequestParam(required = false) String yearCode,
@@ -31,6 +32,7 @@ public class AjaxRecruitmentNoticeController {
 		Map<String, Object> params = new HashMap<String, Object>();		
 		params.put("startRow", (page - 1) * pageSize);
 		params.put("endRow", page * pageSize);
+		params.put("sort", sort);
 		params.put("districtCode", districtCode);
 		params.put("jobCode", jobCode);
 		params.put("yearCode", yearCode);

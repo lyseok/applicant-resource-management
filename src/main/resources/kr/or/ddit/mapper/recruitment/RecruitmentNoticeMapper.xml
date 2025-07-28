@@ -541,6 +541,17 @@
 		ON b.RECRUITMENT_NO = RS.RECRUITMENT_NO
 		AND RS.RECRUIT_SKILL_DEL_DATE IS NULL
 		WHERE rnum &gt; #{startRow}
+				<if test="sort != null">
+					ORDER BY
+					<choose>
+						<when test="sort == 'RD'"> RECRUITMENT_STARTDATE DESC </when>
+						<when test="sort == 'EA'"> RECRUITMENT_FINISH_DATE ASC </when>
+						<when test="sort == 'RL'"> SCRAB_CNT DESC </when>
+						<when test="sort == 'RE'"> VIEW_CNT DESC </when>
+						<when test="sort == 'SALARY'"> TO_NUMBER(RECRUITMENT_SALARY) DESC </when>
+						<otherwise> RECRUITMENT_STARTDATE DESC </otherwise>
+					</choose>
+			    </if>
 	</select>
 	
 	<select id="countRecruitmentNotice" resultType="int">
