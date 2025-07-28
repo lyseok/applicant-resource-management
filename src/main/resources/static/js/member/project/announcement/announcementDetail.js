@@ -179,13 +179,7 @@ function renderAnnouncementDetail(data) {
           </span>
         </div>
       </div>
-      <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-1">
-          <span class="material-symbols-outlined">
-            favorite
-          </span>
-          ${data.like || 0}</button>
-      </div>
+
     </div>
     
 
@@ -221,13 +215,13 @@ function renderAnnouncementDetail(data) {
 
     <!-- PM 이력서 버튼 -->
     <div class="d-flex justify-content-center mb-3">
-      <button class="btn btn-purple px-5 py-2 fw-semibold">PM 이력서 확인</button>
+      <button class="btn btn_gray_line px-5 py-2 fw-semibold">PM 이력서 확인</button>
     </div>
 
     <!-- 하단 버튼 -->
     <div class="d-flex justify-content-center gap-3">
       <a href="/board/project" class="btn btn-outline-secondary px-5 py-2">목록</a>
-      <button class="btn btn-purple px-5 py-2" onclick="openApplicationModal(renderData.prjEmpTitle, renderData.prjRcrtPsncntList)">지원</button>
+      <button class="btn btn-purple px-5 py-2 btn btn_violet_line" onclick="openApplicationModal(renderData.prjEmpTitle, renderData.prjRcrtPsncntList)">지원</button>
     </div>
   `;
 

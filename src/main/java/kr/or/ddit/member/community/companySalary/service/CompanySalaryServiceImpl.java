@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 public class CompanySalaryServiceImpl implements CompanySalaryService{
 	private final SalaryMapper salaryMapper;
 	private final CodeMapProvider codeMapProvider;
+	
+	
 
 	@Override
 	public List<Map<String, Object>> readSalaryListAllCompany() {
@@ -32,10 +34,19 @@ public class CompanySalaryServiceImpl implements CompanySalaryService{
 	public List<CompanySalaryDTO> readSalaryStatisticsById(String userId) {
 		
 		List<CompanySalaryDTO> sList =  salaryMapper.selectSalaryStatisticsById(userId);
+			
 		
 		for (CompanySalaryDTO s : sList) {
-			String codeName = codeMapProvider.getCodeName(s.getCodeDetailNo());
-			s.setCodeName(codeName);
+			 String codeDetailNo = s.getCodeDetailNo();
+			if ("RANK-007".equals(codeDetailNo) || "RANK-008".equals(codeDetailNo) ||
+            "RANK-009".equals(codeDetailNo) || "RANK-010".equals(codeDetailNo) ||
+            "RANK-011".equals(codeDetailNo)) {
+				s.setCodeName("임원");
+			}else {
+				String codeName = codeMapProvider.getCodeName(s.getCodeDetailNo());
+				s.setCodeName(codeName);
+			}
+			
 		}
 		return sList;
 	}
