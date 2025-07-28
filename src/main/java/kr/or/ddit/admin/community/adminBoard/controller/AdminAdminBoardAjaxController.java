@@ -112,6 +112,10 @@ public class AdminAdminBoardAjaxController {
 	    params.put("boardTypeCode", boardTypeCode);  // 게시판 유형 추가
 	    params.put("startRow", (page - 1) * pageSize);
 	    params.put("endRow", page * pageSize);
+	    
+	    //if(boardTypeCode=="BRDD-002") {
+	    //	return service.readAFaqListByUcn(boardTypeCode);
+	    //}
 
 	    // service에서 boardTypeCode도 고려하도록
 	    Map<String, Object> resp = service.readAboardPage(params);

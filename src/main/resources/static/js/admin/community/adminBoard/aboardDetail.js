@@ -182,6 +182,7 @@ function aceditable(pBtn, commentNo, userId, boardNo) {
   }
 }
 
+// 답글 삭제
 const acdel = function (cno, bno) {
 
   Swal.fire({
@@ -413,6 +414,7 @@ const achtml = async function (no) {
 
 // 상세보기->목록
 const detailToList = function (type) {
+  //fetchData(type);
   if (type.startsWith("BRDD")) {
     alist(type);
   } else {

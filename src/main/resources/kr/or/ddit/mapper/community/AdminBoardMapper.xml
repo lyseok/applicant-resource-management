@@ -142,9 +142,9 @@
 	            FROM ADMIN_BOARD
 	            <where>
 	                BOARD_STATUS != 'D'
-	                <if test='boardTypeCode != null and boardTypeCode != ""'>
-	                    AND BOARD_TYPE_CODE = #{boardTypeCode}
-	                </if>
+	                <if test="boardTypeCode != null and boardTypeCode != ''">
+						AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+					</if>
 	            </where>
 	            ORDER BY BOARD_NO DESC
 	        ) A
@@ -159,9 +159,9 @@
 	    FROM ADMIN_BOARD
 	    <where>
 	        BOARD_STATUS != 'D'
-	        <if test='boardTypeCode != null and boardTypeCode != ""'>
-	            AND BOARD_TYPE_CODE = #{boardTypeCode}
-	        </if>
+	        <if test="boardTypeCode != null and boardTypeCode != ''">
+				AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+			</if>
 	    </where>
 	</select>
 	

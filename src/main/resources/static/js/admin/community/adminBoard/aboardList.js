@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 let type = document.querySelector("#typeHidden").value;
 const aboardList = document.querySelector("#aboardList");
 const memTypeBtn = document.querySelector("#memTypeBtn");
@@ -9,6 +12,86 @@ window.userId = document.querySelector("#userIdHidden")?.value;
 const aboardform = document.querySelector("#aboardForm");
 const modalElement = document.querySelector('#deleteModal');
 const TypoBox_searchBar = document.querySelector('.TypoBox.searchBar');
+
+//==================== 필터링 및 페이징 ===============================================
+
+const params = {
+  page: 1,       // 시작 페이지, 
+  pageSize: 10,  // 리스트에 몇개씩 보여줄건지
+};
+
+// 1. 출력할 리스트 가져오기
+function fetchData(type) {
+  alist(type);
+  const paramsString = paramsSerializer(params);
+  console.log('필터링 요청:', paramsString);
+  axios
+    .get(`/ajax/admin/board/admin_board/${type}/page?` + paramsString)
+    .then((res) => {
+	  console.log("res?", res);
+	  console.log("res.data?", res.data);
+      // res.data가 배열이면 바로 사용
+      const resp = res.data;
+      //alist(type, resp.data);
+      //bhtml(resp.data);
+
+      totalPage = Math.ceil(resp.totalCnt / params.pageSize);
+      console.log(totalPage, params.page);
+      renderPager(totalPage, params.page); // 페이저 렌더링
+    })
+    .catch((err) => {
+      alert('데이터를 불러오는 데 실패했습니다.');
+    })
+}
+
+// 2. 가져온 리스트에 페이저 찍기
+function renderPager(totalPages, page) {
+  let pagerHtml = '';
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === page) {
+      pagerHtml += `<span class="BtnType SizeS active">${i}</span>`;
+    } else {
+      pagerHtml += `<button class="BtnType SizeS page" data-page="${i}">${i}</button>`;
+    }
+  }
+  if (page < totalPages) {
+    pagerHtml += `<button data-page="${
+      page + 1
+    }" class="BtnType SizeS BtnNext btnNext">다음</button>`;
+  }
+  document.querySelector('.PageBox').innerHTML = pagerHtml;
+}
+
+// 페이저 클릭 (이벤트 위임)
+document.querySelector('.PageBox').addEventListener('click', function (e) {
+  if (e.target.classList.contains('page')) {
+    const page = Number(e.target.dataset.page);
+    params.page = page;
+    fetchData(type, params.page, params.pageSize);
+  } else if (e.target.classList.contains('BtnNext')) {
+    params.page += 1;
+    fetchData(type, params.page, params.pageSize);
+  }
+  // 필요시 이전(Prev) 버튼도 처리
+});
+
+//필터링
+const paramsSerializer = function (params) {
+  const query = [];
+  for (const key in params) {
+    const value = params[key];
+    if (Array.isArray(value)) {
+      value.forEach((v) =>
+        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(v))
+      );
+    } else if (value !== null && value !== undefined) {
+      query.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+    }
+  }
+  return query.join('&');
+};
+
+//=============== 공통 함수 =================================================================
 
 // ✅ 게시글 상세 제목 설정
 const pageTitle = function () {
@@ -84,6 +167,8 @@ const bhtml = function (rslt) {
 	aboardList.innerHTML = html;
 };
 
+//=========================== 유형별 함수 ==================================================================================
+
 // ✅ 문의사항 탭 렌더링
 const asklist = function (type, activeTab = 'all') {
 	let html = `
@@ -132,6 +217,7 @@ const faqDetail = function(codeDetailNo, userType = 'all') {
 
 // ✅ FAQ 탭 렌더링
 const flist = function (activeTab = 'all') {
+	//fetchData(type);
 	let html = `
 		<p class="h4">자주 묻는 질문 탭 선택</p>
 		<ul class="nav nav-underline" id="faqTabs" style="display: flex; gap: 12px;">
@@ -288,6 +374,8 @@ const pre = function(type) {
 		});
 };
 
+//================================ 리스트 자체 호출 ====================================== 
+
 // ✅ 초기 로딩
 const alist = function(type) {
 	if (type === "BRDD-001") {
@@ -310,4 +398,5 @@ const alist2 = function(type) {
 	}
 };
 
-alist(type);
+fetchData(type);
+

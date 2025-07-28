@@ -9,84 +9,6 @@ window.userId = document.querySelector("#userIdHidden")?.value;
 const aboardform = document.querySelector("#aboardForm");
 const modalElement = document.querySelector('#deleteModal');
 const TypoBox_searchBar = document.querySelector('.TypoBox.searchBar');
-/*
-const params = {
-  page: 1,       // 시작 페이지, 
-  pageSize: 10,  // 리스트에 몇개씩 보여줄건지
-};
-
-// 1. 출력할 리스트 가져오기
-function fetchData() {
-  const paramsString = paramsSerializer(params);
-  console.log('필터링 요청:', paramsString);
-
-  axios
-    .get(`/ajax/admin/board/admin_board/${type}/page?` + paramsString)
-    .then((res) => {
-      const resp = res.data;
-      console.log('응답:', resp);
-
-      // 게시글 목록 렌더링
-      bhtml(resp.data);
-
-      // 페이징 처리
-      const totalPage = Math.ceil(resp.totalCnt / params.pageSize);
-      renderPager(totalPage, params.page);
-      
-    })
-    .catch((err) => {
-      console.error(err);
-      alert('데이터를 불러오는 데 실패했습니다.');
-    })
-    .finally(() => {
-    });
-}
-
-// 2. 가져온 리스트에 페이저 찍기
-function renderPager(totalPages, page) {
-  let pagerHtml = '';
-  for (let i = 1; i <= totalPages; i++) {
-    if (i === page) {
-      pagerHtml += `<span class="BtnType SizeS active">${i}</span>`;
-    } else {
-      pagerHtml += `<button class="BtnType SizeS page" data-page="${i}">${i}</button>`;
-    }
-  }
-  if (page < totalPages) {
-    pagerHtml += `<button data-page="${page + 1}" 
-    class="BtnType SizeS BtnNext btnNext">다음</button>`;
-  }
-  document.querySelector('.PageBox').innerHTML = pagerHtml;
-}
-
-// 페이저 클릭 (이벤트 위임)
-document.querySelector('.PageBox').addEventListener('click', function (e) {
-  if (e.target.classList.contains('page')) {
-    const page = Number(e.target.dataset.page);
-    params.page = page;
-    fetchData(params.page, params.pageSize);
-  } else if (e.target.classList.contains('BtnNext')) {
-    params.page += 1;
-    fetchData(params.page, params.pageSize);
-  }
-  // 필요시 이전(Prev) 버튼도 처리
-});
-
-const paramsSerializer = function (params) {
-  const query = [];
-  for (const key in params) {
-    const value = params[key];
-    if (Array.isArray(value)) {
-      value.forEach((v) =>
-        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(v))
-      );
-    } else if (value !== null && value !== undefined) {
-      query.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-    }
-  }
-  return query.join('&');
-};
-*/
 
 // ✅ 게시글 상세 제목 설정
 const pageTitle = function () {
@@ -182,7 +104,6 @@ const asklist = function (type, activeTab = 'all') {
 
 // ✅ 드롭다운 항목을 동적으로 생성하는 함수
 const loadFaqDropdownItems = function(groupCode, containerId, userType) {
-	console.log("groupCode, containerId, userType", groupCode, containerId, userType);
 	fetch(`/ajax/admin/board/admin_board/cmn/${groupCode}`)
 		.then(resp => resp.json())
 		.then(rslt => {
@@ -200,24 +121,22 @@ const loadFaqDropdownItems = function(groupCode, containerId, userType) {
 
 // ✅ 상세 유형 FAQ 조회
 const faqDetail = function(codeDetailNo, userType = 'all') {
-	console.log("codeDetailNo?", codeDetailNo, "userType?", userType);
 	setActiveTab();
 	fetch(`/ajax/admin/board/admin_board/pre/${codeDetailNo}`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
-			flist(codeDetailNo, userType); // 클릭된 탭 유지
+			flist(userType); // 클릭된 탭 유지
 		});
 };
 
 // ✅ FAQ 탭 렌더링
-const flist = function (type, activeTab = 'all') {
-	console.log("type?", type);
+const flist = function (activeTab = 'all') {
 	let html = `
 		<p class="h4">자주 묻는 질문 탭 선택</p>
 		<ul class="nav nav-underline" id="faqTabs" style="display: flex; gap: 12px;">
 			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="faqAll('${type}')">전체</a>
+				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="faqAll()">전체</a>
 			</li>
 
 			<li class="nav-item dropdown" id="userFaqDropdown">
@@ -225,7 +144,7 @@ const flist = function (type, activeTab = 'all') {
 					일반회원
 				</a>
 				<ul class="dropdown-menu" id="userFaqDropdownMenu">
-					<li><a class="dropdown-item" href="#" onclick="faqUser('UFAQ')">전체</a></li>
+					<li><a class="dropdown-item" href="#" onclick="faqUser()">전체</a></li>
 					<li><hr class="dropdown-divider"></li>
 				</ul>
 			</li>
@@ -235,7 +154,7 @@ const flist = function (type, activeTab = 'all') {
 					기업회원
 				</a>
 				<ul class="dropdown-menu" id="corpFaqDropdownMenu">
-					<li><a class="dropdown-item" href="#" onclick="faqCorp('CFAQ')">전체</a></li>
+					<li><a class="dropdown-item" href="#" onclick="faqCorp()">전체</a></li>
 					<li><hr class="dropdown-divider"></li>
 				</ul>
 			</li>
@@ -244,7 +163,6 @@ const flist = function (type, activeTab = 'all') {
 	memTypeBtn.innerHTML = html;
 
 	// ✅ 드롭다운 항목 생성 함수 호출
-	loadFaqDropdownItems('BRDD', 'allFaqDropdownMenu', 'all');
 	loadFaqDropdownItems('UFAQ', 'userFaqDropdownMenu', 'user');
 	loadFaqDropdownItems('CFAQ', 'corpFaqDropdownMenu', 'corp');
 };
@@ -255,13 +173,13 @@ const nlist = function (activeTab = 'user') {
 		<p class="h4">공지사항 탭 선택</p>
 		<ul class="nav nav-underline" id="noticeTabs">
 			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="noticeUser('UNTC')">일반회원</a>
+				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="noticeUser()">일반회원</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="noticeCorp('CNTC')">기업회원</a>
+				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="noticeCorp()">기업회원</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'event' ? 'active' : ''}" href="#" onclick="noticeEvent('ENTC')">이벤트</a>
+				<a class="nav-link ${activeTab === 'event' ? 'active' : ''}" href="#" onclick="noticeEvent()">이벤트</a>
 			</li>
 		</ul>`;
 	memTypeBtn.innerHTML = html;
@@ -299,9 +217,9 @@ const askCorp = function(type) {
 };
 
 // ✅ FAQ 데이터
-const faqAll = function(type) {
+const faqAll = function() {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/list/${type}`)
+	fetch(`/ajax/admin/board/admin_board/list/BRDD-002`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
@@ -309,9 +227,9 @@ const faqAll = function(type) {
 		});
 };
 
-const faqUser = function(type) {
+const faqUser = function() {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
+	fetch(`/ajax/admin/board/admin_board/pre/UFAQ`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
@@ -319,9 +237,9 @@ const faqUser = function(type) {
 		});
 };
 
-const faqCorp = function(type) {
+const faqCorp = function() {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
+	fetch(`/ajax/admin/board/admin_board/pre/CFAQ`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
@@ -330,9 +248,9 @@ const faqCorp = function(type) {
 };
 
 // ✅ 공지사항 데이터
-const noticeUser = function(type) {
+const noticeUser = function() {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
+	fetch(`/ajax/admin/board/admin_board/pre/UNTC`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
@@ -340,9 +258,9 @@ const noticeUser = function(type) {
 		});
 };
 
-const noticeCorp = function(type) {
+const noticeCorp = function() {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
+	fetch(`/ajax/admin/board/admin_board/pre/CNTC`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
@@ -350,9 +268,9 @@ const noticeCorp = function(type) {
 		});
 };
 
-const noticeEvent = function(type) {
+const noticeEvent = function() {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
+	fetch(`/ajax/admin/board/admin_board/pre/ENTC`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
