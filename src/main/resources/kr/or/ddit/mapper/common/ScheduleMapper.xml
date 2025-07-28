@@ -93,6 +93,60 @@
 	WHERE USER_ID = #{userId}
 	</select>
 	
+	<select id="selectCompanySchedule">
+	SELECT
+		-- RECRUITMENT_NOTICE
+		rn.RECRUITMENT_NO                       AS RENO_RECRUITMENT_NO,
+		rn.USER_ID                              AS RENO_USER_ID,
+		rn.RECRUITMENT_TITLE                    AS RENO_RECRUITMENT_TITLE,
+		rn.JOB_CODE                             AS RENO_JOB_CODE,
+		rn.YEAR_CODE                            AS RENO_YEAR_CODE,
+		rn.REC_CONTENT                          AS RENO_REC_CONTENT,
+		rn.PREFERENTIAL                         AS RENO_PREFERENTIAL,
+		rn.CITY_CODE                            AS RENO_CITY_CODE,
+		rn.DISTRICT_CODE                        AS RENO_DISTRICT_CODE,
+		rn.REC_POSITION_NUMBER                  AS RENO_REC_POSITION_NUMBER,
+		rn.RECRUITMENT_CHARGER_TEL              AS RENO_RECRUITMENT_CHARGER_TEL,
+		rn.RECRUITMENT_SALARY                   AS RENO_RECRUITMENT_SALARY,
+		rn.WELFARE                              AS RENO_WELFARE,
+		rn.RECRUITMENT_DESK                     AS RENO_RECRUITMENT_DESK,
+		rn.RECRUITMENT_IMG                      AS RENO_RECRUITMENT_IMG,
+		rn.RECRUITMENT_STARTDATE                AS RENO_RECRUITMENT_STARTDATE,
+		rn.RECRUITMENT_RECEIPT_START            AS RENO_RECRUITMENT_RECEIPT_START,
+		rn.RECRUITMENT_FINISH_DATE              AS RENO_RECRUITMENT_FINISH_DATE,
+		rn.RECRUITMENT_DEL_DATE                 AS RENO_RECRUITMENT_DEL_DATE,
+		rn.RECRUIT_FINISH_YN					AS RENO_RECRUIT_FINISH_YN,
+	    
+	    -- RECRUIT_PROCESS (1:N)
+		rp.RECRUIT_PROCESS_NO 					AS REPR_RECRUIT_PROCESS_NO,
+		rp.RECRUIT_PROCESS_STEP 				AS REPR_RECRUIT_PROCESS_STEP,
+		rp.RECRUIT_PROCESS_FINAL 				AS REPR_RECRUIT_PROCESS_FINAL,
+		rp.RECRUIT_PROCESS_TYPE 				AS REPR_RECRUIT_PROCESS_TYPE,
+		rp.RECRUIT_PROCESS_DEL_DATE 			AS REPR_RECRUIT_PROCESS_DEL_DATE,
+	    
+	    -- RECRUITMENT_EXAM (1:N)
+	    re.RECRUIT_EXAM_NO                      AS REEX_RECRUIT_EXAM_NO,
+	    re.RECRUIT_EXAM_NAME                    AS REEX_RECRUIT_EXAM_NAME,
+	    re.RECRUIT_EXAM_CUTLINE                 AS REEX_RECRUIT_EXAM_CUTLINE,
+	    TO_CHAR(re.recruit_exam_start_date, 'YYYY-MM-DD HH24:MI')              AS REEX_RECRUIT_EXAM_START_DATE,
+	    
+	    i.INTERVIEW_NO                          AS ITVI_INTEVIEW_NO,
+	    TO_CHAR(i.interview_date, 'YYYY-MM-DD HH24:MI')                        AS ITVI_INTEIVEW_DATE,
+	    i.INTERVIEW_LOCATION                    AS ITVI_INTERVIEW_LOCATION,
+	    i.INTERVIEW_TYPE                        AS ITVI_INTERVIEW_TYPE,
+	    i.INTERVIEW_PASS_SCORE                  AS ITVI_INTERVIEW_PASS_SCORE
+	    
+	FROM RECRUITMENT_NOTICE rn
+	LEFT JOIN RECRUIT_PROCESS rp
+	  ON rn.RECRUITMENT_NO = rp.RECRUITMENT_NO
+	LEFT JOIN RECRUITMENT_EXAM re
+	  ON rp.RECRUIT_PROCESS_NO = re.PROCESS_NO
+	LEFT JOIN INTERVIEW i
+	  ON rp.RECRUIT_PROCESS_NO = i.PROCESS_NO
+	WHERE rn.USER_ID = #{userId}
+	AND rn.RECRUITMENT_DEL_DATE IS NULL
+	</select>
+	
 	<insert id="insertSchedule">
 		<selectKey resultType="string" keyProperty="scheduleNo" order="BEFORE">
 		    SELECT
