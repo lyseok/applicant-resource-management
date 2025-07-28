@@ -11,5 +11,6 @@ public class PassIntroductionVO implements Serializable{
 
 	private String passIntroductionNo;
 	private String passerCode;
+	private String introductionCode;
 	private String passIntroductionDelDate;
 }
