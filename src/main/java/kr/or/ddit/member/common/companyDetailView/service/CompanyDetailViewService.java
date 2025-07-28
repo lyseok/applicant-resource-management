@@ -6,6 +6,7 @@ import java.util.Map;
 import kr.or.ddit.dto.CompanyOpProfitDTO;
 import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.dto.CompanySalesDTO;
+import kr.or.ddit.dto.PassIntroductionDetailDTO;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.FilesVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
@@ -24,4 +25,6 @@ public interface CompanyDetailViewService {
 	public List<FilesVO> readCompanyImageFileListBySourceNo(String sourceNo);
 	
 	public List<Map<String, Object>> readTopFiveJobNotice(String userId);
+	
+	public List<PassIntroductionDetailDTO> readPassIntroductionDetail(String comId);
 }

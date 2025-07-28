@@ -29,6 +29,7 @@
       <div class="d-flex justify-content-end gap-2 mt-4">
         <button type="submit" class="btn btn_violet px-4"> 저장</button>
         <button type="reset" class="btn btn_violet_line px-4"> 초기화</button>
+        <button type="button" id="cancelBtn" class="btn btn_gray_line px-4"> 취소</button>
       </div>
     </form>
   </div>
