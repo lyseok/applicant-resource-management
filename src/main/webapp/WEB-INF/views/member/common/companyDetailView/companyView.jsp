@@ -43,11 +43,11 @@
 	padding: 20px 0; /* 필요하면 위아래 여백 */
 }
 
-
-#recruit-title-main{
+#recruit-title-main {
 	color: var(--violet70);
 	font-size: 15px;
 }
+
 table.table-in-progress-announcement tr.clickable-row:hover {
 	background-color: hotpink !important;
 }
@@ -157,7 +157,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 .job-card-header {
 	font-weight: bold;
-	 color: var(--violet70);
+	color: var(--violet70);
 }
 
 .job-card-title {
@@ -177,57 +177,67 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 }
 
 .salary-summary-box {
-  display: flex;
-  justify-content: space-around;
-  padding: 1rem 0;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 1rem;
+	display: flex;
+	justify-content: space-around;
+	padding: 1rem 0;
+	border-bottom: 1px solid #eee;
+	margin-bottom: 1rem;
 }
+
 .salary-summary-box .summary-item {
-  flex: 1;
-  text-align: center;
+	flex: 1;
+	text-align: center;
 }
+
 .salary-summary-box .summary-value {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--violet70);
+	font-size: 2rem;
+	font-weight: bold;
+	color: var(--violet70);
 }
+
 .salary-summary-box .summary-label {
-  margin-top: .25rem;
-  color: #666;
-  font-size: .9rem;
+	margin-top: .25rem;
+	color: #666;
+	font-size: .9rem;
 }
+
 .salary-summary-box .summary-sub {
-  margin-top: .25rem;
-  color: #999;
-  font-size: .8rem;
+	margin-top: .25rem;
+	color: #999;
+	font-size: .8rem;
 }
+
 .salary-summary-box .summary-monthly {
-  margin-top: .5rem;
-  font-size: .9rem;
-  color: #333;
+	margin-top: .5rem;
+	font-size: .9rem;
+	color: #333;
 }
 
 /* 차트 카드 중앙 정렬 */
 .salary-chart-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top : 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 50px;
 }
+
 .salary-chart-note {
-  margin-top: .70rem;
-  font-size: .95rem;
-  color: #333;
-  text-align: center;
+	margin-top: .70rem;
+	font-size: .95rem;
+	color: #333;
+	text-align: center;
 }
 
 .salary-company-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #222;
-  margin-bottom: 0.2rem;
-  text-align: center;
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: #222;
+	margin-bottom: 0.2rem;
+	text-align: center;
+}
+
+#btnOpenNaverMap{
+	color: var(--violet70);
 }
 </style>
 </head>
@@ -236,25 +246,21 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 		<div class="company-header-container">
 			<div class="company-header-branding background-type1">
 				<!-- ↓ 여기 이미지 삽입하세요~~~ -->
-				<img  alt="company_bg" id="company_bg">
+				<img alt="company_bg" id="company_bg">
 				<div class="company-header-branding-container ">
 					<input type="hidden" id="mId" value=""> <input
 						type="hidden" id="cId" value=""> <input type="hidden"
 						id="jkcId" value="kari042"> <input type="hidden"
 						id="devPath" value="https://www.jobkorea.co.kr">
-					<div class="logo" >
-						<a href="/company/1899862"><img id="logoImg"
-							 class="width" style="left: 9px; margin: -21px 0 0 0"></a>  <!-- 로고이미지 -->
+					<div class="logo">
+						<a href="/company/1899862"><img id="logoImg" class="width"
+							style="left: 9px; margin: -21px 0 0 0"></a>
+						<!-- 로고이미지 -->
 					</div>
 
 
 					<div class="company-header-branding-body">
-						<div class="special-feature">
-							<div class="special-feature-item web-awards">
-								<a href="javascript:void(0);" class="button button-tooltip">
-									i-AWARDS 수상</a>
-							</div>
-						</div>
+
 						<div id="head-com-name" class="name"></div>
 						<div class="summary">
 							<div id="head-com-indu" class="summary-item"></div>
@@ -302,11 +308,12 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 			<div class="company-nav" role="navigation">
 				<div class="company-nav-container">
 					<a href="#" class="company-nav-item active" data-tab="info">
-					<div class="name">기업정보</div></a> 
-					<a href="#" class="company-nav-item" data-tab="recruit">
-					<div class="name">채용</div></a> 
-					<a href="#" class="company-nav-item" data-tab="salary"><div class="name">연봉정보</div></a>
-					<a href="#" class="company-nav-item" data-tab="essay"><div class="name">합격자소서</div></a>
+						<div class="name">기업정보</div>
+					</a> <a href="#" class="company-nav-item" data-tab="recruit">
+						<div class="name">채용</div>
+					</a> <a href="#" class="company-nav-item" data-tab="salary"><div
+							class="name">연봉정보</div></a> <a href="#" class="company-nav-item"
+						data-tab="essay"><div class="name">합격자소서</div></a>
 				</div>
 			</div>
 		</div>
@@ -600,102 +607,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 							<!--동종업계 순위-->
 
 
-							<div
-								class="financial-analysis-card financial-analysis-card-ranking full-width">
-								<div class="headers" id="devRankIndustry">
-									<h3 class="header">동종업계 순위</h3>
-									<button type="button" class="button button-view-ranking-more">동종업계
-										더보기</button>
-								</div>
-								<div class="financial-analysis-card-container">
-									<div class="ranking-peers">
-										<div class="ranking">
-											<div class="ranking-container">
-												<div class="ranking-header">동종업계</div>
-												<div class="ranking-value">
-													<strong>2</strong>위
-												</div>
-											</div>
-										</div>
-									</div>
-									<ol class="list list-ranking-peers">
-										<li class="">
-											<div class="order">1위</div>
-											<div class="company">
-												<a href="/company/1642064" target="_blank"> 한국산업기술기획평가원
-												</a>
-											</div>
-										</li>
-										<li class="current">
-											<div class="order">2위</div>
-											<div class="company">(재)한국항공우주연구원</div>
-										</li>
-										<li class="">
-											<div class="order">3위</div>
-											<div class="company">
-												<a href="/company/44959175" target="_blank">
-													지엠테크니컬센터코리아(주) </a>
-											</div>
-										</li>
-										<li class="">
-											<div class="order">4위</div>
-											<div class="company">
-												<a href="/company/1850794" target="_blank"> (재)한국원자력연구원
-												</a>
-											</div>
-										</li>
-										<li class="">
-											<div class="order">5위</div>
-											<div class="company">
-												<a href="/company/1544107" target="_blank"> 한국생산기술연구원 </a>
-											</div>
-										</li>
-									</ol>
-									<ol class="list list-ranking-peers">
-										<li class="">
-											<div class="order">6위</div>
-											<div class="company">
-												<a href="/company/16152311" target="_blank"> 고려대학교산학협력단
-												</a>
-											</div>
-										</li>
-										<li class="">
-											<div class="order">7위</div>
-											<div class="company">
-												<a href="/company/1830354" target="_blank">
-													(재)한국에너지기술연구원 </a>
-											</div>
-										</li>
-										<li class="">
-											<div class="order">8위</div>
-											<div class="company">
-												<a href="/company/1969855" target="_blank"> (재)한국표준과학연구원
-												</a>
-											</div>
-										</li>
-										<li class="">
-											<div class="order">9위</div>
-											<div class="company">
-												<a href="/company/45438928" target="_blank"> 전북대학교산학협력단
-												</a>
-											</div>
-										</li>
-										<li class="">
-											<div class="order">10위</div>
-											<div class="company">
-												<a href="/company/1864249" target="_blank"> 한국과학기술정보연구원
-												</a>
-											</div>
-										</li>
-									</ol>
-								</div>
 
-								<div class="based-on-data">표준산업 분류 기준 [기타 공학 연구개발업]의 공시된
-									재무정보(매출액)를 기준으로 평가된 순위입니다.</div>
-
-								<div class="button button-view-reference-table">2019기준</div>
-
-							</div>
 						</div>
 					</div>
 				</div>
@@ -787,7 +699,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 									</div>
 								</div>
 								<div class="chart chart-doughnut-recruit-history">
-									<canvas id="recruitTypeChart" width="300" height="200"></canvas>
+									<canvas id="recruitTypeChart" width="400" height="200"></canvas>
 								</div>
 								<div class="benchmark">최근 3년 기준</div>
 							</div>
@@ -795,47 +707,12 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 							<div class="employment-status-card number-of-employees">
 								<div class="headers">
-									<h3 class="header">사원수</h3>
+									<h3 class="header">많이 모집한 직무</h3>
 								</div>
 								<div class="chart-bar-wrap">
-									<div
-										class="chart chart-bar chart-bar-number-of-employees chart-bar-plus">
-										<div class="axios-y" aria-hidden="true">0</div>
-										<div class="bar bar1">
-											<div class="label-container">
-												<div class="label">2002</div>
-											</div>
-											<div class="progress" style="height: 69px">
-												<div class="value">317명</div>
-											</div>
-										</div>
-										<div class="bar bar2">
-											<div class="label-container">
-												<div class="label">2003</div>
-											</div>
-											<div class="progress" style="height: 69px">
-												<div class="value">317명</div>
-											</div>
-										</div>
-										<div class="bar bar3">
-											<div class="label-container">
-												<div class="label">2004</div>
-											</div>
-											<div class="progress" style="height: 112px">
-												<div class="value">518명</div>
-											</div>
-										</div>
-										<div class="bar bar4 max">
-											<div class="label-container">
-												<div class="label">2007</div>
-											</div>
-											<div class="progress" style="height: 149px">
-												<div class="value">690명</div>
-											</div>
-										</div>
-									</div>
+									<canvas id="topJobChart" width="400" height="230"></canvas>
 								</div>
-								<div class="benchmark">최근 4년 기준</div>
+								<div class="benchmark">최근 1년 기준</div>
 							</div>
 
 							<div
@@ -877,7 +754,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 							</div>
 							<p></p>
 						</div>
-						
+
 					</div>
 
 					<!--직무 인터뷰: Company일때만 노출-->
@@ -921,11 +798,12 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 
 			<!-- 연봉정보 탭 -->
-			<div class="company-infomation-row tab-content hidden" data-section="salary">
+			<div class="company-infomation-row tab-content hidden"
+				data-section="salary">
 				<h2 class="header">연봉 정보</h2>
 				<div class="salary-summary-box">
 					<div class="summary-item">
-					 <div id="salaryCompanyName" class="salary-company-name">대덕인재개발원</div>
+						<div id="salaryCompanyName" class="salary-company-name">대덕인재개발원</div>
 						<div class="summary-value" id="salaryAvgGross">-- 만원</div>
 						<div class="summary-label">전체 평균 연봉</div>
 						<div class="summary-sub">(임원 제외)</div>
@@ -938,16 +816,16 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 					</div>
 				</div>
 
-			
+
 				<h2 class="header">직급별 평균 연봉</h2>
 				<div class="financial-analysis-card salary-chart-card">
-				  <canvas id="salaryChart" width="640" height="300"></canvas>
-				  <div class="salary-chart-note" id="salaryChartNote">직급별 평균 연봉</div>
+					<canvas id="salaryChart" width="640" height="300"></canvas>
+					<div class="salary-chart-note" id="salaryChartNote">직급별 평균 연봉</div>
 				</div>
 				<h2 class="header">직급별 최소 최대 연봉</h2>
 				<div class="financial-analysis-card salary-chart-card">
 					<canvas id="salaryRangeChart" width="640" height="300"></canvas>
-					 <div class="salary-chart-note">직급별 최소 | 최대 연봉</div>
+					<div class="salary-chart-note">직급별 최소 | 최대 연봉</div>
 				</div>
 			</div>
 

@@ -1,7 +1,10 @@
  package kr.or.ddit.member.community.companyReview.service;
 
 import java.util.List;
-import kr.or.ddit.vo.common.CmnCodeVO;
+import java.util.Map;
+
+import kr.or.ddit.dto.CompanyReviewDTO;
+import kr.or.ddit.dto.CompanyReviewStatsDTO;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.MemberVO;
 import kr.or.ddit.vo.community.CompanyReviewVO;
@@ -16,7 +19,7 @@ public interface MemberCompanyReviewService {
 	
 	public List<CompanyReviewVO> readCompanyReviewList();
 	
-	public void createCompanyReview(CompanyReviewVO companyReview);
+	public void createCompanyReview(CompanyReviewDTO  companyReview);
 	
 	public boolean updateRemoveStatusMyCompanyReview(CompanyReviewVO companyReview);
 	
@@ -28,6 +31,11 @@ public interface MemberCompanyReviewService {
 	
 	public List<ResumeVO> readResumeWithCareers();
 	public CareerVO readCareerDetail(String careerNo);
+	
+	public CompanyReviewStatsDTO readCompanyReviewStats(String comId);
+	
+	public Map<String, Object> readCompanyWithReviewInfo(String comId);
+	
 	
 	
 	
