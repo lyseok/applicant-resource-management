@@ -28,15 +28,15 @@ function fetchData(type) {
   axios
     .get(`/ajax/admin/board/admin_board/${type}/page?` + paramsString)
     .then((res) => {
-	  console.log("res?", res);
-	  console.log("res.data?", res.data);
+	  //console.log("res?", res);
+	  //console.log("res.data?", res.data);
       // res.data가 배열이면 바로 사용
       const resp = res.data;
       //alist(type, resp.data);
       //bhtml(resp.data);
 
       totalPage = Math.ceil(resp.totalCnt / params.pageSize);
-      console.log(totalPage, params.page);
+      //console.log(totalPage, params.page);
       renderPager(totalPage, params.page); // 페이저 렌더링
     })
     .catch((err) => {
@@ -136,14 +136,40 @@ function setActiveTab(e) {
 	e.target.classList.add("active");
 }
 
+/*
+const params = {
+  page: 1,       // 시작 페이지, 
+  pageSize: 10,  // 리스트에 몇개씩 보여줄건지
+};
+*/
+
 // ✅ 카드 UI 렌더링
 const bhtml = function (rslt) {
 	listTitle.style.display = "block";
 	aboardform.style.display = "none";
 	TypoBox_searchBar.style.display = "block";
+	
+	// 변수 선언해두고 보면서 하기, 수정도 변수만 하면 됨!
+	//countPerPage : 10
+	//curPage : 1 시작시 기본값
+	//startNum : 0, 10, 20, 30 => (curPage-1)*countPerPage
+	//endNum : 9, 19, 29 => startNum + (countPerPage - 1)
+	//totalPage : Math.ceil(rslt.length/countPerPage) => 마지막 페이지까지 고려
+	
+	let params = {
+		countPerPage : '',
+		curPage : '',
+		startNum : '',
+		endNum : '',
+		totalPage : ''
+	}
+	
+	params.page = 1;
+	params.pageSize = 10;
 
 	let html = '<div class="list_body">';
 	rslt.forEach((item) => {
+		console.log("item?", item);  //배열의 데이터 하나하나
 		html += `
 			<div class="list_item mb-3">
 				<div class="box_item p-3 border rounded">
