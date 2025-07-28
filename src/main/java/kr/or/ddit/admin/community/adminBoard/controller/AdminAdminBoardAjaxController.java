@@ -79,6 +79,7 @@ public class AdminAdminBoardAjaxController {
 		return service.readAdminBoardListByType(boardTypeCode, userRole);
 	}
 	
+	// 검색
 	@GetMapping("/filter")
 	public ResponseEntity<Map<String, Object>> getFilterAboardList(
 		@RequestParam int page,
@@ -101,17 +102,20 @@ public class AdminAdminBoardAjaxController {
 	}
 	
 	// 게시글 페이지 처리
-	@GetMapping("/page")
+	@GetMapping("/{boardTypeCode}/page")
 	public ResponseEntity<Map<String, Object>> getAboardPage(
-		@RequestParam int page,
-	    @RequestParam int pageSize
-	){
-		Map<String, Object> params = new HashMap<>();
-		params.put("startRow", (page - 1) * pageSize);
-		params.put("endRow", page * pageSize);
-		
-		Map<String, Object> resp = service.readAboardPage(params);
-		return ResponseEntity.ok(resp);
+	      @PathVariable String boardTypeCode
+	    , @RequestParam int page
+	    , @RequestParam int pageSize
+	) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("boardTypeCode", boardTypeCode);  // 게시판 유형 추가
+	    params.put("startRow", (page - 1) * pageSize);
+	    params.put("endRow", page * pageSize);
+
+	    // service에서 boardTypeCode도 고려하도록
+	    Map<String, Object> resp = service.readAboardPage(params);
+	    return ResponseEntity.ok(resp);
 	}
 
 	// 삭제된 게시글 목록조회

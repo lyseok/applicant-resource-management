@@ -84,6 +84,7 @@
 		</if>
 	</select>
 	
+	<!-- 검색 페이징 처리(검색조건 추가해야 함) -->
 	<select id="selectAboardByFilter" resultMap="adminBoardMap">
 	    SELECT *
 	    FROM (
@@ -91,31 +92,6 @@
 	        FROM (
 	            SELECT R.*
 	            FROM ADMIN_BOARD R
-	            
-	            <!-- 작성자 아이디 (부분검색) -->
-	            <if test="userId != null and userId != ''">
-	                AND R.USER_ID LIKE '%' || #{userId} || '%'
-	            </if>
-	            
-	            <!-- 제목 (부분검색) -->
-	            <if test="boardTitle != null and boardTitle != ''">
-	                AND UPPER(R.BOARD_TITLE) LIKE '%' || UPPER(TRIM(#{boardTitle})) || '%'
-	            </if>
-	            
-	            <!-- 내용 또는 댓글 내용 검색 -->
-	            <if test="(boardContent != null and boardContent != '') or (boardCommentContent != null and boardCommentContent != '')">
-	                AND (
-	                        ( (#{boardContent} is null and #{boardCommentContent} is null) )
-	                        OR R.BOARD_CONTENT LIKE '%' || #{boardContent} || '%'
-	                        OR EXISTS (
-	                            SELECT 1 
-	                            FROM ADMIN_COMMENT S
-	                            WHERE S.BOARD_NO = R.BOARD_NO
-	                              AND S.BOARD_COMMENT_CONTENT LIKE '%' || #{boardCommentContent} || '%'
-	                        )
-	                )
-	            </if>
-	            
 	            ORDER BY R.BOARD_NO DESC
 	        ) A
 	        WHERE ROWNUM &lt;= #{endRow}
@@ -123,6 +99,7 @@
 	    WHERE rnum &gt; #{startRow}
 	</select>
 	
+	<!-- 답글여부 조회 -->
 	<select id="selectAdminBoardWithComments" resultMap="adminBoardMap">
 	    SELECT *
 	    FROM (
@@ -130,7 +107,7 @@
 	        FROM (
 	            SELECT R.*
 	            FROM ADMIN_BOARD R
-	            JOIN ADMIN_COMMENT M ON M.BOARD_NO = R.BOARD_NO  <!-- 댓글 있는 글만 -->
+	            JOIN ADMIN_COMMENT M ON M.BOARD_NO = R.BOARD_NO
 	            WHERE 1 = 1
 	            ORDER BY R.BOARD_NO DESC
 	        ) A
@@ -139,6 +116,7 @@
 	    WHERE rnum &gt; #{startRow}
 	</select>
 	
+	<!-- 검색 시 페이지 개수 조회(검색 조건 추가해야 함) -->
 	<select id="selectAboardCountByFilter" resultMap="adminBoardMap">
 	    SELECT COUNT(*)
 	    FROM (
@@ -146,33 +124,8 @@
 	        FROM (
 	            SELECT R.*
 	            FROM ADMIN_BOARD R
-	            LEFT JOIN ADMIN_COMMENT M ON M.BOARD_NO = R.BOARD_NO  <!-- 댓글 없어도 포함 -->
+	            LEFT JOIN ADMIN_COMMENT M ON M.BOARD_NO = R.BOARD_NO
 	            WHERE 1 = 1
-	            
-	            <!-- 작성자 아이디 (부분검색) -->
-	            <if test="userId != null and userId != ''">
-	                AND R.USER_ID LIKE '%' || #{userId} || '%'
-	            </if>
-	            
-	            <!-- 제목 (부분검색) -->
-	            <if test="boardTitle != null and boardTitle != ''">
-	                AND UPPER(R.BOARD_TITLE) LIKE '%' || UPPER(TRIM(#{boardTitle})) || '%'
-	            </if>
-	            
-	            <!-- 내용 또는 댓글 내용 검색 -->
-	            <if test="(boardContent != null and boardContent != '') or (boardCommentContent != null and boardCommentContent != '')">
-	                AND (
-	                        ( (#{boardContent} is null and #{boardCommentContent} is null) )
-	                        OR R.BOARD_CONTENT LIKE '%' || #{boardContent} || '%'
-	                        OR EXISTS (
-	                            SELECT 1 
-	                            FROM ADMIN_COMMENT S
-	                            WHERE S.BOARD_NO = R.BOARD_NO
-	                              AND S.BOARD_COMMENT_CONTENT LIKE '%' || #{boardCommentContent} || '%'
-	                        )
-	                )
-	            </if>
-	            
 	            ORDER BY R.BOARD_NO DESC
 	        ) A
 	        WHERE ROWNUM &lt;= #{endRow}
@@ -180,21 +133,36 @@
 	    WHERE rnum &gt; #{startRow}
 	</select>
 	
-	<select id="selectAdminBoard" resultMap="adminBoardMap">
+	<!-- 게시판 유형별, 기본 페이징 처리 -->
+	<select id="selectAdminBoard" parameterType="map" resultMap="adminBoardMap">
 		SELECT * FROM (
-			SELECT ROWNUM rnum, A.* FROM (
-				SELECT * 
-				FROM ADMIN_BOARD 
-			    ORDER BY BOARD_NO ASC 
-		  ) A
-		  WHERE ROWNUM &lt;= #{endRow}
-		)
-		WHERE rnum &gt; #{startRow}
+	        SELECT ROWNUM rnum, A.* 
+	        FROM (
+	            SELECT * 
+	            FROM ADMIN_BOARD
+	            <where>
+	                BOARD_STATUS != 'D'
+	                <if test='boardTypeCode != null and boardTypeCode != ""'>
+	                    AND BOARD_TYPE_CODE = #{boardTypeCode}
+	                </if>
+	            </where>
+	            ORDER BY BOARD_NO DESC
+	        ) A
+	        WHERE ROWNUM &lt;= #{endRow}
+	    )
+	    WHERE rnum &gt; #{startRow}
 	</select>
 	
-	<select id="selectCountAdminBoard">
-		SELECT COUNT(*)
-		FROM ADMIN_BOARD
+	<!-- 게시판 유형별, 기본 페이지 개수 조회 -->
+	<select id="selectCountAdminBoard" parameterType="map" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM ADMIN_BOARD
+	    <where>
+	        BOARD_STATUS != 'D'
+	        <if test='boardTypeCode != null and boardTypeCode != ""'>
+	            AND BOARD_TYPE_CODE = #{boardTypeCode}
+	        </if>
+	    </where>
 	</select>
 	
 	<select id="selectCmnGroupList">
