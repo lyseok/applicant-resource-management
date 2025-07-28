@@ -10,15 +10,18 @@ import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.dto.CompanyOpProfitDTO;
 import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.dto.CompanySalesDTO;
+import kr.or.ddit.dto.PassIntroductionDetailDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.CompanyOpProfitMapper;
 import kr.or.ddit.mapper.common.CompanySalesMapper;
 import kr.or.ddit.mapper.common.FileMapper;
 import kr.or.ddit.mapper.common.SalaryMapper;
+import kr.or.ddit.mapper.recruitment.PassIntroductionMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.FilesVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
+import kr.or.ddit.vo.resume.EducationVO;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	private final RecruitmentNoticeMapper recruitmentNoticeMapper;
 	private final SalaryMapper salaryMapper;
 	private final FileMapper fileMapper;
+	private final PassIntroductionMapper passIntroductionMapper;
 	
 
 	@Override
@@ -106,6 +110,24 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	@Override
 	public List<Map<String, Object>> readTopFiveJobNotice(String userId) {
 		return recruitmentNoticeMapper.selectTopFiveJobNotice(userId);
+	}
+
+
+	@Override
+	public List<PassIntroductionDetailDTO> readPassIntroductionDetail(String comId) {
+		List<PassIntroductionDetailDTO> passList = passIntroductionMapper.selectPassIntroductionDetailInfo(comId);
+		for (PassIntroductionDetailDTO pass : passList) {
+			String job = codeMapProvider.getJobName(pass.getJobCode());
+			pass.setJobCodeName(job);
+			for (EducationVO edu : pass.getEducation()) {
+				String high = codeMapProvider.getCodeName(edu.getHighestEducationCode());
+			    String grade = codeMapProvider.getCodeName(edu.getGraduateYn());
+			    edu.setGraduateYnName(grade);
+			    edu.setHighestEducationCodeName(high);
+			}
+			
+		}
+		return passList;
 	}
 	
 	

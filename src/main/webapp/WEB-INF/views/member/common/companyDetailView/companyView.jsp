@@ -236,7 +236,233 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 	text-align: center;
 }
 
-#btnOpenNaverMap{
+/* 합격자소서 탭 */
+.essay-tabs {
+	display: flex;
+	border-bottom: 2px solid #ddd;
+	margin-bottom: 20px;
+}
+
+.essay-tab {
+	padding: 12px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	border: 1px solid #ddd;
+	border-bottom: none;
+	background: #f5f5f5;
+	margin-right: 5px;
+	border-radius: 5px 5px 0 0;
+}
+
+.essay-tab.active {
+	background: #fff;
+	border-bottom: 2px solid #fff;
+	font-weight: bold;
+}
+
+.essay-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 25px;
+}
+
+.essay-filter-btn {
+	padding: 8px 15px;
+	border: 1px solid #ddd;
+	border-radius: 20px;
+	background: #fff;
+	cursor: pointer;
+	font-size: 14px;
+	transition: 0.2s;
+}
+
+.essay-filter-btn:hover {
+	background: #f0f0f0;
+}
+
+/* 자소서 카드 */
+.essay-card {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	margin-bottom: 15px;
+	transition: 0.2s;
+}
+
+.essay-card:hover {
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.essay-card-title {
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+.essay-card-meta {
+	font-size: 14px;
+	color: #888;
+	margin-bottom: 12px;
+}
+
+.essay-card-content {
+	font-size: 15px;
+	color: #333;
+	line-height: 1.5;
+}
+
+.essay-views {
+	font-size: 13px;
+	color: #999;
+	margin-top: 10px;
+}
+
+/* 상세 페이지 */
+#essay-detail {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+}
+
+/* 뒤로가기 */
+.essay-back-btn {
+	display: inline-block;
+	margin-bottom: 15px;
+	background: #f5f5f5;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding: 8px 12px;
+	cursor: pointer;
+}
+
+/* 제목 및 합격자 정보 */
+.essay-detail-header {
+	margin-bottom: 20px;
+}
+
+.essay-detail-title {
+	font-size: 22px;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+.essay-detail-subinfo {
+	font-size: 14px;
+	color: #555;
+	margin-bottom: 12px;
+}
+
+.essay-detail-meta {
+	display: flex;
+	justify-content: flex-end; /* 오른쪽 정렬 */
+	align-items: center; /* 수직 중앙정렬 */
+	gap: 10px; /* 요소 간격 */
+	font-size: 13px;
+	color: #999;
+}
+
+.essay-divider {
+	color: #ccc;
+}
+
+.essay-views {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.essay-views .material-symbols-outlined {
+	font-size: 16px;
+	line-height: 1;
+	color: #999;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid #eee;
+	margin: 20px 0;
+}
+
+/* 자소서 질문/답변 */
+.essay-questions {
+	border: 1px solid #ddd;
+	padding: 15px;
+	margin-bottom: 20px;
+	background: #fafafa;
+}
+
+.essay-questions p {
+	margin: 8px 0;
+	font-weight: bold;
+}
+
+.essay-answer {
+	margin-bottom: 30px;
+}
+
+.essay-answer h4 {
+	font-size: 18px;
+	margin-bottom: 10px;
+	color: #ff6600;
+}
+
+.essay-answer p {
+	font-size: 15px;
+	color: #333;
+	line-height: 1.6;
+}
+
+.accordion {
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.accordion-item {
+	border-bottom: 1px solid #eee;
+}
+
+.accordion-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+	background: #fafafa;
+	transition: background 0.3s;
+}
+
+.accordion-header:hover {
+	background: #f0f0f0;
+}
+
+.q-number {
+	color: #ff6600;
+	margin-right: 8px;
+}
+
+.arrow {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-right: 2px solid #666;
+	border-bottom: 2px solid #666;
+	transform: rotate(45deg);
+	transition: transform 0.3s ease;
+	margin-left: 10px;
+}
+
+.accordion-header.active .arrow {
+	transform: rotate(225deg);
+}
+
+}
+#btnOpenNaverMap {
 	color: var(--violet70);
 }
 </style>
@@ -830,36 +1056,140 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 			</div>
 
 
-
-			<!-- 합격자소서 탭 -->
 			<div class="tab-content hidden" data-section="essay">
-				<h2>합격자소서</h2>
-				<p>합격자소서 탭 전용 컨텐츠를 여기에 추가하세요.</p>
-			</div>
+				<!-- 목록 영역 -->
+				<div id="essay-list">
+					<div class="essay-tabs">
+						<div class="essay-tab active">합격자소서 (39)</div>
+						<div class="essay-tab">자소서항목 (24)</div>
+					</div>
+					<div class="essay-filters">
+						<div class="essay-filter-btn">직무전체</div>
+						<div class="essay-filter-btn">경영·비즈니스기타</div>
+						<div class="essay-filter-btn">인사담당자</div>
+						<div class="essay-filter-btn">회계담당자</div>
+						<div class="essay-filter-btn">재무담당자</div>
+						<div class="essay-filter-btn">온라인마케팅</div>
+						<div class="essay-filter-btn">MD</div>
+						<div class="essay-filter-btn">협력업체</div>
+						<div class="essay-filter-btn">자재관리자</div>
+					</div>
 
-			<div class="bottom-banner review">
-				<a href="/review/home"
-					onclick="GA_Event('기업정보_PC', '기업하단배너', '기업리뷰작성하기'); BrazeCallPageInto('기업리뷰진입');"
-					target="_blank"> <img
-					src="//i.jobkorea.kr/content/images/company/review/banner2_1040x80.png"
-					alt="취업&amp;이직 준비중이라면? 현직자가 알려주는 기업리뷰 체크는 필수!기업리뷰 바로가기">
-				</a>
-			</div>
-			<!--하단-->
+					<div class="essay-card">
+						<div class="essay-card-title">2023년 하반기 인턴 제품영업 합격자소서</div>
+						<div class="essay-card-meta">2023.12.14 | 신입 | 경영·비즈니스</div>
+						<div class="essay-card-content">"고객과 10년, 20년을 바라보는 큰 그림을
+							그려나가고자 합니다."</div>
+						<div class="essay-views">조회수 10,458</div>
+					</div>
 
-
-
-			<div class="license">
-				<div class="license-description">
-					띹잡 기업정보와 NICE평가정보 기업정보를 기반으로 기업 프로필을 제공합니다. 잘못된 정보는 신고해주시면 빠르게 전달하여
-					수정 검토하겠습니다.<br>게시된 정보는 무단으로 수집 및 배포할 수 없습니다.
+					<div class="essay-card">
+						<div class="essay-card-title">한샘에 입사하는 것을 희망하게 된 이유와 회사 선택 시
+							중요하게 생각하는 부분을 작성해 주세요.</div>
+						<div class="essay-card-meta">2022.11.16 | 신입 | 재무담당자</div>
+						<div class="essay-card-content">회사에서는 어떤 사람을 선호하는지에 대한 기준이
+							명확하고 안정적인 발전 가능성을 가진다는 점에서...</div>
+						<div class="essay-views mt-0">조회수 10,926</div>
+					</div>
 				</div>
-				<div class="license-help">
-					<div class="license-help-item header">자료수정 및 정정문의</div>
-					<div class="license-help-item tel">띹잡 고객센터 (T. 1588-9350, E.
-						help@ddit.co.kr)</div>
+
+				<!-- 상세 영역 -->
+
+				<!-- 합격자소서 상세 -->
+				<div id="essay-detail" style="display: none;">
+					<button onclick="closeEssayDetail()" class="essay-back-btn">←
+						목록으로</button>
+					<div class="essay-detail-header">
+						<h2 class="essay-detail-title">2023년 하반기 인턴 제품영업 합격자소서</h2>
+						<div class="essay-detail-subinfo">
+							<span>합격자 정보</span> | <span>지방4년제</span> · <span>사회복지학과</span> ·
+							<span>학점 3.2/4.5</span> · <span>인턴 1회</span>
+						</div>
+						<div class="essay-detail-meta">
+							<span class="essay-date">2023.12.14</span> <span
+								class="essay-divider">|</span> <span class="essay-views mt-0">
+								<span class="material-symbols-outlined">visibility</span> 10,459
+							</span>
+						</div>
+					</div>
+					<hr>
+
+					<h3>자소서 항목</h3>
+					<div class="essay-questions">
+						<p>
+							<b>Q1.</b> 영업 직무에 도전하는 이유와 한샘 SC 직무에 지원한 동기를 작성해 주세요.
+						</p>
+						<p>
+							<b>Q2.</b> 도전적인 목표에 도전한 경험을 작성해 주세요.
+						</p>
+						<p>
+							<b>Q3.</b> 한샘 입사 후 3년 내 이루고 싶은 목표를 작성해 주세요.
+						</p>
+					</div>
+					<hr>
+
+					<h3>합격 자소서</h3>
+					<div class="accordion" id="essayAccordion">
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="heading1">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse1"
+									aria-expanded="false" aria-controls="collapse1">Q1. 영업
+									직무에 도전하는 이유와 한샘 SC 직무에 지원한 동기</button>
+							</h2>
+							<div id="collapse1" class="accordion-collapse collapse"
+								aria-labelledby="heading1" data-bs-parent="#essayAccordion">
+								<div class="accordion-body">"고객과 10년, 20년을 내다보는 큰 그림을
+									그려나가겠습니다." … (내용)</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="heading2">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse2"
+									aria-expanded="false" aria-controls="collapse2">Q2.
+									도전적인 목표에 도전한 경험을 작성해 주세요.</button>
+							</h2>
+							<div id="collapse2" class="accordion-collapse collapse"
+								aria-labelledby="heading2" data-bs-parent="#essayAccordion">
+								<div class="accordion-body">"도전 경험에 대한 서술…" … (내용)</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="heading3">
+								<button class="accordion-button collapsed" type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapse3"
+									aria-expanded="false" aria-controls="collapse3">Q3. 한샘
+									입사 후 3년 내 이루고 싶은 목표를 작성해 주세요.</button>
+							</h2>
+							<div id="collapse3" class="accordion-collapse collapse"
+								aria-labelledby="heading3" data-bs-parent="#essayAccordion">
+								<div class="accordion-body">"기회의 땅 OO에서 청사진을 그려나가다…" …
+									(내용)</div>
+							</div>
+						</div>
+					</div>
 				</div>
+
+
+			
+
+
+		<div class="license">
+			<div class="license-description">
+				띹잡 기업정보와 NICE평가정보 기업정보를 기반으로 기업 프로필을 제공합니다. 잘못된 정보는 신고해주시면 빠르게 전달하여
+				수정 검토하겠습니다.<br>게시된 정보는 무단으로 수집 및 배포할 수 없습니다.
+			</div>
+			<div class="license-help">
+				<div class="license-help-item header">자료수정 및 정정문의</div>
+				<div class="license-help-item tel">띹잡 고객센터 (T. 1588-9350, E.
+					help@ddit.co.kr)</div>
 			</div>
 		</div>
+	</div>
+
+	
 </body>
 </html>

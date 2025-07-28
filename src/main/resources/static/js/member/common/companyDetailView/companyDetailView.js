@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-	const userId = 'testCompany';
+	const userId = 'corp03';
 	
 	axios
-		.get('/ajax/member/company_view/testCompany')
+		.get(`/ajax/member/company_view/${userId}`)
 		.then((resp) => {
 			const company = resp.data;
 			console.log(company);
@@ -682,7 +682,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+	axios.get(`/ajax/member/company_view/pass_introduction/${userId}`)
+			 .then(resp => {
+				const passI = resp.data;
+				console.log('pass:',passI);
+			 })
 
+
+
+
+
+		// 자소서 카드 클릭 이벤트 연결
+		document.querySelectorAll('.essay-card').forEach(card => {
+			card.addEventListener('click', openEssayDetail);
+		});
+
+		function openEssayDetail() {
+		document.getElementById("essay-list").style.display = "none";
+		const detail = document.getElementById("essay-detail");
+		detail.style.opacity = 0;
+		detail.style.display = "block";
+		setTimeout(() => detail.style.opacity = 1, 50);
+	}
 
 	function getDdayLabel(date) {
 		if (!date) return '';
@@ -715,6 +736,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 	});
+
+
 
 
 

@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.PassIntroductionMapper">
+	<resultMap id="passIntroductionDetailResultMap" type="kr.or.ddit.dto.PassIntroductionDetailDTO">
+    <!-- 기본 필드 매핑 -->
+    <id     property="passerCode" column="PASSER_CODE"/>
+    <result property="passIntrodocutionNo" column="PASS_INTRODUCTION_NO"/>
+    
+    <result property="recruitmentNo" column="RECRUITMENT_NO"/>
+    <result property="recruitmentTitle" column="RECRUITMENT_TITLE"/>
+    <result property="jobCode" column="JOB_CODE"/>
+    <result property="comId" column="COM_ID"/>
+    <result property="compName" column="COM_NAME"/>
+    
+    <result property="resumeNo" column="RESUME_NO"/>
+    <result property="resumeName" column="RESUME_NAME"/>
+
+    <!-- 자소서 및 문항 -->
+    <association property="introduction" javaType="kr.or.ddit.vo.resume.IntroductionVO">
+        <id     property="introductionNo" column="INTRODUCTION_NO"/>
+        <result property="introductionName" column="INTRODUCTION_NAME"/>
+        <result property="introductionCreateDate" column="INTRODUCTION_CREATE_DATE"/>
+        
+        <collection property="introductionQuestionList" ofType="kr.or.ddit.vo.resume.IntroductionQuestionVO">
+            <id     property="questionNo" column="QUESTION_NO"/>
+            <result property="question" column="QUESTION"/>
+            <result property="content" column="CONTENT"/>
+        </collection>
+    </association>
+
+    <!-- 학력 정보 -->
+    <collection property="education" ofType="kr.or.ddit.vo.resume.EducationVO">
+        <result property="schoolName" column="SCHOOL_NAME"/>
+        <result property="highestEducationCode" column="HIGHEST_EDUCATION_CODE"/>
+        <result property="graduateYn" column="GRADUATE_YN"/>
+        <result property="location" column="LOCATION"/>
+        <result property="departmentCode" column="DEPARTMENT_CODE"/>
+    </collection>
+</resultMap>
+
 	<select id="selectPassIntroductionList" resultType="PassIntroductionVO">
 	SELECT 
 		PASS_INTRODUCTION_NO
@@ -35,4 +72,72 @@
 	DELETE FROM PASS_INTRODUCTION 
 	WHERE PASS_INTRODUCTION_NO = #{passIntroductionNo}
 	</delete>
+	
+	
+	<select id="selectPassIntroductionDetailInfo" resultMap="passIntroductionDetailResultMap">
+		SELECT
+		    pi.PASSER_CODE,
+		    pi.PASS_INTRODUCTION_NO,
+		    a.APPLICANT_ID,
+		    a.USER_ID,
+		
+		    rn.RECRUITMENT_NO,
+		    rn.RECRUITMENT_TITLE,
+		    rn.JOB_CODE,
+		    rn.USER_ID as COM_ID,
+		    c.COM_NAME,
+		
+		    r.RESUME_NO,
+		    r.RESUME_NAME,
+		
+		    i.INTRODUCTION_NO,
+		    i.INTRODUCTION_NAME,
+		    i.INTRODUCTION_CREATE_DATE,
+		
+		    iq.QUESTION_NO,
+		    iq.QUESTION,
+		    iq.CONTENT,
+		
+		    e.SCHOOL_NAME,
+		    e.HIGHEST_EDUCATION_CODE,
+		    e.GRADUATE_YN,
+		    e.LOCATION,
+		    e.DEPARTMENT_CODE
+
+		FROM PASS_INTRODUCTION pi
+		JOIN PASSER p
+		    ON pi.PASSER_CODE = p.PASSER_NO
+		    AND p.PASSER_DEL_DATE IS NULL
+		    AND p.RECRUIT_ACCEPT_YN = 'Y'
+		
+		JOIN APPLICANT a
+		    ON p.APPLICANT_ID = a.APPLICANT_ID
+		    AND a.APPLICANT_DEL_DATE IS NULL
+		
+		JOIN RECRUITMENT_NOTICE rn
+		    ON a.RECRUITMENT_NO = rn.RECRUITMENT_NO
+		    AND rn.RECRUITMENT_DEL_DATE IS NULL
+		
+		
+		JOIN COMPANY c
+		    ON rn.USER_ID = c.USER_ID
+		
+		JOIN RESUME r
+		    ON a.RESUME_NO = r.RESUME_NO
+		    AND r.RESUME_DELETE_DATE IS NULL
+		
+		JOIN INTRODUCTION i
+		    ON pi.PASS_INTRODUCTION_NO = i.INTRODUCTION_NO
+		    AND i.INTRODUCTION_DELETE_DATE IS NULL
+		
+		LEFT JOIN INTRODUCTION_QUESTION iq
+		    ON i.INTRODUCTION_NO = iq.INTRODUCTION_NO
+		
+		LEFT JOIN EDUCATION e
+		    ON r.RESUME_NO = e.RESUME_NO
+		    AND e.DELETE_DATE IS NULL
+		WHERE c.USER_ID = #{comId}
+		ORDER BY p.PASSER_NO, iq.QUESTION_NO, e.EDUCATION_NO
+	
+	</select>
 </mapper>
