@@ -149,12 +149,42 @@
 		   	   , CAREER_YEAR = #{careerYear}
 		   	   , SALARY = #{salary}
 		   	   , LOCATION = #{location} 
-		   	   , COM_ID = # {comId}
+		   	   , COM_ID = #{comId}
 		 WHERE CAREER_NO = #{careerNo}
+	</update>
+	
+	<update id="updateCareerDelete">
+			UPDATE CAREER 
+		  SET DELETE_DATE = SYSDATE
+		 	WHERE CAREER_NO = #{careerNo}
+		  AND RESUME_NO = #{resumeNo}
 	</update>
 	
 	<delete id="deleteCareer">
 		DELETE FROM CAREER 
-		 WHERE CAREER_NO = #{careerNo}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
+	
+	<select id="selectCareerDetailWithCom">
+    SELECT C.CAREER_NO
+           , C.RESUME_NO
+           , C.JOB_CODE
+           , TO_CHAR(TO_DATE(C.START_WORK_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS START_WORK_DATE
+           , TO_CHAR(TO_DATE(C.RETIRE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS RETIRE_DATE
+           , C.TENURE
+           , C.DEPARTMENT
+           , C.RESPONSIBILITY
+           , C.FREELANCER
+           , C.JOB_GRADE_CODE
+           , C.POSITION_CODE
+           , C.CAREER_YEAR
+           , C.SALARY
+           , C.LOCATION
+           , C.COM_ID
+           , CO.COM_NAME AS COM_NAME
+      FROM CAREER C
+      LEFT JOIN COMPANY CO 
+        ON C.COM_ID = CO.USER_ID
+     WHERE C.CAREER_NO = #{careerNo}
+</select>
 </mapper>

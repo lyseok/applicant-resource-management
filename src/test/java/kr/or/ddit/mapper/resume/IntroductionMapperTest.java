@@ -37,7 +37,7 @@ class IntroductionMapperTest {
 		IntroductionVO vo = new IntroductionVO();
 		vo.setUserId("USR001");
 		vo.setIntroductionName("제출용 자기소개서 인서트지롱");
-		vo.setIntroductionContent("제출 자소서 test 할거다!");
+//		vo.setIntroductionContent("제출 자소서 test 할거다!");
         int result = mapper.insertIntroduction(vo);
 
 		log.info("{}", result);		
@@ -49,7 +49,7 @@ class IntroductionMapperTest {
 		vo.setUserId("USR001");
 		vo.setIntroductionNo("INT0000004");
 		vo.setIntroductionName("업데이트 테스트다!");
-		vo.setIntroductionContent("이렇게 오래 걸리는게 정상임?");
+//		vo.setIntroductionContent("이렇게 오래 걸리는게 정상임?");
         mapper.updateIntroduction(vo);
 
         IntroductionVO result1 = mapper.selectIntroductionDetail(vo.getIntroductionNo());

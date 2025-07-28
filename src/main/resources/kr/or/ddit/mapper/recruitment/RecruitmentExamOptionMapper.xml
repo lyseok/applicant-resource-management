@@ -52,4 +52,11 @@
 	DELETE FROM RECRUITMENT_EXAM_OPTION 
 	WHERE RECRUIT_OPTION_NO = #{recruitOptionNo}
 	</delete>
+	
+	
+	 <select id="selectOptionCorrectYn" resultType="string" parameterType="string">
+	    SELECT RECRUIT_EXAM_OPTION_CORRECT_YN
+	      FROM RECRUITMENT_EXAM_OPTION
+	     WHERE RECRUIT_OPTION_NO = #{optionNo}
+  	</select>
 </mapper>

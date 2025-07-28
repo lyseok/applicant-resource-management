@@ -50,8 +50,8 @@
 	        #{porCode}
 	      , #{resumeNo}
 	      , #{porName}
-	      , #{porStartDate}
-	      , #{porEndDate}
+	      , REPLACE(#{porStartDate}, '-', '')
+	      , REPLACE(#{porEndDate}, '-', '')
 	      , #{porInformation}
 	      , #{deleteDate}
 	      , #{porUrl}
@@ -62,8 +62,8 @@
 		UPDATE PORTFOLIO
 		   SET RESUME_NO         = #{resumeNo}
 		     , POR_NAME          = #{porName}
-		     , POR_START_DATE    = #{porStartDate}
-		     , POR_END_DATE      = #{porEndDate}
+		     , POR_START_DATE    = REPLACE(#{porStartDate}, '-', '')
+		     , POR_END_DATE      = REPLACE(#{porEndDate}, '-', '')
 		     , POR_INFORMATION   = #{porInformation}
 		     , POR_URL   		 = #{porUrl}
 		 WHERE POR_CODE = #{porCode}
@@ -73,8 +73,8 @@
 		UPDATE PORTFOLIO
 		   SET RESUME_NO         = #{resumeNo}
 		     , POR_NAME          = #{porName}
-		     , POR_START_DATE    = #{porStartDate}
-		     , POR_END_DATE      = #{porEndDate}
+		     , POR_START_DATE    = REPLACE(#{porStartDate}, '-', '')
+		     , POR_END_DATE      = REPLACE(#{porEndDate}, '-', '')
 		     , POR_INFORMATION   = #{porInformation}
 		     , POR_URL   		 = #{porUrl}
 		     , DELETE_DATE       = SYSDATE
@@ -83,6 +83,6 @@
 	
 	<delete id="deletePortfolio">
 		DELETE FROM PORTFOLIO 
-		 WHERE POR_CODE = #{porCode}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 </mapper>

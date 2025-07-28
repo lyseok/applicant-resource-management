@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+
+/* dash member 채용공고 css 추가 */
+/* 아이콘 스타일 초기화 */
+.recruit_list span{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24;
+  color:var(--violet80);
+}
+
+.recruit_list .viewat_box{	
+    flex: 0 0 202px;
+    overflow: hidden;
+    max-width: 136px;
+    width:202px;
+}
+.recruit_list .viewAt{	
+    color: var(--gray120);
+    line-height: 24px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left:10px;
+    font-size:14px;
+}
+
+.recruit_list .recruit_tit{
+    margin-left: 64px;
+    padding: 0;
+    flex-basis: 492px;
+}
+
+.recruit_info span{
+  color:#a1a1a1;
+}
+.recruit_list .recruit_info span:last-child {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    padding-left: 12px;
+    color: var(--gray100);
+    font-size: 13px;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.recruit_list .recruit_info span.num_line{
+	margin-top:2px;
+}

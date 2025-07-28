@@ -2,8 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script defer src="/js/company/recruitment/talentpool/talentpool.js"></script>
+<!-- Bootstrap JS (필수) -->
 
+<!-- 현재상태 : modal은 작동함 filter 처리부분 조금만 손보면 된다. -->
 <head>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <meta charset="UTF-8">
 <title>인재풀 목록</title>
 <style>
@@ -42,8 +46,6 @@ body {
 	font-weight: bold;
 	cursor: pointer;
 }
-
-
 
 /* 전체 레이아웃 */
 .main-wrapper {
@@ -228,21 +230,81 @@ body {
 <body>
 
 	<!-- 🔍 상단 검색 바 -->
-	<form action="/company/talentpool/higtsearch" method="post">
-	<div class="search-filter-bar">
-		<input type="text" name="license" placeholder="원하시는 자격증있나요?">
-		<input type="text" name="skillName" placeholder="원하시는 기술명있나요?">
-		<button class="btn btn_violet" type="submit">검색</button>
-	</div>
+	<!-- 상단 통합 필터 영역 -->
+	<form id="filterForm" action="/company/talentpool/filter" method="post">
+		<input type="hidden" name="topJob" id="hiddenTopJob"> <input
+			type="hidden" name="job" id="hiddenJob"> <input type="hidden"
+			name="careerlong" id="hiddenCareer"> <input type="hidden"
+			name="location" id="hiddenLocation"> <input type="hidden"
+			name="edudone" id="hiddenEdu"> <input type="hidden"
+			name="gedu" id="hiddenGedu">
+		<div class="search-filter-bar"
+			style="flex-wrap: wrap; justify-content: flex-start;">
+
+			<!-- 자격증 / 기술명 -->
+			<input type="text" name="license" placeholder="원하시는 자격증있나요?">
+			<input type="text" name="skillName" placeholder="원하시는 기술명있나요?">
+
+
+
+			<!-- 경력 -->
+			<%-- <select name="careerlong" id="yearSel">
+      <option value="">경력</option>
+      <c:forEach var="career" items="${careerList}"> ... </c:forEach>
+    </select>
+
+    <!-- 지역 -->
+    <select name="location">
+      <option value="">지역</option>
+      <c:forEach var="city" items="${cityList}">
+        <option value="${city.cityName}" <c:if test="${location == city.cityName}">selected</c:if>>
+          ${city.cityName}
+        </option>
+      </c:forEach>
+    </select>
+
+    <!-- 학력 -->
+    <select name="edudone" id="finedu">
+      <option value="">최종학력</option>
+    </select>
+
+    <!-- 졸업 상태 -->
+    <select name="gedu" id="edustatus">
+      <option value="">졸업 상태</option>
+    </select>
+
+    <!-- 직군 -->
+    <select id="positionSelect" name="topJob">
+      <option value="">직군</option>
+      <c:forEach var="tjob" items="${tjobList}">
+        <option value="${tjob.topJobCode}" <c:if test="${topJob == tjob.topJobName}">selected</c:if>>
+          ${tjob.topJobName}
+        </option>
+      </c:forEach>
+    </select>
+
+    <!-- 직무 -->
+    <select id="jobSelect" name="job">
+      <option value="">직무</option>
+      <c:forEach var="job" items="${jobList}">
+        <option value="${job.jobCode}" data-top-job-code="${job.topJobCode}">${job.jobName}</option>
+      </c:forEach>
+    </select> --%>
+
+			<!-- 버튼들 -->
+			<button type="button" id="resetFilter" class="btn btn_red_line">초기화</button>
+			<button class="btn btn_violet" type="submit">검색하기</button>
+			<button type="button" onclick="openModalById('select-top-job')">필터링열기</button>
+
+		</div>
 	</form>
-	
-	
 
-	<!-- 📦 메인 컨텐츠 -->
-	<div class="main-wrapper">
 
-		<!-- 왼쪽 필터 -->
-		<form id="filterForm" action="/company/talentpool/filter" method="post">
+
+
+
+	<!-- 왼쪽 필터 -->
+	<%-- <form id="filterForm" action="/company/talentpool/filter" method="post">
 			<div class="left-filter">
 				<h3>필터</h3>
 
@@ -251,12 +313,6 @@ body {
 				<div style="display: flex; gap: 10px;">
 					<select name="careerlong" id="yearSel">
 						<option value="" >선택</option>
-<%-- 						<c:forEach var="career" items="${careerList}"> --%>
-<%-- 							<option value="${career.careerYear}"  --%>
-<%-- 							<c:if test="${careerlong == career.careerYear}"> selected</c:if>> --%>
-<%-- 							${career.careerYear } --%>
-<!-- 							</option> -->
-<%-- 						</c:forEach> --%>
 					</select>
 				</div>
 
@@ -307,7 +363,9 @@ body {
 				</div>
 			</div>
 		</form>
-
+ --%>
+	<!-- 📦 메인 컨텐츠 -->
+	<div class="main-wrapper">
 
 		<!-- 오른쪽 콘텐츠 영역 -->
 		<div class="content-area">
@@ -317,5 +375,176 @@ body {
 		</div>
 	</div>
 
+	<!-- 직군 -->
+	<div class="modal fade" id="select-top-job" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">직군 선택</h5>
+				<%-- <div class="d-flex flex-wrap gap-2">
+					<c:forEach var="tjob" items="${tjobList}">
+						<button type="button"
+							class="btn btn-outline-primary select-top-job"
+							data-code="${tjob.topJobCode}" data-name="${tjob.topJobName}">
+							${tjob.topJobName}</button>
+					</c:forEach>
+				</div> --%>
+				<label for="topJobSelect" class="form-label">직군</label> <select
+					id="positionSelect" name="topJob" class="form-select">
+					<option value="">선택</option>
+					<c:forEach var="tjob" items="${tjobList}">
+						<option value="${tjob.topJobCode}">${tjob.topJobName}</option>
+					</c:forEach>
+				</select>
+				<button id="nextTopJob" class="btn btn-primary mt-3" disabled>다음</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- 📌 직무 선택 모달 -->
+	<div class="modal fade" id="select-job" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">직무 선택</h5>
+				<%-- <div class="d-flex flex-wrap gap-2">
+					<c:forEach var="job" items="${jobList}">
+						<button type="button" class="btn btn-outline-primary select-job"
+							data-code="${job.jobCode}" data-name="${job.jobName}"
+							data-top-code="${job.topJobCode}">${job.jobName}</button>
+					</c:forEach>
+				</div> --%>
+				<label for="jobSelect" class="form-label">직무</label> <select
+					id="jobSelect" name="job" class="form-select">
+					<option value="">선택</option>
+					<c:forEach var="job" items="${jobList}">
+						<option value="${job.jobCode}"
+							data-top-job-code="${job.topJobCode}">${job.jobName}</option>
+					</c:forEach>
+				</select>
+				<button id="nextJob" class="btn btn-primary mt-3" disabled>다음</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- 📌 경력 선택 모달 -->
+	<%-- <div class="modal fade" id="select-career" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <h5 class="fw-bold mb-3">경력 선택</h5>
+      <label for="careerSelect" class="form-label">경력</label>
+      <select id="careerSelect" name="careerlong" class="form-select">
+        <option value="">선택</option>
+        <c:forEach var="career" items="${careerList}">
+          <option value="${career.careerYear}">${career.careerYearName}</option>
+        </c:forEach>
+      </select>
+      <button id="nextCareer" class="btn btn-primary mt-3" disabled>다음</button>
+    </div>
+  </div>
+</div> --%>
+
+	<!-- 경력 -->
+	<div class="modal fade" id="select-career" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">경력 선택</h5>
+				<label for="careerSelect" class="form-label">경력</label> <select
+					id="careerSelect" name="careerlong" class="form-select">
+					<option value="">선택</option>
+				</select>
+				<button id="nextCareer" class="btn btn-primary mt-3" disabled>다음</button>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- 📌 지역 선택 모달 -->
+	<div class="modal fade" id="select-location" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">지역 선택</h5>
+				<label for="locationSelect" class="form-label">지역</label> <select
+					id="locationSelect" name="location" class="form-select">
+					<option value="">선택</option>
+					<c:forEach var="city" items="${cityList}">
+						<option value="${city.cityName}">${city.cityName}</option>
+					</c:forEach>
+				</select>
+				<button id="nextLocation" class="btn btn-primary mt-3" disabled>다음</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- 📌 학력 선택 모달 -->
+	<%-- <div class="modal fade" id="educationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <h5 class="fw-bold mb-3">최종학력 선택</h5>
+      <label for="eduSelect" class="form-label">최종학력</label>
+      <select id="eduSelect" name="edudone" class="form-select">
+        <option value="">선택</option>
+        <c:forEach var="edu" items="${eduList}">
+          <option value="${edu.educationNo}">${edu.highestEducationCode}</option>
+        </c:forEach>
+      </select>
+      <button id="nextEdu" class="btn btn-primary mt-3" disabled>다음</button>
+    </div>
+  </div>
+</div> --%>
+	<!-- 📌 학력 선택 모달 -->
+	<div class="modal fade" id="educationModal" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">최종학력 선택</h5>
+				<label for="eduSelect" class="form-label">최종학력</label> <select
+					id="eduSelect" name="edudone" class="form-select">
+					<option value="">선택</option>
+				</select>
+				<button id="nextEdu" class="btn btn-primary mt-3" disabled>다음</button>
+
+			</div>
+		</div>
+	</div>
+
+
+	<%-- 	<div class="modal fade" id="select-gedu" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <h5 class="fw-bold mb-3">졸업 상태 선택</h5>
+      <label for="geduSelect" class="form-label">졸업 여부</label>
+      <select id="geduSelect" name="gedu" class="form-select">
+        <option value="">선택</option>
+        <c:forEach var="gedu" items="${geduList}">
+          <option value="${gedu.educationNo}">${gedu.graduateYn}</option>
+        </c:forEach>
+      </select>
+      <button id="nextGedu" class="btn btn-primary mt-3" disabled>다음</button>
+    </div>
+  </div>
+</div> --%>
+
+	<!-- 📌 졸업 상태 선택 모달 -->
+	<div class="modal fade" id="select-gedu" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content p-3">
+				<h5 class="fw-bold mb-3">졸업 상태 선택</h5>
+				<label for="geduSelect" class="form-label">졸업 상태</label> <select
+					id="geduSelect" name="gedu" class="form-select">
+					<option value="">선택</option>
+				</select>
+				<button id="nextGedu" class="btn btn-primary mt-3" disabled>다음</button>
+			</div>
+		</div>
+	</div>
 
 </body>
+
+
+<button type="button" class="btn btn-outline-primary select-top-job"
+	data-code="${tjob.topJobCode}" data-name="${tjob.topJobName}">
+	${tjob.topJobName}</button>

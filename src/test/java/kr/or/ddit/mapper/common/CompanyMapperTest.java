@@ -33,17 +33,20 @@ class CompanyMapperTest {
 	void testInsertCompany() {
 
 	    CompanyVO newCompany = new CompanyVO();
-	    newCompany.setUserId("USR002");
-	    newCompany.setComName("JUnit Company");
-	    newCompany.setComInfo("Unit test company");
+	    newCompany.setUserId("imgoogle001");
+	    newCompany.setComName("구글코리아(유)");
+	    newCompany.setComInfo("포털 및 기타 인터넷 정보매개 서비스업");
 	    newCompany.setComNum("01012345678");
-	    newCompany.setComEmail("junit@company.com");
-	    newCompany.setComUrl("<http://junit.company.com>");
-	    newCompany.setComCreateYear("2023");
-	    newCompany.setComMem(50);
+	    newCompany.setComEmail("googleKorea@gmail.com");
+	    newCompany.setComUrl("<http://www.google.co.kr>");
+	    newCompany.setComCreateYear("2004");
+	    newCompany.setComMem(2600);
 	    newCompany.setComLogo("logo.png");
 	    newCompany.setComPayment("Y");
-	    newCompany.setIndustryType("IT");
+	    newCompany.setIndustryType("INNO000305");
+	    newCompany.setCeoName("낸시메이블워커");
+	    newCompany.setComAddr("서울 강남구 테헤란로 152, 22층");
+	    newCompany.setComType("SIZE-002");
 
 	    mapper.insertCompany(newCompany);
 

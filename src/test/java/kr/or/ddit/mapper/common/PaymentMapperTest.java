@@ -28,7 +28,7 @@ class PaymentMapperTest {
 		PaymentVO pv = new PaymentVO();
 
 		pv.setPaymentNo("PAMT000001");
-		mapper.selectPaymentByPk(pv);
+//		mapper.selectPaymentByPk(pv);
 		
 		
 	}
@@ -40,7 +40,7 @@ class PaymentMapperTest {
 		pv.setUserId("corp03");
 		pv.setPaymentMethod("TEST");	
 		pv.setPaymentPay("TEST");
-		pv.setPaymentContract("TEST");
+//		pv.setPaymentContract("TEST");
 		pv.setProductNo("PAPD000002");
 		
 		assertEquals(1, mapper.insertPayment(pv));
@@ -54,7 +54,7 @@ class PaymentMapperTest {
 		pv.setUserId("TEST01");
 		pv.setPaymentMethod("TEST01");	
 		pv.setPaymentPay("TEST01");
-		pv.setPaymentContract("TEST01");
+//		pv.setPaymentContract("TEST01");
 		pv.setProductNo("PAPD000002");
 		
 		mapper.updatePayment(pv);

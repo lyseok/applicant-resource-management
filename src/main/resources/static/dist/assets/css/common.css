@@ -3,8 +3,16 @@
 	flex-direction:column !important;
 }
 /* 폰트사이즈 */
+.fs-12{font-size:12px !important;}
+.fs-13{font-size:13px !important;}
 .fs-14{font-size:14px !important;}
-.fs-16{font-size:14px !important;}
+.fs-16{font-size:16px !important;}
+.fs-18{font-size:18px !important;}
+
+/* 폰트 굵기 */
+.fw-500{
+	font-weight:500 !important;
+}
 
 /* padding */
 .p-6{padding:6rem !important;}
@@ -40,10 +48,49 @@
 .bg-violet10{
 	background-color:#5a00fa !important;
 }
+
+/* 폰트 색상  */
+.text-violet10{
+	color:var(--violet10);
+}
+.text-violet20{
+	color:var(--violet20);
+}
+.text-violet30{
+	color:var(--violet30);
+}
+.text-violet40{
+	color:var(--violet40);
+}
+.text-violet50{
+	color:var(--violet50);
+}
+.text-violet60{
+	color:var(--violet60);
+}
+.text-violet70{
+	color:var(--violet70);
+}
+.text-violet80{
+	color:var(--violet80);
+}
+.text-violet90{
+	color:var(--violet90);
+}
+.text-violet100{
+	color:var(--violet100);
+}
+.text-violet110{
+	color:var(--violet110);
+}
+.text-violet120{
+	color:var(--violet120);
+}
 /* % 넓이 - width */
 .w100p{width:100% !important;}
 .w95p{width:95% !important;}
 /* px 넓이 - width */
+.w140{width:140px !important;}
 .w500{width:500px !important;}
 .w600{width:600px !important;}
 .w700{width:700px !important;}
@@ -62,6 +109,10 @@
 /* line-height */
 .lh_normal{line-height:normal !important;}
 .lh1{line-height:1 !important;}
+.lh1-2{line-height:1.2 !important;}
+.lh1-4{line-height:1.4 !important;}
+.lh1-6{line-height:1.6 !important;}
+.lh1-8{line-height:1.8 !important;}
 .lh40{line-height:40px !important;}
 .lh50{line-height:50px !important;}
 
@@ -72,6 +123,15 @@
 .btn.btn_violet_line{background-color:#fff; border-color:var(--violet60); color:var(--violet100); font-weight:bold;}
 .btn.btn_gray_line{background-color:#fff; border-color:var(--gray60); color:var(--gray80); font-weight:bold;}
 .btn.btn_red_line{background-color:#fff; border-color:#b70000; color:#b70000; font-weight:bold;}
+
+/* 버튼 hover 스타일 */
+.btn:hover{
+	transform:translateY(-1px);
+}
+.btn:disabled:hover,
+.btn.disabled:hover{
+	transform:translateY(0);	
+}
 
 
 /* 말줄임 2줄 */
@@ -88,25 +148,153 @@
   white-space: normal;
 }
 
-/* 라디오버튼 커스텀 */
-.form-check-wrap .form-check{
+
+/* 구글아이콘 두께 */
+.material-symbols-outlined.fw-200{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24
+}
+.material-symbols-outlined.fw-300{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+/* 체크박스 커스텀 */
+.form-check{
 	display:flex;
 	align-items:center;
 	gap:7px;
+	margin:0;
 }
-.form-check-wrap .form-check input{
-	padding:0;
+.form-check .form-check-input{
 	width:20px;
 	height:20px;
+	padding:0;
 	margin-top:0;
 }
-.form-check-wrap .form-check input:checked,
-.form-check-wrap .form-check input[type=checkbox]:indeterminate{
+.form-check-input:checked[type=checkbox],
+.form-check-input:checked[type=radio]{
 	background-color:var(--violet100);
 }
-.form-check-wrap .form-check label{
-	margin-top:0;
+.form-radio-wrap .form-radio input:checked,
+.form-radio-wrap .form-radio input[type=checkbox]:indeterminate{
+	background-color:var(--violet100);
 }
+
+
+/* 라디오버튼 커스텀 */
+.required{
+	position:relative;
+}
+.required:after{
+	content:'*';
+	position:absolute;
+	top:20%;
+	right:auto;
+	transform:translateY(-50%);
+	color:red;
+	margin-left:5px;
+}
+
+
+/* aos 적용 */
+.layout-demo-wrapper{
+	position: relative;
+  top: -100px;
+  transition:top 0.5s ease !important;
+  min-height:calc(100vh - 220px);
+}
+.layout-demo-wrapper.aos-animate{
+  top:0px;
+}
+.aos_frans_none .layout-demo-wrapper {
+  transform: none !important;
+}
+
+
+/* 부트스트랩 덮어쓰기 */
+.text-success{
+	color: var(--violet80) !important;
+}
+.modal-dialog-centered{min-height:100vh}
+
+
+
+
+
+/* 채용공고 공통 스타일 */
+.recruit_list span{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 24;
+  color:var(--violet80);
+}
+
+.recruit_list .viewat_box,
+.recruit_list .com_name_box{	
+    flex: 0 0 202px;
+    overflow: hidden;
+    max-width: 136px;
+    width:202px;
+}
+.recruit_list .viewAt{	
+    color: var(--gray120);
+    line-height: 24px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left:10px;
+    font-size:14px;
+}
+
+.recruit_list .recruit_tit{
+    margin-left: 64px;
+    padding: 0;
+    flex-basis: 492px;
+}
+
+.recruit_info span{
+  color:#a1a1a1;
+}
+.recruit_list .recruit_info span:last-child {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    padding-left: 12px;
+    color: var(--gray100);
+    font-size: 13px;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.recruit_list .recruit_info span.num_line{
+	margin-top:2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* popover/tooltip */
 .toolTipWrap {

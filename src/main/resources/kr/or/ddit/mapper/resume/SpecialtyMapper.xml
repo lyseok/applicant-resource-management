@@ -49,8 +49,7 @@
 	
 	<delete id="deleteSpecialty">
 		DELETE FROM SPECIALTY 
-		 WHERE EDUCATION_NO = #{educationNo}
-		   AND RESUME_NO = #{resumeNo}
+		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
 	
 </mapper>

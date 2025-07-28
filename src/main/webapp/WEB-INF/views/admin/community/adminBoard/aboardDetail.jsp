@@ -2,49 +2,62 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
-<title>띹잡 고객센터 | 게시글 상세</title>
-
+<head>
+	<title>띹잡 고객센터 | 게시글 상세</title>
+</head>
 <body>
 
-	<h4>관리자 게시판 상세보기</h4>
-	
-	<table class="table table-bordered">
-		<tr>
-			<td colspan="2">
-				<c:url value="/admin/aboardForm/edit" var="updateURL">
-					<c:param name="boardNo" value="${aboard.boardNo}"></c:param>
-				</c:url>
-				<a class="btn btn-primary" href="${updateURL}">수정</a>
-			</td>
-		</tr>
-	<tr><th>게시글 번호</th><td>${aboard.boardNo}</td></tr>
-	<tr><th>사용자 ID</th><td>${aboard.userId}</td></tr>
-	<tr><th>게시판 유형 코드</th><td>${aboard.boardTypeCode}</td></tr>
-	<tr><th>제목</th><td>${aboard.boardTitle}</td></tr>
-	<tr><th>등록일시</th><td>${aboard.boardWriteDate}</td></tr>
-	<tr><th>내용</th><td>${aboard.boardContent}</td></tr>
-	<tr><th>삭제일시</th><td>${aboard.boardDeleteDate}</td></tr>
-	<tr><th>조회수</th><td>${aboard.boardPostHit}</td></tr>
-	<tr><th>게시글 상태</th><td>${aboard.boardStatus}</td></tr>
-	<!-- 게시글 존재 여부에 따른 분기 -->
-	<c:if test="${not empty aboard.adminCommentList}">
-		<c:forEach items="${aboard.adminCommentList}" var="acomment">
-			<tr>
-				<td>${acomment.boardCommentNo}</td>
-				<td>${acomment.userId}</td>
-				<td>${acomment.boardNo}</td>
-				<td>${acomment.boardCommentContent}</td>
-				<td>${acomment.boardWriteDate}</td>
-				<td>${acomment.boardDeleteDate}</td>
-				<td>${acomment.boardCommentStatus}</td>
-			</tr>
-		</c:forEach>
-	</c:if>
-	<c:if test="${empty aboard.adminCommentList}">
-	    <tr>
-			<td colspan="7">댓글 없음</td>
-		</tr>
-	</c:if>
+	<sec:authentication property="principal.realUser.userId" var="userId"/>
 
+	<!-- 게시글 상세 -->
+	<div id="aboardDetail"></div><br>
+
+	<!-- 리스트 -->
+	<div id="memTypeBtn"></div><br>
+	<ul id="aboardList">
+		<input type="hidden" id="typeHidden" value="${type}">
+	</ul>
+	
+	<!-- 새 글 등록 버튼 -->
+	<div id="formBtn"></div>
+
+	<!-- 답글 리스트 -->
+	<div id="acommentListContainer"></div>
+
+	<!-- 답글 폼 -->
+	<div id="acommentFormContainer"></div>	
+	
+	<!-- 등록 폼 미리 숨겨놓기 -->
+	  <form id="aboardForm" style="display: none;">
+	  	<p class="h4" id="formTitle">관리자 게시판</p><br>
+	  	<input type="hidden" id="noHidden" value="${aboard.boardNo}">
+	    
+	    <label>게시판 유형 코드</label>
+	    <select id="boardTypeCode">
+	      <option value="-1">--선택--</option>
+	    </select>
+	    
+	    <select id="codeGroup" disabled>
+	      <option value="-1">--선택--</option>
+	    </select>
+	    
+	    <select id="memType" disabled>
+	      <option value="-1">--선택--</option>
+	    </select>
+	    
+	    <br>
+	    <input type="text" name="boardTitle" placeholder="제목">
+	    <label>작성자 아이디: </label>
+		<input type="text" name="userId" value="${userId}" disabled><br>
+		<textarea name="boardContent" placeholder="내용" rows="6" cols="60"></textarea>
+	    
+	    <button type="submit">등록</button>
+	  </form>
+	  
+	
+<script src="/js/admin/community/adminBoard/aboardList.js"></script>
+<script src="/js/admin/community/adminBoard/aboardForm.js"></script>
+<script src="/js/admin/community/adminBoard/aboardDetail.js"></script>	
 </body>

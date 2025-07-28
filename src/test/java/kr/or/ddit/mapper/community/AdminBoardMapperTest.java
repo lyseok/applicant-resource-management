@@ -3,8 +3,11 @@ package kr.or.ddit.mapper.community;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +31,42 @@ class AdminBoardMapperTest {
 	}
 
 	@Test
+	void testSelectAFaqListByCgn() {
+		Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("boardTypeCode", "UFAQ-U5");
+
+	    assertDoesNotThrow(() -> {
+	        List<AdminBoardVO> list = mapper.selectAFaqListByCgn(paramMap);
+	        list.forEach(board -> log.info("기업/일반 FAQ 전용 리스트 : {}", board));
+	    });
+	}
+
+	@Test
+	void testSelectAFaqListByUcn() {
+		assertDoesNotThrow(()->mapper.selectAFaqListByUcn("BRDD-002"));  //얜 이것만을 위한 거임
+		
+		List<AdminBoardVO> list = mapper.selectAFaqListByUcn("BRDD-002");
+		list.forEach(board->{
+			log.info("자주묻는질문 전용 리스트 : {}", board);
+		});
+	}
+
+	@Test
 	void testSelectAdminBoardListByType() {
 		assertDoesNotThrow(()->mapper.selectAdminBoardListByType("UFAQ-U5"));
 		
 		List<AdminBoardVO> list = mapper.selectAdminBoardListByType("UFAQ-U5");
 		list.forEach(board->{
-			log.info("{}", board);
+			log.info(" BRDD-002 제외한 모든 타입 리스트 : {}", board);
+		});
+	}
+	@Test
+	void testSelectDelAboardList() {
+		assertDoesNotThrow(()->mapper.selectDelAboardList());
+		
+		List<AdminBoardVO> list = mapper.selectDelAboardList();
+		list.forEach(board->{
+			log.info(" 삭제된 게시글만 : {}", board);
 		});
 	}
 

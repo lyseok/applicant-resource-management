@@ -2,87 +2,103 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.ResumeMapper">
 
-  <resultMap id="resumeWithCareerMap" type="kr.or.ddit.vo.resume.ResumeVO">
-    <id     property="resumeNo"         column="RESUME_NO"/>
-    <result property="userId"           column="USER_ID"/>
-    <result property="userName"         column="USER_NAME"/>
-    <collection property="careerList" ofType="kr.or.ddit.vo.resume.CareerVO">
-      <id     property="careerNo"        column="CAREER_NO"/>
-      <result property="resumeNo"        column="RESUME_NO"/>
-      <result property="jobCode"         column="JOB_CODE"/>
-      <result property="startWorkDate"   column="START_WORK_DATE"/>
-      <result property="retireDate"      column="RETIRE_DATE"/>
-      <result property="tenure"          column="TENURE"/>
-      <result property="department"      column="DEPARTMENT"/>
-      <result property="responsibility"  column="RESPONSIBILITY"/>
-      <result property="freelancer"      column="FREELANCER"/>
-      <result property="jobGradeCode"    column="JOB_GRADE_CODE"/>
-      <result property="positionCode"    column="POSITION_CODE"/>
-      <result property="careerYear"      column="CAREER_YEAR"/>
-      <result property="salary"          column="SALARY"/>
-      <result property="location"        column="LOCATION"/>
-      <result property="comId"           column="COM_ID"/>
-       
-      <association property="company" javaType="kr.or.ddit.vo.common.CompanyVO">
-      	 <id     property="userId"         column="userId"/>
-        <result property="comName"       column="COM_NAME"/>
-      </association>
-    </collection>
-  </resultMap>
-  
-  
-  
-	<select id="selectResumeList">
-	  	SELECT  RESUME_NO
-		      , RESUME_MAIN_YN
-		      , INTRODUCTION_NO
-		      , USER_ID
-		      , USER_NAME
-		      , PHOTO
-		      , TO_CHAR(TO_DATE(BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
-		      , EMAIL
-		      , TEL
-		      , ADDRESS
-		      , VETERAN_REASON
-		      , TO_CHAR(TO_DATE(UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
-		      , RESUME_SUBMIT_YN
-		      , RESUME_DELETE_DATE
-		      , RESUME_NAME
-		  FROM resume
-		 WHERE USER_ID = #{userId}
-		   AND RESUME_DELETE_DATE IS NULL
+<resultMap id="resumeWithCareersMap" type="kr.or.ddit.vo.resume.ResumeVO">
+  <!-- ResumeVO 기본 필드 -->
+  <id property="resumeNo" column="RESUME_NO"/>
+  <result property="userId" column="USER_ID"/>
+  <result property="userName" column="USER_NAME"/>
 
+  <!-- CareerVO 중첩 리스트 -->
+  <collection property="careerList" ofType="kr.or.ddit.vo.resume.CareerVO">
+    <id property="careerNo" column="CAREER_NO"/>
+    <result property="resumeNo" column="RESUME_NO"/>
+    <result property="jobCode" column="JOB_CODE"/>
+    <result property="startWorkDate" column="START_WORK_DATE"/>
+    <result property="retireDate" column="RETIRE_DATE"/>
+    <result property="tenure" column="TENURE"/>
+    <result property="department" column="DEPARTMENT"/>
+    <result property="responsibility" column="RESPONSIBILITY"/>
+    <result property="freelancer" column="FREELANCER"/>
+    <result property="jobGradeCode" column="JOB_GRADE_CODE"/>
+    <result property="positionCode" column="POSITION_CODE"/>
+    <result property="careerYear" column="CAREER_YEAR"/>
+    <result property="salary" column="SALARY"/>
+    <result property="location" column="LOCATION"/>
+
+    <!-- company 중첩 -->
+    <association property="company" javaType="kr.or.ddit.vo.common.CompanyVO">
+      <id property="userId" column="USER_ID"/>
+      <result property="comName" column="COM_NAME"/>
+    </association>
+  </collection>
+</resultMap>
+  
+  
+  
+	<select id="selectResumeList" resultType="map">
+    SELECT 
+    R.RESUME_NO
+    , R.USER_ID
+    , R.USER_NAME
+    , R.PHOTO
+    , TO_CHAR(TO_DATE(R.BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
+    , R.EMAIL
+    , R.TEL
+    , R.ADDRESS
+    , R.VETERAN_REASON
+    , TO_CHAR(TO_DATE(R.UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
+    , R.RESUME_SUBMIT_YN
+    , R.RESUME_DELETE_DATE
+    , R.RESUME_MAIN_YN
+    , R.INTRODUCTION_NO
+    , R.RESUME_NAME
+    , (SELECT COUNT(*) FROM MY_LICENSE WHERE RESUME_NO = R.RESUME_NO) AS MY_LICENSE_CNT
+    , (SELECT COUNT(*) FROM CAREER WHERE RESUME_NO = R.RESUME_NO) AS CAREER_YN
+    , (SELECT COUNT(*) FROM MILITARY WHERE RESUME_NO = R.RESUME_NO) AS MILITARY_YN
+    , (SELECT COUNT(*) FROM LANGUAGE_SKILL WHERE RESUME_NO = R.RESUME_NO) AS LANGUAGE_SKILL_YN
+    FROM RESUME R
+		WHERE USER_ID = #{userId}
+    AND RESUME_DELETE_DATE IS NULL
+    AND RESUME_SUBMIT_YN = 'N'
 	</select>
 	<resultMap id="resumeDetailtMap" type="kr.or.ddit.vo.resume.ResumeVO">
-	    <!-- ResumeVO 기본 필드 매핑 -->
-	    <id     property="resumeNo"         column="RESUME_NO"/>
-	    <result property="resumeName"       column="RESUME_NAME"/>
-	    <result property="resumeMainYn"     column="RESUME_MAIN_YN"/>
-	    <result property="introductionNo"   column="INTRODUCTION_NO"/>
-	    <result property="userId"           column="USER_ID"/>
-	    <result property="userName"         column="USER_NAME"/>
-	    <result property="photo"            column="PHOTO"/>
-	    <result property="birth"            column="BIRTH"/>
-	    <result property="email"            column="EMAIL"/>
-	    <result property="tel"              column="TEL"/>
-	    <result property="address"          column="ADDRESS"/>
-	    <result property="veteranReason"    column="VETERAN_REASON"/>
-	    <result property="updateDate"       column="UPDATE_DATE"/>
-	    <result property="resumeSubmitYn"   column="RESUME_SUBMIT_YN"/>
-	    <result property="resumeDeleteDate" column="RESUME_DELETE_DATE"/>
-	
-	    <!-- IntroductionVO는 introduction property에 중첩 매핑 -->
-	    <association property="introduction" javaType="kr.or.ddit.vo.resume.IntroductionVO">
-	        <id     property="introductionNo"        column="INTRODUCTION_NO"/>
-	        <result property="introductionName"      column="INTRODUCTION_NAME"/>
-	        <result property="introductionContent"   column="INTRODUCTION_CONTENT"/>
-	        <result property="introductionQuestion"  column="INTRODUCTION_QUESTION"/>
-	        <result property="introductionCreateDate" column="INTRODUCTION_CREATE_DATE"/>
-	        <result property="introductionDeleteDate" column="INTRODUCTION_DELETE_DATE"/>
-	        <result property="introductionSubmitYn"   column="INTRODUCTION_SUBMIT_YN"/>
-	        <result property="userId"                 column="USER_ID"/>
-	    </association>
-	</resultMap>
+    <!-- ResumeVO 기본 필드 매핑 -->
+    <id     property="resumeNo"         column="RESUME_NO"/>
+    <result property="resumeName"       column="RESUME_NAME"/>
+    <result property="resumeMainYn"     column="RESUME_MAIN_YN"/>
+    <result property="introductionNo"   column="INTRODUCTION_NO"/>
+    <result property="userId"           column="USER_ID"/>
+    <result property="userName"         column="USER_NAME"/>
+    <result property="photo"            column="PHOTO"/>
+    <result property="birth"            column="BIRTH"/>
+    <result property="email"            column="EMAIL"/>
+    <result property="tel"              column="TEL"/>
+    <result property="address"          column="ADDRESS"/>
+    <result property="veteranReason"    column="VETERAN_REASON"/>
+    <result property="updateDate"       column="UPDATE_DATE"/>
+    <result property="resumeSubmitYn"   column="RESUME_SUBMIT_YN"/>
+    <result property="resumeDeleteDate" column="RESUME_DELETE_DATE"/>
+
+    <!-- IntroductionVO 중첩 -->
+    <association property="introduction" javaType="kr.or.ddit.vo.resume.IntroductionVO">
+        <id     property="introductionNo"        column="INTRODUCTION_NO"/>
+        <result property="introductionName"      column="INTRODUCTION_NAME"/>
+        <result property="introductionCreateDate" column="INTRODUCTION_CREATE_DATE"/>
+        <result property="introductionDeleteDate" column="INTRODUCTION_DELETE_DATE"/>
+        <result property="introductionSubmitYn"   column="INTRODUCTION_SUBMIT_YN"/>
+        <result property="userId"                 column="USER_ID"/>
+
+        <!-- IntroductionQuestionVO 중첩 -->
+		    <collection property="introductionQuestionList" ofType="kr.or.ddit.vo.resume.IntroductionQuestionVO">
+            <id     property="questionNo" column="QUESTION_NO"/>
+            <result property="introductionNo" column="INTRODUCTION_NO"/>
+            <result property="question" column="QUESTION"/>
+            <result property="content" column="CONTENT"/>
+        </collection>
+    </association>
+</resultMap>
+
+
 		
 	<select id="selectResumeDetail" resultMap="resumeDetailtMap">
 		SELECT  
@@ -136,6 +152,7 @@
 			, UPDATE_DATE
 			, RESUME_SUBMIT_YN
 			, RESUME_DELETE_DATE
+			, INTRODUCTION_NO
 		) VALUES (
 			#{resumeNo}
 			, #{resumeName}
@@ -150,11 +167,15 @@
 			, TO_CHAR(SYSDATE, 'YYYYMMDD')
 			, #{resumeSubmitYn}
 			, #{resumeDeleteDate}
+			, #{introductionNo}
 		)
 	</insert>
+	
+	
 	<update id="updateResume">
 		UPDATE RESUME 
 		   SET USER_ID = #{userId}
+		       , RESUME_NAME = #{resumeName}
 		       , USER_NAME = #{userName}
 		       , PHOTO = #{photo}
 		       , BIRTH = REPLACE(#{birth}, '-', '')
@@ -165,25 +186,33 @@
 		       , UPDATE_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
 		       , RESUME_SUBMIT_YN = #{resumeSubmitYn}
 		       , RESUME_DELETE_DATE = #{resumeDeleteDate}
+		       , INTRODUCTION_NO = #{introductionNo}
 		 WHERE RESUME_NO = #{resumeNo}
-	</update>
+	</update>	
+	
+	<update id="updateResumeDelete">
+		UPDATE RESUME 
+		   SET RESUME_DELETE_DATE = SYSDATE
+		 WHERE RESUME_NO = #{resumeNo}
+		  AND USER_ID = #{userId}
+	</update>	
+	
 	
 	<delete id="deleteResume">
 		DELETE FROM RESUME
 		 WHERE RESUME_NO = #{resumeNo}
-	</delete>
+	</delete>	
 	
 	
-	
-	 <select id="selectResumeWithCareers" resultMap="resumeWithCareerMap">
+	 <select id="selectResumeWithCareers" resultMap="resumeWithCareersMap">
 		    SELECT
 		      r.RESUME_NO,
 		      r.USER_ID,
 		      r.USER_NAME,
 		      c.CAREER_NO,
 		      c.JOB_CODE,
-		      c.START_WORK_DATE,
-		      c.RETIRE_DATE,
+		      TO_CHAR(TO_DATE(c.START_WORK_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS START_WORK_DATE,
+  			  TO_CHAR(TO_DATE(c.RETIRE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS RETIRE_DATE,
 		      c.TENURE,
 		      c.DEPARTMENT,
 		      c.RESPONSIBILITY,
@@ -206,5 +235,71 @@
 		    ORDER BY
 		      r.UPDATE_DATE DESC
   </select>
-  <select id=""></select>
+  
+  <select id="selectUserResumeNoCount">
+  	SELECT count(RESUME_NO)
+	  FROM RESUME
+		WHERE USER_ID = #{userId}
+  </select>
+  
+  
+  <select id="selectResumeSearch">
+		SELECT *
+		  FROM RESUME
+		 WHERE RESUME_DELETE_DATE IS NULL
+       AND RESUME_NAME LIKE '%'||#{resumeName}||'%'  	
+       AND USER_ID = #{userId}
+	     AND RESUME_SUBMIT_YN = 'N'
+  </select>
+  
+  
+  
+  
+  
+  
+	<select id="selectResumeTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM RESUME
+		WHERE USER_ID = #{userId}
+		  AND RESUME_DELETE_DATE IS NULL
+		  AND RESUME_SUBMIT_YN = 'N'
+	</select>
+	
+	<select id="selectResumePagingList" resultType="map">
+		SELECT *
+		FROM (
+			SELECT A.*, ROWNUM rnum
+			FROM (
+				SELECT 
+					R.RESUME_NO,
+					R.USER_ID,
+					R.USER_NAME,
+					R.PHOTO,
+					TO_CHAR(TO_DATE(R.BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH,
+					R.EMAIL,
+					R.TEL,
+					R.ADDRESS,
+					R.VETERAN_REASON,
+					TO_CHAR(TO_DATE(R.UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE,
+					R.RESUME_SUBMIT_YN,
+					R.RESUME_DELETE_DATE,
+					R.RESUME_MAIN_YN,
+					R.INTRODUCTION_NO,
+					R.RESUME_NAME,
+					(SELECT COUNT(*) FROM MY_LICENSE WHERE RESUME_NO = R.RESUME_NO) AS MY_LICENSE_CNT,
+					(SELECT COUNT(*) FROM CAREER WHERE RESUME_NO = R.RESUME_NO) AS CAREER_YN,
+					(SELECT COUNT(*) FROM MILITARY WHERE RESUME_NO = R.RESUME_NO) AS MILITARY_YN,
+					(SELECT COUNT(*) FROM LANGUAGE_SKILL WHERE RESUME_NO = R.RESUME_NO) AS LANGUAGE_SKILL_YN
+				FROM RESUME R
+				WHERE USER_ID = #{userId}
+				  AND RESUME_DELETE_DATE IS NULL
+				  AND RESUME_SUBMIT_YN = 'N'
+				ORDER BY R.RESUME_NO DESC
+			) A
+			WHERE ROWNUM &lt;= #{offset} + #{limit}
+		)
+		WHERE rnum &gt; #{offset}
+	</select>
+
+  
 </mapper>

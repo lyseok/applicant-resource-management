@@ -80,8 +80,9 @@
 		R.RECRUITMENT_NO AS recruitmentNo,
 		R.RECRUITMENT_TITLE AS recruitmentTitle,
 		R.JOB_CODE AS jobCode,
-		R.RECRUITMENT_STARTDATE AS startDate,
-		R.RECRUITMENT_FINISH_DATE AS finishDate,
+		R.YEAR_CODE as yearCode,
+		R.RECRUITMENT_STARTDATE AS recruitmentStartDate,
+		R.RECRUITMENT_FINISH_DATE AS recruitmentFinishDate,
 		R.RECRUITMENT_SALARY AS salary,
 		R.CITY_CODE AS cityCode,
 		R.DISTRICT_CODE AS districtCode,
@@ -92,10 +93,48 @@
 	LEFT JOIN
 	APPLICANT A ON R.RECRUITMENT_NO = A.RECRUITMENT_NO
 	WHERE R.USER_ID = #{userId}
+	AND R.RECRUITMENT_DEL_DATE IS NULL
 	GROUP BY
 		R.RECRUITMENT_NO,
 		R.RECRUITMENT_TITLE,
 		R.JOB_CODE,
+		R.YEAR_CODE,
+		R.RECRUITMENT_STARTDATE,
+		R.RECRUITMENT_FINISH_DATE,
+		R.RECRUITMENT_SALARY,
+		R.CITY_CODE,
+		R.DISTRICT_CODE,
+		R.REC_CONTENT
+	ORDER BY
+		R.RECRUITMENT_STARTDATE DESC
+	</select>
+	
+	<select id="selectApplicatedNotice">
+	SELECT
+		R.RECRUITMENT_NO AS recruitmentNo,
+        R.USER_ID AS userId,
+        (SELECT COM_NAME FROM COMPANY WHERE USER_ID = R.USER_ID) AS COM_NAME, 
+		R.RECRUITMENT_TITLE AS recruitmentTitle,
+		R.JOB_CODE AS jobCode,
+		R.YEAR_CODE as yearCode,
+		R.RECRUITMENT_STARTDATE AS recruitmentStartDate,
+		R.RECRUITMENT_FINISH_DATE AS recruitmentFinishDate,
+		R.RECRUITMENT_SALARY AS salary,
+		R.CITY_CODE AS cityCode,
+		R.DISTRICT_CODE AS districtCode,
+		R.REC_CONTENT AS recContent,
+		COUNT(A.APPLICANT_ID) AS applicantCount
+	FROM
+	RECRUITMENT_NOTICE R
+	LEFT JOIN
+	APPLICANT A ON R.RECRUITMENT_NO = A.RECRUITMENT_NO
+	WHERE A.USER_ID = #{userId}
+	GROUP BY
+		R.RECRUITMENT_NO,
+        R.USER_ID,
+		R.RECRUITMENT_TITLE,
+		R.JOB_CODE,
+		R.YEAR_CODE,
 		R.RECRUITMENT_STARTDATE,
 		R.RECRUITMENT_FINISH_DATE,
 		R.RECRUITMENT_SALARY,
@@ -126,7 +165,7 @@
 		RECRUITMENT_FINISH_DATE
 		FROM RECRUITMENT_NOTICE
 		ORDER BY
-		RECRUITMENT_STARTDATE DESC;
+		RECRUITMENT_STARTDATE DESC
 	</select>
 
 	<select id="selectliveRecruitmentDetail"
@@ -152,6 +191,7 @@
 	rn.RECRUITMENT_RECEIPT_START            AS RENO_RECRUITMENT_RECEIPT_START,
 	rn.RECRUITMENT_FINISH_DATE              AS RENO_RECRUITMENT_FINISH_DATE,
 	rn.RECRUITMENT_DEL_DATE                 AS RENO_RECRUITMENT_DEL_DATE,
+	rn.RECRUIT_FINISH_YN					AS RENO_RECRUIT_FINISH_YN,
 
 	-- COMPANY
 	c.USER_ID                               AS COM_USER_ID,
@@ -216,14 +256,12 @@
 		INSERT INTO RECRUITMENT_NOTICE (
 		RECRUITMENT_NO
 		, USER_ID
-		,
-		RECRUITMENT_TITLE
+		, RECRUITMENT_TITLE
 		, JOB_CODE
 		, YEAR_CODE
 		, REC_CONTENT
 		, PREFERENTIAL
-		,
-		CITY_CODE
+		, CITY_CODE
 		, DISTRICT_CODE
 		, REC_POSITION_NUMBER
 		, RECRUITMENT_CHARGER_TEL
@@ -231,34 +269,27 @@
 		, WELFARE
 		, RECRUITMENT_DESK
 		, RECRUITMENT_IMG
-		,
-		RECRUITMENT_STARTDATE
+		, RECRUITMENT_STARTDATE
 		, RECRUITMENT_RECEIPT_START
-		,
-		RECRUITMENT_FINISH_DATE
+		, RECRUITMENT_FINISH_DATE
 		)VALUES (
 		#{recruitmentNo}
 		, #{userId}
-		,
-		#{recruitmentTitle}
+		, #{recruitmentTitle}
 		, #{jobCode}
 		, #{yearCode}
 		, #{recContent}
-		,
-		#{preferential}
+		, #{preferential}
 		, #{cityCode}
 		, #{districtCode}
 		, #{recPositionNumber}
-		,
-		#{recruitmentChargerTel}
+		, #{recruitmentChargerTel}
 		, #{recruitmentSalary}
 		, #{welfare}
-		,
-		#{recruitmentDesk}
+		, #{recruitmentDesk}
 		, #{recruitmentImg}
 		, SYSDATE
-		,
-		#{recruitmentReceiptStart}
+		, #{recruitmentReceiptStart}
 		, #{recruitmentFinishDate}
 		)
 	</insert>
@@ -327,5 +358,247 @@
 		SYSDATE
 		WHERE RECRUITMENT_NO = #{recruitmentNo}
 	</update>
+	
+	<update id="updateRecruitDeadLine">
+		UPDATE RECRUITMENT_NOTICE SET
+		RECRUIT_FINISH_YN = 'Y'
+		WHERE RECRUITMENT_NO = #{recruitmentNo}
+	</update>
+	
+	
+	
+	<select id="selectRecruitNoticeByUserId" resultType="RecruitmentNoticeVO">	       
+		 SELECT 
+		    RECRUITMENT_NO,
+		    USER_ID,
+		    JOB_CODE,
+		    YEAR_CODE,
+		    REC_CONTENT,
+		    PREFERENTIAL,
+		    CITY_CODE,
+		    DISTRICT_CODE,
+		    REC_POSITION_NUMBER,
+		    RECRUITMENT_CHARGER_TEL,
+		    RECRUITMENT_SALARY,
+		    WELFARE,
+		    RECRUITMENT_DESK,
+		    RECRUITMENT_IMG,
+		    RECRUITMENT_STARTDATE,
+		    RECRUITMENT_RECEIPT_START,
+		    RECRUITMENT_FINISH_DATE,
+		    RECRUITMENT_TITLE,
+		    RECRUITMENT_DEL_DATE,
+		    RECRUIT_FINISH_YN
+		  FROM RECRUITMENT_NOTICE
+		  WHERE USER_ID = #{userId}
+		ORDER BY RECRUITMENT_STARTDATE DESC
+	</select>
+	
+	<resultMap id="recruitmentNoticeDtoMap" type="kr.or.ddit.dto.RecruitmentNoticeDTO">
+	    <id property="recruitmentNo" column="RECRUITMENT_NO"/>
+	    <result property="recruitmentTitle" column="RECRUITMENT_TITLE"/>
+	    <result property="userId" column="USER_ID"/>
+	    <result property="viewCnt" column="VIEW_CNT"/>	    
+	    <result property="scrabCnt" column="SCRAB_CNT"/>	    
+	    <result property="comName" column="COM_NAME"/>
+	    <result property="jobCode" column="JOB_CODE"/>
+	    <result property="jobName" column="JOB_NAME"/>
+	    <result property="yearCode" column="YEAR_CODE"/>
+	    <result property="yearCodeName" column="YEAR_CODE_NAME"/>
+	    <result property="preferential" column="PREFERENTIAL"/>
+	    <result property="cityCode" column="CITY_CODE"/>
+	    <result property="cityName" column="CITY_NAME"/>
+	    <result property="districtCode" column="DISTRICT_CODE"/>
+	    <result property="districtName" column="DISTRICT_NAME"/>
+	    <result property="recruitmentSalary" column="RECRUITMENT_SALARY"/>
+	    <result property="recruitmentImg" column="RECRUITMENT_IMG"/>
+	    <result property="recruitmentStartDate" column="RECRUITMENT_STARTDATE"/>
+	    <result property="recruitmentFinishDate" column="RECRUITMENT_FINISH_DATE"/>
+	    <result property="recruitFinishYn" column="RECRUIT_FINISH_YN"/>
+	    <result property="recContent" column="REC_CONTENT"/>
+	
+	    <!-- 학력: 단일 -->
+	    <association property="education" javaType="kr.or.ddit.dto.RecruitmentEducationDTO">
+	        <result property="recruitmentEducationCode" column="RECRUITMENT_EDUCATION_CODE"/>
+	        <result property="educationCodeDetailNo" column="CODE_DETAIL_NO"/>
+	        <result property="recruitmentEducationCodeName" column="RECRUITMENT_EDUCATION_CODE_NAME"/>
+	    </association>
+	    <!-- 포지션: 여러개 -->
+	    <collection property="positionList" ofType="kr.or.ddit.dto.RecruitmentPositionDTO">
+	        <result property="recruitmentPositionCode" column="RECRUITMENT_POSITION_CODE"/>
+	        <result property="positionCodeDetailNo" column="CODE_DETAIL_NO"/>
+	        <result property="recruitmentPositionCodeName" column="RECRUITMENT_POSITION_CODE_NAME"/>
+	    </collection>
+	    <!-- 스킬: 여러개 -->
+	    <collection property="skillList" ofType="kr.or.ddit.dto.RecruitmentSkillDTO">
+	        <result property="recruitSkillCode" column="RECRUIT_SKILL_CODE"/>
+	        <result property="recruitSkillName" column="RECRUIT_SKILL_NAME"/>
+	    </collection>
+	</resultMap>
+	
+	<select id="searchRecruitNoticeDtoList" resultMap="recruitmentNoticeDtoMap">
+		SELECT b.*
+			, RP.RECRUITMENT_POSITION_CODE
+			, RP.CODE_DETAIL_NO AS POSITION_CODE_DETAIL_NO
+			, (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = RP.CODE_DETAIL_NO) AS RECRUITMENT_POSITION_CODE_NAME
+			
+			, RE.RECRUITMENT_EDUCATION_CODE
+			, RE.CODE_DETAIL_NO AS EDUCATION_CODE_DETAIL_NO
+			, (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = RE.CODE_DETAIL_NO) AS RECRUITMENT_EDUCATION_CODE_NAME
+			
+			, RS.RECRUIT_SKILL_CODE
+			, RS.RECRUIT_SKILL_NAME
+		FROM (
+			SELECT ROWNUM rnum, a.*
+			FROM (
+		  
+				SELECT
+				    (SELECT COUNT(*) FROM RECRUIT_VIEW WHERE RECRUITMENT_NO = RN.RECRUITMENT_NO) AS VIEW_CNT
+				    , (SELECT COUNT(*) FROM SCRAB_RECRUITMENT WHERE RECRUITMENT_NO = RN.RECRUITMENT_NO) AS SCRAB_CNT
+				  	, RN.RECRUITMENT_NO
+				    , RN.RECRUITMENT_TITLE
+				    , RN.USER_ID
+				    , (SELECT COM_NAME FROM COMPANY WHERE USER_ID = RN.USER_ID) AS COM_NAME
+				    
+				    , RN.JOB_CODE
+				    , (SELECT JOB_NAME FROM JOB WHERE JOB_CODE = RN.JOB_CODE) AS JOB_NAME
+				    
+				    , RN.YEAR_CODE
+				    , (SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = RN.YEAR_CODE) AS YEAR_CODE_NAME
+				    
+				    , RN.PREFERENTIAL
+				    , RN.CITY_CODE
+				    , (SELECT CITY_NAME FROM CITY_CODE WHERE CITY_CODE_NO = RN.CITY_CODE) AS CITY_NAME
+				    
+				    , RN.DISTRICT_CODE
+				    , (SELECT DISTRICT_NAME FROM DISTRICT_CODE WHERE DISTRICT_CODE_NO = RN.DISTRICT_CODE) AS DISTRICT_NAME
+				    
+				    , RN.RECRUITMENT_SALARY
+				    , RN.RECRUITMENT_IMG
+				    , RN.RECRUITMENT_STARTDATE
+				    , RN.RECRUITMENT_FINISH_DATE
+				    , RN.RECRUIT_FINISH_YN
+				    
+				    , RN.REC_CONTENT
+				FROM RECRUITMENT_NOTICE RN
+				WHERE RN.RECRUITMENT_DEL_DATE IS NULL
+				AND RN.RECRUIT_FINISH_YN = 'N'
+				<!-- yearCode가 넘어온 경우 -->
+			    <if test="yearCode != null and yearCode != ''">
+			      AND RN.YEAR_CODE = #{yearCode}
+			    </if>
+			    
+			    <!-- cityCode가 하나 이상 넘어온 경우 -->
+			    <if test="districtCode != null and districtCode.size > 0">
+			      AND RN.DISTRICT_CODE IN
+			      <foreach item="code" collection="districtCode" open="(" separator="," close=")">
+			        #{code}
+			      </foreach>
+			    </if>
+			    
+			    <!-- jobCode가 하나 이상 넘어온 경우 -->
+			    <if test="jobCode != null and jobCode.size > 0">
+			      AND RN.JOB_CODE IN
+			      <foreach item="code" collection="jobCode" open="(" separator="," close=")">
+			        #{code}
+			      </foreach>
+			    </if>
+			    
+			    <!-- keyword가 넘어온 경우: 제목 또는 회사명에 포함 -->
+			    <if test="keyword != null and keyword != ''">
+			      AND (RN.RECRUITMENT_TITLE LIKE '%' || #{keyword} || '%'
+			           OR EXISTS (
+			               SELECT 1 FROM COMPANY C 
+			               WHERE C.USER_ID = RN.USER_ID 
+			                 AND C.COM_NAME LIKE '%' || #{keyword} || '%'
+			           )
+			      )
+			    </if>
+				
+				<if test="sort != null">
+					ORDER BY
+					<choose>
+						<when test="sort == 'RD'"> RN.RECRUITMENT_STARTDATE DESC </when>
+						<when test="sort == 'EA'"> RN.RECRUITMENT_FINISH_DATE ASC </when>
+						<when test="sort == 'RL'"> SCRAB_CNT DESC </when>
+						<when test="sort == 'RE'"> VIEW_CNT DESC </when>
+						<when test="sort == 'SALARY'"> TO_NUMBER(RN.RECRUITMENT_SALARY) DESC </when>
+						<otherwise> RN.RECRUITMENT_STARTDATE DESC </otherwise>
+					</choose>
+			    </if>
+			) a
+			WHERE ROWNUM &lt;= #{endRow}
+		) b
+		LEFT OUTER JOIN RECRUITMENT_POSITION RP
+		ON b.RECRUITMENT_NO = RP.RECRUITMENT_NO
+		AND RP.RECRUITMENT_POSITION_DEL_DATE IS NULL
+		
+		LEFT OUTER JOIN RECRUITMENT_EDUCATION RE
+		ON b.RECRUITMENT_NO = RE.RECRUITMENT_NO
+		AND RE.RECRUITMENT_EDU_DEL_DATE IS NULL
+		
+		LEFT OUTER JOIN RECRUITMENT_SKILL RS
+		ON b.RECRUITMENT_NO = RS.RECRUITMENT_NO
+		AND RS.RECRUIT_SKILL_DEL_DATE IS NULL
+		WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<select id="countRecruitmentNotice" resultType="int">
+	  SELECT COUNT(*) 
+	  FROM RECRUITMENT_NOTICE RN
+	  WHERE RN.RECRUITMENT_DEL_DATE IS NULL
+	    AND RN.RECRUIT_FINISH_YN = 'N'
+	    
+	    <!-- yearCode가 넘어온 경우 -->
+	    <if test="yearCode != null and yearCode != ''">
+	      AND RN.YEAR_CODE = #{yearCode}
+	    </if>
+	    
+	    <!-- cityCode가 하나 이상 넘어온 경우 -->
+	    <if test="districtCode != null and districtCode.size > 0">
+	      AND RN.DISTRICT_CODE IN
+	      <foreach item="code" collection="districtCode" open="(" separator="," close=")">
+	        #{code}
+	      </foreach>
+	    </if>
+	    
+	    <!-- jobCode가 하나 이상 넘어온 경우 -->
+	    <if test="jobCode != null and jobCode.size > 0">
+	      AND RN.JOB_CODE IN
+	      <foreach item="code" collection="jobCode" open="(" separator="," close=")">
+	        #{code}
+	      </foreach>
+	    </if>
+	    
+	    <!-- keyword가 넘어온 경우: 제목 또는 회사명에 포함 -->
+	    <if test="keyword != null and keyword != ''">
+	      AND (RN.RECRUITMENT_TITLE LIKE '%' || #{keyword} || '%'
+	           OR EXISTS (
+	               SELECT 1 FROM COMPANY C 
+	               WHERE C.USER_ID = RN.USER_ID 
+	                 AND C.COM_NAME LIKE '%' || #{keyword} || '%'
+	           )
+	      )
+	    </if>
+	</select>
+	
+	
+	<select id="selectTopFiveJobNotice" resultType="hashMap">
+		SELECT 
+		    tj.TOP_JOB_NAME,                 
+		    j.JOB_NAME,      
+		    SUM(TO_NUMBER(rn.REC_POSITION_NUMBER)) AS TOTAL_POSITIONS
+		FROM TEAM1_202501F.RECRUITMENT_NOTICE rn
+		JOIN TEAM1_202501F.JOB j 
+		    ON rn.JOB_CODE = j.JOB_CODE
+		JOIN TEAM1_202501F.TOP_JOB tj 
+		    ON j.TOP_JOB_CODE = tj.TOP_JOB_CODE
+		WHERE rn.USER_ID = #{userId}
+		  AND REGEXP_LIKE(rn.REC_POSITION_NUMBER, '^[0-9]+$')     
+		  AND rn.RECRUITMENT_STARTDATE >= ADD_MONTHS(SYSDATE, -12) 
+		GROUP BY tj.TOP_JOB_NAME, j.JOB_NAME
+		ORDER BY TOTAL_POSITIONS DESC
+		FETCH FIRST 5 ROWS ONLY
+	</select>
 
 </mapper>

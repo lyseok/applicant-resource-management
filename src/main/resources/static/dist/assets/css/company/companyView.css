@@ -21,13 +21,17 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    background-color: #171b24;
-    background-image: url(https://i.jobkorea.kr/content/images/company/bg-header-default.png);
+    background-color: #ccc;
     background-repeat: no-repeat;
     background-position: center top;
 }
-.company-header-branding.background-type1{
-    background-image: url(https://i.jobkorea.kr/content/images/company/bg-header1.png);
+.company-header-branding #company_bg{
+   	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .company-header-branding-container {
@@ -35,7 +39,7 @@
     position: relative;
     z-index: 1;
     width: 1260px;
-    height: 200px;
+    height: 250px;
     padding-left: 145px;
     margin: 0 auto;
     text-align: left;
@@ -266,15 +270,15 @@
 }
 
 .company-nav-item.active {
-    border-bottom: 2px solid #39f;
+    border-bottom: 2px solid var(--violet70);
 }
 
 .company-nav-item:hover .name, .company-nav-item.active .name {
-    color: #39f;
+    color: var(--violet70);
 }
 
 .company-nav-item:hover .post .value, .company-nav-item.active .post .value {
-    color: #39f;
+    color: var(--violet70);
 }
 
 .company-nav-item .name {
@@ -381,6 +385,18 @@
 
 .company-infomation-row h2.header:before {
     content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 3px;
+    height: 25px;
+    background-color: #3c4146;
+}
+
+
+	salary-summary-box h2.header:before{
+	content: '';
     display: block;
     position: absolute;
     left: 0;
