@@ -24,4 +24,5 @@ public interface CareerMapper {
 	
 	//추가
 	public CareerVO selectCareerDetail(String careerNo);
+	public CareerVO selectCareerDetailWithCom(String careerNo);
 }

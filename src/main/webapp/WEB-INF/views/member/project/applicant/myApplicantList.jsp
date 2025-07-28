@@ -20,10 +20,13 @@
     .tab-btn.active {
       color: #181f2a;
       border-bottom: 3.5px solid #181f2a;
-      background: none;
     }
-    .tab-btn:hover:not(.active) { color: #ad8be8; }
-    .badge-recruit { background:#ae8be1 !important; }
+    .tab-btn:hover:not(.active) {
+	    color: #181f2a;
+	    border-bottom: 3.5px solid #181f2a;
+	    background: none;
+	   }
+	   
     .search-mainbox { border-radius: 12px; border: 1.6px solid #e5e7eb; }
     .search-mainbox:focus-within { border-color: #ae8be1 !important; }
     .tag-chip {
@@ -50,12 +53,21 @@
       background: #181f2a; color: #fff; font-size: 1.12em; font-weight: 600; border-radius: 11px;
       padding: .72em 2em; border: none; transition: background .16s;
     }
-    .btn-write:hover { background: #7e3ff2; color: #fff; }
-    .card-post { border-radius: 20px; box-shadow:0 2px 22px 0 rgba(170, 125, 241, 0.09);}
+    .btn-write:hover { background: #7e3ff2; color: #fff; }   
+    
+    .badge-recruit { background:var(--violet80); }
+    .card-post { border-radius: 10px; cursor:pointer;}
     .card-post:hover { box-shadow: 0 4px 28px 0 rgba(120, 80, 210, 0.16);}
     .post-title { font-size:1.25em; font-weight:700; color:#222;}
-    .post-content { font-size:1.04em; color:#626b80; min-height:2.7em; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;}
-    .badge-tag { background: #eebdff;; color: #39b1d2; font-size: .98em; margin-right:.3em;}
+    .badge-tag { 
+	    background: var(--violet10);
+	    padding: 5px 13px;
+	    border-radius: 15px;
+	    border: 1px solid var(--violet30);
+	    font-weight: 500;
+	    font-size: 12px;
+	    color: var(--violet70);
+    }
     @media (max-width: 768px) {
       .tab-btn { font-size: 1em; margin-right: .5rem; padding: .5em 1.2em; }
       .sort-btn { font-size: .99em; padding: .28em .6em; }
@@ -63,8 +75,9 @@
     }
   </style>
 </head>
-<body style="background:#f8f8fc;">
-  <div class="container py-5" style="max-width:950px;">
+<body>
+  <div class="container">
+    <p class="h1 mb-4 fw-bold">내 지원 관리</p>
 
     <!-- 탭 네비게이션 -->
     <div class="mb-4">
