@@ -1,6 +1,7 @@
 package kr.or.ddit.member.project.announcement.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnouncememtService {
 	private final PrjAnncBbsMapper prjAnncBbsMapper;
 	private final PrjRcrtPsncntService prjRcrtPsncntService;
@@ -31,8 +33,19 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 	private final ResumeService resumeService;
 	
 	@Override
-	public List<PrjAnncBbsVO> prjAnncBbsList() {
-		return prjAnncBbsMapper.selectPrjAnncBbsList();
+	public Map<String, Object> prjAnncBbsList(Map<String, Object> params) {
+		Integer page = Integer.parseInt((String)params.get("page"));
+		Integer pageSize = Integer.parseInt((String)params.get("pageSize"));
+		
+		params.put("startRow", (page - 1) * pageSize);
+		params.put("endRow", page * pageSize);
+		
+		List<PrjAnncBbsVO> data = prjAnncBbsMapper.selectPrjAnncBbsList(params);
+		int totalCnt = prjAnncBbsMapper.selectCntPrjAnncBbsList(params);
+		params.put("data", data);
+		params.put("totalCnt", totalCnt);
+
+		return params;
 	}
 	
 	@Override

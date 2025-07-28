@@ -11,4 +11,8 @@ public class MyPageController {
 	public String memberMypage() {
 		return "member/index";
 	}
+	@GetMapping("/test")
+	public String testmyPage() {
+		return "member/testIndex";
+	}
 }
