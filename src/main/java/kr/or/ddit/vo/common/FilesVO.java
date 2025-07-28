@@ -8,10 +8,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(of="fileNo")
 public class FilesVO implements Serializable{
+	
 	private String fileNo;
 	private String realFile;
 	private String fileName;
-	private Integer fileSize;
+	private long fileSize;
 	private String fileType;
 	private String filePath;
 	private Integer fileSource;

@@ -1,12 +1,23 @@
 package kr.or.ddit.admin.community.adminBoard.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.conf.CodeMapProvider;
+import kr.or.ddit.mapper.common.CompanyMapper;
+import kr.or.ddit.mapper.common.MemberMapper;
+import kr.or.ddit.mapper.common.UserMapper;
 import kr.or.ddit.mapper.community.AdminBoardMapper;
+import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
+import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.MemberVO;
+import kr.or.ddit.vo.common.UsersVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
 import lombok.RequiredArgsConstructor;
 
@@ -14,8 +25,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxService{
 
-	private final AdminBoardMapper mapper;  //UserMapper를 넣어야 하나?
+	private final AdminBoardMapper mapper;
 	private final CodeMapProvider codeMapProvider;
+	private final UserMapper userMapper;
+	private final MemberMapper memberMapper;
+	private final CompanyMapper companyMapper;
 	
 	@Override
 	public Optional<AdminBoardVO> readAdminBoardByPk(String boardNo) {
@@ -32,6 +46,33 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	@Override
 	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode) {
 		List<AdminBoardVO> aboardList = mapper.selectAdminBoardListByType(boardTypeCode);
+		for(AdminBoardVO aboard : aboardList) {
+			setCodeName(aboard);
+		}
+		return aboardList;
+	}
+	
+	//문의사항에서 유저권한 구분용
+	@Override
+	public List<AdminBoardVO> readAdminBoardListByType(String boardTypeCode, String userRole) {
+		List<AdminBoardVO> aboardList = mapper.selectAdminBoardListByTypeAndUserRole(boardTypeCode, userRole);
+		for (AdminBoardVO aboard : aboardList) {
+			setCodeName(aboard);
+		}
+		return aboardList;
+	}
+
+	
+	@Override
+	public List<AdminBoardVO> readAFaqListByCgn(String groupPrefix) {
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("boardTypeCode", groupPrefix + "%"); // 예: "CFAQ%" 또는 "UFAQ%"
+	    return mapper.selectAFaqListByCgn(paramMap);
+	}	
+
+	@Override
+	public List<AdminBoardVO> readAFaqListByUcn(String upperCodeNo) {
+		List<AdminBoardVO> aboardList = mapper.selectAFaqListByUcn(upperCodeNo);  //'BRDD-002'
 		for(AdminBoardVO aboard : aboardList) {
 			setCodeName(aboard);
 		}
@@ -55,12 +96,51 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 	@Override
 	public void modifyAdminBoard(AdminBoardVO board) {
 		mapper.updateAdminBoard(board);
-
+	}
+	
+	@Override
+	public void addABoardPostHit(AdminBoardVO board) {
+		mapper.updateABoardPostHit(board);		
 	}
 
 	@Override
 	public void removeAdminBoard(String boardNo) {
 		mapper.deleteAdminBoard(boardNo);
+	}
+
+	@Override
+	public void hiddenAdminBoard(AdminBoardVO board) {
+		mapper.upDeleteAdminBoard(board);
+	}
+
+	@Override
+	public List<CmnCodeGroupVO> readCmnGroupList(String upperCodeNo) {
+		return mapper.selectCmnGroupList(upperCodeNo);
+	}
+
+	@Override
+	public List<CmnCodeVO> readCmnList(String codeGroupNo) {
+		return mapper.selectCmnList(codeGroupNo);
+	}
+
+	@Override
+	public List<AdminBoardVO> readDelAboardList() {
+		return mapper.selectDelAboardList();
+	}
+
+	@Override
+	public MemberVO readMemName(String userId) {
+		return memberMapper.selectMemberById(userId);
+	}
+
+	@Override
+	public CompanyVO readComName(String userId) {
+		return companyMapper.selectCompanyById(userId);
+	}
+
+	@Override
+	public String readBoardTypeName(String boardTypeCode) {
+		return mapper.selectBoardTypeName(boardTypeCode);
 	}
 
 }

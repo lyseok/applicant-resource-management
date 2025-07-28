@@ -12,7 +12,7 @@
 	      , B.USER_ENABLED     
 	      , A.MEM_NAME         
 	      , A.MEM_EMAIL        
-	      , A.MEM_BIR          
+	      , TO_CHAR(TO_DATE(A.MEM_BIR, 'YYYYMMDD'), 'YYYY-MM-DD') AS MEM_BIR          
 	      , A.MEM_TEL          
 	      , A.MEM_ADD1         
 	      , A.MEM_ADD2         
@@ -35,7 +35,7 @@
 	      , B.USER_ENABLED     
 	      , A.MEM_NAME         
 	      , A.MEM_EMAIL        
-	      , A.MEM_BIR          
+	      , TO_CHAR(TO_DATE(A.MEM_BIR, 'YYYYMMDD'), 'YYYY-MM-DD') AS MEM_BIR          
 	      , A.MEM_TEL          
 	      , A.MEM_ADD1         
 	      , A.MEM_ADD2         
@@ -84,5 +84,49 @@
 		DELETE FROM MEMBER WHERE USER_ID = #{userId}
 	</delete>
 	
+	<resultMap id="userResultMap" type="kr.or.ddit.dto.UserDTO">
+    <id property="userId" column="USER_ID"/>
+    <result property="userRole" column="USER_ROLE"/>
+    <result property="userType" column="USER_TYPE"/>
+    <result property="userName" column="USER_NAME"/>
+    <result property="userEmail" column="USER_EMAIL"/>
+    <result property="userPhone" column="USER_PHONE"/>
+    <result property="canAccessAllProjects" column="CAN_ACCESS_ALL_PROJECTS"/>
+    <collection property="accessibleProjects" ofType="kr.or.ddit.dto.ProjectDTO">
+        <result property="projectNo" column="PROJECT_NO"/>
+        <result property="projectName" column="PROJECT_NAME"/>
+        <result property="authorityCode" column="AUTHORITY_CODE"/>
+        <result property="userPosition" column="USER_POSITION"/>
+    </collection>
+</resultMap>
+
+<select id="selectUserWithProjects" resultMap="userResultMap" parameterType="string">
+    SELECT 
+        MEM.USER_ID AS USER_ID,
+        'ROLE_USER' AS USER_ROLE,
+        'MEMBER' AS USER_TYPE,
+        MEM.MEM_NAME AS USER_NAME,
+        MEM.MEM_EMAIL AS USER_EMAIL,
+        MEM.MEM_TEL AS USER_PHONE,
+        'false' AS CAN_ACCESS_ALL_PROJECTS,
+        PM.PRJ_NO AS PROJECT_NO,
+        (SELECT PRJ.PROJECT_NAME FROM PROJECT PRJ WHERE PRJ.PRJ_NO = PM.PRJ_NO) AS PROJECT_NAME,
+        PM.AUTHORITY_CODE,
+        PM.USER_POSITION
+    FROM MEMBER MEM
+    LEFT OUTER JOIN PRJ_MEM PM ON PM.USER_ID = MEM.USER_ID
+    WHERE MEM.USER_ID = #{userId}
+</select>
 	
+<select id="selectCompanyWithProjects" resultMap="userResultMap" parameterType="string">
+	SELECT 
+	    USER_ID
+	    , COM_NAME AS USER_NAME
+	    , 'ROLE_COMPANY' AS USER_ROLE
+	    , 'COMPANY' AS USER_TYPE
+	    , COM_EMAIL AS USER_EMAIL
+	    , 'true' AS CAN_ACCESS_ALL_PROJECTS 
+	FROM COMPANY COM
+	WHERE COM.USER_ID = #{userId}
+</select>
 </mapper>

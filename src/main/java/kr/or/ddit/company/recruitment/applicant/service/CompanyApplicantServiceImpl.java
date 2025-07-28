@@ -41,9 +41,9 @@ public class CompanyApplicantServiceImpl implements CompanyApplicantService {
 	}
 
 	@Override
-	public int updateApplicant(ApplicantVO vo) {
+	public int updateApplicant(String applicantId) {
 		
-		return AlMapper.updateApplicant(vo);
+		return AlMapper.updateApplicant(applicantId);
 	}
 
 	@Override

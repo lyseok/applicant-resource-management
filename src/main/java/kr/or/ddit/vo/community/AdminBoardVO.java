@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
-import kr.or.ddit.vo.common.CmnCodeVO;
+import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.UsersVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+//관리자 게시판
 @Data
 @EqualsAndHashCode(of="boardNo")
 public class AdminBoardVO implements Serializable {
@@ -29,4 +30,20 @@ public class AdminBoardVO implements Serializable {
 
 	private transient UsersVO users;
 	private transient List<AdminCommentVO> adminCommentList;  // 게시판 댓글 리스트
+	
+	/*
+	1. 게시판 유형 코드(AdminBoardVO.boardTypeCode = CmnCodeVO.codeDetailNo = CmnCodeVO.upperCodeNo)
+
+	1-1. 일반회원(CmnCodeGroupVO.codeGroupNo)
+		1-1-1. 이력서등록/관리(CmnCodeVO.codeDetailNo, memType)
+		1-1-2. 회원정보/아이디/비밀번호
+		...
+	
+	1-2. 기업회원(CmnCodeGroupVO.codeGroupNo)
+		1-2-1. 채용정보 등록/관리
+		1-2-2. 유료서비스/결제
+		...
+	 */
+	//AdminBoardVO(하나의 게시판 유형) : CmnCodeGroupVO(일반/기업회원) = 1 : N
+	private List<CmnCodeGroupVO> cmnCodeGroupVOList;
 }

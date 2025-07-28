@@ -3,66 +3,407 @@
 <mapper namespace="kr.or.ddit.mapper.common.PaymentMapper">
 
 	<insert id="insertPayment">
-	<selectKey resultType="string" keyProperty="paymentNo" order="BEFORE">
-    SELECT
-        'PAMT'||
-        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO), LENGTH('PAMT' ) + 1)), 0) + 1, 6, '0')
-    FROM PAYMENT
-</selectKey>
+		<selectKey resultType="string" keyProperty="paymentNo"
+			order="BEFORE">
+			SELECT 'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO),
+			LENGTH('PAMT')
+			+ 1)), 0) + 1, 6, '0')
+			FROM PAYMENT
+		</selectKey>
 		INSERT INTO PAYMENT (
-		PAYMENT_NO
-		, USER_ID
-		, PRODUCT_NO
-		, PAYMENT_METHOD
-		, PAYMENT_DATE
-		, PAYMENT_PAY
-		, PAYMENT_CONTRACT
-		) VALUES (
-		#{paymentNo}
-		, #{userId}
-		, #{productNo}
-		, #{paymentMethod}
-		, SYSDATE
-		, #{paymentPay}
-		, #{paymentContract}
+		PAYMENT_NO,
+		USER_ID,
+		PRODUCT_NO,
+		PAYMENT_METHOD,
+		PAYMENT_DATE,
+		PAYMENT_PAY,
+		PAYMENT_BILLING_KEY,
+		START_DATE,
+		END_DATE,
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING,
+		PAYMENT_ORDER_ID,
+		PAYMENT_KEY
+		)
+		VALUES (
+		#{paymentNo},
+		#{userId},
+		#{productNo},
+		#{paymentMethod},
+		SYSDATE,
+		#{paymentPay},
+		#{paymentBillingKey},
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(ADD_MONTHS(SYSDATE, 1), 'YYYYMMDD'),
+		'A',
+		#{usageAllowed},
+		#{usageRemaining},
+		#{paymentOrderId},
+		#{paymentKey}
 		)
 	</insert>
 
-	<select id="selectPaymentList">
+	<select id="selectScheduledByUserId" resultType="PaymentVO">
+		SELECT *
+		FROM
+		PAYMENT
+		WHERE USER_ID = #{userId}
+		AND STATUS = 'S'
+	</select>
+
+	<!-- 관리자 페이지 매출용 -->
+	<select id="selectPaymentStatistics"
+		resultType="kr.or.ddit.vo.common.AdminPaymentVO">
 		SELECT
-		PAYMENT_NO
-		, USER_ID
-		, PRODUCT_NO
-		, PAYMENT_METHOD
-		, PAYMENT_DATE
-		, PAYMENT_PAY
-		, PAYMENT_CONTRACT
+		pp.PRODUCT_NAME AS productName,
+		pp.PRODUCT_TYPE AS
+		productType,
+		SUM(
+		CASE
+		WHEN TO_CHAR(p.PAYMENT_DATE, 'YYYYMM') =
+		TO_CHAR(SYSDATE,
+		'YYYYMM')
+		THEN TO_NUMBER(p.PAYMENT_PAY)
+		ELSE 0
+		END
+		) AS
+		monthlySalesAmount,
+		SUM(TO_NUMBER(p.PAYMENT_PAY)) AS totalSalesAmount,
+		SUM(
+		CASE
+		WHEN TO_CHAR(p.PAYMENT_DATE, 'YYYYMM') = TO_CHAR(SYSDATE,
+		'YYYYMM')
+		THEN 1
+		ELSE 0
+		END
+		) AS monthlySalesCount,
+		COUNT(*) AS
+		totalSalesCount
+		FROM
+		PAYMENT p
+		JOIN
+		PAYMENT_PRODUCT pp ON p.PRODUCT_NO =
+		pp.PRODUCT_NO
+		WHERE
+		p.STATUS = 'A'
+		GROUP BY
+		pp.PRODUCT_NAME,
+		pp.PRODUCT_TYPE
+		ORDER BY
+		pp.PRODUCT_NAME
+
+	</select>
+
+	<select id="allcompanyName">
+		SELECT
+		COM_NAME
+		FROM COMPANY
+	</select>
+
+	<!-- 2달이내에 가입한사람 -->
+	<select id="selectNewSubscribers">
+		SELECT DISTINCT c.COM_NAME
+		FROM PAYMENT p
+		JOIN COMPANY
+		c ON p.USER_ID = c.USER_ID
+		WHERE p.PAYMENT_DATE >= ADD_MONTHS(SYSDATE,
+		-2)
+	</select>
+
+	<!-- 결제 그만한 사람 -->
+	<select id="selectChurnedSubscribers">
+		SELECT DISTINCT c.COM_NAME
+		FROM PAYMENT p
+		JOIN COMPANY c ON p.USER_ID = c.USER_ID
+		WHERE p.STATUS = 'D'
+		OR p.STATUS = 'E'
+	</select>
+	
+	<!-- 2달이내 끊은사람 -->
+	<select id="selectLeftSubscribers">
+		SELECT DISTINCT c.COM_NAME
+		FROM PAYMENT p
+		JOIN COMPANY
+		c ON p.USER_ID = c.USER_ID
+		WHERE p.PAYMENT_DATE >= ADD_MONTHS(SYSDATE,
+		-2)
+		AND p.STATUS = 'E'
+		OR p.STATUS = 'D'
+	</select>
+
+	<!-- 여기까지 관리자 통계관련 -->
+
+	<insert id="comePayment">
+		<selectKey resultType="string" keyProperty="paymentNo"
+			order="BEFORE">
+			SELECT 'PAMT' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PAYMENT_NO),
+			LENGTH('PAMT')
+			+ 1)), 0) + 1, 6, '0')
+			FROM PAYMENT
+		</selectKey>
+		INSERT INTO PAYMENT (
+		PAYMENT_NO,
+		USER_ID,
+		PRODUCT_NO,
+		PAYMENT_METHOD,
+		PAYMENT_DATE,
+		PAYMENT_PAY,
+		PAYMENT_BILLING_KEY,
+		START_DATE,
+		END_DATE,
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING,
+		PAYMENT_ORDER_ID,
+		PAYMENT_KEY
+		)
+		VALUES (
+		#{paymentNo},
+		#{userId},
+		#{productNo},
+		#{paymentMethod},
+		SYSDATE,
+		#{paymentPay},
+		#{paymentBillingKey},
+		#{startDate},
+		TO_CHAR(ADD_MONTHS(TO_DATE(#{startDate}, 'YYYYMMDD'), 1), 'YYYYMMDD'),
+		'S',
+		#{usageAllowed},
+		#{usageRemaining},
+		#{paymentOrderId},
+		#{paymentKey}
+		)
+	</insert>
+
+	<select id="cancleSub">
+		SELECT
+		PAYMENT_KEY,
+		PAYMENT_ORDER_ID,
+		PAYMENT_BILLING_KEY
+		FROM
+		PAYMENT
+		WHERE
+		USER_ID = #{userId}
+	</select>
+
+	<select id="getPaymentNo">
+		SELECT PAYMENT_NO
+		FROM PAYMENT
+		WHERE USER_ID =
+		#{userId}
+	</select>
+
+	<update id="updateComPaymentStatus" parameterType="String">
+		UPDATE company
+		c
+		SET c.com_payment =
+		CASE
+		WHEN EXISTS (
+		SELECT 1
+		FROM payment p
+		WHERE
+		p.user_id = #{userId}
+		AND p.start_date &lt;= TO_CHAR(SYSDATE,
+		'YYYYMMDD')
+		AND p.end_date &gt;= TO_CHAR(SYSDATE, 'YYYYMMDD')
+		AND
+		p.status = 'A'
+		AND p.user_id = #{userId}
+		) THEN 'Y'
+		ELSE 'N'
+		END
+		WHERE
+		c.user_id = #{userId}
+	</update>
+
+	<!-- 여기서부터 -->
+	<update id="expireCancelledSubscriptions">
+		UPDATE PAYMENT
+		SET STATUS = 'E'
+		WHERE STATUS = 'C'
+	</update>
+
+	<select id="selectScheduledSubscriptions" resultType="PaymentVO">
+		SELECT *
+		FROM PAYMENT
+		WHERE STATUS = 'S'
+	</select>
+
+	<update id="activateSubscription">
+		UPDATE PAYMENT
+		SET STATUS = 'A',
+		USAGE_REMAINING =
+		#{usageRemaining},
+		START_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		END_DATE =
+		TO_CHAR(ADD_MONTHS(SYSDATE, 1)-1, 'YYYYMMDD')
+		WHERE PAYMENT_NO =
+		#{paymentNo}
+	</update>
+	<!-- 여기까지가 횟수자동으로채워주기 -->
+
+
+
+
+	<select id="newPaymentNo" resultType="String">
+		SELECT PAYMENT_NO
+		FROM (
+		SELECT PAYMENT_NO
+		FROM PAYMENT
+		WHERE USER_ID = #{userId}
+		ORDER BY
+		PAYMENT_DATE DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
+
+	<update id="cancelPayment">
+		UPDATE PAYMENT
+		SET STATUS = 'C'
+		WHERE PAYMENT_NO =
+		#{paymentNo}
+	</update>
+
+	<resultMap id="paymentResultMap" type="PaymentVO">
+		<id property="paymentNo" column="PAYMENT_NO" />
+		<result property="userId" column="USER_ID" />
+		<result property="productNo" column="PRODUCT_NO" />
+		<result property="paymentMethod" column="PAYMENT_METHOD" />
+		<result property="paymentDate" column="PAYMENT_DATE" />
+		<result property="paymentPay" column="PAYMENT_PAY" />
+		<result property="paymentBillingKey"
+			column="PAYMENT_BILLING_KEY" />
+		<result property="startDate" column="START_DATE" />
+		<result property="endDate" column="END_DATE" />
+		<result property="status" column="STATUS" />
+
+		<collection property="paymentProductList"
+			ofType="PaymentProductVO">
+			<result property="productNo" column="PRODUCT_NO" />
+			<result property="productName" column="PRODUCT_NAME" />
+		</collection>
+	</resultMap>
+
+	<update id="minuseaining">
+		UPDATE PAYMENT
+		SET USAGE_REMAINING = USAGE_REMAINING -
+		1
+		WHERE PAYMENT_NO = #{paymentNo}
+	</update>
+
+	<!-- ✅ 수정됨: PAYMENT_BILLING_KEY, STATUS 추가 -->
+	<select id="selectMyPaymentList" resultMap="paymentResultMap">
+		SELECT
+		p.PAYMENT_NO,
+		p.USER_ID,
+		p.PRODUCT_NO,
+		p.PAYMENT_METHOD,
+		TO_CHAR(p.PAYMENT_DATE,
+		'YYYY-MM-DD HH24:MI:SS') AS PAYMENT_DATE,
+		p.PAYMENT_PAY,
+		p.PAYMENT_BILLING_KEY,
+		p.START_DATE,
+		p.END_DATE,
+		p.STATUS,
+		pr.PRODUCT_NAME
+		FROM PAYMENT p
+		JOIN PAYMENT_PRODUCT pr ON p.PRODUCT_NO =
+		pr.PRODUCT_NO
+		WHERE p.USER_ID = #{userId}
+		ORDER BY p.PAYMENT_DATE DESC
+	</select>
+
+	<select id="selectPaymentList" resultType="PaymentVO">
+		SELECT
+		PAYMENT_NO,
+		USER_ID,
+		PRODUCT_NO,
+		PAYMENT_METHOD,
+		PAYMENT_DATE,
+		PAYMENT_PAY,
+		PAYMENT_BILLING_KEY,
+		START_DATE,
+		END_DATE,
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING
 		FROM PAYMENT
 	</select>
 
-
-	<select id="selectPaymentByPk">
-		SELECT
-		PAYMENT_NO
-		, USER_ID
-		, PRODUCT_NO
-		, PAYMENT_METHOD
-		, PAYMENT_DATE
-		, PAYMENT_PAY
-		, PAYMENT_CONTRACT
+	<select id="checkbilling">
+		SELECT PAYMENT_BILLING_KEY
 		FROM PAYMENT
-		WHERE PAYMENT_NO = #{paymentNo}
+		WHERE USER_ID =
+		#{userId}
+	</select>
+
+	<select id="selectPaymentByPk" resultType="PaymentVO">
+		SELECT
+		PAYMENT_NO,
+		USER_ID,
+		PRODUCT_NO,
+		PAYMENT_METHOD,
+		PAYMENT_DATE,
+		PAYMENT_PAY,
+		PAYMENT_BILLING_KEY,
+		START_DATE,
+		END_DATE,
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING,
+		PAYMENT_ORDER_ID
+		FROM PAYMENT
+		WHERE PAYMENT_NO =
+		#{paymentNo}
+	</select>
+
+	<select id="selectStauts" resultType="PaymentVO">
+		SELECT *
+		FROM (
+		SELECT
+		PAYMENT_NO,
+		USER_ID,
+		PRODUCT_NO,
+		PAYMENT_METHOD,
+		PAYMENT_DATE,
+		PAYMENT_PAY,
+		PAYMENT_BILLING_KEY,
+		START_DATE,
+		END_DATE,
+		STATUS,
+		USAGE_ALLOWED,
+		USAGE_REMAINING
+		FROM PAYMENT
+		WHERE user_id = #{userId}
+		AND
+		STATUS IN ('A','C')
+		ORDER BY
+		CASE STATUS WHEN 'A' THEN 1
+		WHEN 'C' THEN 2
+		ELSE 3 END
+		)
+		WHERE ROWNUM = 1
 	</select>
 
 	<update id="updatePayment">
 		UPDATE PAYMENT
 		SET
-		USER_ID = #{userId}
-		, PRODUCT_NO = #{productNo}
-		, PAYMENT_METHOD = #{paymentMethod}
-		, PAYMENT_DATE = #{paymentDate}
-		, PAYMENT_PAY = #{paymentPay}
-		, PAYMENT_CONTRACT = #{paymentContract}
+		USER_ID = #{userId},
+		PRODUCT_NO =
+		#{productNo},
+		PAYMENT_METHOD = #{paymentMethod},
+		PAYMENT_DATE =
+		#{paymentDate},
+		PAYMENT_PAY = #{paymentPay},
+		PAYMENT_BILLING_KEY =
+		#{paymentBillingKey},
+		START_DATE = #{startDate},
+		END_DATE = #{endDate},
+		STATUS = #{status}
+		USAGE_ALLOWED = #{usageAllowed}
+		USAGE_REMAINING =
+		#{usageRemaining}
 		WHERE PAYMENT_NO = #{paymentNo}
 	</update>
 

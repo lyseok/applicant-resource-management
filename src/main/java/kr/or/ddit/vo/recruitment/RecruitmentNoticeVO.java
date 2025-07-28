@@ -3,9 +3,14 @@ package kr.or.ddit.vo.recruitment;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import kr.or.ddit.validate.UpdateGroup;
+import kr.or.ddit.validate.constraints.MimeTypeCheck;
 import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.common.FilesVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +20,6 @@ public class RecruitmentNoticeVO implements Serializable{
 
 	@NotBlank(groups = UpdateGroup.class)
 	private String recruitmentNo;
-	@NotBlank
 	private String userId;
 	@NotBlank
 	private String recruitmentTitle;
@@ -43,17 +47,25 @@ public class RecruitmentNoticeVO implements Serializable{
 	@NotBlank
 	private String recruitmentDesk;
 	private String recruitmentImg;
-	@NotBlank
+	@MimeTypeCheck(mainType = "image/")
+	private MultipartFile recruitThumbnail;
 	private String recruitmentStartdate;
-	@NotBlank
 	private String recruitmentReceiptStart;
 	@NotBlank
 	private String recruitmentFinishDate;
+	private String recruitFinishYn;
 	private String recruitmentDelDate;
 	
+	
+	private String comName;
+	@Valid
 	private List<RecruitmentPositionVO> positionList;
+	@Valid
 	private RecruitmentEducationVO education;
+	@Valid
 	private List<RecruitmentSkillVO> skillList;
+	@Valid
 	private List<RecruitProcessVO> processList;
 	private CompanyVO company;
+	private List<FilesVO> fileList;
 }

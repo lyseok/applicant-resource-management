@@ -10,5 +10,10 @@ import kr.or.ddit.vo.project.PrjAplcntVO;
 public interface PrjAplcntMapper {
 	public List<PrjAplcntVO> selectPrjRcrtPsncntList();
 	public PrjAplcntVO selectPrjRcrtPsncntByPk(String prjAplcntNo);
+	public String duplicationPrjRcrtPsncnt(PrjAplcntVO vo);
 	public int insertPrjRcrtPsncnt(PrjAplcntVO prjAplcnt);
+	public int updateStatusCode(PrjAplcntVO prjAplcnt);
+	
+	
+	public List<PrjAplcntVO> selectPrjRcrtPsncntByBbs(String prjAplcntNo);
 }

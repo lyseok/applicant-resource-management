@@ -2,6 +2,8 @@ package kr.or.ddit.vo.community;
 
 import java.io.Serializable;
 
+import kr.or.ddit.vo.common.CompanyVO;
+import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,4 +21,6 @@ public class InterviewReviewVO implements Serializable {
 	
 	private InterviewInformationVO interviewInformation;
 	private PassInformationVO passInformation;
+	private RecruitmentNoticeVO recruitmentNotice;
+	private CompanyVO company;
 }

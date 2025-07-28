@@ -20,7 +20,14 @@
 			, C.COM_MEM            
 			, C.COM_LOGO           
 			, C.COM_PAYMENT        
-			, C.INDUSTRY_TYPE      
+			, C.INDUSTRY_TYPE
+			, C.COM_TYPE
+			, C.COM_SIZE
+			, C.INSURANCE_YN
+			, C.CEO_NAME
+			, C.COM_ADDR
+			, C.COM_CAPITAL
+			, C.COM_MAIN_BIZ      
 	    FROM COMPANY C
 	    JOIN USERS U
 	      ON C.USER_ID = U.USER_ID
@@ -44,7 +51,14 @@
 			, C.COM_MEM            
 			, C.COM_LOGO           
 			, C.COM_PAYMENT        
-			, C.INDUSTRY_TYPE      
+			, C.INDUSTRY_TYPE
+			, C.COM_TYPE
+			, C.COM_SIZE
+			, C.INSURANCE_YN
+			, C.CEO_NAME
+			, C.COM_ADDR
+			, C.COM_CAPITAL
+			, C.COM_MAIN_BIZ      
 	    FROM COMPANY C
 	    JOIN USERS U
 	    ON C.USER_ID = U.USER_ID
@@ -61,8 +75,16 @@
 			, COM_CREATE_YEAR
 			, COM_MEM
 			, COM_LOGO
+			, COM_BACKGROUND_IMG
 			, COM_PAYMENT
 			, INDUSTRY_TYPE
+			, COM_TYPE
+			, COM_SIZE
+			, INSURANCE_YN
+			, CEO_NAME
+			, COM_ADDR
+			, COM_CAPITAL
+			, COM_MAIN_BIZ
 		) VALUES (
 			#{userId}
 			, #{comName}
@@ -73,8 +95,16 @@
 			, #{comCreateYear}
 			, #{comMem}
 			, #{comLogo}
-			, #{comPayment}
+			, #{comBackgroundImg}
+			, 'N'
 			, #{industryType}
+			, #{comType}
+			, #{comSize}
+			, #{insuranceYn}
+			, #{ceoName}
+			, #{comAddr}
+			, #{comCapital}
+			, #{comMainBiz}
 		)
 	</insert>
 	
@@ -90,8 +120,16 @@
 			, COM_CREATE_YEAR = #{comCreateYear}
 			, COM_MEM = #{comMem}
 			, COM_LOGO = #{comLogo}
+			, COM_BACKGROUND_IMG = #{comBackgroundImg}
 			, COM_PAYMENT = #{comPayment}
 			, INDUSTRY_TYPE = #{industryType}
+			, COM_TYPE = #{comType}
+			, COM_SIZE = #{comSize}
+			, INSURANCE_YN = #{insuranceYn}
+			, CEO_NAME = #{ceoName}
+			, COM_ADDR = #{comAddr}
+			, COM_CAPITAL = #{comCapital}
+			, COM_MAIN_BIZ = #{comMainBiz}
 		WHERE USER_ID = #{userId}
 	</update>
 	
@@ -103,7 +141,90 @@
 	</delete>
 	
 	
+	<select id="selectCompanyInfoById" resultType="CompanyVO">
+		SELECT
+			USER_ID           
+			, COM_NAME           
+			, COM_INFO           
+			, COM_NUM            
+			, COM_EMAIL          
+			, COM_URL            
+			, COM_CREATE_YEAR    
+			, COM_MEM            
+			, COM_LOGO 
+			, COM_BACKGROUND_IMG          
+			, COM_PAYMENT        
+			, INDUSTRY_TYPE
+			, COM_TYPE
+			, COM_SIZE
+			, INSURANCE_YN
+			, CEO_NAME
+			, COM_ADDR
+			, COM_CAPITAL
+			, COM_MAIN_BIZ      
+	    FROM COMPANY
+	    WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="selectCompanyInfoList" resultType="CompanyVO">
+		 SELECT
+			    C.USER_ID,
+			    C.COM_NAME,
+			    C.COM_INFO,
+			    C.COM_NUM,
+			    C.COM_EMAIL,
+			    C.COM_URL,
+			    C.COM_CREATE_YEAR,
+			    C.COM_MEM,
+			    C.COM_LOGO,
+			    C.COM_BACKGROUND_IMG,
+			    C.COM_PAYMENT,
+			    C.INDUSTRY_TYPE,
+			    C.COM_TYPE,
+			    C.COM_SIZE,
+			    C.INSURANCE_YN,
+			    C.CEO_NAME,
+			    C.COM_ADDR,
+			    C.COM_CAPITAL,
+			    C.COM_MAIN_BIZ
+		  FROM COMPANY C
+		  WHERE EXISTS (
+		    SELECT 1
+		    FROM COMPANY_REVIEW R
+		    WHERE R.COM_ID = C.USER_ID
+		  )
+		  ORDER BY C.COM_NAME
+	</select>
 	
 	
+	<update id="updateCompanyInfoById">
+		UPDATE COMPANY
+		SET 
+			COM_INFO = #{comInfo}
+		  , COM_NUM = #{comNum}
+		  , COM_EMAIL = #{comEmail}
+		  , COM_URL = #{comUrl}
+		  , COM_MEM = #{comMem}
+		  , INDUSTRY_TYPE = #{industryType}
+	  	  , COM_TYPE = #{comType}
+		  , COM_SIZE = #{comSize}
+		  , INSURANCE_YN = #{insuranceYn}
+		  , CEO_NAME = #{ceoName}
+		  , COM_ADDR = #{comAddr}
+		  , COM_CAPITAL = #{comCapital}
+		  , COM_MAIN_BIZ = #{comMainBiz}
+		  , COM_LOGO = #{comLogo}
+		  , COM_BACKGROUND_IMG = #{comBackgroundImg}
+		WHERE USER_ID = #{userId}
+	</update>
 	
+	
+	<select id="selectCompanyWithResumeCareer" resultType="CompanyVO">
+		SELECT
+		    U.USER_ID            
+		   ,C.COM_NAME           
+		FROM COMPANY C
+		JOIN USERS U
+		  ON C.USER_ID = U.USER_ID
+	</select>
 </mapper>

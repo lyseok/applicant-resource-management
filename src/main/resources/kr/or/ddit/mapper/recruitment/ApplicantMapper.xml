@@ -12,6 +12,18 @@
 	FROM APPLICANT
 	</select>
 	
+	<select id="selectApplicantListByNo">
+	SELECT
+		APPLICANT_ID
+		, RECRUITMENT_NO
+		, RESUME_NO
+		, RESUME_VIEW_YN
+		, USER_ID
+	FROM APPLICANT
+	WHERE RECRUITMENT_NO = #{recruitmentNo}
+	AND APPLICANT_DEL_DATE IS NULL
+	</select>
+	
 	<select id="selectApplicant" resultType="ApplicantVO">
 	SELECT 
 		APPLICANT_ID
@@ -19,8 +31,25 @@
 		, RESUME_NO
 		, RESUME_VIEW_YN
 		, USER_ID
-		, STATUS FROM APPLICANT 
+	FROM APPLICANT 
 	WHERE APPLICANT_ID = #{applicantId}
+	AND APPLICANT_DEL_DATE IS NULL
+	</select>
+	
+	<select id="duplicationApplicant">
+	SELECT APPLICANT_ID
+	FROM APPLICANT
+	WHERE USER_ID = #{userId}
+    AND RECRUITMENT_NO = #{recruitmentNo}
+	</select>
+	
+	<select id="selectApplicantMail">
+	SELECT
+	    MEM_EMAIL
+	FROM APPLICANT a 
+	JOIN MEMBER m
+	ON a.user_id = m.user_id
+	WHERE APPLICANT_ID = #{applicant_id}
 	</select>
 	
 	<insert id="insertApplicant">
@@ -36,26 +65,24 @@
 		, RESUME_NO
 		, RESUME_VIEW_YN
 		, USER_ID
-		, STATUS
 	) VALUES (
 		#{applicantId}
 		, #{recruitmentNo}
 		, #{resumeNo}
 		, 'N'
 		, #{userId}
-		, 'N'
 	)
 	</insert>
 	
 	<update id="updateApplicant">
 	UPDATE APPLICANT SET 
-		RESUME_VIEW_YN = #{resumeViewYn}
-		, STATUS = #{status} 
+		RESUME_VIEW_YN = 'Y'
 	WHERE APPLICANT_ID = #{applicantId}
 	</update>
 	
 	<delete id="deleteApplicant">
-	DELETE FROM APPLICANT 
+	UPDATE APPLICANT SET 
+		APPLICANT_DEL_DATE = SYSDATE 
 	WHERE APPLICANT_ID = #{applicantId}
 	</delete>
 </mapper>

@@ -1,8 +1,10 @@
 package kr.or.ddit.company.recruitment.videointerview.questionscore.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.common.exception.DataUpdateException;
 import kr.or.ddit.common.exception.InterviewQuestionScoreInsertException;
@@ -29,6 +31,7 @@ public class InterviewQuestionScoreServiceImpl implements InterviewQuestionScore
 	}
 
 	@Override
+	@Transactional
 	public void createInterviewQuestionScoreList(InterviewQuestionScoreListDTO dto) {
 		for(InterviewQuestionScoreVO vo : dto.getInterviewQuestionScoreList()) {
 			// 1. PK가 아니라면, interviewScoreNo/interviewQuestionNo 조합 등으로 select
@@ -48,9 +51,11 @@ public class InterviewQuestionScoreServiceImpl implements InterviewQuestionScore
 	            }
 	        }
 	        
-	        if (1 > applicantRecordMapper.updateApplication(dto.getApplicantId())) {
-	        	throw new DataUpdateException("단계별 응시 여부 변경에 실패했습니다");
-	        }
+		}
+		Map<String, String> map = Map.of("applicantId", dto.getApplicantId(), "processNo", dto.getProcessNo());
+		
+		if (1 > applicantRecordMapper.updateApplication(map)) {
+			throw new DataUpdateException("단계별 응시 여부 변경에 실패했습니다");
 		}
 	}
 

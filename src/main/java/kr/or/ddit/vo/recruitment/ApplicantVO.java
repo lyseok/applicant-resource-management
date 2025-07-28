@@ -20,4 +20,5 @@ public class ApplicantVO implements Serializable{
 
 	private MemberVO member;
 	private ResumeVO resume;
+	private InterviewScoreVO interviewScore;
 }

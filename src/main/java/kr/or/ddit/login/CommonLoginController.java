@@ -37,7 +37,7 @@ public class CommonLoginController {
 	private final SecurityContextRepository securityContextRepository;
 	private final LogoutHandler logoutHandler;
 	
-	@PostMapping("/common/auth/revoke")
+	@PostMapping({"/common/auth/revoke", "/api/common/auth/revoke"})
 	public ResponseEntity<?> revoke(
 		HttpServletRequest req
 		, HttpServletResponse resp

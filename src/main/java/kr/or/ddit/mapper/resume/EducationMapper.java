@@ -13,10 +13,10 @@ public interface EducationMapper {
 	// 단건 조회
 	public EducationVO selectEducationDetail(EducationVO vo);
 	// 등록
-	public void insertEducation(EducationVO vo);
+	public int insertEducation(EducationVO vo);
 	// 수정
-	public void updateEducation(EducationVO vo);
-	// 삭제
-	public void deleteEducation(EducationVO vo);
+	public int updateEducation(EducationVO vo);
+	// 이력서 번호기준 전체 eduction 삭제
+	public int deleteEducation(String no);
 	
 }

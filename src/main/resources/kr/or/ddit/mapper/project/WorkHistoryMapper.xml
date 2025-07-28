@@ -40,31 +40,142 @@
 	WHERE WORK_HIST_NO = #{workHistNo}
 </select>
 
-<insert id="insertWorkHistory">
+<select id="selectWorkHistoryByPrjNo" parameterType="string" resultType="WorkHistoryVO">
+    SELECT *
+      FROM WORK_HISTORY
+     WHERE PRJ_NO = #{prjNo}
+     ORDER BY WORK_DATE DESC
+</select>
+
+    <!-- WorkHistory ResultMap -->
+    <resultMap id="WorkHistoryResultMap" type="kr.or.ddit.dto.WorkHistoryDTO">
+        <id property="workHistNo" column="WORK_HIST_NO"/>
+        <result property="prjNo" column="PRJ_NO"/>
+        <result property="prjName" column="PRJ_NAME"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="workDate" column="WORK_DATE"/>
+        <result property="workTable" column="WORK_TABLE"/>
+        <result property="workType" column="WORK_TYPE"/>
+        <result property="workTarget" column="WORK_TARGET"/>
+        <result property="workContent" column="WORK_CONTENT"/>
+    </resultMap>
+
+    <!-- 전체 최근 작업 내역 조회 -->
+    <select id="selectRecentWorkHistory" resultMap="WorkHistoryResultMap">
+	    SELECT *
+	    FROM (
+	        SELECT 
+	            wh.WORK_HIST_NO,
+	            wh.PRJ_NO,
+	            p.PROJECT_NAME AS PRJ_NAME,
+	            wh.USER_ID,
+	            pm.USER_NAME,
+	            wh.WORK_DATE,
+	            wh.WORK_TABLE,
+	            wh.WORK_TYPE,
+	            wh.WORK_TARGET,
+	            wh.WORK_CONTENT
+	        FROM WORK_HISTORY wh
+	        LEFT JOIN PROJECT p ON wh.PRJ_NO = p.PRJ_NO
+	        LEFT JOIN PRJ_MEM pm ON wh.USER_ID = pm.USER_ID AND wh.PRJ_NO = pm.PRJ_NO
+	        WHERE wh.WORK_DATE IS NOT NULL
+	        ORDER BY wh.WORK_DATE DESC
+	    )
+	    <if test="limit != null and limit > 0">
+	        WHERE ROWNUM &lt;= #{limit}
+	    </if>
+	</select>
+
+    <!-- 프로젝트별 최근 작업 내역 조회 -->
+    <select id="selectProjectRecentWorkHistory" resultMap="WorkHistoryResultMap">
+	    SELECT *
+	    FROM (
+	        SELECT 
+	            wh.WORK_HIST_NO,
+	            wh.PRJ_NO,
+	            p.PROJECT_NAME AS PRJ_NAME,
+	            wh.USER_ID,
+	            pm.USER_NAME,
+	            wh.WORK_DATE,
+	            wh.WORK_TABLE,
+	            wh.WORK_TYPE,
+	            wh.WORK_TARGET,
+	            wh.WORK_CONTENT
+	        FROM WORK_HISTORY wh
+	        LEFT JOIN PROJECT p ON wh.PRJ_NO = p.PRJ_NO
+	        LEFT JOIN PRJ_MEM pm ON wh.USER_ID = pm.USER_ID AND wh.PRJ_NO = pm.PRJ_NO
+	        WHERE wh.PRJ_NO = #{projectId}
+	        AND wh.WORK_DATE IS NOT NULL
+	        ORDER BY wh.WORK_DATE DESC
+	    )
+	    <if test="limit != null and limit > 0">
+	        WHERE ROWNUM &lt;= #{limit}
+	    </if>
+	</select>
+
+    <!-- 프로젝트별 전체 작업 내역 조회 -->
+    <select id="selectProjectWorkHistory" resultMap="WorkHistoryResultMap">
+        SELECT 
+            wh.WORK_HIST_NO,
+            wh.PRJ_NO,
+            p.PROJECT_NAME as PRJ_NAME,
+            wh.USER_ID,
+            pm.USER_NAME,
+            wh.WORK_DATE,
+            wh.WORK_TABLE,
+            wh.WORK_TYPE,
+            wh.WORK_TARGET,
+            wh.WORK_CONTENT
+        FROM WORK_HISTORY wh
+        LEFT JOIN PROJECT p ON wh.PRJ_NO = p.PRJ_NO
+        LEFT JOIN PRJ_MEM pm ON wh.USER_ID = pm.USER_ID AND wh.PRJ_NO = pm.PRJ_NO
+        WHERE wh.PRJ_NO = #{projectId}
+        ORDER BY wh.WORK_DATE DESC
+    </select>
+
+    <!-- 작업 내역 생성 -->
+    <insert id="insertWorkHistory" parameterType="kr.or.ddit.dto.WorkHistoryDTO">
 	<selectKey resultType="string" keyProperty="workHistNo" order="BEFORE">
-	    SELECT
-	        'WKHR'||
-	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(WORK_HIST_NO), LENGTH('WKHR' ) + 1)), 0) + 1, 6, '0')
-	    FROM WORK_HISTORY
+	    SELECT 'WKHR' || LPAD(WORK_HISTORY_SEQ.NEXTVAL, 6, '0') FROM DUAL
 	</selectKey>
+        INSERT INTO WORK_HISTORY (
+            WORK_HIST_NO,
+            PRJ_NO,
+            USER_ID,
+            WORK_DATE,
+            WORK_TABLE,
+            WORK_TYPE,
+            WORK_TARGET,
+            WORK_CONTENT
+        ) VALUES (
+            #{workHistNo},
+            #{prjNo},
+            #{userId},
+           	SYSDATE,
+            #{workTable},
+            #{workType},
+            #{workTarget},
+            #{workContent}
+        )
+    </insert>
 
-	INSERT INTO WORK_HISTORY (
-		WORK_HIST_NO
-		, PRJ_NO
-		, USER_ID
-		, WORK_DATE
-		, WORK_TABLE
-		, WORK_TYPE
-		, WORK_TARGET
-	) VALUES (
-		#{workHistNo}
-		, #{prjNo}
-		, #{userId}
-		, SYSDATE
-		, #{workTable}
-		, #{workType}
-		, #{workTarget}
-	)
-</insert>
-
+    <!-- 작업 내역 상세 조회 -->
+    <select id="selectWorkHistoryById" resultMap="WorkHistoryResultMap">
+        SELECT 
+            wh.WORK_HIST_NO,
+            wh.PRJ_NO,
+            p.PROJECT_NAME as PRJ_NAME,
+            wh.USER_ID,
+            pm.USER_NAME,
+            wh.WORK_DATE,
+            wh.WORK_TABLE,
+            wh.WORK_TYPE,
+            wh.WORK_TARGET,
+            wh.WORK_CONTENT
+        FROM WORK_HISTORY wh
+        LEFT JOIN PROJECT p ON wh.PRJ_NO = p.PRJ_NO
+        LEFT JOIN PRJ_MEM pm ON wh.USER_ID = pm.USER_ID AND wh.PRJ_NO = pm.PRJ_NO
+        WHERE wh.WORK_HIST_NO = #{workHistNo}
+    </select>
 </mapper>

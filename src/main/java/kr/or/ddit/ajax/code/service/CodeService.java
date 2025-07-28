@@ -5,6 +5,7 @@ import java.util.List;
 import kr.or.ddit.vo.common.BusinessTypeCodeVO;
 import kr.or.ddit.vo.common.CityCodeVO;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
+import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.common.DistrictCodeVO;
 import kr.or.ddit.vo.common.InduClassCodeVO;
 import kr.or.ddit.vo.common.InduCodeVO;
@@ -20,4 +21,5 @@ public interface CodeService {
 	public List<InduCodeVO> readInduCodeList();
 	public List<BusinessTypeCodeVO> readBusinessTypeCodeList();
 	public CmnCodeGroupVO readCmnCodeGroupByPk(String codeGroupNo);
+	public List<CmnCodeVO> readCmnCodeListByUc(String upperCodeNo);
 }

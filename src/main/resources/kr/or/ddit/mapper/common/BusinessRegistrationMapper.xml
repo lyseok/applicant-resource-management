@@ -22,17 +22,15 @@
 		ORDER BY BR_NUMBER
 	</select>
 	
-	
+	<select id="duplicatedBusinessregistration">
+		SELECT 
+			COUNT(BR_NUMBER)
+		FROM BUSINESSREGISTRATION
+		WHERE BR_NUMBER = #{brNumber}
+	</select>
 	  
 	
 	<insert id="insertBusinessregistration">
-	  <selectKey resultType="string" keyProperty="brNumber" order="BEFORE">
-		    SELECT
-		        'BSRG'||
-		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(BR_NUMBER), LENGTH('BSRG' ) + 1)), 0) + 1, 6, '0')
-		    FROM BUSINESSREGISTRATION
-		</selectKey>
-     
 		INSERT INTO BUSINESSREGISTRATION (
 			BR_NUMBER,
 			USER_NAME,

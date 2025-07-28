@@ -41,9 +41,13 @@ public class AdminAdminCommentAjaxServiceImpl implements AdminAdminCommentAjaxSe
 	}
 
 	@Override
+	public void hiddenAdminComment(AdminCommentVO comment) {
+		mapper.upDeleteAdminComment(comment);
+	}
+
+	@Override
 	public void removeAdminComment(String commentNo) {
 		mapper.deleteAdminComment(commentNo);
 	}
-
 
 }

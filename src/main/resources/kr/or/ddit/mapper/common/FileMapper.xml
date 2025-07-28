@@ -2,21 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.FileMapper">
 	<insert id="insertFile">
-		
 	INSERT INTO FILES (
 		FILE_NO
 		, REAL_FILE
 		, FILE_NAME
 		, FILE_SIZE
 		, FILE_TYPE
+		, FILE_PATH
+		, FILE_SOURCE
+		, SOURCE_NO
+		, FILE_TOTAL
 	) VALUES (
-		SEQ_FILE_NO.NEXTVAL,
+		SEQ_FILE_NO.NEXTVAL
 		, #{realFile}
 		, #{fileName}
 		, #{fileSize}
 		, #{fileType}
+		, #{filePath}
+		, #{fileSource}
+		, #{sourceNo}
+		, #{fileTotal}
 	)
 	</insert>
+	
+	<delete id="deleteByFilePath">
+		DELETE FROM FILES 
+		WHERE FILE_PATH = #{filePath}
+	</delete>
+	
+	<update id="updateSource">
+		UPDATE FILES SET
+			SOURCE_NO = #{sourceNo}
+			, FILE_TOTAL = #{fileTotal}
+		WHERE FILE_PATH = #{filePath}
+	</update>
 
 	<select id="selectFileList">
 		SELECT
@@ -57,5 +76,21 @@
 		DELETE FROM FILES
 		WHERE FILE_NO = #{fileNo}
 	</delete>
-
+	
+	<select id="selectFileListBySourceNo">
+		SELECT 
+	    FILE_NO,
+	    REAL_FILE,
+	    FILE_NAME,
+	    FILE_SIZE,
+	    FILE_TYPE,
+	    FILE_PATH,
+	    FILE_SOURCE,
+	    SOURCE_NO,
+	    FILE_TOTAL
+	FROM 
+	    FILES
+	WHERE 
+	    SOURCE_NO = #{sourceNo}
+	</select>
 </mapper>

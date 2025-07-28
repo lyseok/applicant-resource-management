@@ -10,7 +10,7 @@
 			, CODE_DETAIL_NO
 			, SALARY_MIN
 			, SALARY_MAX
-			, CREATE_DATE
+			, TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		FROM SALARY
 		WHERE SALARY_ID = #{salaryId}
 	
@@ -24,7 +24,7 @@
 			, CODE_DETAIL_NO
 			, SALARY_MIN
 			, SALARY_MAX
-			, CREATE_DATE
+			,  TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		FROM SALARY
 	</select>
 	
@@ -34,10 +34,10 @@
 		 SELECT
 	        SALARY_ID,
 	        USER_ID,
-	        JOB_CODE,
+	        CODE_DETAIL_NO,
 	        SALARY_MIN,
 	        SALARY_MAX,
-	        CREATE_DATE
+	        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 	    FROM SALARY
 	    WHERE USER_ID = #{userId}
 	</select>
@@ -47,10 +47,10 @@
 		 SELECT 
 		 	SALARY_ID,
 	        USER_ID,
-	        JOB_CODE,
+	        CODE_DETAIL_NO,
 	        SALARY_MIN,
 	        SALARY_MAX,
-	        CREATE_DATE
+	        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		  FROM SALARY
 		  WHERE TO_NUMBER(SALARY_MIN) >= #{salaryMin}
 		    AND TO_NUMBER(SALARY_MAX) <= #{salaryMax}
@@ -62,10 +62,10 @@
 		SELECT
 		    s.SALARY_ID,
 		    s.USER_ID,
-		    s.JOB_CODE,
+		    s.CODE_DETAIL_NO,
 		    s.SALARY_MIN,
 		    s.SALARY_MAX,
-		    s.CREATE_DATE
+		    TO_CHAR(s.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		  FROM SALARY s
 		  JOIN COMPANY c
 		    ON s.USER_ID = c.USER_ID
@@ -93,18 +93,19 @@
 				, #{codeDetailNo}
 				, #{salaryMin}
 				, #{salaryMax}
-				, TO_CHAR(SYSDATE, 'YYYYMMDD')
+				, SYSDATE
 		)
 	</insert>
 
 	<update id="updateSalary">
 		UPDATE SALARY
 		    SET
-		      SALARY_ID   = #{salaryId},
-		      JOB_CODE    = #{jobCode},
+		      CODE_DETAIL_NO = #{codeDetailNo},
 		      SALARY_MIN  = #{salaryMin},
-		      SALARY_MAX  = #{salaryMax}
-		WHERE  USER_ID    = #{userId}
+		      SALARY_MAX  = #{salaryMax},
+		      CREATE_DATE = SYSDATE
+		WHERE SALARY_ID = #{salaryId}
+     		 AND USER_ID = #{userId}
 	</update>
 	
 	
@@ -112,4 +113,165 @@
 		DELETE FROM SALARY
     		WHERE SALARY_ID = #{salaryId}
 	</delete>
+	
+	
+	<select id="selectSalaryListbyId" resultType="kr.or.ddit.vo.common.SalaryVO">
+		SELECT 
+			SALARY_ID
+			, USER_ID
+			, CODE_DETAIL_NO
+			, SALARY_MIN
+			, SALARY_MAX
+			,  TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
+		FROM SALARY
+		WHERE  USER_ID = #{userId}
+		ORDER BY SALARY_ID
+	</select>
+	
+	<select id="selectSalaryByUserAndRank" resultType="kr.or.ddit.vo.common.SalaryVO">
+		SELECT 
+			SALARY_ID
+			, USER_ID
+			, CODE_DETAIL_NO
+			, SALARY_MIN
+			, SALARY_MAX
+			,  TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
+		FROM SALARY
+		WHERE  USER_ID = #{userId} AND CODE_DETAIL_NO = #{codeDetailNo}
+	</select>
+	
+	
+	<select id="selectSalaryStatisticsById" resultType="kr.or.ddit.dto.CompanySalaryDTO">
+		  WITH salary_data AS (
+		  SELECT
+		    s.salary_id,
+		    s.user_id,
+		    s.code_detail_no,
+		    (TO_NUMBER(s.salary_min) + TO_NUMBER(s.salary_max)) / 2 AS salary_mid,
+		    s.create_date,
+		    s.salary_min,
+			s.salary_max,
+		    c.industry_type,
+		    c.com_name
+		  FROM
+		    SALARY  s
+		    LEFT JOIN COMPANY c
+		      ON s.user_id = c.user_id
+		  WHERE
+		    s.user_id =  #{userId}
+		)
+		SELECT
+		  sd.salary_id,
+		  sd.user_id,
+		  sd.code_detail_no,
+		  sd.salary_mid,
+		  sd.salary_min,
+          sd.salary_max,
+		  sd.create_date,
+		  sd.industry_type,
+		  sd.com_name,
+		  
+		  ROUND(
+		    AVG(sd.salary_mid) OVER (), 0) AS salaryAvgAll,
+		  
+		  ROUND(
+		    AVG(
+		      CASE 
+		        WHEN sd.code_detail_no BETWEEN 'RANK-001' AND 'RANK-006'
+		        THEN sd.salary_mid 
+		      END
+		    ) OVER (),
+		    0
+		  ) AS salaryAvgExclExec,
+		
+		  ROUND(
+		    AVG(
+		      CASE 
+		        WHEN sd.code_detail_no BETWEEN 'RANK-007' AND 'RANK-011'
+		        THEN sd.salary_mid 
+		      END
+		    ) OVER (),
+		    0
+		  ) AS salaryAvgExec,
+		  
+		
+		  ROUND(
+		    AVG(sd.salary_mid) OVER (PARTITION BY sd.code_detail_no), 0) AS avgByRank
+		
+		FROM
+		  salary_data sd
+		ORDER BY
+		  sd.code_detail_no, sd.salary_id
+	</select>
+
+
+<select id="selectSalaryListAllCompany" resultType="hashMap">
+		SELECT 
+		    C.INDUSTRY_TYPE AS INDUSTRY_TYPE,
+		    C.COM_NAME AS COM_NAME,
+		    C.COM_MEM AS COM_MEM,
+		    C.COM_LOGO AS COM_LOGO,
+		    C.USER_ID AS USER_ID,
+		    ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2), 0) AS SALARY_AVG
+		FROM COMPANY C
+		LEFT JOIN SALARY S 
+		    ON C.USER_ID = S.USER_ID
+		    AND TO_NUMBER(SUBSTR(code_detail_no, 6)) BETWEEN 1 AND 6
+		GROUP BY 
+		    C.INDUSTRY_TYPE,
+		    C.COM_NAME,
+		    C.COM_MEM,
+		    C.COM_LOGO,
+		    C.USER_ID
+		ORDER BY 
+		    C.COM_NAME
+	</select>
+	
+	
+	<select id="selectSimilarCompanySalariesList" resultType="hashMap">
+		SELECT
+		    C.INDUSTRY_TYPE AS INDUSTRY_TYPE,
+		    C.COM_NAME AS COM_NAME,
+		    C.COM_MEM AS COM_MEM,
+		    C.COM_LOGO AS COM_LOGO,
+		    C.USER_ID AS USER_ID,
+		
+		  
+		  ROUND(
+		    AVG(
+		      CASE
+		        WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+		        THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+		      END
+		    ),
+		    0
+		  ) AS salaryAvgExclExec,
+		
+		
+		  ROUND(
+		    AVG(
+		      (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+		    ),
+		    0
+		  ) AS salaryAvgExec
+		
+		FROM COMPANY c
+		
+		LEFT JOIN SALARY s
+		  ON c.USER_ID = s.USER_ID
+		
+		WHERE
+		  c.INDUSTRY_TYPE = #{industryType}
+		
+		GROUP BY
+		  c.INDUSTRY_TYPE,
+		  c.COM_NAME,
+		  c.COM_MEM,
+		  C.COM_LOGO,
+		  c.USER_ID
+		
+		ORDER BY
+		  salaryAvgExclExec DESC,
+		  c.COM_NAME
+	</select>
 </mapper>

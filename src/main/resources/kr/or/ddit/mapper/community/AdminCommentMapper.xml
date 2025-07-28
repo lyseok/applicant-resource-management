@@ -17,8 +17,8 @@
                , BOARD_DELETE_DATE
                , BOARD_COMMENT_STATUS 
 		FROM ADMIN_COMMENT NATURAL JOIN USERS
-        WHERE 
-        	BOARD_COMMENT_NO = #{boardCommentNo}
+        WHERE BOARD_COMMENT_NO = #{boardCommentNo}
+        AND BOARD_COMMENT_STATUS  != 'D'
 	</select>
 	
 	<select id="searchAdminCommentCommentList" resultMap="adminCommentMap">
@@ -31,8 +31,8 @@
                , BOARD_DELETE_DATE
                , BOARD_COMMENT_STATUS 
 		FROM ADMIN_COMMENT NATURAL JOIN USERS
-		WHERE 
-			BOARD_NO = #{boardNo}
+		WHERE BOARD_NO = #{boardNo}
+		AND BOARD_COMMENT_STATUS  != 'D'
 	</select>
 	
 	<select id="searchAdminCommentList" resultMap="adminCommentMap">
@@ -45,6 +45,7 @@
                , BOARD_DELETE_DATE
                , BOARD_COMMENT_STATUS 
 		FROM ADMIN_COMMENT NATURAL JOIN USERS
+		WHERE BOARD_COMMENT_STATUS  != 'D'
 	</select>
 	
 	<insert id="insertAdminComment" parameterType="AdminCommentVO">
@@ -69,7 +70,7 @@
 			, #{boardNo}
 			, #{boardCommentContent}
 			, sysdate
-			, #{boardCommentStatus}
+			, 'R'
 		)
 	</insert>
 	
@@ -80,9 +81,17 @@
 			  USER_ID = #{userId}
 			, BOARD_NO = #{boardNo}
 			, BOARD_COMMENT_CONTENT = #{boardCommentContent}
-			, BOARD_WRITE_DATE = #{boardWriteDate}
-			, BOARD_DELETE_DATE = #{boardDeleteDate}
-			, BOARD_COMMENT_STATUS = #{boardCommentStatus} 
+			, BOARD_WRITE_DATE = sysdate
+			, BOARD_COMMENT_STATUS = 'U'
+		WHERE 
+			BOARD_COMMENT_NO = #{boardCommentNo}
+	</update>
+	
+	<update id="upDeleteAdminComment">
+		UPDATE ADMIN_COMMENT 
+		SET 
+			  BOARD_DELETE_DATE = #{boardDeleteDate}
+			, BOARD_COMMENT_STATUS = 'D'
 		WHERE 
 			BOARD_COMMENT_NO = #{boardCommentNo}
 	</update>
