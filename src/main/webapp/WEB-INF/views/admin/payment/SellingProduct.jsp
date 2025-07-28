@@ -63,8 +63,8 @@
             <td class="fw-semibold">${row.productName}</td>
             <td class="text-center">
               <c:choose>
-                <c:when test="${row.productType == 'L'}">정기권</c:when>
-                <c:when test="${row.productType == 'S'}">단건</c:when>
+                <c:when test="${row.productType == 'PREMIUM'}">PREMIUM</c:when>
+                <c:when test="${row.productType == 'BUSINESS'}">BUSINESS</c:when>
                 <c:otherwise>${row.productType}</c:otherwise>
               </c:choose>
             </td>

@@ -68,6 +68,7 @@ public interface PaymentMapper {
 	
 	public Integer selectMonthlySales(Map<String, String> of);
 	
+	public String getUserId();
 	
 	
 }

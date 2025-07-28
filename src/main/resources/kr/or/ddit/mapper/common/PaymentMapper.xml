@@ -98,32 +98,38 @@
 	<select id="selectMonthlySalesCompare" resultType="map">
 		SELECT
 		TO_CHAR(p.PAYMENT_DATE, 'MM') AS month,
-		SUM(CASE WHEN TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{thisYear}
-		THEN TO_NUMBER(p.PAYMENT_PAY) ELSE 0 END) AS thisYearSales,
-		SUM(CASE WHEN TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{lastYear}
-		THEN TO_NUMBER(p.PAYMENT_PAY) ELSE 0 END) AS lastYearSales
+		SUM(CASE WHEN
+		TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{thisYear}
+		THEN
+		TO_NUMBER(p.PAYMENT_PAY) ELSE 0 END) AS thisYearSales,
+		SUM(CASE WHEN
+		TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{lastYear}
+		THEN
+		TO_NUMBER(p.PAYMENT_PAY) ELSE 0 END) AS lastYearSales
 		FROM PAYMENT p
 		WHERE TO_CHAR(p.PAYMENT_DATE, 'YYYY') IN (#{thisYear}, #{lastYear})
 		AND p.STATUS = 'A'
 		GROUP BY TO_CHAR(p.PAYMENT_DATE, 'MM')
-		ORDER BY TO_CHAR(p.PAYMENT_DATE, 'MM')
+		ORDER BY
+		TO_CHAR(p.PAYMENT_DATE, 'MM')
 	</select>
 
 	<!-- 월별 총액 -->
-<select id="selectMonthlySales" parameterType="int" resultType="int">
-    SELECT NVL(SUM(p.PAYMENT_PAY),0) AS month_total
-    FROM (
-        SELECT LEVEL AS month
-        FROM dual
-        CONNECT BY LEVEL &lt;= 12
-    ) months
-    LEFT JOIN PAYMENT p
-      ON TO_CHAR(p.PAYMENT_DATE, 'MM') = LPAD(months.month,2,'0')
-     AND TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{year}
-     AND p.STATUS = 'A'
-    GROUP BY months.month
-    ORDER BY months.month
-</select>
+	<select id="selectMonthlySales" parameterType="int"
+		resultType="int">
+		SELECT NVL(SUM(p.PAYMENT_PAY),0) AS month_total
+		FROM (
+		SELECT LEVEL AS month
+		FROM dual
+		CONNECT BY LEVEL &lt;= 12
+		) months
+		LEFT JOIN PAYMENT p
+		ON TO_CHAR(p.PAYMENT_DATE, 'MM') = LPAD(months.month,2,'0')
+		AND TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{year}
+		AND p.STATUS = 'A'
+		GROUP BY months.month
+		ORDER BY months.month
+	</select>
 
 
 	<select id="allcompanyName">
@@ -227,26 +233,20 @@
 	</select>
 
 	<update id="updateComPaymentStatus" parameterType="String">
-		UPDATE company
-		c
-		SET c.com_payment =
-		CASE
-		WHEN EXISTS (
-		SELECT 1
-		FROM payment p
-		WHERE
-		p.user_id = #{userId}
-		AND p.start_date &lt;= TO_CHAR(SYSDATE,
-		'YYYYMMDD')
-		AND p.end_date &gt;= TO_CHAR(SYSDATE, 'YYYYMMDD')
-		AND
-		p.status = 'A'
-		AND p.user_id = #{userId}
-		) THEN 'Y'
+		UPDATE company c
+		SET c.com_payment = NVL((
+		SELECT CASE
+		WHEN MAX(pp.product_type) = 'PREMIUM' THEN 'P'
+		WHEN MAX(pp.product_type) = 'BUSINESS' THEN 'B'
 		ELSE 'N'
 		END
-		WHERE
-		c.user_id = #{userId}
+		FROM payment p
+		JOIN payment_product pp ON p.product_no = pp.product_no
+		WHERE p.user_id = #{userId}
+		AND p.status = 'A'
+		AND TO_CHAR(SYSDATE, 'YYYYMMDD') BETWEEN p.start_date AND p.end_date
+		), 'N')
+		WHERE c.user_id = #{userId}
 	</update>
 
 	<!-- 여기서부터 -->

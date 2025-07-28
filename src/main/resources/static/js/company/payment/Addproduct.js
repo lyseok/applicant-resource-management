@@ -27,8 +27,48 @@ function selectType(type) {
 
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('insertForm');
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch("/admin/insert", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                alert(data.error || "등록 실패");
+                return;
+            }
+
+            location.href = data.redirectUrl;
+
+        } catch (err) {
+            alert("서버 오류: " + err.message);
+        }
+    });
+});
+
+
+
+/*document.addEventListener('DOMContentLoaded', function() {
 	const form = document.getElementById('insertForm');
+	form.addEventListener("submit", function (e){
+		
+		 const formData = new FormData(form);
+		 fetch("/admin/insert", {
+			method: "POST",
+			body: formData
+		 }).then(r => r.text()).then(console.log);
+	});
 	form.setAttribute('action', '/admin/insert');
 	form.setAttribute('method', 'post');
-});
+	form.setAttribute('enctype', 'multipart/form-data');
+});*/

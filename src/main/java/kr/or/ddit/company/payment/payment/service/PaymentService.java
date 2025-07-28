@@ -57,8 +57,5 @@ public interface PaymentService {
 	public List<Integer> selectMonthlySalesCompare(int year);
 
 	List<Integer> selectMonthlySales(@Param("year") int year);
-
-	
-	
 	
 }
