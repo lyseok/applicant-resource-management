@@ -408,6 +408,16 @@ violet {border-color:var(--blue90);background:var(--blue90)}
 .TypoBox .searchBarInput{width: 100%;padding: 8px 11px;border: 0;-webkit-appearance: none;-moz-appearance: none;appearance: none;outline: none;font-size: 14px;line-height: 24px;color: var(--gray80);}
 .TypoBox .searchBarBtn{position: absolute;padding: 4px;z-index: 2;top: 49%;right: 8px;transform: translateY(-50%);}
 .TypoBox .searchBarBtn span{font-size: 33px;width: 25px;height: 25px;color: #a7a7a7;border-radius: 20%; overflow: hidden; font-weight:200;}
+/* input - searchBar2 */
+.TypoBox.searchBar2{display:flex; padding-right:11px;}
+.searchBar2 .searchBarWrap{border:none; padding:0; display: flex; align-items: center;}
+.searchBar2 .btn_box{display:flex; gap:8px; align-items: center;}
+.searchBar2 .searchBarBtn{position:static; transform:none; padding:0; margin-bottom:1px;}
+.searchBar2 button span{color:#a7a7a7;}
+.searchBar2 .searchBarBtn:hover span,
+.searchBar2 button:hover span{color:#4d4d4d;}
+.searchBar2:hover {background:none;}
+
 
 /* textarea */
 .InpBox textarea {display:block;overflow-x:hidden;overflow-y:scroll;padding:24px;width:100%;height:calc(100% - 25px);border:1px solid var(--gray70);border-radius:4px;box-sizing:border-box;color:var(--gray120);font-size:14px;line-height:21px;vertical-align:top;background-color:var(--white);resize:none}
