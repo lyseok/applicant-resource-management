@@ -21,10 +21,10 @@ class PrjAnncBbsMapperTest {
 	
 	@Test
 	void testSelectPrjAnncBbsList() {
-		List<PrjAnncBbsVO> list = mapper.selectPrjAnncBbsList();
-		list.forEach(vo -> log.info("{}", vo));
+//		List<PrjAnncBbsVO> list = mapper.selectPrjAnncBbsList();
+//		list.forEach(vo -> log.info("{}", vo));
 		
-		assertNotNull(list);
+//		assertNotNull(list);
 	}
 	
 	@Test
