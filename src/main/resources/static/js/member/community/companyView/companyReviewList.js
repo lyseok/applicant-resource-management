@@ -24,7 +24,7 @@
             const li = document.createElement('li');
             li.className = 'item';
             li.onclick = () => {
-              location.href = `/member/company_review/detail?companyId=${c.userId}`;
+              location.href = `/member/company_review/detail?company=${c.userId}`;
             };
            li.innerHTML = `
                   <div class="info">
@@ -58,7 +58,7 @@
                 resume.careerList?.forEach(career => {
                   career.resumeName = resume.resumeName;
                   careers.push(career);
-                  console.log(careers);
+               
                 });
             });
             if(careers.length === 0){
@@ -123,6 +123,6 @@
     document.getElementById('btnSaveCareer').addEventListener('click', () => {
       console.log(selectedCareer.careerNo);
 
-      location.href = `/member/company_review/form?careerNo=${careerNo}`;
+      location.href = `/member/company_review/form?careerNo=${selectedCareer.careerNo}`;
     })
  })

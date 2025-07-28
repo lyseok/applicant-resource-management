@@ -175,14 +175,87 @@
 		DELETE FROM COMPANY WHERE COMPANY_REVIEW_NO = #{companyReviewNo}
 	</delete>
 	
+	<select id="selectCompanyWithReviewInfo" resultType="hashMap">
+		SELECT 
+		    C.USER_ID AS COM_ID,
+		    C.COM_NAME AS COMPANY_NAME,
+		    C.COM_LOGO AS COMPANY_LOGO,
+		    COUNT(CR.COMPANY_REVIEW_NO) AS TOTAL_REVIEW_COUNT,
+		    SUM(CASE WHEN CR.WORKING_YN = 'Y' THEN 1 ELSE 0 END) AS WORKING_COUNT,
+		    SUM(CASE WHEN CR.WORKING_YN = 'N' THEN 1 ELSE 0 END) AS NOT_WORKING_COUNT
+		FROM COMPANY C
+		LEFT JOIN COMPANY_REVIEW CR 
+		  ON C.USER_ID = CR.COM_ID
+		WHERE C.USER_ID = #{userId}
+		GROUP BY C.USER_ID, C.COM_NAME, C.COM_LOGO
+	</select>
 	
 	
+	
+	<select id="selectTotalReviewCount">
+		SELECT COUNT(*) 
+        FROM company_review 
+        WHERE com_id = #{comId}
+	</select>
+	
+	
+	<select id="selectOverallAvg">
+		SELECT ROUND(AVG(q.company_review_score),1)
+        FROM company_review cr
+        JOIN company_review_question q ON cr.company_review_no = q.company_review_no
+        WHERE cr.com_id = #{comId}
+	</select>
 
 	
-
+	<select id="selectQuestionAvg">
+		 SELECT 
+            q.review_subject_code AS reviewSubjectCode,
+            c.code_name AS reviewSubjectName,
+            ROUND(AVG(q.company_review_score),1) AS avgScore
+        FROM company_review cr
+        JOIN company_review_question q ON cr.company_review_no = q.company_review_no
+        JOIN cmn_code c ON q.review_subject_code = c.code_detail_no
+        WHERE cr.com_id = #{comId}
+        GROUP BY q.review_subject_code, c.code_name
+        ORDER BY q.review_subject_code
+	</select>
 	
-
+	<select id="selectTopJobOverallList">
+		SELECT 
+	        j.top_job_code AS topJobCode,
+	        tj.top_job_name AS topJobName,
+	        ROUND(AVG(q.company_review_score), 1) AS topJobOverallAvg
+	    FROM company_review cr
+	    JOIN company_review_question q ON cr.company_review_no = q.company_review_no
+	    JOIN job j ON cr.job_code = j.job_code
+	    JOIN top_job tj ON j.top_job_code = tj.top_job_code
+	    WHERE cr.com_id = #{comId}
+	    GROUP BY j.top_job_code, tj.top_job_name
+	    ORDER BY j.top_job_code
+	
+	</select>
 	
 	
+	<select id="selectTopJobQuestionAvgList">
+		SELECT 
+	        j.top_job_code AS topJobCode,
+	        q.review_subject_code AS reviewSubjectCode,
+	        c.code_name AS reviewSubjectName,
+	        ROUND(AVG(q.company_review_score), 1) AS avgScore
+	    FROM company_review cr
+	    JOIN company_review_question q ON cr.company_review_no = q.company_review_no
+	    JOIN job j ON cr.job_code = j.job_code
+	    JOIN cmn_code c ON q.review_subject_code = c.code_detail_no
+	    WHERE cr.com_id = #{comId}
+	    GROUP BY j.top_job_code, q.review_subject_code, c.code_name
+	    ORDER BY j.top_job_code, q.review_subject_code
+	</select>
+	
+	
+	<select id="selectReviewUserCount">
+		SELECT COUNT(DISTINCT cr.user_id) AS reviewUserCount
+		FROM company_review cr
+		WHERE cr.com_id = #{comId}
+	</select>
 	
 </mapper>

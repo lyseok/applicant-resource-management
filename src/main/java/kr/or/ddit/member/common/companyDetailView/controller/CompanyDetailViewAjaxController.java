@@ -1,6 +1,7 @@
 package kr.or.ddit.member.common.companyDetailView.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,6 +62,11 @@ public class CompanyDetailViewAjaxController {
 		List<CompanySalaryDTO> salaries = companyDetailViewService.readSalaryStatisticsById(userId);
 		log.info("salary----{}", salaries);
 		return salaries;
+	}
+	
+	@GetMapping("/top_notice/{userId}")
+	public List<Map<String, Object>> companyTopNotice(@PathVariable("userId") String userId){
+		return companyDetailViewService.readTopFiveJobNotice(userId);
 	}
 	
 }

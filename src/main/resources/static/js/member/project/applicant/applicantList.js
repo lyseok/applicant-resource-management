@@ -47,7 +47,7 @@ function renderPostList() {
   else if (filterStatus === 'closed') posts = posts.filter(p => p.anncEndYn === 'Y');
 
   area.innerHTML = posts.map(post => `
-    <li class="board-list-item" data-id="${post.postId}">
+    <li class="board-list-item" data-id="${post.postId}" style="cursor:pointer;">
       <div class="card card-post mb-4" >
         <div class="card-body p-4">
           <div class="d-flex align-items-center gap-3 mb-2">
@@ -69,10 +69,10 @@ function renderPostList() {
               <span style="font-size:1.05em;">·</span>
               <span style="font-size:.99em;">${post.date}</span>
             </div>
-            <div class="d-flex align-items-center gap-3 text-secondary fs-13">
+						<div class="d-flex align-items-center gap-3 text-secondary fs-13">
 							<span>좋아요 <strong>${post.like}</strong></span>
 							<span>조회수 <strong>${post.view}</strong></span>
-            </div>
+						</div>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@ function renderPostList() {
     item.addEventListener('click', function() {
       const prjAnncNo = this.getAttribute('data-id');
       if (prjAnncNo) {
-        window.location.href = '/mypage/notice_management/detail?prjAnncNo=' + encodeURIComponent(prjAnncNo);
+        window.location.href = '/mypage/project/applicant/detail?prjAnncNo=' + encodeURIComponent(prjAnncNo);
       }
     });
   });

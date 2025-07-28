@@ -33,14 +33,13 @@ public class MemberCompanyReviewController {
 	
 	
 	 @GetMapping("/detail") 
-	 public String review(Model model, @PathVariable("id") String id) {
+	 public String reviewDetail() {
 		return "member/community/companyReview/companyReviewDetail";
 	 }
 	 
 	  
-
 	 @GetMapping("/form")
-	 public String reviewFormUI() {
+	 public String reviewForm() {
 	    	return "member/community/companyReview/companyReviewForm";
 	 }
 	 

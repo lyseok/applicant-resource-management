@@ -581,5 +581,24 @@
 	      )
 	    </if>
 	</select>
+	
+	
+	<select id="selectTopFiveJobNotice" resultType="hashMap">
+		SELECT 
+		    tj.TOP_JOB_NAME,                 
+		    j.JOB_NAME,      
+		    SUM(TO_NUMBER(rn.REC_POSITION_NUMBER)) AS TOTAL_POSITIONS
+		FROM TEAM1_202501F.RECRUITMENT_NOTICE rn
+		JOIN TEAM1_202501F.JOB j 
+		    ON rn.JOB_CODE = j.JOB_CODE
+		JOIN TEAM1_202501F.TOP_JOB tj 
+		    ON j.TOP_JOB_CODE = tj.TOP_JOB_CODE
+		WHERE rn.USER_ID = #{userId}
+		  AND REGEXP_LIKE(rn.REC_POSITION_NUMBER, '^[0-9]+$')     
+		  AND rn.RECRUITMENT_STARTDATE >= ADD_MONTHS(SYSDATE, -12) 
+		GROUP BY tj.TOP_JOB_NAME, j.JOB_NAME
+		ORDER BY TOTAL_POSITIONS DESC
+		FETCH FIRST 5 ROWS ONLY
+	</select>
 
 </mapper>
