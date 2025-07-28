@@ -65,40 +65,39 @@
 }
 
 input[type="date"].move-down {
-  margin-top: 6px; /* 👈 필요한 만큼 조정 (4~8px 사이 추천) */
+	margin-top: 6px; /* 👈 필요한 만큼 조정 (4~8px 사이 추천) */
 }
 
 #jobSuggestions {
-  max-height: 200px;
-  overflow-y: auto;
-  display: none;
+	max-height: 200px;
+	overflow-y: auto;
+	display: none;
 }
 
 #jobSuggestions li {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .position-tag {
-  background-color: #8a2be2;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 50px;
-  display: inline-flex;
-  align-items: center;
-  font-size: 14px;
+	background-color: #8a2be2;
+	color: white;
+	padding: 6px 12px;
+	border-radius: 50px;
+	display: inline-flex;
+	align-items: center;
+	font-size: 14px;
 }
 
 .position-tag button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 14px;
-  margin-left: 6px;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
+	background: none;
+	border: none;
+	color: white;
+	font-size: 14px;
+	margin-left: 6px;
+	cursor: pointer;
+	padding: 0;
+	line-height: 1;
 }
-
 </style>
 </head>
 <body>
@@ -106,7 +105,7 @@ input[type="date"].move-down {
 	<div class="container my-5">
 		<h2 class="mb-4 fw-bold">채용 공고 등록</h2>
 
-		<form method="post" id="recruitForm">
+		<form method="post" id="recruitForm" enctype="multipart/form-data">
 
 			<!-- 🔹 공고 제목 -->
 			<div class="mb-4">
@@ -175,10 +174,10 @@ input[type="date"].move-down {
 					<div class="mb-3">
 						<label class="form-label text-primary fw-semibold">근무지역</label>
 						<div class="d-flex gap-2">
-							<select id="cityCode" name="cityCode" class="form-select">							
+							<select id="cityCode" name="cityCode" class="form-select">
 								<option value="">지역선택
-							</select>
-							<select id="districtCode" name="districtCode" class="form-select"></select>
+							</select> <select id="districtCode" name="districtCode"
+								class="form-select"></select>
 						</div>
 					</div>
 
@@ -192,8 +191,13 @@ input[type="date"].move-down {
 				<div class="col-md-6">
 
 					<div class="mb-3">
-						<label class="form-label text-primary fw-semibold">급여</label> <input
-							type="text" name="recruitmentSalary" class="form-control" />
+						<label class="form-label text-primary fw-semibold">급여</label>
+						<div class="d-flex align-items-center">
+							<input type="text" name="recruitmentSalary" class="form-control"
+								placeholder="만원 단위로 입력하세요 예)13000 = 1억 3천만원"
+								style="max-width: 500px; margin-right: 8px;" /> <span
+								class="ms-1">만원</span>
+						</div>
 					</div>
 
 					<div class="mb-5">
@@ -214,8 +218,9 @@ input[type="date"].move-down {
 					</div>
 
 					<div class="mb-3">
-						<label class="form-label text-primary fw-semibold">접수마감일</label> 
-						<input type="date" name="recruitmentFinishDate" class="form-control move-down" />
+						<label class="form-label text-primary fw-semibold">접수마감일</label> <input
+							type="date" name="recruitmentFinishDate"
+							class="form-control move-down" />
 					</div>
 
 					<div class="mb-3">
@@ -223,6 +228,11 @@ input[type="date"].move-down {
 							type="text" name="recPositionNumber" class="form-control" />
 					</div>
 
+					<div class="mb-3">
+						<label class="form-label text-primary fw-semibold">공고 썸네일</label>
+						<input type="file" name="recruitThumbnail" class="form-control"
+							id="recruitThumbnail" />
+					</div>
 				</div>
 			</div>
 
