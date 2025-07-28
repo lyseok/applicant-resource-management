@@ -3,17 +3,17 @@
 <mapper namespace="kr.or.ddit.mapper.common.CompanySalesMapper">
 	<select id="selectCompanySalesInfoById" resultType="kr.or.ddit.dto.CompanySalesDTO">
 		SELECT 
-            COM_SALES_YEAR AS comSalesYear,
-            COM_SALES_AMOUNT AS comSalesAmount,
-            ROUND(
-                (COM_SALES_AMOUNT - LAG(COM_SALES_AMOUNT) OVER (PARTITION BY USER_ID ORDER BY COM_SALES_YEAR)) /
-                NULLIF(LAG(COM_SALES_AMOUNT) OVER (PARTITION BY USER_ID ORDER BY COM_SALES_YEAR), 0) * 100,
-                2
-            ) AS growthRatePercent,
-            ROUND(AVG(COM_SALES_AMOUNT) OVER (PARTITION BY USER_ID), 2) AS avgSalesAmount
-        FROM TEAM1_202501F.COMPANY_SALES
-        WHERE USER_ID = #{userId}
-        ORDER BY COM_SALES_YEAR
+		    COM_SALES_YEAR AS comSalesYear,
+		    COM_SALES_AMOUNT AS comSalesAmount,
+		    ROUND(
+		        (TO_NUMBER(COM_SALES_AMOUNT) - LAG(TO_NUMBER(COM_SALES_AMOUNT)) OVER (PARTITION BY USER_ID ORDER BY COM_SALES_YEAR)) /
+		        NULLIF(LAG(TO_NUMBER(COM_SALES_AMOUNT)) OVER (PARTITION BY USER_ID ORDER BY COM_SALES_YEAR), 0) * 100,
+		        2
+		    ) AS growthRatePercent,
+		    ROUND(AVG(TO_NUMBER(COM_SALES_AMOUNT)) OVER (PARTITION BY USER_ID), 2) AS avgSalesAmount
+		FROM TEAM1_202501F.COMPANY_SALES
+		WHERE USER_ID = #{userId}
+		ORDER BY COM_SALES_YEAR
 	</select>
 
 </mapper>

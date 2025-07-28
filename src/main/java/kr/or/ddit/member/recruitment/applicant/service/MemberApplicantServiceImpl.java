@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.MemberMapper;
 import kr.or.ddit.mapper.recruitment.ApplicantMapper;
 import kr.or.ddit.mapper.recruitment.ApplicantRecordMapper;
+import kr.or.ddit.mapper.recruitment.PassIntroductionMapper;
 import kr.or.ddit.mapper.recruitment.PasserMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.mapper.resume.ResumeMapper;
@@ -33,6 +35,7 @@ public class MemberApplicantServiceImpl implements MemberApplicantService {
 	private final ApplicantRecordMapper applRecMapper;
 	private final CodeMapProvider codeMapProvider;
 	private final PasserMapper passMapper;
+	private final PassIntroductionMapper passIntroductionMapper;
 	
 	
 	@Override
@@ -89,10 +92,15 @@ public class MemberApplicantServiceImpl implements MemberApplicantService {
 		
 		return applRecMapper.selectMyApplicatedStep(getUserId());
 	}
-
+	@Transactional
 	@Override
 	public int updateAccept(PasserVO vo) {
-		return passMapper.updateAccept(vo);
+		int updated = passMapper.updateAccept(vo);
+		
+		if(updated > 0) {
+			passIntroductionMapper.insertPassIntroductionForAcceptedPasser(vo.getApplicantId(), vo.getRecruitmentNo());
+		}
+		return updated;
 	}
 	
 	private void setCodeName(RecruitmentNoticeVO notiVo) {
