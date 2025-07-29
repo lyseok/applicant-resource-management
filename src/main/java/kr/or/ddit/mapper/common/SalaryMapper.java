@@ -28,13 +28,10 @@ public interface SalaryMapper {
 	public List<Map<String, Object>> selectSalaryListAllCompany();
 	public List<Map<String, Object>> selectSimilarCompanySalariesList(String industryType);
 	
-	
 	public List<Map<String, Object>> selectSalaryListAllCompanyPaged(Map<String, Object> params);	
-	
 	public int countSalaryListAllCompany(Map<String , Object> params);
 	
+	// feature/#012_기업연봉 추가 메서드
 	public Map<String, Object> selectCompanySalaryRankByIndu(String userId, String industryType);
-	
 	public List<Map<String, Object>> selectCompanySalariesRankByIndu(String industryType);
-	
 }

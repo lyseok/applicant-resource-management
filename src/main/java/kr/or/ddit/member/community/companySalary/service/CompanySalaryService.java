@@ -14,5 +14,6 @@ public interface CompanySalaryService {
 	
 	public Map<String, Object> readSalaryListAllCompanyPaged(Map<String, Object> params);
 	
+	// feature/#012_기업연봉 추가 메서드
 	public Map<String, Object> readCompanySalaryRankByIndu(String userId, String industryType);
 }
