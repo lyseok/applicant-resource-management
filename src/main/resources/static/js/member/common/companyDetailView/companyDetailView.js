@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-	const userId = 'testCompany';
+	const userId = new URLSearchParams(window.location.search).get('no');
 	
 	axios
-		.get('/ajax/member/company_view/testCompany')
+		.get(`/ajax/member/company_view/${userId}`)
 		.then((resp) => {
 			const company = resp.data;
 			console.log(company);
