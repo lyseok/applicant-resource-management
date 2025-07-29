@@ -14,7 +14,7 @@
         <div id="content">
 
           <h1>
-            <div class="newcomer_sub_title">신입 연봉 공고</div>
+            <div class="newcomer_sub_title"></div>
           </h1>
 
           <!-- ★★★★★★★★★★★★ 일반 게시글은 여기서부터 참고 ★★★★★★★★★★★★ -->
@@ -22,7 +22,6 @@
             <!-- 필터링 영역 start -->
             <div class="list_info">
               <div class="area_title list_total_count">
-                <h2>신입 연봉 채용정보</h2>
                 <span class="total_count"><em id="notice_cnt"></em>건</span>
               </div>
               <div class="list_select">

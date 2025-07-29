@@ -10,7 +10,9 @@ const params = {
 
 let myCompanyList;
 let myRecruitList;
-
+document.querySelector(
+  '.newcomer_sub_title'
+).innerHTML = `<span class="search_keyword">${params.keyword}</span>에 대한 검색 결과`;
 function fetchRecruitData() {
   axios.get('/ajax/recruit/search', { params }).then((res) => {
     const resp = res.data;

@@ -43,4 +43,23 @@ public class AjaxRecruitmentNoticeController {
 		return ResponseEntity.ok(resp);
 	}
 	
+	@GetMapping("/main_p")
+	public ResponseEntity<?> mainPRecruitmentNotice(){
+		Map<String, Object> resp = service.selectMainPRecruitmentNoticeList();
+		
+		return ResponseEntity.ok(resp);
+	}
+	@GetMapping("/main_middle")
+	public ResponseEntity<?> mainMiddleRecruitmentNotice(){
+		Map<String, Object> resp = service.selectMainMiddleRecruitmentNoticeList();
+		
+		return ResponseEntity.ok(resp);
+	}
+	@GetMapping("/main_bottom")
+	public ResponseEntity<?> mainBottomRecruitmentNotice(){
+		Map<String, Object> resp = service.selectMainBottomRecruitmentNoticeList();
+		
+		return ResponseEntity.ok(resp);
+	}
+	
 }
