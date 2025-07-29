@@ -144,21 +144,21 @@ function renderRankChart(data) {
 	  // 최소/최대 연봉 표시
 	  setTimeout(() => {
 	    const minLabel = document.createElement('span');
-	    minLabel.textContent = `${min}만원`;
+	    minLabel.textContent = `${min}`;
 	    minLabel.style.position = 'absolute';
 	    minLabel.style.right = '110%';
 	    minLabel.style.top = '50%';
 	    minLabel.style.transform = 'translateY(-50%)';
-	    minLabel.style.fontSize = '0.8rem';
+	    minLabel.style.fontSize = '1rem';
 	    minLabel.style.color = '#555';
 
 	    const maxLabel = document.createElement('span');
-	    maxLabel.textContent = `${max}만원`;
+	    maxLabel.textContent = `${max}`;
 	    maxLabel.style.position = 'absolute';
 	    maxLabel.style.left = '110%';
 	    maxLabel.style.top = '50%';
 	    maxLabel.style.transform = 'translateY(-50%)';
-	    maxLabel.style.fontSize = '0.8rem';
+	    maxLabel.style.fontSize = '1rem';
 	    maxLabel.style.color = '#555';
 
 	    icon.appendChild(minLabel);
@@ -211,4 +211,18 @@ function renderScale(globalMin, globalMax) {
 		const man = salary % 10000;
 		return man > 0 ? `${eok}억 ${man.toString()}만원` : `${eok}억원`;
 	}
+	
+	
+	const tableWrapper = document.querySelector('.table-wrapper');
+    const btnLeft = document.querySelector('.scroll-btn.left');
+    const btnRight = document.querySelector('.scroll-btn.right');
+    const scrollAmount = 200; // 한 번에 스크롤할 픽셀
+
+    btnLeft.addEventListener('click', () => {
+        tableWrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    btnRight.addEventListener('click', () => {
+        tableWrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
 })                                        
