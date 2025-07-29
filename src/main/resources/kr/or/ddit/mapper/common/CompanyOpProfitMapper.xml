@@ -3,18 +3,18 @@
 <mapper namespace="kr.or.ddit.mapper.common.CompanyOpProfitMapper">
 	
 	<select id="selectCompanyOpProfitInfoById" resultType="kr.or.ddit.dto.CompanyOpProfitDTO">
-		 SELECT 
-            COM_PROFIT_YEAR AS comProfitYear,
-            COM_OPERATING_PROFIT AS comOperatingProfit,
-            ROUND(
-                (COM_OPERATING_PROFIT - LAG(COM_OPERATING_PROFIT) OVER (PARTITION BY USER_ID ORDER BY COM_PROFIT_YEAR)) /
-                NULLIF(LAG(COM_OPERATING_PROFIT) OVER (PARTITION BY USER_ID ORDER BY COM_PROFIT_YEAR), 0) * 100,
-                2
-            ) AS growthRatePercent,
-            ROUND(AVG(COM_OPERATING_PROFIT) OVER (PARTITION BY USER_ID), 2) AS avgOperatingProfit
-        FROM TEAM1_202501F.COMPANY_OP_PROFIT
-        WHERE USER_ID = #{userId}
-        ORDER BY COM_PROFIT_YEAR
+		  SELECT 
+	        COM_PROFIT_YEAR AS comProfitYear,
+	        COM_OPERATING_PROFIT AS comOperatingProfit,
+	        ROUND(
+	            (TO_NUMBER(COM_OPERATING_PROFIT) - LAG(TO_NUMBER(COM_OPERATING_PROFIT)) OVER (PARTITION BY USER_ID ORDER BY COM_PROFIT_YEAR)) /
+	            NULLIF(LAG(TO_NUMBER(COM_OPERATING_PROFIT)) OVER (PARTITION BY USER_ID ORDER BY COM_PROFIT_YEAR), 0) * 100,
+	            2
+	        ) AS growthRatePercent,
+	        ROUND(AVG(TO_NUMBER(COM_OPERATING_PROFIT)) OVER (PARTITION BY USER_ID), 2) AS avgOperatingProfit
+	    FROM TEAM1_202501F.COMPANY_OP_PROFIT
+	    WHERE USER_ID = #{userId}
+	    ORDER BY COM_PROFIT_YEAR
 	</select>
 
 </mapper>

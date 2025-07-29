@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <head>
 	<title>개인 회원가입</title>
@@ -103,8 +104,24 @@
 	                </div>
 	                <em class="msgInvalid" id="user_nm_msg" name="user_nm_msg" style="display:none">이름은 필수 입력 정보 입니다.</em>
 	            </div>
-	
-	            <!-- 생년월일 -->
+
+				<div class="item identify_mail">
+					<label for="user_gender"><strong>성별</strong></label>
+					<div class="gender-row">
+						<label class="gender-item"> 
+							<input type="radio" name="memGender" id="memMale" value="M"
+							<c:if test="${member.memGender eq 'M'}">checked</c:if> />
+							남성
+						</label> 
+						<label class="gender-item"> 
+							<input type="radio" name="memGender" id="memFemale" value="F"
+							<c:if test="${member.memGender eq 'F'}">checked</c:if> />
+							여성
+						</label>
+					</div>
+					<form:errors cssClass="text-danger" path="memGender" />
+				</div>
+						<!-- 생년월일 -->
 	            <div class="item identify_mail">
 	                <label for="birth_date"><strong>생년월일</strong></label>
 	                <div class="TypoBox">
