@@ -31,12 +31,11 @@ function shuffleAndTrim(arr, premium = false) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-
   // 2. 조건에 따라 자르기
   const length = arr.length;
   let trimLength;
   if (premium) {
-    trimLength = length % 4 === 0 ? length - 1 : length - (length % 4) + 3;
+    trimLength = length % 4 === 0 ? length - 1 : length - (length % 4) - 1;
   } else {
     trimLength = length - (length % 4);
   }
@@ -46,10 +45,10 @@ function shuffleAndTrim(arr, premium = false) {
 function fetchTopRecruitData() {
   axios.get('/ajax/recruit/main_p').then((res) => {
     const resp = res.data;
-    const shuffledData = shuffleAndTrim(resp.data, true);
     myCompanyList = resp.myScrabCompany;
     myRecruitList = resp.myScrabRecruit;
 
+    const shuffledData = shuffleAndTrim(resp.data, true);
     topRecruitNoticeInit(shuffledData); // 목록 그리기 함수
     fetchMiddleRecruitData();
   });
@@ -154,7 +153,6 @@ function middleRecruitNoticeInit(data) {
   if (!middleListBody) return;
   middleListBody.innerHTML = data
     .map((item, idx) => {
-      console.log('middleRecruitNoticeInit', item.recruitmentNo);
       const scrapClass = myRecruitList.includes(item.recruitmentNo)
         ? ' on'
         : '';
@@ -233,7 +231,6 @@ function bottomRecruitNoticeInit(data) {
   if (!bottomListBody) return;
   bottomListBody.innerHTML = data
     .map((item, idx) => {
-      console.log('bottomRecruitNoticeInit', item.recruitmentNo);
       const scrapClass = myRecruitList.includes(item.recruitmentNo)
         ? ' on'
         : '';
