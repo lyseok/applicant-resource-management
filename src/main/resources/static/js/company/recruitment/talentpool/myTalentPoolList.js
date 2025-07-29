@@ -85,7 +85,7 @@ function renderTalentPoolTable(talentList) {
       </td>
       <td>
         <div class="experience-status">
-          <div class="status-text">확인</div>
+          <div class="status-text resume-btn">확인</div>
         </div>
       </td>
       <td>
@@ -122,6 +122,13 @@ function renderTalentPoolTable(talentList) {
       </td>
     `;
     tbody.appendChild(tr);
+    tr.querySelector('.resume-btn').addEventListener('click', function () {
+      window.open(
+        '/popup/resume/' + item.resumeNo,
+        'resumePopup',
+        'width=950,height=800'
+      );
+    });
   });
 }
 {
@@ -145,6 +152,7 @@ function fetchData() {
       renderPager(totalPage, params.page);
     })
     .catch((err) => {
+      console.error('데이터 로드 실패:', err);
       alert('데이터를 불러오는 데 실패했습니다.');
     })
     .finally(() => {
