@@ -174,7 +174,9 @@ function renderTalentPoolTable(talentList) {
       </td>
       <td>
         <div class="experience-status">
-          <div class="status-text">확인</div>
+          <div class="status-text resume-btn" data-resumeno="${
+            item.resumeNo
+          }">확인</div>
         </div>
       </td>
       <td>
@@ -212,6 +214,14 @@ function renderTalentPoolTable(talentList) {
       </td>
     `;
     tbody.appendChild(tr);
+    // resume-btn을 클릭했을때 '/popup/resume'로 이동하는데 새로운 창을 열어서 이동 할거야 새로운 창의 너비는 950px로해줘
+    tr.querySelector('.resume-btn').addEventListener('click', function () {
+      window.open(
+        '/popup/resume/' + item.resumeNo,
+        'resumePopup',
+        'width=950,height=800'
+      );
+    });
   });
 }
 {

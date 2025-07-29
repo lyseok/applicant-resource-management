@@ -87,7 +87,7 @@
                       </a>
                     </li>
                     <li>
-                      <a href="http://localhost:3000/">
+                      <a href="javascript:void(0)" id="projectLink">
                         <span class="material-symbols-outlined">Communities</span>
                         <span class="txt">프로젝트</span>
                       </a>
@@ -340,5 +340,8 @@
 
         </div>
       </div>
-
+      <script src="/js/config.js"></script>
+      <script>
+        document.getElementById('projectLink').setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+      </script>
     </header>
