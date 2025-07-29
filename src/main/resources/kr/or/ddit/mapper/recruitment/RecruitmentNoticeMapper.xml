@@ -67,6 +67,9 @@
 		<result property="recruitmentReceiptStart" column="RENO_RECRUITMENT_RECEIPT_START" />
 		<result property="recruitmentFinishDate" column="RENO_RECRUITMENT_FINISH_DATE" />
 		<result property="recruitmentDelDate" column="RENO_RECRUIMENT_DEL_DATE" />
+		<result property="recruitFinishYn" column="RENO_RECRUIT_FINISH_YN"/>
+		<result property="viewHit" column="VIEW_HIT"/>
+		<result property="viewScrab" column="VIEW_SCRAB"/>
 
 		<association property="company" resultMap="companyMap" />
 		<association property="education" resultMap="recruitmentEducationMap" />
@@ -192,6 +195,8 @@
 	rn.RECRUITMENT_FINISH_DATE              AS RENO_RECRUITMENT_FINISH_DATE,
 	rn.RECRUITMENT_DEL_DATE                 AS RENO_RECRUITMENT_DEL_DATE,
 	rn.RECRUIT_FINISH_YN					AS RENO_RECRUIT_FINISH_YN,
+	(SELECT COUNT(*) FROM RECRUIT_VIEW WHERE RECRUITMENT_NO = rn.RECRUITMENT_NO) AS VIEW_HIT,
+	(SELECT COUNT(*) FROM SCRAB_RECRUITMENT WHERE RECRUITMENT_NO = rn.RECRUITMENT_NO) AS VIEW_SCRAB,
 
 	-- COMPANY
 	c.USER_ID                               AS COM_USER_ID,
@@ -205,6 +210,13 @@
 	c.COM_LOGO 								AS COM_LOGO,
 	c.COM_PAYMENT 							AS COM_PAYMENT,
 	c.INDUSTRY_TYPE							AS INDUSTRY_TYPE,
+	c.COM_TYPE								AS COM_TYPE,
+	c.COM_SIZE								AS COM_SIZE,
+	c.COM_ADDR								AS COM_ADDR,
+	c.COM_MAIN_BIZ							AS COM_MAIN_BIZ,
+	c.CEO_NAME								AS CEO_NAME,
+	c.COM_CAPITAL							AS COM_CAPITAL,
+	c.INSURANCE_YN							AS INSURANCE_YN,
 
 	-- RECRUITMENT_EDUCATION (1:1)
 	re.RECRUITMENT_EDUCATION_CODE 			AS EDU_RECRUITMENT_EDUCATION_CODE,
