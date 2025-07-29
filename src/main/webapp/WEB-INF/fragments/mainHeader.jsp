@@ -2,45 +2,35 @@
   <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
     <head>
+      <script defer src="/js/common/mainHeader.js"></script>
       <style>
-        .custom-dropdown {
-          position: relative;
-          width: 60px;
-          user-select: none;
+        #companyDropdown {
+          position: absolute;
+          top: 100%;
+          /* input 바로 아래 */
+          left: 0;
+          background: #fff;
+          border: 1px solid #ccc;
+          width: 100%;
+          max-height: 200px;
+          overflow-y: auto;
+          z-index: 999;
+          display: none;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        #companyDropdown li {
+          padding: 8px;
           cursor: pointer;
         }
 
-        .dropdown-selected {
-          /* border: 1px solid var(--violet70); */
-          border-radius: 8px;
-          background: #fff;
-          text-align: center;
-        }
-
-        .dropdown-options {
-          position: absolute;
-          top: 110%;
-          left: 0;
-          width: 100%;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          background: #fff;
-          display: none;
-          z-index: 100;
-        }
-
-        .dropdown-options li {
-          padding: 10px;
-        }
-
-        .dropdown-options li:hover {
+        #companyDropdown li:hover {
           background: #f0f0f0;
         }
-
-        .custom-dropdown.open .dropdown-options {
-          display: block;
-        }
       </style>
+
     </head>
     <header id="sri_header" class="main bubble">
       <div class="wrap_header">
@@ -54,15 +44,20 @@
           <form id="searchForm">
             <div id="btn_search" class="btn_search">
               <div class="custom-select">
-                <div class="custom-dropdown" id="categoryDropdown">
-                  <div class="dropdown-selected" data-value="recruit">공고</div>
-                  <ul class="dropdown-options">
-                    <li data-value="recruit">공고</li>
-                    <li data-value="company">기업</li>
-                  </ul>
+                <select name="search_sel">
+                  <option>공고</option>
+                  <option>기업</option>
+                </select>
+                <div class="select-styled">
+                  <span>선택</span>
                 </div>
+                <ul class="select-options">
+                  <li data-value="recruit">공고</li>
+                  <li data-value="company">기업</li>
+                </ul>
               </div>
-              <input type="text" id="searchInput" placeholder="검색어를 입력하세요" class="keyword static" />
+              <input type="text" id="search_input" placeholder="검색어를 입력하세요" class="keyword static" />
+              <ul id="companyDropdown"></ul>
               <button type="submit" class="search_btn" style="background: none; border: none;">
                 <span class="material-symbols-outlined search_icon">search</span>
               </button>
@@ -346,116 +341,4 @@
         </div>
       </div>
 
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          // 버튼과 레이어 변수 저장
-          const memberBtn = document.querySelector('.member_btn');
-          const memberLayer = document.querySelector('.layer_member');
-
-          if (memberBtn) {
-            // 멤버 버튼 클릭 이벤트
-            memberBtn.addEventListener('click', function (event) {
-              event.stopPropagation();
-              const isOpen = memberLayer.style.display === 'block';
-              // 토글
-              memberLayer.style.display = isOpen ? 'none' : 'block';
-            });
-          }
-
-          // 외부 클릭시 닫기 (버튼/레이어 아닌 부분 클릭시)
-          document.addEventListener('click', function (event) {
-            if (memberBtn) {
-              if (!memberBtn.contains(event.target) && !memberLayer.contains(event.target)) {
-                memberLayer.style.display = 'none';
-              }
-            }
-          });
-          axios.get('/ajax/userinfo')
-            .then(res => {
-              const data = res.data;
-              let name = '비회원';
-              if (data.userType === 'company') name = data.userName;
-              else if (data.userType === 'admin') name = '관리자';
-              else if (data.userType === 'member') name = data.userName;
-              if (document.getElementById('user_name')) {
-                document.getElementById('user_name').textContent = name;
-              }
-            });
-        });
-
-        // 로그아웃 버튼 이벤트
-        const logoutBtnEls = document.querySelectorAll('.logoutBtn');
-        logoutBtnEls.forEach(btn => {
-          btn.addEventListener('click', () => {
-            console.log('test');
-            axios.post("/common/auth/revoke", {}, {
-              withCredentials: true
-            }).then(resp => location.href = "/");
-          });
-        });
-
-        // 검색 폼 submit 및 엔터/아이콘 클릭 이벤트
-        document.addEventListener('DOMContentLoaded', function () {
-          const searchForm = document.getElementById('searchForm');
-          const searchInput = document.getElementById('searchInput');
-          const dropdown = document.getElementById('categoryDropdown');
-          const selected = dropdown.querySelector('.dropdown-selected');
-          const options = dropdown.querySelectorAll('.dropdown-options li');
-
-          // URL 파라미터 적용
-          const urlParams = new URLSearchParams(location.search);
-          const categoryParam = urlParams.get('category');
-          const keywordParam = urlParams.get('keyword');
-
-          if (categoryParam) {
-            const matchingOption = Array.from(options).find(opt => opt.getAttribute('data-value') === categoryParam);
-            if (matchingOption) {
-              selected.textContent = matchingOption.textContent;
-              selected.dataset.value = categoryParam;
-            }
-          }
-          if (keywordParam) {
-            searchInput.value = keywordParam;
-          }
-
-          dropdown.addEventListener('click', (e) => {
-            dropdown.classList.toggle('open');
-          });
-
-          options.forEach(option => {
-            option.addEventListener('click', (e) => {
-              const value = option.getAttribute('data-value');
-              selected.textContent = option.textContent;
-              selected.dataset.value = value;
-              dropdown.classList.remove('open');
-            });
-          });
-
-          // 바깥 클릭 시 닫기
-          document.addEventListener('click', (e) => {
-            if (!dropdown.contains(e.target)) {
-              dropdown.classList.remove('open');
-            }
-          });
-
-          if (searchForm && searchInput) {
-            searchForm.addEventListener('submit', function (e) {
-              e.preventDefault();
-              const category = document.querySelector('.dropdown-selected').dataset.value;
-              const keyword = searchInput.value.trim();
-
-              if (!keyword) {
-                alert('검색어를 입력해주세요.');
-                return;
-              }
-
-              const query = new URLSearchParams({
-                category,
-                keyword
-              }).toString();
-              location.href = '/search?' + query;
-            });
-          }
-        });
-      </script>
     </header>
