@@ -79,12 +79,12 @@ function renderPostList() {
     );
   }
   area.innerHTML = posts.map(post => `
-    <li class="board-list-item" data-id="${post.postId}" style="cursor:pointer;">
-      <div class="card card-post mb-4">
+    <li class="board-list-item" data-id="${post.postId}">
+      <div class="card card-post mb-4 cursor-auto">
         <div class="card-body p-4">
 					<div class="d-flex justify-content-between align-items-center">
 	          <div class="d-flex align-items-center gap-3 mb-2">
-	            <span class="badge badge-recruit">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
+	            <span class="badge badge-recruit ${post.anncEndYn === 'Y' ? 'opacity-25' : ''}">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
 	            <div class="post-title flex-grow-1 fs-18">${post.title}</div>
 	          </div>
 						<div class="d-flex align-items-center gap-1">

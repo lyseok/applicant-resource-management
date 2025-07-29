@@ -165,6 +165,11 @@
 					min-width: 100px;
 				}
 			}
+			
+			/* 리스트 스타일 */
+			.badge-recruit {
+			    background: var(--violet80);
+			}
 		</style>
 	</head>
 
@@ -190,7 +195,7 @@
 						<script>
 							document.addEventListener('DOMContentLoaded', () => {
 								const recommendSwiper = new Swiper('.recommend_list_wrap', {
-									slidesPerView: 3,
+									slidesPerView: 3.2,
 								});
 							});
 						</script>
@@ -226,7 +231,7 @@
 						<div class="Post_post">
 							<h2 class="Post_title Post_titleAddPadding">게시글</h2>
 							<div class="Post_filter">
-								<div class="Post_category d-flex justify-content-between align-items-center overflow-visible">
+								<div class="Post_category d-flex align-items-center justify-content-between overflow-visible">
 									<div class="d-flex">
 										<div class="Post_categoryItem">
 											<input id="status_all" type="radio" value="status_all" name="category" checked />
@@ -240,21 +245,21 @@
 											<input id="status_y" type="radio" value="status_y" name="category" />
 											<label for="status_y"><span>모집완료</span></label>
 										</div>
-									</div>
-									<div>
 										<select class="Select_root Select_size38 Select_round w140" name="selectName">
 											<option value="date" selected="">최신순</option>
 											<option value="pop">인기순</option>
 											<option value="like">시작일순</option>
 										</select>
 									</div>
+									<!-- 글쓰기 버튼 -->
+									<div>
+										<button class="btn btn_violet" id="writeBtn" type="button">
+											<i class="bi bi-pencil-square me-1"></i> 글쓰기
+										</button>
+									</div>
 								</div>
 							</div>
 							
-								<!-- 글쓰기 버튼 -->
-									<button class="btn btn_violet w140" id="writeBtn" type="button">
-										<i class="bi bi-pencil-square me-1"></i> 글쓰기
-									</button>
 							<div class="PostList_postList">
 
 								<ul></ul>

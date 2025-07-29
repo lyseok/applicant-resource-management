@@ -100,6 +100,8 @@
 .w700{width:700px !important;}
 .w800{width:800px !important;}
 .w900{width:900px !important;}
+/* 최대넓이 - max-width */
+.mw-28{max-width:28px;}
 
 /* 높이 - height */
 .h40{height:40px !important;}
@@ -109,6 +111,8 @@
 .min-ht300{min-height:300px !important; }
 .min-ht400{min-height:400px !important; }
 .min-ht500{min-height:500px !important; }
+/* 최대높이 - max-height */
+.mh-28{max-height:28px;}
 
 /* line-height */
 .lh_normal{line-height:normal !important;}
@@ -136,6 +140,10 @@
 }
 .row_custom_scroll::-webkit-scrollbar-thumb:hover{
 	cursor:pointer;
+}
+/* 마우스 커서 */
+.cursor-auto{
+	cursor:auto !important;
 }
 
 /* 버튼 */
@@ -236,6 +244,8 @@
 	color:red;
 	margin-left:5px;
 }
+
+
 
 
 /* aos 적용 */
