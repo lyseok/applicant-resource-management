@@ -188,81 +188,99 @@
 }
 
 .company-info-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end; /* 하단 정렬로 맞춤 */
-    min-height: 70px; /* 로고와 차트 높이 맞춤 */
-    padding-bottom: 50px;
-    margin-top: 50px;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end; /* 하단 정렬로 맞춤 */
+	min-height: 70px; /* 로고와 차트 높이 맞춤 */
+	padding-bottom: 50px;
+	margin-top: 50px;
 }
 
 .company-info-left {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+	display: flex;
+	gap: 20px;
+	align-items: center;
 }
 
 .company-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: #fff;
+	width: 80px;
+	height: 80px;
+	object-fit: contain;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	background: #fff;
 }
 
 .company-name {
-    margin: 0 0 5px 0; /* 이름과 리뷰 수 간격 */
-    font-size: 1.5rem;
-    font-weight: bold;
+	margin: 0 0 5px 0; /* 이름과 리뷰 수 간격 */
+	font-size: 1.5rem;
+	font-weight: bold;
 }
 
 .review-count {
-    margin: 0;
-    color: #555;
-    font-size: 14px;
+	margin: 0;
+	color: #555;
+	font-size: 14px;
 }
+
 .review-count .count {
-    font-weight: bold;
-    color: var(--violet60);
+	font-weight: bold;
+	color: var(--violet60);
 }
 
 .review-count-top {
-    margin: 10px 0;
-    font-size: 15px;
-    font-weight: bold;
-    color: #333;
+	margin: 10px 0;
+	font-size: 15px;
+	font-weight: bold;
+	color: #333;
 }
+
 .review-count-top .count {
-    color: var(--violet60);
+	color: var(--violet60);
 }
 
 .employee-status-box {
-    width: 250px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* 하단 정렬 */
+	width: 250px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end; /* 하단 정렬 */
 }
 
 .employee-status-percent {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 4px; /* 기존 8px → 4px로 간격 축소 */
-    font-size: 14px;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 4px; /* 기존 8px → 4px로 간격 축소 */
+	font-size: 14px;
 }
+
 .employee-status-percent .label {
-    color: #333;
+	color: #333;
 }
+
 .employee-status-percent .percent {
-    font-weight: bold;
-    font-size: 16px;
+	font-weight: bold;
+	font-size: 16px;
 }
+
 .employee-status-total {
-    margin-top: 4px; /* 기존 8px → 4px로 간격 축소 */
-    font-weight: bold;
-    font-size: 14px;
+	margin-top: 4px; /* 기존 8px → 4px로 간격 축소 */
+	font-weight: bold;
+	font-size: 14px;
 }
+
+.tab-overall .d-flex {
+    display: flex !important;
+    justify-content: space-around;
+    flex-direction: row;
+    align-content: stretch;
+    align-items: flex-end;
+}
+
+.tab-overall .gap-3 {
+    gap: 5rem !important;
+}
+
 </style>
 </head>
 
@@ -273,30 +291,15 @@
 			<img id="companyLogo" class="company-logo" src="" alt="기업 로고">
 			<div>
 				<h3 id="companyName" class="company-name"></h3>
-				
+
 			</div>
 		</div>
-		
-		
-		<!-- 오른쪽 비율 차트 -->
-		<div class="employee-status-box">
-			<canvas id="employeeStatusChart"></canvas>
-			<div class="employee-status-percent">
-				<div>
-					<div class="label">현직원</div>
-					<div class="percent" id="workingPercent">0%</div>
-				</div>
-				<div>
-					<div class="label">전직원</div>
-					<div class="percent" id="notWorkingPercent">0%</div>
-				</div>
-			</div>
-			<p class="employee-status-total" id="totalRespondentsText">총 0명의
-				답변입니다.</p>
-		</div>
+
+
+
 	</div>
 
-	
+
 	<p class="review-count">
 		<span id="reviewCount" class="count"></span>개의 리뷰가 등록되 있습니다.
 	</p>
@@ -312,15 +315,35 @@
 
 	<div id="tab-overall" class="tab-content active">
 		<h4>전체 평균</h4>
-		<div class="chart-section large">
-			<div class="chart-card">
-				<canvas id="overallAvgChart"></canvas>
-				<div class="chart-info">
-					<p class="avg">
-						평균 점수: <span id="overallAvgText"></span>점
-					</p>
-					<p class="desc">전체 리뷰를 종합한 평균 점수입니다.</p>
+		<div class="d-flex gap-3">
+			<div class="chart-section large">
+				<div class="chart-card">
+					<canvas id="overallAvgChart"></canvas>
+					<div class="chart-info">
+						<p class="avg">
+							평균 점수: <span id="overallAvgText"></span>점
+						</p>
+						<p class="desc">전체 리뷰를 종합한 평균 점수입니다.</p>
+					</div>
 				</div>
+			</div>
+	
+	
+			<!-- 오른쪽 비율 차트 -->
+			<div class="employee-status-box">
+				<canvas id="employeeStatusChart"></canvas>
+				<div class="employee-status-percent">
+					<div>
+						<div class="label">현직원</div>
+						<div class="percent" id="workingPercent">0%</div>
+					</div>
+					<div>
+						<div class="label">전직원</div>
+						<div class="percent" id="notWorkingPercent">0%</div>
+					</div>
+				</div>
+				<p class="employee-status-total" id="totalRespondentsText">총 0명의
+					답변입니다.</p>
 			</div>
 		</div>
 		<hr>
