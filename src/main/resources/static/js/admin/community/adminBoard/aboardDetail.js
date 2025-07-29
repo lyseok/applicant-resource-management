@@ -413,7 +413,18 @@ const achtml = async function (no) {
   }
 };
 
+//상세보기->목록
+const detailToList = function (type) {
+  params.page = 1; // 페이지 초기화
+  if (type.startsWith("BRDD")) {
+    alist(type);
+  } else {
+    alist2(type);
+  }
+};
+
 // 상세보기->목록
+/*
 const detailToList = function (type) {
   if (type.startsWith("BRDD")) {
 	fetchData(type)
@@ -423,8 +434,9 @@ const detailToList = function (type) {
     alist2(type);
   }
 };
+*/
 
-// 4
+// 상세글 목록, 수정, 삭제 버튼
 const abbtn = function (no, type) {
   allBtns.innerHTML = "";
 
@@ -451,6 +463,14 @@ const abbtn = function (no, type) {
 
   if (listBtn) {
     listBtn.onclick = function () {
+        resetView();
+        restoreListWithTabs();  // 탭 + 목록 같이 복원
+    };
+  }
+
+  /*
+  if (listBtn) {
+    listBtn.onclick = function () {
       aboardDetail.innerHTML = "";
       detTitle.innerHTML = "";
 
@@ -460,6 +480,7 @@ const abbtn = function (no, type) {
       detailToList(type); // 목록으로
     };
   }
+  */
 
   if (editBtn) {
     editBtn.onclick = function () {

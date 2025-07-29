@@ -10,11 +10,17 @@ const addopt = function(type){
 	aboardform.style.display = "block";
 	let backBtn = document.querySelector('button.btn.btn-secondary.px-4.me-2');  //취소 버튼 이벤트
 	backBtn.addEventListener("click", function(){
+	    resetView();  // 상세/폼 초기화
+	    restoreListWithTabs();  // 탭 + 목록 같이 복원
+	});
+	/*
+	backBtn.addEventListener("click", function(){
 	    // 등록 or 수정 구분
 		console.log("등록에서 취소?", type);
 		aboardForm.style.display = "none";
 		alist2(type);
 	})
+	*/
 	document.querySelector('.PageBox').innerHTML = "";
 	fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
 	  resp.json().then((rslt) => {
@@ -276,11 +282,16 @@ const abno2 = function(no){
 	updateNo = no;  // 전역변수에 저장
 	let backBtn = document.querySelector('button.btn.btn-secondary.px-4.me-2');
 	backBtn.addEventListener("click", function(){
+	    resetView();  // 상세/폼 초기화
+	    restoreListWithTabs();  // 탭 + 목록 같이 복원
+	});
+	/*
+	backBtn.addEventListener("click", function(){
 	    // 등록 or 수정 구분
 		console.log("수정에서 취소!", no);
 		abno(no);
 	})
-	
+	*/
 	fetch(`/ajax/admin/board/admin_board/detail/${no}`)
 	  .then((resp) => resp.json())
 	  .then((rslt) => {

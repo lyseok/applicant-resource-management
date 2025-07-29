@@ -12,8 +12,22 @@ window.userId = document.querySelector("#userIdHidden")?.value;
 const aboardform = document.querySelector("#aboardForm");
 const modalElement = document.querySelector('#deleteModal');
 const TypoBox_searchBar = document.querySelector('.TypoBox.searchBar');
+let currentNoticeType = 'UNTC';  // 기본값
 
 //==================== 필터링 및 페이징 ===============================================
+
+// 공통 초기화
+function resetView() {
+    listTitle.style.display = "none";
+    TypoBox_searchBar.style.display = "none";
+    memTypeBtn.innerHTML = "";
+    formBtn.innerHTML = "";
+    aboardList.innerHTML = "";
+    aboardDetail.innerHTML = "";
+    detTitle.innerHTML = "";
+    allBtns.innerHTML = "";
+    aboardform.style.display = "none";
+}
 
 // 0. 페이지 데이터
 const params = {
@@ -21,7 +35,27 @@ const params = {
   pageSize: 10,  // 리스트에 몇개씩 보여줄건지
 };
 
+// 1. 출력 리스트 가져오기
+function fetchData(type, activeTab) {
+  const paramsString = paramsSerializer(params);
+  axios
+    .get(`/ajax/admin/board/admin_board/${type}/notice-page?` + paramsString)
+    .then((res) => {
+      const resp = res.data;
+      bhtml(resp.data);
+
+      // 현재 type(실제 UNTC/CNTC/ENTC)을 그대로 renderPager에 넘김
+      totalPage = Math.ceil(resp.totalCnt / params.pageSize);
+      renderPager(totalPage, params.page, activeTab, type);
+    })
+    .catch((err) => {
+      alert('데이터를 불러오는 데 실패했습니다.');
+      console.log(err);
+    });
+}
+
 // 1. 출력할 리스트 가져오기
+/*
 function fetchData(type, activeTab) {
 
   const paramsString = paramsSerializer(params);
@@ -53,8 +87,26 @@ function fetchData(type, activeTab) {
       console.log("현정 에렁",err);
     })
 }
+*/
 
 // 2. 가져온 리스트에 페이저 찍기
+function renderPager(totalPages, page, activeTab) {
+  let pagerHtml = '';
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === page) {
+      pagerHtml += `<span class="BtnType SizeS active" data-tab="${activeTab}" data-type="${currentNoticeType}">${i}</span>`;
+    } else {
+      pagerHtml += `<button class="BtnType SizeS page" data-page="${i}" data-tab="${activeTab}" data-type="${currentNoticeType}">${i}</button>`;
+    }
+  }
+  if (page < totalPages) {
+    pagerHtml += `<button data-page="${page + 1}" class="BtnType SizeS BtnNext btnNext" data-tab="${activeTab}" data-type="${currentNoticeType}">다음</button>`;
+  }
+  document.querySelector('.PageBox').innerHTML = pagerHtml;
+}
+
+// 2. 가져온 리스트에 페이저 찍기
+/*
 function renderPager(totalPages, page, activeTab) {
 	console.log("activeTab?", activeTab);
 	setActiveTab(activeTab);
@@ -73,6 +125,7 @@ function renderPager(totalPages, page, activeTab) {
   }
   document.querySelector('.PageBox').innerHTML = pagerHtml;
 }
+*/
 
 // 페이지 숫자 클릭
 document.querySelector('.PageBox').addEventListener('click', function (e) {
@@ -81,15 +134,16 @@ document.querySelector('.PageBox').addEventListener('click', function (e) {
       ? Number(e.target.dataset.page)
       : params.page + 1;
 
-    let activeTab = e.target.dataset.tab; // 버튼에 저장된 탭 값
+    let activeTab = e.target.dataset.tab;  // user/corp/event
+    let realType = e.target.dataset.type;  // UNTC/CNTC/ENTC
     params.page = page;
 
     // 탭 활성화 처리
     document.querySelectorAll('#noticeTabs .nav-link').forEach(link => link.classList.remove('active'));
     document.querySelector(`#noticeTabs .nav-link.${activeTab}`)?.classList.add('active');
 
-    // 데이터 로드
-    fetchData(type, activeTab, params.page, params.pageSize);
+    // 실제 타입으로 데이터 요청
+    fetchData(realType, activeTab, params.page, params.pageSize);
   }
 });
 
@@ -147,7 +201,25 @@ const pageTitle = function () {
 	detTitle.appendChild(title);
 };
 
+// 새 글 등록 버튼 클릭
+const newFormBtn = function (type) {
+    formBtn.innerHTML = "";
+    let newForm = document.createElement("button");
+    newForm.className = "btn btn_violet";
+    newForm.textContent = "새 글 등록";
+    formBtn.appendChild(newForm);
+    
+    newForm.addEventListener("click", function(){
+        resetView();  // 초기화
+        aboardform.reset();
+        document.querySelector("#noHidden").value = "";
+        updateNo = null; // 수정 상태 해제
+        addopt(type);
+    })
+};
+
 // ✅ 새 글 등록 버튼 생성
+/*
 const newFormBtn = function (type) {
 	let backType = type;  //가져온 타입을 addEventListener에서도 쓸 수 있게 미리 선언
 	formBtn.innerHTML = "";
@@ -165,8 +237,17 @@ const newFormBtn = function (type) {
 		addopt(type);
 	})
 };
+*/
 
 // ✅ 탭 UI 활성화 처리
+function setActiveTab(tabClass) {
+  const links = document.querySelectorAll('#noticeTabs .nav-link');
+  links.forEach(link => link.classList.remove('active'));
+  document.querySelector(`#noticeTabs .nav-link.${tabClass}`)?.classList.add('active');
+}
+
+// ✅ 탭 UI 활성화 처리
+/*
 function setActiveTab(e) {
 	console.log("e?", e);
 	
@@ -180,6 +261,7 @@ function setActiveTab(e) {
 
 	e.target.classList.add("active");
 }
+*/
 
 // ✅ 관리자게시판 목록 UI
 const bhtml = function (rslt) {
@@ -229,7 +311,27 @@ const bhtml = function (rslt) {
 
 //==========!공지!=================================================================================
 
+// 공지사항 탭 초기 1회만 렌더링
+const nlist = function (activeTab) {
+	let html = `
+		<p class="h4">공지사항 탭 선택</p>
+		<ul class="nav nav-underline" id="noticeTabs">
+			<li class="nav-item">
+				<a class="nav-link user ${activeTab === 'user' ? 'active' : ''}" href="javascript:void(0)" onclick="noticeUser('UNTC')">일반회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link corp ${activeTab === 'corp' ? 'active' : ''}" href="javascript:void(0)" onclick="noticeCorp('CNTC')">기업회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link event ${activeTab === 'event' ? 'active' : ''}" href="javascript:void(0)" onclick="noticeEvent('ENTC')">이벤트</a>
+			</li>
+		</ul>`;
+	memTypeBtn.innerHTML = html;
+};
+
+
 // ✅ 공지사항 탭 렌더링
+/*
 const nlist = function (activeTab) {
 	let html = `
 		<p class="h4">공지사항 탭 선택</p>
@@ -246,7 +348,30 @@ const nlist = function (activeTab) {
 		</ul>`;
 	memTypeBtn.innerHTML = html;
 };
+*/
 
+const noticeUser = function(type) {
+  currentNoticeType = type;
+  params.page = 1;   // 탭 변경 시 페이지 초기화
+  setActiveTab('user');
+  fetchData(type, 'user');
+};
+
+const noticeCorp = function(type) {
+  currentNoticeType = type;
+  params.page = 1;   // 탭 변경 시 페이지 초기화
+  setActiveTab('corp');
+  fetchData(type, 'corp');
+};
+
+const noticeEvent = function(type) {
+  currentNoticeType = type;
+  params.page = 1;   // 탭 변경 시 페이지 초기화
+  setActiveTab('event');
+  fetchData(type, 'event');
+};
+
+/*
 // ✅ 공지사항 일반회원 데이터
 const noticeUser = function(type) {
 	setActiveTab('user');
@@ -264,6 +389,7 @@ const noticeEvent = function(type) {
 	setActiveTab('event');
 	fetchData(type, 'event');
 };
+*/
 
 // ✅ 단일 타입 프리로드
 /*
@@ -440,6 +566,56 @@ const askCorp = function(type) {
 
 // ✅ 초기 로딩
 const alist = function(type) {
+  if (type === "BRDD-001") {
+    askAll(type);
+  } else if (type === "BRDD-003") {
+    nlist('user');           // ← 초기 공지사항 탭 추가
+    noticeUser('UNTC');      // 처음엔 일반회원으로 가게
+  } else if (type === "BRDD-002") {
+    faqAll(type);
+  }
+};
+
+// ✅ 상세보기에서 목록 클릭시 로딩
+const alist2 = function(type) {
+  params.page = 1; // 항상 1페이지부터
+  if (type === "BRDD-001") {
+    askAll(type);
+  } else if (type.includes('FAQ')) {
+    faqAll('BRDD-002');
+  } else {
+    nlist(
+      type.startsWith('U') ? 'user' :
+      type.startsWith('C') ? 'corp' :
+      'event'
+    ); // ← 탭 다시 그리기
+    if(type.startsWith('U')){
+      noticeUser(type);
+    }else if(type.startsWith('C')){
+      noticeCorp(type);
+    }else{
+      noticeEvent(type);
+    }
+  }
+};
+
+function restoreListWithTabs() {
+    // 현재 보고 있는 게시판 유형에 맞게 탭 복원
+    if (type === "BRDD-003") {
+        nlist(document.querySelector('#noticeTabs .nav-link.active')?.classList[1] || 'user');
+    } else if (type === "BRDD-002") {
+        flist('all'); // FAQ는 all 기본
+    } else if (type === "BRDD-001") {
+        asklist(type, 'all');
+    }
+
+    // 목록 다시 불러오기
+    fetchData(currentNoticeType, document.querySelector('#noticeTabs .nav-link.active')?.classList[1] || 'user');
+}
+
+// ✅ 초기 로딩
+/*
+const alist = function(type) {
 	if (type === "BRDD-001") {
 		askAll(type);
 	} else if (type === "BRDD-003") {
@@ -465,6 +641,7 @@ const alist2 = function(type) {
 		}
 	}
 };
+*/
 
 alist(type);
 
