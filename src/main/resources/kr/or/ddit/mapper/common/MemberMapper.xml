@@ -54,6 +54,7 @@
 			, MEM_ADD1
 			, MEM_ADD2
 			, MEM_IMG
+			, MEM_GENDER
 		) VALUES(
 			#{userId}
 			, #{memName}
@@ -63,6 +64,7 @@
 		 	, #{memAdd1}
 		 	, #{memAdd2}
 		 	, #{memImg}
+		 	, #{memGender}
 		)
 	</insert>
 	

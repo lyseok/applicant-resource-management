@@ -29,6 +29,9 @@
 .industry-option input {
     margin-right: 6px;
 }
+.alert_box{
+	clear:both;
+}
 </style>
 </head>
 <body>
