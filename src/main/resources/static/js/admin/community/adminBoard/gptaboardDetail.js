@@ -29,6 +29,38 @@ const abhit = async function (no) {
 };
 
 // 2
+// 상세보기 진입 시점에 현재 탭과 타입 저장
+const abno = function (no) {
+	currentTab = document.querySelector("#noticeTabs .nav-link.active")?.classList[1] || currentTab;
+	currentNoticeType = document.querySelector(".PageBox .active")?.dataset.type || currentNoticeType;
+
+	listTitle.style.display = "none";
+	  aboardform.style.display = "none";
+	  TypoBox_searchBar.style.display = "none";
+	  document.querySelector('.PageBox').innerHTML = "";
+	  memTypeBtn.innerHTML = "";
+	  formBtn.innerHTML = "";
+	  aboardList.innerHTML = "";
+	  pageTitle();
+
+	  abhit(no) //조회수부터 증가
+	    .then((rslt) => {
+	      if (rslt.ok) {
+	        return fetch(`/ajax/admin/board/admin_board/detail/${no}`);
+	      } else {
+	        throw new Error("조회수 증가 실패");
+	      }
+	    })
+	    .then((resp) => resp.json())
+	    .then((rslt) => {
+	      abdetail(rslt); // 상세 정보 렌더링
+	    })
+	    .catch((err) => {
+	      console.error("에러 발생:", err);
+	    });
+}
+
+/*
 const abno = function (no) {
   listTitle.style.display = "none";
   aboardform.style.display = "none";
@@ -55,6 +87,7 @@ const abno = function (no) {
       console.error("에러 발생:", err);
     });
 };
+*/
 
 // 작성자명 매핑용 통합 API 호출
 const getUserInfo = async function(userId) {
@@ -413,7 +446,13 @@ const achtml = async function (no) {
   }
 };
 
+//상세보기->목록
+const detailToList = function (type) {
+    fetchData(currentNoticeType, currentTab);  // 기존 저장된 탭과 타입 사용
+};
+
 // 상세보기->목록
+/*
 const detailToList = function (type) {
   if (type.startsWith("BRDD")) {
 	fetchData(type)
@@ -423,8 +462,9 @@ const detailToList = function (type) {
     alist2(type);
   }
 };
+*/
 
-// 4
+// 상세글 목록, 수정, 삭제 버튼
 const abbtn = function (no, type) {
   allBtns.innerHTML = "";
 
@@ -450,6 +490,14 @@ const abbtn = function (no, type) {
   const delBtn = document.querySelector("#delBtn");
 
   if (listBtn) {
+      listBtn.onclick = function () {
+          resetView();
+          restoreListWithTabs();
+      };
+  }
+
+  /*
+  if (listBtn) {
     listBtn.onclick = function () {
       aboardDetail.innerHTML = "";
       detTitle.innerHTML = "";
@@ -460,6 +508,7 @@ const abbtn = function (no, type) {
       detailToList(type); // 목록으로
     };
   }
+  */
 
   if (editBtn) {
     editBtn.onclick = function () {
