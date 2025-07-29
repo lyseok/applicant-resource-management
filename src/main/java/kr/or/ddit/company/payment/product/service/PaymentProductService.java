@@ -11,7 +11,7 @@ public interface PaymentProductService {
 
 	public PaymentProductVO selectPaymentProductByPk(String productNo);
 
-	public int insertPaymentProduct(PaymentProductVO vo);
+	public String insertPaymentProduct(PaymentProductVO vo);
 
 	public int updatePaymentProduct(PaymentProductVO vo);
 

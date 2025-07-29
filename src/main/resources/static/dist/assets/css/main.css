@@ -2500,7 +2500,7 @@ body .chips {
     margin: 0 auto;
     width: 1260px;
     grid-auto-flow: row;
-    gap: 24px
+    gap: 32px;
 }
 .cont_product .z-index1{
 	position:relative;

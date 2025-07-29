@@ -45,12 +45,12 @@
 
 <body style="background:#fafafc;">
 
-  <div class="card-body px-5 py-4">
+  <div class="card-body px-5 pt-4">
 
   </div>
 
-  <div class="d-flex justify-content-center gap-3 mb-4">
-    <a href="/mypage/notice_management" class="btn btn-outline-secondary px-5 py-2">목록</a>
+  <div class="d-flex justify-content-end gap-2 mb-4 px-5">
+    <a href="/mypage/notice_management" class="btn btn_gray_line">목록</a>
     <button id="btnEditNotice" class="btn btn_violet px-5 py-2">수정</button>
   </div>
 

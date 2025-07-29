@@ -42,6 +42,7 @@ function convertServerPosts(serverPosts) {
     title: item.prjEmpTitle,
     content: item.prjAnncContent || '',
     nickname: item.memName,
+    image: item.memImg,
     job: item.prjTopic || '',
     date: item.anncCreateDate || '',
     like: 0,
@@ -68,30 +69,28 @@ function renderPostList(posts) {
         <div class="PostList_post">
           <div class="ListItem_post">
             <div class="ListItem_post_item">
-              <h2 class="ListItem_post_title">${post.title} · ${
-        post.anncEndYn === 'Y' ? '모집완료' : '모집중'
-      }</h2>
-              <div class="ListItem_post_content">
-                ${post.job}
+            	<div class="d-flex align-items-center gap-3 mb-2">
+            		<span class="badge badge-recruit  ${post.anncEndYn === 'Y' ? 'opacity-50' : ''}">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
+              	<h2 class="ListItem_post_title mb-0">${post.title}</h2>
               </div>
-              <div class="ListItem_post_content">
+              <div class="fs-13 text-violet110 mb-1">#${post.job}</div>
+              <div class="fs-14 text-truncate">
                 ${
                   post.content.length > 80
                     ? post.content.slice(0, 80) + '...'
                     : post.content
                 }
               </div>
-              <div class="ListItem_post_content">
-                ${(post.tags || []).map((tag) => `${tag}`).join(' · ')}
+              <div class="d-flex gap-2 my-2">
+                ${(post.tags || []).map((tag) => `<span class="badge badge-tag">${tag}</span>`).join('')}
               </div>
             </div>
           </div>
-          ${post.job ? `<span class="badge badge-tag">${post.job}</span>` : ''}
           <div class="ListItem_info">
             <div class="ListItem_profile">
               <div class="ListItem_profile_pic">
-                <img src="https://www.saraminimage.co.kr/sri/career-service/profile/character04.png"
-                  alt="프로필 이미지" />
+                <img src="${post.image != null ? post.image : 'https://placehold.co/28x28'}"
+                  alt="${post.nickname || ''} 프로필 이미지" />
               </div>
               <div class="ListItem_profile_info">
                 <div class="ListItem_profile_infoDiv">
@@ -403,3 +402,8 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 });
+
+const writeBtn = document.getElementById('writeBtn');
+writeBtn.addEventListener("click" , function(){
+	location.href = `/board/project/form`
+})

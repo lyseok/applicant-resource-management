@@ -2,8 +2,10 @@
 package kr.or.ddit.mapper.common;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.or.ddit.vo.common.AdminPaymentVO;
 import kr.or.ddit.vo.common.PaymentListVO;
@@ -60,6 +62,13 @@ public interface PaymentMapper {
 	
 	public List<String> selectChurnedSubscribers();		// 이번달 해지한사람
 	
-	public List<String> selectLeftSubscribers();
+	public List<String> selectLeftSubscribers();		// 해지한 사람
+	
+	List<Integer> selectMonthlySales(@Param("year") int year);
+	
+	public Integer selectMonthlySales(Map<String, String> of);
+	
+	public String getUserId();
+	
 	
 }

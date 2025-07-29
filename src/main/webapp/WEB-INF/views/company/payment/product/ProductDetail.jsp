@@ -28,8 +28,8 @@
 	<div class="card shadow">
 		<div class="row g-0">
 			<div class="col-md-4">
-				<img src="/upload/${product.productImg}"
-					class="img-fluid rounded-start" alt="상품 이미지" />
+				<img src="${product.productImg}" alt="상품 이미지" class="rounded"
+					style="width: 120px; height: 120px; object-fit: cover;">
 			</div>
 			<div class="col-md-8">
 				<div class="card-body">
@@ -55,8 +55,7 @@
 
 					<button class="btn btn-primary" onclick="subscribe(event, this)"
 						id="sub-btn" data-product-no="${product.productNo}"
-						data-billing-key="${payment.paymentBillingKey}"
-						>구독하기</button>
+						data-billing-key="${payment.paymentBillingKey}">구독하기</button>
 				</div>
 				<button onclick="history.back()">뒤로가기</button>
 			</div>
