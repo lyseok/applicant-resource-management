@@ -28,4 +28,9 @@ public interface SalaryMapper {
 	public List<Map<String, Object>> selectSalaryListAllCompany();
 	public List<Map<String, Object>> selectSimilarCompanySalariesList(String industryType);
 	
+	
+	public List<Map<String, Object>> selectSalaryListAllCompanyPaged(Map<String, Object> params);	
+	
+	public int countSalaryListAllCompany(Map<String , Object> params);
+	
 }
