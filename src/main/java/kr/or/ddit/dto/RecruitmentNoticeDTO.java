@@ -31,6 +31,7 @@ public class RecruitmentNoticeDTO {
     private String recruitmentFinishDate;
     private String recruitFinishYn;
     private String recContent;
+    private String comLogo;
 
     private List<RecruitmentPositionDTO> positionList;
     private RecruitmentEducationDTO education;  

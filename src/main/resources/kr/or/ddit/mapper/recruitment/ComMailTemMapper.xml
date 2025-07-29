@@ -13,6 +13,7 @@
 	FROM COM_MAIL_TEM
 	WHERE USER_ID = #{userId}
 	AND DELETE_DATE IS NULL
+	ORDER BY CREATE_DATE DESC
 </select>
 
 <select id="selectComMailTem">

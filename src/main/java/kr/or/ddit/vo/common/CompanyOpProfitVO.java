@@ -10,7 +10,7 @@ public class CompanyOpProfitVO implements Serializable{
 	private String comProfitId;
 	private String userId;
 	private String comProfitYear;
-	private long comOperatingProfit;
+	private String comOperatingProfit;
 	private String createDate;
 	
 }

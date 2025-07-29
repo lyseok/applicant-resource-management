@@ -46,7 +46,7 @@
             <h4 class="mb-0">상품 등록<span id="selectedType" class="fw-normal"></span></h4>
         </div>
         <div class="card-body">
-            <form id="insertForm">
+            <form id="insertForm" enctype="multipart/form-data">
                 <!-- 선택된 상품 유형도 hidden으로 전송 -->
                 <input type="hidden" name="productType" id="productType">
 	
@@ -71,7 +71,7 @@
                 <!-- 상품 이미지 -->
                 <div class="mb-3">
                     <label for="productImg" class="form-label">상품 이미지</label>
-                    <input type="file" class="form-control" id="productImg" name="productImg">
+                     <input type="file" class="form-control" id="productImgFile" name="productImgFile">
                 </div>
 
                 <!-- 공통 사항: PRODUCT_LIMIT -->

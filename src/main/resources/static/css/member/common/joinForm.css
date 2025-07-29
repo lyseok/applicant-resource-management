@@ -99,6 +99,20 @@ em, i {
     font-style: normal
 }
 
+.gender-row {
+  display: flex;
+  gap: 4rem; /* 남성/여성 간 간격 */
+  margin-top: 0.5rem;
+}
+
+.gender-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem; /* 라디오 버튼과 텍스트 간 간격 */
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
 .img_svg_layout, .img_svg_common, .img_svg_hidden {
     visibility: hidden;
     overflow: hidden;

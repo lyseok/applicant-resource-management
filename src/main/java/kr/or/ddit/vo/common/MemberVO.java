@@ -23,4 +23,5 @@ public class MemberVO extends UsersVO implements Serializable {
 	private String memImg;
 	@MimeTypeCheck(mainType = "image/")
 	private MultipartFile memberImage;
+	private String memGender;
 }

@@ -356,7 +356,7 @@
 				<div class="button-group">
 					<button class="btn">필터</button>
 					<!-- <button class="btn">정렬: 최신순</button> -->
-					<button class="btn" id="addTalent">관심 인재 등록</button>
+					<button class="btn btn_violet_line" id="addTalent">관심 인재 등록</button>
 					<button class="btn btn_violet_line">필터링</button>
 				</div>
 			</div>
@@ -365,7 +365,7 @@
 			<div class="filter-container">
 				<div class="filter-column">
 					<div class="filter-group">
-						<div class="filter-label">경력 (년)</div>
+						<div class="filter-label">최근 경력 (년)</div>
 						<div class="range-slider">
 							<div class="slider-track"></div>
 							<div class="slider-range" style="left: 0%; right: 0%"></div>
@@ -387,7 +387,7 @@
 
 				<div class="filter-column">
 					<div class="filter-group">
-						<div class="filter-label">학력</div>
+						<div class="filter-label">최종 학력</div>
 						<div class="education-options">
 						</div>
 					</div>
@@ -440,7 +440,7 @@
 						<th>최종 학력</th>
 						<th>어학</th>
 						<th>연락처</th>
-						<th>최근 경력</th>
+						<th>최근 경력(년)</th>
 						<th>자격증</th>
 						<th>보유기술</th>
 					</tr>

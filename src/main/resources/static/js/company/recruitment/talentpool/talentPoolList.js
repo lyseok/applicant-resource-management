@@ -1,3 +1,26 @@
+// Floating dropdown overlay for .dropdown-hover
+document.addEventListener('mouseover', function (e) {
+  if (e.target.closest('.dropdown-hover')) {
+    const container = e.target.closest('.dropdown-hover');
+    const dropdown = container.querySelector('.dropdown-content');
+    if (dropdown) {
+      const rect = container.getBoundingClientRect();
+      dropdown.style.top = rect.top - dropdown.offsetHeight + 'px';
+      dropdown.style.left = rect.left + 'px';
+      dropdown.style.display = 'block';
+    }
+  }
+});
+document.addEventListener('mouseout', function (e) {
+  if (e.target.closest('.dropdown-hover')) {
+    const dropdown = e.target
+      .closest('.dropdown-hover')
+      .querySelector('.dropdown-content');
+    if (dropdown) {
+      dropdown.style.display = 'none';
+    }
+  }
+});
 const skillInput = document.querySelector('.skill-input');
 const licenseInput = document.querySelector('.license-input');
 const majorInput = document.querySelector('.major-input');
@@ -177,12 +200,13 @@ function renderTalentPoolTable(talentList) {
         </div>
       </td>
       <td>
-        <div class="my-list">
+        <div class="my-list dropdown-hover">
           ${licenses.map((l) => `<span class="skill-tag">${l}</span>`).join('')}
+
         </div>
       </td>
       <td>
-        <div class="my-list">
+        <div class="my-list dropdown-hover">
           ${skills.map((s) => `<span class="skill-tag">${s}</span>`).join('')}
         </div>
       </td>
