@@ -310,7 +310,11 @@
       </div>
 
       <script>
+
+        let companyList = [];
+
         document.addEventListener('DOMContentLoaded', function () {
+          initCompanyList();
           // 버튼과 레이어 변수 저장
           const memberBtn = document.querySelector('.member_btn');
           const memberLayer = document.querySelector('.layer_member');
@@ -401,9 +405,18 @@
 
             if (selectedCategory === 'recruit') {
               location.href = `/search/recruit?keyword=` + keyword;
+            } else {
+              location.href = `/member/company_view?no=` + keyword;
             }
           });
         });
+
+        function initCompanyList() {
+          axios.get('/ajax/company_name').then((res) => {
+            companyList = res.data;
+            console.log('Company List Initialized:', companyList);
+          });
+        }
 
       </script>
     </header>
