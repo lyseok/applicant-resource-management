@@ -13,4 +13,6 @@ public interface CompanySalaryService {
 	public List<Map<String, Object>> readSimilarCompanySalariesList(String industryType);
 	
 	public Map<String, Object> readSalaryListAllCompanyPaged(Map<String, Object> params);
+	
+	public Map<String, Object> readCompanySalaryRankByIndu(String userId, String industryType);
 }

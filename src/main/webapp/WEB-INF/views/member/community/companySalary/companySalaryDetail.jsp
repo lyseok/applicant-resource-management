@@ -98,41 +98,85 @@ body {
 	cursor: default;
 }
 
-/* 테이블 */
+.table-scroll-container {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
+.fixed-table-wrapper {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: #fff;
+    border-right: 1px solid #ddd;
+}
+
+.fixed-table-wrapper .compare-table {
+    width: auto;
+    border-collapse: collapse;
+}
+
 .table-wrapper {
-	overflow-x: auto;
-	margin-top: 2rem;
-	margin-left: 80px;
-	margin-right: 40px;
+    overflow-x: hidden; /* 넘치는 부분 가리기 */
+    flex: 1;
+    max-width: calc(200px * 4); /* 4개의 열만 보이도록 (열 너비 * 4) */
+    scroll-behavior: smooth;
 }
 
 .compare-table {
-	width: 100%;
-	border-collapse: collapse;
-	text-align: center;
-	font-size: 1.2rem;
-	border: none;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 1.2rem;
+    border: none;
+    min-width: max-content;
 }
-
 .compare-table th, .compare-table td {
-	padding: 0.7rem 0.6rem;
-	border: none; /* 각 셀 테두리 제거 */
-	text-align: center;
+    padding: 0.7rem 0.6rem;
+    border: none;
+    text-align: center;
+    min-width: 200px;
 }
-
 .compare-table thead th {
-	background: none;
-	font-weight: 500;
-	border-bottom: 1px solid #ddd; /* 헤더 아래만 라인 */
+    font-weight: 500;
+    border-bottom: 1px solid #ddd;
 }
-
 .compare-table tbody tr:nth-child(even) {
-	background: #fafafa;
+    background: #fafafa;
+}
+.compare-table .selected {
+    background: rgba(124, 58, 237, 0.08);
+    font-weight: bold;
 }
 
-/* 선택된 열 강조 */
-.compare-table .selected {
-	background: rgba(124, 58, 237, 0.08); /* 연보라색 배경 */
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%; /* 원형 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index: 10;
+    font-size: 1.5rem;
+    color: #555;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+.scroll-btn:hover {
+    background: var(--violet70);
+    color: #fff;
+}
+.scroll-btn.left {
+    left: -60px; /* 살짝 바깥으로 */
+}
+.scroll-btn.right {
+    right: -60px;
 }
 
 /* 연봉 차트 */
@@ -163,7 +207,7 @@ body {
 	position: relative;
 	width: 100%;
 	height: 50px;
-	background: #e5e5e5;
+	background: var(--violet30);
 	border-radius: 8px;
 }
 
@@ -188,7 +232,7 @@ body {
 	position: absolute;
 	top: -20px;
 	font-size: 0.8rem;
-	color: #666;
+	color: var(--violet70);
 	transform: translateX(-50%);
 	white-space: nowrap;
 }
@@ -207,98 +251,85 @@ body {
 	margin-right: 40px;
 }
 
+.section-card{
+	padding-bottom: 70px;
+}
+
+#sim-section{
+	padding-top: 30px;
+}
+
+#cht-section{
+	width: 90%;
+	align-items: center;
+}
+
 #icon {
-	display: inline-flex; /* 내용 길이에 맞게 */
-	align-items: center; /* 텍스트와 아이콘 세로 정렬 */
-	gap: 15px; /* 아이콘과 텍스트 간격 */
-	padding: 6px 12px; /* 여백 최소화 */
+	display: inline-flex;
+	align-items: center;
+	gap: 15px;
+	padding: 6px 12px;
 	background-color: var(--violet40);
-	border-radius: 6px; /* 살짝 둥글게 */
+	border-radius: 6px;
 	font-size: 0.95rem;
 	color: #333;
-}
-
-.table-scroll-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.table-wrapper {
-    overflow-x: auto;
-    flex: 1;
-    scroll-behavior: smooth;
-}
-
-.scroll-btn {
-    background: #fff;
-    border: 1px solid #ddd;
-    font-size: 1.5rem;
-    cursor: pointer;
-    width: 40px;
-    height: 100%;
-    color: #555;
-    position: sticky;
-    z-index: 10;
-}
-
-.scroll-btn.left {
-    left: 0;
-}
-
-.scroll-btn.right {
-    right: 0;
 }
 
 
 </style>
 </head>
 <body>
-	<div class="container">
+<div class="container">
 
-		<div class="company-infomation-row" data-section="salary">
-			<div class="salary-summary-box">
-				<div class="summary-item">
-					<div id="salaryCompanyName" class="salary-company-name"></div>
-					<div class="summary-value" id="salaryAvgGross">-- 만원</div>
-					<div class="summary-label">전체 평균 연봉</div>
-					<div class="summary-sub">(임원 제외)</div>
-					<div class="summary-monthly" id="salaryAvgNet"></div>
-				</div>
-				<div class="summary-item">
-					<div class="summary-value" id="salaryNewhireGross">-- 만원</div>
-					<div class="summary-label">신입사원 초봉</div>
-					<div class="summary-monthly" id="salaryNewhireNet"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="salary-rank-wrapper">
-		<p class="section-title h3">직급별 연봉 통계</p>
-		<div class="chart-area">
-			<div class="salary-rank-scale" id="salaryRankScale"></div>
-			<div id="salaryRankChart" class="salary-rank-chart"></div>
-		</div>
-		<div id="icon">
-			최소연봉<i class="bx bxs-user"></i>최고연봉
-		</div>
-	</div>
-	<div class="similar-companies">
-		<p class="section-title h3">
-			유사기업 비교 <span class="tooltip">?</span>
-		</p>
-		<div class="table-scroll-container">
-			<button class="scroll-btn left">&lt;</button>
-			<div class="table-wrapper">
-				<table id="similarTable" class="compare-table">
-					<thead></thead>
-					<tbody></tbody>
-				</table>
-			</div>
-			<button class="scroll-btn right">&gt;</button>
-		</div>
-	</div>
+    <!-- 요약 -->
+    <div class="section-card">
+        <div class="section-title"><i class="bx bxs-bar-chart-alt-2"></i> 기업 연봉 요약</div>
+        <div class="salary-summary-box">
+            <div class="summary-item">
+                <div id="salaryCompanyName"></div>
+                <div class="summary-value" id="salaryAvgGross">-- 만원</div>
+                <div class="summary-label">전체 평균 연봉</div>
+                <div class="summary-sub">(임원 제외)</div>
+                <div class="summary-monthly" id="salaryAvgNet"></div>
+            </div>
+            <div class="summary-item">
+                <div id="salaryCompanyIndu"></div>
+                <div class="summary-value" id="salaryRank">-- 위</div>
+                <div class="summary-label">평균연봉 순위 </div>
+                <div class="summary-monthly" id="salaryNewhireNet"></div>
+            </div>
+        </div>
+    </div>
 
+    <!-- 차트 -->
+    <div class="section-card" id="cht-section">
+        <div class="section-title"><i class="bx bxs-analyse"></i> 직급별 연봉 통계</div>
+        <div class="chart-area">
+            <div id="salaryRankScale"></div>
+            <div id="salaryRankChart" class="salary-rank-chart"></div>
+        </div>
+    </div>
 
+    <!-- 유사 기업 -->
+    <div class="section-card" id="sim-section">
+        <div class="section-title"><i class="bx bxs-business"></i> 유사기업 비교</div>
+        <div class="table-scroll-container">
+            <div class="fixed-table-wrapper">
+                <table id="fixedTable" class="compare-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="table-wrapper">
+                <table id="scrollTable" class="compare-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <button class="scroll-btn left">&lt;</button>
+            <button class="scroll-btn right">&gt;</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

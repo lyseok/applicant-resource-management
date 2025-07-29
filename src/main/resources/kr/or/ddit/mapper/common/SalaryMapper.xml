@@ -363,4 +363,99 @@ SELECT COUNT(*) FROM (
 )
 </select>
 
+
+<select id="selectCompanySalariesRankByIndu" resultType="hashMap">
+    SELECT
+	    c.INDUSTRY_TYPE,
+	    c.COM_NAME,
+	    c.COM_MEM,
+	    c.COM_LOGO,
+	    c.USER_ID,
+	    ROUND(
+	        AVG(
+	            CASE
+	                WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+	                THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+	            END
+	        ), 0
+	    ) AS salaryAvgExclExec,
+	    ROUND(
+	        AVG((TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2), 0
+	    ) AS salaryAvgExec
+	FROM COMPANY c
+	LEFT JOIN SALARY s
+	    ON c.USER_ID = s.USER_ID
+	WHERE c.INDUSTRY_TYPE = #{industryType}
+	GROUP BY
+	    c.INDUSTRY_TYPE,
+	    c.COM_NAME,
+	    c.COM_MEM,
+	    c.COM_LOGO,
+	    c.USER_ID
+	HAVING
+	    ROUND(
+	        AVG(
+	            CASE
+	                WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+	                THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+	            END
+	        ), 0
+	    ) IS NOT NULL
+	ORDER BY
+	    salaryAvgExclExec DESC,
+	    c.COM_NAME
+</select>
+
+<select id="selectCompanySalaryRankByIndu" resultType="hashMap">
+ SELECT *
+	FROM (
+	    SELECT 
+	        c.INDUSTRY_TYPE,
+	        c.COM_NAME,
+	        c.COM_MEM,
+	        c.COM_LOGO,
+	        c.USER_ID,
+	        ROUND(
+	            AVG(
+	                CASE
+	                    WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+	                    THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+	                END
+	            ), 0
+	        ) AS salaryAvgExclExec,
+	        ROUND(
+	            AVG((TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2), 0
+	        ) AS salaryAvgExec,
+	        RANK() OVER (ORDER BY 
+	            ROUND(
+	                AVG(
+	                    CASE
+	                        WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+	                        THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+	                    END
+	                ), 0
+	            ) DESC, 
+	            c.COM_NAME
+	        ) AS salary_rank
+	    FROM COMPANY c
+	    LEFT JOIN SALARY s
+	        ON c.USER_ID = s.USER_ID
+	    WHERE c.INDUSTRY_TYPE = #{industryType}
+	    GROUP BY 
+	        c.INDUSTRY_TYPE,
+	        c.COM_NAME,
+	        c.COM_MEM,
+	        c.COM_LOGO,
+	        c.USER_ID
+	    HAVING
+	        AVG(
+	            CASE
+	                WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+	                THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+	            END
+	        ) IS NOT NULL
+	) ranked
+	WHERE ranked.USER_ID = #{userId}
+</select>
+
 </mapper>

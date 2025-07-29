@@ -86,6 +86,17 @@ public class CompanySalaryServiceImpl implements CompanySalaryService{
 				
 	}
 
+	@Override
+	public Map<String, Object> readCompanySalaryRankByIndu(String userId, String industryType) {
+		
+		Map<String, Object> rank = salaryMapper.selectCompanySalaryRankByIndu(userId, industryType);
+		String induCode = (String)rank.get("INDUSTRY_TYPE");
+		String induName = codeMapProvider.getInduName(induCode);
+		rank.put("INDU_NAME", induName);
+		return rank;
+		
+	}
+
 	
 
 

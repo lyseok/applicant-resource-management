@@ -33,4 +33,8 @@ public interface SalaryMapper {
 	
 	public int countSalaryListAllCompany(Map<String , Object> params);
 	
+	public Map<String, Object> selectCompanySalaryRankByIndu(String userId, String industryType);
+	
+	public List<Map<String, Object>> selectCompanySalariesRankByIndu(String industryType);
+	
 }
