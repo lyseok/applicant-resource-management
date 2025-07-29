@@ -96,7 +96,7 @@
 
       <li class="menu-header small text-uppercase"><span class="menu-header-text">맞춤 공고함</span></li>
       <li class="menu-item">
-        <a href="/member/mypage/scrab_company" class="menu-link">
+        <a href="/member/mypage/scrabCompany/list" class="menu-link">
           <i class="menu-icon tf-icons bx bx-bookmark"></i>
           <div data-i18n="Basic">스크랩</div>
         </a>
