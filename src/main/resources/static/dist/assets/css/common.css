@@ -48,43 +48,47 @@
 .bg-violet10{
 	background-color:#5a00fa !important;
 }
+/* 보더 */
+.border-violet30{
+	border:1px solid var(--violet30) !important;
+}
 
 /* 폰트 색상  */
 .text-violet10{
-	color:var(--violet10);
+	color:var(--violet10) !important;
 }
 .text-violet20{
-	color:var(--violet20);
+	color:var(--violet20) !important;
 }
 .text-violet30{
-	color:var(--violet30);
+	color:var(--violet30) !important;
 }
 .text-violet40{
-	color:var(--violet40);
+	color:var(--violet40) !important;
 }
 .text-violet50{
-	color:var(--violet50);
+	color:var(--violet50) !important;
 }
 .text-violet60{
-	color:var(--violet60);
+	color:var(--violet60) !important;
 }
 .text-violet70{
-	color:var(--violet70);
+	color:var(--violet70) !important;
 }
 .text-violet80{
-	color:var(--violet80);
+	color:var(--violet80) !important;
 }
 .text-violet90{
-	color:var(--violet90);
+	color:var(--violet90) !important;
 }
 .text-violet100{
-	color:var(--violet100);
+	color:var(--violet100) !important;
 }
 .text-violet110{
-	color:var(--violet110);
+	color:var(--violet110) !important;
 }
 .text-violet120{
-	color:var(--violet120);
+	color:var(--violet120) !important;
 }
 /* % 넓이 - width */
 .w100p{width:100% !important;}
@@ -116,6 +120,23 @@
 .lh40{line-height:40px !important;}
 .lh50{line-height:50px !important;}
 
+/* 테이블 레이아웃 */
+.table-layout-fixed {
+  table-layout: fixed !important;
+}
+
+/* 가로 스크롤 커스텀 */
+.row_custom_scroll::-webkit-scrollbar{
+	height: 3px;
+}
+/* 스크롤바 막대 */
+.row_custom_scroll::-webkit-scrollbar-thumb {
+    background: var(--gray40); /* 스크롤바 막대 색상 */
+    border-radius: 12px;
+}
+.row_custom_scroll::-webkit-scrollbar-thumb:hover{
+	cursor:pointer;
+}
 
 /* 버튼 */
 .btn{display:inline-flex; align-items:center;}
@@ -187,6 +208,20 @@
 	background-color:var(--violet100);
 }
 
+/* 해시태그 */
+.badge-tag-wrap{
+	display:flex;
+	gap:.5rem;	
+}
+.badge-tag{
+   background: var(--violet10);
+   padding: 5px 13px;
+   border-radius: 15px;
+   border: 1px solid var(--violet30);
+   font-weight: 500;
+   font-size: 12px;
+   color: var(--violet70);
+}
 
 /* 라디오버튼 커스텀 */
 .required{
