@@ -14,6 +14,7 @@ public class PrjAnncBbsVO implements Serializable {
 	private String prjAnncNo;
 	private String userId;
 	private String memName;
+	private String resumeNo;
 	@NotBlank
 	private String prjEmpTitle;
 	@NotBlank

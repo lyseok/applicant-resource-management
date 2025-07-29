@@ -127,16 +127,19 @@ function renderApplicants(list, idx) {
       <td class="py-2">${app.resume?.userName || '-'}</td>
       <td class="py-2 text-start">
 	      <a href="#" onclick="showResumeDetail('${
-	          app.resumeNo
-	        }');return false;" class="me-2 btn btn_violet_line btn-sm fs-12">상세</a>
+          app.resumeNo
+        }');return false;" class="me-2 btn btn_violet_line btn-sm fs-12">상세</a>
         ${app.resume?.resumeName || '-'}
       </td>
       <td class="py-2 overflow-auto row_custom_scroll">
       	<div class="text-nowrap text-center">
 		      ${
-		        (app.resume?.mySkillList || []).map(k => `<span class="badge-tag me-1">${k.mySkillName}</span>`).join('') ||
-		        '-'
-		      }
+            (app.resume?.mySkillList || [])
+              .map(
+                (k) => `<span class="badge-tag me-1">${k.mySkillName}</span>`
+              )
+              .join('') || '-'
+          }
       	</div>
       </td>
       <td class="fw-bold py-2">${STATUS_MAP[app.aplcntStatusCode] || '-'}</td>
@@ -148,7 +151,11 @@ function renderApplicants(list, idx) {
 
 // 이력서 상세 (예시)
 window.showResumeDetail = function (resumeNo) {
-  alert('이력서 상세보기: ' + resumeNo);
+  window.open(
+    '/popup/resume/' + resumeNo,
+    'resumePopup',
+    'width=950,height=800'
+  );
 };
 
 // ==================== 필터 UI/로직 ====================
