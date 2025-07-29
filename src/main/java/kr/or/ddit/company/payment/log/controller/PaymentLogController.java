@@ -45,9 +45,12 @@ public class PaymentLogController {
 	public String listFormUI(
 		Model model
 		 ,@RequestParam(defaultValue ="1") int page
+		 ,  @RequestParam(required = false, defaultValue = "all") String key,
+	        @RequestParam(required = false) String keyword
 			) {
 		
 		List<PaymentLogVO> history = service.selectLoghistoryByUserId(pservice.getUserId());
+//	    List<PaymentLogVO> history = service.filterLogHistory(key, keyword);
 		
 		int totalItems = history.size();
 		int itemsPerPage = 10;
@@ -59,7 +62,7 @@ public class PaymentLogController {
 		List<PaymentLogVO> pageList = history.subList(fromIndex, toIndex);
 		
 		log.info("history 값 : {}",history);
-		model.addAttribute("history",history);
+		model.addAttribute("history",pageList);
 		model.addAttribute("currentPage", page);
 	    model.addAttribute("totalPages", totalPages);
 		return "company/payment/log/PaymentLog";

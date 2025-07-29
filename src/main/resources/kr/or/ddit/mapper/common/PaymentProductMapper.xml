@@ -3,36 +3,38 @@
 <mapper namespace="kr.or.ddit.mapper.common.PaymentProductMapper">
 
 	<insert id="insertPaymentProduct">
-		<selectKey resultType="string" keyProperty="productNo"
-			order="BEFORE">
-			SELECT 'PAPD' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRODUCT_NO), LENGTH('PAPD')
-			+ 1)), 0) + 1, 6, '0')
-			FROM PAYMENT_PRODUCT
-		</selectKey>
-		INSERT INTO PAYMENT_PRODUCT (
-		PRODUCT_NO,
-		PRODUCT_NAME,
-		PRODUCT_TYPE,
-		PRODUCT_DETAIL,
-		PRODUCT_PRICE,
-		PRODUCT_IMG,
-		PRODUCT_PERIOD,
-		PRODUCT_STATUS,
-		PRODUCT_LIMIT, <!-- 추가된 컬럼 -->
-		LIMIT_CYCLE   <!-- 추가된 컬럼 -->
-		) VALUES (
-		#{productNo},
-		#{productName},
-		#{productType},
-		#{productDetail},
-		#{productPrice},
-		#{productImg},
-		#{productPeriod},
-		'A',
-		#{productLimit}, <!-- 추가된 컬럼 -->
-		'MONTH'
-		)
-	</insert>
+    <selectKey resultType="string" keyProperty="productNo" order="BEFORE">
+        SELECT 'PAPD' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRODUCT_NO), LENGTH('PAPD') + 1)), 0) + 1, 6, '0')
+        FROM PAYMENT_PRODUCT
+    </selectKey>
+    INSERT INTO PAYMENT_PRODUCT (
+        PRODUCT_NO,
+        PRODUCT_NAME,
+        PRODUCT_TYPE,
+        PRODUCT_DETAIL,
+        PRODUCT_PRICE,
+        PRODUCT_IMG,
+        PRODUCT_PERIOD,
+        PRODUCT_STATUS,
+        PRODUCT_LIMIT,
+        LIMIT_CYCLE
+    ) VALUES (
+        #{productNo},
+        #{productName},
+        #{productType},
+        #{productDetail},
+        #{productPrice},
+        #{productImg},
+        30,
+        'A',
+        <choose>
+            <when test="productType == 'Premium'">-1</when>
+            <otherwise>#{productLimit}</otherwise>
+        </choose>,
+        'MONTH'
+    )
+</insert>
+
 
 	
 
@@ -48,8 +50,8 @@
 		PRODUCT_IMG,
 		PRODUCT_PERIOD,
 		PRODUCT_STATUS,
-		PRODUCT_LIMIT, <!-- 추가된 컬럼 -->
-		LIMIT_CYCLE   <!-- 추가된 컬럼 -->
+		PRODUCT_LIMIT,  
+		LIMIT_CYCLE    
 		FROM PAYMENT_PRODUCT
 		ORDER BY PRODUCT_NAME ASC
 	</select>
@@ -66,8 +68,8 @@
 		PRODUCT_IMG,
 		PRODUCT_PERIOD,
 		PRODUCT_STATUS,
-		PRODUCT_LIMIT, <!-- 추가된 컬럼 -->
-		LIMIT_CYCLE   <!-- 추가된 컬럼 -->
+		PRODUCT_LIMIT,  
+		LIMIT_CYCLE    
 		FROM PAYMENT_PRODUCT
 		WHERE PRODUCT_NO = #{productNo}
 	</select>
@@ -83,8 +85,8 @@
 		PRODUCT_IMG,
 		PRODUCT_PERIOD,
 		PRODUCT_STATUS,
-		PRODUCT_LIMIT, <!-- 추가된 컬럼 -->
-		LIMIT_CYCLE   <!-- 추가된 컬럼 -->
+		PRODUCT_LIMIT,  
+		LIMIT_CYCLE    
 		FROM PAYMENT_PRODUCT
 		WHERE PRODUCT_NO = #{productNo}
 	</select>
@@ -101,8 +103,8 @@
 		PRODUCT_IMG,
 		PRODUCT_PERIOD,
 		PRODUCT_STATUS,
-		PRODUCT_LIMIT, <!-- 추가된 컬럼 -->
-		LIMIT_CYCLE   <!-- 추가된 컬럼 -->
+		PRODUCT_LIMIT,  
+		LIMIT_CYCLE    
 		FROM PAYMENT_PRODUCT
 		WHERE PRODUCT_NAME = #{productName}
 	</select>
@@ -117,17 +119,7 @@
 		PRODUCT_IMG = #{productImg},
 		PRODUCT_PERIOD = #{productPeriod},
 		PRODUCT_STATUS = #{productStatus},
-		PRODUCT_TYPE = #{productType},
-		PRODUCT_LIMIT = #{productLimit}, <!-- 추가된 컬럼 -->
-		LIMIT_CYCLE =
-		<choose>
-			<when test="productType == 'S'">
-				'MONTH'
-			</when>
-			<otherwise>
-				null
-			</otherwise>
-		</choose>
+		PRODUCT_LIMIT = #{productLimit} 
 		WHERE PRODUCT_NO = #{productNo}
 	</update>
 
