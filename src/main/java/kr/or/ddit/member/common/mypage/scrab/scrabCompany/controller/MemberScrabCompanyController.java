@@ -22,10 +22,12 @@ import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.utils.ErrorsUtils;
 import kr.or.ddit.vo.common.ScrabCompanyVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/member/mypage/scrab_company")
+@RequestMapping("/member/mypage/scrabCompany")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberScrabCompanyController {
 
 	private final MemberScrabCompanyService service;
@@ -36,6 +38,39 @@ public class MemberScrabCompanyController {
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);
 		return "member/common/mypage/scrab/scrabCompany/scompanyForm";
+	}
+	
+	@GetMapping("/list")
+	public String listUI(
+		Model model
+		, @RequestParam(defaultValue = "1") int page
+		, @RequestParam(required = false, defaultValue = "") String keyword
+			) {
+		List<ScrabCompanyVO> SCompany = service.readMyScrabCompanyList();
+		
+		int totalItems = SCompany.size();
+		int itemsPerPage = 10;
+		int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+		
+		int fromIndex = (page - 1) * itemsPerPage;
+		int toIndex = Math.min(fromIndex + itemsPerPage, totalItems);
+		
+		List<ScrabCompanyVO> pageList = SCompany.subList(fromIndex, toIndex);
+		
+		if(keyword != null && !keyword.trim().isEmpty()) {
+			SCompany = SCompany.stream()
+						.filter(s-> s.getCompany().getComName() != null &&
+									s.getCompany().getComName().toLowerCase()
+									 .contains(keyword.toLowerCase()))
+									 .toList();
+		}
+		
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("SCompany",pageList);
+		model.addAttribute("keyword", keyword);
+		log.info("SCompany : {}",SCompany);
+		return "member/common/mypage/scrab/scrabCompany/scompanyList";
 	}
 	
 	/*

@@ -3,34 +3,56 @@
 <mapper namespace="kr.or.ddit.mapper.common.ScrabCompanyMapper">
 
 	<select id="selectScrabCompanyList">
-		SELECT 
-			USER_ID
-			, COMPANY_ID
-			, SCRAB_COMPANY_DATE
-		FROM SCRAB_COMPANY
+		SELECT
+		USER_ID
+		, COMPANY_ID
+		, SCRAB_COMPANY_DATE
+		FROM
+		SCRAB_COMPANY
 	</select>
-	
-	<select id="selectMyScrabCompanyList">
-		SELECT 
-			USER_ID
-			, COMPANY_ID
-			, SCRAB_COMPANY_DATE
-		FROM SCRAB_COMPANY
-		WHERE USER_ID = #{userId}
+
+	<!-- <select id="selectMyScrabCompanyList"> SELECT USER_ID , COMPANY_ID 
+		, SCRAB_COMPANY_DATE FROM SCRAB_COMPANY WHERE USER_ID = #{userId} </select> -->
+
+	<resultMap id="ScrabCompanyMap" type="ScrabCompanyVO">
+		<id property="userId" column="USER_ID" />
+		<result property="companyId" column="COMPANY_ID" />
+		<result property="scrabCompanyDate" column="SCRAB_COMPANY_DATE" />
+		<association property="company"
+			javaType="kr.or.ddit.vo.common.CompanyVO">
+			<result property="comName" column="COM_NAME" />
+			<result property="comInfo" column="COM_INFO" />
+		</association>
+	</resultMap>
+
+	<select id="selectMyScrabCompanyList"
+		resultMap="ScrabCompanyMap">
+		SELECT
+		sc.COMPANY_ID,
+		sc.SCRAB_COMPANY_DATE,
+		c.COM_NAME,
+		c.COM_INFO
+		FROM
+		SCRAB_COMPANY sc
+		JOIN COMPANY c ON sc.COMPANY_ID = c.USER_ID
+		WHERE
+		sc.USER_ID = #{userId}
 	</select>
-	
+
+
 	<insert id="insertScrabCompany">
 		INSERT INTO SCRAB_COMPANY (
-			USER_ID
-			, COMPANY_ID
-			, SCRAB_COMPANY_DATE
+		USER_ID
+		, COMPANY_ID
+		,
+		SCRAB_COMPANY_DATE
 		) VALUES (
-			#{userId}
-			, #{companyId}
-			, SYSDATE
+		#{userId}
+		, #{companyId}
+		, SYSDATE
 		)
 	</insert>
-	
+
 	<delete id="deleteScrabCompany">
 		DELETE FROM SCRAB_COMPANY
 		WHERE USER_ID = #{userId}
