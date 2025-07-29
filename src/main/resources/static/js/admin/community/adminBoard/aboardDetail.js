@@ -33,6 +33,7 @@ const abno = function (no) {
   listTitle.style.display = "none";
   aboardform.style.display = "none";
   TypoBox_searchBar.style.display = "none";
+  document.querySelector('.PageBox').innerHTML = "";
   memTypeBtn.innerHTML = "";
   formBtn.innerHTML = "";
   aboardList.innerHTML = "";
@@ -414,10 +415,11 @@ const achtml = async function (no) {
 
 // 상세보기->목록
 const detailToList = function (type) {
-  //fetchData(type);
   if (type.startsWith("BRDD")) {
+	fetchData(type)
     alist(type);
   } else {
+	fetchData(type)
     alist2(type);
   }
 };

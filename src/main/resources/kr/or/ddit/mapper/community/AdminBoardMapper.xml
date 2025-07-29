@@ -133,6 +133,61 @@
 	    WHERE rnum &gt; #{startRow}
 	</select>
 	
+	<!-- 공지사항 리스트 조회 -->
+	<select id="selectNoticeList" resultType="AdminBoardVO">
+		SELECT 
+			  B.BOARD_NO
+			, B.USER_ID
+			, B.BOARD_TYPE_CODE
+			, B.BOARD_TITLE
+			, B.BOARD_WRITE_DATE
+			, B.BOARD_CONTENT
+			, B.BOARD_DELETE_DATE
+			, B.BOARD_POST_HIT
+			, B.BOARD_STATUS
+			, U.USER_ROLE
+		FROM ADMIN_BOARD B
+		JOIN USERS U ON B.USER_ID = U.USER_ID
+		<where>
+			B.BOARD_STATUS != 'D'
+			<if test='boardTypeCode == "BRDD-003" or boardTypeCode.contains("NTC")'>
+				AND B.BOARD_TYPE_CODE LIKE '%NTC%'
+			</if>
+		</where>
+	</select>
+	
+	<!-- 공지사항 기본 페이징 처리 -->
+	<select id="selectNotice" parameterType="map" resultMap="adminBoardMap">
+		SELECT * FROM (
+	        SELECT ROWNUM rnum, A.* 
+	        FROM (
+	            SELECT * 
+	            FROM ADMIN_BOARD
+	            <where>
+	                BOARD_STATUS != 'D'
+	                <if test="boardTypeCode != null and boardTypeCode != ''">
+						AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+					</if>
+	            </where>
+	            ORDER BY BOARD_NO DESC
+	        ) A
+	        WHERE ROWNUM &lt;= #{endRow}
+	    )
+	    WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<!-- 공지사항용 기본 페이지 개수 조회 -->
+	<select id="selectCountNotice" parameterType="map" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM ADMIN_BOARD
+	    <where>
+	        BOARD_STATUS != 'D'
+	        <if test="boardTypeCode != null and boardTypeCode != ''">
+				AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+			</if>
+	    </where>
+	</select>
+	
 	<!-- 게시판 유형별, 기본 페이징 처리 -->
 	<select id="selectAdminBoard" parameterType="map" resultMap="adminBoardMap">
 		SELECT * FROM (

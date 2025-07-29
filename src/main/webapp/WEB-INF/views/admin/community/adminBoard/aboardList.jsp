@@ -7,6 +7,15 @@
 <head>
 	<title>띹잡 관리자 페이지 | 관리자게시판</title>
 	<link rel="stylesheet" href="/dist/assets/css/board/jop_view.css" >
+<style>
+#allBtns button {
+  margin-right: 8px; /* 버튼 사이 간격 */
+}
+
+#allBtns button:last-child {
+  margin-right: 0; /* 마지막 버튼은 여백 제거 */
+}
+</style>
 </head>
 <body>
 

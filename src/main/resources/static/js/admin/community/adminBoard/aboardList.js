@@ -15,67 +15,107 @@ const TypoBox_searchBar = document.querySelector('.TypoBox.searchBar');
 
 //==================== 필터링 및 페이징 ===============================================
 
+// 0. 페이지 데이터
 const params = {
   page: 1,       // 시작 페이지, 
   pageSize: 10,  // 리스트에 몇개씩 보여줄건지
 };
 
 // 1. 출력할 리스트 가져오기
-function fetchData(type) {
-  alist(type);
+function fetchData(type, activeTab) {
+
   const paramsString = paramsSerializer(params);
   console.log('필터링 요청:', paramsString);
+
+  setActiveTab(activeTab);  //클릭한 탭(user, corp, event)에 맞게 넘어옴
+  console.log("setActiveTAb?", activeTab);
+
   axios
-    .get(`/ajax/admin/board/admin_board/${type}/page?` + paramsString)
+    .get(`/ajax/admin/board/admin_board/${type}/notice-page?` + paramsString)
     .then((res) => {
-	  //console.log("res?", res);
-	  //console.log("res.data?", res.data);
-      // res.data가 배열이면 바로 사용
       const resp = res.data;
-      //alist(type, resp.data);
-      //bhtml(resp.data);
+      console.log("resp?", resp);
+      bhtml(resp.data);
+	  nlist(activeTab);  //클릭한 탭(user, corp, event)이 들어옴
 
       totalPage = Math.ceil(resp.totalCnt / params.pageSize);
-      //console.log(totalPage, params.page);
-      renderPager(totalPage, params.page); // 페이저 렌더링
+      console.log(totalPage, params.page);
+      renderPager(totalPage, params.page, activeTab); // 페이저 렌더링
+      console.log("renderPager?", activeTab);
     })
     .catch((err) => {
       alert('데이터를 불러오는 데 실패했습니다.');
+      console.log("현정 에렁",err);
     })
 }
 
 // 2. 가져온 리스트에 페이저 찍기
-function renderPager(totalPages, page) {
+function renderPager(totalPages, page, activeTab) {
+	console.log("activeTab?", activeTab);
+	setActiveTab(activeTab);
   let pagerHtml = '';
   for (let i = 1; i <= totalPages; i++) {
-    if (i === page) {
-      pagerHtml += `<span class="BtnType SizeS active">${i}</span>`;
+    if (i === page) {  //<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="noticeUser('UNTC')">
+      pagerHtml += `<span class="BtnType SizeS active" data-tab="${activeTab}">${i}</span>`;
     } else {
-      pagerHtml += `<button class="BtnType SizeS page" data-page="${i}">${i}</button>`;
+      pagerHtml += `<button class="BtnType SizeS page" data-page="${i}" data-tab="${activeTab}">${i}</button>`;
     }
   }
   if (page < totalPages) {
     pagerHtml += `<button data-page="${
       page + 1
-    }" class="BtnType SizeS BtnNext btnNext">다음</button>`;
+    }" class="BtnType SizeS BtnNext btnNext" data-tab="${activeTab}">다음</button>`;
   }
   document.querySelector('.PageBox').innerHTML = pagerHtml;
 }
 
-// 페이저 클릭 (이벤트 위임)
+// 페이지 숫자 클릭
+document.querySelector('.PageBox').addEventListener('click', function (e) {
+  if (e.target.classList.contains('page') || e.target.classList.contains('BtnNext')) {
+    let page = e.target.classList.contains('page')
+      ? Number(e.target.dataset.page)
+      : params.page + 1;
+
+    let activeTab = e.target.dataset.tab; // 버튼에 저장된 탭 값
+    params.page = page;
+
+    // 탭 활성화 처리
+    document.querySelectorAll('#noticeTabs .nav-link').forEach(link => link.classList.remove('active'));
+    document.querySelector(`#noticeTabs .nav-link.${activeTab}`)?.classList.add('active');
+
+    // 데이터 로드
+    fetchData(type, activeTab, params.page, params.pageSize);
+  }
+});
+
+/*
+// 페이지 숫자 클릭
 document.querySelector('.PageBox').addEventListener('click', function (e) {
   if (e.target.classList.contains('page')) {
-    const page = Number(e.target.dataset.page);
+    let page = Number(e.target.dataset.page);
+    let activeTab = e.target.dataset.tab; // ← 버튼에 저장된 탭 값 가져오기
     params.page = page;
-    fetchData(type, params.page, params.pageSize);
+
+    // 탭 활성화는 따로 처리 (버튼 클릭이니까 setActiveTab은 직접 클래스만 바꿔주는 걸로)
+    document.querySelectorAll('#noticeTabs .nav-link').forEach(link => link.classList.remove('active'));
+    document.querySelector(`#noticeTabs .nav-link.${activeTab}`)?.classList.add('active');
+
+    fetchData(type, activeTab, params.page, params.pageSize);  //noticeUser()등에서 type 부여
   } else if (e.target.classList.contains('BtnNext')) {
     params.page += 1;
-    fetchData(type, params.page, params.pageSize);
+    let activeTab = e.target.dataset.tab; // ← 버튼에 저장된 탭 값 가져오기
+    
+    // 탭 활성화는 따로 처리 (버튼 클릭이니까 setActiveTab은 직접 클래스만 바꿔주는 걸로)
+    document.querySelectorAll('#noticeTabs .nav-link').forEach(link => link.classList.remove('active'));
+    document.querySelector(`#noticeTabs .nav-link.${activeTab}`)?.classList.add('active');
+    
+    fetchData(type, activeTab, params.page, params.pageSize);
   }
   // 필요시 이전(Prev) 버튼도 처리
 });
+*/
 
-//필터링
+// 페이지 쿼리스트링에 검색 필터링 쿼리스트링 더하기
 const paramsSerializer = function (params) {
   const query = [];
   for (const key in params) {
@@ -125,6 +165,8 @@ const newFormBtn = function () {
 
 // ✅ 탭 UI 활성화 처리
 function setActiveTab(e) {
+	console.log("e?", e);
+	
 	if (!e || !e.target) return;
 
 	const parent = e.target.closest("ul");
@@ -136,40 +178,15 @@ function setActiveTab(e) {
 	e.target.classList.add("active");
 }
 
-/*
-const params = {
-  page: 1,       // 시작 페이지, 
-  pageSize: 10,  // 리스트에 몇개씩 보여줄건지
-};
-*/
-
-// ✅ 카드 UI 렌더링
+// ✅ 관리자게시판 목록 UI
 const bhtml = function (rslt) {
+	console.log("체킁 bhtml",rslt);
 	listTitle.style.display = "block";
 	aboardform.style.display = "none";
 	TypoBox_searchBar.style.display = "block";
-	
-	// 변수 선언해두고 보면서 하기, 수정도 변수만 하면 됨!
-	//countPerPage : 10
-	//curPage : 1 시작시 기본값
-	//startNum : 0, 10, 20, 30 => (curPage-1)*countPerPage
-	//endNum : 9, 19, 29 => startNum + (countPerPage - 1)
-	//totalPage : Math.ceil(rslt.length/countPerPage) => 마지막 페이지까지 고려
-	
-	let params = {
-		countPerPage : '',
-		curPage : '',
-		startNum : '',
-		endNum : '',
-		totalPage : ''
-	}
-	
-	params.page = 1;
-	params.pageSize = 10;
 
 	let html = '<div class="list_body">';
 	rslt.forEach((item) => {
-		console.log("item?", item);  //배열의 데이터 하나하나
 		html += `
 			<div class="list_item mb-3">
 				<div class="box_item p-3 border rounded">
@@ -195,51 +212,55 @@ const bhtml = function (rslt) {
 
 //=========================== 유형별 함수 ==================================================================================
 
-// ✅ 문의사항 탭 렌더링
-const asklist = function (type, activeTab = 'all') {
+//==========!공지!=================================================================================
+
+// ✅ 공지사항 탭 렌더링
+const nlist = function (activeTab) {
 	let html = `
-		<p class="h4">문의사항 탭 선택</p>
-		<ul class="nav nav-underline" id="askTabs">
+		<p class="h4">공지사항 탭 선택</p>
+		<ul class="nav nav-underline" id="noticeTabs">
 			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="askUser('${type}')">일반회원</a>
+				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="javascript:void(0)" onclick="noticeUser('UNTC')">일반회원</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="askCorp('${type}')">기업회원</a>
+				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="javascript:void(0)" onclick="noticeCorp('CNTC')">기업회원</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="askAll('${type}')">전체</a>
+				<a class="nav-link ${activeTab === 'event' ? 'active' : ''}" href="javascript:void(0)" onclick="noticeEvent('ENTC')">이벤트</a>
 			</li>
 		</ul>`;
 	memTypeBtn.innerHTML = html;
 };
 
-// ✅ 드롭다운 항목을 동적으로 생성하는 함수
-const loadFaqDropdownItems = function(groupCode, containerId, userType) {
-	fetch(`/ajax/admin/board/admin_board/cmn/${groupCode}`)
-		.then(resp => resp.json())
-		.then(rslt => {
-			const menu = document.querySelector(`#${containerId}`);
-			rslt.forEach(item => {
-				const li = document.createElement("li");
-				li.innerHTML = `
-					<a class="dropdown-item" href="#" onclick="faqDetail('${item.codeDetailNo}', '${userType}')">
-						${item.codeName}
-					</a>`;
-				menu.appendChild(li);
-			});
-		});
+// ✅ 공지사항 일반회원 데이터
+const noticeUser = function(type) {
+	setActiveTab('user');
+	fetchData(type, 'user');
 };
 
-// ✅ 상세 유형 FAQ 조회
-const faqDetail = function(codeDetailNo, userType = 'all') {
-	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/${codeDetailNo}`)
+// ✅ 공지사항 기업회원 데이터
+const noticeCorp = function(type) {
+	setActiveTab('corp');
+	fetchData(type, 'corp');
+};
+
+// ✅ 공지사항 이벤트 데이터
+const noticeEvent = function(type) {
+	setActiveTab('event');
+	fetchData(type, 'event');
+};
+
+// ✅ 단일 타입 프리로드
+const pre = function(type) {
+	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
-			flist(userType); // 클릭된 탭 유지
+			nlist();
 		});
 };
+
+//==========!자주묻는질문!============================================
 
 // ✅ FAQ 탭 렌더링
 const flist = function (activeTab = 'all') {
@@ -279,56 +300,35 @@ const flist = function (activeTab = 'all') {
 	loadFaqDropdownItems('CFAQ', 'corpFaqDropdownMenu', 'corp');
 };
 
-// ✅ 공지사항 탭 렌더링
-const nlist = function (activeTab = 'user') {
-	let html = `
-		<p class="h4">공지사항 탭 선택</p>
-		<ul class="nav nav-underline" id="noticeTabs">
-			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="noticeUser()">일반회원</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="noticeCorp()">기업회원</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link ${activeTab === 'event' ? 'active' : ''}" href="#" onclick="noticeEvent()">이벤트</a>
-			</li>
-		</ul>`;
-	memTypeBtn.innerHTML = html;
-};
-
-// ✅ 문의사항 데이터
-const askAll = function(type) {
-	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/${type}`)
+// ✅ 드롭다운 항목을 동적으로 생성하는 함수
+const loadFaqDropdownItems = function(groupCode, containerId, userType) {
+	fetch(`/ajax/admin/board/admin_board/cmn/${groupCode}`)
 		.then(resp => resp.json())
 		.then(rslt => {
-			bhtml(rslt);
-			asklist(type, 'all');
+			const menu = document.querySelector(`#${containerId}`);
+			rslt.forEach(item => {
+				const li = document.createElement("li");
+				li.innerHTML = `
+					<a class="dropdown-item" href="#" onclick="faqDetail('${item.codeDetailNo}', '${userType}')">
+						${item.codeName}
+					</a>`;
+				menu.appendChild(li);
+			});
 		});
 };
 
-const askUser = function(type) {
+// ✅ 자주묻는 질문 상세유형 데이터
+const faqDetail = function(codeDetailNo, userType = 'all') {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/${type}?userRole=ROLE_USER`)
+	fetch(`/ajax/admin/board/admin_board/pre/${codeDetailNo}`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
-			asklist(type, 'user');
+			flist(userType);
 		});
 };
 
-const askCorp = function(type) {
-	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/${type}?userRole=ROLE_COMPANY`)
-		.then(resp => resp.json())
-		.then(rslt => {
-			bhtml(rslt);
-			asklist(type, 'corp');
-		});
-};
-
-// ✅ FAQ 데이터
+// ✅ 자주묻는질문 전체 데이터
 const faqAll = function() {
 	setActiveTab();
 	fetch(`/ajax/admin/board/admin_board/list/BRDD-002`)
@@ -339,6 +339,7 @@ const faqAll = function() {
 		});
 };
 
+// ✅ 자주묻는질문 일반회원 데이터
 const faqUser = function() {
 	setActiveTab();
 	fetch(`/ajax/admin/board/admin_board/pre/UFAQ`)
@@ -349,6 +350,7 @@ const faqUser = function() {
 		});
 };
 
+// ✅ 자주묻는질문 기업회원 데이터
 const faqCorp = function() {
 	setActiveTab();
 	fetch(`/ajax/admin/board/admin_board/pre/CFAQ`)
@@ -359,46 +361,59 @@ const faqCorp = function() {
 		});
 };
 
-// ✅ 공지사항 데이터
-const noticeUser = function() {
+//============!문의사항!==================================================================
+
+// ✅ 문의사항 탭 렌더링
+const asklist = function (type, activeTab = 'all') {
+	let html = `
+		<p class="h4">문의사항 탭 선택</p>
+		<ul class="nav nav-underline" id="askTabs">
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="askUser('${type}')">일반회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'corp' ? 'active' : ''}" href="#" onclick="askCorp('${type}')">기업회원</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link ${activeTab === 'all' ? 'active' : ''}" href="#" onclick="askAll('${type}')">전체</a>
+			</li>
+		</ul>`;
+	memTypeBtn.innerHTML = html;
+};
+
+// ✅ 문의사항 전체 데이터
+const askAll = function(type) {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/UNTC`)
+	fetch(`/ajax/admin/board/admin_board/${type}`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
-			nlist('user');
+			asklist(type, 'all');
 		});
 };
 
-const noticeCorp = function() {
+// ✅ 문의사항 일반회원 데이터
+const askUser = function(type) {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/CNTC`)
+	fetch(`/ajax/admin/board/admin_board/${type}?userRole=ROLE_USER`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
-			nlist('corp');
+			asklist(type, 'user');
 		});
 };
 
-const noticeEvent = function() {
+// ✅ 문의사항 기업회원 데이터
+const askCorp = function(type) {
 	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/pre/ENTC`)
+	fetch(`/ajax/admin/board/admin_board/${type}?userRole=ROLE_COMPANY`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
-			nlist('event');
+			asklist(type, 'corp');
 		});
 };
 
-// ✅ 단일 타입 프리로드
-const pre = function(type) {
-	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
-		.then(resp => resp.json())
-		.then(rslt => {
-			bhtml(rslt);
-			nlist();
-		});
-};
 
 //================================ 리스트 자체 호출 ====================================== 
 
@@ -407,13 +422,13 @@ const alist = function(type) {
 	if (type === "BRDD-001") {
 		askAll(type);
 	} else if (type === "BRDD-003") {
-		noticeUser();
+		noticeUser('UNTC');  //처음엔 일반회원으로 가게
 	} else if (type === "BRDD-002") {
 		faqAll();
 	}
 };
 
-// ✅ 상세 이후 복귀
+// ✅ 상세보기에서 목록 클릭시 로딩
 const alist2 = function(type) {
 	if (type === "BRDD-001") {
 		askAll(type);
@@ -424,5 +439,5 @@ const alist2 = function(type) {
 	}
 };
 
-fetchData(type);
+alist(type);
 

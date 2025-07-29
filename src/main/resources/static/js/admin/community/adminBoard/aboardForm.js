@@ -8,6 +8,7 @@ let updateNo = null;  // 전역으로 선언
 //1차 옵션 추가
 const addopt = function(){
 	aboardform.style.display = "block";
+	document.querySelector('.PageBox').innerHTML = "";
 	fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
 	  resp.json().then((rslt) => {
 	    rslt.cmnCodeList.map((v, i) => {

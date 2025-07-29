@@ -183,5 +183,22 @@ public class AdminAdminBoardAjaxServiceImpl implements AdminAdminBoardAjaxServic
 		
 		return resp;
 	}
+	
+	@Override
+	public Map<String, Object> readNotice(Map<String, Object> params) {
+    	
+		List<AdminBoardVO> noticeList = mapper.selectNotice(params);
+		int totalCnt = mapper.selectCountNotice(params); 
+		Map<String, Object> resp = new HashMap<String, Object>();
+		resp.put("data", noticeList);
+		resp.put("totalCnt", totalCnt);
+		
+		return resp;
+	}
+
+	@Override
+	public List<AdminBoardVO> readNoticeList(String boardTypeCode) {
+		return mapper.selectNoticeList(boardTypeCode);
+	}
 
 }

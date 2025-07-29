@@ -24,6 +24,10 @@ public interface AdminAdminBoardAjaxService {
 	public Map<String, Object> readAboardPage(Map<String, Object> params);  //페이징 처리
 	public Map<String, Object> readAboardByFilter(Map<String, Object> params);  //검색
 	
+	// 공지사항용 페이징 처리
+	public List<AdminBoardVO> readNoticeList(String boardTypeCode);
+	public Map<String, Object> readNotice(Map<String, Object> params);
+	
 	// 공통 코드 이용한 목록 조회
 	public List<CmnCodeVO> readCmnList(String codeGroupNo);
 	public List<CmnCodeGroupVO> readCmnGroupList(String upperCodeNo);
