@@ -26,7 +26,7 @@
         </a>
       </li>
       <li class="menu-item">
-        <a href="http://localhost:3000/" class="menu-link">
+        <a href="javascript:void(0);" class="menu-link" id="projectLink">
           <!-- <i class="menu-icon tf-icons bx bx-garage"></i> -->
           <span class="menu-icon material-symbols-outlined"
             style="font-size:1.35rem; width:20px; height: 20px;">Communities</span>
@@ -142,7 +142,10 @@
         </a>
       </li>
       <!-- 여기까지 사이드바 작업하는 곳 -->
-
+      <script src="/js/config.js"></script>
+      <script>
+        document.getElementById('projectLink').setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+      </script>
     </ul>
   </aside>
   <!-- / Menu -->

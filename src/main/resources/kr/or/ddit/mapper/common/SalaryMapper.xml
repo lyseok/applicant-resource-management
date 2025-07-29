@@ -205,7 +205,7 @@
 	</select>
 
 
-<select id="selectSalaryListAllCompany" resultType="hashMap">
+<!-- <select id="selectSalaryListAllCompany" resultType="hashMap">
 		SELECT 
 		    C.INDUSTRY_TYPE AS INDUSTRY_TYPE,
 		    C.COM_NAME AS COM_NAME,
@@ -225,7 +225,7 @@
 		    C.USER_ID
 		ORDER BY 
 		    C.COM_NAME
-	</select>
+	</select> -->
 	
 	
 	<select id="selectSimilarCompanySalariesList" resultType="hashMap">
@@ -274,4 +274,93 @@
 		  salaryAvgExclExec DESC,
 		  c.COM_NAME
 	</select>
+	
+	
+	
+<select id="selectSalaryListAllCompanyPaged" parameterType="map" resultType="hashMap">
+SELECT * FROM (
+    SELECT ROWNUM rnum, a.* FROM (
+        SELECT 
+            C.INDUSTRY_TYPE,
+            C.COM_NAME,
+            C.COM_MEM,
+            C.COM_LOGO,
+            C.USER_ID,
+            ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2), 0) AS SALARY_AVG
+        FROM COMPANY C
+        LEFT JOIN SALARY S 
+            ON C.USER_ID = S.USER_ID
+            AND TO_NUMBER(SUBSTR(S.CODE_DETAIL_NO, 6)) BETWEEN 1 AND 6
+        WHERE 1=1
+        <if test="keyword != null and keyword != ''">
+            AND C.COM_NAME LIKE '%' || #{keyword} || '%'
+        </if>
+        GROUP BY 
+            C.INDUSTRY_TYPE,
+            C.COM_NAME,
+            C.COM_MEM,
+            C.COM_LOGO,
+            C.USER_ID
+        <if test="minSalary != null or maxSalary != null">
+        HAVING 1=1
+            <if test="minSalary != null">
+                <![CDATA[
+                AND ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2),0) >= #{minSalary}
+                ]]>
+            </if>
+            <if test="maxSalary != null">
+                <![CDATA[
+                AND ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2),0) <= #{maxSalary}
+                ]]>
+            </if>
+        </if>
+        ORDER BY 
+            <choose>
+                <when test="sort == 'high'">
+                    SALARY_AVG DESC
+                </when>
+                <when test="sort == 'low'">
+                    SALARY_AVG ASC
+                </when>
+                <otherwise>
+                    C.COM_NAME
+                </otherwise>
+            </choose>
+    ) a
+    WHERE ROWNUM &lt;= #{endRow}
+)
+WHERE rnum &gt; #{startRow}
+</select>
+
+
+
+
+	
+	
+<select id="countSalaryListAllCompany" parameterType="map" resultType="int">
+SELECT COUNT(*) FROM (
+    SELECT C.USER_ID
+    FROM COMPANY C
+    LEFT JOIN SALARY S 
+        ON C.USER_ID = S.USER_ID
+        AND TO_NUMBER(SUBSTR(S.CODE_DETAIL_NO, 6)) BETWEEN 1 AND 6
+    WHERE 1=1
+    <if test="keyword != null and keyword != ''">
+        AND UPPER(C.COM_NAME) LIKE UPPER('%' || #{keyword} || '%')
+    </if>
+    GROUP BY C.USER_ID
+    HAVING 1=1
+    <if test="minSalary != null">
+        <![CDATA[
+        AND ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2),0) >= #{minSalary}
+        ]]>
+    </if>
+    <if test="maxSalary != null">
+        <![CDATA[
+        AND ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2),0) <= #{maxSalary}
+        ]]>
+    </if>
+)
+</select>
+
 </mapper>
