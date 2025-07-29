@@ -3,248 +3,192 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>연봉 검색 UI</title>
-  <script src = "/js/member/community/companySalary/companySalaryList.js"></script>
-  <style>
-   :root {
-      --violet40: #ede9fe;
-      --violet70: #7c3aed;
-      --gray100: #f5f5f5;
-      --gray200: #e5e5e5;
-      --gray500: #6b7280;
-      --gray700: #374151;
-      --border: 1px solid #d1d5db;
-      --radius: 8px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: sans-serif; color: var(--gray700); background: #fff; }
-    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-
-    /* 타이틀 */
-    .title {
-      font-size: 1.5rem;
-      color: var(--violet70);
-      margin-bottom: 1rem;
-    }
-
-    /* 탭 + 검색창 */
-    .tabs-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .tabs {
-      display: flex;
-      gap: .5rem;
-    }
-    .tab {
-      padding: .5rem 1rem;
-      border: var(--border);
-      border-radius: var(--radius);
-      background: #fff;
-      color: var(--gray500);
-      cursor: pointer;
-      font-size: .95rem;
-    }
-    .tab.active {
-      background: var(--violet70);
-      color: #fff;
-      border-color: var(--violet70);
-    }
-    .search-box {
-      position: relative;
-      width: 30%;
-    }
-    .search-box input {
-      width: 100%;
-      padding: .75rem 1rem;
-      border: var(--border);
-      border-radius: var(--radius);
-      font-size: 1rem;
-    }
-    .autocomplete-list {
-      position: absolute;
-      top: 100%; left: 0; right: 0;
-      background: #fff;
-      border: var(--border);
-      border-top: none;
-      border-radius: 0 0 var(--radius) var(--radius);
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 10;
-      list-style: none;
-    }
-    .autocomplete-list li {
-      padding: .5rem 1rem;
-      cursor: pointer;
-    }
-    .autocomplete-list li:hover {
-      background: var(--gray100);
-    }
-
-    /* 연봉 슬라이더 */
-    .salary-filter {
-      background: var(--violet40);
-      padding: 1rem;
-      border-radius: var(--radius);
-      margin-bottom: 2rem;
-    }
-    .salary-filter label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: .75rem;
-    }
-    .salary-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      position: relative;
-    }
-    .salary-controls select {
-      padding: .5rem;
-      border: var(--border);
-      border-radius: var(--radius);
-      background: #fff;
-    }
-    .slider-container {
-      flex: 1;
-      position: relative;
-      height: 16px;
-    }
-    .slider-track {
-      position: absolute;
-      top: 50%; left: 0; right: 0;
-      height: 4px;
-      background: var(--gray200);
-      transform: translateY(-50%);
-      border-radius: 2px;
-    }
-    .slider-range {
-      position: absolute;
-      top: 50%;
-      height: 4px;
-      background: var(--violet70);
-      transform: translateY(-50%);
-      border-radius: 2px;
-    }
-    .handle {
-      position: absolute;
-      top: 50%;
-      width: 24px; height: 24px;
-      background: #fff;
-      border: 2px solid var(--violet70);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      cursor: grab;
-    }
-    .handle span {
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      margin-bottom: 6px;
-      background: var(--gray700);
-      color: #fff;
-      padding: 4px 8px;
-      border-radius: var(--radius);
-      font-size: .75rem;
-      white-space: nowrap;
-    }
-
-    /* 결과 리스트 */
-    .list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 3rem 0;
-      border-bottom: var(--border);
-      cursor: pointer;
-    }
-    .info {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .logo {
-      width: 48px; height: 48px;
-      object-fit: contain;
-      background: #eee;
-    }
-    .text {
-      display: flex;
-      flex-direction: column;
-    }
-    .name {
-      font-weight: bold;
-    }
-    .meta {
-      font-size: .9rem;
-      color: var(--gray500);
-    }
-    .salary {
-      font-weight: bold;
-    }
-    
-    .no-item {
-  padding: 1rem;
-  text-align: center;
-  color: var(--gray500);
-  font-size: 0.95rem;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>연봉 검색 UI</title>
+<script src="/js/member/community/companySalary/companySalaryList.js"></script>
+<style>
+:root {
+    --violet40: #ede9fe;
+    --violet70: #7c3aed;
+    --gray50: #fafafa;
+    --gray100: #f5f5f5;
+    --gray200: #e5e5e5;
+    --gray500: #6b7280;
+    --gray700: #374151;
+    --border: 1px solid #d1d5db;
+    --radius: 8px;
+    --shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
-  </style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: sans-serif; color: var(--gray700); background: #fff; }
+.container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+
+/* 타이틀 */
+.title { font-size: 1.5rem; color: var(--violet70); margin-bottom: 1rem; }
+
+/* 카드형 필터 박스 */
+.filter-card {
+    background: var(--violet40);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+.tabs-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* 탭 */
+.tab {
+    padding: .5rem 1rem;
+    border: var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--gray500);
+    cursor: pointer;
+    font-size: .95rem;
+    transition: all 0.2s;
+}
+.tab.active { background: var(--violet70); color: #fff; border-color: var(--violet70); }
+.tab:hover { border-color: var(--violet70); }
+
+/* select 공통 */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: .75rem 2.5rem .75rem 1rem;
+    border: var(--border);
+    border-radius: var(--radius);
+    background: #fff
+        url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='%236b7280' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E")
+        no-repeat right 0.75rem center;
+    background-size: 1rem;
+    font-size: 1rem;
+    color: var(--gray700);
+    height: 48px;
+    cursor: pointer;
+    min-width: 150px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+select:focus { border-color: var(--violet70); box-shadow: 0 0 0 2px rgba(124,58,237,0.2); outline: none; }
+select:hover { border-color: var(--violet70); }
+
+/* 검색창 */
+.search-box { position: relative; flex: 1; min-width: 250px; }
+.search-box input {
+    width: 100%; padding: .75rem 1rem; border: var(--border); border-radius: var(--radius);
+    font-size: 1rem; height: 48px;
+}
+.autocomplete-list {
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: #fff; border: var(--border); border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    max-height: 200px; overflow-y: auto; z-index: 10; list-style: none;
+}
+.autocomplete-list li { padding: .5rem 1rem; cursor: pointer; }
+.autocomplete-list li:hover { background: var(--gray100); }
+
+/* 연봉 슬라이더 */
+.salary-filter {
+    background: var(--violet40); padding: 1rem; border-radius: var(--radius);
+    margin-bottom: 2rem;
+}
+.salary-filter label { font-weight: bold; display: block; margin-bottom: .75rem; }
+.salary-controls { display: flex; align-items: center; gap: 1rem; position: relative; }
+.salary-controls select { padding: .75rem 2.5rem .75rem 1rem; border: var(--border); border-radius: var(--radius); background: #fff; font-size: 1rem; height: 48px; }
+.slider-container { flex: 1; position: relative; height: 16px; }
+.slider-track { position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: var(--gray200); transform: translateY(-50%); border-radius: 2px; }
+.slider-range { position: absolute; top: 50%; height: 4px; background: var(--violet70); transform: translateY(-50%); border-radius: 2px; }
+.handle { position: absolute; top: 50%; width: 24px; height: 24px; background: #fff; border: 2px solid var(--violet70); border-radius: 50%; transform: translate(-50%, -50%); cursor: grab; }
+.handle span { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 6px; background: var(--gray700); color: #fff; padding: 4px 8px; border-radius: var(--radius); font-size: .75rem; white-space: nowrap; }
+
+/* 리스트 */
+.list { list-style: none; margin: 0; padding: 0; }
+.item { display: flex; justify-content: space-between; align-items: center; padding: 3rem 0; border-bottom: var(--border); cursor: pointer; }
+.info { display: flex; align-items: center; gap: 1rem; }
+.logo { width: 48px; height: 48px; object-fit: contain; background: #eee; }
+.text { display: flex; flex-direction: column; }
+.name { font-weight: bold; }
+.meta { font-size: .9rem; color: var(--gray500); }
+.salary { font-weight: bold; }
+.no-item { padding: 1rem; text-align: center; color: var(--gray500); font-size: 0.95rem; }
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .tabs-container { flex-direction: column; align-items: stretch; }
+    .search-box, select { width: 100%; }
+}
+</style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <!-- 동적 타이틀 -->
     <div class="title" id="salary-title">0개 기업의 연봉이 등록되어 있습니다.</div>
 
-    <!-- 탭 + 검색 -->
-    <div class="tabs-container">
-      <div class="tabs">
-        <div class="tab active">전체</div>
-        <div class="tab">기업형태별</div>
-        <div class="tab">업종별</div>
-      </div>
-      <div class="search-box">
-        <input id="search-input" placeholder="기업명을 검색해 보세요." autocomplete="off"/>
-        <ul id="autocomplete-list" class="autocomplete-list"></ul>
-      </div>
+    <!-- 카드형 필터 박스 -->
+    <div class="filter-card">
+        <div class="tabs-container">
+            <div class="tab active">전체</div>
+            <select id="company-size-select">
+                <option value="">기업규모 전체</option>
+                <option value="large">대기업</option>
+                <option value="mid">중견기업</option>
+                <option value="small">중소기업</option>
+            </select>
+            <select id="industry-select">
+                <option value="">업종 전체</option>
+                <option value="it">IT/인터넷</option>
+                <option value="finance">금융</option>
+                <option value="manufacturing">제조업</option>
+                <option value="service">서비스업</option>
+            </select>
+            <div class="search-box">
+                <input id="search-input" placeholder="기업명을 검색해 보세요." autocomplete="off" />
+                <ul id="autocomplete-list" class="autocomplete-list"></ul>
+            </div>
+            <select id="sort-select">
+                <option value="default">회사명순</option>
+                <option value="high">연봉 높은순</option>
+                <option value="low">연봉 낮은순</option>
+            </select>
+        </div>
     </div>
 
     <!-- 연봉 슬라이더 -->
     <div class="salary-filter">
-      <label>연봉</label>
-      <div class="salary-controls">
-        <select id="min-select">
-          <option value="0">0만원 ~</option>
-          <option value="1000">1,000만원 ~</option>
-          <option value="2000">2,000만원 ~</option>
-          <option value="3000">3,000만원 ~</option>
-        </select>
-        <div class="slider-container">
-          <div class="slider-track"></div>
-          <div class="slider-range" id="slider-range"></div>
-          <div class="handle" id="min-handle"><span id="min-label">0만원</span></div>
-          <div class="handle" id="max-handle"><span id="max-label">1억원↑</span></div>
+        <label>연봉</label>
+        <div class="salary-controls">
+            <select id="min-select">
+                <option value="0">0만원 ~</option>
+                <option value="1000">1,000만원 ~</option>
+                <option value="2000">2,000만원 ~</option>
+                <option value="3000">3,000만원 ~</option>
+            </select>
+            <div class="slider-container">
+                <div class="slider-track"></div>
+                <div class="slider-range" id="slider-range"></div>
+                <div class="handle" id="min-handle"><span id="min-label">0만원</span></div>
+                <div class="handle" id="max-handle"><span id="max-label">1억원↑</span></div>
+            </div>
+            <select id="max-select">
+                <option value="10000">~ 1억원 이상</option>
+                <option value="9000">~ 9,000만원</option>
+                <option value="8000">~ 8,000만원</option>
+            </select>
         </div>
-        <select id="max-select">
-          <option value="10000">~ 1억원 이상</option>
-          <option value="9000">~ 9,000만원</option>
-          <option value="8000">~ 8,000만원</option>
-        </select>
-      </div>
     </div>
 
     <!-- 결과 리스트 -->
     <ul id="salary-list" class="list"></ul>
-  </div>
+    <!-- 페이징 -->
+    <div class="PageBox" style="text-align:center; margin:2rem 0;"></div>
+</div>
 </body>
 </html>

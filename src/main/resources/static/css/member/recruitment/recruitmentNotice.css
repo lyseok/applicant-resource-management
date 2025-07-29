@@ -2307,10 +2307,6 @@
     font-weight: bold
 }
 
-.jv_summary .meta .list_meta > li+li {
-    margin-left: 8px;
-    padding-left: 10px
-}
 
 .jv_summary .meta .list_meta > li+li:before {
     display: block;
@@ -2321,7 +2317,7 @@
     width: 2px;
     height: 2px;
     background: #bebfc3;
-    content: ""
+    
 }
 
 /* //WMG-28101 수정 */
@@ -4245,7 +4241,6 @@
 }
 
 .jv_company .link_area {
-    display: flex;
     justify-content: space-between;
     align-items: flex-end;
     margin-top: 28px
@@ -5132,9 +5127,8 @@ body#sri_layout_popup.printing .jv_footer .cont .tags {
 
 /* 지원 버튼 색상 변경 예외 처리 */
 .jv_header .btn_apply .sri_btn_lg span, .jv_howto .cont.box .sri_btn_lg span {
-    border: 1px solid #8491a7;
-    color: #666;
-    background: #fff
+    border: 1px solid #7B3FE4;
+    color: #7B3FE4;;
 }
 
 .jv_header .btn_apply .sri_btn_lg span.sri_btn_recruitin_apply, .jv_howto .cont.box .sri_btn_lg span.sri_btn_recruitin_apply, .jv_header .btn_apply .sri_btn_lg span.sri_btn_immediately, .jv_howto .cont.box .sri_btn_lg span.sri_btn_immediately {

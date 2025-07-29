@@ -13,7 +13,6 @@
 			, TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		FROM SALARY
 		WHERE SALARY_ID = #{salaryId}
-	
 	</select>
 	
 
@@ -27,8 +26,6 @@
 			,  TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE
 		FROM SALARY
 	</select>
-	
-	
 	
 	<select id="selectSalaryByCompany" resultType="kr.or.ddit.vo.common.SalaryVO">
 		 SELECT
@@ -57,7 +54,6 @@
 		   ]]>
 	</select>
 	
-	
 	<select id="searchSalaryComNameList" resultType="kr.or.ddit.vo.common.SalaryVO">
 		SELECT
 		    s.SALARY_ID,
@@ -72,9 +68,8 @@
 		  WHERE c.COM_NAME = #{comName}
 	</select>
 	
-	
 	<insert id="insertSalary">
-	<selectKey resultType="string" keyProperty="salaryId" order="BEFORE">
+		<selectKey resultType="string" keyProperty="salaryId" order="BEFORE">
 		    SELECT
 		        'SLRY'||
 		        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(SALARY_ID), LENGTH('SLRY' ) + 1)), 0) + 1, 6, '0')
@@ -108,12 +103,10 @@
      		 AND USER_ID = #{userId}
 	</update>
 	
-	
 	<delete id="deleteSalary">
 		DELETE FROM SALARY
     		WHERE SALARY_ID = #{salaryId}
 	</delete>
-	
 	
 	<select id="selectSalaryListbyId" resultType="kr.or.ddit.vo.common.SalaryVO">
 		SELECT 
@@ -139,7 +132,6 @@
 		FROM SALARY
 		WHERE  USER_ID = #{userId} AND CODE_DETAIL_NO = #{codeDetailNo}
 	</select>
-	
 	
 	<select id="selectSalaryStatisticsById" resultType="kr.or.ddit.dto.CompanySalaryDTO">
 		  WITH salary_data AS (
@@ -203,30 +195,6 @@
 		ORDER BY
 		  sd.code_detail_no, sd.salary_id
 	</select>
-
-
-<select id="selectSalaryListAllCompany" resultType="hashMap">
-		SELECT 
-		    C.INDUSTRY_TYPE AS INDUSTRY_TYPE,
-		    C.COM_NAME AS COM_NAME,
-		    C.COM_MEM AS COM_MEM,
-		    C.COM_LOGO AS COM_LOGO,
-		    C.USER_ID AS USER_ID,
-		    ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2), 0) AS SALARY_AVG
-		FROM COMPANY C
-		LEFT JOIN SALARY S 
-		    ON C.USER_ID = S.USER_ID
-		    AND TO_NUMBER(SUBSTR(code_detail_no, 6)) BETWEEN 1 AND 6
-		GROUP BY 
-		    C.INDUSTRY_TYPE,
-		    C.COM_NAME,
-		    C.COM_MEM,
-		    C.COM_LOGO,
-		    C.USER_ID
-		ORDER BY 
-		    C.COM_NAME
-	</select>
-	
 	
 	<select id="selectSimilarCompanySalariesList" resultType="hashMap">
 		SELECT
@@ -236,7 +204,6 @@
 		    C.COM_LOGO AS COM_LOGO,
 		    C.USER_ID AS USER_ID,
 		
-		  
 		  ROUND(
 		    AVG(
 		      CASE
@@ -247,7 +214,6 @@
 		    0
 		  ) AS salaryAvgExclExec,
 		
-		
 		  ROUND(
 		    AVG(
 		      (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
@@ -256,22 +222,195 @@
 		  ) AS salaryAvgExec
 		
 		FROM COMPANY c
-		
 		LEFT JOIN SALARY s
 		  ON c.USER_ID = s.USER_ID
-		
 		WHERE
 		  c.INDUSTRY_TYPE = #{industryType}
-		
 		GROUP BY
 		  c.INDUSTRY_TYPE,
 		  c.COM_NAME,
 		  c.COM_MEM,
 		  C.COM_LOGO,
 		  c.USER_ID
-		
 		ORDER BY
 		  salaryAvgExclExec DESC,
 		  c.COM_NAME
 	</select>
+	
+	<select id="selectSalaryListAllCompanyPaged" parameterType="map" resultType="hashMap">
+	SELECT * FROM (
+	    SELECT ROWNUM rnum, a.* FROM (
+	        SELECT 
+	            C.INDUSTRY_TYPE,
+	            C.COM_NAME,
+	            C.COM_MEM,
+	            C.COM_LOGO,
+	            C.USER_ID,
+	            ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2), 0) AS SALARY_AVG
+	        FROM COMPANY C
+	        LEFT JOIN SALARY S 
+	            ON C.USER_ID = S.USER_ID
+	            AND TO_NUMBER(SUBSTR(S.CODE_DETAIL_NO, 6)) BETWEEN 1 AND 6
+	        WHERE 1=1
+	        <if test="keyword != null and keyword != ''">
+	            AND C.COM_NAME LIKE '%' || #{keyword} || '%'
+	        </if>
+	        GROUP BY 
+	            C.INDUSTRY_TYPE,
+	            C.COM_NAME,
+	            C.COM_MEM,
+	            C.COM_LOGO,
+	            C.USER_ID
+	        <if test="minSalary != null or maxSalary != null">
+	        HAVING 1=1
+	            <if test="minSalary != null">
+	                <![CDATA[
+	                AND ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2),0) >= #{minSalary}
+	                ]]>
+	            </if>
+	            <if test="maxSalary != null">
+	                <![CDATA[
+	                AND ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2),0) <= #{maxSalary}
+	                ]]>
+	            </if>
+	        </if>
+	        ORDER BY 
+	            <choose>
+	                <when test="sort == 'high'">
+	                    SALARY_AVG DESC
+	                </when>
+	                <when test="sort == 'low'">
+	                    SALARY_AVG ASC
+	                </when>
+	                <otherwise>
+	                    C.COM_NAME
+	                </otherwise>
+	            </choose>
+	    ) a
+	    WHERE ROWNUM &lt;= #{endRow}
+	)
+	WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<select id="countSalaryListAllCompany" parameterType="map" resultType="int">
+	SELECT COUNT(*) FROM (
+	    SELECT C.USER_ID
+	    FROM COMPANY C
+	    LEFT JOIN SALARY S 
+	        ON C.USER_ID = S.USER_ID
+	        AND TO_NUMBER(SUBSTR(S.CODE_DETAIL_NO, 6)) BETWEEN 1 AND 6
+	    WHERE 1=1
+	    <if test="keyword != null and keyword != ''">
+	        AND UPPER(C.COM_NAME) LIKE UPPER('%' || #{keyword} || '%')
+	    </if>
+	    GROUP BY C.USER_ID
+	    HAVING 1=1
+	    <if test="minSalary != null">
+	        <![CDATA[
+	        AND ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2),0) >= #{minSalary}
+	        ]]>
+	    </if>
+	    <if test="maxSalary != null">
+	        <![CDATA[
+	        AND ROUND(AVG((TO_NUMBER(S.SALARY_MIN) + TO_NUMBER(S.SALARY_MAX)) / 2),0) <= #{maxSalary}
+	        ]]>
+	    </if>
+	)
+	</select>
+
+	<!-- feature/#012_기업연봉 추가 -->
+	<select id="selectCompanySalariesRankByIndu" resultType="hashMap">
+	    SELECT
+		    c.INDUSTRY_TYPE,
+		    c.COM_NAME,
+		    c.COM_MEM,
+		    c.COM_LOGO,
+		    c.USER_ID,
+		    ROUND(
+		        AVG(
+		            CASE
+		                WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+		                THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+		            END
+		        ), 0
+		    ) AS salaryAvgExclExec,
+		    ROUND(
+		        AVG((TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2), 0
+		    ) AS salaryAvgExec
+		FROM COMPANY c
+		LEFT JOIN SALARY s
+		    ON c.USER_ID = s.USER_ID
+		WHERE c.INDUSTRY_TYPE = #{industryType}
+		GROUP BY
+		    c.INDUSTRY_TYPE,
+		    c.COM_NAME,
+		    c.COM_MEM,
+		    c.COM_LOGO,
+		    c.USER_ID
+		HAVING
+		    ROUND(
+		        AVG(
+		            CASE
+		                WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+		                THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+		            END
+		        ), 0
+		    ) IS NOT NULL
+		ORDER BY
+		    salaryAvgExclExec DESC,
+		    c.COM_NAME
+	</select>
+
+	<select id="selectCompanySalaryRankByIndu" resultType="hashMap">
+	 SELECT *
+		FROM (
+		    SELECT 
+		        c.INDUSTRY_TYPE,
+		        c.COM_NAME,
+		        c.COM_MEM,
+		        c.COM_LOGO,
+		        c.USER_ID,
+		        ROUND(
+		            AVG(
+		                CASE
+		                    WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+		                    THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+		                END
+		            ), 0
+		        ) AS salaryAvgExclExec,
+		        ROUND(
+		            AVG((TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2), 0
+		        ) AS salaryAvgExec,
+		        RANK() OVER (ORDER BY 
+		            ROUND(
+		                AVG(
+		                    CASE
+		                        WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+		                        THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+		                    END
+		                ), 0
+		            ) DESC, 
+		            c.COM_NAME
+		        ) AS salary_rank
+		    FROM COMPANY c
+		    LEFT JOIN SALARY s
+		        ON c.USER_ID = s.USER_ID
+		    WHERE c.INDUSTRY_TYPE = #{industryType}
+		    GROUP BY 
+		        c.INDUSTRY_TYPE,
+		        c.COM_NAME,
+		        c.COM_MEM,
+		        c.COM_LOGO,
+		        c.USER_ID
+		    HAVING
+		        AVG(
+		            CASE
+		                WHEN s.CODE_DETAIL_NO BETWEEN 'RANK-001' AND 'RANK-006'
+		                THEN (TO_NUMBER(s.SALARY_MIN) + TO_NUMBER(s.SALARY_MAX)) / 2
+		            END
+		        ) IS NOT NULL
+		) ranked
+		WHERE ranked.USER_ID = #{userId}
+	</select>
+
 </mapper>

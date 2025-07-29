@@ -14,6 +14,11 @@ public class AdminBatchSchedulerController {
     // 매월 1일 0시 실행
     @Scheduled(cron = "0 0 0 1 * *")
     public void monthlyReset() {
+    	// 초기화 범위설정 (* 해당 WAS에서만 돌 수 있게)
+    	// application.properties :
+    	// batch.service.was = ndel
         service.resetSubscriptions();
     }
+    
+    
 }
