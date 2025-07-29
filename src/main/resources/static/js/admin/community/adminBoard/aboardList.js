@@ -143,24 +143,22 @@ const pageTitle = function () {
 };
 
 // ✅ 새 글 등록 버튼 생성
-const newFormBtn = function () {
+const newFormBtn = function (type) {
+	let backType = type;  //가져온 타입을 addEventListener에서도 쓸 수 있게 미리 선언
 	formBtn.innerHTML = "";
 	let newForm = document.createElement("button");
-	newForm.id = "formForm";
 	newForm.className = "btn btn_violet";
 	newForm.textContent = "새 글 등록";
 	formBtn.appendChild(newForm);
-
-	const formForm = document.querySelector("#formForm");
-	if (formForm != null) {
-		formForm.onclick = function () {
-			memTypeBtn.innerHTML = "";
-			aboardList.innerHTML = "";
-			listTitle.style.display = "none";
-			formBtn.innerHTML = "";
-			addopt();
-		};
-	}
+	
+	newForm.addEventListener("click", function(){
+		let type = backType;  //바깥의 type을 여기서 쓸수있게 한번더 선언
+		memTypeBtn.innerHTML = "";
+		aboardList.innerHTML = "";
+		listTitle.style.display = "none";
+		formBtn.innerHTML = "";
+		addopt(type);
+	})
 };
 
 // ✅ 탭 UI 활성화 처리
@@ -186,25 +184,37 @@ const bhtml = function (rslt) {
 	TypoBox_searchBar.style.display = "block";
 
 	let html = '<div class="list_body">';
+	
 	rslt.forEach((item) => {
-		html += `
-			<div class="list_item mb-3">
-				<div class="box_item p-3 border rounded">
-					<div class="row align-items-center">
-						<div class="col">
-							<a href="javascript:void(0)" class="fw-bold fs-5 text-decoration-none" onclick="abno('${item.boardNo}')">
-								${item.boardTitle}
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		`;
+		// 날짜 포맷 (YYYY-MM-DD)
+	    let dateOnly = item.boardWriteDate.split(" ")[0];
+	
+	    html += `
+	        <div class="list_item mb-3">
+            <div class="box_item p-3 border rounded">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- 제목 -->
+                    <a href="javascript:void(0)" class="fw-bold fs-5 text-decoration-none" onclick="abno('${item.boardNo}')">
+                        ${item.boardTitle}
+                    </a>
+                    <!-- 조회수 + 날짜 (오른쪽 정렬, 간격 추가) -->
+                    <div class="text-end" style="font-size:0.85rem; line-height:1.4;">
+                        <span>조회수 ${item.boardPostHit}</span>
+                        <span style="margin-left:10px;">등록일자 ${dateOnly}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+	    `;
 	});
 	html += '</div>';
-
-	let isthere = rslt.some(item => item.boardTypeCode !== 'BRDD-001');
-	if (isthere) newFormBtn();
+	
+	rslt.some((item)=>{
+		let type = item.boardTypeCode;
+		if(type !== 'BRDD-001'){
+			newFormBtn(type);
+		}
+	})
 
 	allBtns.innerHTML = '';
 	aboardList.innerHTML = html;
@@ -251,14 +261,12 @@ const noticeEvent = function(type) {
 };
 
 // ✅ 단일 타입 프리로드
-const pre = function(type) {
-	fetch(`/ajax/admin/board/admin_board/pre/${type}`)
-		.then(resp => resp.json())
-		.then(rslt => {
-			bhtml(rslt);
-			nlist();
-		});
+/*
+const pre = function(type, activeTab) {
+	setActiveTab(activeTab);
+	fetchData(type, activeTab);
 };
+*/
 
 //==========!자주묻는질문!============================================
 
@@ -432,10 +440,16 @@ const alist = function(type) {
 const alist2 = function(type) {
 	if (type === "BRDD-001") {
 		askAll(type);
-	} else if (type.startsWith('UFAQ') || type.startsWith('CFAQ')) {
+	} else if (type.includes('FAQ')) {
 		faqAll();
 	} else {
-		pre(type);
+		if(type.startsWith('U')){
+			noticeUser(type);
+		}else if(type.startsWith('C')){
+			noticeCorp(type);
+		}else{
+			noticeEvent(type);
+		}
 	}
 };
 
