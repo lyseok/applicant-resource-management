@@ -44,11 +44,11 @@ public class PaymentServiceImpl implements PaymentService {
 	public PaymentVO getUserCurrentPaymentStatus() {
 	    String userId = getUserId();
 	    PaymentVO ppvo = selectStauts(userId);
-
+	    String productName = nextMonthPay(userId);
 	    if (ppvo != null) {
 	        List<PaymentProductVO> productList = pservice.selectPaymentProductListByPk(ppvo.getProductNo());
 	        ppvo.setPaymentProductList(productList);
-
+	        ppvo.setNextMonth(productName);
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 	        LocalDate today = LocalDate.now();
 	        LocalDate end = LocalDate.parse(ppvo.getEndDate(), formatter);
@@ -486,6 +486,13 @@ public class PaymentServiceImpl implements PaymentService {
 	public List<Integer> selectMonthlySalesCompare(int year) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public String nextMonthPay(String userId) {
+		String productName = mapper.nextMonthPay(userId);
+		return productName;
 	}
 
 

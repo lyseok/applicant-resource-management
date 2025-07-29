@@ -1,7 +1,7 @@
-function deleteCompany(companyId) {
+function deleteRecruit(recruitmentNo) {
     if (!confirm("정말 삭제하시겠습니까?")) return;
 
-    fetch(`/ajax/member/scrabCompany/${companyId}`, {
+    fetch(`/ajax/member/scrabRecruitment/${recruitmentNo}`, {
         method: 'DELETE'
     })
     .then(response => {
