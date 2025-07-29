@@ -53,6 +53,7 @@
     <result property="anncEndPlanDate"  column="ANNC_END_PLAN_DATE"/>
     <result property="anncEndYn"        column="ANNC_END_YN"/>
     <result property="memName" column="MEM_NAME"/>
+    <result property="memImg" column="MEM_IMG"/>
     <result property="resumeNo" column="RESUME_NO"/> 
     <!-- 태그 리스트 -->
     <collection property="prjAnncBoardTagList"
@@ -108,6 +109,7 @@
         B.PRJ_ANNC_NO,         
         B.USER_ID,             
         M.MEM_NAME,            
+        M.MEM_IMG,            
         B.PRJ_EMP_TITLE,       
         B.PRJ_TOPIC,           
         B.ANNC_CREATE_DATE,    
@@ -211,6 +213,7 @@
 	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
 	    B.USER_ID,             -- 사용자 ID
 	    M.MEM_NAME,            -- 사용자명 
+	    M.MEM_IMG,            -- 사용자이미지 
 	    B.PRJ_EMP_TITLE,       -- 게시글 제목
 	    B.PRJ_TOPIC,           -- 프로젝트 주제
 	    B.ANNC_CREATE_DATE,    -- 작성일시
@@ -290,6 +293,7 @@
 	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
 	    B.USER_ID,             -- 사용자 ID
 	    M.MEM_NAME,            -- 사용자명
+	    M.MEM_IMG,             -- 사용자이미지
 	    M.RESUME_NO,
 	    B.PRJ_EMP_TITLE,       -- 게시글 제목
 	    B.PRJ_TOPIC,           -- 프로젝트 주제

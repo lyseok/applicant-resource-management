@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function renderAnnouncementDetail(data) {
   // 상태 변환
   const statusText = data.anncEndYn === 'Y' ? '모집완료' : '모집중';
-  const statusClass = data.anncEndYn === 'Y' ? 'bg-secondary' : 'badge-recruit';
+  const statusClass = data.anncEndYn === 'Y' ? 'opacity-25' : 'badge-recruit';
   
   // 팀 구성 (모집 팀원)
   const teamListHtml = (data.prjRcrtPsncntList || [])
@@ -76,14 +76,15 @@ function renderAnnouncementDetail(data) {
 		<!-- 작업 기간 -->
     <div class="mb-5">
       <div class="mb-1 fs-6 fw-bold">프로젝트 작업 기간</div>
-      <div class="fs-14">
+      <div class="d-flex align-items-center gap-2 fs-14 fw-500">
+      	<span class="material-symbols-outlined fw-300 text-violet70">calendar_today</span>
 	      <span class="">
+	      	<!-- 시작일자 -->
 	        ${data.prjStartPlanDate
 	          ? `${data.prjStartPlanDate.slice(0,4)}-${data.prjStartPlanDate.slice(4,6)}-${data.prjStartPlanDate.slice(6,8)}`
-	          : '-'} ~
-	      </span>
-	      <span>
-	        <i class="bi bi-calendar-check me-1"></i>
+	          : '-'}
+	          ~
+          <!-- 마감일자 --> 
 	        ${data.prjEndPlanDate
 	          ? `${data.prjEndPlanDate.slice(0,4)}-${data.prjEndPlanDate.slice(4,6)}-${data.prjEndPlanDate.slice(6,8)}`
 	          : '-'}
@@ -120,7 +121,7 @@ function renderAnnouncementDetail(data) {
 	    <!-- 작성자 정보 -->
 	    <div class="d-flex align-items-center gap-3">
 	    	<div class="profile">
-	    		<img src="${data.memProfile || 'https://placehold.co/32x32'}">
+	    		<img src="${data.memImg || 'https://placehold.co/32x32'}">
 	    	</div>
 	    	<div class="fw-bold fs-16">${data.memName || '익명'}</div>
 	    </div>

@@ -11,4 +11,6 @@ public interface CompanySalaryService {
 	public List<CompanySalaryDTO> readSalaryStatisticsById(String userId);
 	
 	public List<Map<String, Object>> readSimilarCompanySalariesList(String industryType);
+	
+	public Map<String, Object> readSalaryListAllCompanyPaged(Map<String, Object> params);
 }
