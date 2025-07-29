@@ -4,15 +4,6 @@
 		<title>띹잡</title>
 		<link rel="stylesheet" href="/dist/assets/css/main.css">
 		<script defer src="/js/index.js"></script>
-		<style>
-			.btn_scrap.on span {
-				font-variation-settings:
-					'FILL' 1,
-					'wght' 400,
-					'GRAD' 0,
-					'opsz' 24
-			}
-		</style>
 	</head>
 
 	<body>
@@ -140,7 +131,7 @@
 
 					<div class="z-index3" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000">
 						<div class="top_poduct">
-							<strong class="tit_cont mb-2" id="product_platinum">회원님이 꼭 봐야 할 공고 (프리미엄)</strong>
+							<strong class="tit_cont mb-3" id="product_platinum">회원님이 꼭 봐야 할 공고 (프리미엄)</strong>
 							<!--
 						버튼 클릭 시 상품 안내 팝업 뜨게 제작하기
 						<button class="btn_product">
@@ -174,7 +165,7 @@
 			<div class="cont_product prd_prime">
 				<div class="inner_cont">
 					<div class="z-index2" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1200">
-						<div class="top_poduct mb-2">
+						<div class="top_poduct mb-3">
 							<strong class="tit_cont" id="product_prime">최고의 인기 공고 (비지니스)</strong>
 							<!-- <button class="btn_product">
 							<span class="track_event">
@@ -188,8 +179,8 @@
 
 
 					<div class="z-index1" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1400">
-						<div class="top_poduct mb-2">
-							<strong class="tit_cont" id="product_prime">최고의 인기 공고 (베이직)</strong>
+						<div class="top_poduct mb-3">
+							<strong class="tit_cont" id="product_prime">띹잡 추천 공고 (베이직)</strong>
 							<!-- <button class="btn_product">
 							<span class="track_event">
 								<span>아이콘영역</span>

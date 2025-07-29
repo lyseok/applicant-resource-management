@@ -49,8 +49,8 @@
 				<div class="address d-flex">
 					<i class='bx  bx-home-alt'></i> ${resumeList.address }
 				</div>
-				<c:if test="${not empty resumeList.resumeSubmitYn}">
-					<div class="info-badge">대표 이력서 번호 ${resumeList.resumeNo }</div>
+				<c:if test="${resumeList.mainResumeNo eq resumeList.resumeNo}">
+					<div class="info-badge">대표 이력서</div>
 				</c:if>
 			</div>
 		</div>

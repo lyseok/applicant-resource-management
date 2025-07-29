@@ -248,34 +248,31 @@
             </div>
           </div>
 
-          <div class="familysite">
-            
+          <div class="familysite">            
 						<!-- 하이테크 아티클 배너 -->
-						<!-- <div class="swiper-container">
+						<div class="swiper-container">
 							<ul class="swiper-wrapper">
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
-										<p class="subtitle">AI 트렌드 배송</p>
-										<h3 class="title">오픈AI 국내 인재 채용</h3>
-										<p class="text">불붙는 AI 인재 쟁탈전</p>
+										<span class="d-flex">가장 많이 찾아봤어요 🔥</span>
+										백엔드 개발자
 									</a>
 								</li>
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
-										<p class="subtitle">인사이트</p>
-										<h3 class="title">연봉, 나만 궁금해요?</h3>
-										<p class="text">연봉 협상, 안 하면 손해?!</p>
+										<span>02.</span>
+										프론트엔드 개발자
 									</a>
 								</li>
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
-										<p class="subtitle">인사이트</p>
-										<h3 class="title">좋은 회사 고르려면!</h3>
-										<p class="text">이직 시 놓치면 안되는 팁 공개</p>
+										<span>03.</span>
+										디자이너
 									</a>
 								</li>
 							</ul>
-						</div> 
+    					<div class="swiper-pagination job-pager"></div>
+						</div>
 						<script>
 							document.addEventListener("DOMContentLoaded", () => {
 								const mainHeaderSilde = new Swiper(".familysite .swiper-container", {
@@ -286,14 +283,14 @@
 										delay: 2500,
 										disableOnInteraction: false,
 									},
-									navigation: {
-										nextEl: ".bnrs-next",
-										prevEl: ".bnrs-next"
-									},
+						      pagination: {
+					          el: ".job-pager",
+					          clickable: true,
+					        },
 								});
 							});
 						</script>
-          </div>-->
+          </div>
         </div>
       </div>
       <div class="navi_total">
