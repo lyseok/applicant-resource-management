@@ -49,7 +49,7 @@
                   <option>기업</option>
                 </select>
                 <div class="select-styled">
-                  <span>선택</span>
+                  <span>공고</span>
                 </div>
                 <ul class="select-options">
                   <li data-value="recruit">공고</li>

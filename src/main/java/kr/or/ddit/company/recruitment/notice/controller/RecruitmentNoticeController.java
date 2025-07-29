@@ -1,5 +1,7 @@
 package kr.or.ddit.company.recruitment.notice.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,31 +20,24 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RecruitmentNoticeController {
 	
-	private final RecruitService service;
 	
-	@GetMapping("recruit_notice/{recruitmentNo}")
-	public String selectRecruitDetail(
-		@PathVariable String recruitmentNo
-		, Model model
-	) {
-		RecruitmentNoticeVO notice = service.readRecruitNotice(recruitmentNo);
-		UsersVO user = service.searchUser();
-		log.info("{}", user);
-		model.addAttribute("recruitmentNotice", notice);
-		model.addAttribute("userInfo", user);
+	@GetMapping("/recruit_notice/{recruitmentNo}")
+	public String selectRecruitDetail(@PathVariable String recruitmentNo, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		model.addAttribute("recruitmentNo", recruitmentNo);
+		model.addAttribute("username", username);
 		return "member/recruitment/recruitmentNotice";
 	}
 	
 	@GetMapping("/company/recruit_notice/{recruitmentNo}")
-	public String selectRecruitDetailInCompany(
-		@PathVariable String recruitmentNo
-		, Model model
-	) {
-		RecruitmentNoticeVO notice = service.readRecruitNotice(recruitmentNo);
-		UsersVO user = service.searchUser();
-		log.info("{}", user);
-		model.addAttribute("recruitmentNotice", notice);
-		model.addAttribute("userInfo", user);
+	public String selectRecruitDetailInCompany(@PathVariable String recruitmentNo, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		
+		model.addAttribute("recruitmentNo", recruitmentNo);
+		model.addAttribute("username", username);
 		return "member/recruitment/recruitmentNotice";
 	}
 	

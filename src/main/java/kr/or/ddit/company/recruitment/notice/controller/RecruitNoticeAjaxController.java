@@ -36,6 +36,11 @@ public class RecruitNoticeAjaxController {
 	private final RecruitService service;
 	private final ErrorsUtils errorsUtils;
 	
+	@GetMapping("/{recruitmentNo}")
+	public RecruitmentNoticeVO readNotice(@PathVariable String recruitmentNo) {
+		return service.readRecruitNotice(recruitmentNo);
+	}
+	
 	@PostMapping("/notice")
 	public ResponseEntity<?> insertNotice(
 		@RequestPart("notice") @Valid RecruitmentNoticeVO notice

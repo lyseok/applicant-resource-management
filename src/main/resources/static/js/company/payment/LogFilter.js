@@ -1,37 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('filterForm');
-  if (!form) return;
+  const tableBody = document.querySelector('#logTable tbody');
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
-
-    // 폼 값 수집
-    const key     = form.querySelector('select[name="key"]').value;
+    const key = form.querySelector('select[name="key"]').value;
     const keyword = form.querySelector('input[name="keyword"]').value.trim();
-    console.log("key", key);
-    console.log("keyword", keyword);
     if (!keyword) return;
 
     try {
       const res = await fetch(`/company/log/selectlog?key=${encodeURIComponent(key)}&keyword=${encodeURIComponent(keyword)}`);
       if (!res.ok) throw new Error(res.statusText);
       const logs = await res.json();
-	console.log("res :", res);
-	console.log("logs : ", logs);
-      // 테이블 바디를 동적으로 찾고, 존재하는지 확인
-      const tableBody = document.querySelector('#logTable tbody');
-      if (!tableBody) {
-        console.warn('테이블 요소를 찾을 수 없습니다: #logTable tbody');
+
+      tableBody.innerHTML = '';
+
+      if (logs.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">검색 결과가 없습니다.</td></tr>`;
         return;
       }
-      
 
-      // 로드된 로그로 테이블 갱신
-      tableBody.innerHTML = '';
       logs.forEach((log, idx) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <th scope="row">${idx + 1}</th>
+          <td>${idx + 1}</td>
           <td>${log.usedAt || '<span class="text-muted">미사용</span>'}</td>
           <td>${log.usedCount}</td>
           <td>${escapeHtml(log.emailAddress)}</td>
@@ -47,60 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function escapeHtml(s) {
-    return s.replace(/[&<>"']/g, c =>
+    return s ? s.replace(/[&<>"']/g, c =>
       ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]
-    );
+    ) : '';
   }
 
   function truncate(s, len) {
     return s.length > len ? s.slice(0, len) + '…' : s;
   }
 });
-
-const params = {
-  page: 1,       // 시작 페이지, 
-  pageSize: 10,  // 리스트에 몇개씩 보여줄건지
-};
-
-// 1. 출력할 리스트 가져오기
-function fetchData() {
-  showLoading();
-  const paramsString = paramsSerializer(params);
-  console.log('필터링 요청:', paramsString);
-  axios
-    .get('/ajax/company/talentpool/company-scrab?' + paramsString)
-    .then((res) => {
-      // res.data가 배열이면 바로 사용
-      const resp = res.data;
-      renderTalentPoolTable(resp.data);
-
-      totalPage = Math.ceil(resp.totalCnt / params.pageSize);
-      console.log(totalPage, params.page);
-      renderPager(totalPage, params.page); // 페이저 렌더링
-      applyCheckboxStates();
-    })
-    .catch((err) => {
-      alert('데이터를 불러오는 데 실패했습니다.');
-    })
-    .finally(() => {
-      hideLoading();
-    });
-}
-
-// 2. 가져온 리스트에 페이저 찍기
-function renderPager(totalPages, page) {
-  let pagerHtml = '';
-  for (let i = 1; i <= totalPages; i++) {
-    if (i === page) {
-      pagerHtml += `<span class="BtnType SizeS active">${i}</span>`;
-    } else {
-      pagerHtml += `<button class="BtnType SizeS page" data-page="${i}">${i}</button>`;
-    }
-  }
-  if (page < totalPages) {
-    pagerHtml += `<button data-page="${
-      page + 1
-    }" class="BtnType SizeS BtnNext btnNext">다음</button>`;
-  }
-  document.querySelector('.PageBox').innerHTML = pagerHtml;
-}
