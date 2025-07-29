@@ -5,27 +5,23 @@
   <title>프로젝트 공고 상세</title>
   <style>
     .dot {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       background: #bbb;
       border-radius: 50%;
       display: inline-block;
       margin-right: 12px;
     }
+    .badge-tag {
+	    background: var(--violet10);
+	    padding: 5px 13px;
+	    border-radius: 15px;
+	    border: 1px solid var(--violet30);
+	    font-weight: 500;
+	    font-size: 12px;
+	    color: var(--violet70);
+		}
 
-    .section-title {
-      font-size: 1.17rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-
-    .badge-recruit {
-      background: #22c55e;
-    }
-
-    .shadow-card {
-      box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.09);
-    }
 
     .list-dot li {
       display: flex;
@@ -36,37 +32,12 @@
     .list-dot .dot {
       margin: 0;
     }
-
-    .btn-purple {
-      background: #9333ea;
-      color: #fff;
-    }
-
-    .btn-purple:hover {
-      background: #7c2dd6;
-      color: #fff;
-    }
-
-    .text-purple {
-      color: #ae8be1 !important;
-    }
-
-    .bg-purple {
-      background: #ae8be1 !important;
-    }
-
-    .selected-card {
-      border: 2px solid #ae8be1 !important;
-      background: #f6f2ff !important;
-    }
-
-    .resume-card {
-      cursor: pointer;
-      border: 1.5px solid #eee;
-    }
-
-    .resume-card:hover {
-      border-color: #ae8be1 !important;
+    
+    .profile img{
+    	max-width:32px;
+    	max-height:32px;
+    	object-fit:cover;    	
+    	border-radius:50%;
     }
   </style>
   <script defer src="/js/member/project/noticeManagement/noticeDetail.js"></script>
@@ -78,9 +49,9 @@
 
   </div>
 
-  <div class="d-flex justify-content-center gap-3 my-4">
+  <div class="d-flex justify-content-center gap-3 mb-4">
     <a href="/mypage/notice_management" class="btn btn-outline-secondary px-5 py-2">목록</a>
-    <button id="btnEditNotice" class="btn btn-purple px-5 py-2">수정</button>
+    <button id="btnEditNotice" class="btn btn_violet px-5 py-2">수정</button>
   </div>
 
 </body>
