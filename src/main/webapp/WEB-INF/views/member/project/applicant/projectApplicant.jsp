@@ -2,24 +2,10 @@
 
   <head>
     <title>지원자 관리</title>
-    <script defer src="/js/member/project/applicant/projectApplicant.js"></script>
+    <script defer src="/js/member/project/announcement/applicant/projectApplicant.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css">
     <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
     <style>
-      body {
-        font-size: 13px;
-      }
-
-      table {
-        font-size: 13px;
-      }
-
-      .form-select,
-      .form-control {
-        font-size: 13px;
-        padding: 2px 6px;
-        height: 28px;
-      }
 
       .form-select {
         width: 10em;
@@ -33,109 +19,73 @@
         padding: 4px 6px !important;
       }
 
-      .btn-sm {
-        padding: 2px 7px;
-        font-size: 12px;
-      }
-
       .nav-link {
         padding: 4px 10px;
         font-size: 13px;
-      }
-
-      /* 경력 슬라이더 noUiSlider 커스텀 */
-      #careerSlider .noUi-base {
-        height: 6px;
-        /* 더 얇게 */
-        background: #e9ecef;
-      }
-
-      #careerSlider .noUi-connect {
-        background: #8bb4ff;
-      }
-
-      #careerSlider .noUi-handle {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #fff;
-        border: 2px solid #0d6efd;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
-        top: -7px;
-        /* 바 가운데 맞춤 */
-        cursor: grab;
-        transition: border 0.2s;
-      }
-
-      #careerSlider .noUi-handle:hover {
-        border: 2.5px solid #296ed7;
-      }
-
-      #careerSlider .noUi-tooltip {
-        font-size: 12px;
-        background: #0d6efd;
-        color: #fff;
-        border-radius: 4px;
-        padding: 1px 7px;
-      }
-
-      #careerSlider .noUi-value {
-        font-size: 12px;
-        color: #296ed7;
-        font-weight: 600;
-        top: -22px;
-        /* 필요시 조절 */
       }
     </style>
   </head>
 
   <body>
-    <div class="container mt-3">
       <p class="h2 mb-4 fw-bold"> 지원자 관리</p>
 
       <!-- 필터 영역 -->
-      <!-- 1번째 줄: 보유기술 -->
-      <div class="row mb-2 g-2">
-        <div class="col">
-          <p class="h5">보유기술</p>
-          <div id="skillTagFilter" class="d-flex flex-wrap gap-1">
+      <div class="">
+      
+      	<!-- 1번째 줄: 보유기술 -->
+        <div class="mb-4">
+          <p class="h6 fw-bold">보유기술</p>
+          <div id="skillTagFilter" class="badge-tag-wrap">
             <!-- JS에서 태그형 생성 -->
           </div>
+        </div>
+        
+      	<!-- 2번째 줄: 지원 부문 -->
+        <div class="mb-4">
+          <p class="h6 fw-bold">지원 부문</p>
+          <!-- 탭 네비게이션 -->
+          <ul class="nav mb-2 badge-tag-wrap" id="recruitTabNav"></ul>
         </div>
       </div>
 
       <!-- 2번째 줄: 이름검색(왼) / 버튼(오른) -->
-      <div class="row mb-3 g-2">
-        <div class="col d-flex align-items-center">
-          <input type="text" class="form-control" id="searchInput" placeholder="지원자 이름 검색" style="width:200px;">
+      <div class="d-flex justify-content-between align-items-center">
+      	<div class="d-flex flex-column align-items-start gap-1">
+        	<button class="btn btn_violet_line btn-sm fs-12" id="btnRequestParticipation">참여 요청</button>
+        	<span class="text-muted fw-500 fs-13">지원완료 상태인 지원자에게 참여요청을 보낼 수 있습니다.</span>
         </div>
-        <div class="col-auto ms-auto d-flex align-items-center gap-2">
-          <button class="btn btn_violet_line" id="searchBtn" type="button">검색</button>
-          <button class="btn btn_gray_line" style="width:100px; justify-content:center;" id="resetFilters"
-            type="button">초기화</button>
-        </div>
-      </div>
+				
+	      <div class="TypoBox searchBar2">
+					<div class="searchBarWrap">
+						<label class="searchBarLabel" for="listKeyword">검색어</label>
+						<input type="text" class="searchBarInput" id="searchInput" placeholder="지원자 이름 검색">
+					</div>
+					
+					<div class="btn_box">
+	          <a class="searchBarBtn" id="searchBtn" type="button">
+	          	<span class="material-symbols-outlined">search</span>
+	          </a>
+		        <button class="" id="resetFilters" type="button">
+		        	<span class="material-symbols-outlined fw-300">close</span>
+		        </button>
+	        </div>
+				</div>
+			</div>
 
-
+				
       <!-- 단계별 탭 & 버튼 한 줄에 배치 -->
       <div class="row mb-2 align-items-center">
-        <div class="col">
-          <!-- 탭 네비게이션 -->
-          <ul class="nav nav-tabs mb-2" id="recruitTabNav"></ul>
-        </div>
         <div class="col-auto ms-auto d-flex gap-2">
-          <button class="btn btn_gray_line" style="width:100px" id="btnRequestParticipation">참여 요청</button>
         </div>
       </div>
 
-    </div>
 
     <!-- 탭 내용(지원자 테이블) -->
-    <div class="tab-content" id="recruitTabContent"></div>
+    <div class="tab-content p-0" id="recruitTabContent"></div>
 
     <!-- 단계별 탭 & 버튼 한 줄에 배치 -->
     <div class="col-auto ms-auto gap-2 mt-3 container">
-      <button class="btn btn_violet_line" id="createBtn">프로젝트 생성</button>
+      <button class="btn btn_violet w140 justify-content-center fs-14" id="createBtn">프로젝트 생성</button>
     </div>
 
 
@@ -145,18 +95,18 @@
         <div class="modal-content">
           <!-- 헤더 -->
           <div class="modal-header bg-white">
-            <h5 class="modal-title text-purple fw-semibold" id="modalProjectTitle">프로젝트 제목</h5>
+            <h5 class="modal-title fs-5 fw-bold text-success" id="modalProjectTitle">프로젝트 제목</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <!-- 프로젝트명 입력 -->
           <div class="px-4 pb-2 pt-3">
-            <label for="inputProjectName" class="form-label fw-medium mb-1">프로젝트명</label>
-            <input type="text" id="inputProjectName" class="form-control" placeholder="프로젝트명을 입력하세요" maxlength="30"
+            <label for="inputProjectName" class="form-label mb-1 fs-14 fw-500">프로젝트명</label>
+            <input type="text" id="inputProjectName" class="form-control fs-13" placeholder="프로젝트명을 입력하세요" maxlength="30"
               autocomplete="off">
           </div>
           <!-- 하단 버튼 -->
           <div class="modal-footer bg-white">
-            <button id="createProjectBtn" class="btn w-100 py-2 text-white" style="background: #ae8be1;">생성</button>
+            <button id="createProjectBtn" class="btn w-100 btn_violet justify-content-center">생성</button>
           </div>
         </div>
       </div>

@@ -67,7 +67,7 @@ function renderPostList() {
             <div class="d-flex align-items-center gap-2 text-secondary">
               <span class="fw-semibold fs-13">${post.nickname || '익명'}</span>
               <span style="font-size:1.05em;">·</span>
-              <span style="font-size:.99em;">${post.date}</span>
+              <span class="fs-14">${post.date}</span>
             </div>
 						<div class="d-flex align-items-center gap-3 text-secondary fs-13">
 							<span>좋아요 <strong>${post.like}</strong></span>

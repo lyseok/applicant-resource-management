@@ -82,7 +82,7 @@ brInput.addEventListener("blur", async () => {
             companyArea.style.display = "none";
         } else {
             msg.textContent = data;
-            msg.style.color = "green";
+            msg.style.color = "#7224ff";
             companyArea.style.display = "block";
         }
     } catch (err) {
@@ -151,18 +151,18 @@ function renderIndustryList(data) {
 	data.forEach(depth1 => {
 		const section = document.createElement('div');
 		section.classList.add('industry-section');
+section.innerHTML = `
+    <h5 class="industry-title">${depth1.induClassName}</h5>
+    <div class="industry-options d-flex">
+        ${depth1.induList.map(d2 => `
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="industry" value="${d2.induNo}" data-name="${d2.induName}" id="${d2.induNo}">
+                <label class="form-check-label fs-14" for="${d2.induNo}">${d2.induName}</label>
+            </div>
+        `).join('')}
+    </div>
+`;
 
-		section.innerHTML = `
-                <h5 class="industry-title">${depth1.induClassName}</h5>
-                <div class="industry-options">
-                    ${depth1.induList.map(d2 => `
-                        <label class="industry-option">
-                            <input type="radio" name="industry" value="${d2.induNo}" data-name="${d2.induName}">
-                            <span>${d2.induName}</span>
-                        </label>
-                    `).join('')}
-                </div>
-            `;
 		industryGroups.appendChild(section);
 
 		// 라디오 버튼 클릭 → 선택

@@ -79,16 +79,16 @@ function renderPostList() {
     );
   }
   area.innerHTML = posts.map(post => `
-    <li class="board-list-item" data-id="${post.postId}" style="cursor:pointer;">
-      <div class="card card-post mb-4">
+    <li class="board-list-item" data-id="${post.postId}">
+      <div class="card card-post mb-4 cursor-auto">
         <div class="card-body p-4">
 					<div class="d-flex justify-content-between align-items-center">
 	          <div class="d-flex align-items-center gap-3 mb-2">
-	            <span class="badge badge-recruit">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
+	            <span class="badge badge-recruit ${post.anncEndYn === 'Y' ? 'opacity-25' : ''}">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
 	            <div class="post-title flex-grow-1 fs-18">${post.title}</div>
 	          </div>
 						<div class="d-flex align-items-center gap-1">
-						  <div class="d-flex align-items-center gap-2 bg-violet02 py-2 px-5 rounded fw-bold">
+						  <div class="d-flex align-items-center gap-2 bg-violet02 py-2 px-5 rounded fw-bold border-violet30">
 								${
 								  post.myStatus === 'PRST-002' 
 								    ? `<span class="material-symbols-outlined fw-300 text-violet80">arrow_circle_right</span>${STATUS_MAP[post.myStatus]}` 
@@ -119,7 +119,7 @@ function renderPostList() {
             <div class="d-flex align-items-center gap-2 text-secondary">
               <span class="fw-semibold fs-13">${post.nickname || '익명'}</span>
               <span style="font-size:1.05em;">·</span>
-              <span style="font-size:.99em;">${post.date}</span>
+              <span class="fs-14">${post.date}</span>
             </div>
 							<div class="d-flex align-items-center gap-3 text-secondary fs-13">
 								<span>좋아요 <strong>${post.like}</strong></span>

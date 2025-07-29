@@ -5,35 +5,49 @@
 		<script defer src="/js/member/project/announcement/prjNoticeList.js"></script>
 		<style>
 			/* 검색 입력 스타일 */
-			.search-input-wrapper {
-				position: relative;
+			.search-input-wrapper{
+				display:flex;
+				gap:10px;
+			}
+			.search-box{
+				display:flex;
+				width:100%;
+				align-items:center;
+				border-radius: 8px;
+				border: 2px solid #e9ecef;
 			}
 
 			.search-input-wrapper .search-icon {
-				position: absolute;
-				left: 15px;
-				top: 50%;
-				transform: translateY(-50%);
+				flex-basis:48px;
 				color: #6c757d;
-				z-index: 2;
+				text-align:center;
+				
 			}
 
 			.search-input-wrapper .search-input {
-				padding-left: 45px;
-				height: 48px;
-				border: 2px solid #e9ecef;
-				border-radius: 8px;
+				height: 44px;
 				font-size: 14px;
 			}
 
-			.search-input-wrapper .search-input:focus {
-				border-color: #28a745;
-				box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-			}
 
+			input:focus-visible,
+			input:focus{
+				outline:none !important;
+				box-shadow:none  !important;
+			}
+			
+			
+			
+			
+			
+			
 			/* 태그 입력 컨테이너 스타일 */
+			.tag-wrap{
+				gap:10px;
+			}
 			.tag-input-wrapper {
 				position: relative;
+				width:calc(100% - 100px);
 			}
 
 			.tag-input-container {
@@ -47,11 +61,7 @@
 				cursor: text;
 				flex-wrap: wrap;
 				gap: 6px;
-			}
-
-			.tag-input-container:focus-within {
-				border-color: #28a745;
-				box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+				width:100%;
 			}
 
 			.tag-prefix {
@@ -68,19 +78,7 @@
 				align-items: center;
 			}
 
-			.tag-chip {
-				display: inline-flex;
-				align-items: center;
-				background-color: #f8f9fa;
-				border: 1px solid #dee2e6;
-				border-radius: 16px;
-				padding: 4px 8px 4px 12px;
-				font-size: 13px;
-				color: #495057;
-				white-space: nowrap;
-			}
-
-			.tag-chip .remove-tag {
+			.badge-tag .remove-tag {
 				margin-left: 6px;
 				cursor: pointer;
 				color: #6c757d;
@@ -96,7 +94,7 @@
 				justify-content: center;
 			}
 
-			.tag-chip .remove-tag:hover {
+			.badge-tag .remove-tag:hover {
 				background-color: #e9ecef;
 				color: #495057;
 			}
@@ -167,6 +165,11 @@
 					min-width: 100px;
 				}
 			}
+			
+			/* 리스트 스타일 */
+			.badge-recruit {
+			    background: var(--violet80);
+			}
 		</style>
 	</head>
 
@@ -192,7 +195,7 @@
 						<script>
 							document.addEventListener('DOMContentLoaded', () => {
 								const recommendSwiper = new Swiper('.recommend_list_wrap', {
-									slidesPerView: 3,
+									slidesPerView: 3.2,
 								});
 							});
 						</script>
@@ -202,48 +205,33 @@
 						<!-- 검색 영역 -->
 						<div class="row align-items-center mb-4 g-2">
 							<!-- 검색 입력 -->
-							<div class="col-12 col-md-6">
-								<div class="search-input-wrapper">
-									<span class="material-symbols-outlined">
-										search
-									</span>
-									<input type="text" class="form-control search-input" placeholder="팀 프로젝트, 사이드프로젝트를 검색해보세요!" />
-									<button class="btn btn-success search-btn" id="searchBtn" type="button">
-										검색
-									</button>
+							<div class="search-input-wrapper">
+								<div class="search-box">
+									<span class="material-symbols-outlined search-icon">search</span>
+									<input type="text" class="form-control search-input border-0" placeholder="팀 프로젝트, 사이드프로젝트를 검색해보세요!" />
 								</div>
+								<button class="btn btn_violet_line search-btn justify-content-center fs-16 fw-500" id="searchBtn" type="button">
+									검색
+								</button>
 							</div>
-							<!-- 검색 버튼 -->
-							<div class="col-12 text-end mt-2">
-							</div>
-							<!-- 태그 입력 -->
-							<div class="col-12 col-md-6">
+							
+								<!-- 태그 입력 -->
 								<div class="tag-input-wrapper">
 									<div class="tag-input-container">
 										<span class="tag-prefix">#</span>
 										<div class="tags-display"></div>
 										<input type="text" class="tag-input" placeholder="태그로 검색해보세요!" />
 										<button type="button" class="tag-reset-btn" title="초기화">
-											<span class="material-symbols-outlined">
-												close
-											</span>
+											<span class="material-symbols-outlined">close</span>
 										</button>
 									</div>
 								</div>
-							</div>
-
-							<!-- 글쓰기 버튼 -->
-							<div class="col-12 col-md-3 text-end">
-								<button class="btn btn-write mt-2 mt-md-0" id="writeBtn" type="button">
-									<i class="bi bi-pencil-square me-1"></i> 글쓰기
-								</button>
-							</div>
 						</div>
 
 						<div class="Post_post">
 							<h2 class="Post_title Post_titleAddPadding">게시글</h2>
 							<div class="Post_filter">
-								<div class="Post_category d-flex justify-content-between align-items-center overflow-visible">
+								<div class="Post_category d-flex align-items-center justify-content-between overflow-visible">
 									<div class="d-flex">
 										<div class="Post_categoryItem">
 											<input id="status_all" type="radio" value="status_all" name="category" checked />
@@ -257,16 +245,21 @@
 											<input id="status_y" type="radio" value="status_y" name="category" />
 											<label for="status_y"><span>모집완료</span></label>
 										</div>
-									</div>
-									<div>
 										<select class="Select_root Select_size38 Select_round w140" name="selectName">
 											<option value="date" selected="">최신순</option>
 											<option value="pop">인기순</option>
 											<option value="like">시작일순</option>
 										</select>
 									</div>
+									<!-- 글쓰기 버튼 -->
+									<div>
+										<button class="btn btn_violet" id="writeBtn" type="button">
+											<i class="bi bi-pencil-square me-1"></i> 글쓰기
+										</button>
+									</div>
 								</div>
 							</div>
+							
 							<div class="PostList_postList">
 
 								<ul></ul>

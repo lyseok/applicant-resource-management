@@ -27,7 +27,7 @@
 	    background: none;
 	   }
     .badge-recruit { background:var(--violet80); }
-    .card-post { border-radius: 10px; cursor:pointer;}
+    .card-post { border-radius: 10px; cursor:pointer; border: 1px solid #eaedf4;box-shadow: none;}
     .card-post:hover { box-shadow: 0 4px 28px 0 rgba(120, 80, 210, 0.16);}
     .post-title { font-size:1.25em; font-weight:700; color:#222;}
     .badge-tag { 

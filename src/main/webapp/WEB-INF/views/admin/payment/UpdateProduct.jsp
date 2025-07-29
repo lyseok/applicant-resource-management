@@ -32,18 +32,12 @@
                     <textarea class="form-control" id="productDetail" name="productDetail" rows="3"
                               placeholder="설명을 입력하세요">${product.productDetail}</textarea>
                 </div>
-					${product.productNo}
                 <div class="mb-3">
                     <label for="productPrice" class="form-label">가격</label>
                     <input type="text" class="form-control" id="productPrice" name="productPrice"
                            placeholder="가격 입력" value="${product.productPrice}" required>
                 </div>
 
-                <div class="mb-3">
-                    <label for="productPeriod" class="form-label">이용 기간</label>
-                    <input type="text" class="form-control" id="productPeriod" name="productPeriod"
-                           placeholder="예: 30일" value="${product.productPeriod}" required>
-                </div>
 
                 <div class="mb-3">
                     <label for="productImgFile" class="form-label">상품 이미지</label>

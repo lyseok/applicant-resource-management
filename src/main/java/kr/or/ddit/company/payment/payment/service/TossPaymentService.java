@@ -26,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TossPaymentService {
 
-	@Autowired
-	PaymentServiceImpl service;
+//	@Autowired
+//	PaymentServiceImpl service;
 	
 	@Value("${toss.secretKey}")
 	private String secretKey;
