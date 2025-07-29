@@ -1,6 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
   <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+    <head>
+      <script defer src="/js/common/mainHeader.js"></script>
+      <style>
+        #companyDropdown {
+          position: absolute;
+          top: 100%;
+          /* input 바로 아래 */
+          left: 0;
+          background: #fff;
+          border: 1px solid #ccc;
+          width: 100%;
+          max-height: 200px;
+          overflow-y: auto;
+          z-index: 999;
+          display: none;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        #companyDropdown li {
+          padding: 8px;
+          cursor: pointer;
+        }
+
+        #companyDropdown li:hover {
+          background: #f0f0f0;
+        }
+      </style>
+
+    </head>
     <header id="sri_header" class="main bubble">
       <div class="wrap_header">
         <h1>
@@ -25,7 +56,8 @@
                   <li data-value="company">기업</li>
                 </ul>
               </div>
-              <input type="text" id="searchInput" placeholder="검색어를 입력하세요" class="keyword static" />
+              <input type="text" id="search_input" placeholder="검색어를 입력하세요" class="keyword static" />
+              <ul id="companyDropdown"></ul>
               <button type="submit" class="search_btn" style="background: none; border: none;">
                 <span class="material-symbols-outlined search_icon">search</span>
               </button>
@@ -309,114 +341,4 @@
         </div>
       </div>
 
-      <script>
-
-        let companyList = [];
-
-        document.addEventListener('DOMContentLoaded', function () {
-          initCompanyList();
-          // 버튼과 레이어 변수 저장
-          const memberBtn = document.querySelector('.member_btn');
-          const memberLayer = document.querySelector('.layer_member');
-
-          if (memberBtn) {
-            // 멤버 버튼 클릭 이벤트
-            memberBtn.addEventListener('click', function (event) {
-              event.stopPropagation();
-              const isOpen = memberLayer.style.display === 'block';
-              // 토글
-              memberLayer.style.display = isOpen ? 'none' : 'block';
-            });
-          }
-
-          // 외부 클릭시 닫기 (버튼/레이어 아닌 부분 클릭시)
-          document.addEventListener('click', function (event) {
-            if (memberBtn) {
-              if (!memberBtn.contains(event.target) && !memberLayer.contains(event.target)) {
-                memberLayer.style.display = 'none';
-              }
-            }
-          });
-          axios.get('/ajax/userinfo')
-            .then(res => {
-              const data = res.data;
-              let name = '비회원';
-              if (data.userType === 'company') name = data.userName;
-              else if (data.userType === 'admin') name = '관리자';
-              else if (data.userType === 'member') name = data.userName;
-              if (document.getElementById('user_name')) {
-                document.getElementById('user_name').textContent = name;
-              }
-            });
-        });
-
-        // 로그아웃 버튼 이벤트
-        const logoutBtnEls = document.querySelectorAll('.logoutBtn');
-        logoutBtnEls.forEach(btn => {
-          btn.addEventListener('click', () => {
-            console.log('test');
-            axios.post("/common/auth/revoke", {}, {
-              withCredentials: true
-            }).then(resp => location.href = "/");
-          });
-        });
-        document.addEventListener('DOMContentLoaded', () => {
-          const customSelect = document.querySelector('.custom-select');
-          const selectStyled = customSelect.querySelector('.select-styled');
-          const optionsList = customSelect.querySelector('.select-options');
-
-          // 클릭 시 토글
-          selectStyled.addEventListener('click', (e) => {
-            e.stopPropagation(); // 다른 곳 클릭 시 닫히는 기능 대비
-            const isVisible = optionsList.style.display === 'block';
-            optionsList.style.display = isVisible ? 'none' : 'block';
-          });
-
-          // 옵션 선택 시 값 반영 및 닫기
-          optionsList.querySelectorAll('li').forEach(li => {
-            li.addEventListener('click', (e) => {
-              const value = li.getAttribute('data-value');
-              const text = li.textContent;
-              selectStyled.querySelector('span').textContent = text;
-              selectStyled.dataset.value = value;
-              optionsList.style.display = 'none';
-            });
-          });
-
-          // 바깥 클릭 시 닫기
-          document.addEventListener('click', (e) => {
-            if (!customSelect.contains(e.target)) {
-              optionsList.style.display = 'none';
-            }
-          });
-
-          // 검색 이벤트 처리
-          const searchForm = document.getElementById('searchForm');
-          const searchInput = document.getElementById('searchInput');
-
-          searchForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // 기본 제출 동작 방지
-
-            const selectedCategory = selectStyled.dataset.value || 'recruit'; // 기본값 설정
-            const keyword = searchInput.value.trim();
-
-            console.log('선택된 카테고리:', selectedCategory);
-            console.log('입력된 검색어:', keyword);
-
-            if (selectedCategory === 'recruit') {
-              location.href = `/search/recruit?keyword=` + keyword;
-            } else {
-              location.href = `/member/company_view?no=` + keyword;
-            }
-          });
-        });
-
-        function initCompanyList() {
-          axios.get('/ajax/company_name').then((res) => {
-            companyList = res.data;
-            console.log('Company List Initialized:', companyList);
-          });
-        }
-
-      </script>
     </header>
