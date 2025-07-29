@@ -172,12 +172,12 @@ function removeTag(idx) {
     renderTags();
 }
 function renderTags() {
-    tagInputBox.querySelectorAll('.tag-chip').forEach(chip => chip.remove());
+    tagInputBox.querySelectorAll('.badge-tag').forEach(chip => chip.remove());
     tags.forEach((t, i) => {
         const chip = document.createElement('span');
-        chip.className = 'tag-chip';
+        chip.className = 'badge-tag d-flex gap-2 me-2';
         chip.innerHTML = `${t}<span class="remove-tag" onclick="removeTag(${i})">&times;</span>`;
-        tagInputBox.insertBefore(chip, tagInput);
+        tagInputBox.insertBefore(chip, tagInput.nextSibling);
     });
 }
 window.removeTag = removeTag;
@@ -252,7 +252,7 @@ function renderRoleList() {
         const li = document.createElement('li');
         li.className = 'd-flex align-items-center justify-content-between position-row py-2 px-3';
         li.innerHTML = `
-            <span>
+            <span class="fs-14">
                 ${role.name}
                 <button type="button" class="delete-role" onclick="removeRole(${i})">&times;</button>
                 <input type="hidden" name="teamRoles[${i}].jobName" value="${role.name}">

@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tagsDisplay.innerHTML = tagList
         .map(
           (tag) => `
-        <span class="tag-chip">
+        <span class="badge-tag d-flex">
           ${tag}
           <span class="remove-tag" data-tag="${tag}">×</span>
         </span>
