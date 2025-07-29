@@ -22,7 +22,7 @@
 	                  <a class="placeholder" tabindex="-1"></a>
 	                  <div class="jv_header">
 	                    <div class="title_inner">
-	                      <a href="javascript:void(0)" title="(주)야스" class="company"target="_blank">
+	                      <a href="" title="(주)야스" class="company"target="_blank">
 	                        (주)야스
 	                      </a>
 	                      <button type="button" title="관심기업 등록" class="btn_jview spr_jview btn_interest">
