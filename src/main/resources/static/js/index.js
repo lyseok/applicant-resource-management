@@ -13,14 +13,44 @@ const params = {
 let myCompanyList;
 let myRecruitList;
 
-function fetchTopRecruitData() {
-  axios.get('/ajax/recruit/search', { params }).then((res) => {
-    const resp = res.data;
+// function fetchTopRecruitData() {
+//   axios.get('/ajax/recruit/search', { params }).then((res) => {
+//     const resp = res.data;
 
+//     myCompanyList = resp.myScrabCompany;
+//     myRecruitList = resp.myScrabRecruit;
+
+//     topRecruitNoticeInit(resp.data); // 목록 그리기 함수
+//     fetchMiddleRecruitData();
+//   });
+// }
+
+function shuffleAndTrim(arr, premium = false) {
+  // 1. 배열 섞기 (Fisher-Yates 알고리즘)
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+
+  // 2. 조건에 따라 자르기
+  const length = arr.length;
+  let trimLength;
+  if (premium) {
+    trimLength = length % 4 === 0 ? length - 1 : length - (length % 4) + 3;
+  } else {
+    trimLength = length - (length % 4);
+  }
+  return arr.slice(0, trimLength);
+}
+
+function fetchTopRecruitData() {
+  axios.get('/ajax/recruit/main_p').then((res) => {
+    const resp = res.data;
+    const shuffledData = shuffleAndTrim(resp.data, true);
     myCompanyList = resp.myScrabCompany;
     myRecruitList = resp.myScrabRecruit;
 
-    topRecruitNoticeInit(resp.data); // 목록 그리기 함수
+    topRecruitNoticeInit(shuffledData); // 목록 그리기 함수
     fetchMiddleRecruitData();
   });
 }
@@ -112,11 +142,10 @@ function topRecruitNoticeInit(data) {
 }
 
 function fetchMiddleRecruitData() {
-  params.pageSize = 8;
-  axios.get('/ajax/recruit/search', { params }).then((res) => {
+  axios.get('/ajax/recruit/main_middle').then((res) => {
     const resp = res.data;
-
-    middleRecruitNoticeInit(resp.data); // 목록 그리기 함수
+    const shuffledData = shuffleAndTrim(resp.data);
+    middleRecruitNoticeInit(shuffledData); // 목록 그리기 함수
     fetchBottomRecruitData();
   });
 }
@@ -192,11 +221,10 @@ function middleRecruitNoticeInit(data) {
 }
 
 function fetchBottomRecruitData() {
-  params.pageSize = 20;
-  axios.get('/ajax/recruit/search', { params }).then((res) => {
+  axios.get('/ajax/recruit/main_bottom').then((res) => {
     const resp = res.data;
-
-    bottomRecruitNoticeInit(resp.data); // 목록 그리기 함수
+    const shuffledData = shuffleAndTrim(resp.data);
+    bottomRecruitNoticeInit(shuffledData); // 목록 그리기 함수
   });
 }
 

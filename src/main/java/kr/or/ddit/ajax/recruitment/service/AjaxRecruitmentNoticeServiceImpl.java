@@ -67,4 +67,34 @@ public class AjaxRecruitmentNoticeServiceImpl implements AjaxRecruitmentNoticeSe
 		return scrabMap;
 	}
 
+	@Override
+	public Map<String, Object> selectMainPRecruitmentNoticeList() {
+		Map<String, Object> resp = myScrabList();
+		List<RecruitmentNoticeDTO> list = mapper.selectMainPRecruitNoticeDtoList();
+		
+		resp.put("data", list);
+		
+		return resp;
+	}
+
+	@Override
+	public Map<String, Object> selectMainMiddleRecruitmentNoticeList() {
+		Map<String, Object> resp = myScrabList();
+		List<RecruitmentNoticeDTO> list = mapper.selectMainMiddleRecruitNoticeDtoList();
+		
+		resp.put("data", list);
+		
+		return resp;
+	}
+
+	@Override
+	public Map<String, Object> selectMainBottomRecruitmentNoticeList() {
+		Map<String, Object> resp = myScrabList();
+		List<RecruitmentNoticeDTO> list = mapper.selectMainBottomRecruitNoticeDtoList();
+		
+		resp.put("data", list);
+		
+		return resp;
+	}
+
 }
