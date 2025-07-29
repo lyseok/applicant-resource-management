@@ -37,87 +37,183 @@ public class CommonLoginController {
 	private final SecurityContextRepository securityContextRepository;
 	private final LogoutHandler logoutHandler;
 	
-	@PostMapping({"/common/auth/revoke", "/api/common/auth/revoke"})
-	public ResponseEntity<?> revoke(
-		HttpServletRequest req
-		, HttpServletResponse resp
-		, Authentication authentication
-	) {
-		
-		// 토큰 기반 인증 상태를 로그아웃으로 처리
-		String tokenCookie = ResponseCookie.from(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
-				.value("")
-				.path("/")
-//				.domain(".naver.com")
-				.httpOnly(true)
-//				.secure(true)
-				.sameSite(SameSite.STRICT.attributeValue())
-				.maxAge(0)
-				.build().toString();
-		
-		// 세션 기반 인증 상태를 로그아웃으로 처리
-		logoutHandler.logout(req, resp, authentication);
-		
-		return ResponseEntity.ok()
-				.header(HttpHeaders.SET_COOKIE, tokenCookie)
-				.build();
-	}
-	
-
 	@PostMapping("/common/auth")
 	public ResponseEntity<?> authenticate(
-		@RequestBody RestAuthVO auth
-		, HttpServletRequest req
-		, HttpServletResponse resp
+	    @RequestBody RestAuthVO auth,
+	    HttpServletRequest req,
+	    HttpServletResponse resp
 	) {
-		UsernamePasswordAuthenticationToken inputData =
-				UsernamePasswordAuthenticationToken
-					.unauthenticated(auth.getUsername(), auth.getPassword());
-		
-		try {
-			log.info("{}", auth);
-			Authentication authentication = authenticationManager.authenticate(inputData);
-			
-			// 토큰 기반 인증 처리
-			String encodedToken = jwtProvider.authenticationToToken(authentication);
-			
-			String tokenCookie = ResponseCookie.from(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
-						.value(encodedToken)
-						.path("/")
-//						.domain(".naver.com")
-						.httpOnly(true)
-//						.secure(true)
-						.sameSite(SameSite.STRICT.attributeValue())
-						.maxAge(JwtProvider.VALID_TERM / 1000)
-						.build().toString();
-						
-			
-			// 세션 기반 인증 처리
-			SecurityContext newContext = SecurityContextHolder.createEmptyContext();
-			newContext.setAuthentication(authentication);
-			SecurityContextHolder.setContext(newContext);
-			securityContextRepository.saveContext(newContext, req, resp);
-			
-			List<String> roles = authentication.getAuthorities().stream()
-		            .map(GrantedAuthority::getAuthority)
-		            .collect(Collectors.toList());
-			
-			Map<String, Object> body = Map.of(
-		            "username", authentication.getName(),
-		            "roles", roles
-		        );
-			return ResponseEntity.ok()
-							.header(HttpHeaders.SET_COOKIE, tokenCookie)
-							.body(body);
-							
-			
-		} catch (AuthenticationException e) {
-			
-			return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
-							.body(Map.of("error", 401, "message", e.getMessage()));
-		}
-		
+	    UsernamePasswordAuthenticationToken inputData =
+	            UsernamePasswordAuthenticationToken
+	                .unauthenticated(auth.getUsername(), auth.getPassword());
+
+	    try {
+	        Authentication authentication = authenticationManager.authenticate(inputData);
+
+	        // 토큰 생성
+	        String encodedToken = jwtProvider.authenticationToToken(authentication);
+
+	        // 토큰 쿠키
+	        String tokenCookie = ResponseCookie.from(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
+	                .value(encodedToken)
+	                .path("/")
+	                .httpOnly(true)
+	                .sameSite(SameSite.STRICT.attributeValue())
+	                .maxAge(JwtProvider.VALID_TERM / 1000) // JWT 유효시간
+	                .build()
+	                .toString();
+
+	        // 세션 기반 인증 처리
+	        SecurityContext newContext = SecurityContextHolder.createEmptyContext();
+	        newContext.setAuthentication(authentication);
+	        SecurityContextHolder.setContext(newContext);
+	        securityContextRepository.saveContext(newContext, req, resp);
+
+	        // **JSESSIONID 쿠키를 토큰과 동일한 유효기간으로 설정**
+	        String jsessionCookie = ResponseCookie.from("JSESSIONID", req.getSession().getId())
+	                .path("/")
+	                .httpOnly(true)
+	                .sameSite(SameSite.STRICT.attributeValue())
+	                .maxAge(JwtProvider.VALID_TERM / 1000) // JWT와 동일한 유효기간
+	                .build()
+	                .toString();
+
+	        List<String> roles = authentication.getAuthorities().stream()
+	                .map(GrantedAuthority::getAuthority)
+	                .collect(Collectors.toList());
+
+	        Map<String, Object> body = Map.of(
+	                "username", authentication.getName(),
+	                "roles", roles
+	        );
+
+	        return ResponseEntity.ok()
+	                .header(HttpHeaders.SET_COOKIE, tokenCookie)
+	                .header(HttpHeaders.SET_COOKIE, jsessionCookie) // JSESSIONID도 동기화
+	                .body(body);
+
+	    } catch (AuthenticationException e) {
+	        return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
+	                .body(Map.of("error", 401, "message", e.getMessage()));
+	    }
 	}
+	
+	@PostMapping({"/common/auth/revoke", "/api/common/auth/revoke"})
+	public ResponseEntity<?> revoke(
+	    HttpServletRequest req,
+	    HttpServletResponse resp,
+	    Authentication authentication
+	) {
+	    // access_token 삭제
+	    String tokenCookie = ResponseCookie.from(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
+	            .value("")
+	            .path("/")
+	            .httpOnly(true)
+	            .sameSite(SameSite.STRICT.attributeValue())
+	            .maxAge(0)
+	            .build()
+	            .toString();
+
+	    // JSESSIONID 삭제
+	    String jsessionCookie = ResponseCookie.from("JSESSIONID")
+	            .value("")
+	            .path("/")
+	            .httpOnly(true)
+	            .sameSite(SameSite.STRICT.attributeValue())
+	            .maxAge(0)
+	            .build()
+	            .toString();
+
+	    // 세션 종료
+	    logoutHandler.logout(req, resp, authentication);
+
+	    return ResponseEntity.ok()
+	            .header(HttpHeaders.SET_COOKIE, tokenCookie)
+	            .header(HttpHeaders.SET_COOKIE, jsessionCookie)
+	            .build();
+	}
+	
+//	@PostMapping({"/common/auth/revoke", "/api/common/auth/revoke"})
+//	public ResponseEntity<?> revoke(
+//		HttpServletRequest req
+//		, HttpServletResponse resp
+//		, Authentication authentication
+//	) {
+//		
+//		// 토큰 기반 인증 상태를 로그아웃으로 처리
+//		String tokenCookie = ResponseCookie.from(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
+//				.value("")
+//				.path("/")
+////				.domain(".naver.com")
+//				.httpOnly(true)
+////				.secure(true)
+//				.sameSite(SameSite.STRICT.attributeValue())
+//				.maxAge(0)
+//				.build().toString();
+//		
+//		// 세션 기반 인증 상태를 로그아웃으로 처리
+//		logoutHandler.logout(req, resp, authentication);
+//		
+//		return ResponseEntity.ok()
+//				.header(HttpHeaders.SET_COOKIE, tokenCookie)
+//				.build();
+//	}
+//	
+//
+//	@PostMapping("/common/auth")
+//	public ResponseEntity<?> authenticate(
+//		@RequestBody RestAuthVO auth
+//		, HttpServletRequest req
+//		, HttpServletResponse resp
+//	) {
+//		UsernamePasswordAuthenticationToken inputData =
+//				UsernamePasswordAuthenticationToken
+//					.unauthenticated(auth.getUsername(), auth.getPassword());
+//		
+//		try {
+//			log.info("{}", auth);
+//			Authentication authentication = authenticationManager.authenticate(inputData);
+//			
+//			// 토큰 기반 인증 처리
+//			String encodedToken = jwtProvider.authenticationToToken(authentication);
+//			
+//			String tokenCookie = ResponseCookie.from(CookieBearerTokenResolver.ACCESSTOKENCOOKIE)
+//						.value(encodedToken)
+//						.path("/")
+////						.domain(".naver.com")
+//						.httpOnly(true)
+////						.secure(true)
+//						.sameSite(SameSite.STRICT.attributeValue())
+//						.maxAge(JwtProvider.VALID_TERM / 1000)
+//						.build().toString();
+//						
+//			
+//			// 세션 기반 인증 처리
+//			SecurityContext newContext = SecurityContextHolder.createEmptyContext();
+//			newContext.setAuthentication(authentication);
+//			SecurityContextHolder.setContext(newContext);
+//			securityContextRepository.saveContext(newContext, req, resp);
+//			
+//			List<String> roles = authentication.getAuthorities().stream()
+//		            .map(GrantedAuthority::getAuthority)
+//		            .collect(Collectors.toList());
+//			
+//			Map<String, Object> body = Map.of(
+//		            "username", authentication.getName(),
+//		            "roles", roles
+//		        );
+//			return ResponseEntity.ok()
+//							.header(HttpHeaders.SET_COOKIE, tokenCookie)
+//							.body(body);
+//							
+//			
+//		} catch (AuthenticationException e) {
+//			
+//			return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
+//							.body(Map.of("error", 401, "message", e.getMessage()));
+//		}
+//		
+//	}
 
 	/**
 	 * 인증된 객체임을 표현할 수 있는 여러가지 데이터(claim)를 자체적으로 포함하고 있는 JSON 으로 표현된 토큰 생성

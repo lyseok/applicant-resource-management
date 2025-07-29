@@ -188,6 +188,9 @@ public class RecruitServiceImpl implements RecruitService {
 		
 		String year = codeMapProvider.getCodeName(notiVo.getYearCode());
 		notiVo.setYearCodeName(year);
+		
+		String indu = codeMapProvider.getInduName(notiVo.getCompany().getIndustryType());
+		notiVo.getCompany().setInduName(indu);		
 	}
 
 	@Override

@@ -74,4 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			})
 	})
 	
+		   // 취소 버튼 클릭 시 리스트로 이동 
+	       cancelBtn.addEventListener('click', () => {
+	           if (confirm('취소하시겠습니까? 변경사항은 저장되지 않습니다.')) {
+	               location.href = '/company/salary_management';
+	           }
+	       });
+	
 });

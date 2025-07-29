@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-	const userId = 'testCompany';
+	const userId = new URLSearchParams(window.location.search).get('no');
 	
 	axios
-		.get('/ajax/member/company_view/testCompany')
+		.get(`/ajax/member/company_view/${userId}`)
 		.then((resp) => {
 			const company = resp.data;
 			console.log(company);
@@ -56,210 +56,171 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	axios.get(`/ajax/member/company_view/sales/${userId}`).then((resp) => {
 		const sales = resp.data;
+		
+		console.log(sales.map(s => s.comSalesAmount));
+		console.log(sales.map(s => Number(s.comSalesAmount)));
 		const labels = sales.map((s) => s.comSalesYear);
-		const data = sales.map((s) => s.comSalesAmount / 100_000_000); // 억 원
-		const avgData = sales.map((s) => s.avgSalesAmount / 100_000_000); // 억 원
+		const data = sales.map((s) => Number(s.comSalesAmount) / 100_000_000); // 억 원
+		const avgData = sales.map((s) => Number(s.avgSalesAmount) / 100_000_000); // 억 원
 
 
 
 		const latest = sales[sales.length - 1];
-		console.log('킄큭큭', latest);
-		document.getElementById('comSales').textContent = formatKRW(latest.comSalesAmount) + '(전년도 기준)'
+			if (latest) {
+				const latestAmount = Number(latest.comSalesAmount);
+				document.getElementById('comSales').textContent = formatSalary(latestAmount) + '(전년도 기준)';
+			}
 
-		new Chart(document.getElementById('salesChart').getContext('2d'), {
-			type: 'line',
-			data: {
-				labels: labels,
-				datasets: [
-					{
-						label: '매출액',
-						data: data,
-						backgroundColor: 'rgba(153, 102, 255, 0.2)',
-						borderColor: 'rgba(153, 102, 255, 1)',
-						borderWidth: 2,
-						pointBackgroundColor: 'rgba(153, 102, 255, 1)',
-						fill: true,
-						tension: 0.3,
-					},
-					{
-						label: '업계 평균 매출액',
-						data: avgData,
-						borderColor: 'rgba(200, 200, 200, 0.6)',
-						borderDash: [5, 5],
-						fill: false,
-						pointRadius: 0,
-						tension: 0.1,
-						datalabels: {
-							display: false,
+			new Chart(document.getElementById('salesChart').getContext('2d'), {
+				type: 'line',
+				data: {
+					labels: labels,
+					datasets: [
+						{
+							label: '매출액',
+							data: data,
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							borderColor: 'rgba(153, 102, 255, 1)',
+							borderWidth: 2,
+							pointBackgroundColor: 'rgba(153, 102, 255, 1)',
+							fill: true,
+							tension: 0.3,
 						},
-					},
-				],
-			},
-			options: {
-				responsive: false,
-				plugins: {
-					datalabels: {
-						display: true,
-						align: 'end',
-						offset: 8, // 약간 위로 띄움
-						font: { size: 12 },
-						formatter: (value) => formatKRW(value * 100_000_000),
-					},
-					tooltip: {
-						callbacks: {
-							label: function(ctx) {
-								const raw = ctx.raw * 100_000_000;
-								if (ctx.dataset.label.includes('평균')) {
-									return '업계 평균: ' + formatKRW(raw);
-								}
-								const growth = sales[ctx.dataIndex].growthRatePercent;
-								return `매출액: ${formatKRW(raw)} (작년 대비 ${growth >= 0 ? '+' : ''
-									}${growth.toFixed(2)}%)`;
+						{
+							label: '업계 평균 매출액',
+							data: avgData,
+							borderColor: 'rgba(200, 200, 200, 0.6)',
+							borderDash: [5, 5],
+							fill: false,
+							pointRadius: 0,
+							tension: 0.1,
+							datalabels: { display: false },
+						},
+					],
+				},
+				options: {
+					responsive: false,
+					plugins: {
+						datalabels: {
+							display: true,
+							align: 'end',
+							offset: 8,
+							font: { size: 12 },
+							formatter: (value) => formatSalary(value * 100_000_000),
+						},
+						tooltip: {
+							callbacks: {
+								label: function(ctx) {
+									const raw = ctx.raw * 100_000_000;
+									if (ctx.dataset.label.includes('평균')) {
+										return '업계 평균: ' + formatSalary(raw);
+									}
+									const growth = Number(sales[ctx.dataIndex].growthRatePercent ?? 0);
+									return `매출액: ${formatSalary(raw)} (작년 대비 ${growth >= 0 ? '+' : ''}${growth.toFixed(2)}%)`;
+								},
 							},
 						},
 					},
-				},
-				layout: {
-					padding: {
-						bottom: 80,
-						right: 30,
-					},
-				},
-				scales: {
-					y: {
-						title: {
-							display: true,
-							text: '억 원',
-							color: '#666',
-							font: { size: 14 },
+					layout: { padding: { bottom: 80, right: 30 } },
+					scales: {
+						y: {
+							title: { display: true, text: '억 원', color: '#666', font: { size: 14 } },
+							beginAtZero: true,
 						},
-						beginAtZero: true,
 					},
 				},
-			},
-			plugins: [ChartDataLabels],
+				plugins: [ChartDataLabels],
+			});
+
+			if (latest) {
+				document.getElementById('salesUpdate').textContent = `${latest.comSalesYear}.12 기준`;
+				document.getElementById('totalSalesAmount').textContent = formatSalary(Number(latest.comSalesAmount));
+
+				const growth = Number(latest.growthRatePercent ?? 0);
+				const growthColor = growth >= 0 ? 'blue' : 'red';
+				const growthArrow = growth >= 0 ? '▲' : '▼';
+				document.getElementById('salesYoY').innerHTML = `<span style="color:${growthColor}">${Math.abs(growth).toFixed(0)}% ${growthArrow}</span>`;
+			}
 		});
+		axios.get(`/ajax/member/company_view/profit/${userId}`).then((resp) => {
+			const profit = resp.data;
+			const labels = profit.map((p) => p.comProfitYear);
+			const data = profit.map((p) => Number(p.comOperatingProfit) / 100_000_000); // 억 원
+			const avgData = profit.map((p) => Number(p.avgOperatingProfit) / 100_000_000); // 억 원
 
-		if (latest) {
-			document.getElementById(
-				'salesUpdate'
-			).textContent = `${latest.comSalesYear}.12 기준`;
-			document.getElementById('totalSalesAmount').textContent = formatKRW(
-				latest.comSalesAmount
-			);
+			const latest = profit[profit.length - 1];
 
-			const growth = latest.growthRatePercent ?? 0;
-			const growthColor = growth >= 0 ? 'blue' : 'red';
-			const growthArrow = growth >= 0 ? '▲' : '▼';
-			document.getElementById(
-				'salesYoY'
-			).innerHTML = `<span style="color:${growthColor}">${Math.abs(
-				growth
-			).toFixed(0)}% ${growthArrow}</span>`;
-		}
-	});
-
-	axios.get(`/ajax/member/company_view/profit/${userId}`).then((resp) => {
-		const profit = resp.data;
-		console.log(profit);
-
-		const labels = profit.map((p) => p.comProfitYear);
-		const data = profit.map((p) => p.comOperatingProfit / 100_000_000);
-		const avgData = profit.map((p) => p.avgOperatingProfit / 100_000_000);
-
-		const latest = profit[profit.length - 1];
-
-		new Chart(document.getElementById('profitChart').getContext('2d'), {
-			type: 'line',
-			data: {
-				labels: labels,
-				datasets: [
-					{
-						label: '영업 이익',
-						data: data,
-						backgroundColor: 'rgba(153, 102, 255, 0.2)',
-						borderColor: 'rgba(153, 102, 255, 1)',
-						borderWidth: 2,
-						pointBackgroundColor: 'rgba(153, 102, 255, 1)',
-						fill: true,
-						tension: 0.3,
-					},
-					{
-						label: '업계 평균 영업이익',
-						data: avgData,
-						borderColor: 'rgba(200, 200, 200, 0.6)',
-						borderDash: [5, 5],
-						fill: false,
-						pointRadius: 0,
-						tension: 0.1,
-						datalabels: {
-							display: false,
+			new Chart(document.getElementById('profitChart').getContext('2d'), {
+				type: 'line',
+				data: {
+					labels: labels,
+					datasets: [
+						{
+							label: '영업 이익',
+							data: data,
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							borderColor: 'rgba(153, 102, 255, 1)',
+							borderWidth: 2,
+							pointBackgroundColor: 'rgba(153, 102, 255, 1)',
+							fill: true,
+							tension: 0.3,
 						},
-					},
-				],
-			},
-			options: {
-				responsive: false,
-				plugins: {
-					datalabels: {
-						display: true,
-						align: 'end',
-						offset: 8, // 약간 위로 띄움
-						font: { size: 12 },
-						formatter: (value) => formatKRW(value * 100_000_000),
-					},
-					tooltip: {
-						callbacks: {
-							label: function(ctx) {
-								const raw = ctx.raw * 100_000_000;
-								if (ctx.dataset.label.includes('평균')) {
-									return '업계 평균: ' + formatKRW(raw);
-								}
-								const growth = profit[ctx.dataIndex].growthRatePercent;
-								return `영업 이익: ${formatKRW(raw)} (작년 대비 ${growth >= 0 ? '+' : ''
-									}${growth.toFixed(2)}%)`;
+						{
+							label: '업계 평균 영업이익',
+							data: avgData,
+							borderColor: 'rgba(200, 200, 200, 0.6)',
+							borderDash: [5, 5],
+							fill: false,
+							pointRadius: 0,
+							tension: 0.1,
+							datalabels: { display: false },
+						},
+					],
+				},
+				options: {
+					responsive: false,
+					plugins: {
+						datalabels: {
+							display: true,
+							align: 'end',
+							offset: 8,
+							font: { size: 12 },
+							formatter: (value) => formatSalary(value * 100_000_000),
+						},
+						tooltip: {
+							callbacks: {
+								label: function(ctx) {
+									const raw = ctx.raw * 100_000_000;
+									if (ctx.dataset.label.includes('평균')) {
+										return '업계 평균: ' + formatSalary(raw);
+									}
+									const growth = Number(profit[ctx.dataIndex].growthRatePercent ?? 0);
+									return `영업 이익: ${formatSalary(raw)} (작년 대비 ${growth >= 0 ? '+' : ''}${growth.toFixed(2)}%)`;
+								},
 							},
 						},
 					},
-				},
-				layout: {
-					padding: {
-						bottom: 80,
-						right: 30,
-					},
-				},
-				scales: {
-					y: {
-						title: {
-							display: true,
-							text: '억 원',
-							color: '#666',
-							font: { size: 14 },
+					layout: { padding: { bottom: 80, right: 50, left: 20} },
+					scales: {
+						y: {
+							title: { display: true, text: '억 원', color: '#666', font: { size: 14 } },
+							beginAtZero: true,
 						},
-						beginAtZero: true,
 					},
 				},
-			},
-			plugins: [ChartDataLabels],
-		});
-		if (latest) {
-			document.getElementById(
-				'profitUpdate'
-			).textContent = `${latest.comProfitYear}.12 기준`;
-			document.getElementById('totalOperatingProfit').textContent = formatKRW(
-				latest.comOperatingProfit
-			);
+				plugins: [ChartDataLabels],
+			});
 
-			const growth = latest.growthRatePercent ?? 0;
-			const growthColor = growth >= 0 ? 'blue' : 'red';
-			const growthArrow = growth >= 0 ? '▲' : '▼';
-			document.getElementById(
-				'profitYoY'
-			).innerHTML = `<span style="color:${growthColor}">${Math.abs(
-				growth
-			).toFixed(0)}% ${growthArrow}</span>`;
-		}
-	});
+			if (latest) {
+				document.getElementById('profitUpdate').textContent = `${latest.comProfitYear}.12 기준`;
+				document.getElementById('totalOperatingProfit').textContent = formatSalary(Number(latest.comOperatingProfit));
+
+				const growth = Number(latest.growthRatePercent ?? 0);
+				const growthColor = growth >= 0 ? 'blue' : 'red';
+				const growthArrow = growth >= 0 ? '▲' : '▼';
+				document.getElementById('profitYoY').innerHTML = `<span style="color:${growthColor}">${Math.abs(growth).toFixed(0)}% ${growthArrow}</span>`;
+			}
+		});
 
 
 
@@ -506,22 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 
 
-	function formatKRW(amount) {
-		const num = Number(amount);
-		console.log("왜", num);
-		if (amount == null || isNaN(num)) return '정보 없음';
-
-		const 조 = Math.floor(amount / 1_0000_0000_0000);
-		const 억 = Math.floor((amount % 1_0000_0000_0000) / 1_0000_0000);
-		const 만 = Math.floor((amount % 1_0000_0000) / 10_000);
-
-		let result = '';
-		if (조 > 0) result += `${조.toLocaleString()}조 `;
-		if (억 > 0) result += `${억.toLocaleString()}억 `;
-		if (조 === 0 && 억 === 0) result += `${만.toLocaleString()}만원`;
-
-		return result.trim();
-	}
+		
+	axios.get(`/ajax/member/company_view/pass_introduction/${userId}`)
 
 	function formatDate(dtStr) {
 		return dtStr?.slice(0, 10) || '-';
@@ -679,8 +626,112 @@ document.addEventListener('DOMContentLoaded', () => {
 		statusTabs.querySelector('[data-status="open"]').click();
 	}
 
+	axios.get(`/ajax/member/company_view/pass_introduction/${userId}`)
+		 .then(resp => {
+			const essays = resp.data;
+			console.log("자소서 체킁", essays);
+			renderEssayList(essays);
+			setUpEssayFilters(essays);
+			document.getElementById('essayCount').textContent = essays.length;
+		 }).catch(err => console.error('합격 자소서 못불러왔당', err));
+
+	function renderEssayList(essays){
+		const listContainer = document.getElementById('essayCardList');
+		listContainer.innerHTML = essays.map((e, idx) => `
+			<div class="essay-card clickable" data-index="${idx}">
+				<div class="essay-card-title">${e.recruitmentTitle}</div>
+				<div class="essay-card-meta">
+					${formatDate(e.introduction.introductionCreateDate)} | ${e.education.highestEducationCodeName || '-'} | ${e.education.departmentCode || '-'}
+				</div>
+				<div class="essay-card-content">
+					"${e.introduction.introductionQuestionList[0]?.content?.slice(0, 60) || '내용 없음'}..."
+				</div>
+				<div class="essay-views">조회수 ${Math.floor(Math.random() * 5000) + 1000}</div>
+        	</div>
+    	`).join('');
 
 
+		listContainer.querySelectorAll('.essay-card').forEach(card => {
+			card.addEventListener('click', () => {
+				const idx = card.dataset.index;
+				renderEssayDetail(essays[idx]);
+			});
+		});
+	}
+
+	function renderEssayDetail(essay){
+		const detail = document.getElementById('essay-detail');
+		const list = document.getElementById('essay-list');
+		list.style.display = 'none';
+		detail.style.display = 'block';
+
+		detail.innerHTML = `
+			<button id="back" class="essay-back-btn">← 목록으로</button>
+			<div class="essay-detail-header">
+				<h2 class="essay-detail-title">${essay.recruitmentTitle}</h2>
+				<div class="essay-detail-subinfo">
+					<span>${essay.education.highestEducationCodeName || '-'}</span> ·
+					<span>${essay.education.departmentCode || '-'}</span>
+				</div>
+				<div class="essay-detail-meta">
+					<span class="essay-date">${formatDate(essay.introduction.introductionCreateDate)}</span>
+				</div>
+			</div>
+			<hr>
+			<h2 class="header">자소서 항목</h2>
+			<div class="essay-questions">
+				${essay.introduction.introductionQuestionList.map((q,i) => `<p><b>Q${i+1}.</b> ${q.question}</p>`).join('')}
+			</div>
+			<hr>
+			<h2 class="header">합격 자소서</h2>
+			<div class="accordion" id="essayAccordion">
+				${essay.introduction.introductionQuestionList.map((q,i) => `
+				<div class="accordion-item">
+					<div class="accordion-header" data-idx="${i}">
+						<span class="q-number">Q${i+1}.</span> ${q.question}
+						<span class="arrow"></span>
+					</div>
+					<div class="accordion-body" style="display:none;">${q.content}</div>
+				</div>
+				`).join('')}
+			</div>
+		`;
+
+		 detail.querySelectorAll('.accordion-header').forEach(header => {
+			header.addEventListener('click', () => {
+				const body = header.nextElementSibling;
+				const isOpen = body.style.display === 'block';
+				body.style.display = isOpen ? 'none' : 'block';
+				header.classList.toggle('active', !isOpen);
+			});
+		});
+
+		document.getElementById('back')
+				.addEventListener('click', closeEssayDetail);
+	}
+
+	function closeEssayDetail(){
+		document.getElementById('essay-detail').style.display = 'none';
+		document.getElementById('essay-list').style.display = 'block';
+	}
+
+	function setUpEssayFilters(essays){
+		const filterContainer = document.getElementById('essayFilters');
+		const uniqueJobs = Array.from(new Set(essays.map(e => e.jobCodeName)))
+
+		filterContainer.innerHTML = `<div class="essay-filter-btn active" data-filter="all">직무전체</div>` +
+        uniqueJobs.map(j => `<div class="essay-filter-btn" data-filter="${j}">${j}</div>`).join('');
+
+		filterContainer.querySelectorAll('.essay-filter-btn').forEach(btn => {
+			btn.addEventListener('click', () => {
+				filterContainer.querySelectorAll('.essay-filter-btn').forEach(b => b.classList.remove('active'));
+				btn.classList.add('active');
+				const filter = btn.dataset.filter;
+				const filtered = filter === 'all' ? essays : essays.filter(e => e.jobCodeName === filter);
+            	renderEssayList(filtered);
+			})
+		})
+	}
 
 
 

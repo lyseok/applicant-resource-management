@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.recruitment.PassIntroductionMapper">
+<!-- PassIntroductionDetailDTO 매핑 -->
+    <resultMap id="passIntroductionDetailResultMap" type="kr.or.ddit.dto.PassIntroductionDetailDTO">
+        <id property="passerCode" column="PASSER_CODE"/>
+        <result property="passIntroductionNo" column="PASS_INTRODUCTION_NO"/>
+         <result property="introductionCode" column="INTRODUCTION_CODE"/> 
+        <result property="recruitmentNo" column="RECRUITMENT_NO"/>
+        <result property="recruitmentTitle" column="RECRUITMENT_TITLE"/>
+        <result property="jobCode" column="JOB_CODE"/>
+        <result property="jobCodeName" column="JOB_CODE_NAME"/>
+        <result property="compName" column="COM_NAME"/>
+        <result property="comId" column="COM_ID"/>
+        <result property="resumeNo" column="RESUME_NO"/>
+        <result property="resumeName" column="RESUME_NAME"/>
+
+        <!-- EducationVO 매핑 -->
+        <association property="education" javaType="kr.or.ddit.vo.resume.EducationVO">
+            <id property="educationNo" column="EDUCATION_NO"/>
+            <result property="schoolName" column="SCHOOL_NAME"/>
+            <result property="highestEducationCode" column="HIGHEST_EDUCATION_CODE"/>
+            <result property="graduateYn" column="GRADUATE_YN"/>
+            <result property="transferYn" column="TRANSFER_YN"/>
+            <result property="location" column="LOCATION"/>
+            <result property="departmentCode" column="DEPARTMENT_CODE"/>
+        </association>
+
+        <!-- IntroductionVO 매핑 -->
+        <association property="introduction" javaType="kr.or.ddit.vo.resume.IntroductionVO">
+            <id property="introductionNo" column="INTRODUCTION_NO"/>
+            <result property="introductionName" column="INTRODUCTION_NAME"/>
+            <result property="introductionCreateDate" column="INTRODUCTION_CREATE_DATE"/>
+
+            <!-- 자기소개서 문항 리스트 -->
+            <collection property="introductionQuestionList"
+                        ofType="kr.or.ddit.vo.resume.IntroductionQuestionVO"
+                        javaType="java.util.ArrayList">
+                <id property="questionNo" column="QUESTION_NO"/>
+                <result property="question" column="QUESTION"/>
+                <result property="content" column="CONTENT"/>
+            </collection>
+        </association>
+    </resultMap>
+
+
 	<select id="selectPassIntroductionList" resultType="PassIntroductionVO">
 	SELECT 
 		PASS_INTRODUCTION_NO
@@ -35,4 +78,90 @@
 	DELETE FROM PASS_INTRODUCTION 
 	WHERE PASS_INTRODUCTION_NO = #{passIntroductionNo}
 	</delete>
+	
+	 <select id="selectPassIntroductionDetailInfo" resultMap="passIntroductionDetailResultMap">
+        SELECT
+            pi.PASSER_CODE,
+            pi.PASS_INTRODUCTION_NO,
+            a.APPLICANT_ID,
+            a.USER_ID,
+            rn.RECRUITMENT_NO,
+            rn.RECRUITMENT_TITLE,
+            rn.JOB_CODE,
+            rn.USER_ID as COM_ID,
+            c.COM_NAME,
+            r.RESUME_NO,
+            r.RESUME_NAME,
+            i.INTRODUCTION_NO,
+            i.INTRODUCTION_NAME,
+            i.INTRODUCTION_CREATE_DATE,
+            iq.QUESTION_NO,
+            iq.QUESTION,
+            iq.CONTENT,
+            e.EDUCATION_NO,
+            e.SCHOOL_NAME,
+            e.HIGHEST_EDUCATION_CODE,
+            e.GRADUATE_YN,
+            e.TRANSFER_YN,
+            e.LOCATION,
+            e.DEPARTMENT_CODE
+        FROM PASS_INTRODUCTION pi
+        JOIN PASSER p
+            ON pi.PASSER_CODE = p.PASSER_NO
+            AND p.PASSER_DEL_DATE IS NULL
+            AND p.RECRUIT_ACCEPT_YN = 'Y'
+        JOIN APPLICANT a
+            ON p.APPLICANT_ID = a.APPLICANT_ID
+            AND a.APPLICANT_DEL_DATE IS NULL
+        JOIN RECRUITMENT_NOTICE rn
+            ON a.RECRUITMENT_NO = rn.RECRUITMENT_NO
+            AND rn.RECRUITMENT_DEL_DATE IS NULL
+        JOIN COMPANY c
+            ON rn.USER_ID = c.USER_ID
+        JOIN RESUME r
+            ON a.RESUME_NO = r.RESUME_NO
+            AND r.RESUME_DELETE_DATE IS NULL
+        JOIN INTRODUCTION i
+    		ON pi.INTRODUCTION_CODE = i.INTRODUCTION_NO
+        LEFT JOIN INTRODUCTION_QUESTION iq
+            ON i.INTRODUCTION_NO = iq.INTRODUCTION_NO
+        LEFT JOIN EDUCATION e
+            ON r.RESUME_NO = e.RESUME_NO
+            AND e.DELETE_DATE IS NULL
+        WHERE c.USER_ID = #{comId}
+        ORDER BY p.PASSER_NO, iq.QUESTION_NO, e.EDUCATION_NO
+    </select>
+    
+ 
+	 <insert id="insertPassIntroductionForAcceptedPasser">
+	    <selectKey resultType="string" keyProperty="passIntroductionNo" order="BEFORE">
+	        SELECT
+	            'PSIT' ||
+	            LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PASS_INTRODUCTION_NO), LENGTH('PSIT') + 1)), 0) + 1, 6, '0')
+	        FROM PASS_INTRODUCTION
+	    </selectKey>
+	    INSERT INTO PASS_INTRODUCTION (
+	        PASS_INTRODUCTION_NO,
+	        PASSER_CODE,
+	        INTRODUCTION_CODE
+	    )
+	    SELECT
+	        #{passIntroductionNo},
+	        p.PASSER_NO,
+	        r.INTRODUCTION_NO
+	    FROM PASSER p
+	    JOIN APPLICANT a ON p.APPLICANT_ID = a.APPLICANT_ID
+	    JOIN RESUME r ON a.RESUME_NO = r.RESUME_NO
+	    WHERE a.APPLICANT_ID = #{applicantId}
+	      AND a.RECRUITMENT_NO = #{recruitmentNo}
+	      AND p.RECRUIT_ACCEPT_YN = 'Y'
+	      AND p.PASSER_DEL_DATE IS NULL
+	      AND r.RESUME_DELETE_DATE IS NULL
+	      AND r.INTRODUCTION_NO IS NOT NULL
+	      AND NOT EXISTS (
+	          SELECT 1 FROM PASS_INTRODUCTION pi
+	          WHERE pi.PASSER_CODE = p.PASSER_NO
+	            AND pi.INTRODUCTION_CODE = r.INTRODUCTION_NO
+	      )
+	</insert>
 </mapper>

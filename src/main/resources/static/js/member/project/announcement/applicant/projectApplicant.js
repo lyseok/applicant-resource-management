@@ -36,22 +36,31 @@ function renderTabsAndContent() {
 
   // -------- 전체 탭/테이블 --------
   const allApplicants = tabs.flatMap((sec) => sec.aplcntList || []);
-  tabNav.innerHTML += /* html */ `<li class="nav-item">
-    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#recruitTabAll" type="button">전체</button>
-  </li>`;
+  tabNav.innerHTML += /* html */ `
+	  <li class="nav-item">
+	    <button class="btn nav-link lh1 badge-tag py-2 active text-secondary fw-bold" data-bs-toggle="tab" data-bs-target="#recruitTabAll" type="button">전체</button>
+	  </li>
+  `;
   tabContent.innerHTML += `
     <div class="tab-pane fade show active" id="recruitTabAll" role="tabpanel">
-      <table class="table table-sm table-bordered align-middle text-center" id="mainTableAll">
-        <thead>
+      <table class="table align-middle text-center table-layout-fixed fs-13" id="mainTableAll">
+      	<colspan>
+      		<col width="10%">
+      		<col width="20%">
+      		<col width="30%">
+      		<col width="30%">
+      		<col width="10%">
+      	</colspan>
+        <thead class="border-top">
           <tr>
-            <th class="text-center">선택</th>
-            <th class="text-center">이름</th>
-            <th class="text-center">이력서</th>
-            <th class="text-center">기술</th>
-            <th class="text-center">상태</th>
+            <th class="text-center fw-bold fs-13 py-3">선택</th>
+            <th class="text-center fw-bold fs-13 py-3">이름</th>
+            <th class="text-center fw-bold fs-13 py-3">이력서</th>
+            <th class="text-center fw-bold fs-13 py-3">기술</th>
+            <th class="text-center fw-bold fs-13 py-3">상태</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="border-top">
           ${renderApplicants(allApplicants, 'all')}
         </tbody>
       </table>
@@ -61,19 +70,28 @@ function renderTabsAndContent() {
   // -------- 기존 탭/테이블 --------
   tabs.forEach((section, idx) => {
     const tabId = `recruitTab${idx}`;
-    tabNav.innerHTML += `<li class="nav-item">
-      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#${tabId}" type="button">${section.jobCodeName}</button>
-    </li>`;
+    tabNav.innerHTML += `
+	    <li class="nav-item d-flex align-items-center">
+	      <button class="btn nav-link lh1 badge-tag py-2 text-secondary fw-bold" data-bs-toggle="tab" data-bs-target="#${tabId}" type="button">${section.jobCodeName}</button>
+	    </li>
+    `;
     tabContent.innerHTML += `
       <div class="tab-pane fade" id="${tabId}" role="tabpanel">
-        <table class="table table-sm table-bordered align-middle text-center" id="mainTable${idx}">
-          <thead>
+        <table class="table align-middle text-center table-layout-fixed fs-13" id="mainTable${idx}">
+	      	<colspan>
+	      		<col width="10%">
+	      		<col width="20%">
+	      		<col width="30%">
+	      		<col width="30%">
+	      		<col width="10%">
+	      	</colspan>
+          <thead class="border-top">
             <tr>
-              <th class="text-center">선택</th>
-              <th class="text-center">이름</th>
-              <th class="text-center">이력서</th>
-              <th class="text-center">기술</th>
-              <th class="text-center">상태</th>
+              <th class="text-center fw-bold fs-13 py-3">선택</th>
+              <th class="text-center fw-bold fs-13 py-3">이름</th>
+              <th class="text-center fw-bold fs-13 py-3">이력서</th>
+              <th class="text-center fw-bold fs-13 py-3">기술</th>
+              <th class="text-center fw-bold fs-13 py-3">상태</th>
             </tr>
           </thead>
           <tbody>
@@ -105,19 +123,26 @@ function renderApplicants(list, idx) {
       )
         .map((k) => k.mySkillName)
         .join(',')}" data-status="${app.aplcntStatusCode}">
-      <td><input type="checkbox" class="rowCheck"></td>
-      <td>${app.resume?.userName || '-'}</td>
-      <td>
-        ${app.resume?.resumeName || '-'}
-        <a href="#" onclick="showResumeDetail('${
+      <td class="py-2"><input type="checkbox" class="rowCheck"></td>
+      <td class="py-2">${app.resume?.userName || '-'}</td>
+      <td class="py-2 text-start">
+	      <a href="#" onclick="showResumeDetail('${
           app.resumeNo
-        }');return false;" class="ms-2 text-primary">상세</a>
+        }');return false;" class="me-2 btn btn_violet_line btn-sm fs-12">상세</a>
+        ${app.resume?.resumeName || '-'}
       </td>
-      <td>${
-        (app.resume?.mySkillList || []).map((k) => k.mySkillName).join(', ') ||
-        '-'
-      }</td>
-      <td class="status-cell">${STATUS_MAP[app.aplcntStatusCode] || '-'}</td>
+      <td class="py-2 overflow-auto row_custom_scroll">
+      	<div class="text-nowrap text-center">
+		      ${
+            (app.resume?.mySkillList || [])
+              .map(
+                (k) => `<span class="badge-tag me-1">${k.mySkillName}</span>`
+              )
+              .join('') || '-'
+          }
+      	</div>
+      </td>
+      <td class="fw-bold py-2">${STATUS_MAP[app.aplcntStatusCode] || '-'}</td>
     </tr>
   `
     )
@@ -126,7 +151,11 @@ function renderApplicants(list, idx) {
 
 // 이력서 상세 (예시)
 window.showResumeDetail = function (resumeNo) {
-  alert('이력서 상세보기: ' + resumeNo);
+  window.open(
+    '/popup/resume/' + resumeNo,
+    'resumePopup',
+    'width=950,height=800'
+  );
 };
 
 // ==================== 필터 UI/로직 ====================
@@ -154,8 +183,8 @@ function fillFilterOptions() {
     $skillTag.innerHTML = allSkills
       .map(
         (skill) =>
-          `<label class="badge rounded-pill bg-light text-dark border p-2 mb-0" style="cursor:pointer;">
-        <input type="checkbox" class="form-check-input me-1" value="${skill}" style="vertical-align:middle;">${skill}
+          `<label class="badge-tag d-flex align-items-center gap-2">
+        		<input type="checkbox" class="form-check-input mt-0" value="${skill}">${skill}
       </label>`
       )
       .join('');
@@ -327,7 +356,8 @@ document
       if (res.data === 'ok') {
         alert('프로젝트가 성공적으로 생성되었습니다!');
         // 필요하면 페이지 이동 또는 새로고침 등
-        location.href = 'http://localhost:3000/';
+        // location.href = 'http://localhost:3000/';
+        location.href = APP_CONFIG.REACT_BASE_URL;
       } else {
         alert('프로젝트 생성에 실패했습니다. 다시 시도해 주세요.');
       }
@@ -335,7 +365,7 @@ document
       alert('서버 오류가 발생했습니다.');
     }
   });
-
+console.log(APP_CONFIG.REACT_BASE_URL);
 // ================================ 모달 랜더링 ================================
 
 document.getElementById('createBtn').addEventListener('click', () => {
