@@ -4611,6 +4611,9 @@ h3 .counting strong.total-count {
     vertical-align: top;
     margin-top: 4px
 }
+.list_recruiting .list_body .list_item .company_nm .interested_corp.on{
+	background:url(//www.saraminimage.co.kr/ui/btn/sp_interested_corp.png) -20px 1px no-repeat;
+}
 
 .list_recruiting .list_body .list_item .company_nm .main_corp {
     display: block;
