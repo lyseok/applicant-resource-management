@@ -124,21 +124,26 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 	overflow-x: auto;
 }
 
+/* 필터 버튼 기본 스타일 */
 .filter-btn {
-	white-space: nowrap;
-	border: 1px solid #ccc;
-	background: #fff;
-	padding: 0.4rem 0.8rem;
-	border-radius: 999px;
-	cursor: pointer;
-	font-size: 0.9rem;
+  white-space: nowrap;
+  border: 1px solid var(--violet70);
+  background: #fff;
+  color: var(--violet70);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
+/* 활성화된(선택된) 버튼 */
 .filter-btn.active {
-	background: var(--violet70);
-	border-color: var(--violet70);
-	color: #fff;
+  background: var(--violet70);
+  color: #fff;
+  border-color: var(--violet70);
 }
+
+
 
 /* 카드 리스트 */
 .card-list {
@@ -236,9 +241,248 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 	text-align: center;
 }
 
-#btnOpenNaverMap{
+#btnOpenNaverMap {
 	color: var(--violet70);
 }
+
+/* 합격자소서 탭 */
+.essay-tabs {
+	display: flex;
+	border-bottom: 2px solid #ddd;
+	margin-bottom: 20px;
+}
+
+.essay-tab {
+	padding: 12px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	border: 1px solid #ddd;
+	border-bottom: none;
+	background: #f5f5f5;
+	margin-right: 5px;
+	border-radius: 5px 5px 0 0;
+}
+
+.essay-tab.active {
+	background: #fff;
+	border-bottom: 2px solid #fff;
+	font-weight: bold;
+}
+
+.essay-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 25px;
+}
+
+.essay-filter-btn {
+	padding: 8px 15px;
+	border: 1px solid var(--violet60);
+	border-radius: 20px;
+	color: var(--violet60);
+	background: #fff;
+	cursor: pointer;
+	font-size: 14px;
+	transition: 0.2s;
+}
+
+.essay-filter-btn.active {
+  background: var(--violet60);
+  color: #fff;
+  border-color: var(--violet60);
+}
+
+.essay-filter-btn:hover {
+	background: #f0f0f0;
+}
+
+/* 자소서 카드 */
+.essay-card {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	margin-bottom: 15px;
+	transition: 0.2s;
+}
+
+.essay-card:hover {
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.essay-card-title {
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+.essay-card-meta {
+	font-size: 14px;
+	color: #888;
+	margin-bottom: 12px;
+}
+
+.essay-card-content {
+	font-size: 15px;
+	color: #333;
+	line-height: 1.5;
+}
+
+.essay-views {
+	font-size: 13px;
+	color: #999;
+	margin-top: 10px;
+}
+
+/* 상세 페이지 */
+#essay-detail {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+}
+
+/* 뒤로가기 */
+.essay-back-btn {
+	display: inline-block;
+	margin-bottom: 15px;
+	background: var(--violet60);
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding: 8px 12px;
+	cursor: pointer;
+}
+
+/* 제목 및 합격자 정보 */
+.essay-detail-header {
+	margin-bottom: 20px;
+}
+
+.essay-detail-title {
+	font-size: 22px;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+.essay-detail-subinfo {
+	font-size: 14px;
+	color: #555;
+	margin-bottom: 12px;
+}
+
+.essay-detail-meta {
+	display: flex;
+	justify-content: flex-end; /* 오른쪽 정렬 */
+	align-items: center; /* 수직 중앙정렬 */
+	gap: 10px; /* 요소 간격 */
+	font-size: 13px;
+	color: #999;
+}
+
+.essay-divider {
+	color: #ccc;
+}
+
+.essay-views {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.essay-views .material-symbols-outlined {
+	font-size: 16px;
+	line-height: 1;
+	color: #999;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid #eee;
+	margin: 20px 0;
+}
+
+/* 자소서 질문/답변 */
+.essay-questions {
+	border: 1px solid #ddd;
+	padding: 15px;
+	margin-bottom: 20px;
+	background: #fafafa;
+}
+
+.essay-questions p {
+	margin: 8px 0;
+	font-weight: bold;
+}
+
+.essay-answer {
+	margin-bottom: 30px;
+}
+
+.essay-answer h4 {
+	font-size: 18px;
+	margin-bottom: 10px;
+	color: #ff6600;
+}
+
+.essay-answer p {
+	font-size: 15px;
+	color: #333;
+	line-height: 1.6;
+}
+
+.accordion {
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.accordion-item {
+	border-bottom: 1px solid #eee;
+}
+
+.accordion-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+	background: #fafafa;
+	transition: background 0.3s;
+}
+
+.accordion-header:hover {
+	background: #f0f0f0;
+}
+
+.q-number {
+	color: var(--violet70);
+	margin-right: 8px;
+}
+
+.arrow {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-right: 2px solid #666;
+	border-bottom: 2px solid #666;
+	transform: rotate(45deg);
+	transition: transform 0.3s ease;
+	margin-left: 10px;
+}
+
+.accordion-header.active .arrow {
+	transform: rotate(225deg);
+}
+
+
+#essayCount{
+	color: var(--violet70);
+}
+
+.class-filter
 </style>
 </head>
 <body>
@@ -831,35 +1075,54 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 
 
-			<!-- 합격자소서 탭 -->
-			<div class="tab-content hidden" data-section="essay">
-				<h2>합격자소서</h2>
-				<p>합격자소서 탭 전용 컨텐츠를 여기에 추가하세요.</p>
-			</div>
+				<!-- 상세 영역 -->
 
-			<div class="bottom-banner review">
-				<a href="/review/home"
-					onclick="GA_Event('기업정보_PC', '기업하단배너', '기업리뷰작성하기'); BrazeCallPageInto('기업리뷰진입');"
-					target="_blank"> <img
-					src="//i.jobkorea.kr/content/images/company/review/banner2_1040x80.png"
-					alt="취업&amp;이직 준비중이라면? 현직자가 알려주는 기업리뷰 체크는 필수!기업리뷰 바로가기">
-				</a>
-			</div>
-			<!--하단-->
+				<!-- 합격자소서 탭 -->
+				<div class="tab-content hidden" data-section="essay">
+					<!-- 목록 영역 -->
+					<div id="essay-list">
+						<div class="essay-tabs">
+							<div class="essay-tab active">
+								합격자소서 (<span id="essayCount">0</span>)
+							</div>
+						</div>
+						<!-- 직무 필터 -->
+						<div class="essay-filters" id="essayFilters">
+							<div class="essay-filter-btn active" data-filter="all">직무전체</div>
+							<!-- JS로 직무 필터 버튼 추가 -->
+						</div>
 
+						<!-- 자소서 카드 리스트 (JS 바인딩) -->
+						<div id="essayCardList"></div>
+					</div>
 
-
-			<div class="license">
-				<div class="license-description">
-					띹잡 기업정보와 NICE평가정보 기업정보를 기반으로 기업 프로필을 제공합니다. 잘못된 정보는 신고해주시면 빠르게 전달하여
-					수정 검토하겠습니다.<br>게시된 정보는 무단으로 수집 및 배포할 수 없습니다.
+					<!-- 상세 영역 -->
+					<div id="essay-detail" style="display: none;"></div>
 				</div>
-				<div class="license-help">
-					<div class="license-help-item header">자료수정 및 정정문의</div>
-					<div class="license-help-item tel">띹잡 고객센터 (T. 1588-9350, E.
-						help@ddit.co.kr)</div>
+
+				<div class="bottom-banner review">
+					<a href="/review/home"
+						onclick="GA_Event('기업정보_PC', '기업하단배너', '기업리뷰작성하기'); BrazeCallPageInto('기업리뷰진입');"
+						target="_blank"> <img
+						src="//i.jobkorea.kr/content/images/company/review/banner2_1040x80.png"
+						alt="취업&amp;이직 준비중이라면? 현직자가 알려주는 기업리뷰 체크는 필수!기업리뷰 바로가기">
+					</a>
+				</div>
+				<!--하단-->
+
+
+
+				<div class="license">
+					<div class="license-description">
+						띹잡 기업정보와 NICE평가정보 기업정보를 기반으로 기업 프로필을 제공합니다. 잘못된 정보는 신고해주시면 빠르게
+						전달하여 수정 검토하겠습니다.<br>게시된 정보는 무단으로 수집 및 배포할 수 없습니다.
+					</div>
+					<div class="license-help">
+						<div class="license-help-item header">자료수정 및 정정문의</div>
+						<div class="license-help-item tel">띹잡 고객센터 (T. 1588-9350, E.
+							help@ddit.co.kr)</div>
+					</div>
 				</div>
 			</div>
-		</div>
 </body>
 </html>

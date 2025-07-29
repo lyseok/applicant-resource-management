@@ -13,6 +13,7 @@ import kr.or.ddit.dto.CompanyInfoDTO;
 import kr.or.ddit.dto.CompanyOpProfitDTO;
 import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.dto.CompanySalesDTO;
+import kr.or.ddit.dto.PassIntroductionDetailDTO;
 import kr.or.ddit.member.common.companyDetailView.service.CompanyDetailViewService;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.recruitment.RecruitmentNoticeVO;
@@ -67,6 +68,11 @@ public class CompanyDetailViewAjaxController {
 	@GetMapping("/top_notice/{userId}")
 	public List<Map<String, Object>> companyTopNotice(@PathVariable("userId") String userId){
 		return companyDetailViewService.readTopFiveJobNotice(userId);
+	}
+	
+	@GetMapping("/pass_introduction/{comId}")
+	public List<PassIntroductionDetailDTO> passIntroduction(@PathVariable("comId") String comId){
+		return companyDetailViewService.readPassIntroductionDetail(comId);
 	}
 	
 }

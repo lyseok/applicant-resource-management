@@ -10,7 +10,7 @@ public class CompanySalesVO implements Serializable{
 	private String comSalesId;
 	private String userId;
 	private String comSalesYear;
-	private long comSalesAmount;
+	private String comSalesAmount;
 	private String createDate;
 	
 }
