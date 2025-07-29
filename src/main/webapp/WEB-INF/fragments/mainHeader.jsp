@@ -87,7 +87,7 @@
                       </a>
                     </li>
                     <li>
-                      <a href="http://localhost:3000/">
+                      <a href="javascript:void(0)" id="project_link">
                         <span class="material-symbols-outlined">Communities</span>
                         <span class="txt">프로젝트</span>
                       </a>
@@ -248,10 +248,48 @@
             </div>
           </div>
 
-          <div class="familysite">
-            <a class="item" href="javascript:void(0)" rel="noreferrer">
-              <span class="txt">인기 직업순위 들어갈지도~?</span>
-            </a>
+          <div class="familysite">            
+						<!-- 하이테크 아티클 배너 -->
+						<div class="swiper-container">
+							<ul class="swiper-wrapper">
+								<li class="swiper-slide">
+									<a href="javascript:void(0)">
+										<span class="d-flex">가장 많이 찾아봤어요 🔥</span>
+										백엔드 개발자
+									</a>
+								</li>
+								<li class="swiper-slide">
+									<a href="javascript:void(0)">
+										<span>02.</span>
+										프론트엔드 개발자
+									</a>
+								</li>
+								<li class="swiper-slide">
+									<a href="javascript:void(0)">
+										<span>03.</span>
+										디자이너
+									</a>
+								</li>
+							</ul>
+    					<div class="swiper-pagination job-pager"></div>
+						</div>
+						<script>
+							document.addEventListener("DOMContentLoaded", () => {
+								const mainHeaderSilde = new Swiper(".familysite .swiper-container", {
+									spaceBetween: 0,
+						      slidesPerView: 1,
+									centeredSlides: true,
+									autoplay: {
+										delay: 2500,
+										disableOnInteraction: false,
+									},
+						      pagination: {
+					          el: ".job-pager",
+					          clickable: true,
+					        },
+								});
+							});
+						</script>
           </div>
         </div>
       </div>
@@ -340,5 +378,13 @@
 
         </div>
       </div>
-
+      <script src="/js/config.js"></script>
+      <sec:authorize access="isAuthenticated()">
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    	    const projectLink = document.querySelector('#project_link');
+   	      projectLink.setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+    	  });
+      </script>
+       </sec:authorize>
     </header>

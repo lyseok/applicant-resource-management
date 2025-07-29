@@ -19,6 +19,11 @@
 		<result property="comLogo" column="COM_LOGO" />
 		<result property="comPayment" column="COM_PAYMENT" />
 		<result property="industryType" column="INDUSTRY_TYPE" />
+		<result property="comAddr" column="COM_ADDR"/>
+		<result property="ceoName" column="CEO_NAME"/>
+		<result property="comType" column="COM_TYPE"/>
+		<result property="comSize" column="COM_SIZE"/>
+		
 	</resultMap>
 
 	<resultMap id="recruitmentEducationMap" type="kr.or.ddit.vo.recruitment.RecruitmentEducationVO">
@@ -210,8 +215,8 @@
 	c.COM_LOGO 								AS COM_LOGO,
 	c.COM_PAYMENT 							AS COM_PAYMENT,
 	c.INDUSTRY_TYPE							AS INDUSTRY_TYPE,
-	c.COM_TYPE								AS COM_TYPE,
-	c.COM_SIZE								AS COM_SIZE,
+	(SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = c.COM_SIZE)AS COM_SIZE,
+	(SELECT CODE_NAME FROM CMN_CODE WHERE CODE_DETAIL_NO = c.COM_TYPE)AS COM_TYPE,
 	c.COM_ADDR								AS COM_ADDR,
 	c.COM_MAIN_BIZ							AS COM_MAIN_BIZ,
 	c.CEO_NAME								AS CEO_NAME,
