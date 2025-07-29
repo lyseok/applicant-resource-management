@@ -1,47 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
   <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-    <head>
-      <style>
-        .custom-dropdown {
-          position: relative;
-          width: 60px;
-          user-select: none;
-          cursor: pointer;
-        }
-
-        .dropdown-selected {
-          /* border: 1px solid var(--violet70); */
-          border-radius: 8px;
-          background: #fff;
-          text-align: center;
-        }
-
-        .dropdown-options {
-          position: absolute;
-          top: 110%;
-          left: 0;
-          width: 100%;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          background: #fff;
-          display: none;
-          z-index: 100;
-        }
-
-        .dropdown-options li {
-          padding: 10px;
-        }
-
-        .dropdown-options li:hover {
-          background: #f0f0f0;
-        }
-
-        .custom-dropdown.open .dropdown-options {
-          display: block;
-        }
-      </style>
-    </head>
     <header id="sri_header" class="main bubble">
       <div class="wrap_header">
         <h1>
@@ -54,13 +13,17 @@
           <form id="searchForm">
             <div id="btn_search" class="btn_search">
               <div class="custom-select">
-                <div class="custom-dropdown" id="categoryDropdown">
-                  <div class="dropdown-selected" data-value="recruit">공고</div>
-                  <ul class="dropdown-options">
-                    <li data-value="recruit">공고</li>
-                    <li data-value="company">기업</li>
-                  </ul>
+                <select name="search_sel">
+                  <option>공고</option>
+                  <option>기업</option>
+                </select>
+                <div class="select-styled">
+                  <span>선택</span>
                 </div>
+                <ul class="select-options">
+                  <li data-value="recruit">공고</li>
+                  <li data-value="company">기업</li>
+                </ul>
               </div>
               <input type="text" id="searchInput" placeholder="검색어를 입력하세요" class="keyword static" />
               <button type="submit" class="search_btn" style="background: none; border: none;">
@@ -347,7 +310,11 @@
       </div>
 
       <script>
+
+        let companyList = [];
+
         document.addEventListener('DOMContentLoaded', function () {
+          initCompanyList();
           // 버튼과 레이어 변수 저장
           const memberBtn = document.querySelector('.member_btn');
           const memberLayer = document.querySelector('.layer_member');
@@ -393,69 +360,63 @@
             }).then(resp => location.href = "/");
           });
         });
+        document.addEventListener('DOMContentLoaded', () => {
+          const customSelect = document.querySelector('.custom-select');
+          const selectStyled = customSelect.querySelector('.select-styled');
+          const optionsList = customSelect.querySelector('.select-options');
 
-        // 검색 폼 submit 및 엔터/아이콘 클릭 이벤트
-        document.addEventListener('DOMContentLoaded', function () {
-          const searchForm = document.getElementById('searchForm');
-          const searchInput = document.getElementById('searchInput');
-          const dropdown = document.getElementById('categoryDropdown');
-          const selected = dropdown.querySelector('.dropdown-selected');
-          const options = dropdown.querySelectorAll('.dropdown-options li');
-
-          // URL 파라미터 적용
-          const urlParams = new URLSearchParams(location.search);
-          const categoryParam = urlParams.get('category');
-          const keywordParam = urlParams.get('keyword');
-
-          if (categoryParam) {
-            const matchingOption = Array.from(options).find(opt => opt.getAttribute('data-value') === categoryParam);
-            if (matchingOption) {
-              selected.textContent = matchingOption.textContent;
-              selected.dataset.value = categoryParam;
-            }
-          }
-          if (keywordParam) {
-            searchInput.value = keywordParam;
-          }
-
-          dropdown.addEventListener('click', (e) => {
-            dropdown.classList.toggle('open');
+          // 클릭 시 토글
+          selectStyled.addEventListener('click', (e) => {
+            e.stopPropagation(); // 다른 곳 클릭 시 닫히는 기능 대비
+            const isVisible = optionsList.style.display === 'block';
+            optionsList.style.display = isVisible ? 'none' : 'block';
           });
 
-          options.forEach(option => {
-            option.addEventListener('click', (e) => {
-              const value = option.getAttribute('data-value');
-              selected.textContent = option.textContent;
-              selected.dataset.value = value;
-              dropdown.classList.remove('open');
+          // 옵션 선택 시 값 반영 및 닫기
+          optionsList.querySelectorAll('li').forEach(li => {
+            li.addEventListener('click', (e) => {
+              const value = li.getAttribute('data-value');
+              const text = li.textContent;
+              selectStyled.querySelector('span').textContent = text;
+              selectStyled.dataset.value = value;
+              optionsList.style.display = 'none';
             });
           });
 
           // 바깥 클릭 시 닫기
           document.addEventListener('click', (e) => {
-            if (!dropdown.contains(e.target)) {
-              dropdown.classList.remove('open');
+            if (!customSelect.contains(e.target)) {
+              optionsList.style.display = 'none';
             }
           });
 
-          if (searchForm && searchInput) {
-            searchForm.addEventListener('submit', function (e) {
-              e.preventDefault();
-              const category = document.querySelector('.dropdown-selected').dataset.value;
-              const keyword = searchInput.value.trim();
+          // 검색 이벤트 처리
+          const searchForm = document.getElementById('searchForm');
+          const searchInput = document.getElementById('searchInput');
 
-              if (!keyword) {
-                alert('검색어를 입력해주세요.');
-                return;
-              }
+          searchForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // 기본 제출 동작 방지
 
-              const query = new URLSearchParams({
-                category,
-                keyword
-              }).toString();
-              location.href = '/search?' + query;
-            });
-          }
+            const selectedCategory = selectStyled.dataset.value || 'recruit'; // 기본값 설정
+            const keyword = searchInput.value.trim();
+
+            console.log('선택된 카테고리:', selectedCategory);
+            console.log('입력된 검색어:', keyword);
+
+            if (selectedCategory === 'recruit') {
+              location.href = `/search/recruit?keyword=` + keyword;
+            } else {
+              location.href = `/member/company_view?no=` + keyword;
+            }
+          });
         });
+
+        function initCompanyList() {
+          axios.get('/ajax/company_name').then((res) => {
+            companyList = res.data;
+            console.log('Company List Initialized:', companyList);
+          });
+        }
+
       </script>
     </header>
