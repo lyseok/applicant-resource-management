@@ -356,7 +356,8 @@ document
       if (res.data === 'ok') {
         alert('프로젝트가 성공적으로 생성되었습니다!');
         // 필요하면 페이지 이동 또는 새로고침 등
-        location.href = 'http://localhost:3000/';
+        // location.href = 'http://localhost:3000/';
+        location.href = APP_CONFIG.REACT_BASE_URL;
       } else {
         alert('프로젝트 생성에 실패했습니다. 다시 시도해 주세요.');
       }
@@ -364,7 +365,7 @@ document
       alert('서버 오류가 발생했습니다.');
     }
   });
-
+console.log(APP_CONFIG.REACT_BASE_URL);
 // ================================ 모달 랜더링 ================================
 
 document.getElementById('createBtn').addEventListener('click', () => {
