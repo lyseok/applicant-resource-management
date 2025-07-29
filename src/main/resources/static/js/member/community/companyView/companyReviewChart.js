@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				options: {
 					rotation: -90,
 					circumference: 180,
-					cutout: '70%',
+					cutout: '60%',
 					plugins: { legend: { display: false } }
 				}
 			});

@@ -149,7 +149,7 @@
 }
 
 .chart-section.large {
-	
+	flex-basis:48%;
 }
 
 /* 차트 카드 */
@@ -245,6 +245,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end; /* 하단 정렬 */
+   	margin-bottom: 80px;
 }
 
 .employee-status-percent {
@@ -280,7 +281,6 @@
 .tab-overall .gap-3 {
     gap: 5rem !important;
 }
-
 </style>
 </head>
 
@@ -314,8 +314,8 @@
 
 
 	<div id="tab-overall" class="tab-content active">
-		<h4>전체 평균</h4>
-		<div class="d-flex gap-3">
+		<p class="h3">전체 평균</p>
+		<div class="d-flex align-items-center all-chart-wrap">
 			<div class="chart-section large">
 				<div class="chart-card">
 					<canvas id="overallAvgChart"></canvas>
@@ -347,7 +347,7 @@
 			</div>
 		</div>
 		<hr>
-		<h5>질문별 평균</h5>
+		<p class="h3">질문별 평균</p>
 		<div class="chart-section">
 			<div id="questionCharts" class="question-charts"></div>
 		</div>
