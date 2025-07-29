@@ -31,12 +31,11 @@ function shuffleAndTrim(arr, premium = false) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-
   // 2. 조건에 따라 자르기
   const length = arr.length;
   let trimLength;
   if (premium) {
-    trimLength = length % 4 === 0 ? length - 1 : length - (length % 4) + 3;
+    trimLength = length % 4 === 0 ? length - 1 : length - (length % 4) - 1;
   } else {
     trimLength = length - (length % 4);
   }
@@ -46,10 +45,10 @@ function shuffleAndTrim(arr, premium = false) {
 function fetchTopRecruitData() {
   axios.get('/ajax/recruit/main_p').then((res) => {
     const resp = res.data;
-    const shuffledData = shuffleAndTrim(resp.data, true);
     myCompanyList = resp.myScrabCompany;
     myRecruitList = resp.myScrabRecruit;
 
+    const shuffledData = shuffleAndTrim(resp.data, true);
     topRecruitNoticeInit(shuffledData); // 목록 그리기 함수
     fetchMiddleRecruitData();
   });
@@ -75,8 +74,8 @@ function topRecruitNoticeInit(data) {
         <a href="/recruit_notice/${
           item.recruitmentNo
         }" class="goodsBox-info info">
-          <span class="logo">
-            <img src="${item.comLogo}"
+          <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
+            <img src="${item.comLogo ? item.comLogo :'/dist/assets/images/logo.png'}"
               alt="${item.comName} 로고">
           </span>
           <span class="company">
@@ -97,7 +96,7 @@ function topRecruitNoticeInit(data) {
             !isFirst
               ? `
           <span class="ani">
-            <img src="${item.recruitmentImg}" class="superpower_1" alt="배경이미지">
+            <img src="${item.recruitmentImg ? item.recruitmentImg : 'https://placehold.co/298x269'}" class="superpower_1" alt="배경이미지">
           </span>`
               : ''
           }
@@ -154,15 +153,14 @@ function middleRecruitNoticeInit(data) {
   if (!middleListBody) return;
   middleListBody.innerHTML = data
     .map((item, idx) => {
-      console.log('middleRecruitNoticeInit', item.recruitmentNo);
       const scrapClass = myRecruitList.includes(item.recruitmentNo)
         ? ' on'
         : '';
       return `
       <li class="option">
         <a href="javascript:void(0)" class="link_box track_event">
-          <span class="logo">
-            <img src="${item.comLogo}" class="img" alt="${
+          <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
+            <img src="${item.comLogo ? item.comLogo : '/dist/assets/images/logo.png'}" class="img" alt="${
         item.comName
       } 로고" loading="lazy"/>
           </span>
@@ -171,7 +169,7 @@ function middleRecruitNoticeInit(data) {
           <span class="title_ex">상반기 부문별<br>경력직원 채용</span>
           <span class="bg_ex">
             <img
-              src="${item.recruitmentImg}"
+              src="${item.recruitmentImg ? item.recruitmentImg : 'https://placehold.co/96x96'}"
               alt="배경이미지" loading="lazy">
           </span>
           <span class="tags">
@@ -233,16 +231,15 @@ function bottomRecruitNoticeInit(data) {
   if (!bottomListBody) return;
   bottomListBody.innerHTML = data
     .map((item, idx) => {
-      console.log('bottomRecruitNoticeInit', item.recruitmentNo);
       const scrapClass = myRecruitList.includes(item.recruitmentNo)
         ? ' on'
         : '';
       return `
       <li>
         <a href="javascript:void(0)" class="link_box track_event">
-          <span class="logo">
+          <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
             <img
-              src="${item.comLogo}"
+              src="${item.comLogo? item.comLogo:'/dist/assets/images/logo.png'}"
               class="img" alt="${item.comName}" loading="lazy">
           </span>
           <span class="c_name">${item.comName}</span>
