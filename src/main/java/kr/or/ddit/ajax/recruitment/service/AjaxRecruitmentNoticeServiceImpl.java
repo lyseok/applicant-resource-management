@@ -30,13 +30,13 @@ public class AjaxRecruitmentNoticeServiceImpl implements AjaxRecruitmentNoticeSe
 	@Override
 	public Map<String, Object> searchRecruitmentNoticeList(Map<String, Object> params) {
 		Map<String, Object> resp = myScrabList();
-		
 		List<RecruitmentNoticeDTO> list = mapper.searchRecruitNoticeDtoList(params);
 		int cnt = mapper.countRecruitmentNotice(params);
 		
 		resp.put("noticeCnt", cnt);
 		resp.put("data", list);
 		
+		log.info("========> params: {}", params);
 		
 		return resp;
 	}

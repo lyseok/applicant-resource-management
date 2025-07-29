@@ -20,5 +20,19 @@ public class MemberRecruitmentNoticeController {
 		model.addAttribute("boardCss", true);
 		return "recruitNotice/newbieSalary";
 	}
+	
+	@GetMapping("/city")
+	public String cityList(Model model) {
+		model.addAttribute("boardCss", true);
+		return "recruitNotice/searchNotice";
+	}
+	@GetMapping("/job")
+	public String jobList(Model model) {
+		model.addAttribute("boardCss", true);
+		return "recruitNotice/searchNotice";
+	}
+
+	
+	
 
 }

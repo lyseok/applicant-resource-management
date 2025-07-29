@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+
   <head>
-    <title>채용공고 리스트</title>
+    <title>공고 검색 리스트</title>
     <link rel="stylesheet" href="/dist/assets/css/search_panel.css">
-    <script defer src="/js/recruitNotice/newbieSalary.js"></script>
+    <script defer src="/js/common/searchNotice.js"></script>
   </head>
 
   <body>

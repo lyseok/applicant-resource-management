@@ -48,72 +48,7 @@ function openApplicationModal(recruitTitle) {
 
 // ================================ 이력서 랜더링 ================================
 
-let resumeListCache = [];
-const resumeListDiv = document.getElementById('resumeList');
-// JS파일 로드 시 즉시 호출!
-(async function preloadResumeList() {
-  try {
-    const res = await axios.get(`/ajax/resume`);
-    resumeListCache = res.data;
-  } catch (err) {
-    resumeListCache = [];
-    // console.error('이력서 미리 로딩 실패', err);
-  }
-})();
 
-// ... 아래는 동일하게 사용 가능
-btnShowResumeList.onclick = function () {
-  if (resumeListDiv.style.display !== 'none') {
-    resumeListDiv.style.display = 'none';
-    return;
-  }
-
-  // 이미 로딩되어 있으므로 바로 사용
-  const resumeList = resumeListCache || [];
-  selectedResumeCard.style.display = 'none';
-
-  if (!Array.isArray(resumeList) || resumeList.length === 0) {
-    resumeListDiv.innerHTML = `<div class="text-secondary py-2">등록된 이력서가 없습니다.</div>`;
-    resumeListDiv.style.display = 'block';
-    return;
-  }
-
-  // 카드 UI 렌더링
-  resumeListDiv.innerHTML = resumeList.map(resume => `
-    <div class="card mb-2 resume-card ${selectedResume && selectedResume.RESUME_NO === resume.RESUME_NO ? 'selected-card' : ''}" data-id="${resume.RESUME_NO}">
-      <div class="card-body py-2 px-3">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <p class="mb-1 text-secondary" style="font-size: .92em;">
-              ${resume.UPDATE_DATE ? `수정일: ${resume.UPDATE_DATE}` : ''}
-            </p>
-            <h6 class="mb-1">${resume.RESUME_NAME || resume.RESUME_NAME}</h6>
-            <div class="text-secondary" style="font-size:.96em;">
-              ${resume.RESUME_MAIN_YN === 'Y' ? `<span class="badge bg-purple">대표 이력서</span>` : ''}
-              ${resume.RESUME_SUBMIT_YN === 'Y' ? `<span class="badge bg-success">제출됨</span>` : ''}
-            </div>
-          </div>
-          <div>
-            ${resume.PHOTO ? `<img src="${resume.PHOTO}" alt="증명사진" style="width:38px; height:38px; border-radius:50%;">` : ''}
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  // 카드 클릭 이벤트로 선택
-  resumeListDiv.querySelectorAll('.resume-card').forEach(card => {
-    card.onclick = function () {
-      const rid = this.getAttribute('data-id');
-      selectedResume = resumeList.find(r => r.RESUME_NO === rid);
-      renderSelectedResumeCard();
-      selectedResumeCard.style.display = 'block';
-      resumeListDiv.style.display = 'none';
-    };
-  });
-
-  resumeListDiv.style.display = 'block';
-};
 
 // 이력서 카드(선택된 것) 랜더링 함수
 function renderSelectedResumeCard() {
