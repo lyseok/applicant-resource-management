@@ -87,7 +87,7 @@
                       </a>
                     </li>
                     <li>
-                      <a href="javascript:void(0)" id="projectLink">
+                      <a href="javascript:void(0)" id="project_link">
                         <span class="material-symbols-outlined">Communities</span>
                         <span class="txt">프로젝트</span>
                       </a>
@@ -249,10 +249,51 @@
           </div>
 
           <div class="familysite">
-            <a class="item" href="javascript:void(0)" rel="noreferrer">
-              <span class="txt">인기 직업순위 들어갈지도~?</span>
-            </a>
-          </div>
+            
+						<!-- 하이테크 아티클 배너 -->
+						<!-- <div class="swiper-container">
+							<ul class="swiper-wrapper">
+								<li class="swiper-slide">
+									<a href="javascript:void(0)">
+										<p class="subtitle">AI 트렌드 배송</p>
+										<h3 class="title">오픈AI 국내 인재 채용</h3>
+										<p class="text">불붙는 AI 인재 쟁탈전</p>
+									</a>
+								</li>
+								<li class="swiper-slide">
+									<a href="javascript:void(0)">
+										<p class="subtitle">인사이트</p>
+										<h3 class="title">연봉, 나만 궁금해요?</h3>
+										<p class="text">연봉 협상, 안 하면 손해?!</p>
+									</a>
+								</li>
+								<li class="swiper-slide">
+									<a href="javascript:void(0)">
+										<p class="subtitle">인사이트</p>
+										<h3 class="title">좋은 회사 고르려면!</h3>
+										<p class="text">이직 시 놓치면 안되는 팁 공개</p>
+									</a>
+								</li>
+							</ul>
+						</div> 
+						<script>
+							document.addEventListener("DOMContentLoaded", () => {
+								const mainHeaderSilde = new Swiper(".familysite .swiper-container", {
+									spaceBetween: 0,
+						      slidesPerView: 1,
+									centeredSlides: true,
+									autoplay: {
+										delay: 2500,
+										disableOnInteraction: false,
+									},
+									navigation: {
+										nextEl: ".bnrs-next",
+										prevEl: ".bnrs-next"
+									},
+								});
+							});
+						</script>
+          </div>-->
         </div>
       </div>
       <div class="navi_total">
@@ -341,7 +382,12 @@
         </div>
       </div>
       <script src="/js/config.js"></script>
+      <sec:authorize access="isAuthenticated()">
       <script>
-        document.getElementById('projectLink').setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+      document.addEventListener("DOMContentLoaded", function () {
+    	    const projectLink = document.querySelector('#project_link');
+   	      projectLink.setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+    	  });
       </script>
+       </sec:authorize>
     </header>
