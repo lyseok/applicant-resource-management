@@ -369,7 +369,7 @@ const acform = async function (no) {
 const achtml = async function (no) {
   try {
     if (!userId) {
-      console.error("userId not found in hidden input");
+      console.error("아이디를 찾을 수 없습니다");
       return;
     }
 

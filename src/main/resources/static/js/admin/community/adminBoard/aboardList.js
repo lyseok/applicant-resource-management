@@ -36,7 +36,12 @@ function fetchData(type, activeTab) {
       const resp = res.data;
       console.log("resp?", resp);
       bhtml(resp.data);
-	  nlist(activeTab);  //클릭한 탭(user, corp, event)이 들어옴
+
+      if(type.includes('FAQ')||type==='BRDD-002'){
+		flist(activeTab);
+	  }else if(type.includes('NTC')||type==='BRDD-003'){
+		nlist(activeTab);  //클릭한 탭(user, corp, event)이 들어옴
+	  } 
 
       totalPage = Math.ceil(resp.totalCnt / params.pageSize);
       console.log(totalPage, params.page);
@@ -187,7 +192,7 @@ const bhtml = function (rslt) {
 	
 	rslt.forEach((item) => {
 		// 날짜 포맷 (YYYY-MM-DD)
-	    let dateOnly = item.boardWriteDate.split(" ")[0];
+		let dateOnly = item.boardWriteDate.split(" ")[0];
 	
 	    html += `
 	        <div class="list_item mb-3">
@@ -271,7 +276,7 @@ const pre = function(type, activeTab) {
 //==========!자주묻는질문!============================================
 
 // ✅ FAQ 탭 렌더링
-const flist = function (activeTab = 'all') {
+const flist = function (activeTab) {
 	//fetchData(type);
 	let html = `
 		<p class="h4">자주 묻는 질문 탭 선택</p>
@@ -337,9 +342,9 @@ const faqDetail = function(codeDetailNo, userType = 'all') {
 };
 
 // ✅ 자주묻는질문 전체 데이터
-const faqAll = function() {
-	setActiveTab();
-	fetch(`/ajax/admin/board/admin_board/list/BRDD-002`)
+const faqAll = function(type) {
+	setActiveTab('all');
+	fetch(`/ajax/admin/board/admin_board/list/${type}`)
 		.then(resp => resp.json())
 		.then(rslt => {
 			bhtml(rslt);
@@ -348,7 +353,10 @@ const faqAll = function() {
 };
 
 // ✅ 자주묻는질문 일반회원 데이터
-const faqUser = function() {
+const faqUser = function(type) {
+	setActiveTab('user');
+	fetchData(type, 'user');
+	/*
 	setActiveTab();
 	fetch(`/ajax/admin/board/admin_board/pre/UFAQ`)
 		.then(resp => resp.json())
@@ -356,10 +364,14 @@ const faqUser = function() {
 			bhtml(rslt);
 			flist('user');
 		});
+	*/
 };
 
 // ✅ 자주묻는질문 기업회원 데이터
-const faqCorp = function() {
+const faqCorp = function(type) {
+	setActiveTab('corp');
+	fetchData(type, 'corp');
+	/*
 	setActiveTab();
 	fetch(`/ajax/admin/board/admin_board/pre/CFAQ`)
 		.then(resp => resp.json())
@@ -367,6 +379,7 @@ const faqCorp = function() {
 			bhtml(rslt);
 			flist('corp');
 		});
+	*/
 };
 
 //============!문의사항!==================================================================
@@ -432,7 +445,7 @@ const alist = function(type) {
 	} else if (type === "BRDD-003") {
 		noticeUser('UNTC');  //처음엔 일반회원으로 가게
 	} else if (type === "BRDD-002") {
-		faqAll();
+		faqAll(type);
 	}
 };
 
@@ -441,7 +454,7 @@ const alist2 = function(type) {
 	if (type === "BRDD-001") {
 		askAll(type);
 	} else if (type.includes('FAQ')) {
-		faqAll();
+		faqAll('BRDD-002');
 	} else {
 		if(type.startsWith('U')){
 			noticeUser(type);

@@ -312,7 +312,10 @@
 		     , A.USER_ID
 		     , A.BOARD_TYPE_CODE
 		     , A.BOARD_TITLE
+		     , A.BOARD_WRITE_DATE
 		     , A.BOARD_CONTENT
+		     , A.BOARD_DELETE_DATE
+		     , A.BOARD_POST_HIT
 		     , A.BOARD_STATUS
 		FROM ADMIN_BOARD A
 			JOIN CMN_CODE C 
@@ -323,12 +326,15 @@
 
 	<select id="selectAdminBoardList" resultMap="adminBoardMap">
 		SELECT 
-			  A.BOARD_NO
-			, A.USER_ID
-			, A.BOARD_TYPE_CODE
-			, A.BOARD_TITLE
-			, A.BOARD_CONTENT
-			, A.BOARD_STATUS
+			   A.BOARD_NO
+		     , A.USER_ID
+		     , A.BOARD_TYPE_CODE
+		     , A.BOARD_TITLE
+		     , A.BOARD_WRITE_DATE
+		     , A.BOARD_CONTENT
+		     , A.BOARD_DELETE_DATE
+		     , A.BOARD_POST_HIT
+		     , A.BOARD_STATUS
 		FROM ADMIN_BOARD A
 		INNER JOIN USERS U 
 			ON A.USER_ID = U.USER_ID
