@@ -110,4 +110,36 @@
 		)
 		WHERE rnum &gt; #{offset}
 	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="getSearchCount" resultType="int">
+    SELECT COUNT(*)
+		FROM introduction
+		WHERE user_id = #{userId}
+		AND INTRODUCTION_NAME LIKE '%' || #{keyword} || '%'
+
+	</select>
+
+	<select id="searchIntroductionList">
+    SELECT *
+    FROM (
+        SELECT a.*, ROWNUM rnum
+        FROM (
+            SELECT * FROM introduction
+            WHERE user_id = #{userId}
+            AND (INTRODUCTION_NAME LIKE '%' || #{keyword} || '%')
+            ORDER BY INTRODUCTION_NO DESC
+        ) a
+        WHERE ROWNUM  &lt;= #{offset} + #{pageSize}
+    )
+    WHERE rnum &gt; #{offset}
+	</select>
+
 </mapper>
