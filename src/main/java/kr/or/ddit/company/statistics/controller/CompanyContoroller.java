@@ -1,4 +1,4 @@
-package kr.or.ddit.company;
+package kr.or.ddit.company.statistics.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
