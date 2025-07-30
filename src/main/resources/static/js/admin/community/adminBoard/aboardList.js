@@ -12,6 +12,7 @@ window.userId = document.querySelector("#userIdHidden")?.value;
 const aboardform = document.querySelector("#aboardForm");
 const modalElement = document.querySelector('#deleteModal');
 const TypoBox_searchBar = document.querySelector('.TypoBox.searchBar');
+let selectedType = "";  //페이지 생성 함수서 type을 담는 파라미터로 쓰일 객체
 
 //==================== 필터링 및 페이징 ===============================================
 
@@ -26,13 +27,15 @@ function fetchData(type, activeTab) {
 
   const paramsString = paramsSerializer(params);
 
-  setActiveTab(activeTab);  //클릭한 탭(user, corp, event)에 맞게 넘어옴
+  //setActiveTab(activeTab);  //클릭한 탭(user, corp, event)에 맞게 넘어옴
 
   axios
     .get(`/ajax/admin/board/admin_board/${type}/notice-page?` + paramsString)
     .then((res) => {
       const resp = res.data;
-      console.log("페이지 잘라서 가져옴?", resp);
+      console.log("페이징 데이터?", resp);
+      
+      setActiveTab(activeTab);  //클릭한 탭(user, corp, event)에 맞게 넘어옴
 
       if(type.includes('FAQ')||type==='BRDD-002'){
 		flist(activeTab);
@@ -54,10 +57,10 @@ function fetchData(type, activeTab) {
 
 // 2. 가져온 리스트에 페이저 찍기
 function renderPager(totalPages, page, activeTab) {
-	setActiveTab(activeTab);
+  setActiveTab(activeTab);
   let pagerHtml = '';
   for (let i = 1; i <= totalPages; i++) {
-    if (i === page) {  //<a class="nav-link ${activeTab === 'user' ? 'active' : ''}" href="#" onclick="noticeUser('UNTC')">
+    if (i === page) {
       pagerHtml += `<span class="BtnType SizeS active" data-tab="${activeTab}">${i}</span>`;
     } else {
       pagerHtml += `<button class="BtnType SizeS page" data-page="${i}" data-tab="${activeTab}">${i}</button>`;
@@ -86,36 +89,9 @@ document.querySelector('.PageBox').addEventListener('click', function (e) {
     document.querySelector(`#noticeTabs .nav-link.${activeTab}`)?.classList.add('active');
 
     // 데이터 로드
-    fetchData(type, activeTab, params.page, params.pageSize);
+    fetchData(selectedType, activeTab, params.page, params.pageSize);
   }
 });
-
-/*
-// 페이지 숫자 클릭
-document.querySelector('.PageBox').addEventListener('click', function (e) {
-  if (e.target.classList.contains('page')) {
-    let page = Number(e.target.dataset.page);
-    let activeTab = e.target.dataset.tab; // ← 버튼에 저장된 탭 값 가져오기
-    params.page = page;
-
-    // 탭 활성화는 따로 처리 (버튼 클릭이니까 setActiveTab은 직접 클래스만 바꿔주는 걸로)
-    document.querySelectorAll('#noticeTabs .nav-link').forEach(link => link.classList.remove('active'));
-    document.querySelector(`#noticeTabs .nav-link.${activeTab}`)?.classList.add('active');
-
-    fetchData(type, activeTab, params.page, params.pageSize);  //noticeUser()등에서 type 부여
-  } else if (e.target.classList.contains('BtnNext')) {
-    params.page += 1;
-    let activeTab = e.target.dataset.tab; // ← 버튼에 저장된 탭 값 가져오기
-    
-    // 탭 활성화는 따로 처리 (버튼 클릭이니까 setActiveTab은 직접 클래스만 바꿔주는 걸로)
-    document.querySelectorAll('#noticeTabs .nav-link').forEach(link => link.classList.remove('active'));
-    document.querySelector(`#noticeTabs .nav-link.${activeTab}`)?.classList.add('active');
-    
-    fetchData(type, activeTab, params.page, params.pageSize);
-  }
-  // 필요시 이전(Prev) 버튼도 처리
-});
-*/
 
 // 페이지 쿼리스트링에 검색 필터링 쿼리스트링 더하기
 const paramsSerializer = function (params) {
@@ -248,6 +224,7 @@ const nlist = function (activeTab) {
 
 // ✅ 공지사항 일반회원 데이터
 const noticeUser = function(type) {
+	selectedType = type;
 	setActiveTab('user');
 	fetchData(type, 'user');
 };
@@ -439,7 +416,6 @@ const askCorp = function(type) {
 
 // ✅ 초기 로딩
 const alist = function(type) {
-	console.log("에잇! 목록이 나와야 하는데 왜 수정이 나와?", type);
 	if (type === "BRDD-001") {
 		askAll(type);
 	} else if (type === "BRDD-003") {
@@ -449,7 +425,7 @@ const alist = function(type) {
 	}
 };
 
-// ✅ 상세보기에서 목록 클릭시 로딩
+// ✅ 초기 외는 전부 여기로 로딩
 const alist2 = function(type) {
 	if (type === "BRDD-001") {
 		askAll(type);

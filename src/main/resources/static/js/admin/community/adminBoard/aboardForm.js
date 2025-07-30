@@ -10,12 +10,21 @@ const addopt = function(type){
 	aboardform.style.display = "block";
 	TypoBox_searchBar.style.display = 'none';
 	document.querySelector('.PageBox').innerHTML = "";
-	let backBtn = document.querySelector('button.btn.btn-secondary.px-4.me-2');  //취소 버튼 이벤트
+	//취소 버튼 이벤트 등록
+	let backBtn = document.querySelector('button.btn.btn-secondary.px-4.me-2');  
 	backBtn.addEventListener("click", function(){
-	    // 등록 or 수정 구분
+	    // 등록 폼에서 취소
 		console.log("등록에서 취소?", type);
 		aboardForm.style.display = "none";
 		alist2(type);
+		//등록하다가 취소해도 리셋은 해야 다음에 등록 시 데이터 중복 생성되지 않음
+		aboardform.reset(); //폼은 초기화
+        //옵션 초기화
+        bdis();
+        cdis(); codeGroup.disabled = true;	
+        mdis(); memType.disabled = true;
+        //수정 상태 해제 - 전역의 값 비워줘야
+        updateNo = null;
 	})
 	fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
 	  resp.json().then((rslt) => {
@@ -91,7 +100,6 @@ aboardform.onsubmit = function (e) {
 
 //수정에서 넘어올 시, 0차 옵션 기입하고 선택
 const addopt2 = function(type){
-	console.log("수정 type :", type);
 	fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
 	  resp.json().then((rslt) => {
 	    rslt.cmnCodeList.map((v, i) => {
@@ -229,7 +237,7 @@ const if2 = function(){
 	}
 }
 
-//수정에서 넘어올 때
+//수정에서 넘어오는 옵션 데이터 기입
 const if3 = function(type){
 	
 	if(type.includes('NTC')){
@@ -273,7 +281,7 @@ const mdis = function(){
 	memType.value = "-1";		
 }
 
-//수정 폼 옵션 제외 데이터 기입
+// 수정에서 넘어오는 제목, 내용 데이터 기입
 const abno2 = function(no){
 	updateNo = no;  // 전역변수에 저장
 	
@@ -300,18 +308,23 @@ const aform = function(no, type){
 	
 	addopt2(type);  //옵션 넣어줌
 	abno2(no);  //제목, 내용 넣어줌
+	
+	// 폼 취소
 	let backBtn = document.querySelector('button.btn.btn-secondary.px-4.me-2');
 	backBtn.addEventListener("click", function(){
-	    // 등록 or 수정 구분
-		console.log("수정에서 취소!", no);
-		abno(no);
-		aboardform.reset(); //폼 초기화
-        //옵션 초기화
-        bdis();
-        cdis(); codeGroup.disabled = true;	
-        mdis(); memType.disabled = true;
-        //수정 상태 해제
-        updateNo = null;
+		if(updateNo){  //updateNo에 담긴 no가 null이 아니라서 수정일 때만 상세보기로
+			abno(updateNo);  //상세보기 렌더링해주고
+			
+			aboardform.reset(); //폼은 초기화
+	        //옵션 초기화
+	        bdis();
+	        cdis(); codeGroup.disabled = true;	
+	        mdis(); memType.disabled = true;
+	        //수정 상태 해제 - 전역의 값 비워줘야
+	        updateNo = null;
+	    }else{  //등록이면 리스트로
+			alist2(type);
+		}
 	})
 }
 

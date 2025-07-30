@@ -30,16 +30,6 @@ const abhit = async function (no) {
 
 // 2
 const abno = function (no) {
-	console.log("왜 새글 등록 후 취소하면 abno를 타지?", no);
-  listTitle.style.display = "none";
-  aboardform.style.display = "none";
-  TypoBox_searchBar.style.display = "none";
-  document.querySelector('.PageBox').innerHTML = "";
-  memTypeBtn.innerHTML = "";
-  formBtn.innerHTML = "";
-  aboardList.innerHTML = "";
-  pageTitle();
-
   abhit(no) //조회수부터 증가
     .then((rslt) => {
       if (rslt.ok) {
@@ -72,6 +62,17 @@ const statusMap = {
 
 // 3
 const abdetail = async function (rslt) {
+	listTitle.style.display = "none";
+    aboardform.style.display = "none";
+    TypoBox_searchBar.style.display = "none";
+    document.querySelector('.PageBox').innerHTML = "";
+    memTypeBtn.innerHTML = "";
+    formBtn.innerHTML = "";
+    aboardList.innerHTML = "";
+    pageTitle();
+	
+	//fetch(`/ajax/admin/board/admin_board/detail/${rslt.boardNo}`)
+	
     let userInfo = await getUserInfo(rslt.userId);
     let statusText = statusMap[rslt.boardStatus] || rslt.boardStatus || "-";
 
@@ -208,7 +209,7 @@ const acdel = function (cno, bno) {
       .then((rslt)=>{
         if (rslt.ok) {
           if (rslt.boardNo){
-            abno(rslt.boardNo ?? "ABNO000001"); //목록으로, 널일 시 기본값 부여
+            //abno(rslt.boardNo ?? "ABNO000001"); //목록으로, 널일 시 기본값 부여
             acommentListContainer.innerHTML = "";
             aclist();
           }
@@ -347,7 +348,7 @@ const acform = async function (no) {
           resp.json().then((rslt) => {
             if (rslt.ok) {
               if (rslt.boardNo) {
-                abno(rslt.boardNo ?? "ABNO000001");
+                //abno(rslt.boardNo ?? "ABNO000001");
                 acommentListContainer.innerHTML = "";
                 aclist(rslt.boardCommentNo);
               }
