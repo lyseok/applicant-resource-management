@@ -3,7 +3,9 @@ const customerKey = "h5hXSJ-WPK8sZQpXQUJUA"; // 세션 기반이면 이 값은 �
 
 const productNo = window.PRODUCT_NO
 const tossPayments = TossPayments(clientKey);
-const successUrl = `${window.location.origin}/company/toss/success?productNo=${productNo}`;
+/*const successUrl = `${window.location.origin}/company/toss/success?productNo=${productNo}`;
+*/const successUrl = `${window.location.origin}/company/toss/success?productNo=${productNo}&customerKey=${customerKey}`;
+
 const failUrl = `${window.location.origin}/fail`;
 
 const payment = tossPayments.payment({ customerKey });
