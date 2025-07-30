@@ -1619,12 +1619,13 @@ body::-webkit-scrollbar-thumb:hover {
 	cursor:pointer;
 }
 .wrap_header .member_btn .user_photo{
-	display: block;
+	display: flex;
   overflow: hidden;
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background: #ccc;
+  border: 1px solid #edeef0;
 }
 .wrap_header .member_btn .material-symbols-outlined{
 	width:18px;

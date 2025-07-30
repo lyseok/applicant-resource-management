@@ -121,6 +121,7 @@
     height: 32px;
     border-radius: 50%;
     background:#ccc;
+  	border: 1px solid #edeef0;
 }
 .dash_header .btn_member .user_name {
     display: inline-block;

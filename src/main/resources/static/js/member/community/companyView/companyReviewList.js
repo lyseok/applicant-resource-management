@@ -26,21 +26,35 @@
             li.onclick = () => {
               location.href = `/member/company_review/detail?company=${c.userId}`;
             };
-           li.innerHTML = `
-                  <div class="info">
+           	li.innerHTML = `
+                <div class="info">
                   ${c.comLogo
                     ? `<img class="logo" src="${c.comLogo}" alt="${c.comName}"/>`
-                    : `<div class="logo"></div>`}
+                    : `<img class="logo opacity-25" src="/dist/assets/images/favicon.png" alt="${c.comName}"/>`
+                   }
                   <div class="text">
-                    <div class="name">
-                    ${c.comName}
-                      <span style="color:var(--violet70);font-size:.8rem;">(채용중)</span>
+                    <div class="name mb-1">
+                    	${c.comName}
+                      <span class="text-violet90 fs-14">(채용중)</span>
                     </div>
-                    <div class="meta">
-                    ${c.induName || ''} | 사원수 ${c.comMem || 0}명
+                  	<p class="fw-500 text-muted fs-14 mb-3">총 <b>N</b> 개의 리뷰가 등록되어 있습니다.</p>
+                    
+                    <div class="d-flex gap-3 fs-13">
+                    	<p class="d-flex gap-2 fw-500 text-muted"><b class="text-dark">업종</b>${c.induName? `<span>${c.induName}</span>`:''}</p>
+                    	<p class="d-flex gap-2 fw-500 text-muted"><b class="text-dark">사원수</b>${c.comMem ? `<span>${c.comMem} 명</span>` : `0 명`}</p>
+                    </div>
+                    <div class="d-flex gap-3 fs-13">
+                    	<p class="d-flex gap-2 fw-500 text-muted">
+                    		<b class="text-dark">평균점수</b>
+                    		<span class="">태규 여기 데이터 넣어조~~!</span>
+                    	</p>
+                    	<p class="d-flex gap-2 fw-500 text-muted">
+                    		<b class="text-dark">답변인원</b>
+                    		<span class="">태규 여기두 데이터 넣어조~~!</span>
+                    	</p>
                     </div>
                   </div>
-                  </div>
+                </div>
                   
                 `;
                   companyListEl.append(li);
