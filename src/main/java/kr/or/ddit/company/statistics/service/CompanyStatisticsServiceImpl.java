@@ -13,7 +13,7 @@ public class CompanyStatisticsServiceImpl implements CompanyStatisticsService{
 	private final CompanyMapper companyMapper;
 	@Override
 	public CompanyVO readCompanyById() {
-		return companyMapper.selectCompanyById(getUserId());
+		return companyMapper.selectCompanyInfoById(getUserId());
 	}
 	
 	public String getUserId() {
