@@ -7,6 +7,15 @@
 <head>
 	<title>띹잡 관리자 페이지 | 관리자게시판</title>
 	<link rel="stylesheet" href="/dist/assets/css/board/jop_view.css" >
+<style>
+#allBtns button {
+  margin-right: 8px; /* 버튼 사이 간격 */
+}
+
+#allBtns button:last-child {
+  margin-right: 0; /* 마지막 버튼은 여백 제거 */
+}
+</style>
 </head>
 <body>
 
@@ -18,17 +27,34 @@
 	<!-- 회원 탭 버튼 -->
 	<div id="memTypeBtn"></div><br>
 	
+	<div class="d-flex justify-content-between align-items-end pb-2">
 	<!-- 새 글 등록 버튼 -->
 	<div id="formBtn"></div><br>
-
-	<!-- 게시글 리스트 -->
+	<!-- 검색 바 -->
+		<div class="TypoBox searchBar" style="display: block;">
+			<div class="searchBarWrap">
+				<label class="searchBarLabel" for="listKeyword">검색어</label> 
+				<input type="text" id="listKeyword" class="searchBarInput" 
+				placeholder="제목으로 검색하세요." maxlength="24" autocomplete="off" value="">
+			</div>
+			<button type="button" class="searchBarBtn">
+				<span class="material-symbols-outlined">search</span>
+			</button>
+		</div>
+	</div>
+	
+	<!-- 상세보기 p태그 -->
 	<div id="detTitle"></div>
+	<!-- 게시글 리스트 -->
 	<ul id="aboardList">
 		<input type="hidden" id="typeHidden" value="${type}">
 	</ul>
+	<!-- pager 영역 -->
+	<div class="PageBox"></div>
 	
 	<!-- 게시글 상세 -->
 	<div id="aboardDetail"></div>
+	<div style="height:8px;"></div>
 	<div id="allBtns"></div>
 	<br>
 	
@@ -82,7 +108,7 @@
 	  </div>
 	
 	  <div class="text-end">
-	    <button type="button" class="btn btn-secondary px-4 me-2" onclick="history.back()">취소</button>
+	    <button type="button" class="btn btn-secondary px-4 me-2">취소</button>
 	    <button type="submit" class="btn btn-primary px-4">등록</button>
 	  </div>
 	</form>
@@ -117,6 +143,7 @@
 		</div>
 	</div>
 	
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/admin/community/adminBoard/aboardList.js"></script>
 <script src="/js/admin/community/adminBoard/aboardDetail.js"></script>

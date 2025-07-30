@@ -191,8 +191,29 @@ public class introductionController {
 	public String getintroductionSearch(
 		Model model
 		, @RequestParam String keyword
+		, @RequestParam(defaultValue = "1") int page
 	) {
-		model.addAttribute("introductionList", service.readIntroductionSearch(keyword));
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
+		
+		int pageSize = 4;
+	    int offset = (page - 1) * pageSize;
+	    
+
+	    int totalCount = service.getSearchCount(userId, keyword);
+	    List<IntroductionVO> introductionList = service.searchIntroductionList(userId, keyword, offset, pageSize);
+
+	    
+	    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+	    
+		// model.addAttribute("introductionList", service.readIntroductionSearch(keyword));
+
+	    model.addAttribute("introductionList", introductionList);
+		model.addAttribute("currentPage", page);
+	    model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("keyword", keyword);
+
 		return "member/resume/mypage/introduction/introductionList";
 	}
 }

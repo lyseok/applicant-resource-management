@@ -17,4 +17,9 @@ public interface introductionService {
 	
 	public int getTotalCount(String userId);
 	public List<IntroductionVO> getIntroductionPagingList(String userId, int offset, int limit);
+
+	// 자소서 검색 - 페이징 처리
+	public int getSearchCount(String userId, String keyword);
+	public List<IntroductionVO> searchIntroductionList(String userId, String keyword, int offset, int pageSize);
+
 }

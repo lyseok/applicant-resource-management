@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>채용 탭 UI</title>
+<title>기업 리뷰 상세</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/js/member/community/companyView/companyReviewChart.js"></script>
 <style>
@@ -285,6 +285,8 @@
 </head>
 
 <body>
+	<p class="h1 mb-3 fw-bold">기업 리뷰 상세</p>
+
 
 	<div id="companyInfoBox" class="company-info-box">
 		<div class="company-info-left">

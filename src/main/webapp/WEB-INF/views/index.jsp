@@ -9,10 +9,9 @@
 	<body>
 		<nav class="wing" style="top: 304px; bottom: auto;">
 			<ul>
-				<li><button value="main" class="_ga_quick on">추천공고</button></li>
-				<li><button value="banner" class="_ga_quick">주요 채용소식</button></li>
-				<li><button value="helper" class="_ga_quick">취업TOOL</button></li>
-				<li><a href="javascript:void(0)" target="_blank" class="_ga_quick">고객센터</a></li>
+				<li><a href="#pre_recruit" class="_ga_quick on">프리미엄공고</a></li>
+				<li><a href="#hot_recruit" class="_ga_quick">인기공고</a></li>
+				<li><a href="#recommend_recruit" class="_ga_quick">추천공고</a></li>
 			</ul>
 			<button class="btn_top"><span class="_ga_top">TOP</span></button>
 		</nav>
@@ -129,9 +128,9 @@
 					</div>
 					<!-- 띠배너 영역 - 여수, 광양 어쩌구 -->
 
-					<div class="z-index3" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000">
-						<div class="top_poduct">
-							<strong class="tit_cont mb-3" id="product_platinum">회원님이 꼭 봐야 할 공고 (프리미엄)</strong>
+					<div class="z-index3" id="pre_recruit" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000">
+						<div class="top_poduct" id="look">
+							<strong class="tit_cont mb-3" id="product_platinum">✨ 회원님이 꼭 봐야 할 공고</strong>
 							<!--
 						버튼 클릭 시 상품 안내 팝업 뜨게 제작하기
 						<button class="btn_product">
@@ -164,9 +163,9 @@
 		-->
 			<div class="cont_product prd_prime">
 				<div class="inner_cont">
-					<div class="z-index2" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1200">
+					<div class="z-index2" id="hot_recruit" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1200">
 						<div class="top_poduct mb-3">
-							<strong class="tit_cont" id="product_prime">최고의 인기 공고 (비지니스)</strong>
+							<strong class="tit_cont" id="product_prime">🔥 최고의 인기 공고</strong>
 							<!-- <button class="btn_product">
 							<span class="track_event">
 								<span>아이콘영역</span>
@@ -178,9 +177,9 @@
 					</div>
 
 
-					<div class="z-index1" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1400">
+					<div class="z-index1" id="recommend_recruit" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1400">
 						<div class="top_poduct mb-3">
-							<strong class="tit_cont" id="product_prime">띹잡 추천 공고 (베이직)</strong>
+							<strong class="tit_cont" id="product_prime">👍 띹잡 추천 공고</strong>
 							<!-- <button class="btn_product">
 							<span class="track_event">
 								<span>아이콘영역</span>

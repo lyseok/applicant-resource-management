@@ -77,7 +77,79 @@ public class AdminAdminBoardAjaxController {
 		, @RequestParam(required = false) String userRole
 	) {
 		return service.readAdminBoardListByType(boardTypeCode, userRole);
+	}
+
+	// 공지사항 게시글 목록조회
+	@GetMapping("/notice/{boardTypeCode}")
+	public List<AdminBoardVO> getNotice(
+		@PathVariable String boardTypeCode
+	) {
+		return service.readNoticeList(boardTypeCode);
+	}
+	
+	// 검색
+	@GetMapping("/filter")
+	public ResponseEntity<Map<String, Object>> getFilterAboardList(
+		@RequestParam int page,
+	    @RequestParam int pageSize,
+		@RequestParam(required = false) List<String> adminCommentList,
+		@RequestParam(required = false) String userId,
+		@RequestParam(required = false) String boardTitle,
+		@RequestParam(required = false) String boardContent
+	){
+		Map<String, Object> params = new HashMap<>();
+		params.put("startRow", (page - 1) * pageSize);
+		params.put("endRow", page * pageSize);
+		params.put("adminCommentList", adminCommentList);
+		params.put("userId", userId);
+		params.put("boardTitle", boardTitle);
+		params.put("boardContent", boardContent);
 		
+		Map<String, Object> resp = service.readAboardByFilter(params);
+		return ResponseEntity.ok(resp);
+	}
+	
+	// 공지사항 페이지 처리
+	@GetMapping("/{boardTypeCode}/notice-page")
+	public ResponseEntity<Map<String, Object>> getNoticePage(
+			@PathVariable String boardTypeCode
+			, @RequestParam int page
+			, @RequestParam int pageSize
+			) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("boardTypeCode", boardTypeCode);  // 게시판 유형 추가
+		params.put("startRow", (page - 1) * pageSize);
+		params.put("endRow", page * pageSize);
+		
+		log.debug("boardTypeCode : {}", boardTypeCode);
+		log.debug("startRow : {}", (page - 1) * pageSize);
+		log.debug("endRow : {}", page * pageSize);
+		
+		// service에서 boardTypeCode도 고려하도록
+		Map<String, Object> resp = service.readNotice(params);
+		log.info("params : {}", params);
+		
+		log.info("resp : {}", resp);
+		
+		return ResponseEntity.ok(resp);
+	}
+	
+	// 게시글 페이지 처리
+	@GetMapping("/{boardTypeCode}/page")
+	public ResponseEntity<Map<String, Object>> getAboardPage(
+	      @PathVariable String boardTypeCode
+	    , @RequestParam int page
+	    , @RequestParam int pageSize
+	) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("boardTypeCode", boardTypeCode);  // 게시판 유형 추가
+	    params.put("startRow", (page - 1) * pageSize);
+	    params.put("endRow", page * pageSize);
+	    
+	    // service에서 boardTypeCode도 고려하도록
+	    Map<String, Object> resp = service.readAboardPage(params);
+	    log.info("params : {}", params);
+	    return ResponseEntity.ok(resp);
 	}
 
 	// 삭제된 게시글 목록조회

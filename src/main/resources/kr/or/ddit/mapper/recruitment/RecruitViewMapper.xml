@@ -30,10 +30,10 @@
 		    LEFT JOIN COMPANY C 
 		        ON C.USER_ID = RN.USER_ID
 		    WHERE RV.USER_ID = #{userId}
+				ORDER BY VIEW_AT, RECRUITMENT_TITLE
 		)
 		WHERE RNK = 1
-		AND ROWNUM &lt;= 10
-		ORDER BY VIEW_AT, RECRUITMENT_TITLE		
+		AND ROWNUM &lt;= 10		
 	</select>
 	
 	
