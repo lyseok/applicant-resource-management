@@ -225,18 +225,23 @@ const nlist = function (activeTab) {
 // ✅ 공지사항 일반회원 데이터
 const noticeUser = function(type) {
 	selectedType = type;
+	params.page = 1;  // 탭 클릭 시 첫 페이지로 초기화
 	setActiveTab('user');
 	fetchData(type, 'user');
 };
 
 // ✅ 공지사항 기업회원 데이터
 const noticeCorp = function(type) {
+	selectedType = type;
+	params.page = 1;
 	setActiveTab('corp');
 	fetchData(type, 'corp');
 };
 
 // ✅ 공지사항 이벤트 데이터
 const noticeEvent = function(type) {
+	selectedType = type;
+	params.page = 1;
 	setActiveTab('event');
 	fetchData(type, 'event');
 };

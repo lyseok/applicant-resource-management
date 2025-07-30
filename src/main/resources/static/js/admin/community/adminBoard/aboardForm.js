@@ -324,6 +324,14 @@ const aform = function(no, type){
 	        updateNo = null;
 	    }else{  //등록이면 리스트로
 			alist2(type);
+			
+			aboardform.reset(); //폼은 초기화
+	        //옵션 초기화
+	        bdis();
+	        cdis(); codeGroup.disabled = true;	
+	        mdis(); memType.disabled = true;
+	        //수정 상태 해제 - 전역의 값 비워줘야
+	        updateNo = null;
 		}
 	})
 }

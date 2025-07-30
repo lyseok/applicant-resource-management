@@ -30,6 +30,7 @@ const abhit = async function (no) {
 
 // 2
 const abno = function (no) {
+  console.log("디버깅하다 놓친 조회수 증가 쿼리");
   abhit(no) //조회수부터 증가
     .then((rslt) => {
       if (rslt.ok) {
@@ -62,6 +63,8 @@ const statusMap = {
 
 // 3
 const abdetail = async function (rslt) {
+	console.log("디버깅하다 놓친 상세보기 조회 쿼리");
+	
 	listTitle.style.display = "none";
     aboardform.style.display = "none";
     TypoBox_searchBar.style.display = "none";
