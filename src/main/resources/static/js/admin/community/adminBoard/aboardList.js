@@ -25,17 +25,14 @@ const params = {
 function fetchData(type, activeTab) {
 
   const paramsString = paramsSerializer(params);
-  console.log('필터링 요청:', paramsString);
 
   setActiveTab(activeTab);  //클릭한 탭(user, corp, event)에 맞게 넘어옴
-  console.log("setActiveTAb?", activeTab);
 
   axios
     .get(`/ajax/admin/board/admin_board/${type}/notice-page?` + paramsString)
     .then((res) => {
       const resp = res.data;
-      console.log("resp?", resp);
-      bhtml(resp.data);
+      console.log("페이지 잘라서 가져옴?", resp);
 
       if(type.includes('FAQ')||type==='BRDD-002'){
 		flist(activeTab);
@@ -43,10 +40,11 @@ function fetchData(type, activeTab) {
 		nlist(activeTab);  //클릭한 탭(user, corp, event)이 들어옴
 	  } 
 
+      bhtml(resp.data);
+
       totalPage = Math.ceil(resp.totalCnt / params.pageSize);
       console.log(totalPage, params.page);
       renderPager(totalPage, params.page, activeTab); // 페이저 렌더링
-      console.log("renderPager?", activeTab);
     })
     .catch((err) => {
       alert('데이터를 불러오는 데 실패했습니다.');
@@ -56,7 +54,6 @@ function fetchData(type, activeTab) {
 
 // 2. 가져온 리스트에 페이저 찍기
 function renderPager(totalPages, page, activeTab) {
-	console.log("activeTab?", activeTab);
 	setActiveTab(activeTab);
   let pagerHtml = '';
   for (let i = 1; i <= totalPages; i++) {
@@ -168,7 +165,6 @@ const newFormBtn = function (type) {
 
 // ✅ 탭 UI 활성화 처리
 function setActiveTab(e) {
-	console.log("e?", e);
 	
 	if (!e || !e.target) return;
 
@@ -187,6 +183,9 @@ const bhtml = function (rslt) {
 	listTitle.style.display = "block";
 	aboardform.style.display = "none";
 	TypoBox_searchBar.style.display = "block";
+	detTitle.innerHTML = "";
+	aboardDetail.innerHTML = "";
+	allBtns.innerHTML = "";
 
 	let html = '<div class="list_body">';
 	
@@ -440,6 +439,7 @@ const askCorp = function(type) {
 
 // ✅ 초기 로딩
 const alist = function(type) {
+	console.log("에잇! 목록이 나와야 하는데 왜 수정이 나와?", type);
 	if (type === "BRDD-001") {
 		askAll(type);
 	} else if (type === "BRDD-003") {

@@ -30,6 +30,7 @@ const abhit = async function (no) {
 
 // 2
 const abno = function (no) {
+	console.log("왜 새글 등록 후 취소하면 abno를 타지?", no);
   listTitle.style.display = "none";
   aboardform.style.display = "none";
   TypoBox_searchBar.style.display = "none";
@@ -500,6 +501,7 @@ const abbtn = function (no, type) {
               if (rslt.boardTypeCode){
                 detailToList(rslt.boardTypeCode ?? "BRDD-001"); //목록으로, 널일 시 기본값 부여
                 aboardDetail.innerHTML = "";
+                detTitle.innerHTML = '';
               }
             }
           });
