@@ -86,7 +86,7 @@ public class BillingPaymentController {
 		log.info("==> sessionId: {}" ,session.getId());
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
 		map.put("customerKey", customerKey);
-		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
+		log.info("빌링키빌링키빌링키빌링키빌링키 : {}", billingKey);
 		log.info("map 반환값 : {}", map);
 		return map;
 	}
@@ -121,8 +121,8 @@ public class BillingPaymentController {
 		model.addAttribute("productNo",productNo);
 		model.addAttribute("customerKey", sessionCustomerKey);
 		model.addAttribute("billingKey",sessionBillingKey);
-//		return "/company/payment/payment/buyproduct?productNo=" + productNo;
-		return "company/payment/payment/BuyProduct";
+		return "/company/payment/payment/buyproduct?productNo=" + productNo;
+//		return "company/payment/payment/BuyProduct";
 	}
 	
 	@GetMapping("/billing")
@@ -140,11 +140,11 @@ public class BillingPaymentController {
 				, @RequestParam String productNo
 				, HttpSession session
 				, Model model) {
-		String billingKey = (String) session.getAttribute("billingKey");
+		String billingKey = null;
 		log.info("productNo : {}", productNo);
 		log.info("customerKey : {}", customerKey);
 		log.info("authKey : {}", authKey);
-
+		log.info("/success오고나서 바로 ? :  {}", Pservice.getUserId());
 		// JSOn 본문 생성
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, String> requestBody = new HashMap<>();
@@ -171,7 +171,8 @@ public class BillingPaymentController {
 				.POST(HttpRequest.BodyPublishers.ofString(jsonBody))
 				.build();
 		
-		
+		log.info("<+<+<+<+ 다 찍어볼게 request : {}", request);
+		log.info("세션이 새로왔나요? : {}", Pservice.getUserId());
 		// 요청 실행
 		
 		HttpResponse<String> response = null;
@@ -186,11 +187,12 @@ public class BillingPaymentController {
 		
 		if (response != null && response.body() != null) {
 			
-			log.info("결제응답 : " + response.body());
+			log.info("결제응답 : {}", response.body());
+			log.info("세션이 새로왔나요? : {}", Pservice.getUserId());
 
 			try {
 				JsonNode jsonNode = objectMapper.readTree(response.body());
-				/* String billingKey = jsonNode.get("billingKey").asText(); */
+				billingKey = jsonNode.get("billingKey").asText();
 				log.info("jsonBody : {}",jsonBody);
 				// billingKey를 저장
 //				model.addAttribute("billingKey",billingKey);
@@ -202,8 +204,12 @@ public class BillingPaymentController {
 				log.info("customerKey",customerKey);
 				log.info("빌링빌링빌링키 = billingKey : {}", billingKey);
 				log.info("session id: {}", session.getId());
-				return "company/toss/buyproduct?productNo";
-				
+				if (session.getAttribute("billingKey") == null && billingKey != null) {
+				    session.setAttribute("billingKey", billingKey);
+				}
+				return "redirect:company/toss/buyproduct?productNo=" + productNo 
+				        + "&customerKey=" + customerKey 
+				        + "&billingKey=" + billingKey;
 				
 			} catch (IOException e) {
 				log.error("JSON파싱 실패 ", e);
@@ -217,8 +223,10 @@ public class BillingPaymentController {
 		}
 		
 		log.info("responseBody : {}", response.body());
-		return "redirect:/company/toss/buyproduct";
-//		return "company/payment/payment/BillingResult";
+//		return "redirect:/company/toss/buyproduct";
+		return "redirect:/company/toss/buyproduct?productNo=" + productNo 
+		        + "&customerKey=" + customerKey 
+		        + "&billingKey=" + billingKey;
 	}
 
 	@PostMapping("/api/toss/billing/issue")
