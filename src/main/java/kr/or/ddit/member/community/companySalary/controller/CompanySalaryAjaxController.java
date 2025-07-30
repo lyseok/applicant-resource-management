@@ -61,5 +61,12 @@ public class CompanySalaryAjaxController {
 	public List<Map<String, Object>> getSimilarSalary(@PathVariable String industryType){
 		return salaryService.readSimilarCompanySalariesList(industryType);
 	}
+	
+	@GetMapping("/rank/{userId}/{industryType}")	
+	public Map<String, Object> getSalaryRank(
+	        @PathVariable String userId, 
+	        @PathVariable String industryType) {
+	    return salaryService.readCompanySalaryRankByIndu(userId, industryType);
+	}
 
 }
