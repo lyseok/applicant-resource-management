@@ -13,7 +13,7 @@ function subscribe(event ,btn) {
    	
    
      fetch("/company/toss/check/billing",{
-		method : "GET" ,
+		method : "POST" ,
 		credentials : "include"
 	 }) // <-- 여기 경로 중요
         .then(response => {

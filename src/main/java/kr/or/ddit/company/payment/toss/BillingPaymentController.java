@@ -71,7 +71,7 @@ public class BillingPaymentController {
 	}
 
 	
-	@GetMapping("/check/billing")
+	@PostMapping("/check/billing")
 	@ResponseBody
 	public Map<String, Object> checkBillingKey(HttpSession session){
 		Map<String, Object> map = new HashMap<>();
@@ -83,6 +83,7 @@ public class BillingPaymentController {
 			log.info("여기서 빌링키가 나온다고요 ?? : {}", billingKey);
 			map.put("billingKey", billingKey);
 		}
+		log.info("==> sessionId: {}" ,session.getId());
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
 		map.put("customerKey", customerKey);
 		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
@@ -114,12 +115,12 @@ public class BillingPaymentController {
 		log.info("최종 sessionBillingKey: {}", sessionBillingKey);
 		log.info("최종 sessionCustomerKey: {}", sessionCustomerKey);
 		
-		
+		log.info("==> sessionId: {}" ,session.getId());
 		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
 		model.addAttribute("product",product);
 		model.addAttribute("productNo",productNo);
-		session.setAttribute("customerKey", sessionCustomerKey);
-		session.setAttribute("billingKey",sessionBillingKey);
+		model.addAttribute("customerKey", sessionCustomerKey);
+		model.addAttribute("billingKey",sessionBillingKey);
 //		return "/company/payment/payment/buyproduct?productNo=" + productNo;
 		return "company/payment/payment/BuyProduct";
 	}
@@ -139,6 +140,7 @@ public class BillingPaymentController {
 				, @RequestParam String productNo
 				, HttpSession session
 				, Model model) {
+		String billingKey = (String) session.getAttribute("billingKey");
 		log.info("productNo : {}", productNo);
 		log.info("customerKey : {}", customerKey);
 		log.info("authKey : {}", authKey);
@@ -188,8 +190,8 @@ public class BillingPaymentController {
 
 			try {
 				JsonNode jsonNode = objectMapper.readTree(response.body());
-				String billingKey = jsonNode.get("billingKey").asText();
-				
+				/* String billingKey = jsonNode.get("billingKey").asText(); */
+				log.info("jsonBody : {}",jsonBody);
 				// billingKey를 저장
 //				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("result",jsonNode.toPrettyString());
@@ -200,7 +202,7 @@ public class BillingPaymentController {
 				log.info("customerKey",customerKey);
 				log.info("빌링빌링빌링키 = billingKey : {}", billingKey);
 				log.info("session id: {}", session.getId());
-				return "redirect:/company/toss/buyproduct?productNo=" + productNo;
+				return "company/toss/buyproduct?productNo";
 				
 				
 			} catch (IOException e) {
@@ -213,9 +215,9 @@ public class BillingPaymentController {
 			log.warn("응답 실패 !! ");
 			model.addAttribute("error", "응답 없음");
 		}
-
+		
 		log.info("responseBody : {}", response.body());
-		return "redirect:/company/toss/buyproduct?productNo=" + productNo;
+		return "redirect:/company/toss/buyproduct";
 //		return "company/payment/payment/BillingResult";
 	}
 

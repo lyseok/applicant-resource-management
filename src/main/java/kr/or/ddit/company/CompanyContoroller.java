@@ -12,4 +12,8 @@ public class CompanyContoroller {
 	public String indexPage() {
 		return "company/index";
 	}
+	@GetMapping("/test")
+	public String indexTestPage() {
+		return "company/indexTest";
+	}
 }
