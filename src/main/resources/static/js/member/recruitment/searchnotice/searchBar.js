@@ -17,6 +17,7 @@ containers.forEach((container) => {
 
 const customSelectCity = document.querySelector('.custom-select');
 let selectStyledDetail;
+
 if (!selectStyledDetail) {
   selectStyledDetail = customSelectCity.querySelector('.select-styled');
 }
@@ -1033,7 +1034,7 @@ btn_reset.addEventListener('click', function (e) {
             clearJobCategoryByTopCode(topJobCode);
         }
     }
-});
+})
 */
 
 //-----------------------내부 스크롤 동작-----------------------------------------
