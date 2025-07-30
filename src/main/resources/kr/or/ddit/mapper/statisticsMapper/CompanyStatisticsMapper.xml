@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.statistics.CompanyStatisticsMapper">
+
+	<select id="selectRecruitmentStatusById" resultType="hashMap">
+		SELECT
+		    COUNT(DISTINCT A.APPLICANT_ID) AS total_applicants,
+		    COUNT(DISTINCT CASE 
+		                     WHEN AR.STEP_PASS_YN = 'Y' 
+		                          AND RP.RECRUIT_PROCESS_TYPE = 'RERP-003' 
+		                     THEN A.APPLICANT_ID 
+		                   END) AS document_pass_count,
+		    COUNT(DISTINCT CASE 
+		                     WHEN P.RECRUIT_ACCEPT_YN = 'Y' 
+		                     THEN P.APPLICANT_ID 
+		                   END) AS final_pass_count,
+		    COUNT(DISTINCT CASE 
+		                     WHEN R.RECRUITMENT_DEL_DATE IS NULL 
+		                          AND R.RECRUIT_FINISH_YN = 'N' 
+		                     THEN R.RECRUITMENT_NO 
+		                   END) AS active_notice_count
+		FROM COMPANY C
+		LEFT JOIN RECRUITMENT_NOTICE R 
+		    ON C.USER_ID = R.USER_ID
+		LEFT JOIN APPLICANT A 
+		    ON R.RECRUITMENT_NO = A.RECRUITMENT_NO
+		LEFT JOIN APPLICANT_RECORD AR 
+		    ON A.APPLICANT_ID = AR.APPLICANT_ID
+		LEFT JOIN RECRUIT_PROCESS RP 
+		    ON AR.RECRUIT_PROCESS_NO = RP.RECRUIT_PROCESS_NO
+		LEFT JOIN PASSER P 
+		    ON A.APPLICANT_ID = P.APPLICANT_ID
+		WHERE C.USER_ID = #{userId}
+	</select>
+</mapper>
