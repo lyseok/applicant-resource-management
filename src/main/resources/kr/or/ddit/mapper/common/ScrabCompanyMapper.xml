@@ -19,6 +19,14 @@
 		WHERE USER_ID = #{userId}
 	</select>
 	
+	<select id="checkMyCompanyScrab">
+		SELECT
+			COUNT(SCRAB_COMPANY_DATE)
+		FROM SCRAB_COMPANY
+		WHERE USER_ID = #{userId}
+		AND COMPANY_ID = #{companyId}
+	</select>
+	
 	<insert id="insertScrabCompany">
 		INSERT INTO SCRAB_COMPANY (
 			USER_ID

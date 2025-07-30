@@ -213,6 +213,92 @@ async function renderNotice() {
 }
 renderNotice();
 
+//================================= 일반회원의 관심기업 체크 ===========================================
+const button = document.getElementById('scrab_company');
+const svgPath = button.querySelector('svg path');
+let companyId = null;
+
+function setFillColor(isScrapped){
+	svgPath.setAttribute('fill', isScrapped ? 'red' : 'white');
+}
+
+async function loadScrapStatus(){
+	try{
+		const data = await fetchNotice();
+		companyId = data.userId;
+		const res = await fetch(`/ajax/member/scrab_company/${companyId}`)
+		const json = await res.json();
+		setFillColor(json > 0);
+	}catch(err){
+		console.error('스크랩 상태 불러오기 실패', err);
+	}
+}
+
+button.addEventListener('click', async function(){
+	try{
+		const isScrapped = svgPath.getAttribute('fill') === 'red';
+		const method = isScrapped ? 'DELETE' : 'POST';
+		
+		const res = await fetch(`/ajax/member/scrab_company/${companyId}`,{
+			method : method,
+			headers : {'Content-Type' : 'application/json'}
+		});
+		const result = await res.text();
+		
+		if(result === 'ok'){
+			await loadScrapStatus();
+		}
+	}catch(err){
+		console.error('스크랩 처리 실패', err);
+	}
+});
+
+loadScrapStatus();
+
+//================================= 일반 회원의 관심 공고 체크 ==========================================
+const scrapButton = document.getElementById('scrap_recruit');
+const scrapIconPath = scrapButton.querySelector('svg path');
+const scrapCountSpan = scrapButton.querySelector('.txt_scrap');
+
+function setScrapState(count) {
+  const isScrapped = count > 0;
+  scrapIconPath.setAttribute('fill', isScrapped ? 'gold' : 'white');
+  scrapButton.setAttribute('aria-pressed', isScrapped);
+  scrapCountSpan.textContent = count;
+}
+
+// 서버에서 스크랩 상태 불러오기
+async function loadScrapStatus() {
+  try {
+    const res = await fetch(`/ajax/member/scrab_recruit/${recruitmentNo}`);
+    const json = await res.json();
+    setScrapState(count);
+  } catch (err) {
+    console.error('스크랩 상태 불러오기 실패', err);
+  }
+}
+
+scrapButton.addEventListener('click', async function () {
+  try {
+    const currentCount = parseInt(scrapCountSpan.textContent, 10);
+    const isScrapped = currentCount > 0;
+    const method = isScrapped ? 'DELETE' : 'POST';
+
+    const res = await fetch(`/ajax/member/scrab_recruit/${recruitmentNo}`, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const newCount = await res.json(); // 서버에서 최신 카운트만 내려줌
+
+    setScrapState(newCount);
+  } catch (err) {
+    console.error('스크랩 처리 실패', err);
+  }
+});
+
+// 페이지 로드 시 초기 상태 불러오기
+loadScrapStatus();
+
 //================================= 예솔 - 최근본 공고 인서트 ===========================================
 document.addEventListener('DOMContentLoaded', function() {
 	console.log("비동기 요청 전 스트립트 동작 확인", recruitmentNo)

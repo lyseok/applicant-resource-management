@@ -20,6 +20,14 @@
 		WHERE USER_ID = #{userId}
 	</select>
 	
+	<select id="checkRecruitScrab">
+		SELECT
+			 COUNT(SCRAB_RECUITMENT_DATE)
+		FROM SCRAB_RECRUITMENT
+		WHERE USER_ID = #{userId}
+		AND RECRUITMENT_NO = #{recruitmentNo}
+	</select>
+	
 	<insert id="insertScrabRecruitment">
 		INSERT INTO SCRAB_RECRUITMENT (
 			USER_ID

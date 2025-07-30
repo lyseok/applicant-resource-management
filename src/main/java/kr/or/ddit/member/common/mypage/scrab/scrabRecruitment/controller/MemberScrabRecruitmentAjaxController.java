@@ -26,6 +26,11 @@ public class MemberScrabRecruitmentAjaxController {
 	public ResponseEntity<List<ScrabRecruitmentVO>> getMyList() {
 		return ResponseEntity.ok(service.readMyScrabRecruitmentList());
 	}
+	
+	@GetMapping("/{recruitmentNo}")
+	public int findRecruitScrabYn(@PathVariable String recruitmentNo) {
+		return service.findRecruitScrabYn(recruitmentNo);
+	}
 
 	// 관심 공고 마이페이지 내 등록
 	@PostMapping("/{srecruit}")
