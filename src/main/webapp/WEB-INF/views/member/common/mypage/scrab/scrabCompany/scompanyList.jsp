@@ -1,74 +1,84 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <head>
-	<meta charset="UTF-8">
-	<title>띹잡 마이페이지 | 관심기업 리스트</title>
+<meta charset="UTF-8">
+<title>띹잡 마이페이지 | 관심기업 리스트</title>
 
-	<%-- 에러 메시지를 표시하려면 다음과 같이 추가해야 합니다. --%>
-	<c:if test="${not empty error }">
-	    <script>
-	        alert('${error}'); // 'error' FlashAttribute를 확인
-	    </script>
-	</c:if>
-	   <script type="text/javascript" src="/js/member/common/mypage/scrab/scrabCompany/scompanyList.js" defer></script>
+<%-- 에러 메시지를 표시하려면 다음과 같이 추가해야 합니다. --%>
+<c:if test="${not empty error }">
+	<script>
+		alert('${error}'); // 'error' FlashAttribute를 확인
+	</script>
+</c:if>
+<script type="text/javascript"
+	src="/js/member/common/mypage/scrab/scrabCompany/scompanyList.js" defer></script>
 </head>
 <body>
 
 	<p class="h1 mb-3 fw-bold">관심기업</p>
-	
-	<div class="border-bottom d-flex justify-content-between align-items-end pb-2">
-		<p class="fs-14">총 ${scompanyList.size() }건</p>
+
+	<div
+		class="border-bottom d-flex justify-content-between align-items-end pb-2">
+		<p class="fs-14">총 ${SCompany.size() }건</p>
 		<div class="TypoBox searchBar">
-			<div class="searchBarWrap">
-				<label class="searchBarLabel" for="listKeyword">검색어</label>
-				<input type="text" id="listKeyword" class="searchBarInput" placeholder="관심 기업을 검색해보세요" maxlength="24" autocomplete="off" value="">
-			</div>
-			<a href="/ajax/member/common/mypage/scrab/scrabCompany/scompanyDetail?companyId=${scompany.companyId }" class="searchBarBtn"><!-- 링크 확인필요 -->
-				<span class="material-symbols-outlined">search</span>
-			</a>
+			<form method="get" action="">
+				<div class="searchBarWrap">
+					<label class="searchBarLabel" for="listKeyword">검색어</label> <input
+						type="text" id="listKeyword" name="keyword" class="searchBarInput"
+						placeholder="관심 공고를 검색해보세요" maxlength="24" autocomplete="off"
+						value="${keyword}">
+				</div>
+				<button type="submit" class="searchBarBtn">
+					<span class="material-symbols-outlined">search</span>
+				</button>
+			</form>
 		</div>
 	</div>
 	<%-- 관심기업 존재 여부에 따른 분기 --%>
-	<c:if test="${not empty scompanyList}">
+	<c:if test="${not empty SCompany}">
 		<div class="">
-			<c:forEach items="${scompanyList }" var="scompany">
+			<c:forEach items="${SCompany }" var="scompany">
 				<ul>
-					<li class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
+					<li
+						class="pt-5 pb-5 border-bottom d-flex justify-content-between align-items-center">
 						<div class="">
-							<a class="d-block h4 fw-bold" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/${scompany.companyId}"/>">${scompany.companyId.comName}</a>
-							<p class="text-truncate w800">${scompany.companyId.comInfo}</p>
+							<a class="d-block h4 fw-bold"
+								href="<c:url value="/member/company_view?no=${scompany.companyId}"/>">
+								${scompany.company.comName} </a>
+							<p class="text-truncate w800">${scompany.company.comInfo}</p>
 						</div>
 						<div class="d-flex gap-1">
-							<a class="btn btn_violet_line fw-normal" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/edit/${scompany.companyId}"/>">수정</a>
-							<a class="btn btn_red_line fw-normal" href="<c:url value="/ajax/member/common/mypage/scrab/scrabCompany/delete/${scompany.companyId}"/>" onclick="return confirmDelete();">삭제</a>
+							<a class="btn btn_red_line fw-normal" href="javascript:void(0);"
+								onclick="deleteCompany('${scompany.companyId}')"> 삭제 </a>
+
 						</div>
 					</li>
 				</ul>
 			</c:forEach>
-			<div class="PageBox">
-	            <span class="BtnType SizeS active">1</span>
-	            <button class="BtnType SizeS page" data-page="2">2</button>
-	            <button class="BtnType SizeS page" data-page="3">3</button>
-	            <button class="BtnType SizeS page" data-page="4">4</button>
-	            <button class="BtnType SizeS page" data-page="5">5</button>
-	            <button class="BtnType SizeS page" data-page="6">6</button>
-	            <button class="BtnType SizeS page" data-page="7">7</button>
-	            <button class="BtnType SizeS page" data-page="8">8</button>
-	            <button class="BtnType SizeS page" data-page="9">9</button>
-	            <button class="BtnType SizeS page" data-page="10">10</button>
-	            <button data-page="11" class="BtnType SizeS BtnNext btnNext">다음</button>
-	        </div>
+
 		</div>
 	</c:if>
-	<c:if test="${empty scompanyList}">
-		<p>관심 기업이 없습니다, 등록해보세요!</p><br>
-           <a href="/member/recruitment/recruitmentNotice" class="item" onmousedown="">
-               <strong class="title">나에게 맞는 공고가<br>보고싶다면?</strong>
-               <span class="txt link">추천 공고 보러가기</span>
-           </a>
+	<c:if test="${empty SCompany}">
+		<p>관심 기업이 없습니다, 등록해보세요!</p>
+		<br>
+		<a href="/member/recruitment/recruitmentNotice" class="item"
+			onmousedown=""> <strong class="title">나에게 맞는 공고가<br>보고싶다면?
+		</strong> <span class="txt link">추천 공고 보러가기</span>
+		</a>
+	</c:if>
+
+	<c:if test="${not empty totalPages}">
+		<nav class="mt-4">
+			<ul class="pagination justify-content-center">
+				<c:forEach begin="1" end="${totalPages}" var="i">
+					<li class="page-item ${i == currentPage ? 'active' : ''}"><a
+						class="page-link" href="?page=${i}&keyword=${keyword}">${i}</a></li>
+				</c:forEach>
+			</ul>
+		</nav>
 	</c:if>
 	<%-- 스크랩(개수)/관심기업(개수) --%>
 	<%-- 
@@ -92,12 +102,12 @@
 		
 	<ul>
         <li class="">
-    --%>    
-    <%-- 화면엔 없지만 값이 넘어올 부분 --%>
-    <%--
+    --%>
+	<%-- 화면엔 없지만 값이 넘어올 부분 --%>
+	<%--
 	<input type="hidden" name="scrabCompanyDate" value="${scompany.scrabCompanyDate}">    	
 	<input type="hidden" name="userId" value="${scompany.userId}">
-	--%>    	
+	--%>
 	<%-- 관심기업 존재 여부에 따른 분기 --%>
 	<%-- 
 	<c:if test="${not empty scompany}">
@@ -145,8 +155,9 @@
 	</c:if>
     </li>
 	</ul>
-	--%>	
-</div>
-
+	--%>
+	</div>
+	<script
+		src="/js/member/common/mypage/scrab/scrabCompany/scompanyList.js"></script>
 
 </body>

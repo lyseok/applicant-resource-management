@@ -12,131 +12,170 @@
 <script src="https://js.tosspayments.com/v1"></script>
 <script src="/js/company/payment/TossPayment.js"></script>
 <style>
-/* 전체 배경 및 기본 폰트 설정 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 body {
-  font-family: 'Noto Sans KR', sans-serif;
-  background-color: #f8f9fa;
+	font-family: 'Noto Sans KR', sans-serif;
+	background-color: #f8f9fa;
+	color: #333;
 }
 
-/* 제목 스타일 */
-h2.fw-bold {
-  color: #343a40;
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
 }
 
-/* 상품 카드 스타일 */
-.list-group-item {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
+/* 헤더 영역 */
+.header {
+	margin-bottom: 20px;
 }
 
-.list-group-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+.header h1 {
+	font-size: 28px;
+	font-weight: bold;
+	margin-bottom: 5px;
 }
 
-/* 이미지 테두리 강조 */
-.list-group-item img {
-  border: 2px solid #dee2e6;
+.subtitle {
+	color: #666;
+	font-size: 14px;
 }
 
-/* 상품 설명 텍스트 */
-.list-group-item p {
-  margin-bottom: 0.25rem;
-  font-size: 0.95rem;
+/* 헤더 상단 우측 정렬 */
+.header-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-bottom: 30px;
 }
 
-.list-group-item h5 {
-  font-size: 1.2rem;
-  color: #212529;
+/* 패키지 카드 */
+.packages-section {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
 }
 
-/* 필터 섹션 드롭다운 */
-.form-select {
-  min-width: 140px;
+.package-card {
+	background: white;
+	border-radius: 8px;
+	width: 100%;
+	padding: 20px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border: 1px solid #7e57c2;
+	cursor: pointer;
+	transition: transform .2s ease, box-shadow .2s ease;
+	position: relative;
+	overflow: hidden;
 }
 
-/* 페이징 버튼 */
-.pagination .page-item.active .page-link {
-  background-color: #7e57c2;
-  border-color: #7e57c2;
+.package-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, .1);
 }
 
-.pagination .page-link {
-  color: #7e57c2;
+/* 상품혜택 hover */
+.package-info {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	color: #666;
+	font-size: 14px;
+	position: relative;
 }
 
-.pagination .page-link:hover {
-  color: #5e3fa3;
+.hover-detail {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background: rgba(126, 87, 194, 0.9);
+	color: #fff;
+	padding: 15px;
+	font-size: 0.95rem;
+	line-height: 1.4;
+	opacity: 0;
+	transform: translateY(100%);
+	transition: all 0.3s ease;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
 }
 
-/* 버튼 공통 정렬 */
-.d-flex.flex-column.gap-2 .btn {
-  width: 100px;
+.package-info:hover .hover-detail {
+	opacity: 1;
+	transform: translateY(0);
+}
+.search_wrap {
+	width:260px;
+}
+.search_wrap select{
+	width:180px;
+}
+.search_btn{
+	width:calc(100% - 180px);
+	
 }
 </style>
 </head>
-<body class="bg-light">
-	<div class="container py-5">
-
-		<!-- 헤더 -->
-		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h2 class="fw-bold mb-0">📦 등록된 상품 목록</h2>
-			<a href="/admin/add" class="btn btn_violet h50">+ 상품 등록하기</a>
-			<%-- 버튼 색상 변경 (btn -> btn_violet) --%>
+<body>
+	<div class="container">
+		<!-- 상단 타이틀 -->
+		<div class="header">
+			<h1>📦 등록된 상품 목록</h1>
+			<p class="subtitle">대표 채용공고 지면에서 다수 구직자에게 효과적으로 공고를 홍보하는 상품</p>
 		</div>
 
-		<!-- 필터 폼 -->
-		<form class="row g-2 mb-4" method="get" action="">
-			<div class="col-auto">
-				<select class="form-select" name="filterType">
+		<!-- 우측 정렬된 필터 + 등록 버튼 -->
+		<div class="header-actions">
+			<form class="d-flex search_wrap" method="get" action="">
+				<select class="form-select me-2" name="filterType">
 					<option value="" ${empty param.filterType ? "selected" : ""}>전체</option>
-					<option value="S"
+					<option value="BUSINESS"
 						${param.filterType == 'BUSINESS' ? "selected" : ""}>Business</option>
-					<option value="L"
+					<option value="PREMIUM"
 						${param.filterType == 'PREMIUM' ? "selected" : ""}>Premium</option>
 				</select>
-			</div>
-			<div class="col-auto">
-				<button type="submit" class="btn btn_violet h50">검색</button>
-			</div>
-		</form>
+				<button type="submit" class="btn btn_violet search_btn">검색</button>
+			</form>
+			<a href="/admin/add" class="btn btn_violet">+ 상품 등록하기</a>
+		</div>
 
-		<!-- 상품 목록 -->
-		<div class="list-group">
+		<!-- 상품 리스트 -->
+		<div class="packages-section">
 			<c:forEach var="product" items="${productList}">
-				<div
-					class="list-group-item p-4 mb-3 shadow-sm rounded border d-flex justify-content-between align-items-center"
-					data-product-no="${product.productNo}" onclick="AdminDetail(this)">
-					<div class="d-flex align-items-center gap-3">
-						<img src="${product.productImg}" alt="상품 이미지" class="rounded"
-							style="width: 120px; height: 120px; object-fit: cover;">
-						<div>
-							<h5 class="fw-bold mb-2">${product.productName}</h5>
-							<p class="text-muted mb-1">${product.productDetail}</p>
-							<p class="mb-1">
-								<strong>가격:</strong> ₩
-								<fmt:formatNumber value="${product.productPrice}"
-									pattern="#,##0" />
-							</p>
-							<p class="mb-1">
-								<strong>유형:</strong>
-								<c:choose>
-									<c:when test="${product.productType == 'PREMIUM'}">PREMIUM</c:when>
-									<c:when test="${product.productType == 'BUSINESS'}">BUSINESS</c:when>
-									<c:otherwise>${product.productType}</c:otherwise>
-								</c:choose>
-							</p>
-							<p class="text-secondary">
-								<small>이용기간: ${product.productPeriod}</small>
-							</p>
-						</div>
+				<div class="package-card" data-product-no="${product.productNo}"
+					onclick="AdminDetail(this)">
+					<div class="package-header">
+						<h5>${product.productName}</h5>
 					</div>
-					<!-- 버튼 -->
-					<div class="d-flex flex-column gap-2">
-						<a href="/admin/edit?productNo=${product.productNo}"
-							class="btn btn_gray_line">수정</a>
-						<button type="button" class="btn btn-outline-danger"
-							onclick="event.stopPropagation(); deleteProduct(${product.productNo})">삭제</button>
+					<div class="package-tags">
+						<p class="card-text">${product.productDetail}</p>
+					</div>
+					<div class="package-options">
+						<p class="card-text mb-1">
+							<strong>유형:</strong>
+							<c:choose>
+								<c:when test="${product.productType == 'PREMIUM'}">PREMIUM</c:when>
+								<c:when test="${product.productType == 'BUSINESS'}">BUSINESS</c:when>
+								<c:otherwise>${product.productType}</c:otherwise>
+							</c:choose>
+						</p>
+					</div>
+					<div class="package-pricing">
+						<p class="card-text mb-1">
+							<strong>가격:</strong> ₩
+							<fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />
+						</p>
+					</div>
+					<div class="package-info">
+						<span class="info-icon">🏢</span> <span>상품혜택</span>
+						<div class="hover-detail">${product.productDetail}</div>
 					</div>
 				</div>
 			</c:forEach>

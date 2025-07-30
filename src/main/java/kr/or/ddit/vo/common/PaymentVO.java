@@ -24,6 +24,7 @@ public class PaymentVO implements Serializable{
 	private String paymentKey;
 	private String paymentOrderId;	// 결제시 오더 아이디
 	private int daysRemaining;		// 남은기한
+	private String nextMonth;
 	
 	private List<PaymentProductVO> paymentProductList;
 	private List<CompanyVO> CompanyList;
