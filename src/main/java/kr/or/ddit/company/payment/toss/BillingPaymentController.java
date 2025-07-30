@@ -134,7 +134,7 @@ public class BillingPaymentController {
 		return "company/payment/payment/BillingPayment";
 	}
 
-	@GetMapping("/success") // 결제 빌씨링발키 ㅋㅋ 부르긴 했는데 안나오네 집가서 하자
+	@GetMapping("/success") // 결제 빌씨링발키
 	String Success(@RequestParam String authKey
 				, @RequestParam String customerKey
 				, @RequestParam String productNo

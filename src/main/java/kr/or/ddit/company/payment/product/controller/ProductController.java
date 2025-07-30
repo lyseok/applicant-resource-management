@@ -24,15 +24,15 @@ public class ProductController {
 	@Autowired
 	PaymentProductServiceImpl service;
 
-	// service 분리
-	@GetMapping("/detail")
-	public String detailForm(@RequestParam String productNo, @ModelAttribute("billingKey") String billingKey,
-			Model model) {
-		PaymentProductVO product = service.getProductDetail(productNo);
-		model.addAttribute("product", product);
-		model.addAttribute("billingKey", billingKey);
-		return "company/payment/product/ProductDetail";
-	}
+//	// service 분리
+//	@GetMapping("/detail")
+//	public String detailForm(@RequestParam String productNo, @ModelAttribute("billingKey") String billingKey,
+//			Model model) {
+//		PaymentProductVO product = service.getProductDetail(productNo);
+//		model.addAttribute("product", product);
+//		model.addAttribute("billingKey", billingKey);
+//		return "company/payment/product/ProductDetail";
+//	}
 
 	// service 분리
 	@GetMapping("/list")
@@ -55,18 +55,18 @@ public class ProductController {
 //	@Value("${file.upload-dir}")
 //	private String RealuploadPath;
 
-//	@GetMapping("/detail")
-//	public String detailForm(
-//		@RequestParam String productNo,
-//		Model model,
-//		@ModelAttribute("billingKey")String billingKey
-//			) {
-//		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
-//		model.addAttribute("product",product);
-//		model.addAttribute("billingKey",billingKey);
-//		
-//		return "company/payment/product/ProductDetail";
-//	}
+	@GetMapping("/detail")
+	public String detailForm(
+		@RequestParam String productNo,
+		Model model,
+		@ModelAttribute("billingKey")String billingKey
+			) {
+		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
+		model.addAttribute("product",product);
+		model.addAttribute("billingKey",billingKey);
+		
+		return "company/payment/product/ProductDetail";
+	}
 
 //	@GetMapping("/list")
 //	String listForm(@RequestParam(value = "page", defaultValue = "1") int page,
