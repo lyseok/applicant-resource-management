@@ -33,7 +33,7 @@
 			        </dl>
 			        <dl>
 			            <dt>이메일</dt>
-			            <dd><a href="mailto:help@saramin.co.kr" target="_blank" title="이메일 바로가기">help@saramin.co.kr</a></dd>
+			            <dd><a href="mailto:help@saramin.co.kr" target="_blank" title="이메일 바로가기">help@ddit.co.kr</a></dd>
 			        </dl>
 			        <dl>
 			            <dt>FAX</dt>

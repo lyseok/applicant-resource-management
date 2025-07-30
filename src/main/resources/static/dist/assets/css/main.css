@@ -2505,14 +2505,17 @@ body .chips {
 .cont_product .z-index1{
 	position:relative;
 	z-index:1;
+	scroll-margin-top:100px;
 }
 .cont_product .z-index2{
 	position:relative;
 	z-index:2;
+	scroll-margin-top:100px;
 }
 .cont_product .z-index3{
 	position:relative;
 	z-index:3;
+	scroll-margin-top:100px;
 }
 
 .cont_product .inner_cont>ul {
@@ -2540,7 +2543,7 @@ body .chips {
     display: inline-block;
     color: #292e41;
     font-size: 22px;
-    font-weight: normal;
+    font-weight: 600;
     line-height: 26px;
     vertical-align: top
 }

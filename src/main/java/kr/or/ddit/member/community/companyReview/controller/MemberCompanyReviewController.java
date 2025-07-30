@@ -21,7 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberCompanyReviewController {
 	
 	@GetMapping
-	public String review() {
+	public String review(Model model) {
+		model.addAttribute("boardCss", true);
 		return "member/community/companyReview/companyReviewList";
 	}
 	

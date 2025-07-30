@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>면접 후기</title>
 
 <style>
 .badge-fail {
