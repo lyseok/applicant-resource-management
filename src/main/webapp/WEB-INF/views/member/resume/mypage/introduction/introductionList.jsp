@@ -22,7 +22,7 @@
 <body>
 	<p class="h1 mb-3 fw-bold">자소서 관리</p>
 	<div class="p-3 pt-4 pb-4 bg-violet03 rounded d-flex justify-content-between align-items-center mb-5">
-		<p class="fw-bold">✍ 맞춤법 검사를 통한 편리한 작성</p>
+		<p class="fw-bold">✍ 기업 맞춤으로 작성하는 자기소개서</p>
 		<div class="">
 			<!-- <button type="button" class="btn btn_gray_line h50">파일로 등록</button> -->
 			<a class="btn btn_violet h50 lh50" href="/mypage/introduction/create">자소서 등록</a>

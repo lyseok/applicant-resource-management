@@ -38,4 +38,14 @@ public interface IntroductionMapper {
 	    @Param("limit") int limit
 	);
 	
+	// 검색 페이징 처리
+	public int getSearchCount(@Param("userId") String userId, @Param("keyword") String keyword);
+	public List<IntroductionVO> searchIntroductionList(
+		@Param("userId") String userId
+		,@Param("keyword") String keyword
+		,@Param("offset") int offset
+		,@Param("pageSize") int pageSize
+	);
+
+	
 }

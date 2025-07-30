@@ -115,7 +115,7 @@
     align-items: center;
 }
 .dash_header  .btn_member .user_photo {
-    display: block;
+    display: flex;
     overflow: hidden;
     width: 32px;
     height: 32px;
