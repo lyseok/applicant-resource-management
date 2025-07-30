@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 // 일반회원의 마이페이지 스크랩 중 관심기업 조회
 @RestController
-@RequestMapping("/ajax/member/scrab_company")
+@RequestMapping("/ajax/member/scrabCompany")
 @RequiredArgsConstructor
 public class MemberScrabCompanyAjaxController {
 

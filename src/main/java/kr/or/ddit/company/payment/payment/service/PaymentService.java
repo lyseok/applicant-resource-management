@@ -58,4 +58,6 @@ public interface PaymentService {
 
 	List<Integer> selectMonthlySales(@Param("year") int year);
 	
+	public String nextMonthPay(String userId);
+	
 }

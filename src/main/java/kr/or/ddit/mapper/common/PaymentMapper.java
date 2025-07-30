@@ -70,5 +70,5 @@ public interface PaymentMapper {
 	
 	public String getUserId();
 	
-	
+	public String nextMonthPay(String userId);
 }

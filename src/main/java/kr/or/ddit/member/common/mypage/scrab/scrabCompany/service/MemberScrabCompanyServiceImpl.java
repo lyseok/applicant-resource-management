@@ -10,9 +10,11 @@ import kr.or.ddit.common.exception.DataInsertException;
 import kr.or.ddit.mapper.common.ScrabCompanyMapper;
 import kr.or.ddit.vo.common.ScrabCompanyVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberScrabCompanyServiceImpl implements MemberScrabCompanyService {
 	private final ScrabCompanyMapper mapper;
 
@@ -20,6 +22,7 @@ public class MemberScrabCompanyServiceImpl implements MemberScrabCompanyService 
 	public List<ScrabCompanyVO> readMyScrabCompanyList() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
+		log.info("username : {}", username);
 		return mapper.selectMyScrabCompanyList(username);
 	}
 

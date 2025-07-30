@@ -52,6 +52,15 @@
 		AND STATUS = 'S'
 	</select>
 
+	<select id="nextMonthPay">
+		SELECT A.PRODUCT_NAME
+		FROM PAYMENT_PRODUCT A
+		JOIN PAYMENT B
+		ON A.PRODUCT_NO = B.PRODUCT_NO
+		WHERE B.USER_ID = #{userId}
+		AND B.STATUS = 'S'
+	</select>
+
 	<!-- 관리자 페이지 통계용 -->
 	<select id="selectPaymentStatistics"
 		resultType="kr.or.ddit.vo.common.AdminPaymentVO">
@@ -123,8 +132,10 @@
 		FROM dual
 		CONNECT BY LEVEL &lt;= 12
 		) months
-		LEFT JOIN PAYMENT p
-		ON TO_CHAR(p.PAYMENT_DATE, 'MM') = LPAD(months.month,2,'0')
+		LEFT
+		JOIN PAYMENT p
+		ON TO_CHAR(p.PAYMENT_DATE, 'MM') =
+		LPAD(months.month,2,'0')
 		AND TO_CHAR(p.PAYMENT_DATE, 'YYYY') = #{year}
 		AND p.STATUS = 'A'
 		GROUP BY months.month
@@ -233,19 +244,25 @@
 	</select>
 
 	<update id="updateComPaymentStatus" parameterType="String">
-		UPDATE company c
+		UPDATE company
+		c
 		SET c.com_payment = NVL((
 		SELECT CASE
-		WHEN MAX(pp.product_type) = 'PREMIUM' THEN 'P'
+		WHEN MAX(pp.product_type) =
+		'PREMIUM' THEN 'P'
 		WHEN MAX(pp.product_type) = 'BUSINESS' THEN 'B'
-		ELSE 'N'
+		ELSE
+		'N'
 		END
 		FROM payment p
-		JOIN payment_product pp ON p.product_no = pp.product_no
+		JOIN payment_product pp ON p.product_no =
+		pp.product_no
 		WHERE p.user_id = #{userId}
 		AND p.status = 'A'
-		AND TO_CHAR(SYSDATE, 'YYYYMMDD') BETWEEN p.start_date AND p.end_date
-		), 'N')
+		AND
+		TO_CHAR(SYSDATE, 'YYYYMMDD') BETWEEN p.start_date AND p.end_date
+		),
+		'N')
 		WHERE c.user_id = #{userId}
 	</update>
 
