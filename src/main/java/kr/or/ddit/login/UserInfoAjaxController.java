@@ -34,7 +34,7 @@ public class UserInfoAjaxController {
                 map.put("userType", "member");
                 map.put("userName", ((MemberVO) user).getMemName());
                 map.put("userImg", ((MemberVO) user).getMemImg());
-                map.put("userId", ((CompanyVO) user).getUserId());
+                map.put("userId", ((MemberVO) user).getUserId());
             } else {
                 map.put("userType", "user");
             }
