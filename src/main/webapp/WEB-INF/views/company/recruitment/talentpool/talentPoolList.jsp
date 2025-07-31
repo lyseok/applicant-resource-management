@@ -356,7 +356,7 @@
 				<div class="button-group">
 					<button class="btn">필터</button>
 					<!-- <button class="btn">정렬: 최신순</button> -->
-					<button class="btn btn_violet_line" id="addTalent">관심 인재 등록</button>
+					<button class="btn btn_violet_line" id="addTalent">관심 인재 수정</button>
 					<button class="btn btn_violet_line">필터링</button>
 				</div>
 			</div>

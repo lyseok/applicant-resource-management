@@ -30,4 +30,6 @@ public interface ScrabUserMapper {
     // 관심 인재 삭제
     public void deleteTalentUsers(@Param("companyId") String companyId,
                            @Param("userList") List<String> userList);
+    
+    public int updateResumeConfirm(ScrabUserVO vo);
 }
