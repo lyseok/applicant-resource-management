@@ -296,10 +296,10 @@ function getTimeAgo(dateString) {
   const diffHour = Math.floor(diffMin / 60);
   const diffDay = Math.floor(diffHour / 24);
 
-  if (diffSec < 60) return '마감임박';
-  if (diffMin < 60) return `마감임박`;
-  if (diffHour < 24) return `마감임박`;
-  return `D-${diffDay}`;
+  if (-diffSec < 60) return '마감임박';
+  if (-diffMin < 60) return `마감임박`;
+  if (-diffHour < 24) return `마감임박`;
+  return `D-${-diffDay}`;
 }
 
   const btn_top = document.querySelector(".btn_top");
