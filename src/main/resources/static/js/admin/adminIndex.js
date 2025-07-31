@@ -16,18 +16,29 @@ const colorPalette = {
 
 // 구직자 통계 차트들
 function initJobseekerCharts() {
-  // 신규 가입자 추이
+  // 신규 가입자 데이터 객체
+  const jobseekerData = {
+    weekly: {
+      labels: ['1일', '2일', '3일', '4일', '5일', '6일', '7일'],
+      data: [45, 52, 38, 67, 89, 76, 94],
+    },
+    monthly: {
+      labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월'],
+      data: [320, 450, 380, 520, 610, 700, 850],
+    },
+  };
+  // 신규 가입자 추이 차트 생성
   const newJobseekerCtx = document
     .getElementById('newJobseekerChart')
     .getContext('2d');
-  new Chart(newJobseekerCtx, {
+  const newJobseekerChart = new Chart(newJobseekerCtx, {
     type: 'line',
     data: {
-      labels: ['1일', '2일', '3일', '4일', '5일', '6일', '7일'],
+      labels: jobseekerData.weekly.labels,
       datasets: [
         {
           label: '신규 가입자',
-          data: [45, 52, 38, 67, 89, 76, 94],
+          data: jobseekerData.weekly.data,
           borderColor: colorPalette.primary,
           backgroundColor: `${colorPalette.primary}20`,
           borderWidth: 3,
@@ -46,6 +57,21 @@ function initJobseekerCharts() {
       },
     },
   });
+  // 차트 컨트롤 버튼 이벤트 리스너
+  document
+    .getElementById('jobseekerWeeklyBtn')
+    .addEventListener('click', () => {
+      newJobseekerChart.data.labels = jobseekerData.weekly.labels;
+      newJobseekerChart.data.datasets[0].data = jobseekerData.weekly.data;
+      newJobseekerChart.update();
+    });
+  document
+    .getElementById('jobseekerMonthlyBtn')
+    .addEventListener('click', () => {
+      newJobseekerChart.data.labels = jobseekerData.monthly.labels;
+      newJobseekerChart.data.datasets[0].data = jobseekerData.monthly.data;
+      newJobseekerChart.update();
+    });
 
   // 회원 활동 현황
   const memberActivityCtx = document

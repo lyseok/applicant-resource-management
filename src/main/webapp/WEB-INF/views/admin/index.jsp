@@ -570,9 +570,8 @@
 								<div class="chart-header">
 									<h5>신규 가입자 추이</h5>
 									<div class="chart-controls">
-										<button class="btn btn-sm btn-outline-secondary active">일별</button>
-										<button class="btn btn-sm btn-outline-secondary">주별</button>
-										<button class="btn btn-sm btn-outline-secondary">월별</button>
+										<button class="btn btn-sm btn-outline-secondary" id="jobseekerWeeklyBtn">주별</button>
+										<button class="btn btn-sm btn-outline-secondary" id="jobseekerMonthlyBtn">월별</button>
 									</div>
 								</div>
 								<canvas id="newJobseekerChart"></canvas>
