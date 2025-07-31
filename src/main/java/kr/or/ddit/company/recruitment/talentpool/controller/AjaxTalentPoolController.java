@@ -103,9 +103,9 @@ public class AjaxTalentPoolController {
 		return ResponseEntity.ok("ok");
 	}
 	
-	@PostMapping("/{userId}")
-	public ResponseEntity<?> updateResumeConfirm(@PathVariable String userId){
-		poolService.updateResumeConfirm(userId);
+	@PostMapping("/{resumeNo}")
+	public ResponseEntity<?> createReadResume(@PathVariable String resumeNo){
+		poolService.createReadResume(resumeNo);
 		
 		return ResponseEntity.ok("ok");
 	}
