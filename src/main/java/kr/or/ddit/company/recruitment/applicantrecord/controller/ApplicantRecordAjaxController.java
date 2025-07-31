@@ -47,6 +47,20 @@ public class ApplicantRecordAjaxController {
 		}
 	}
 	
+	@PostMapping("/fail")
+	public ResponseEntity<?> failed(@RequestBody List<ApplicantRecordVO> applList){
+		try {
+			for(ApplicantRecordVO appl : applList) {
+				log.info("{}", appl);
+				service.updateFailed(appl);
+			}
+			return ResponseEntity.ok("Success");
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail");
+		}
+	}
+	
 	@GetMapping("/passer/{recruitmentNo}")
 	public List<PasserVO> getPasser(@PathVariable String recruitmentNo){
 		return service.selectPasserByRecruitment(recruitmentNo);

@@ -14,6 +14,7 @@ public class ApplicantRecordVO implements Serializable{
 	private String applicantId;
 	private String interviewUrl;
 	private String stepPassYn;
+	private String failedYn;
 	private String stepApplicationYn;
 	private String evaluationStartTime;
 	private String applicantName;

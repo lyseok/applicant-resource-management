@@ -135,4 +135,19 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 		
 	}
 
+	@Override
+	public void updateFailed(ApplicantRecordVO vo) {
+		applMapper.updateApplicantFail(vo);
+		String step = vo.getRecruitProcessStep();
+		String email = applicantMapper.selectApplicantMail(vo.getApplicantId());
+		
+		try {
+			String subject = String.format("[%s차 전형] 에 불합격 하셨습니다.", step);
+			String body = vo.getApplicantName() + "님, " + subject + "!\n좋은 인연으로 다시 뵙으면 합니다.";
+			emailUtils.sendEmail(email, subject, body);
+		} catch(MessagingException e) {
+			log.warn("불합격자 메일 전송 실패 : {}", email, e);
+		}
+	}
+
 }

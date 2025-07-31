@@ -221,6 +221,15 @@ function renderTalentPoolTable(talentList) {
         'resumePopup',
         'width=950,height=800'
       );
+      // 이력서 열람 업데이트 axios 들어갑니다잉~
+		axios
+			.post(`/ajax/company/talentpool/${userId}`)
+			.then(() => {
+				console.log(`이력서 열람 기록 완료: ${userId}`);
+			})
+			.catch((err) => {
+				console.error(`이력서 열람 기록 실패: ${userId}`, err);
+		});
     });
   });
 }

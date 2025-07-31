@@ -22,6 +22,7 @@ import kr.or.ddit.mapper.common.TalentPoolMapper;
 import kr.or.ddit.mapper.recruitment.ComMailTemMapper;
 import kr.or.ddit.vo.common.PaymentLogVO;
 import kr.or.ddit.vo.common.PaymentVO;
+import kr.or.ddit.vo.common.ScrabUserVO;
 import kr.or.ddit.vo.recruitment.ComMailTemVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
@@ -170,4 +171,18 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 		}
 
 	}
+
+	@Override
+	public int updateResumeConfirm(String userId) {
+		ScrabUserVO vo = new ScrabUserVO();
+		vo.setCompanyId(getUserId());
+		vo.setUserId(userId);
+		return scrabUserMapper.updateResumeConfirm(vo);
+	}
+	
+	public String getUserId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();
+	}
+
 }

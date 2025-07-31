@@ -13,4 +13,5 @@ public interface TalentPoolService {
     public Map<String, Object> readSetupList();
     
     public int postMailLogic(List<MailDTO> mailList);
+    public int updateResumeConfirm(String userId);
 }
