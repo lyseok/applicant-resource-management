@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const data = resp.data;
 			// 기업 정보
 			document.getElementById("companyLogo").src = data.COMPANY_LOGO || "/img/default-logo.png";
-			document.getElementById("companyName").textContent = data.COMPANY_NAME + '의 리뷰입니다.' || "-";
+			document.getElementById("companyName").textContent = data.COMPANY_NAME || "-";
 			document.getElementById("reviewCount").textContent = data.TOTAL_REVIEW_COUNT || 0;
 
 			// 비율 계산
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			// DOM 업데이트
 			document.getElementById("workingPercent").textContent = `${workingPercent}%`;
 			document.getElementById("notWorkingPercent").textContent = `${notWorkingPercent}%`;
-			document.getElementById("totalRespondentsText").textContent = `총 ${total}명의 답변입니다.`;
+			document.getElementById("totalRespondentsText").innerHTML = `총 <b class="fw-bold fs-5 text-violet90">${total}</b>명의 답변입니다.`;
 
 			// 반원 차트
 			const ctx = document.getElementById('employeeStatusChart').getContext('2d');
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			jobBtns.innerHTML = "";
 			data.topJobStatsList.forEach((job, idx) => {
 				const btn = document.createElement("button");
-				btn.classList.add("filter-btn");
+				btn.classList.add("filter-btn", "btn", "lh1", "badge-tag", "py-2", "px-4", "text-secondary", "fw-bold", "fs-14");
 				btn.textContent = job.topJobName;
 				if (idx === 0) btn.classList.add("active");
 				btn.addEventListener("click", (e) => {
@@ -85,8 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 
 			// 직무 개수 표시
-			document.getElementById("topJobCountInfo").textContent =
-				`${data.topJobStatsList.length}개 직무의 리뷰가 등록되었습니다.`;
+			document.getElementById("topJobCountInfo").textContent = `${data.topJobStatsList.length}`;
 
 			// 첫 직무 초기화
 			if (data.topJobStatsList.length > 0) {
@@ -118,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		container.innerHTML = "";
 		dataList.forEach((q, idx) => {
 			const card = document.createElement("div");
-			card.classList.add("chart-card");
+			/*card.classList.add("");*/
 
 			const canvasId = `${prefix}-chart-${idx}`;
 			const canvas = document.createElement("canvas");
@@ -130,8 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			const info = document.createElement("div");
 			info.classList.add("chart-info");
 			info.innerHTML = `
-        <p class="avg">${q.reviewSubjectName}: <span>${q.avgScore.toFixed(1)}</span>점</p>
-        <p class="desc">이 질문에 대한 평균 점수입니다.</p>
+        <p class="fs-18 fw-semibold lh1-4">${q.reviewSubjectName}</p>
+        <p class="fs-6 fw-semibold total_count"><span class="fw-bold fs-16 text-violet90">${q.avgScore.toFixed(1)}</span>점</p>
       `;
 			card.appendChild(info);
 			container.appendChild(card);

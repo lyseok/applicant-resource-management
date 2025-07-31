@@ -202,7 +202,7 @@
               </ul>
             </div>
             <div class="major">
-              <a class="depth1" href="javascript:void(0)">
+              <a class="depth1" href="/board/project">
                 <span class="txt">프로젝트</span>
               </a>
               <ul class="depth2">
@@ -256,19 +256,19 @@
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
 										<span class="text-success fs-14">많이 찾는 🔥</span>
-										<span class="d-block text-dark fw-semibold fs-15"><small class="fs-12">01.</small> 백엔드/서버 개발자</span>
+										<span class="d-block text-dark fw-semibold fs-15">백엔드/서버 개발자</span>
 									</a>
 								</li>
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
 										<span class="text-success fs-14">요즘 뜨는 🚀</span>
-										<span class="d-block text-dark fw-semibold fs-6"><small class="fs-12">02.</small> 프론트엔드 개발자</span>
+										<span class="d-block text-dark fw-semibold fs-6">프론트엔드 개발자</span>
 									</a>
 								</li>
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
 										<span class="text-success fs-14">감각적인 아이디어 🎨</span>
-										<span class="d-block text-dark fw-semibold fs-6"><small class="fs-12">03.</small> 웹 디자인</span>
+										<span class="d-block text-dark fw-semibold fs-6">웹 디자인</span>
 									</a>
 								</li>
 							</ul>

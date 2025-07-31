@@ -71,9 +71,7 @@ function topRecruitNoticeInit(data) {
       }
       return `
       <li class="${liClass}">
-        <a href="/recruit_notice/${
-          item.recruitmentNo
-        }" class="goodsBox-info info">
+        <a href="/recruit_notice/${item.recruitmentNo}" class="goodsBox-info info" target="_blank">
           <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
             <img src="${item.comLogo ? item.comLogo :'/dist/assets/images/logo.png'}"
               alt="${item.comName} 로고">
@@ -114,7 +112,7 @@ function topRecruitNoticeInit(data) {
   );
 
   if (superTopInfo) {
-    superTopInfo.style.backgroundImage = 'url(' + firstImg + ')';
+    superTopInfo.style.background = 'url(' + firstImg + ') 50% 0 /110% 220px no-repeat';
   }
   topListBody.addEventListener('click', async (e) => {
     const btn = e.target.closest('div');
@@ -158,7 +156,7 @@ function middleRecruitNoticeInit(data) {
         : '';
       return `
       <li class="option">
-        <a href="javascript:void(0)" class="link_box track_event">
+        <a href="/recruit_notice/${item.recruitmentNo}" class="link_box track_event" target="_blank">
           <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
             <img src="${item.comLogo ? item.comLogo : '/dist/assets/images/logo.png'}" class="img" alt="${
         item.comName
@@ -236,7 +234,7 @@ function bottomRecruitNoticeInit(data) {
         : '';
       return `
       <li>
-        <a href="javascript:void(0)" class="link_box track_event">
+        <a href="/recruit_notice/${item.recruitmentNo}" class="link_box track_event" target="_blank">
           <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
             <img
               src="${item.comLogo? item.comLogo:'/dist/assets/images/logo.png'}"
@@ -298,8 +296,36 @@ function getTimeAgo(dateString) {
   const diffHour = Math.floor(diffMin / 60);
   const diffDay = Math.floor(diffHour / 24);
 
-  if (diffSec < 60) return '마감임박';
-  if (diffMin < 60) return `마감임박`;
-  if (diffHour < 24) return `마감임박`;
-  return `D-${diffDay}`;
+  if (-diffSec < 60) return '마감임박';
+  if (-diffMin < 60) return `마감임박`;
+  if (-diffHour < 24) return `마감임박`;
+  return `D-${-diffDay}`;
 }
+
+  const btn_top = document.querySelector(".btn_top");
+  const wing = document.querySelector(".wing");
+
+  function getWingQuicks() {
+    // 항상 최신 DOM 다시 가져오기
+    return document.querySelectorAll(".wing li a._ga_quick");
+  }
+
+  // wing 내부 클릭 시 on 토글
+  wing.addEventListener("click", function(e){
+    if (e.target.classList.contains("_ga_quick")) {
+      const wing_quicks = getWingQuicks();
+      wing_quicks.forEach(w => w.classList.remove("on"));
+      e.target.classList.add("on");
+    }
+  });
+
+  // btn_top 클릭 시 첫 번째에 on 추가
+  btn_top.addEventListener("click", function(){
+    const wing_quicks = getWingQuicks();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    wing_quicks.forEach(w => w.classList.remove("on"));
+    if (wing_quicks.length > 0) {
+      wing_quicks[0].classList.add("on");
+      console.log("클래스 추가됨:", wing_quicks[0].className);
+    }
+  });

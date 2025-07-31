@@ -96,13 +96,13 @@
 
       <li class="menu-header small text-uppercase"><span class="menu-header-text">맞춤 공고함</span></li>
       <li class="menu-item">
-        <a href="/member/mypage/scrabCompany/list" class="menu-link">
+        <a href="/mypage/scrabCompany/list" class="menu-link">
           <i class="menu-icon tf-icons bx bx-bookmark"></i>
           <div data-i18n="Basic">관심기업</div>
         </a>
       </li>
       <li class="menu-item">
-        <a href="/member/mypage/scrabRecruit/list" class="menu-link">
+        <a href="/mypage/scrabRecruit/list" class="menu-link">
           <i class="menu-icon tf-icons bx bx-heart"></i>
           <div data-i18n="Basic">공고스크랩</div>
         </a>
