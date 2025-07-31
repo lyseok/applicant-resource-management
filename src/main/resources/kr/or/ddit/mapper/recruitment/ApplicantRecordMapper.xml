@@ -132,6 +132,7 @@
 	    rp.recruit_process_step AS step,
 	    rp.recruit_process_type AS step_type,
 	    ar.STEP_PASS_YN AS pass,
+	    ar.FAILED_YN AS fail,
 	    rp.recruit_process_final AS final
 	  FROM recruit_process rp
 	  JOIN applicant_record ar
@@ -148,6 +149,7 @@
 	  ls.step_type,
 	  ls.pass,
 	  ls.final,
+	  ls.fail,
 	  ec.ex_score,
 	  ic.int_score,
 	  p.PASS_ALARM_YN,
@@ -213,6 +215,13 @@
 	<update id="updateApplicantPass">
 	UPDATE APPLICANT_RECORD SET
 		STEP_PASS_YN = 'Y'
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
+	</update>
+	
+	<update id="updateApplicantFail">
+	UPDATE APPLICANT_RECORD SET
+		FAILED_YN = 'Y'
 	WHERE APPLICANT_ID = #{applicantId}
 	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
 	</update>
