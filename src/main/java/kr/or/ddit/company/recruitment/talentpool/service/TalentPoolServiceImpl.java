@@ -1,7 +1,6 @@
 package kr.or.ddit.company.recruitment.talentpool.service;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.or.ddit.company.email.talentpool.service.JoboffSendService;
 import kr.or.ddit.dto.MailDTO;
+import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.PaymentLogMapper;
 import kr.or.ddit.mapper.common.PaymentMapper;
 import kr.or.ddit.mapper.common.ReadResumeMapper;
@@ -41,6 +40,9 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 	private final ComMailTemMapper comMailTemMapper;
 	private final PaymentMapper paymentMapper;
 	private final PaymentLogMapper paymentLogMapper;
+
+	private final CompanyMapper companyMapper;
+
 	private final ReadResumeMapper readResumeMapper;
 
 	@Override
@@ -54,7 +56,16 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 
 		return resp;
 	}
-
+	public String NonPayment() {
+		String paymentY = companyMapper.selectComPayment(getUserId());
+		return paymentY;
+	}
+	
+	public String getUserId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();		// 기업 ID 
+		}
+	
 	// 저장된 관심 인재 리스트 조회
 	public List<String> getSavedTalentList() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -183,10 +194,6 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 		return scrabUserMapper.updateResumeConfirm(vo);
 	}
 	
-	public String getUserId() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return authentication.getName();
-	}
 
 	@Override
 	public int createReadResume(String resumeNo) {

@@ -55,14 +55,14 @@ function subscribe(event ,btn) {
           customerName: "김철민",
         })
       };*/
-
+/*
 const clientKey = "test_ck_Gv6LjeKD8a9wXO9o7lLw8wYxAdXy";
 const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
 const tossPayments = TossPayments(clientKey);
 const payment = tossPayments.payment({ customerKey });
 const successUrl = `${window.location.origin}/company/toss/success?productNo=${productNo}`;
-
-async function requestBillingAuth() {
+*/
+/*async function requestBillingAuth() {
 	const authResult = await tossPayments.billing.requestBillingAuth({
 		method: "CARD",
 		customerKey: "h5hXSJ-WPK8sZQpXQUJUA",
@@ -99,7 +99,7 @@ fetch("/api/toss/billing/execute", {
 	.catch(err => {
 		consoler.error("결제 실패 !", err);
 	})
-
+*/
 
 function showNoCardModal() {
     const modal = new bootstrap.Modal(document.getElementById("noCardModal"));

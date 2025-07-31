@@ -229,6 +229,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (product == null) {
             throw new IllegalArgumentException("존재하지 않는 상품명입니다: " + orderName);
         }
+
         PaymentVO vo = new PaymentVO();
         vo.setPaymentKey(paymentKey);
         vo.setUserId(getUserId());
@@ -241,7 +242,6 @@ public class PaymentServiceImpl implements PaymentService {
         vo.setPaymentOrderId(orderId);
         vo.setPaymentProductList(List.of(product));
 
-        log.info("vo : {} ", vo);
         insertPayment(vo);
         updateComPaymentStatus(vo.getUserId());
 
