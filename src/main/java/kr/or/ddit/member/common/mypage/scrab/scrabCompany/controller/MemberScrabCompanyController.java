@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/member/mypage/scrabCompany")
+@RequestMapping("/mypage/scrabCompany")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberScrabCompanyController {
