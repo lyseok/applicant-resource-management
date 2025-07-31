@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.company.email.talentpool.service.JoboffSendService;
 import kr.or.ddit.dto.MailDTO;
+import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.PaymentLogMapper;
 import kr.or.ddit.mapper.common.PaymentMapper;
 import kr.or.ddit.mapper.common.ScrabUserMapper;
@@ -38,6 +39,7 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 	private final ComMailTemMapper comMailTemMapper;
 	private final PaymentMapper paymentMapper;
 	private final PaymentLogMapper paymentLogMapper;
+	private final CompanyMapper companyMapper;
 
 	@Override
 	public Map<String, Object> readResumeByFilter(Map<String, Object> params) {
@@ -50,7 +52,16 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 
 		return resp;
 	}
-
+	public String NonPayment() {
+		String paymentY = companyMapper.selectComPayment(getUserId());
+		return paymentY;
+	}
+	
+	public String getUserId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();		// 기업 ID 
+		}
+	
 	// 저장된 관심 인재 리스트 조회
 	public List<String> getSavedTalentList() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

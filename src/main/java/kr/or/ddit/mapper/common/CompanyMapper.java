@@ -27,4 +27,6 @@ public interface CompanyMapper {
 	public List<CompanyVO> selectCompanyInfoList();
 	
 	public List<Map<String, Object>> selectCompanyNameList();
+	
+	public String selectComPayment(String userId);
 }
