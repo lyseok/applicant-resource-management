@@ -71,7 +71,7 @@ public class BillingPaymentController {
 	}
 
 	
-	@GetMapping("/check/billing")
+	@PostMapping("/check/billing")
 	@ResponseBody
 	public Map<String, Object> checkBillingKey(HttpSession session){
 		Map<String, Object> map = new HashMap<>();
@@ -83,9 +83,10 @@ public class BillingPaymentController {
 			log.info("여기서 빌링키가 나온다고요 ?? : {}", billingKey);
 			map.put("billingKey", billingKey);
 		}
+		log.info("==> sessionId: {}" ,session.getId());
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
 		map.put("customerKey", customerKey);
-		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
+		log.info("빌링키빌링키빌링키빌링키빌링키 : {}", billingKey);
 		log.info("map 반환값 : {}", map);
 		return map;
 	}
@@ -114,14 +115,14 @@ public class BillingPaymentController {
 		log.info("최종 sessionBillingKey: {}", sessionBillingKey);
 		log.info("최종 sessionCustomerKey: {}", sessionCustomerKey);
 		
-		
+		log.info("==> sessionId: {}" ,session.getId());
 		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
 		model.addAttribute("product",product);
 		model.addAttribute("productNo",productNo);
-		session.setAttribute("customerKey", sessionCustomerKey);
-		session.setAttribute("billingKey",sessionBillingKey);
-//		return "/company/payment/payment/buyproduct?productNo=" + productNo;
-		return "company/payment/payment/BuyProduct";
+		model.addAttribute("customerKey", sessionCustomerKey);
+		model.addAttribute("billingKey",sessionBillingKey);
+		return "/company/payment/payment/buyproduct?productNo=" + productNo;
+//		return "company/payment/payment/BuyProduct";
 	}
 	
 	@GetMapping("/billing")
@@ -133,16 +134,17 @@ public class BillingPaymentController {
 		return "company/payment/payment/BillingPayment";
 	}
 
-	@GetMapping("/success") // 결제 빌씨링발키 ㅋㅋ 부르긴 했는데 안나오네 집가서 하자
+	@GetMapping("/success") // 결제 빌씨링발키 
 	String Success(@RequestParam String authKey
 				, @RequestParam String customerKey
 				, @RequestParam String productNo
 				, HttpSession session
 				, Model model) {
+		String billingKey = null;
 		log.info("productNo : {}", productNo);
 		log.info("customerKey : {}", customerKey);
 		log.info("authKey : {}", authKey);
-
+		log.info("/success오고나서 바로 ? :  {}", Pservice.getUserId());
 		// JSOn 본문 생성
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, String> requestBody = new HashMap<>();
@@ -169,7 +171,8 @@ public class BillingPaymentController {
 				.POST(HttpRequest.BodyPublishers.ofString(jsonBody))
 				.build();
 		
-		
+		log.info("<+<+<+<+ 다 찍어볼게 request : {}", request);
+		log.info("세션이 새로왔나요? : {}", Pservice.getUserId());
 		// 요청 실행
 		
 		HttpResponse<String> response = null;
@@ -184,12 +187,13 @@ public class BillingPaymentController {
 		
 		if (response != null && response.body() != null) {
 			
-			log.info("결제응답 : " + response.body());
+			log.info("결제응답 : {}", response.body());
+			log.info("세션이 새로왔나요? : {}", Pservice.getUserId());
 
 			try {
 				JsonNode jsonNode = objectMapper.readTree(response.body());
-				String billingKey = jsonNode.get("billingKey").asText();
-				
+				billingKey = jsonNode.get("billingKey").asText();
+				log.info("jsonBody : {}",jsonBody);
 				// billingKey를 저장
 //				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("result",jsonNode.toPrettyString());
@@ -200,8 +204,12 @@ public class BillingPaymentController {
 				log.info("customerKey",customerKey);
 				log.info("빌링빌링빌링키 = billingKey : {}", billingKey);
 				log.info("session id: {}", session.getId());
-				return "redirect:/company/toss/buyproduct?productNo=" + productNo;
-				
+				if (session.getAttribute("billingKey") == null && billingKey != null) {
+				    session.setAttribute("billingKey", billingKey);
+				}
+				return "redirect:company/toss/buyproduct?productNo=" + productNo 
+				        + "&customerKey=" + customerKey 
+				        + "&billingKey=" + billingKey;
 				
 			} catch (IOException e) {
 				log.error("JSON파싱 실패 ", e);
@@ -213,10 +221,12 @@ public class BillingPaymentController {
 			log.warn("응답 실패 !! ");
 			model.addAttribute("error", "응답 없음");
 		}
-
+		
 		log.info("responseBody : {}", response.body());
-		return "redirect:/company/toss/buyproduct?productNo=" + productNo;
-//		return "company/payment/payment/BillingResult";
+//		return "redirect:/company/toss/buyproduct";
+		return "redirect:/company/toss/buyproduct?productNo=" + productNo 
+		        + "&customerKey=" + customerKey 
+		        + "&billingKey=" + billingKey;
 	}
 
 	@PostMapping("/api/toss/billing/issue")
