@@ -147,7 +147,7 @@ function startCountdown(endDate) {
             // 마감 처리
             dayEl.textContent = "0";
             timeEl.textContent = "00:00:00";
-            clearInterval(interval);
+           
             return;
         }
 
