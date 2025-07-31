@@ -26,6 +26,11 @@ public class MemberScrabCompanyAjaxController {
 	public ResponseEntity<List<ScrabCompanyVO>> getAll() {
 		return ResponseEntity.ok(service.readMyScrabCompanyList());
 	}
+	
+	@GetMapping("/{companyId}")
+	public int findCompanyScrabYn(@PathVariable String companyId) {
+		return service.findCompanyScrabYn(companyId);
+	}
 
 	@PostMapping("/{scompany}")
 	public ResponseEntity<?> inSCompany(@PathVariable String scompany) {

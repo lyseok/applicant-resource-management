@@ -61,5 +61,17 @@ public class MemberScrabRecruitmentServiceImpl implements MemberScrabRecruitment
 		}
 	}
 
+	@Override
+	public int findRecruitScrabYn(String recruitmentNo) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		ScrabRecruitmentVO vo = new ScrabRecruitmentVO();
+		vo.setUserId(username);
+		vo.setRecruitmentNo(recruitmentNo);
+		
+		int res = mapper.checkRecruitScrab(vo);
+		return res;
+	}
+
 
 }
