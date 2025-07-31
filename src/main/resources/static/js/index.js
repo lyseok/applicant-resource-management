@@ -75,7 +75,9 @@ function topRecruitNoticeInit(data) {
           item.recruitmentNo
         }" class="goodsBox-info info">
           <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
-            <img src="${item.comLogo ? item.comLogo :'/dist/assets/images/logo.png'}"
+            <img src="${
+              item.comLogo ? item.comLogo : '/dist/assets/images/logo.png'
+            }"
               alt="${item.comName} 로고">
           </span>
           <span class="company">
@@ -96,7 +98,11 @@ function topRecruitNoticeInit(data) {
             !isFirst
               ? `
           <span class="ani">
-            <img src="${item.recruitmentImg ? item.recruitmentImg : 'https://placehold.co/298x269'}" class="superpower_1" alt="배경이미지">
+            <img src="${
+              item.recruitmentImg
+                ? item.recruitmentImg
+                : 'https://placehold.co/298x269'
+            }" class="superpower_1" alt="배경이미지">
           </span>`
               : ''
           }
@@ -160,16 +166,20 @@ function middleRecruitNoticeInit(data) {
       <li class="option">
         <a href="javascript:void(0)" class="link_box track_event">
           <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
-            <img src="${item.comLogo ? item.comLogo : '/dist/assets/images/logo.png'}" class="img" alt="${
-        item.comName
-      } 로고" loading="lazy"/>
+            <img src="${
+              item.comLogo ? item.comLogo : '/dist/assets/images/logo.png'
+            }" class="img" alt="${item.comName} 로고" loading="lazy"/>
           </span>
           <span class="c_name">${item.comName}</span>
           <span class="title">${item.jobName}<br>경력직원 채용</span>
           <span class="title_ex">상반기 부문별<br>경력직원 채용</span>
           <span class="bg_ex">
             <img
-              src="${item.recruitmentImg ? item.recruitmentImg : 'https://placehold.co/96x96'}"
+              src="${
+                item.recruitmentImg
+                  ? item.recruitmentImg
+                  : 'https://placehold.co/96x96'
+              }"
               alt="배경이미지" loading="lazy">
           </span>
           <span class="tags">
@@ -239,7 +249,9 @@ function bottomRecruitNoticeInit(data) {
         <a href="javascript:void(0)" class="link_box track_event">
           <span class="logo ${item.comLogo ? '' : 'opacity-25'}">
             <img
-              src="${item.comLogo? item.comLogo:'/dist/assets/images/logo.png'}"
+              src="${
+                item.comLogo ? item.comLogo : '/dist/assets/images/logo.png'
+              }"
               class="img" alt="${item.comName}" loading="lazy">
           </span>
           <span class="c_name">${item.comName}</span>
@@ -298,8 +310,8 @@ function getTimeAgo(dateString) {
   const diffHour = Math.floor(diffMin / 60);
   const diffDay = Math.floor(diffHour / 24);
 
-  if (diffSec < 60) return '마감임박';
-  if (diffMin < 60) return `마감임박`;
-  if (diffHour < 24) return `마감임박`;
-  return `D-${diffDay}`;
+  if (-diffSec < 60) return '마감임박';
+  if (-diffMin < 60) return `마감임박`;
+  if (-diffHour < 24) return `마감임박`;
+  return `D-${-diffDay}`;
 }
