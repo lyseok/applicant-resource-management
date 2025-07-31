@@ -118,7 +118,7 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header .search .btn_search .custom-select {
   position: relative;
   font-weight: bold;
-  width: 70px;
+  width: 55px;
 }
 #sri_header .search .btn_search .custom-select select{
 	display: none;
@@ -171,7 +171,7 @@ body::-webkit-scrollbar-thumb:hover {
     font-size: 15px;
     font-weight: bold;
     line-height: 20px;
-    flex-basis:calc(100% - 107px);
+    flex-basis:calc(100% - 101px);
     width:100%;
     border:none;
 }
@@ -1257,9 +1257,9 @@ body::-webkit-scrollbar-thumb:hover {
     font-size: 14px
 }
 
-#sri_header.fixed .search .btn_search .keyword.static {
+/* #sri_header.fixed .search .btn_search .keyword.static {
     display: none
-}
+} */
 
 #sri_header.fixed .search .btn_search .keyword.fixed {
     display: block
