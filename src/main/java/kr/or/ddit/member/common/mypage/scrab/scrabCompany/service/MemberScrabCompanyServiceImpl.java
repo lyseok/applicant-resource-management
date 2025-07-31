@@ -59,4 +59,16 @@ public class MemberScrabCompanyServiceImpl implements MemberScrabCompanyService 
 		}
 	}
 
+	@Override
+	public int findCompanyScrabYn(String companyId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		ScrabCompanyVO scompany = new ScrabCompanyVO();
+		scompany.setUserId(username);
+		scompany.setCompanyId(companyId);
+		
+		int res = mapper.checkMyCompanyScrab(scompany);
+		return res;
+	}
+
 }

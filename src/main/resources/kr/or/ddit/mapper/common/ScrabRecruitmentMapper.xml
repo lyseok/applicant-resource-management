@@ -55,9 +55,6 @@
 		WHERE sr.USER_ID = #{userId}
 	</select>
 
-
-
-
 	<insert id="insertScrabRecruitment">
 		INSERT INTO SCRAB_RECRUITMENT (
 		USER_ID
