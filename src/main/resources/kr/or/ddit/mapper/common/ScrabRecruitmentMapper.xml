@@ -54,17 +54,23 @@
 		JOIN COMPANY c ON r.USER_ID = c.USER_ID   <!-- 회사와 매칭 -->
 		WHERE sr.USER_ID = #{userId}
 	</select>
+	
+	<select id="checkRecruitScrab">
+		SELECT
+			COUNT(SCRAB_RECUITMENT_DATE)
+		FROM SCRAB_RECRUITMENT
+		WHERE USER_ID = #{userId}
+		AND RECRUITMENT_NO = #{recruitmentNo}
+	</select>
 
 	<insert id="insertScrabRecruitment">
 		INSERT INTO SCRAB_RECRUITMENT (
 		USER_ID
-		,
-		RECRUITMENT_NO
+		, RECRUITMENT_NO
 		, SCRAB_RECUITMENT_DATE
 		) VALUES (
 		#{userId}
-		,
-		#{recruitmentNo}
+		, #{recruitmentNo}
 		, SYSDATE
 		)
 	</insert>
