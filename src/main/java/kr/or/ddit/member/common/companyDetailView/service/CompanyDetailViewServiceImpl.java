@@ -39,7 +39,7 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 		CompanyVO company = companyMapper.selectCompanyInfoById(userId);
 		String no = company.getIndustryType();
 		String name = codeMapProvider.getInduName(no);
-		company.setIndustryType(name);
+		company.setInduName(name);
 	
 		String typeName = codeMapProvider.getCodeName(company.getComType());
 		String sizeName = codeMapProvider.getCodeName(company.getComSize());

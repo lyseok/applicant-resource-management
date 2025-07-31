@@ -82,24 +82,27 @@
         </a>
       </li>
 
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">인재풀</span></li>
+      <li class="menu-header small text-uppercase  off"><span class="menu-header-text">인재풀</span></li>
 
       <li class="menu-item">
-        <a href="/company/talentpool" class="menu-link">
+        <a href="/company/talentpool" class="menu-link off">
           <i class="menu-icon tf-icons bx bx-user-search"></i>
           <div data-i18n="Basic">인재검색</div>
+          <i class='bx  bx-lock-keyhole'  ></i> 
         </a>
       </li>
       <li class="menu-item">
-        <a href="/company/talentpool/scrab" class="menu-link">
+        <a href="/company/talentpool/scrab" class="menu-link off">
           <i class="menu-icon tf-icons bx bx-user"></i>
           <div data-i18n="Basic">인재관리</div>
+          <i class='bx  bx-lock-keyhole'  ></i> 
         </a>
       </li>
       <li class="menu-item">
-        <a href="/company/mail/template" class="menu-link">
+        <a href="/company/mail/template" class="menu-link off">
           <i class="menu-icon tf-icons bx bx-envelope"></i>
           <div data-i18n="Basic">메일/알림</div>
+          <i class='bx  bx-lock-keyhole'  ></i> 
         </a>
       </li>
       <li class="menu-header small text-uppercase"><span class="menu-header-text">상품관리</span></li>
