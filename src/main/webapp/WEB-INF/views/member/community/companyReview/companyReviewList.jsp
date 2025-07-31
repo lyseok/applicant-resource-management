@@ -60,79 +60,75 @@
 </style>
 </head>
 <body>
-	<div class="container">
-
-		<p class="h1 mb-3 fw-bold">기업 리뷰</p>
-
-		<!-- 제목 -->
-		<div class="title fs-14" id="company-title">
-			<div style="display: flex; align-items: center; gap: 0.5rem;">
-
-			</div>
-
+	<p class="h1 mb-3 fw-bold">기업 리뷰</p>
+	
+	<!-- 제목 -->
+	<div class="title fs-14" id="company-title">
+		<div style="display: flex; align-items: center; gap: 0.5rem;">
+	
 		</div>
-
-
-		<!-- 탭 + 검색창 -->
-		<div class="Post_filter">
-			<div class="Post_category d-flex align-items-center justify-content-between overflow-visible">
-				<div class="d-flex">
-					<div class="Post_categoryItem">
-						<input id="status_all" type="radio" value="status_all" name="category" checked="">
-						<label for="status_all"><span>전체</span></label>
-					</div>
-					<div class="Post_categoryItem">
-						<input id="status_n" type="radio" value="status_n" name="category">
-						<label for="status_n"><span>산업별</span></label>
-					</div>
-					<div class="Post_categoryItem">
-						<input id="status_y" type="radio" value="status_y" name="category">
-						<label for="status_y"><span>직무별</span></label>
-					</div>
-					<select class="Select_root Select_size38 Select_round w140" name="selectName">
-						<option value="date" selected="">최신순</option>
-						<option value="pop">인기순</option>
-						<option value="like">시작일순</option>
-					</select>
+	
+	</div>
+	
+	
+	<!-- 탭 + 검색창 -->
+	<div class="Post_filter">
+		<div class="Post_category d-flex align-items-center justify-content-between overflow-visible">
+			<div class="d-flex">
+				<div class="Post_categoryItem">
+					<input id="status_all" type="radio" value="status_all" name="category" checked="">
+					<label for="status_all"><span>전체</span></label>
 				</div>
-				
-				<div class="d-flex gap-2">				
-					<!-- 검색창 -->
-					<div class="TypoBox searchBar">
-						<div class="searchBarWrap">
-							<label class="searchBarLabel" for="listKeyword">검색어</label>
-							<input type="text" id="listKeyword" class="searchBarInput" placeholder="회사명으로 리뷰 검색" maxlength="24" autocomplete="off" value="">
-						</div>
-						
-						<a href="javascript:void(0)" class="searchBarBtn">
-							<span class="material-symbols-outlined">search</span>
-						</a>
+				<div class="Post_categoryItem">
+					<input id="status_n" type="radio" value="status_n" name="category">
+					<label for="status_n"><span>산업별</span></label>
+				</div>
+				<div class="Post_categoryItem">
+					<input id="status_y" type="radio" value="status_y" name="category">
+					<label for="status_y"><span>직무별</span></label>
+				</div>
+				<select class="Select_root Select_size38 Select_round w140" name="selectName">
+					<option value="date" selected="">최신순</option>
+					<option value="pop">인기순</option>
+					<option value="like">시작일순</option>
+				</select>
+			</div>
+			
+			<div class="d-flex gap-2">				
+				<!-- 검색창 -->
+				<div class="TypoBox searchBar">
+					<div class="searchBarWrap">
+						<label class="searchBarLabel" for="listKeyword">검색어</label>
+						<input type="text" id="listKeyword" class="searchBarInput" placeholder="회사명으로 리뷰 검색" maxlength="24" autocomplete="off" value="">
 					</div>
 					
-					<!-- 글쓰기 버튼 -->					
-					<button type="button" class="btn btn_violet btn-primary" id="review_form_btn">리뷰등록</button>
+					<a href="javascript:void(0)" class="searchBarBtn">
+						<span class="material-symbols-outlined">search</span>
+					</a>
 				</div>
+				
+				<!-- 글쓰기 버튼 -->					
+				<button type="button" class="btn btn_violet btn-primary" id="review_form_btn">리뷰등록</button>
 			</div>
 		</div>
-
-		<!-- 결과 리스트 -->
-		<ul class="list" id="company-list">
-		</ul>
-
-
-
-		<!-- 페이지네이션 -->
-		<div class="PageBox">
-			<!-- <button data-page="2" class="BtnType SizeS BtnPrev">이전</button> -->
-			<span class="BtnType SizeS active">1</span>
-			<button class="BtnType SizeS page" data-page="2">2</button>
-			<button data-page="2" class="BtnType SizeS BtnNext">다음</button>
-		</div>
-
-
-
-
 	</div>
+	
+	<!-- 결과 리스트 -->
+	<ul class="list" id="company-list">
+	</ul>
+	
+	
+	
+	<!-- 페이지네이션 -->
+	<div class="PageBox">
+		<!-- <button data-page="2" class="BtnType SizeS BtnPrev">이전</button> -->
+		<span class="BtnType SizeS active">1</span>
+		<button class="BtnType SizeS page" data-page="2">2</button>
+		<button data-page="2" class="BtnType SizeS BtnNext">다음</button>
+	</div>
+	
+	
+	
 
 
 	
