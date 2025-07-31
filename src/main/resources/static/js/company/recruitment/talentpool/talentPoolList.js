@@ -223,12 +223,12 @@ function renderTalentPoolTable(talentList) {
       );
       // 이력서 열람 업데이트 axios 들어갑니다잉~
 		axios
-			.post(`/ajax/company/talentpool/${userId}`)
+			.post(`/ajax/company/talentpool/${item.resumeNo}`)
 			.then(() => {
-				console.log(`이력서 열람 기록 완료: ${userId}`);
+				console.log(`이력서 열람 기록 완료: ${item.resumeNo}`);
 			})
 			.catch((err) => {
-				console.error(`이력서 열람 기록 실패: ${userId}`, err);
+				console.error(`이력서 열람 기록 실패: ${item.resumeNo}`, err);
 		});
     });
   });
