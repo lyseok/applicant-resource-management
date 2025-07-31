@@ -21,36 +21,38 @@
           companyTitleEl.textContent = `${companyList.length}개 기업의 리뷰가 등록되어 있습니다.`;
 		      companyListEl.innerHTML = '';
           companyList.forEach( c=>{
+			
+			const isRecruiting = c.IS_RECRUITING === 'Y' ? '채용 중' : '채용 정보 없음';
             const li = document.createElement('li');
             li.className = 'item';
             li.onclick = () => {
-              location.href = `/member/company_review/detail?company=${c.userId}`;
+              location.href = `/member/company_review/detail?company=${c.USER_ID}`;
             };
            	li.innerHTML = `
                 <div class="info">
-                  ${c.comLogo
-                    ? `<img class="logo" src="${c.comLogo}" alt="${c.comName}"/>`
-                    : `<img class="logo opacity-25" src="/dist/assets/images/favicon.png" alt="${c.comName}"/>`
+                  ${c.COM_LOGO
+                    ? `<img class="logo" src="${c.COM_LOGO}" alt="${c.COM_NAME}"/>`
+                    : `<img class="logo opacity-25" src="/dist/assets/images/favicon.png" alt="${c.COM_NAME}"/>`
                    }
                   <div class="text">
                     <div class="name mb-1">
-                    	${c.comName}
-                      <span class="text-violet90 fs-14">(채용중)</span>
+                    	${c.COM_NAME}
+                      <span class="text-violet90 fs-14">${isRecruiting}</span>
                     </div>
-                  	<p class="fw-500 text-muted fs-14 mb-3">총 <b>N</b> 개의 리뷰가 등록되어 있습니다.</p>
+                  	<p class="fw-500 text-muted fs-14 mb-3">총 <b>${c.TOTAL_REVIEW_COUNT}</b> 개의 리뷰가 등록되어 있습니다.</p>
                     
                     <div class="d-flex gap-3 fs-13">
-                    	<p class="d-flex gap-2 fw-500 text-muted"><b class="text-dark">업종</b>${c.induName? `<span>${c.induName}</span>`:''}</p>
-                    	<p class="d-flex gap-2 fw-500 text-muted"><b class="text-dark">사원수</b>${c.comMem ? `<span>${c.comMem} 명</span>` : `0 명`}</p>
+                    	<p class="d-flex gap-2 fw-500 text-muted"><b class="text-dark">업종</b>${c.INDU_NAME? `<span>${c.INDU_NAME}</span>`:''}</p>
+                    	<p class="d-flex gap-2 fw-500 text-muted"><b class="text-dark">사원수</b>${c.COM_MEM ? `<span>${c.COM_MEM} 명</span>` : `0 명`}</p>
                     </div>
                     <div class="d-flex gap-3 fs-13">
                     	<p class="d-flex gap-2 fw-500 text-muted">
                     		<b class="text-dark">평균점수</b>
-                    		<span class="">태규 여기 데이터 넣어조~~!</span>
+                    		<span class="">${c.OVERALL_AVG_SCORE}</span>
                     	</p>
                     	<p class="d-flex gap-2 fw-500 text-muted">
                     		<b class="text-dark">답변인원</b>
-                    		<span class="">태규 여기두 데이터 넣어조~~!</span>
+                    		<span class="">${c.REVIEW_USER_COUNT}</span>
                     	</p>
                     </div>
                   </div>
