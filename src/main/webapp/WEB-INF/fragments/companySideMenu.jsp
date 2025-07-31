@@ -151,7 +151,7 @@
         </a>
       </li>
 
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">고객센테</span></li>
+      <li class="menu-header small text-uppercase"><span class="menu-header-text">고객센터</span></li>
 
       <li class="menu-item">
         <a href="/company/board/admin_board?type=BRDD-003" class="menu-link">

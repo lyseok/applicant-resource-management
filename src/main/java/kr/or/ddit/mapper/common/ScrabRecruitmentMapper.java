@@ -12,6 +12,8 @@ public interface ScrabRecruitmentMapper {
 	public List<ScrabRecruitmentVO> selectScrabRecruitmentList();
 
 	public List<ScrabRecruitmentVO> selectMyScrabRecruitmentList(String userId);
+	
+	public int checkRecruitScrab(ScrabRecruitmentVO vo);
 
 	public int insertScrabRecruitment(ScrabRecruitmentVO vo);
 

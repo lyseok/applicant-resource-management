@@ -132,7 +132,7 @@ function renderPostList(posts) {
 }
 
 function renderTopPostList(posts) {
-  const area = document.querySelector('.swiper-wrapper');
+  const area = document.querySelector('.recommend_list_wrap .swiper-wrapper');
 
   area.innerHTML = (posts || [])
     .map(

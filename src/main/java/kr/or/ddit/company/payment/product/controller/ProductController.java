@@ -1,5 +1,7 @@
 package kr.or.ddit.company.payment.product.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,36 +23,33 @@ public class ProductController {
 
 	@Autowired
 	PaymentProductServiceImpl service;
-	
+
 	// service 분리
 	@GetMapping("/detail")
-	public String detailForm(
-	        @RequestParam String productNo,
-	        @ModelAttribute("billingKey") String billingKey,
-	        Model model
-	) {
-	    PaymentProductVO product = service.getProductDetail(productNo);
-	    model.addAttribute("product", product);
-	    model.addAttribute("billingKey", billingKey);
-	    return "company/payment/product/ProductDetail";
+	public String detailForm(@RequestParam String productNo, @ModelAttribute("billingKey") String billingKey,
+			Model model) {
+		PaymentProductVO product = service.getProductDetail(productNo);
+		model.addAttribute("product", product);
+		model.addAttribute("billingKey", billingKey);
+		return "company/payment/product/ProductDetail";
 	}
-	
+
 	// service 분리
 	@GetMapping("/list")
 	public String listForm(
 	        @RequestParam(value = "page", defaultValue = "1") int page,
 	        @RequestParam(value = "filterType", required = false) String filterType,
-	        Model model) {
-
+	        Model model
+	) {
 	    ProductListResponseVO response = service.getProductList(filterType, page);
 
+	    model.addAttribute("productList", response.getProducts());
 	    model.addAttribute("totalPages", response.getTotalPages());
 	    model.addAttribute("currentPage", page);
-	    model.addAttribute("productList", response.getProducts());
+	    model.addAttribute("filterType", filterType);
 
 	    return "company/payment/product/ProductList";
 	}
-
 
 
 //	@Value("${file.upload-dir}")
@@ -68,10 +67,6 @@ public class ProductController {
 //		
 //		return "company/payment/product/ProductDetail";
 //	}
-	
-
-
-	
 
 //	@GetMapping("/list")
 //	String listForm(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -105,6 +100,5 @@ public class ProductController {
 //		
 //		return "company/payment/product/ProductList";
 //	}
-	
-}
 
+}

@@ -9,6 +9,8 @@ public interface MemberScrabRecruitmentService {
 	public List<ScrabRecruitmentVO> readScrabRecruitmentList();
 
 	public List<ScrabRecruitmentVO> readMyScrabRecruitmentList();
+	
+	public int findRecruitScrabYn (String recruitmentNo);
 
 	public void createScrabRecruitment(String srecruit);
 

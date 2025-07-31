@@ -3,14 +3,19 @@ document.addEventListener("DOMContentLoaded", () => {
 	const company = urlParams.get('company');
 	const chartInstances = {}; // canvasId -> Chart 객체 저장
 
-
+	// 기업 정보 호출
 	axios.get(`/ajax/member/company_review/info/${company}`)
 		.then(resp => {
 			const data = resp.data;
-			// 기업 정보
+
+			// 기업 정보 텍스트 삽입
 			document.getElementById("companyLogo").src = data.COMPANY_LOGO || "/img/default-logo.png";
-			document.getElementById("companyName").textContent = data.COMPANY_NAME + '의 리뷰입니다.' || "-";
+			document.getElementById("companyName").textContent = data.COMPANY_NAME || "-";
 			document.getElementById("reviewCount").textContent = data.TOTAL_REVIEW_COUNT || 0;
+			document.getElementById("comIndu").textContent = data.INDU_NAME || '-';
+			document.getElementById("comSize").textContent = data.COM_SIZE_NAME || '-';
+			document.getElementById("comMem").textContent = '직원 수 ' + data.COM_MEM + '명' || '-';
+			document.getElementById("ceoName").textContent = data.CEO_NAME || '-';
 
 			// 비율 계산
 			const total = data.TOTAL_REVIEW_COUNT || 0;
@@ -19,19 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
 			const workingPercent = total > 0 ? (working / total * 100).toFixed(1) : 0;
 			const notWorkingPercent = total > 0 ? (notWorking / total * 100).toFixed(1) : 0;
 
-			// DOM 업데이트
+			// 텍스트 삽입
 			document.getElementById("workingPercent").textContent = `${workingPercent}%`;
 			document.getElementById("notWorkingPercent").textContent = `${notWorkingPercent}%`;
-			document.getElementById("totalRespondentsText").textContent = `총 ${total}명의 답변입니다.`;
+			document.getElementById("totalRespondentsText").innerHTML = `총 <b class="fw-bold fs-5 text-violet90">${total}</b>명의 답변입니다.`;
 
-			// 반원 차트
+			// 반원 차트 (현/전직 비율)
 			const ctx = document.getElementById('employeeStatusChart').getContext('2d');
 			new Chart(ctx, {
 				type: 'doughnut',
 				data: {
 					datasets: [{
 						data: [working, notWorking],
-						backgroundColor: ['#1abc9c', '#6a5acd'],
+						backgroundColor: ['#aca7ff', '#5d3fff'], // cherry-pie 계열
 						borderWidth: 0
 					}]
 				},
@@ -42,9 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
 					plugins: { legend: { display: false } }
 				}
 			});
-		})
+		});
 
-	// === 탭 전환 ===
+	// 탭 전환 처리
 	const tabButtons = document.querySelectorAll(".tab-btn");
 	const tabContents = document.querySelectorAll(".tab-content");
 	tabButtons.forEach(btn => {
@@ -57,23 +62,24 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 
+	// 상세 리뷰 데이터 조회 및 차트 렌더링
 	axios.get(`/ajax/member/company_review/detail/${company}`)
 		.then(resp => {
 			const data = resp.data;
 
-			// --- 전체 평균 ---
+			// 전체 평균 차트
 			initOrUpdateChart("overallAvgChart", data.overallAvg);
 			document.getElementById("overallAvgText").textContent = data.overallAvg.toFixed(1);
 
-			// --- 질문별 차트 (전체) ---
+			// 전체 질문별 평균
 			renderStaticCharts("questionCharts", data.questionAvgList, "q");
 
-			// --- 직무 필터 버튼 ---
+			// 직무 버튼 렌더링
 			const jobBtns = document.getElementById("topJobButtons");
 			jobBtns.innerHTML = "";
 			data.topJobStatsList.forEach((job, idx) => {
 				const btn = document.createElement("button");
-				btn.classList.add("filter-btn");
+				btn.classList.add("filter-btn", "btn", "lh1", "badge-tag", "py-2", "px-4", "text-secondary", "fw-bold", "fs-14");
 				btn.textContent = job.topJobName;
 				if (idx === 0) btn.classList.add("active");
 				btn.addEventListener("click", (e) => {
@@ -84,9 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				jobBtns.appendChild(btn);
 			});
 
-			// 직무 개수 표시
-			document.getElementById("topJobCountInfo").textContent =
-				`${data.topJobStatsList.length}개 직무의 리뷰가 등록되었습니다.`;
+			// 직무 개수 텍스트
+			document.getElementById("topJobCountInfo").textContent = `${data.topJobStatsList.length}`;
 
 			// 첫 직무 초기화
 			if (data.topJobStatsList.length > 0) {
@@ -99,11 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				document.getElementById("topJobAvgText").textContent = job.topJobOverallAvg.toFixed(1);
 
 				job.questionAvgList.forEach((q, idx) => {
-					requestAnimationFrame(() => { // DOM 렌더링 이후 실행
+					requestAnimationFrame(() => {
 						const canvasId = `job-chart-${idx}`;
 						initOrUpdateChart(canvasId, q.avgScore);
 						const canvasEl = document.querySelector(`#${canvasId}`);
-						if (canvasEl) { // DOM 존재할 때만 실행
+						if (canvasEl) {
 							const span = canvasEl.parentElement.querySelector(".chart-info .avg span");
 							if (span) span.textContent = q.avgScore.toFixed(1);
 						}
@@ -112,13 +117,12 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		});
 
-	// === 최초 한 번만 DOM 생성 ===
+	// 질문별 차트 렌더링
 	function renderStaticCharts(containerId, dataList, prefix) {
 		const container = document.getElementById(containerId);
 		container.innerHTML = "";
 		dataList.forEach((q, idx) => {
 			const card = document.createElement("div");
-			card.classList.add("chart-card");
 
 			const canvasId = `${prefix}-chart-${idx}`;
 			const canvas = document.createElement("canvas");
@@ -130,9 +134,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			const info = document.createElement("div");
 			info.classList.add("chart-info");
 			info.innerHTML = `
-        <p class="avg">${q.reviewSubjectName}: <span>${q.avgScore.toFixed(1)}</span>점</p>
-        <p class="desc">이 질문에 대한 평균 점수입니다.</p>
-      `;
+				<p class="fs-18 fw-semibold lh1-4">${q.reviewSubjectName}</p>
+				<p class="fs-6 fw-semibold total_count">
+					<span class="fw-bold fs-16 text-violet90 avg"><span>${q.avgScore.toFixed(1)}</span></span>점
+				</p>`;
 			card.appendChild(info);
 			container.appendChild(card);
 
@@ -140,17 +145,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// === Chart.js 생성/갱신 ===
+	// 차트 생성 또는 갱신
 	function initOrUpdateChart(canvasId, score) {
 		const canvas = document.getElementById(canvasId);
 		if (!canvas) return;
+
 		if (chartInstances[canvasId]) {
-			// 데이터 갱신
 			chartInstances[canvasId].data.datasets[0].data = [score, 5 - score];
 			chartInstances[canvasId].data.datasets[0].backgroundColor = [getColor(score), '#eaeaea'];
 			chartInstances[canvasId].update();
 		} else {
-			// 새로 생성
 			const ctx = canvas.getContext("2d");
 			chartInstances[canvasId] = new Chart(ctx, {
 				type: 'doughnut',
@@ -162,17 +166,22 @@ document.addEventListener("DOMContentLoaded", () => {
 				},
 				options: {
 					cutout: '50%',
-					animation: { duration: 300 }, // 부드러운 전환
-					plugins: { legend: { display: false } }
+					animation: { duration: 300 },
+					plugins: {
+						legend: { display: false }
+					}
 				}
 			});
 		}
 	}
 
-	// === 점수 색상 ===
+	// 점수별 색상 (cherry-pie 계열, 강한 대비)
 	function getColor(score) {
-		if (score < 2) return '#e74c3c';    // 빨강
-		if (score < 4) return '#f1c40f';    // 노랑
-		return '#2ecc71';                   // 초록
+		if (score < 1) return '#ecdcff';   // 아주 연한 보라
+		if (score < 2) return '#d0b2ff';   // 연보라
+		if (score < 3) return '#6900ff';   // 진한 보라
+		if (score < 4) return '#5700b4';   // 짙은 보라
+		if (score < 4.5) return '#460095'; // 더 짙은 보라
+		return '#290052';                 // 거의 검보라 (최상 점수)
 	}
 });

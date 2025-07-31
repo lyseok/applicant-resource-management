@@ -58,15 +58,37 @@ public class AdminPaymentController {
 
 	// 관리자 상품보기
 	@GetMapping("/product/list")
-	public String listForm(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "filterType", required = false) String filterType, Model model) {
-
-		ProductListResponseVO response = pservice.getFilteredProductList(filterType, page);
-
-		model.addAttribute("totalPages", response.getTotalPages());
-		model.addAttribute("currentPage", page);
-		model.addAttribute("productList", response.getProducts());
-
+	public String listForm(
+			@RequestParam(value = "page", defaultValue = "1") int page
+			,@RequestParam(value = "filterType", required = false) String filterType
+			, Model model
+			) {
+		
+		List<PaymentProductVO> response = service.selectPaymentProductList();
+		
+		if(filterType != null && !filterType.isBlank()) {
+			response = response.stream()
+						.filter(p -> p.getProductType() != null && p.getProductType().equalsIgnoreCase(filterType))
+						.toList();
+		}
+		
+		int itemsPerPage = 10;
+		int totalItems = response.size();
+		int totalPages = (int)Math.ceil((double) totalItems / itemsPerPage);
+		int fromIndex = (page -1) * itemsPerPage;
+		
+		if(fromIndex >= totalItems) {
+			fromIndex = 0;
+			page = 1;
+		}
+		int toIndex = Math.min(fromIndex + itemsPerPage, totalItems);
+		List<PaymentProductVO> pageList = totalItems > 0 ? response.subList(fromIndex, toIndex) : List.of();
+	
+		model.addAttribute("productList",pageList);
+		model.addAttribute("currentPage",page);
+		model.addAttribute("totalPages",totalPages);
+		model.addAttribute("filterType",filterType);
+		
 		return "admin/payment/AdminproductList";
 	}
 

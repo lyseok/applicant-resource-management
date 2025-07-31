@@ -1,6 +1,7 @@
 package kr.or.ddit.member.community.companyReview.service;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,6 @@ import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
-//(value="companyReviewService")
 @RequiredArgsConstructor
 public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewService {
 	private final CompanyMapper companyMapper;
@@ -185,6 +185,27 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	public Map<String, Object> readCompanyWithReviewInfo(String comId) {
 		Map<String, Object> companyReviewInfo = companyReviewMapper.selectCompanyWithReviewInfo(comId);
 		return companyReviewInfo;
+	}
+
+
+	@Override
+	public List<Map<String, Object>> readCompanyInfoWithReviewInfoList() {
+		return companyReviewMapper.selectCompanyInfoWithReviewInfoList();
+	}
+
+
+	@Override
+	public Map<String, Object> readCompanyInfoWithReviewInfoPage(Map<String, Object> params) {
+		int total = companyReviewMapper.selectCompanyReviewListCount(params);
+		
+		
+		List<Map<String, Object>> list = companyReviewMapper.selectCompanyReviewList(params);
+		Map<String, Object> result = new HashMap<>();
+		result.put("total", total);
+		result.put("list", list);
+
+		return result;
+	
 	}
 
 	

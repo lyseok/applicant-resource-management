@@ -30,8 +30,11 @@ const abhit = async function (no) {
 
 // 2
 const abno = function (no) {
+	console.log("왜 새글 등록 후 취소하면 abno를 타지?", no);
   listTitle.style.display = "none";
   aboardform.style.display = "none";
+  TypoBox_searchBar.style.display = "none";
+  document.querySelector('.PageBox').innerHTML = "";
   memTypeBtn.innerHTML = "";
   formBtn.innerHTML = "";
   aboardList.innerHTML = "";
@@ -181,6 +184,7 @@ function aceditable(pBtn, commentNo, userId, boardNo) {
   }
 }
 
+// 답글 삭제
 const acdel = function (cno, bno) {
 
   Swal.fire({
@@ -366,7 +370,7 @@ const acform = async function (no) {
 const achtml = async function (no) {
   try {
     if (!userId) {
-      console.error("userId not found in hidden input");
+      console.error("아이디를 찾을 수 없습니다");
       return;
     }
 
@@ -413,8 +417,10 @@ const achtml = async function (no) {
 // 상세보기->목록
 const detailToList = function (type) {
   if (type.startsWith("BRDD")) {
+	fetchData(type)
     alist(type);
   } else {
+	fetchData(type)
     alist2(type);
   }
 };
@@ -495,6 +501,7 @@ const abbtn = function (no, type) {
               if (rslt.boardTypeCode){
                 detailToList(rslt.boardTypeCode ?? "BRDD-001"); //목록으로, 널일 시 기본값 부여
                 aboardDetail.innerHTML = "";
+                detTitle.innerHTML = '';
               }
             }
           });

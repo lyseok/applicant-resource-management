@@ -1,178 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title></title>
+<title>기업 리뷰</title>
 <script src="/js/member/community/companyView/companyReviewList.js"></script>
 <style>
-:root {
-	--violet40: #ede9fe; /* 연봉 필터 배경 */
-	--violet70: #7c3aed; /* 주요 포인트 컬러 */
-	--gray100: #f5f5f5;
-	--gray200: #e5e5e5;
-	--gray500: #6b7280;
-	--gray700: #374151;
-	--border: 1px solid #d1d5db;
-	--radius: 8px; /* 둥근 모서리 반경 */
-}
-
-* {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0
-}
-
-body {
-	font-family: sans-serif;
-	color: var(--gray700);
-	background: #fff;
-}
-
-.container {
-	max-width: 1000px;
-	margin: 2rem auto;
-	padding: 0 1rem;
-}
-
-/* 제목 */
-.title {
-	display: flex;
-	justify-content: space-between; /* 추가 */
-	align-items: center;
-	color: var(--violet70);
-	font-size: 1.5rem;
-	margin-bottom: 1rem;
-}
-
-.title svg {
-	width: 32px;
-	height: 32px;
-	margin-right: 0.5rem;
-}
-
-/* 탭 + 검색창을 같은 줄에 배치 */
-.tabs-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 1rem;
-}
-
-.tabs {
-	display: flex;
-	gap: .5rem;
-}
-
-.tab {
-	padding: .5rem 1rem;
-	border: var(--border);
-	border-radius: var(--radius);
-	background: #fff;
-	color: var(--gray500);
-	cursor: pointer;
-	font-size: .95rem;
-}
-
-.tab.active {
-	background: var(--violet70);
-	color: #fff;
-	border-color: var(--violet70);
-}
-
-/* 검색창 */
-.search-box {
-	width: 30%;
-}
-
-.search-box input {
-	width: 100%;
-	padding: .75rem 1rem;
-	border: var(--border);
-	border-radius: var(--radius);
-	font-size: 1rem;
-}
-
-/* 검색 조건 + 연봉 슬라이더 한 줄 배치 */
-.search-conditions {
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
-	margin-bottom: 2rem;
-}
-
-.search-conditions select {
-	padding: .5rem;
-	border: var(--border);
-	border-radius: var(--radius);
-	background: #fff;
-	font-size: .9rem;
-}
-
-.search-conditions label {
-	font-size: .9rem;
-	display: flex;
-	align-items: center;
-	gap: .25rem;
-}
-
-/* 연봉 필터 박스 */
-.salary-filter {
-	flex: 1;
-	padding: 12px 16px;
-	background: var(--violet40);
-	border-radius: var(--radius);
-	/* border 제거 */
-}
-
-.salary-filter label {
-	display: block;
-	font-weight: bold;
-	margin-bottom: .75rem;
-	font-size: .95rem;
-}
-
-.salary-controls {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-}
-
-.tabs-container select {
-	min-width: 6rem;
-	padding: .5rem;
-	border: var(--border);
-	border-radius: var(--radius);
-	background: #fff;
-	font-size: .9rem;
-}
-
 /* 결과 리스트 */
 .list {
 	list-style: none;
 	margin: 0;
 	padding: 0;
+	display:flex;
+	gap:30px;
 }
 
 .item {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 3rem 0;
-	border-bottom: var(--border);
+	padding: 2.5rem 2rem;
+	width:calc((100% - 30px) / 2);
+	border:1px solid var(--gray40);
+	border-radius:10px;
+	cursor:pointer;
+}
+.item:hover{
+	background:var(--gray20);
 }
 
 .info {
 	display: flex;
 	align-items: center;
-	gap: 1rem;
+	gap: 30px;
 }
 
 .logo {
-	width: 48px;
-	height: 48px;
+	width: 70px;
+	height: 70px;
 	object-fit: contain;
 }
 
@@ -197,77 +57,63 @@ body {
 	font-weight: bold;
 	color: var(--gray700);
 }
-
-/* 페이지네이션 */
-.pagination {
-	display: flex;
-	list-style: none;
-	gap: .5rem;
-	justify-content: center;
-	margin: 2rem 0;
-	padding: 0;
-}
-
-.pagination li {
-	width: 32px;
-	height: 32px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border: var(--border);
-	border-radius: var(--radius);
-	cursor: pointer;
-	color: var(--gray500);
-	font-size: .9rem;
-}
-
-.pagination li.active {
-	background: var(--violet70);
-	color: #fff;
-	border-color: var(--violet70);
-}
 </style>
 </head>
 <body>
 	<div class="container">
 
 		<p class="h1 mb-3 fw-bold">기업 리뷰</p>
-		<div
-			class="p-3 pt-4 pb-4 bg-violet03 rounded d-flex justify-content-between align-items-center mb-5">
-			<p class="fw-bold">✍ 자신의 경험을 공유해주세요</p>
-			<div class="">
-
-				<button type="button" id="review_form_btn"
-					class="btn btn_violet h50 lh50">기업 리뷰 등록</button>
-			</div>
-		</div>
 
 		<!-- 제목 -->
-		<div class="title" id="company-title">
+		<div class="title fs-14" id="company-title">
 			<div style="display: flex; align-items: center; gap: 0.5rem;">
-				<svg viewBox="0 0 24 24" fill="currentColor">
-			      <path d="M3 13h4v8H3v-8zm7-6h4v14h-4V7zm7 4h4v10h-4V11z" />
-			    </svg>
 
 			</div>
 
-			<button type="button" class="btn btn_violet btn-primary">리뷰등록</button>
 		</div>
 
 
 		<!-- 탭 + 검색창 -->
-		<div class="tabs-container">
-			<div class="tabs">
-				<div class="tab active">전체</div>
-				<div class="tab">산업별</div>
-				<div class="tab">직무별</div>
-			</div>
-			<!-- 검색창 -->
-			<div class="search-box">
-				<input type="text" placeholder="기업명을 검색해 보세요." />
+		<div class="Post_filter">
+			<div class="Post_category d-flex align-items-center justify-content-between overflow-visible">
+				<div class="d-flex">
+					<div class="Post_categoryItem">
+						<input id="status_all" type="radio" value="status_all" name="category" checked="">
+						<label for="status_all"><span>전체</span></label>
+					</div>
+					<div class="Post_categoryItem">
+						<input id="status_n" type="radio" value="status_n" name="category">
+						<label for="status_n"><span>산업별</span></label>
+					</div>
+					<div class="Post_categoryItem">
+						<input id="status_y" type="radio" value="status_y" name="category">
+						<label for="status_y"><span>직무별</span></label>
+					</div>
+					<select class="Select_root Select_size38 Select_round w140" name="selectName">
+						<option value="date" selected="">최신순</option>
+						<option value="pop">인기순</option>
+						<option value="like">시작일순</option>
+					</select>
+				</div>
+				
+				<div class="d-flex gap-2">				
+					<!-- 검색창 -->
+					<div class="TypoBox searchBar">
+						<div class="searchBarWrap">
+							<label class="searchBarLabel" for="listKeyword">검색어</label>
+							<input type="text" id="listKeyword" class="searchBarInput" placeholder="회사명으로 리뷰 검색" maxlength="24" autocomplete="off" value="">
+						</div>
+						
+						<a href="javascript:void(0)" class="searchBarBtn">
+							<span class="material-symbols-outlined">search</span>
+						</a>
+					</div>
+					
+					<!-- 글쓰기 버튼 -->					
+					<button type="button" class="btn btn_violet btn-primary" id="review_form_btn">리뷰등록</button>
+				</div>
 			</div>
 		</div>
-
 
 		<!-- 결과 리스트 -->
 		<ul class="list" id="company-list">
@@ -276,15 +122,12 @@ body {
 
 
 		<!-- 페이지네이션 -->
-		<ul class="pagination">
-			<li class="active">1</li>
-			<li>2</li>
-			<li>3</li>
-			<li>4</li>
-			<li>5</li>
-			<li>…</li>
-			<li>10</li>
-		</ul>
+		<div class="PageBox">
+			<!-- <button data-page="2" class="BtnType SizeS BtnPrev">이전</button> -->
+			<span class="BtnType SizeS active">1</span>
+			<button class="BtnType SizeS page" data-page="2">2</button>
+			<button data-page="2" class="BtnType SizeS BtnNext">다음</button>
+		</div>
 
 
 
@@ -292,36 +135,33 @@ body {
 	</div>
 
 
-
+	
+  
 	<div class="modal fade" id="careerModal" tabindex="-1">
 		<div class="modal-dialog modal-dialog-centered"
 			style="max-width: 450px;">
 			<div class="modal-content">
 				<div class="modal-header bg-white">
-					<h5 class="modal-title text-purple fw-semibold" id="recruitTitle">기업명</h5>
+					<h5 class="modal-title fs-5 fw-bold text-success" id="recruitTitle">리뷰 작성 가능한 경력목록</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
-				<div class="modal-body bg-light py-4 px-4">
-					<div class="mb-4">
+				<div class="modal-body  py-4 px-4">
+					<div class="">
 						<div
 							class="d-flex justify-content-between align-items-center mb-2">
-							<label class="form-label fw-medium text-secondary">선택된
-								경력</label>
-							<button type="button" class="btn btn-link p-0 text-secondary"
-								id="btnShowResumeList">경력 변경 &gt;</button>
+							<label class="form-label fw-semibold fs-14 m-0">선택된 경력</label>
+							<button type="button" class="btn btn_violet_line fs-13 fw-semibold" id="btnShowResumeList">경력 선택/변경</button>
 						</div>
 						<div id="selectedCareerCard"></div>
 						<div id="careerList" class="mt-2 overflow-auto" style="display: none; max-height: 220px;"></div>
 					</div>
-					<!-- 하단 버튼 -->
-					<div class="modal-footer bg-white">
-						<button id="btnSaveCareer" class="btn w-100 py-2 text-white"
-							style="background: #ae8be1;">등록</button>
-					</div>
+				</div>
+				<!-- 하단 버튼 -->
+				<div class="modal-footer bg-white">
+					<button id="btnSaveCareer" class="btn btn_violet w100p justify-content-center">등록</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 </body>
-</html>

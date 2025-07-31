@@ -7,12 +7,24 @@
   <meta charset="UTF-8">
   <title>결제 로그</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+.table {
+    background-color: #f3e8fh; 
+}
+.table th {
+    background-color: #e0c3ff; 
+}
+.table td {
+	background-color: #f3e8fe;
+}
+</style>
+
 </head>
 <body class="bg-light">
 <div class="container py-5">
 
   <!-- 제목 -->
-  <h1 class="h3 mb-4 fw-bold">📑 결제 로그</h1>
+  <h1 class="h3 mb-4 fw-bold">📑 메일 발송내역</h1>
 
   <!-- 검색 -->
   <form action="/company/log/list" method="get" id="filterForm" class="row gx-2 gy-2 align-items-center mb-4">

@@ -35,7 +35,7 @@ import kr.or.ddit.vo.common.PaymentListResponseVO;
 import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
 import lombok.extern.slf4j.Slf4j;
-
+  
 @Slf4j
 @Controller
 @RequestMapping("/company/payment")
@@ -91,7 +91,7 @@ public class PaymentController {
 		}
 
 		// 결제성공(controller <-> service 분리완, 작동 이상무)
-		@GetMapping("/success/executebilling")
+		@PostMapping("/success/executebilling")
 		public String successBuy(
 		        @RequestParam("billingKey") String billingKey,
 		        @RequestParam("amount") String amount,
@@ -101,6 +101,7 @@ public class PaymentController {
 		        Model model
 		) {
 		    PaymentVO result = service.processSuccessfulBilling(billingKey, amount, orderName, paymentKey, orderId);
+		    log.info("result: {}",result);
 		    model.addAttribute("result", result);
 		    return "company/payment/payment/SuccessSubscribe";
 		}
