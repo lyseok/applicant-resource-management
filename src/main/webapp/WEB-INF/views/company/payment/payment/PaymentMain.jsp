@@ -139,7 +139,9 @@
     </c:if>
      <div class="report-row">
           <div class="report-label">다음달 결제 예정상품</div>
+          <c:if test="${ppvo.status == 'A'}">
           <div class="report-value">${ppvo.nextMonth}</div>
+          </c:if>
         </div>
 <!--     <a href="/company/payment/product/list" class="btn btn-purple">취소하기</a>
  -->  </div>

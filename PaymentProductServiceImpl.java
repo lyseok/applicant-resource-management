@@ -70,7 +70,7 @@ public class PaymentProductServiceImpl implements PaymentProductService {
 	}
 
 	@Override
-	public String insertPaymentProduct(PaymentProductVO vo) {
+	public int insertPaymentProduct(PaymentProductVO vo) {
 		// TODO Auto-generated method stub
 		return mapper.insertPaymentProduct(vo);
 	}

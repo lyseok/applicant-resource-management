@@ -11,15 +11,15 @@ const failUrl = `${window.location.origin}/fail`;
 
 const payment = tossPayments.payment({ customerKey });
 /* ProductDetail.jsp -> productDetail.js -> fetch("/company/toss/check/billing", -> 그다음에 여기*/
-/*async function requestBillingAuth() {
+async function requestBillingAuth() {
 	console.log("productNo", productNo);
 	console.log("successUrl", successUrl);
-  await payment.requestBillingAuth({
-    method: "CARD",
-    successUrl,
-    failUrl,
-    customerEmail: "dhfjdhfj@naver.com",
-    customerName: "김철민",
-  });
+	fetch("/");
+	await tossPayments.requestBillingAuth("CARD", {
+		customerKey : customerKey,
+		successUrl: successUrl,
+		failUrl: failUrl,
+		customerEmail: "dhfjdhfj@naver.com",
+		customerName: "김철민",
+	});
 }
-*/
