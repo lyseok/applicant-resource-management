@@ -488,7 +488,7 @@ em, i {
 
 /* WMG-35202 230421 */
 .write_base .item .alert_column.good_txt {
-    color: #2d65f2
+    color:var(--violet80) !important;
 }
 
 .write_base .item .alert_column.focus_txt {
