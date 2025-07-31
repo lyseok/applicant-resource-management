@@ -135,32 +135,30 @@
 	</div>
 
 
-
+	
+  
 	<div class="modal fade" id="careerModal" tabindex="-1">
 		<div class="modal-dialog modal-dialog-centered"
 			style="max-width: 450px;">
 			<div class="modal-content">
 				<div class="modal-header bg-white">
-					<h5 class="modal-title text-purple fw-semibold" id="recruitTitle">기업명</h5>
+					<h5 class="modal-title fs-5 fw-bold text-success" id="recruitTitle">리뷰 작성 가능한 경력목록</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
-				<div class="modal-body bg-light py-4 px-4">
-					<div class="mb-4">
+				<div class="modal-body  py-4 px-4">
+					<div class="">
 						<div
 							class="d-flex justify-content-between align-items-center mb-2">
-							<label class="form-label fw-medium text-secondary">선택된
-								경력</label>
-							<button type="button" class="btn btn-link p-0 text-secondary"
-								id="btnShowResumeList">경력 변경 &gt;</button>
+							<label class="form-label fw-semibold fs-14 m-0">선택된 경력</label>
+							<button type="button" class="btn btn_violet_line fs-13 fw-semibold" id="btnShowResumeList">경력 선택/변경</button>
 						</div>
 						<div id="selectedCareerCard"></div>
 						<div id="careerList" class="mt-2 overflow-auto" style="display: none; max-height: 220px;"></div>
 					</div>
-					<!-- 하단 버튼 -->
-					<div class="modal-footer bg-white">
-						<button id="btnSaveCareer" class="btn w-100 py-2 text-white"
-							style="background: #ae8be1;">등록</button>
-					</div>
+				</div>
+				<!-- 하단 버튼 -->
+				<div class="modal-footer bg-white">
+					<button id="btnSaveCareer" class="btn btn_violet w100p justify-content-center">등록</button>
 				</div>
 			</div>
 		</div>

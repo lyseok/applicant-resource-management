@@ -83,11 +83,14 @@
 
             careerListDiv.innerHTML = careers.map(career => `
                 <div class="card mb-2 resume-card ${selectedCareer?.careerNo === career.careerNo ? 'selected-card' : ''}" data-career-no="${career.careerNo}">
-                   <div class="card-body py-2 px-3">
-                    <h6 class ="mb-1">${career.company.comName} (${career.jobCodeName || ''})</h6>
-                      <p class="text-secondary" style="font-size:.96em;">
+                   <div class="card-body p-3">
+                    <h6 class ="mb-1 fw-500 fs-16">
+                    	${career.company.comName} (${career.jobCodeName || ''})
+                    	<small class="ms-2 text-muted">${career.careerYearName || ''}</small>
+                    </h6>
+                      <p class="text-secondary fs-13 fw-500 lh1-4">
                         ${career.startWorkDate || ''} ~ ${career.retireDate || '재직중'}<br>
-                        ${career.jobGradeCodeName || ''} / ${career.positionCodeName || ''} / ${career.careerYearName || ''}
+                        ${career.jobGradeCodeName || ''} ${career.positionCodeName ? '/' + career.positionCodeName : ''}
                       </p>
                   </div>
                 </div>
@@ -113,12 +116,15 @@
       }
 
        div.innerHTML = `
-      <div class="card mb-0 selected-card">
-        <div class="card-body py-2 px-3">
-          <h6 class="mb-1">${selectedCareer.company?.comName || ''} (${selectedCareer.jobCodeName || ''})</h6>
-          <p class="mb-0 text-secondary" style="font-size:.92em;">
+      <div class="card mb-0 selected-card pointer">
+        <div class="card-body p-3">
+          <h6 class="mb-1 fw-500 fs-16">
+          	${selectedCareer.company?.comName || ''} (${selectedCareer.jobCodeName || ''})
+          	<small class="ms-2 text-muted">${selectedCareer.careerYearName || ''}</small>
+          </h6>
+          <p class="text-secondary fs-13 fw-500 lh1-4">
             ${selectedCareer.startWorkDate || ''} ~ ${selectedCareer.retireDate || '재직중'}<br>
-            ${selectedCareer.jobGradeCodeName || ''} / ${selectedCareer.positionCodeName || ''} / ${selectedCareer.careerYearName || ''}
+            ${selectedCareer.jobGradeCodeName || ''} ${selectedCareer.positionCodeName ? '/' + selectedCareer.positionCodeName :  ''}
           </p>
         </div>
       </div>
