@@ -39,12 +39,14 @@
 			, USER_ROLE
 			, USER_STATUS
 			, USER_ENABLED
+			, USER_CREATE_DATE
 		) VALUES (
 			#{userId}
 			, #{userPassword}
 			, 'ROLE_USER'
 			, 'N'
 			, 'Y'
+			, SYSDATE
 		)
 	</insert>
 	
