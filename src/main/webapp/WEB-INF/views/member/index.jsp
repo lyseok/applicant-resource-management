@@ -381,75 +381,74 @@
         <!-- 지원 현황 및 받은 제안 -->
         <div class="row mb-4">
           <div class="col-md-6 mb-3">
-            <div class="status-card">
-              <h5 class="card-title mb-4">지원 현황</h5>
-              <div class="row text-center">
-                <div class="col-3">
-                  <div class="status-number">0</div>
-                  <div class="status-label">지원 완료</div>
-                </div>
-                <div class="col-3">
-                  <div class="status-number">0</div>
-                  <div class="status-label">서류 합격</div>
-                </div>
-                <div class="col-3">
-                  <div class="status-number">0</div>
-                  <div class="status-label">최종 합격</div>
-                </div>
-                <div class="col-3">
-                  <div class="status-number">0</div>
-                  <div class="status-label">불합격</div>
-                </div>
-              </div>
-            </div>
-          </div>
+			<div class="status-card application-status-card">
+				<h5 class="card-title mb-4">지원 현황</h5>
+				<div class="row text-center">
+					<div class="col-3">
+						<div class="status-number apply-count">0</div>
+						<div class="status-label">지원 완료</div>
+					</div>
+					<div class="col-3">
+						<div class="status-number document-pass-count">0</div>
+						<div class="status-label">서류 합격</div>
+					</div>
+					<div class="col-3">
+						<div class="status-number final-pass-count">0</div>
+						<div class="status-label">최종 합격</div>
+					</div>
+					<div class="col-3">
+						<div class="status-number fail-count">0</div>
+						<div class="status-label">불합격</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
           <div class="col-md-6 mb-3">
-            <div class="status-card">
-              <h5 class="card-title mb-4">받은 제안</h5>
-              <div class="row text-center">
-                <div class="col-3">
-                  <div class="status-number">0</div>
-                  <div class="status-label">포지션 제안</div>
-                </div>
-                <div class="col-3">
-                  <div class="status-number">0</div>
-                  <div class="status-label">나에 대한 관심</div>
-                </div>
-                <div class="col-3">
-                  <div class="status-number">0</div>
-                  <div class="status-label">이력서 열람</div>
-                </div>
-                
-              </div>
-            </div>
+            <div class="status-card offer-status-card">
+			  <h5 class="card-title mb-4">받은 제안</h5>
+			  <div class="row text-center">
+			    <div class="col-3">
+			      <div class="status-number proposal-count">0</div>
+			      <div class="status-label">포지션 제안</div>
+			    </div>
+			    <div class="col-3">
+			      <div class="status-number interest-count">0</div>
+			      <div class="status-label">나에 대한 관심</div>
+			    </div>
+			    <div class="col-3">
+			      <div class="status-number resume-view-count">0</div>
+			      <div class="status-label">이력서 열람</div>
+			    </div>
+			  </div>
+			</div>
           </div>
         </div>
 
         <!-- 프로젝트 정보 -->
         <div class="row mb-4">
           <div class="col-12">
-            <div class="status-card">
-              <h5 class="card-title mb-4">프로젝트 정보</h5>
-              <div class="row text-center">
-                <div class="col-3">
-                  <div class="status-number" id="totalProjects">0</div>
-                  <div class="status-label">총 프로젝트 수</div>
-                </div>
-                <div class="col-3">
-                  <div class="status-number" id="ongoingProjects">0</div>
-                  <div class="status-label">진행중인 프로젝트</div>
-                </div>
-                <div class="col-3">
-                  <div class="status-number" id="completedProjects">0</div>
-                  <div class="status-label">종료된 프로젝트</div>
-                </div>
-                <div class="col-3">
-                  <div class="status-number" id="myPostings">0</div>
-                  <div class="status-label">내가 올린 공고</div>
-                </div>
-              </div>
-            </div>
+            <div class="status-card project-status-card">
+			  <h5 class="card-title mb-4">프로젝트 정보</h5>
+			  <div class="row text-center">
+			    <div class="col-3">
+			      <div class="status-number total-projects">0</div>
+			      <div class="status-label">총 프로젝트 수</div>
+			    </div>
+			    <div class="col-3">
+			      <div class="status-number ongoing-projects">0</div>
+			      <div class="status-label">진행중인 프로젝트</div>
+			    </div>
+			    <div class="col-3">
+			      <div class="status-number completed-projects">0</div>
+			      <div class="status-label">종료된 프로젝트</div>
+			    </div>
+			    <div class="col-3">
+			      <div class="status-number my-postings">0</div>
+			      <div class="status-label">내가 올린 공고</div>
+			    </div>
+			  </div>
+			</div>
           </div>
         </div>
 
@@ -480,12 +479,12 @@
           <div class="col-md-4 mb-3">
             <div class="action-card">
               <div class="card-header">
-                <h6 class="card-title">저장한 공고 <i class="bi bi-chevron-right"></i></h6>
+                <h6 class="card-title">스크랩한 공고 <i class="bi bi-chevron-right"></i></h6>
               </div>
               <div class="card-body text-center">
                 <div class="empty-state">
                   <i class="bi bi-bookmark empty-icon"></i>
-                  <p class="empty-text">저장한 공고가 없어요</p>
+                  <p class="empty-text">스크랩한 공고가 없어요</p>
                   <button class="btn btn-success action-btn">채용 공고 탐색</button>
                 </div>
               </div>
@@ -510,7 +509,7 @@
           <div class="col-md-4 mb-3">
             <div class="action-card">
               <div class="card-header">
-                <h6 class="card-title">팔로잉 기업 <i class="bi bi-chevron-right"></i></h6>
+                <h6 class="card-title">관심 기업 <i class="bi bi-chevron-right"></i></h6>
               </div>
               <div class="card-body text-center">
                 <div class="empty-state">

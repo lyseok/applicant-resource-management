@@ -117,87 +117,92 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', () => {
-  loadRecommendedJobs();
-  loadProjectInfo();
+  loadMyPageData();
   setupEventListeners();
 });
 
-// 추천 공고 로드
-function loadRecommendedJobs() {
-  const jobs = [
-    {
-      id: 1,
-      title: '[웹린지] 프론트엔드 개발자 (3년 이상)',
-      company: '(주)하이트큐브',
-      badge: '합격률상 200명',
-      imageClass: 'yellow',
-      logo: '웹',
-    },
-    {
-      id: 2,
-      title: '데이터 커머스 제주국 프로젝트 개발(ReactJS, NextJS, ...)',
-      company: '이그레브',
-      badge: '합격률상 100명',
-      imageClass: 'purple',
-      logo: 'IG',
-    },
-    {
-      id: 3,
-      title: 'Frontend Engineer',
-      company: '(주)바비톡',
-      badge: '합격률상 100명',
-      imageClass: 'blue',
-      logo: 'FE',
-    },
-    {
-      id: 4,
-      title: 'Sr. Frontend Engineer',
-      company: '(주)브레이브모바일',
-      badge: '합격률상 100명',
-      imageClass: 'blue',
-      logo: 'SR',
-    },
-  ];
+/** 마이페이지 데이터 로드 **/
+async function loadMyPageData() {
+  try {
+    const response = await fetch('/ajax/member/mypage/info');
+    if (!response.ok) throw new Error("데이터를 불러올 수 없습니다.");
+    const data = await response.json();
+    const user = data.user || {};
+	const projects = data.projects || {};
 
-  const container = document.getElementById('recommendedJobs');
-  container.innerHTML = jobs
-    .map(
-      (job) => `
-        <div class="col-md-3 col-sm-6 mb-3">
-            <div class="job-card" onclick="viewJobDetail(${job.id})">
-                <div class="job-image ${job.imageClass}">
-                    <div class="job-badge">${job.badge}</div>
-                    <div class="company-logo">${job.logo}</div>
-                    <button class="bookmark-btn" onclick="toggleBookmark(event, ${job.id})">
-                        <i class="bi bi-bookmark"></i>
-                    </button>
-                </div>
-                <div class="job-content">
-                    <h6 class="job-title">${job.title}</h6>
-                    <p class="company-name">${job.company}</p>
-                </div>
-            </div>
-        </div>
-    `
-    )
-    .join('');
+    /** ------------------ 1. 프로필 ------------------ **/
+    document.querySelector('.user-name').innerHTML = `${user.MEMNAME || '이름 없음'} <i class="bi bi-chevron-right text-muted"></i>`;
+    document.querySelector('.user-job').textContent = user.RESUMENO ? '대표 이력서 등록됨' : '이력서 없음';
+
+    if (user.MEMIMG) {
+      const avatar = document.querySelector('.profile-avatar');
+      avatar.innerHTML = `<img src="${user.MEMIMG}" alt="프로필 이미지" class="rounded-circle" style="width:60px; height:60px; object-fit:cover;">`;
+    }
+
+    const profileSection = document.querySelector('.profile-section');
+    let profileDetails = profileSection.querySelector('.profile-details');
+    if (!profileDetails) {
+      profileDetails = document.createElement('div');
+      profileDetails.classList.add('mt-3', 'profile-details');
+      profileSection.appendChild(profileDetails);
+    }
+    profileDetails.innerHTML = `
+      <p class="mb-1 text-muted"><i class="bi bi-envelope"></i> ${user.MEMEMAIL || '-'}</p>
+      <p class="mb-1 text-muted"><i class="bi bi-telephone"></i> ${user.MEMTEL || '-'}</p>
+      <p class="mb-1 text-muted"><i class="bi bi-geo-alt"></i> ${(user.MEMADD1 || '') + ' ' + (user.MEMADD2 || '')}</p>
+    `;
+
+    /** ------------------ 2. 지원 현황 ------------------ **/
+    document.querySelector('.apply-count').textContent = user.COUNT_APPLICATED || 0;
+    document.querySelector('.document-pass-count').textContent = user.COUNT_PASS_RERP003 || 0;
+    document.querySelector('.final-pass-count').textContent = user.COUNT_PASSER || 0;
+    document.querySelector('.fail-count').textContent = user.COUNT_FAILED || 0;
+
+    /** ------------------ 3. 받은 제안 ------------------ **/
+    document.querySelector('.proposal-count').textContent = user.COUNT_PROPOSAL || 0;
+    document.querySelector('.interest-count').textContent = user.COUNT_SCRAB || 0;
+    document.querySelector('.resume-view-count').textContent = user.COUNT_READ_RESUME || 0;
+
+    /** ------------------ 4. 프로젝트 ------------------ **/
+	document.querySelector('.total-projects').textContent = projects.TOTAL_PROJECTS ?? 0;
+	document.querySelector('.ongoing-projects').textContent = projects.IN_PROGRESS_PROJECTS ?? 0;
+	document.querySelector('.completed-projects').textContent = projects.FINISHED_PROJECTS ?? 0;
+	document.querySelector('.my-postings').textContent = user.COUNT_SCRAB ?? 0;
+
+    /** ------------------ 5. 추천 공고 ------------------ **/
+    if (data.jobs && Array.isArray(data.jobs)) {
+      loadRecommendedJobs(data.jobs);
+    }
+
+    /** ------------------ 6. 숫자 애니메이션 ------------------ **/
+    animateNumbers();
+
+  } catch (error) {
+    console.error(error);
+    alert("마이페이지 데이터를 불러오는데 실패했습니다.");
+  }
 }
 
-// 프로젝트 정보 로드
-function loadProjectInfo() {
-  // 실제 데이터는 API에서 가져와야 합니다
-  const projectData = {
-    total: 5,
-    ongoing: 2,
-    completed: 3,
-    myPostings: 1,
-  };
-
-  document.getElementById('totalProjects').textContent = projectData.total;
-  document.getElementById('ongoingProjects').textContent = projectData.ongoing;
-  document.getElementById('completedProjects').textContent =
-    projectData.completed;
-  document.getElementById('myPostings').textContent = projectData.myPostings;
+/** 추천 공고 렌더링 **/
+function loadRecommendedJobs(jobs) {
+  const container = document.getElementById('recommendedJobs');
+  container.innerHTML = jobs.map(job => `
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="job-card" onclick="viewJobDetail(${job.id})">
+            <div class="job-image ${job.imageClass}">
+                <div class="job-badge">${job.badge}</div>
+                <div class="company-logo">${job.logo}</div>
+                <button class="bookmark-btn" onclick="toggleBookmark(event, ${job.id})">
+                    <i class="bi bi-bookmark"></i>
+                </button>
+            </div>
+            <div class="job-content">
+                <h6 class="job-title">${job.title}</h6>
+                <p class="company-name">${job.company}</p>
+            </div>
+        </div>
+    </div>
+  `).join('');
 }
 
 // 이벤트 리스너 설정
@@ -248,21 +253,24 @@ function toggleBookmark(event, jobId) {
   }
 }
 
-// 애니메이션 효과
 function animateNumbers() {
   const numbers = document.querySelectorAll('.status-number');
   numbers.forEach((num) => {
-    const target = Number.parseInt(num.textContent);
+    const target = Number(num.textContent);
+    if (isNaN(target)) return; // 숫자 아니면 스킵
+
     let current = 0;
-    const increment = target / 20;
+    const step = Math.max(1, Math.floor(target / 20)); // 최소 1씩 증가
+    num.textContent = 0;
+
     const timer = setInterval(() => {
-      current += increment;
+      current += step;
       if (current >= target) {
         current = target;
         clearInterval(timer);
       }
-      num.textContent = Math.floor(current);
-    }, 50);
+      num.textContent = current;
+    }, 30);
   });
 }
 

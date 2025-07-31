@@ -15,7 +15,7 @@ public interface MemberMapper {
 	public int insertMember(MemberVO member);
 	public int updateMember(MemberVO member);
 	public int deleteMember(String userId);
-	public List<Map<String, Object>> selectMyPageInfo(String userId);
+	public Map<String, Object> selectMyPageInfo(String userId);
 	
 	public UserDTO selectUserWithProjects(String userId);
 	public UserDTO selectCompanyWithProjects(String userId);
