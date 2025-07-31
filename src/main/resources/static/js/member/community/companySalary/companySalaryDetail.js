@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const icon = document.createElement('div');
             icon.className = 'rank-icon';
-            icon.innerHTML = '<i class="bx bxs-user"></i>';
+            icon.innerHTML = '<span class="material-symbols-outlined">person</span>';
             icon.style.left = '0%';
 
             bar.appendChild(icon);

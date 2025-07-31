@@ -1,16 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+	
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>연봉정보 상세</title>
 
 <script src="/js/member/community/companySalary/companySalaryDetail.js"></script>
-<!-- Boxicons CDN 추가 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/boxicons@2.1.0/css/boxicons.min.css"
-	rel="stylesheet">
 <style type="text/css">
 :root {
 	--violet70: #7c3aed;
@@ -20,19 +15,6 @@
 	--radius: 8px;
 }
 
-body {
-	font-family: sans-serif;
-	color: var(--gray700);
-	background: #fff;
-	padding: 2rem;
-	overflow-x: hidden;
-}
-
-.container {
-	max-width: 1000px;
-	margin: 0 auto;
-	padding: 0 1rem;
-}
 
 /* 데이터 요약 */
 .salary-summary-box {
@@ -77,26 +59,6 @@ body {
 	margin-top: 4rem;
 }
 
-.section-title {
-	font-size: 1.25rem;
-	margin-bottom: 1.5rem;
-	display: flex;
-	align-items: center;
-}
-
-.tooltip {
-	display: inline-block;
-	margin-left: 0.5rem;
-	width: 16px;
-	height: 16px;
-	background: var(--gray200);
-	color: var(--gray500);
-	font-size: 0.75rem;
-	line-height: 16px;
-	text-align: center;
-	border-radius: 50%;
-	cursor: default;
-}
 
 .table-scroll-container {
     position: relative;
@@ -263,27 +225,15 @@ body {
 	width: 90%;
 	align-items: center;
 }
-
-#icon {
-	display: inline-flex;
-	align-items: center;
-	gap: 15px;
-	padding: 6px 12px;
-	background-color: var(--violet40);
-	border-radius: 6px;
-	font-size: 0.95rem;
-	color: #333;
-}
-
-
 </style>
 </head>
 <body>
-<div class="container">
 
+		<h1 class="h2 mb-5 fw-bold  mw-1260 mx-auto">연봉정보 상세</h1>
+		
     <!-- 요약 -->
     <div class="section-card">
-        <div class="section-title"><i class="bx bxs-bar-chart-alt-2"></i> 기업 연봉 요약</div>
+        <div class="h3 mb-4">기업 연봉 요약</div>
         <div class="salary-summary-box">
             <div class="summary-item">
                 <div id="salaryCompanyName"></div>
@@ -303,7 +253,7 @@ body {
 
     <!-- 차트 -->
     <div class="section-card" id="cht-section">
-        <div class="section-title"><i class="bx bxs-analyse"></i> 직급별 연봉 통계</div>
+        <div class="h3 mb-4">직급별 연봉 통계</div>
         <div class="chart-area">
             <div id="salaryRankScale"></div>
             <div id="salaryRankChart" class="salary-rank-chart"></div>
@@ -312,7 +262,7 @@ body {
 
     <!-- 유사 기업 -->
     <div class="section-card" id="sim-section">
-        <div class="section-title"><i class="bx bxs-business"></i> 유사기업 비교</div>
+        <div class="h3 mb-4">유사기업 비교</div>
         <div class="table-scroll-container">
             <div class="fixed-table-wrapper">
                 <table id="fixedTable" class="compare-table">
@@ -330,6 +280,4 @@ body {
             <button class="scroll-btn right">&gt;</button>
         </div>
     </div>
-</div>
 </body>
-</html>
