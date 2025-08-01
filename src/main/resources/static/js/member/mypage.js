@@ -274,11 +274,6 @@ function animateNumbers() {
   });
 }
 
-// 페이지 로드 완료 후 숫자 애니메이션 실행
-window.addEventListener('load', () => {
-  setTimeout(animateNumbers, 500);
-});
-
 // 태그 입력 기능 수정된 JavaScript
 document.addEventListener('DOMContentLoaded', function () {
   const tagInput = document.querySelector('.tag-input');
