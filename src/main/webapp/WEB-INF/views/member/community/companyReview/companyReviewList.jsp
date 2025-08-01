@@ -57,23 +57,15 @@
 	font-weight: bold;
 	color: var(--gray700);
 }
-
-
 </style>
 </head>
 <body>
-	<div class="container">
-
-		<p class="h1 mb-3 fw-bold">기업 리뷰</p>
-
-		<!-- 제목 -->
-		<div class="title fs-14" id="company-title">
-			<div style="display: flex; align-items: center; gap: 0.5rem;">
-
-			</div>
-
+	<p class="h1 mb-3 fw-bold">기업 리뷰</p>
+	
+	<!-- 제목 -->
+	<div class="title fs-14" id="company-title">
+		<div style="display: flex; align-items: center; gap: 0.5rem;">
 		</div>
-
 
 		<!-- 탭 + 검색창 -->
 		<div class="Post_filter">
@@ -89,14 +81,20 @@
 					</div>
 					<div class="Post_categoryItem">
 						<input id="status_y" type="radio" value="status_y" name="category">
-						<label for="status_y"><span>기업규모별 </span></label>
+						<label for="status_y"><span>직무별</span></label>
+					</div>
+					<div class="Post_categoryItem">
+						<input id="status_c" type="radio" value="status_c" name="category">
+						<label for="status_c"><span>기업규모별</span></label>
 					</div>
 					<select class="Select_root Select_size38 Select_round w140" name="selectName" id="sortSelect">
-					     <option value="name">기업명 순</option>
-					    <option value="highScore">평점 높은 순</option>
-					    <option value="lowScore">평점 낮은 순</option>
+						<option value="name">기업명 순</option>
+						<option value="highScore">평점 높은 순</option>
+						<option value="lowScore">평점 낮은 순</option>
+						<option value="date">최신순</option>
+						<option value="pop">인기순</option>
+						<option value="like">시작일순</option>
 					</select>
-				
 				</div>
 				
 				<div class="d-flex gap-2">				
@@ -117,41 +115,30 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	
+	<!-- 결과 리스트 -->
+	<ul class="list" id="company-list"></ul>
 
-		<!-- 결과 리스트 -->
-		<ul class="list" id="company-list">
-		</ul>
-
-
-
-		<!-- 페이지네이션 -->
-		<div class="PageBox">
-			<!-- <button data-page="2" class="BtnType SizeS BtnPrev">이전</button> -->
-			<span class="BtnType SizeS active">1</span>
-			<button class="BtnType SizeS page" data-page="2">2</button>
-			<button data-page="2" class="BtnType SizeS BtnNext">다음</button>
-		</div>
-
-
-
-
+	<!-- 페이지네이션 -->
+	<div class="PageBox">
+		<!-- <button data-page="2" class="BtnType SizeS BtnPrev">이전</button> -->
+		<span class="BtnType SizeS active">1</span>
+		<button class="BtnType SizeS page" data-page="2">2</button>
+		<button data-page="2" class="BtnType SizeS BtnNext">다음</button>
 	</div>
 
-
-	
-  
+	<!-- 경력 선택 모달 -->
 	<div class="modal fade" id="careerModal" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered"
-			style="max-width: 450px;">
+		<div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
 			<div class="modal-content">
 				<div class="modal-header bg-white">
 					<h5 class="modal-title fs-5 fw-bold text-success" id="recruitTitle">리뷰 작성 가능한 경력목록</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
-				<div class="modal-body  py-4 px-4">
-					<div class="">
-						<div
-							class="d-flex justify-content-between align-items-center mb-2">
+				<div class="modal-body py-4 px-4">
+					<div>
+						<div class="d-flex justify-content-between align-items-center mb-2">
 							<label class="form-label fw-semibold fs-14 m-0">선택된 경력</label>
 							<button type="button" class="btn btn_violet_line fs-13 fw-semibold" id="btnShowResumeList">경력 선택/변경</button>
 						</div>
@@ -166,5 +153,4 @@
 			</div>
 		</div>
 	</div>
-
 </body>
