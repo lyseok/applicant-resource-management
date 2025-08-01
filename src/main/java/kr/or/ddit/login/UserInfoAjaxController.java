@@ -26,6 +26,7 @@ public class UserInfoAjaxController {
                 map.put("userType", "company");
                 map.put("userName", ((CompanyVO) user).getComName());
                 map.put("userImg", ((CompanyVO) user).getComLogo());
+                map.put("userId", ((CompanyVO) user).getUserId());
             } else if (user instanceof AdminVO) {
                 map.put("userType", "admin");
                 map.put("userName", "관리자");
@@ -33,6 +34,7 @@ public class UserInfoAjaxController {
                 map.put("userType", "member");
                 map.put("userName", ((MemberVO) user).getMemName());
                 map.put("userImg", ((MemberVO) user).getMemImg());
+                map.put("userId", ((MemberVO) user).getUserId());
             } else {
                 map.put("userType", "user");
             }

@@ -187,54 +187,63 @@ function savePassStatus(){
   alert('합격여부 저장(프론트기준)');
 }
 
-// 단계 마감(합격자 일괄적용)
-function closeStep(){
+function closeStep() {
     const activeTable = document.querySelector('.tab-pane.active table');
-    let selectedApplicants = [];
+    let selectedApplicants = [];   // 합격자
+    let unselectedApplicants = []; // 불합격자
+    let recruitmentNo = null;
+
     activeTable.querySelectorAll('tbody tr').forEach(tr => {
-      const check = tr.querySelector('.passCheck');
-      if(check && check.checked){
-		const applicantId = tr.dataset.applicantId;
-      	const applicantName = tr.dataset.applicantName;
-      	const recruitmentNo = tr.dataset.recruitmentNo;
-      	const recruitProcessNo = tr.dataset.processNo;
-      	const recruitProcessFinal = tr.dataset.final;
-      	const recruitProcessStep = tr.dataset.step;
-      	
-      	selectedApplicants.push({
-			applicantId,
-			applicantName,
-			recruitmentNo,
-			recruitProcessNo,
-			recruitProcessStep,
-			recruitProcessFinal
-		});
-		
-        tr.children[9].innerText = 'Y';
-      }else{
-        tr.children[9].innerText = 'N';
-      }
+        const check = tr.querySelector('.passCheck');
+        const applicantId = tr.dataset.applicantId;
+        const applicantName = tr.dataset.applicantName;
+        const recruitProcessNo = tr.dataset.processNo;
+        const recruitProcessFinal = tr.dataset.final;
+        const recruitProcessStep = tr.dataset.step;
+        recruitmentNo = tr.dataset.recruitmentNo;
+
+        const applicantData = {
+            applicantId,
+            applicantName,
+            recruitmentNo,
+            recruitProcessNo,
+            recruitProcessStep,
+            recruitProcessFinal
+        };
+
+        if (check && check.checked) {
+            selectedApplicants.push(applicantData);
+            tr.children[9].innerText = 'Y'; // 합격
+        } else {
+            unselectedApplicants.push(applicantData);
+            tr.children[9].innerText = 'N'; // 불합격
+        }
     });
-    
-    if(selectedApplicants.length === 0){
-		alert('선택된 지원자가 없습니다.');
-		return;
-	}
-	
-	axios.post(`/applicant/record/pass`, selectedApplicants)
-		.then(res=>{
-			/*alert(`마감 완료, ${selectedApplicants.length}명 반영됨`);*/
-			fetchApplicantData(recruitmentNo);
-		})
-		.catch(err=>{
-			console.error('단계 마감 실패', err);
-			alert('단계 마감 중 오류가 발생했습니다.');
-		})
-		.finally(() => {
-			
-		});
-   	
-  }
+
+    if (selectedApplicants.length === 0 && unselectedApplicants.length === 0) {
+        alert('지원자가 없습니다.');
+        return;
+    }
+
+    // 합격 & 불합격 비동기 처리
+    const requests = [];
+    if (selectedApplicants.length > 0) {
+        requests.push(axios.post(`/applicant/record/pass`, selectedApplicants));
+    }
+    if (unselectedApplicants.length > 0) {
+        requests.push(axios.post(`/applicant/record/fail`, unselectedApplicants));
+    }
+
+    Promise.all(requests)
+        .then(responses => {
+            alert(`단계 마감 완료\n합격: ${selectedApplicants.length}명\n불합격: ${unselectedApplicants.length}명`);
+            fetchApplicantData(recruitmentNo);
+        })
+        .catch(err => {
+            console.error('단계 마감 실패', err);
+            alert('단계 마감 중 오류가 발생했습니다.');
+        });
+}
   
   renderApplicantTable();
   
@@ -609,17 +618,14 @@ document.addEventListener('click', function(e) {
 		console.error('이력서 열람 실패');
 	})
 
-  const popupUrl = `/mypage/resume/${resumeNo}/${userId}`;
   const width = 1000;
   const height = 800;
-  const left = (window.innerWidth - width) / 2;
-  const top = (window.innerHeight - height) / 2;
 
   window.open(
-    popupUrl,
-    'resumePopup',
-    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
-  );
+        '/popup/resume/' + resumeNo,
+        'resumePopup',
+        'width=950,height=800'
+      );
 });
 
 function getHighestCareerYear(careerList) {

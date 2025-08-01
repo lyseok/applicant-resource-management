@@ -194,14 +194,16 @@ function renderPage(page) {
         const accepted = item.RECRUIT_ACCEPT_YN === 'Y';
         const hasPasser = item.PASS_ALARM_YN || item.RECRUIT_ACCEPT_YN || item.HIRE_DATE;
 
-        let label = '';
-        if (accepted) {
-            label = '🎉 최종 합격';
-        } else if (isPassedFinal) {
-            label = `${item.STEP}단계 ${mapStepType(item.STEP_TYPE)} 합격`;
-        } else {
-            label = `${item.STEP}단계 ${mapStepType(item.STEP_TYPE)} 심사중`;
-        }
+		let label = '';
+		if (item.FAIL === 'Y') {
+			label = `${item.STEP}단계 ${mapStepType(item.STEP_TYPE)} 불합격`;
+		} else if (accepted) {
+			label = '🎉 최종 합격';
+		} else if (isPassedFinal) {
+			label = `${item.STEP}단계 ${mapStepType(item.STEP_TYPE)} 합격`;
+		} else {
+			label = `${item.STEP}단계 ${mapStepType(item.STEP_TYPE)} 심사중`;
+		}
 
         statusDiv.innerHTML = `<div class="fs-14 fw-bold">${label}</div>`;
 

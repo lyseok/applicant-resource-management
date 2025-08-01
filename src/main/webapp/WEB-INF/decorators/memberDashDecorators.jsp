@@ -43,6 +43,17 @@
       else if (data.userType === 'admin') name = '관리자';
       else if (data.userType === 'member') name = data.userName;
       document.getElementById('user_name').textContent = name;
+      // 프로필 이미지
+      const userImg = document.querySelector('.user_photo');
+      userImg.innerHTML = "";
+      if (data.userImg != null){
+	      const img = document.createElement("img");
+	      img.src = `\${data.userImg}`;
+	      img.style.width = "100%";
+	      img.style.objectFit = "cover";
+	      userImg.append(img);
+      }
+
   });
 </script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

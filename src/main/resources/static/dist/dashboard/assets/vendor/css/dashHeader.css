@@ -191,3 +191,18 @@
 .dash_header .wrap_member .btn_member.expanded+.layer_member {
     display: block
 }
+
+
+
+/* 250731 - 컴퍼니 사이드메뉴 style 추가 */
+.menu-link .bx-lock-keyhole{
+	display:none;
+}
+
+.menu-link.off{
+	opacity:0.3;
+}
+.menu-link.off  .bx-lock-keyhole{
+	display:block;
+	margin-left:5px;
+}
