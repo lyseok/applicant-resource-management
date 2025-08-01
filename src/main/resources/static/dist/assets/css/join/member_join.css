@@ -66,11 +66,18 @@ button::-moz-focus-inner, input::-moz-focus-inner {
     border: 0
 }
 
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"] {
     display: inline-block;
     width: 13px;
     height: 13px;
     vertical-align: -1px
+}
+.form-check .form-check-input:focus{
+	box-shadow:none;
+	border-color:none;
+}
+.form-check .form-check-input:focus-visible{
+	outline:none;
 }
 
 a:link, a:visited, a:active, a:hover {
@@ -481,7 +488,7 @@ em, i {
 
 /* WMG-35202 230421 */
 .write_base .item .alert_column.good_txt {
-    color: #2d65f2
+    color:var(--violet80) !important;
 }
 
 .write_base .item .alert_column.focus_txt {
@@ -2294,9 +2301,10 @@ em, i {
 
 .area_job_category {
     position: relative;
-    padding: 2px 12px 12px;
-    min-height: 48px;
+    padding: 10px;
+    min-height: 46px;
     box-sizing: border-box;
+    display:flex;
     align-items: center;
     justify-content: space-between
 }
@@ -2372,10 +2380,12 @@ em, i {
     left: 50%;
     z-index: 102;
     padding: 35px 30px 30px;
-    border: 1px solid #444;
+    border: 1px solid var(--violet20);
     box-sizing: border-box;
     background: #fff;
-    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.12)
+    box-shadow: 0 1px 1px 1px rgba(0,0,0,0.12);
+    border-radius:10px;
+    
 }
 
 .layer_pop_manage {
@@ -2395,7 +2405,13 @@ em, i {
 .layer_pop_manage .layer_manage_wrap {
     position: relative;
     z-index: 100;
-    padding: 25px 30px 30px
+    padding: 25px 30px 87px 30px;
+    min-height: 642px;
+}
+.layer_pop_manage .layer_manage_wrap fieldset{
+	padding-top:30px;
+  border-top: 1px solid #444;
+	
 }
 
 .layer_pop_manage .layer_manage_wrap h4 {
@@ -2409,20 +2425,19 @@ em, i {
 .layer_pop_manage .txt {
     margin-bottom: 5px;
     font-size: 13px;
-    line-height: 20px
+    line-height: 20px;
+    color:var(--violet100);
+    text-align:right;    
 }
 
 .layer_pop_manage .bottom_btn_wrap {
-    margin-top: 10px;
-    text-align: center
-}
-
-.layer_pop_manage .bottom_btn_wrap button, .layer_pop_manage .bottom_btn_wrap a {
-    margin-left: 1px
-}
-
-.layer_pop_manage .bottom_btn_wrap button:first-child, .layer_pop_manage .bottom_btn_wrap a:first-child {
-    margin-left: 0
+		position:absolute;
+		bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display:flex;
+    gap:6px;
+    
 }
 
 .layer_pop_manage .btn_layer_close {
@@ -2448,13 +2463,17 @@ em, i {
 }
 
 .layer_hope .area_search_job {
-    margin-bottom: 16px;
-    padding-top: 25px;
-    height: 83px;
-    border: 1px solid #eaeaea;
-    box-sizing: border-box;
-    text-align: center;
-    background-color: #f7f7f7
+	display:flex;
+	justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 16px;
+  height: 83px;
+  border: 1px solid #eaeaea;
+  box-sizing: border-box;
+  text-align: center;
+  background-color:var(--violet20);
+  border-radius:10px;
 }
 
 .layer_hope .area_search_job .title_search_job {
@@ -2467,14 +2486,20 @@ em, i {
 
 .layer_hope .area_search_job .sri_input {
     width: 428px;
-    box-sizing: border-box
+    box-sizing: border-box;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #333;
+}
+.layer_hope .area_search_job .sri_input:focus-visible{
+	border-radius:0;
+	outline:none;
 }
 
 .layer_hope .area_table_scroll {
     overflow-x: hidden;
     overflow-y: scroll;
-    max-height: 380px;
-    border-top: 1px solid #444
+    max-height: 342px;
 }
 
 .layer_hope .area_jobs_add {

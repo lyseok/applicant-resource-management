@@ -68,4 +68,10 @@ public class PaymentLogServiceImpl implements PaymentLogService {
 		return authentication.getName();		// 기업 ID 
 		}
 
+	@Override
+	public List<PaymentLogVO> selectLoghistoryByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return  mapper.selectLoghistoryByUserId(userId);
+	}
+
 }

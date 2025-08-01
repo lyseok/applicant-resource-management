@@ -12,6 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/board/project")
 public class MemberProjectAnnouncementController {
 	@GetMapping
+	public String prjNoticeListPage(Model model) {
+		model.addAttribute("boardCss", true);
+		return "member/project/announcement/prjNoticeList";
+	}
+	@GetMapping("/before")
 	public String projectAnnouncementPage() {
 		return "member/project/announcement/announcementList";
 	}

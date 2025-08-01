@@ -1,6 +1,7 @@
 package kr.or.ddit.mapper.common;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,4 +23,10 @@ public interface CompanyMapper {
 	public int updateCompanyInfoById(CompanyVO company);
 	
 	public List<CompanyVO> selectCompanyWithResumeCareer();
+	
+	public List<CompanyVO> selectCompanyInfoList();
+	
+	public List<Map<String, Object>> selectCompanyNameList();
+	
+	public String selectComPayment(String userId);
 }

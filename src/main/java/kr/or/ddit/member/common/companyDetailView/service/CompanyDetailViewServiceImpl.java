@@ -1,7 +1,7 @@
 package kr.or.ddit.member.common.companyDetailView.service;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -9,11 +9,13 @@ import kr.or.ddit.conf.CodeMapProvider;
 import kr.or.ddit.dto.CompanyOpProfitDTO;
 import kr.or.ddit.dto.CompanySalaryDTO;
 import kr.or.ddit.dto.CompanySalesDTO;
+import kr.or.ddit.dto.PassIntroductionDetailDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.CompanyOpProfitMapper;
 import kr.or.ddit.mapper.common.CompanySalesMapper;
 import kr.or.ddit.mapper.common.FileMapper;
 import kr.or.ddit.mapper.common.SalaryMapper;
+import kr.or.ddit.mapper.recruitment.PassIntroductionMapper;
 import kr.or.ddit.mapper.recruitment.RecruitmentNoticeMapper;
 import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.FilesVO;
@@ -30,14 +32,14 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	private final RecruitmentNoticeMapper recruitmentNoticeMapper;
 	private final SalaryMapper salaryMapper;
 	private final FileMapper fileMapper;
-	
+	private final PassIntroductionMapper passIntroductionMapper;
 
 	@Override
 	public CompanyVO readCompanyInfoById(String userId) {
 		CompanyVO company = companyMapper.selectCompanyInfoById(userId);
 		String no = company.getIndustryType();
 		String name = codeMapProvider.getInduName(no);
-		company.setIndustryType(name);
+		company.setInduName(name);
 	
 		String typeName = codeMapProvider.getCodeName(company.getComType());
 		String sizeName = codeMapProvider.getCodeName(company.getComSize());
@@ -100,7 +102,26 @@ public class CompanyDetailViewServiceImpl implements CompanyDetailViewService{
 	public List<FilesVO> readCompanyImageFileListBySourceNo(String sourceNo) {
 		return	fileMapper.selectFileListBySourceNo(sourceNo);
 	}
+
+
+	@Override
+	public List<Map<String, Object>> readTopFiveJobNotice(String userId) {
+		return recruitmentNoticeMapper.selectTopFiveJobNotice(userId);
+	}
 	
+	@Override
+	public List<PassIntroductionDetailDTO> readPassIntroductionDetail(String comId) {
+		List<PassIntroductionDetailDTO> passList = passIntroductionMapper.selectPassIntroductionDetailInfo(comId);
+		for (PassIntroductionDetailDTO pass : passList) {
+			String job = codeMapProvider.getJobName(pass.getJobCode());
+			pass.setJobCodeName(job);
+			String high = codeMapProvider.getCodeName(pass.getEducation().getHighestEducationCode());
+			String grade = codeMapProvider.getCodeName(pass.getEducation().getGraduateYn());
+			pass.getEducation().setGraduateYnName(grade);
+		    pass.getEducation().setHighestEducationCodeName(high);
+		}
+		return passList;
+	}
 	
 	
 	

@@ -14,19 +14,17 @@
 	<p class="h1 mb-3 fw-bold">면접 목록</p>
 	<div
 		class="border-bottom d-flex justify-content-between align-items-end pb-2">
-		<p class="fs-14">총 <span id="list-size">0</span> 건</p>
+		<p class="fs-14">총 <span id="list-size" class="fw-bold">0</span> 건</p>
+			
 		<div class="TypoBox searchBar">
-			<div class="searchBarWrap">
-				<label class="searchBarLabel" for="listKeyword">검색어</label> <input
-					type="text" id="listKeyword" class="searchBarInput"
-					placeholder="면접 제목으로 검색하세요." maxlength="24"
-					autocomplete="off" class="SearchInput_SearchInput__input__Cg7QD"
-					value="">
+				<div class="searchBarWrap">
+					<label class="searchBarLabel" for="listKeyword">검색어</label>
+					<input type="text" id="examSearch" class="searchBarInput" placeholder="면접 제목으로 검색하세요." maxlength="24" autocomplete="off" value="" >
+				</div>
+				<button type="button" class="searchBarBtn" id="searchBtn">
+					<span class="material-symbols-outlined">search</span>
+				</button>
 			</div>
-			<button type="button" class="searchBarBtn">
-				<span class="material-symbols-outlined">search</span>
-			</button>
-		</div>
 	</div>
 
 	<div class="Post_post">

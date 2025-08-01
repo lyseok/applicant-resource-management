@@ -108,9 +108,8 @@ function recruitNoticeInit(data) {
                 <p class="work_place">${item.cityName} ${item.districtName}</p>
               </li>
               <li>
-                <p class="career">${item.yearCodeName || ''}${
-        item.recruitFinishYn === 'Y' ? ' · 마감' : ' · 진행중'
-      }</p>
+                <p class="career">${item.yearCodeName || ''}
+                ${item.recruitFinishYn === 'Y' ? ' · 마감' : ' · 진행중'}</p>
               </li>
               <li>
                 <p class="education">${
@@ -120,9 +119,9 @@ function recruitNoticeInit(data) {
                 }</p>
               </li>
               <li>
-                <p class="salary">${
-                  formatSalary(item.recruitmentSalary) || '-'
-                }</p>
+                <p class="salary">
+                ${formatSalary(item.recruitmentSalary) || '-'}
+                </p>
               </li>
             </ul>
           </div>

@@ -34,6 +34,33 @@
 	        <result property="industryType"   column="INDUSTRY_TYPE"/>
 	    </association>
 	</resultMap>
+	
+	<resultMap id="careerDetailMap" type="kr.or.ddit.vo.resume.CareerVO">
+    <id property="careerNo" column="CAREER_NO"/>
+    <result property="resumeNo" column="RESUME_NO"/>
+    <result property="jobCode" column="JOB_CODE"/>
+    <result property="comId" column="COM_ID"/>
+    <result property="comName" column="COM_NAME"/>
+    <result property="startWorkDate" column="START_WORK_DATE"/>
+    <result property="retireDate" column="RETIRE_DATE"/>
+    <result property="tenure" column="TENURE"/>
+    <result property="department" column="DEPARTMENT"/>
+    <result property="responsibility" column="RESPONSIBILITY"/>
+    <result property="freelancer" column="FREELANCER"/>
+    <result property="jobGradeCode" column="JOB_GRADE_CODE"/>
+    <result property="positionCode" column="POSITION_CODE"/>
+    <result property="careerYear" column="CAREER_YEAR"/>
+    <result property="salary" column="SALARY"/>
+    <result property="location" column="LOCATION"/>
+    
+    <!-- CompanyVO 매핑 -->
+    <association property="company" javaType="kr.or.ddit.vo.common.CompanyVO">
+        <result property="comSize" column="COM_SIZE"/>
+        <result property="comMem" column="COM_MEM"/>
+        <result property="ceoName" column="CEO_NAME"/>
+    </association>
+</resultMap>
+
 	<select id="selectCareerList" resultMap="careerMap">
 		SELECT
 		      cr.CAREER_NO AS CAREER_NO
@@ -164,4 +191,30 @@
 		DELETE FROM CAREER 
 		 WHERE RESUME_NO = #{resumeNo}
 	</delete>
+	
+	<select id="selectCareerDetailWithCom" resultMap="careerDetailMap">
+    SELECT C.CAREER_NO
+           , C.RESUME_NO
+           , C.JOB_CODE
+           , CO.COM_SIZE
+           , CO.COM_MEM
+           , CO.CEO_NAME
+           , TO_CHAR(TO_DATE(C.START_WORK_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS START_WORK_DATE
+           , TO_CHAR(TO_DATE(C.RETIRE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS RETIRE_DATE
+           , C.TENURE
+           , C.DEPARTMENT
+           , C.RESPONSIBILITY
+           , C.FREELANCER
+           , C.JOB_GRADE_CODE
+           , C.POSITION_CODE
+           , C.CAREER_YEAR
+           , C.SALARY
+           , C.LOCATION
+           , C.COM_ID
+           , CO.COM_NAME
+      FROM CAREER C
+      LEFT JOIN COMPANY CO 
+        ON C.COM_ID = CO.USER_ID
+     WHERE C.CAREER_NO = #{careerNo}
+</select>
 </mapper>

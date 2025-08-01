@@ -198,6 +198,10 @@ body {
 	width:100%;
 	margin: 0 auto;
 }
+.n_inner .inner{
+	max-width:100%;
+}
+
 
 body#sri_layout_popup {
     padding-top: 0

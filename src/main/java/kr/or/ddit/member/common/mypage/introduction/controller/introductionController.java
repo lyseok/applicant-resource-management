@@ -55,7 +55,7 @@ public class introductionController {
 	@GetMapping("/list")
 	public String getintroduction(
 		@AuthenticationPrincipal UserDetails userDetails 
-		, @RequestParam(defaultValue = "1") int page
+		, @RequestParam(defaultValue = "1") int page	// 프론트에서 받음,
 		, Model model
 	) {
 		if(userDetails == null) {
@@ -63,6 +63,7 @@ public class introductionController {
 		}
 		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기	
 		
+		// 페이징 처리를 위한 설정
 		int pageSize = 4;
 	    int offset = (page - 1) * pageSize;
 	    int totalCount = service.getTotalCount(userId);
@@ -76,6 +77,7 @@ public class introductionController {
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalCount", totalCount);
 	    model.addAttribute("totalPages", totalPages);
+		// 페이징 처리를 위한 설정 end
 
 		return "member/resume/mypage/introduction/introductionList";
 	}
@@ -189,8 +191,29 @@ public class introductionController {
 	public String getintroductionSearch(
 		Model model
 		, @RequestParam String keyword
+		, @RequestParam(defaultValue = "1") int page
 	) {
-		model.addAttribute("introductionList", service.readIntroductionSearch(keyword));
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
+		
+		int pageSize = 4;
+	    int offset = (page - 1) * pageSize;
+	    
+
+	    int totalCount = service.getSearchCount(userId, keyword);
+	    List<IntroductionVO> introductionList = service.searchIntroductionList(userId, keyword, offset, pageSize);
+
+	    
+	    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+	    
+		// model.addAttribute("introductionList", service.readIntroductionSearch(keyword));
+
+	    model.addAttribute("introductionList", introductionList);
+		model.addAttribute("currentPage", page);
+	    model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("keyword", keyword);
+
 		return "member/resume/mypage/introduction/introductionList";
 	}
 }

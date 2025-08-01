@@ -54,7 +54,10 @@
 		     , USER_ID
 		     , BOARD_TYPE_CODE
 		     , BOARD_TITLE
+		     , BOARD_WRITE_DATE
 		     , BOARD_CONTENT
+		     , BOARD_DELETE_DATE
+		     , BOARD_POST_HIT
 		     , BOARD_STATUS
 		FROM ADMIN_BOARD
 		WHERE BOARD_STATUS = 'D'
@@ -62,15 +65,16 @@
 	
 	<select id="selectAdminBoardListByTypeAndUserRole" resultType="AdminBoardVO">
 		SELECT 
-			B.BOARD_NO,
-			B.BOARD_TYPE_CODE,
-			B.USER_ID,
-			B.BOARD_TITLE,
-			B.BOARD_WRITE_DATE,
-			B.BOARD_DELETE_DATE,
-			B.BOARD_POST_HIT,
-			B.BOARD_STATUS,
-			U.USER_ROLE
+			  B.BOARD_NO
+			, B.USER_ID
+			, B.BOARD_TYPE_CODE
+			, B.BOARD_TITLE
+			, B.BOARD_WRITE_DATE
+			, B.BOARD_CONTENT
+			, B.BOARD_DELETE_DATE
+			, B.BOARD_POST_HIT
+			, B.BOARD_STATUS
+			, U.USER_ROLE
 		FROM ADMIN_BOARD B
 		JOIN USERS U ON B.USER_ID = U.USER_ID
 		WHERE B.BOARD_TYPE_CODE = #{boardTypeCode}
@@ -79,7 +83,143 @@
 			AND U.USER_ROLE = #{userRole}
 		</if>
 	</select>
-
+	
+	<!-- 검색 페이징 처리(검색조건 추가해야 함) -->
+	<select id="selectAboardByFilter" resultMap="adminBoardMap">
+	    SELECT *
+	    FROM (
+	        SELECT ROWNUM rnum, A.*
+	        FROM (
+	            SELECT R.*
+	            FROM ADMIN_BOARD R
+	            ORDER BY R.BOARD_NO DESC
+	        ) A
+	        WHERE ROWNUM &lt;= #{endRow}
+	    )
+	    WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<!-- 답글여부 조회 -->
+	<select id="selectAdminBoardWithComments" resultMap="adminBoardMap">
+	    SELECT *
+	    FROM (
+	        SELECT ROWNUM rnum, A.*
+	        FROM (
+	            SELECT R.*
+	            FROM ADMIN_BOARD R
+	            JOIN ADMIN_COMMENT M ON M.BOARD_NO = R.BOARD_NO
+	            WHERE 1 = 1
+	            ORDER BY R.BOARD_NO DESC
+	        ) A
+	        WHERE ROWNUM &lt;= #{endRow}
+	    )
+	    WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<!-- 검색 시 페이지 개수 조회(검색 조건 추가해야 함) -->
+	<select id="selectAboardCountByFilter" resultMap="adminBoardMap">
+	    SELECT COUNT(*)
+	    FROM (
+	        SELECT ROWNUM rnum, A.*
+	        FROM (
+	            SELECT R.*
+	            FROM ADMIN_BOARD R
+	            LEFT JOIN ADMIN_COMMENT M ON M.BOARD_NO = R.BOARD_NO
+	            WHERE 1 = 1
+	            ORDER BY R.BOARD_NO DESC
+	        ) A
+	        WHERE ROWNUM &lt;= #{endRow}
+	    )
+	    WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<!-- 공지사항 리스트 조회 -->
+	<select id="selectNoticeList" resultType="AdminBoardVO">
+		SELECT 
+			  B.BOARD_NO
+			, B.USER_ID
+			, B.BOARD_TYPE_CODE
+			, B.BOARD_TITLE
+			, B.BOARD_WRITE_DATE
+			, B.BOARD_CONTENT
+			, B.BOARD_DELETE_DATE
+			, B.BOARD_POST_HIT
+			, B.BOARD_STATUS
+			, U.USER_ROLE
+		FROM ADMIN_BOARD B
+		JOIN USERS U ON B.USER_ID = U.USER_ID
+		<where>
+			B.BOARD_STATUS != 'D'
+			<if test='boardTypeCode == "BRDD-003" or boardTypeCode.contains("NTC")'>
+				AND B.BOARD_TYPE_CODE LIKE '%NTC%'
+			</if>
+		</where>
+	</select>
+	
+	<!-- 공지사항 기본 페이징 처리 -->
+	<select id="selectNotice" parameterType="map" resultMap="adminBoardMap">
+		SELECT * FROM (
+	        SELECT ROWNUM rnum, A.* 
+	        FROM (
+	            SELECT * 
+	            FROM ADMIN_BOARD
+	            <where>
+	                BOARD_STATUS != 'D'
+	                <if test="boardTypeCode != null and boardTypeCode != ''">
+						AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+					</if>
+	            </where>
+	            ORDER BY BOARD_NO DESC
+	        ) A
+	        WHERE ROWNUM &lt;= #{endRow}
+	    )
+	    WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<!-- 공지사항용 기본 페이지 개수 조회 -->
+	<select id="selectCountNotice" parameterType="map" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM ADMIN_BOARD
+	    <where>
+	        BOARD_STATUS != 'D'
+	        <if test="boardTypeCode != null and boardTypeCode != ''">
+				AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+			</if>
+	    </where>
+	</select>
+	
+	<!-- 게시판 유형별, 기본 페이징 처리 -->
+	<select id="selectAdminBoard" parameterType="map" resultMap="adminBoardMap">
+		SELECT * FROM (
+	        SELECT ROWNUM rnum, A.* 
+	        FROM (
+	            SELECT * 
+	            FROM ADMIN_BOARD
+	            <where>
+	                BOARD_STATUS != 'D'
+	                <if test="boardTypeCode != null and boardTypeCode != ''">
+						AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+					</if>
+	            </where>
+	            ORDER BY BOARD_NO DESC
+	        ) A
+	        WHERE ROWNUM &lt;= #{endRow}
+	    )
+	    WHERE rnum &gt; #{startRow}
+	</select>
+	
+	<!-- 게시판 유형별, 기본 페이지 개수 조회 -->
+	<select id="selectCountAdminBoard" parameterType="map" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM ADMIN_BOARD
+	    <where>
+	        BOARD_STATUS != 'D'
+	        <if test="boardTypeCode != null and boardTypeCode != ''">
+				AND BOARD_TYPE_CODE LIKE #{boardTypeCode}
+			</if>
+	    </where>
+	</select>
+	
 	<select id="selectCmnGroupList">
 		WITH UPPER_CODE_VIEW AS (    
 		    SELECT 
@@ -172,7 +312,10 @@
 		     , A.USER_ID
 		     , A.BOARD_TYPE_CODE
 		     , A.BOARD_TITLE
+		     , A.BOARD_WRITE_DATE
 		     , A.BOARD_CONTENT
+		     , A.BOARD_DELETE_DATE
+		     , A.BOARD_POST_HIT
 		     , A.BOARD_STATUS
 		FROM ADMIN_BOARD A
 			JOIN CMN_CODE C 
@@ -183,12 +326,15 @@
 
 	<select id="selectAdminBoardList" resultMap="adminBoardMap">
 		SELECT 
-			  A.BOARD_NO
-			, A.USER_ID
-			, A.BOARD_TYPE_CODE
-			, A.BOARD_TITLE
-			, A.BOARD_CONTENT
-			, A.BOARD_STATUS
+			   A.BOARD_NO
+		     , A.USER_ID
+		     , A.BOARD_TYPE_CODE
+		     , A.BOARD_TITLE
+		     , A.BOARD_WRITE_DATE
+		     , A.BOARD_CONTENT
+		     , A.BOARD_DELETE_DATE
+		     , A.BOARD_POST_HIT
+		     , A.BOARD_STATUS
 		FROM ADMIN_BOARD A
 		INNER JOIN USERS U 
 			ON A.USER_ID = U.USER_ID

@@ -22,6 +22,8 @@ public class ResumeVO implements Serializable {
 
 	@Size(max = 20)
 	private String resumeNo; // 이력서 고유번호
+	
+	private String mainResumeNo;
 
 	@NotBlank
 	private String userId; // 사용자 ID
@@ -87,6 +89,8 @@ public class ResumeVO implements Serializable {
 	private List<MilitaryVO> militaryList; // 병역
 	@Valid
 	private List<EducationVO> educationList; // 학력
+	
+	private EducationVO education;
 	
 
 	private CompanyVO company;						// 기업정보

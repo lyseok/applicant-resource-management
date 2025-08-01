@@ -104,4 +104,18 @@ public class introductionServiceImpl implements introductionService {
 	public List<IntroductionVO> getIntroductionPagingList(String userId, int offset, int limit) {
 	    return mapper.selectIntroductionPagingList(userId, offset, limit);
 	}
+	
+	
+	
+	
+	
+	@Override
+    public int getSearchCount(String userId, String keyword) {
+        return mapper.getSearchCount(userId, keyword);
+    }
+
+    @Override
+    public List<IntroductionVO> searchIntroductionList(String userId, String keyword, int offset, int pageSize) {
+        return mapper.searchIntroductionList(userId, keyword, offset, pageSize);
+    }
 }

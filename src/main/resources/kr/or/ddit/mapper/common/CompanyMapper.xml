@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.CompanyMapper">
 	
+	<select id="selectCompanyNameList" resultType="map">
+		SELECT COM_NAME, USER_ID FROM COMPANY
+	</select>
 	
 	<select id="selectCompanyById" resultType="CompanyVO">
 		SELECT
@@ -62,6 +65,13 @@
 	    FROM COMPANY C
 	    JOIN USERS U
 	    ON C.USER_ID = U.USER_ID
+	</select>
+	
+	<select id="selectComPayment">
+		SELECT COM_PAYMENT
+		FROM COMPANY
+		WHERE COM_PAYMENT = 'N'
+		AND USER_ID = #{user_id}
 	</select>
 	
 	<insert id="insertCompany">
@@ -164,6 +174,36 @@
 			, COM_MAIN_BIZ      
 	    FROM COMPANY
 	    WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="selectCompanyInfoList" resultType="CompanyVO">
+		 SELECT
+			    C.USER_ID,
+			    C.COM_NAME,
+			    C.COM_INFO,
+			    C.COM_NUM,
+			    C.COM_EMAIL,
+			    C.COM_URL,
+			    C.COM_CREATE_YEAR,
+			    C.COM_MEM,
+			    C.COM_LOGO,
+			    C.COM_BACKGROUND_IMG,
+			    C.COM_PAYMENT,
+			    C.INDUSTRY_TYPE,
+			    C.COM_TYPE,
+			    C.COM_SIZE,
+			    C.INSURANCE_YN,
+			    C.CEO_NAME,
+			    C.COM_ADDR,
+			    C.COM_CAPITAL,
+			    C.COM_MAIN_BIZ
+		  FROM COMPANY C
+		  WHERE EXISTS (
+		    SELECT 1
+		    FROM COMPANY_REVIEW R
+		    WHERE R.COM_ID = C.USER_ID
+		  )
+		  ORDER BY C.COM_NAME
 	</select>
 	
 	

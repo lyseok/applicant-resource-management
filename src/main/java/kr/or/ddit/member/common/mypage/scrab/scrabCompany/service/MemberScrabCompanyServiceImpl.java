@@ -10,9 +10,11 @@ import kr.or.ddit.common.exception.DataInsertException;
 import kr.or.ddit.mapper.common.ScrabCompanyMapper;
 import kr.or.ddit.vo.common.ScrabCompanyVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberScrabCompanyServiceImpl implements MemberScrabCompanyService {
 	private final ScrabCompanyMapper mapper;
 
@@ -20,6 +22,7 @@ public class MemberScrabCompanyServiceImpl implements MemberScrabCompanyService 
 	public List<ScrabCompanyVO> readMyScrabCompanyList() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
+		log.info("username : {}", username);
 		return mapper.selectMyScrabCompanyList(username);
 	}
 
@@ -54,6 +57,18 @@ public class MemberScrabCompanyServiceImpl implements MemberScrabCompanyService 
 		if(res <= 0) {
 			throw new DataInsertException("관심 기업 삭제 실패");
 		}
+	}
+
+	@Override
+	public int findCompanyScrabYn(String companyId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		ScrabCompanyVO scompany = new ScrabCompanyVO();
+		scompany.setUserId(username);
+		scompany.setCompanyId(companyId);
+		
+		int res = mapper.checkMyCompanyScrab(scompany);
+		return res;
 	}
 
 }

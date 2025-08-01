@@ -2,39 +2,83 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="kr.or.ddit.mapper.common.ScrabRecruitmentMapper">
-	
+
 	<select id="selectScrabRecruitmentList">
 		SELECT
-			  USER_ID
-			, RECRUITMENT_NO
-			, SCRAB_RECUITMENT_DATE
+		USER_ID
+		, RECRUITMENT_NO
+		, SCRAB_RECUITMENT_DATE
 		FROM SCRAB_RECRUITMENT
 	</select>
 
-	<select id="selectMyScrabRecruitmentList">
+	<!-- <select id="selectMyScrabRecruitmentList"> SELECT USER_ID , RECRUITMENT_NO 
+		, SCRAB_RECUITMENT_DATE FROM SCRAB_RECRUITMENT WHERE USER_ID = #{userId} 
+		</select> -->
+	<resultMap id="ScrabRecruitmentMap"
+		type="kr.or.ddit.vo.common.ScrabRecruitmentVO">
+		<id property="userId" column="USER_ID" />
+		<id property="recruitmentNo" column="RECRUITMENT_NO" />
+		<result property="scrabRecruitmentDate"
+			column="SCRAB_RECUITMENT_DATE" />
+
+		<association property="recruitment"
+			javaType="RecruitmentNoticeVO">
+			<id property="recruitmentNo" column="recruitment_recruitmentNo" />
+			<result property="recruitmentTitle" column="RECRUITMENT_TITLE" />
+			<result property="recContent" column="REC_CONTENT" />
+			<result property="recruitmentFinishDate"
+				column="RECRUITMENT_FINISH_DATE" />
+			<result property="recruitmentSalary"
+				column="RECRUITMENT_SALARY" />
+			<result property="welfare" column="WELFARE" />
+			<result property="comName" column="COM_NAME" /> <!-- 회사명 -->
+		</association>
+
+	</resultMap>
+
+	<select id="selectMyScrabRecruitmentList"
+		resultMap="ScrabRecruitmentMap">
 		SELECT
-			  USER_ID
-			, RECRUITMENT_NO
-			, SCRAB_RECUITMENT_DATE
-		FROM SCRAB_RECRUITMENT
-		WHERE USER_ID = #{userId}
+		sr.USER_ID,
+		sr.RECRUITMENT_NO,
+		sr.SCRAB_RECUITMENT_DATE,
+		r.RECRUITMENT_NO AS recruitment_recruitmentNo,
+		r.RECRUITMENT_TITLE,
+		r.REC_CONTENT,
+		r.RECRUITMENT_FINISH_DATE,
+		r.RECRUITMENT_SALARY,
+		r.WELFARE,
+		c.COM_NAME
+		FROM SCRAB_RECRUITMENT sr
+		JOIN RECRUITMENT_NOTICE r ON sr.RECRUITMENT_NO = r.RECRUITMENT_NO
+		JOIN COMPANY c ON r.USER_ID = c.USER_ID   <!-- 회사와 매칭 -->
+		WHERE sr.USER_ID = #{userId}
 	</select>
 	
+	<select id="checkRecruitScrab">
+		SELECT
+			COUNT(SCRAB_RECUITMENT_DATE)
+		FROM SCRAB_RECRUITMENT
+		WHERE USER_ID = #{userId}
+		AND RECRUITMENT_NO = #{recruitmentNo}
+	</select>
+
 	<insert id="insertScrabRecruitment">
 		INSERT INTO SCRAB_RECRUITMENT (
-			USER_ID
-			, RECRUITMENT_NO
-			, SCRAB_RECUITMENT_DATE
+		USER_ID
+		, RECRUITMENT_NO
+		, SCRAB_RECUITMENT_DATE
 		) VALUES (
-			#{userId}
-			, #{recruitmentNo}
-			, SYSDATE
+		#{userId}
+		, #{recruitmentNo}
+		, SYSDATE
 		)
 	</insert>
 
 	<delete id="deleteScrabRecruitment">
 		DELETE FROM SCRAB_RECRUITMENT
-		WHERE USER_ID = #{userId}
+		WHERE USER_ID =
+		#{userId}
 		AND RECRUITMENT_NO = #{recruitmentNo}
 	</delete>
 

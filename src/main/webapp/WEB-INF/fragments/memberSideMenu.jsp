@@ -26,7 +26,7 @@
         </a>
       </li>
       <li class="menu-item">
-        <a href="http://localhost:3000/" class="menu-link">
+        <a href="javascript:void(0);" class="menu-link" id="projectLink">
           <!-- <i class="menu-icon tf-icons bx bx-garage"></i> -->
           <span class="menu-icon material-symbols-outlined"
             style="font-size:1.35rem; width:20px; height: 20px;">Communities</span>
@@ -96,15 +96,15 @@
 
       <li class="menu-header small text-uppercase"><span class="menu-header-text">맞춤 공고함</span></li>
       <li class="menu-item">
-        <a href="/member/mypage/scrab_company" class="menu-link">
+        <a href="/mypage/scrabCompany/list" class="menu-link">
           <i class="menu-icon tf-icons bx bx-bookmark"></i>
-          <div data-i18n="Basic">스크랩</div>
+          <div data-i18n="Basic">관심기업</div>
         </a>
       </li>
       <li class="menu-item">
-        <a href="/member/mypage/scrab_recruit" class="menu-link">
+        <a href="/mypage/scrabRecruit/list" class="menu-link">
           <i class="menu-icon tf-icons bx bx-heart"></i>
-          <div data-i18n="Basic">관심공고</div>
+          <div data-i18n="Basic">공고스크랩</div>
         </a>
       </li>
       <li class="menu-item">
@@ -142,7 +142,10 @@
         </a>
       </li>
       <!-- 여기까지 사이드바 작업하는 곳 -->
-
+      <script src="/js/config.js"></script>
+      <script>
+        document.getElementById('projectLink').setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+      </script>
     </ul>
   </aside>
   <!-- / Menu -->

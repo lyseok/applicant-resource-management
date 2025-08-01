@@ -72,9 +72,9 @@
     <script defer src="/js/member/project/announcement/announcementDetail.js"></script>
   </head>
 
-  <body style="background:#fafafc;">
-    <div class="container py-5" style="max-width:800px;">
-      <div class="card shadow-card border-0 mb-5" style="border-radius: 22px;">
+  <body>
+    <div class="container">
+      <div class="card shadow-card border-0 mb-5  p-5">
         <div class="card-body px-5 py-4">
 
         </div>
@@ -87,15 +87,15 @@
         <div class="modal-content">
           <!-- 헤더 -->
           <div class="modal-header bg-white">
-            <h5 class="modal-title text-purple fw-semibold" id="modalProjectTitle">프로젝트 제목</h5>
+            <h5 class="modal-title fs-5 fw-bold text-success" id="modalProjectTitle">프로젝트 제목</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
 
           <!-- 본문 -->
-          <div class="modal-body bg-light py-4 px-4">
+          <div class="modal-body py-4 px-4">
             <!-- 지원부문 -->
             <div class="mb-4">
-              <label class="form-label fw-medium text-secondary mb-1">지원부문</label>
+              <label class="form-label fw-semibold fs-14 mb-1">지원부문</label>
               <select class="form-select" id="selectField">
                 <option value="">지원 부문을 선택해주세요</option>
               </select>
@@ -104,9 +104,8 @@
             <!-- 이력서 선택 -->
             <div class="mb-4">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="form-label fw-medium text-secondary">선택된 이력서</label>
-                <button type="button" class="btn btn-link p-0 text-secondary" id="btnShowResumeList">이력서 변경
-                  &gt;</button>
+                <label class="form-label fw-semibold fs-14 mb-1">선택된 이력서</label>
+                <button type="button" class="btn btn_violet_line fs-13 fw-semibold" id="btnShowResumeList">이력서 선택</button>
               </div>
               <!-- 선택된 이력서 카드 -->
               <div id="selectedResumeCard"></div>
@@ -117,7 +116,7 @@
             <!-- 첨부파일 -->
             <div class="mb-3">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="form-label fw-medium text-secondary">첨부파일 0건</label>
+                <label class="form-label fw-semibold fs-14 mb-1">첨부파일 0건</label>
                 <button class="btn btn-outline-secondary btn-sm" type="button">
                   <i class="bi bi-plus-lg"></i> 파일추가
                 </button>
@@ -131,7 +130,7 @@
 
           <!-- 하단 버튼 -->
           <div class="modal-footer bg-white">
-            <button id="btnSaveApplication" class="btn w-100 py-2 text-white" style="background: #ae8be1;">지원</button>
+            <button id="btnSaveApplication" class="btn w-100 btn_violet justify-content-center">지원</button>
           </div>
         </div>
       </div>

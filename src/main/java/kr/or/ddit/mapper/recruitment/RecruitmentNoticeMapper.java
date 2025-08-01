@@ -40,5 +40,11 @@ public interface RecruitmentNoticeMapper {
  
  public int countRecruitmentNotice(Map<String, Object> params);
  
+ public List<RecruitmentNoticeDTO> selectMainPRecruitNoticeDtoList();
+ public List<RecruitmentNoticeDTO> selectMainMiddleRecruitNoticeDtoList();
+ public List<RecruitmentNoticeDTO> selectMainBottomRecruitNoticeDtoList();
  public List<RecruitmentNoticeDTO> searchRecruitNoticeDtoList(Map<String, Object> params);
+ 
+ 
+ public List<Map<String, Object>> selectTopFiveJobNotice(String userId);
 }

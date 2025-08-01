@@ -35,7 +35,7 @@
 	<p class="h1 mb-3 fw-bold">면접 관리</p>
 	
 	<div class="border-bottom d-flex justify-content-between align-items-end pb-2">
-		<p class="fs-14">총 <span id="list-count"></span>건</p>
+		<p class="fs-14">총 <span id="list-count" class="fw-bold"></span>건</p>
 		<div class="TypoBox searchBar">
 			<div class="searchBarWrap">
 				<label class="searchBarLabel" for="listKeyword">검색어</label>
@@ -54,7 +54,7 @@
 	<div id="pageBox" class="PageBox"></div>
 
 <!-- 화상채팅 접속 확인 모달 -->
-<div class="modal fade" id="joinInterviewModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+<div class="modal fade custom_confirm_modal" id="joinInterviewModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -64,9 +64,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center py-4">
-                <div style="font-size:2.4rem; color:#28a745; margin-bottom:10px;">🟢</div>
-                <p class="fs-5 mb-2 fw-semibold" style="color:#218838;">
-                    화상 면접 방에 <span style="color:#28a745;">입장</span>하시겠습니까?
+                <div style="font-size:2.4rem; color: var(--violet80); margin-bottom:10px;">🟪</div>
+                <p class="fs-5 mb-2 fw-semibold" style="color:var(--violet80);">
+                    화상 면접 방에 <span style="color:var(--violet110)">입장</span>하시겠습니까?
                 </p>
                 <p class="text-secondary mb-0" style="font-size:1.08rem;">
                     생성된 화상면접 방으로 이동합니다.<br>
@@ -75,7 +75,7 @@
             </div>
             <div class="modal-footer border-0 justify-content-center">
                 <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-success px-4" id="startInterviewBtn">접속</button>
+                <button type="button" class="btn btn_violet px-4" id="startInterviewBtn">접속</button>
             </div>
         </div>
     </div>
@@ -93,7 +93,7 @@
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h1 class="modal-title fs-5 fw-bold text-primary" id="reviewModalLabel">
+				<h1 class="modal-title fs-5 fw-bold text-success" id="reviewModalLabel">
 					<i class="bi bi-pencil-square me-1"></i> 면접 리뷰 
 				</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -101,7 +101,7 @@
 			<div class="modal-body text-center py-4">
 				<div style="font-size:2.4rem; color:#007bff; margin-bottom:10px;">📝</div>
 				<p class="fs-5 mb-2 fw-semibold" style="color:#333;">
-					면접 리뷰를  <span style="color:#0d6efd;">작성 </span>하시겠습니까?
+					면접 리뷰를  <span style="color:var(--violet80);">작성 </span>하시겠습니까?
 				</p>
 				<p class="text-secondary mb-0" style="font-size:1.1rem;">
 					작성한 내용은 즉시 반영되며,<br>실행 전 다시 한 번 확인해 주세요.
@@ -109,7 +109,7 @@
 			</div>
 			<div class="modal-footer border-0 justify-content-center">
 				<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="btn btn-primary px-4" id="writeReviewBtn">작성하기</button>
+				<button type="button" class="btn btn_violet px-4" id="writeReviewBtn">작성하기</button>
 			</div>
 		</div>
 	</div>

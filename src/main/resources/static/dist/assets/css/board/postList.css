@@ -9,9 +9,9 @@
   width: 100%;
 }
 
-.Post_titleAddPadding {
+/* .Post_titleAddPadding {
   padding: 0 20px;
-}
+} */
 
 .Post_filter {
   position: -webkit-sticky;
@@ -33,9 +33,6 @@
   overflow: hidden;
 }
 
-.Post_category > div {
-  padding: 0 20px;
-}
 
 .Post_category .Post_categoryItem {
   width: auto;
@@ -422,7 +419,7 @@
 }
 
 .PostList_postList {
-  padding: 16px 20px 24px;
+  padding: 20px 0;
 }
 
 .PostList_postItem {
@@ -541,7 +538,7 @@
   }
 
   .PostList_postList {
-    padding: 16px 20px 0;
+    padding:20px 0;
   }
 
   .PostList_postItem {

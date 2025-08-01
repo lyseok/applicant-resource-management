@@ -2,33 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.resume.ResumeMapper">
 
-  <resultMap id="resumeWithCareerMap" type="kr.or.ddit.vo.resume.ResumeVO">
-    <id     property="resumeNo"         column="RESUME_NO"/>
-    <result property="userId"           column="USER_ID"/>
-    <result property="userName"         column="USER_NAME"/>
-    <collection property="careerList" ofType="kr.or.ddit.vo.resume.CareerVO">
-      <id     property="careerNo"        column="CAREER_NO"/>
-      <result property="resumeNo"        column="RESUME_NO"/>
-      <result property="jobCode"         column="JOB_CODE"/>
-      <result property="startWorkDate"   column="START_WORK_DATE"/>
-      <result property="retireDate"      column="RETIRE_DATE"/>
-      <result property="tenure"          column="TENURE"/>
-      <result property="department"      column="DEPARTMENT"/>
-      <result property="responsibility"  column="RESPONSIBILITY"/>
-      <result property="freelancer"      column="FREELANCER"/>
-      <result property="jobGradeCode"    column="JOB_GRADE_CODE"/>
-      <result property="positionCode"    column="POSITION_CODE"/>
-      <result property="careerYear"      column="CAREER_YEAR"/>
-      <result property="salary"          column="SALARY"/>
-      <result property="location"        column="LOCATION"/>
-      <result property="comId"           column="COM_ID"/>
-       
-      <association property="company" javaType="kr.or.ddit.vo.common.CompanyVO">
-      	 <id     property="userId"         column="userId"/>
-        <result property="comName"       column="COM_NAME"/>
-      </association>
-    </collection>
-  </resultMap>
+<resultMap id="resumeWithCareersMap" type="kr.or.ddit.vo.resume.ResumeVO">
+  <!-- ResumeVO 기본 필드 -->
+  <id property="resumeNo" column="RESUME_NO"/>
+  <result property="userId" column="USER_ID"/>
+  <result property="userName" column="USER_NAME"/>
+
+  <!-- CareerVO 중첩 리스트 -->
+  <collection property="careerList" ofType="kr.or.ddit.vo.resume.CareerVO">
+    <id property="careerNo" column="CAREER_NO"/>
+    <result property="resumeNo" column="RESUME_NO"/>
+    <result property="jobCode" column="JOB_CODE"/>
+    <result property="startWorkDate" column="START_WORK_DATE"/>
+    <result property="retireDate" column="RETIRE_DATE"/>
+    <result property="tenure" column="TENURE"/>
+    <result property="department" column="DEPARTMENT"/>
+    <result property="responsibility" column="RESPONSIBILITY"/>
+    <result property="freelancer" column="FREELANCER"/>
+    <result property="jobGradeCode" column="JOB_GRADE_CODE"/>
+    <result property="positionCode" column="POSITION_CODE"/>
+    <result property="careerYear" column="CAREER_YEAR"/>
+    <result property="salary" column="SALARY"/>
+    <result property="location" column="LOCATION"/>
+
+    <!-- company 중첩 -->
+    <association property="company" javaType="kr.or.ddit.vo.common.CompanyVO">
+      <id property="userId" column="USER_ID"/>
+      <result property="comName" column="COM_NAME"/>
+    </association>
+  </collection>
+</resultMap>
   
   
   
@@ -61,6 +64,7 @@
 	<resultMap id="resumeDetailtMap" type="kr.or.ddit.vo.resume.ResumeVO">
     <!-- ResumeVO 기본 필드 매핑 -->
     <id     property="resumeNo"         column="RESUME_NO"/>
+    <id     property="mainResumeNo"     column="MAIN_RESUME_NO"/>
     <result property="resumeName"       column="RESUME_NAME"/>
     <result property="resumeMainYn"     column="RESUME_MAIN_YN"/>
     <result property="introductionNo"   column="INTRODUCTION_NO"/>
@@ -95,34 +99,35 @@
     </association>
 </resultMap>
 
+
 		
 	<select id="selectResumeDetail" resultMap="resumeDetailtMap">
 		SELECT  
-			RE.RESUME_NO
-			, RE.RESUME_MAIN_YN
-			, RE.INTRODUCTION_NO
-			, RE.USER_ID
-			, RE.USER_NAME
-			, RE.PHOTO
-			, TO_CHAR(TO_DATE(RE.BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
-			, RE.EMAIL
-			, RE.TEL
-			, RE.ADDRESS
-			, RE.VETERAN_REASON
-			, TO_CHAR(TO_DATE(RE.UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
-			, RE.RESUME_SUBMIT_YN
-			, RE.RESUME_DELETE_DATE
-			, RE.RESUME_NAME		   
-			, INT.INTRODUCTION_NAME
-			, INT.INTRODUCTION_CONTENT
-			, INT.INTRODUCTION_QUESTION
-			, TO_CHAR(INT.INTRODUCTION_CREATE_DATE, 'YYYY-MM-DD') AS INTRODUCTION_CREATE_DATE
-			, TO_CHAR(INT.INTRODUCTION_DELETE_DATE, 'YYYY-MM-DD') AS INTRODUCTION_DELETE_DATE
-			, INT.INTRODUCTION_SUBMIT_YN
+		    RE.RESUME_NO
+		    , (SELECT M.RESUME_NO FROM MEMBER M WHERE M.USER_ID = RE.USER_ID) AS MAIN_RESUME_NO
+		    , RE.RESUME_MAIN_YN
+		    , RE.INTRODUCTION_NO
+		    , RE.USER_ID
+		    , RE.USER_NAME
+		    , RE.PHOTO
+		    , TO_CHAR(TO_DATE(RE.BIRTH, 'YYYYMMDD'), 'YYYY-MM-DD') AS BIRTH
+		    , RE.EMAIL
+		    , RE.TEL
+		    , RE.ADDRESS
+		    , RE.VETERAN_REASON
+		    , TO_CHAR(TO_DATE(RE.UPDATE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS UPDATE_DATE
+		    , RE.RESUME_SUBMIT_YN
+		    , RE.RESUME_DELETE_DATE
+		    , RE.RESUME_NAME         
+		    , INT.INTRODUCTION_NAME
+		    , INT.INTRODUCTION_CONTENT
+		    , INT.INTRODUCTION_QUESTION
+		    , TO_CHAR(INT.INTRODUCTION_CREATE_DATE, 'YYYY-MM-DD') AS INTRODUCTION_CREATE_DATE
+		    , TO_CHAR(INT.INTRODUCTION_DELETE_DATE, 'YYYY-MM-DD') AS INTRODUCTION_DELETE_DATE
+		    , INT.INTRODUCTION_SUBMIT_YN
 		FROM RESUME RE
-		LEFT JOIN INTRODUCTION INT ON RE.INTRODUCTION_NO = INT.INTRODUCTION_NO		  
-		WHERE RE.USER_ID = #{userId}
-		AND RE.RESUME_DELETE_DATE IS NULL
+		LEFT JOIN INTRODUCTION INT ON RE.INTRODUCTION_NO = INT.INTRODUCTION_NO
+		WHERE RE.RESUME_DELETE_DATE IS NULL
 		AND RE.RESUME_NO = #{resumeNo}
 	</select>
 	
@@ -200,15 +205,15 @@
 	</delete>	
 	
 	
-	 <select id="selectResumeWithCareers" resultMap="resumeWithCareerMap">
+	 <select id="selectResumeWithCareers" resultMap="resumeWithCareersMap">
 		    SELECT
 		      r.RESUME_NO,
 		      r.USER_ID,
 		      r.USER_NAME,
 		      c.CAREER_NO,
 		      c.JOB_CODE,
-		      c.START_WORK_DATE,
-		      c.RETIRE_DATE,
+		      TO_CHAR(TO_DATE(c.START_WORK_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS START_WORK_DATE,
+  			  TO_CHAR(TO_DATE(c.RETIRE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS RETIRE_DATE,
 		      c.TENURE,
 		      c.DEPARTMENT,
 		      c.RESPONSIBILITY,

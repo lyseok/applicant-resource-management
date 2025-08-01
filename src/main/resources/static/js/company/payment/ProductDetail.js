@@ -13,7 +13,7 @@ function subscribe(event ,btn) {
    	
    
      fetch("/company/toss/check/billing",{
-		method : "GET" ,
+		method : "POST" ,
 		credentials : "include"
 	 }) // <-- 여기 경로 중요
         .then(response => {
@@ -46,7 +46,7 @@ function subscribe(event ,btn) {
 }
 
 
-async function requestBillingAuth() {
+/*async function requestBillingAuth() {
         await payment.requestBillingAuth({
           method: "CARD", // 자동결제(빌링)는 카드만 지원합니다
           successUrl , // 현재 페이지로 돌아오게 함
@@ -54,8 +54,52 @@ async function requestBillingAuth() {
           customerEmail: "dhfjdhfj@naver.com",
           customerName: "김철민",
         })
-      };
+      };*/
+/*
+const clientKey = "test_ck_Gv6LjeKD8a9wXO9o7lLw8wYxAdXy";
+const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
+const tossPayments = TossPayments(clientKey);
+const payment = tossPayments.payment({ customerKey });
+const successUrl = `${window.location.origin}/company/toss/success?productNo=${productNo}`;
+*/
+/*async function requestBillingAuth() {
+	const authResult = await tossPayments.billing.requestBillingAuth({
+		method: "CARD",
+		customerKey: "h5hXSJ-WPK8sZQpXQUJUA",
+		customerEmail: "test@test.com",
+		customerName: "홍길동"
+	});
+	const authKey = authResult.authKey;
 
+	const response = await fetch("/company/toss/api/toss/billing/issue", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ authKey: authKey, customerKey: "h5hXSJ-WPK8sZQpXQUJUA" })
+	});
+
+	const data = await response.json();
+	console.log("billingKey:", data.billingKey);
+}
+
+fetch("/api/toss/billing/execute", {
+	method: "POST",
+	headers: {
+		"Content-Type": "application/json"
+	},
+	body: JSON.stringify({
+		billingKey: "${sessionScope.billingKey}",
+		customerKey: customerKey,
+		amount: "${product.productPrice}"
+	})
+})
+	.then(res => res.json())
+	.then(date => {
+		console.log("결제 성공 ! ", data);
+	})
+	.catch(err => {
+		consoler.error("결제 실패 !", err);
+	})
+*/
 
 function showNoCardModal() {
     const modal = new bootstrap.Modal(document.getElementById("noCardModal"));

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.recruitment.ComMailTemMapper">
+
+<select id="selectComMailTemList">
+	SELECT 
+		TEM_NO
+		, USER_ID
+		, TEM_TITLE
+		, TEM_CONTENT
+		, CREATE_DATE
+		, DELETE_DATE
+	FROM COM_MAIL_TEM
+	WHERE USER_ID = #{userId}
+	AND DELETE_DATE IS NULL
+	ORDER BY CREATE_DATE DESC
+</select>
+
+<select id="selectComMailTem">
+	SELECT 
+		M.TEM_NO
+		, M.USER_ID
+		, (SELECT C.COM_NAME FROM COMPANY C WHERE C.USER_ID = M.USER_ID) AS COM_NAME
+		, (SELECT C.COM_EMAIL FROM COMPANY C WHERE C.USER_ID = M.USER_ID) AS COM_MAIL
+		, M.TEM_TITLE
+		, M.TEM_CONTENT
+		, M.CREATE_DATE
+		, M.DELETE_DATE
+	FROM COM_MAIL_TEM M
+	WHERE M.TEM_NO = #{temNo}
+	AND M.USER_ID = #{userId}
+	AND M.DELETE_DATE IS NULL
+</select>
+
+<insert id="insertComMailTem">
+	<selectKey resultType="string" keyProperty="temNo" order="BEFORE">
+	    SELECT
+	        'CMTE'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(TEM_NO), LENGTH('CMTE' ) + 1)), 0) + 1, 6, '0')
+	    FROM COM_MAIL_TEM
+	</selectKey>
+	INSERT INTO COM_MAIL_TEM (
+		TEM_NO
+		, USER_ID
+		, TEM_TITLE
+		, TEM_CONTENT
+		, CREATE_DATE
+	) VALUES (
+		#{temNo}
+		, #{userId}
+		, #{temTitle}
+		, #{temContent}
+		, SYSDATE
+	)
+</insert>
+
+<update id="updateComMailTem">
+	UPDATE COM_MAIL_TEM
+	SET 
+		TEM_TITLE = #{temTitle}
+		, TEM_CONTENT = #{temContent}
+	WHERE TEM_NO = #{temNo}
+	AND USER_ID = #{userId}
+</update>
+
+<update id="deleteComMailTem">
+	UPDATE COM_MAIL_TEM
+	SET 
+		DELETE_DATE = SYSDATE
+	WHERE TEM_NO = #{temNo}
+	AND USER_ID = #{userId}
+</update> 
+
+</mapper>
