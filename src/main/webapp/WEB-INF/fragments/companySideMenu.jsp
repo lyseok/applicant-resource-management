@@ -60,12 +60,6 @@
       <li class="menu-item">
         <a href="/company/recruit_notice/list" class="menu-link">
           <i class="menu-icon tf-icons bx bx-file-detail"></i>
-          <div data-i18n="Basic">공고관리</div>
-        </a>
-      </li>
-      <li class="menu-item">
-        <a href="/company/recruit_applicant/list" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-file-detail"></i>
           <div data-i18n="Basic">채용관리</div>
         </a>
       </li>
