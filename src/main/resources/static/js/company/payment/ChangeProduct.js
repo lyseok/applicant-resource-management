@@ -69,7 +69,7 @@ async function doChangeBilling(event, btn) {
 		orderName: productName,
 		orderId
 	})
-});
+}); 
 
 const rawText = await billingRes.text(); // MIME type이 text/plain이기 때문
 let billingData;
