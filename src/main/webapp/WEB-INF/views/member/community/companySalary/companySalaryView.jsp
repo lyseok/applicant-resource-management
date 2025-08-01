@@ -32,7 +32,7 @@
 	.salary-filter {
 		display:flex;
 		flex-wrap:wrap;
-	  margin-bottom: 100px;
+	  margin-bottom: 40px;
 	  gap:50px;
 	  background:#fff;
 	  padding:30px;
@@ -70,32 +70,6 @@
    <!-- 동적 타이틀 -->   	
    	<div class="salary-bg">
 			<div class="salary-filter mw-1260 mx-auto">
-		  	<!-- 연봉 슬라이더 -->
-		  	<div class="w100p"> 
-		       <label>연봉</label>
-		       <div class="salary-controls">
-		           <div class="slider-container">
-		               <div class="slider-track"></div>
-		               <div class="slider-range" id="slider-range"></div>
-		               <div class="handle" id="min-handle"><span id="min-label" class="badge-tag">0만원</span></div>
-		               <div class="handle" id="max-handle"><span id="max-label" class="badge-tag">1억원↑</span></div>
-		           </div>
-		           <div class="slider-select-wrap d-flex justify-content-between align-items-center gap-3">
-			           <select id="min-select" class="Select_root Select_size38 ps-2 fs-14 h48 w100p">
-			               <option value="0">0만원 ~</option>
-			               <option value="1000">1,000만원</option>
-			               <option value="2000">2,000만원</option>
-			               <option value="3000">3,000만원</option>
-			           </select>
-			           <span class="fs-14 fw-semibold"> ~ </span>
-			           <select id="max-select" class="Select_root Select_size38 ps-2 fs-14 h48  w100p">
-			               <option value="10000">1억원 이상</option>
-			               <option value="9000">9,000만원</option>
-			               <option value="8000">8,000만원</option>
-			           </select>
-		           </div>
-		       </div>
-		     </div>
 		      
 		    <!-- 기업 규모 -->
 				<div class="filter-group">
@@ -120,6 +94,20 @@
 		          <option value="service">서비스업</option>
 		      </select>
 		      </div>
+		      
+		      
+		  	<!-- 연봉 슬라이더 -->
+		  	<div class="w100p"> 
+		       <label>연봉</label>
+		       <div class="salary-controls">
+		           <div class="slider-container">
+		               <div class="slider-track"></div>
+		               <div class="slider-range" id="slider-range"></div>
+		               <div class="handle" id="min-handle"><span id="min-label" class="badge-tag">0만원</span></div>
+		               <div class="handle" id="max-handle"><span id="max-label" class="badge-tag">1억원↑</span></div>
+		           </div>
+		       </div>
+		     </div>
 		   </div>
 	   </div>
    

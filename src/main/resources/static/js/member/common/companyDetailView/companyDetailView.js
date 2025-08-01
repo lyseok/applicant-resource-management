@@ -575,29 +575,50 @@ document.addEventListener('DOMContentLoaded', () => {
 			return finishDate >= today; // 오늘 이후만 표시
 		});
 
-		const tbody = document.getElementById('inProgressTbody');
+		const ul = document.getElementById('inProgressWrap');
 
 		if (noFinishNotice.length > 0) {
-			tbody.innerHTML = noFinishNotice.map(notice => `
-	            <tr class="clickable-row" data-href="/recruit_notice/${notice.recruitmentNo}">
-	                <td>${formatDate(notice.recruitmentReceiptStart)} ~ ${formatDate(notice.recruitmentFinishDate)}</td>
-	                <td id="recruit-title-main"><strong>${notice.recruitmentTitle}</strong></td>
-	                <td>${notice.yearCodeName.trim() || '-'} | ${notice.cityCodeName}</td>
-	            </tr>
-	        `).join('');
+	    ul.innerHTML = noFinishNotice.map(notice => `
+	    	<li class="p-4 border-bottom d-flex justify-content-between align-items-center recruit_list gap-5">
+	        <div class="d-flex flex-fill align-items-start">
+						<div class="d-flex align-items-center viewat_box">
+							<h6 class="recruit_comName text-muted">${notice.comName ?? ''}</h6>
+						</div>
+						<div class="recruit_tit"> 
+	          	<h5 class="d-block fs16 fw-bold m-0">${notice.recruitmentTitle}</h5>
+	          	<span class="text-muted fs-14">${notice.jobCodeName}</span>
+						</div>
+	          <div class="recruit_info">
+	          	<div class="d-flex align-items-center">
+	          		<span class="material-symbols-outlined">distance</span>
+	          		<span class="">${notice.cityCodeName}</span>
+	        		</div>
+							<div class="d-flex align-items-center">
+								<span class="material-symbols-outlined">money_bag</span>
+								<span class="num_line">${notice.recruitmentSalary}만원</span>
+							</div>
+							<div class="d-flex align-items-center">
+								<span class="material-symbols-outlined">business_center</span>
+								<span class="num_line">${notice.yearCodeName.trim() || '-'}</span>
+							</div>      	
+	          </div>
+	        </div>
+	        <div class="d-flex flex-column align-items-center gap-2 ">
+	        <a class="btn btn_violet review-btn w140 justify-content-center fw-light fs-14" href="/recruit_notice/${notice.recruitmentNo}">공고보기</a>
+						<div class="text-end w-100 ">
+							<span class="fs-12 text-muted">${formatDate(notice.recruitmentFinishDate)}</span>
+						</div>
+	        </div>
+	      </li>
+	    `).join('');
+	    
 		} else {
-			tbody.innerHTML = `
-	            <tr>
-	                <td colspan="3">진행중인 채용공고가 없습니다.</td>
-	            </tr>
-	        `;
+			ul.innerHTML = `
+        <li>
+            진행중인 채용공고가 없습니다.
+        </li>
+    `;
 		}
-
-		tbody.querySelectorAll('.clickable-row').forEach(tr => {
-			tr.addEventListener('click', () => {
-				window.location.href = tr.dataset.href;
-			});
-		});
 	}
 
 
@@ -686,9 +707,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		// 4) 상태탭 클릭
-		statusTabs.querySelectorAll('.tab').forEach(tab => {
+		statusTabs.querySelectorAll('.tab-btn').forEach(tab => {
 			tab.addEventListener('click', () => {
-				statusTabs.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+				statusTabs.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
 				tab.classList.add('active');
 				const key = tab.dataset.status;
 				if (key === 'all') renderJobFilter(all);
@@ -743,14 +764,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 		listContainer.innerHTML = essays.map((e, idx) => `
 			<div class="essay-card clickable" data-index="${idx}">
-				<div class="essay-card-title">${e.recruitmentTitle}</div>
-				<div class="essay-card-meta">
-					${formatDate(e.introduction.introductionCreateDate)} | ${e.education.highestEducationCodeName || '-'} | ${e.education.departmentCode || '-'}
+				<div class="essay-card-title">
+					${e.recruitmentTitle}
+					<span class="fs-14 opacity-75 fw-500">( ${e.education.highestEducationCodeName || '-'} / ${e.education.departmentCode || '-'} )</span>
 				</div>
-				<div class="essay-card-content">
-					"${e.introduction.introductionQuestionList[0]?.content?.slice(0, 60) || '내용 없음'}..."
+				<div class="essay-views">
+					<span><b>조회수</b> ${Math.floor(Math.random() * 5000) + 1000}</span>
+					<span><b>작성일자</b> ${formatDate(e.introduction.introductionCreateDate)}</span>					
 				</div>
-				<div class="essay-views">조회수 ${Math.floor(Math.random() * 5000) + 1000}</div>
         	</div>
     	`).join('');
 
@@ -770,32 +791,39 @@ document.addEventListener('DOMContentLoaded', () => {
 		detail.style.display = 'block';
 
 		detail.innerHTML = `
-			<button id="back" class="essay-back-btn">← 목록으로</button>
+			<button id="back" class="btn btn_violet_line btn-sm mb-4">← 목록으로</button>
 			<div class="essay-detail-header">
-				<h2 class="essay-detail-title">${essay.recruitmentTitle}</h2>
-				<div class="essay-detail-subinfo">
-					<span>${essay.education.highestEducationCodeName || '-'}</span> ·
-					<span>${essay.education.departmentCode || '-'}</span>
+				<div class="d-flex gap-3 align-items-end">
+					<h2 class="essay-detail-title">${essay.recruitmentTitle}</h2>
+					<div class="opacity-75 fs-14">
+						( 
+						<span>${essay.education.highestEducationCodeName || '-'}</span>
+						<span>${essay.education.departmentCode || '-'}</span>
+						 )
+					</div>
 				</div>
-				<div class="essay-detail-meta">
-					<span class="essay-date">${formatDate(essay.introduction.introductionCreateDate)}</span>
+				<div class="essay-detail-subinfo">					
+					<div class="essay-detail-meta">
+						<span class="essay-date">${formatDate(essay.introduction.introductionCreateDate)}</span>
+					</div>
 				</div>
 			</div>
-			<hr>
-			<h2 class="header">자소서 항목</h2>
+			<h2 class="fs-18 fw-bold mb-3">자소서 항목</h2>
 			<div class="essay-questions">
-				${essay.introduction.introductionQuestionList.map((q,i) => `<p><b>Q${i+1}.</b> ${q.question}</p>`).join('')}
+				${essay.introduction.introductionQuestionList.map((q,i) => `<p><b class="q-number">Q${i+1}.</b> ${q.question}</p>`).join('')}
 			</div>
-			<hr>
-			<h2 class="header">합격 자소서</h2>
+			
+			<h2 class="fs-18 fw-bold mb-3">합격 자소서</h2>
 			<div class="accordion" id="essayAccordion">
 				${essay.introduction.introductionQuestionList.map((q,i) => `
 				<div class="accordion-item">
 					<div class="accordion-header" data-idx="${i}">
-						<span class="q-number">Q${i+1}.</span> ${q.question}
+						<div class="d-flex">
+							<span class="q-number fw-bold">Q${i+1}.</span> <p class="kepp-all">${q.question}</p>
+						</div>
 						<span class="arrow"></span>
 					</div>
-					<div class="accordion-body" style="display:none;">${q.content}</div>
+					<div class="accordion-body keep-all lh1-8" style="display:none;">${q.content}</div>
 				</div>
 				`).join('')}
 			</div>
@@ -877,14 +905,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	function bindingCompanyImage(fileList) {
 		const galleryList = document.getElementById('companyGalleryList');
 		if (!galleryList || !Array.isArray(fileList)) return;
+		if(fileList != null){
+			const galleryBox = document.querySelector(".corporate-gallery");
+			galleryBox.classList.add("d-none");
+		}
 		galleryList.innerHTML = fileList
 			.map((file, idx) => `
 	          <li class="company-gallery-list-item thumbnail js-lazy-img">
 	            <a href="#company-gallery-viewer" data-category="company" data-index="${idx + 1}" class="js-lazy-img__inner">
 	              <img class="attatched" src="${file.filePath}" alt="회사 이미지" onerror="Company.Gallery.fileOnerror(this);">
-	              <div class="mask">
-	                <div class="mask-header">회사 이미지</div>
-	              </div>
 	            </a>
 	          </li>`
 			).join('');

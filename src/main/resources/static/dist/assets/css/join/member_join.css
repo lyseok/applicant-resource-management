@@ -118,7 +118,7 @@ em, i {
 #join_wrapper {
     position: relative;
     margin: 0 auto;
-    width: 360px
+    width: 500px
 }
 
 .blind {
@@ -416,7 +416,7 @@ em, i {
     padding-top: 55px;
     color: #373f57;
     font-size: 26px;
-    font-weight: normal;
+    font-weight: bold;
     line-height: 24px;
     text-align: center
 }
@@ -426,12 +426,14 @@ em, i {
 }
 
 .write_base .item input.defalt:hover {
-    border: 1px solid #8491a7;
     background-color: #eff5ff
 }
 
-.write_base .item input.defalt:focus {
-    border: 1px solid #2d65f2
+.write_base .item .TypoBox:focus,
+.write_base .item .TypoBox:focus-visible,
+.write_base .item input:focus,
+.write_base .item input:focus-visible {
+    border: 1px solid var(--violet50);
 }
 
 .write_base .item input.defalt::placeholder {

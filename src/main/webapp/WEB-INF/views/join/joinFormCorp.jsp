@@ -49,7 +49,7 @@
 		<fieldset>
 			<!-- **fieldset 내부에 form:form 시작** -->
 			<form:form modelAttribute="company" method="post">
-				<h3 class="tit_join_member">띹잡 통합 기업회원 가입</h3>
+				<h3 class="tit_join_member">기업회원 가입</h3>
 
 				<!-- 사업자등록번호 -->
 				<div class="write_base">
@@ -66,7 +66,7 @@
 				</div>
 
 				<!-- 기업정보 입력 영역 (사업자 검증 후 표시) -->
-				<div id="area_input_company" style="display: none;">
+				<div id="area_input_company" style="filter:blur(2px);">
 					<div class="write_base">
 						<!-- 기업명 -->
 						<div class="item">
