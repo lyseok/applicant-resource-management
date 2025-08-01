@@ -1,6 +1,8 @@
 const interviewListEl = document.querySelector('#interviewList');
 const listSizeEl = document.querySelector('#list-size');
-const editInterviewConfirmBtnEl = document.querySelector('#edit-interview-confirm-btn');
+const editInterviewConfirmBtnEl = document.querySelector(
+  '#edit-interview-confirm-btn'
+);
 
 interviewListEl.addEventListener('click', (event) => {
   if (
@@ -36,7 +38,7 @@ const getInterviewList = async () => {
 							<div class="ListItem_post">
 								<div class="ListItem_post_item">
 									<h3 class="h4 fw-bold">${reNotice.recruitmentTitle}</h3>
-									<h3 class="h5">${reNotice.recContent}</h3>
+									<!-- <h3 class="h5">${reNotice.recContent}</h3> -->
 								</div>
 							</div>
 							<div class="ListItem_info">
