@@ -118,7 +118,7 @@ em, i {
 #join_wrapper {
     position: relative;
     margin: 0 auto;
-    width: 500px
+    width: 750px
 }
 
 .blind {
@@ -407,7 +407,7 @@ em, i {
 .cont_division {
     position: relative;
     margin-top: 24px;
-    width: 360px;
+    width: calc((100% - 15px) / 2);
     box-sizing: border-box
 }
 
@@ -479,7 +479,8 @@ em, i {
 .write_base .item {
     clear: both;
     position: relative;
-    padding-top: 24px
+    padding-top: 24px;
+    width:calc((100% - 15px) / 2);
 }
 
 .write_base .item .alert_column {
@@ -592,9 +593,13 @@ em, i {
     margin-bottom: 8px
 }
 
-.write_base .item .input_collect+.BtnType {
+.write_base .item .input_collect+.BtnType,
+#industry_category .BtnType {
     float: right;
-    width: 100px
+    width: 100px;
+    background:#fff;
+    border:1px solid var(--violet80);
+    color:var(--violet80);
 }
 
 .write_base .item .input_collect .email_box {
@@ -604,7 +609,7 @@ em, i {
 .write_base .item .input_collect.TypoBox, .write_base .item .input_collect .TypoBox {
     float: left;
     margin-right: 8px;
-    width: 252px
+    width: calc(100% - 108px);
 }
 
 .write_base .item .txt_move {
@@ -4826,4 +4831,24 @@ a.btn_basic_type04, a.btn_basic_type05 {
 
 .wrap_account_check .wrap_btn_complete button + button {
     margin-top: 12px
+}
+
+
+
+
+
+/* 기업회원가입 추가 */
+.write_base{
+	display:flex;
+	flex-wrap:wrap;
+	gap:15px;
+	
+}
+#area_input_company{
+	position:relative;
+}
+
+
+#area_input_company.blur{
+	filter:blur(4px);
 }
