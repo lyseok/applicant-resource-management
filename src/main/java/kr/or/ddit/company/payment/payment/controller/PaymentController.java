@@ -102,6 +102,7 @@ public class PaymentController {
 		) {
 		    PaymentVO result = service.processSuccessfulBilling(billingKey, amount, orderName, paymentKey, orderId);
 		    model.addAttribute("result", result);
+		    log.info("결제성공 했을때 : {}", result);
 		    return "company/payment/payment/SuccessSubscribe";
 		}
 
