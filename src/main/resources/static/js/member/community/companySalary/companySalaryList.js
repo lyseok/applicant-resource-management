@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sliderRangeEl = document.getElementById('slider-range');
   const minLabelEl = document.getElementById('min-label');
   const maxLabelEl = document.getElementById('max-label');
-  const sortSel = document.getElementById('sort-select'); 
+  const sortSel = document.getElementById('sort-select');  
 
   const SALARY_MAX = 10000;
   let minVal = 0;
@@ -118,11 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderList(data, totalCount) {
     salaryListEL.innerHTML = '';
-	   
-	  const countLi = document.createElement('li');
-	  countLi.className = 'company-count';
-	  countLi.textContent = `${totalCount}개 기업의 연봉이 검색되었습니다.`;
-	  salaryListEL.appendChild(countLi);
+	  
+
+		const reTotalCount = document.getElementById('result_total_count'); 
+	  reTotalCount.innerHTML = `<p class="fs-14">총 <span class="fw-bold">${totalCount}</span>건</p>`;
 
 	  if (data.length === 0) {
 	    const li = document.createElement('li');
@@ -145,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="meta">${c.INDU_NAME || ''} | 사원수 ${c.COM_MEM || 0}명</div>
           </div>
         </div>
-        <div class="salary">평균 연봉 - ${formatSalary(c.SALARY_AVG)}</div>
+        <div class="text-end"><small class="d-block">평균 연봉</small> ${formatSalary(c.SALARY_AVG)}</div>
       `;
       salaryListEL.appendChild(li);
     });
@@ -154,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function formatSalary(salary) {
     salary = Number(salary);
     if (isNaN(salary) || salary === 0) return '면접 후 결정';
-    if (salary < 10000) return `${salary}만원`;
+    if (salary < 10000) return `<b class="fs-5">${salary}</b><small>만원</small>`;
     const eok = Math.floor(salary / 10000);
     const man = salary % 10000;
     return man > 0 ? `${eok}억 ${man}만원` : `${eok}억원`;

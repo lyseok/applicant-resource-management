@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = {"userId", "recuitmentNo"})
+@EqualsAndHashCode(of = {"userId", "recruitmentNo"})
 public class ScrabRecruitmentVO implements Serializable{
 	private String userId;
 	private String recruitmentNo;

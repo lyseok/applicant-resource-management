@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		.get(`/ajax/member/company_view/${userId}`)
 		.then((resp) => {
 			const company = resp.data;
-			console.log(company);
+			console.log("com정보", company);
 			bindingCompanyImage(company.fileList);
 			console.log('체크', document.getElementById('head-com-name'));
 			console.log('체크', document.getElementById('head-com-indu'));
 
-			document.getElementById('industryType').textContent = company.industryType || '-';
-			document.getElementById('comMem').textContent = company.comMem + '명';
+			document.getElementById('industryType').textContent = company.induName || '-';
+			document.getElementById('comMem').textContent = company.comMem + '명' || '-';
 			document.getElementById('comType').textContent = company.comType || '-';
 			document.getElementById('comCreateYear').textContent = company.comCreateYear || '-';
 			document.getElementById('comCapital').textContent = formatSalary(company.comCapital) || '-';
@@ -22,13 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
 				? '국민연금, 건강보험, 고용보험, 산재보험'
 				: '-';
 			document.getElementById('comUrl').textContent = company.comUrl || '-';
+			document.getElementById('com_url').textContent = company.comName ||'-';
 			document.getElementById('comInfo').textContent = company.comInfo || '-';
 			document.getElementById('head-com-name').textContent = company.comName;
-			document.getElementById('head-com-indu').textContent = company.industryType;
+			document.getElementById('head-com-indu').textContent = company.induName || '-';
 			document.getElementById('salaryCompanyName').textContent = company.comName + '의 평균 연봉';
 			document.getElementById('company_bg').src = company.comBackgroundImg;
 			document.getElementById('logoImg').src = company.comLogo;
-
+			
 			const addr = company.comAddr || '';
 			document.getElementById('comAddr').textContent = addr;
 			const span = document.getElementById('companyAddr');
@@ -48,11 +49,48 @@ document.addEventListener('DOMContentLoaded', () => {
 				});
 
 			}
+			
+			
+			
+			const homeLink = document.querySelector('.button-home');
+			if (homeLink) {
+			    homeLink.setAttribute('href', company.comUrl || 'javascript:void(0)');
+			    homeLink.setAttribute('target', '_blank'); // 새 탭 열기
+			}
+			
+			similarSalaryRank(company.industryType);
+			
 
 		})
 		.catch((err) => {
 			console.error('회사정보 로드 실패', err);
 		});
+		
+		const favBtn = document.querySelector('.button-dibs');
+		 
+		   if (favBtn) {
+		       // 초기 상태 확인
+		       axios.get(`/ajax/member/scrabCompany/${userId}`)
+		           .then(resp => {
+		               if (resp.data > 0) favBtn.classList.add('on'); // 스크랩 되어있으면 하트 채움
+		           });
+
+		       // 클릭 시 토글
+		       favBtn.addEventListener('click', async () => {
+		           try {
+		               if (favBtn.classList.contains('on')) {
+		                   await axios.delete(`/ajax/member/scrabCompany/${userId}`);
+		                   favBtn.classList.remove('on');
+		               } else {
+		                   await axios.post(`/ajax/member/scrabCompany/${userId}`);
+		                   favBtn.classList.add('on');
+		               }
+		           } catch (err) {
+		               console.error('관심기업 처리 실패', err);
+		               alert('처리 중 오류가 발생했습니다.');
+		           }
+		       });
+		   }
 
 	axios.get(`/ajax/member/company_view/sales/${userId}`).then((resp) => {
 		const sales = resp.data;
@@ -87,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 							tension: 0.3,
 						},
 						{
-							label: '업계 평균 매출액',
+							label: '기업 평균 매출액',
 							data: avgData,
 							borderColor: 'rgba(200, 200, 200, 0.6)',
 							borderDash: [5, 5],
@@ -98,40 +136,37 @@ document.addEventListener('DOMContentLoaded', () => {
 						},
 					],
 				},
-				options: {
-					responsive: false,
-					plugins: {
-						datalabels: {
-							display: true,
-							align: 'end',
-							offset: 8,
-							font: { size: 12 },
-							formatter: (value) => formatSalary(value * 100_000_000),
-						},
-						tooltip: {
-							callbacks: {
-								label: function(ctx) {
-									const raw = ctx.raw * 100_000_000;
-									if (ctx.dataset.label.includes('평균')) {
-										return '업계 평균: ' + formatSalary(raw);
-									}
-									const growth = Number(sales[ctx.dataIndex].growthRatePercent ?? 0);
-									return `매출액: ${formatSalary(raw)} (작년 대비 ${growth >= 0 ? '+' : ''}${growth.toFixed(2)}%)`;
-								},
-							},
-						},
-					},
-					layout: { padding: { bottom: 80, right: 30 } },
-					scales: {
-						y: {
-							title: { display: true, text: '억 원', color: '#666', font: { size: 14 } },
-							beginAtZero: true,
-						},
-					},
-				},
-				plugins: [ChartDataLabels],
-			});
-
+				 options: {
+				        responsive: false,
+				        layout: { 
+				            padding: { left: 30, right: 80, bottom: 80 } // 왼쪽 패딩 확장
+				        },
+				        plugins: {
+				            datalabels: {
+				                display: true,
+								align: 'top',      // 포인트 위쪽으로
+								anchor: 'end',     // 데이터 포인트 끝 기준
+								offset: 4, 
+				                font: { size: 10 },
+				                formatter: (value) => formatSalary(value * 100_000_000),
+				            },
+				        },
+						 scales: {
+						            y: {
+						                title: { display: true, text: '금액', color: '#666', font: { size: 14 } },
+						                beginAtZero: true,
+						                ticks: {
+						                    padding: 20,
+						                    callback: function(value) {
+						                        return formatAxisValue(value * 100000000); 
+						                        // 실제 값은 억 단위라 다시 환산
+						                    }
+						                }
+						            }
+						        }
+						    },
+						    plugins: [ChartDataLabels],
+						});
 			if (latest) {
 				document.getElementById('salesUpdate').textContent = `${latest.comSalesYear}.12 기준`;
 				document.getElementById('totalSalesAmount').textContent = formatSalary(Number(latest.comSalesAmount));
@@ -151,64 +186,71 @@ document.addEventListener('DOMContentLoaded', () => {
 			const latest = profit[profit.length - 1];
 
 			new Chart(document.getElementById('profitChart').getContext('2d'), {
-				type: 'line',
-				data: {
-					labels: labels,
-					datasets: [
-						{
-							label: '영업 이익',
-							data: data,
-							backgroundColor: 'rgba(153, 102, 255, 0.2)',
-							borderColor: 'rgba(153, 102, 255, 1)',
-							borderWidth: 2,
-							pointBackgroundColor: 'rgba(153, 102, 255, 1)',
-							fill: true,
-							tension: 0.3,
-						},
-						{
-							label: '업계 평균 영업이익',
-							data: avgData,
-							borderColor: 'rgba(200, 200, 200, 0.6)',
-							borderDash: [5, 5],
-							fill: false,
-							pointRadius: 0,
-							tension: 0.1,
-							datalabels: { display: false },
-						},
-					],
-				},
-				options: {
-					responsive: false,
-					plugins: {
-						datalabels: {
-							display: true,
-							align: 'end',
-							offset: 8,
-							font: { size: 12 },
-							formatter: (value) => formatSalary(value * 100_000_000),
-						},
-						tooltip: {
-							callbacks: {
-								label: function(ctx) {
-									const raw = ctx.raw * 100_000_000;
-									if (ctx.dataset.label.includes('평균')) {
-										return '업계 평균: ' + formatSalary(raw);
-									}
-									const growth = Number(profit[ctx.dataIndex].growthRatePercent ?? 0);
-									return `영업 이익: ${formatSalary(raw)} (작년 대비 ${growth >= 0 ? '+' : ''}${growth.toFixed(2)}%)`;
-								},
-							},
-						},
-					},
-					layout: { padding: { bottom: 80, right: 50, left: 20} },
+			    type: 'line',
+			    data: {
+			        labels: labels,
+			        datasets: [
+			            {
+			                label: '영업 이익',
+			                data: data,
+			                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+			                borderColor: 'rgba(153, 102, 255, 1)',
+			                borderWidth: 2,
+			                pointBackgroundColor: 'rgba(153, 102, 255, 1)',
+			                fill: true,
+			                tension: 0.3,
+			            },
+			            {
+			                label: '기업 평균 영업이익',
+			                data: avgData,
+			                borderColor: 'rgba(200, 200, 200, 0.6)',
+			                borderDash: [5, 5],
+			                fill: false,
+			                pointRadius: 0,
+			                tension: 0.1,
+			                datalabels: { display: false },
+			            },
+			        ],
+			    },
+			    options: {
+			        responsive: false,
+			        layout: { padding: { left: 30, right: 50, bottom: 80 } }, // 왼쪽 여백 확장
+			        plugins: {
+			            datalabels: {
+			                display: true,
+							align: 'top',      // 포인트 위쪽으로
+							anchor: 'end',     // 데이터 포인트 끝 기준
+							offset: 4,          // 포인트와 라벨 간격        // 포인트와 간격
+			                font: { size: 10 },
+			                formatter: (value) => formatSalary(value * 100_000_000),
+			            },
+			            tooltip: {
+			                callbacks: {
+			                    label: function(ctx) {
+			                        const raw = ctx.raw * 100_000_000;
+			                        if (ctx.dataset.label.includes('평균')) {
+			                            return '기업 평균: ' + formatSalary(raw);
+			                        }
+			                        const growth = Number(profit[ctx.dataIndex].growthRatePercent ?? 0);
+			                        return `영업 이익: ${formatSalary(raw)} (작년 대비 ${growth >= 0 ? '+' : ''}${growth.toFixed(2)}%)`;
+			                    },
+			                },
+			            },
+			        },
 					scales: {
-						y: {
-							title: { display: true, text: '억 원', color: '#666', font: { size: 14 } },
-							beginAtZero: true,
-						},
-					},
-				},
-				plugins: [ChartDataLabels],
+					            y: {
+					                title: { display: true, text: '금액', color: '#666', font: { size: 14 } },
+					                beginAtZero: true,
+					                ticks: {
+					                    padding: 20,
+					                    callback: function(value) {
+					                        return formatAxisValue(value * 100000000);
+					                    }
+					                }
+					            }
+					        }
+					    },
+					    plugins: [ChartDataLabels],
 			});
 
 			if (latest) {
@@ -476,17 +518,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 	function formatSalary(salary) {
-		salary = Number(salary);
-		if (isNaN(salary) || salary === 0) return '면접 후 결정';
-		if (salary < 10000) {
-			return `${salary.toString()}만원`;
-		}
-		const eok = Math.floor(salary / 10000);
-		const man = salary % 10000;
-		return man > 0 ? `${eok}억 ${man.toString()}만원` : `${eok}억원`;
+	    salary = Number(salary);
+	    if (isNaN(salary) || salary === 0) return '-';
+
+	    const manUnit = 10000;           // 1억 = 1만만원
+	    const eokUnit = 10000;           // 억
+	    const joUnit = 10000 * 10000;    // 조
+
+	    let resultParts = [];
+
+	    // 조 단위
+	    if (salary >= joUnit) {
+	        const jo = Math.floor(salary / joUnit);
+	        resultParts.push(`${jo.toLocaleString()}조`);
+	        salary = salary % joUnit;
+	    }
+
+	    // 억 단위
+	    if (salary >= eokUnit) {
+	        const eok = Math.floor(salary / eokUnit);
+	        resultParts.push(`${eok.toLocaleString()}억`);
+	        salary = salary % eokUnit;
+	    }
+
+	    // 천만원 단위 (0.1억)
+	    if (salary > 0) {
+	        const cheon = Math.floor(salary / 1000); // 1천만원 단위
+	        if (cheon > 0) {
+	            resultParts.push(`${cheon * 1000}만원`);
+	        }
+	    }
+
+	    return resultParts.join(' ');
 	}
-
-
+	
+	
+	function formatAxisValue(value) {
+	    if (value >= 10000 * 10000) { // 조 단위
+	        return (value / (10000 * 10000)).toFixed(1) + '조';
+	    } else if (value >= 10000) {  // 억 단위
+	        return (value / 10000).toFixed(0) + '억';
+	    } else { // 억 미만 → 만원 단위
+	        return value.toFixed(0) + '만원';
+	    }
+	}
 
 	function renderNotice(notices) {
 		const today = new Date();
@@ -626,6 +701,25 @@ document.addEventListener('DOMContentLoaded', () => {
 		statusTabs.querySelector('[data-status="open"]').click();
 	}
 
+	
+	
+	
+	
+	function similarSalaryRank(induNo){
+		axios.get(`/ajax/member/company_salary/rank/${userId}/${induNo}`)
+			 .then(resp => {
+				const rank = resp.data;
+				console.log(rank);
+				
+				document.getElementById('salaryCompanyIndu').textContent = rank.INDU_NAME + ' 분야';
+				document.getElementById('salaryGrade').textContent = rank.SALARY_RANK + '위';
+			 })
+	}
+	
+	
+	
+	
+	
 	axios.get(`/ajax/member/company_view/pass_introduction/${userId}`)
 		 .then(resp => {
 			const essays = resp.data;
@@ -637,6 +731,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function renderEssayList(essays){
 		const listContainer = document.getElementById('essayCardList');
+		
+		if (!essays || essays.length === 0) {
+		       listContainer.innerHTML = `
+		           <div style="padding: 20px; text-align: center; color: #666;">
+		               등록된 자소서가 없습니다.
+		           </div>
+		       `;
+		       return;
+		   }
+		
 		listContainer.innerHTML = essays.map((e, idx) => `
 			<div class="essay-card clickable" data-index="${idx}">
 				<div class="essay-card-title">${e.recruitmentTitle}</div>
@@ -785,4 +889,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	          </li>`
 			).join('');
 	}
+	
+	
+	
+
 });

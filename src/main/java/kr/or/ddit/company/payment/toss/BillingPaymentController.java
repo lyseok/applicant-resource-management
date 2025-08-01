@@ -55,13 +55,14 @@ public class BillingPaymentController {
 
 	@GetMapping("/change/buyproduct")
 	public String buyProduct(
-	    @RequestParam String productNo,
-	    @RequestParam String oldPaymentNo,
+		@RequestParam String oldPaymentNo,
+	    @RequestParam String newproductNo,
 	    @RequestParam String billingKey,
 	    HttpSession session,
 	    Model model
 	) {
-	    PaymentProductVO product = service.selectPaymentProductByPk(productNo);
+	    PaymentProductVO product = service.selectPaymentProductByPk(oldPaymentNo);
+	    log.info("product: {}", product);
 	    model.addAttribute("product", product);
 	    model.addAttribute("oldPaymentNo", oldPaymentNo);
 	    model.addAttribute("billingKey", billingKey);
@@ -71,7 +72,7 @@ public class BillingPaymentController {
 	}
 
 	
-	@GetMapping("/check/billing")
+	@PostMapping("/check/billing")
 	@ResponseBody
 	public Map<String, Object> checkBillingKey(HttpSession session){
 		Map<String, Object> map = new HashMap<>();
@@ -83,6 +84,7 @@ public class BillingPaymentController {
 			log.info("여기서 빌링키가 나온다고요 ?? : {}", billingKey);
 			map.put("billingKey", billingKey);
 		}
+		log.info("==> sessionId: {}" ,session.getId());
 		map.put("hasBillingKey", billingKey != null && !billingKey.isEmpty());
 		map.put("customerKey", customerKey);
 		log.info("빌링키빌링키빌링키빌링키빌링키", billingKey);
@@ -110,16 +112,16 @@ public class BillingPaymentController {
 		
 		String sessionBillingKey = (String) session.getAttribute("billingKey");
 		String sessionCustomerKey = (String) session.getAttribute("customerKey");
-		
+		log.info("==>> sessionBillingKey가 아닌 그냥 파람으로 받은 BillingKey : {}", billingKey);
 		log.info("최종 sessionBillingKey: {}", sessionBillingKey);
 		log.info("최종 sessionCustomerKey: {}", sessionCustomerKey);
 		
-		
+		log.info("==> sessionId: {}" ,session.getId());
 		PaymentProductVO product = service.selectPaymentProductByPk(productNo);
 		model.addAttribute("product",product);
 		model.addAttribute("productNo",productNo);
-		session.setAttribute("customerKey", sessionCustomerKey);
-		session.setAttribute("billingKey",sessionBillingKey);
+		model.addAttribute("customerKey", sessionCustomerKey);
+		model.addAttribute("billingKey",sessionBillingKey);
 //		return "/company/payment/payment/buyproduct?productNo=" + productNo;
 		return "company/payment/payment/BuyProduct";
 	}
@@ -133,23 +135,24 @@ public class BillingPaymentController {
 		return "company/payment/payment/BillingPayment";
 	}
 
-	@GetMapping("/success") // 결제 빌씨링발키 ㅋㅋ 부르긴 했는데 안나오네 집가서 하자
+	@GetMapping("/success") // 결제 키 ㅋㅋ 부르긴 했는데 안나오네 집가서 하자
+
 	String Success(@RequestParam String authKey
 				, @RequestParam String customerKey
 				, @RequestParam String productNo
 				, HttpSession session
-				, Model model) {
+				, Model model) throws IOException, InterruptedException {
+		String billingKey = (String) session.getAttribute("billingKey");
 		log.info("productNo : {}", productNo);
 		log.info("customerKey : {}", customerKey);
 		log.info("authKey : {}", authKey);
-
+		log.info("==>sessionID : {}", session.getId());
 		// JSOn 본문 생성
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, String> requestBody = new HashMap<>();
 
 		requestBody.put("customerKey", customerKey);
 		requestBody.put("authKey", authKey);
-
 		String jsonBody = "";
 
 		try {
@@ -166,21 +169,14 @@ public class BillingPaymentController {
 				.uri(URI.create("https://api.tosspayments.com/v1/billing/authorizations/issue"))
 				.header("Authorization", "Basic dGVzdF9za192Wm5qRUplUVZ4RzJqQldldjQ1RDNQbU9vQk4wOg==") // Base64 인코딩된																					// secretKey:
 				.header("Content-Type", "application/json")
-				.POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+				.method("POST",HttpRequest.BodyPublishers.ofString(jsonBody))
 				.build();
 		
 		
 		// 요청 실행
 		
-		HttpResponse<String> response = null;
-		
-		try {
-			response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-		} catch (IOException | InterruptedException e) {
-			log.error("HTTP 요청 실패", e);
-			model.addAttribute("error", "결제 요청 실패");
-		}
-		
+		HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
 		
 		if (response != null && response.body() != null) {
 			
@@ -188,12 +184,12 @@ public class BillingPaymentController {
 
 			try {
 				JsonNode jsonNode = objectMapper.readTree(response.body());
-				String billingKey = jsonNode.get("billingKey").asText();
-				
+				/* String billingKey = jsonNode.get("billingKey").asText(); */
+				log.info("jsonBody : {}",jsonBody);
 				// billingKey를 저장
-//				model.addAttribute("billingKey",billingKey);
+				billingKey = jsonNode.get("billingKey").asText();
+				model.addAttribute("billingKey",billingKey);
 				model.addAttribute("result",jsonNode.toPrettyString());
-			
 				session.setAttribute("authKey", authKey);
 				session.setAttribute("customerKey", customerKey);
 				session.setAttribute("billingKey", billingKey);
@@ -213,14 +209,15 @@ public class BillingPaymentController {
 			log.warn("응답 실패 !! ");
 			model.addAttribute("error", "응답 없음");
 		}
-
+		
 		log.info("responseBody : {}", response.body());
+		/* return "dummy"; */
 		return "redirect:/company/toss/buyproduct?productNo=" + productNo;
-//		return "company/payment/payment/BillingResult";
 	}
 
 	@PostMapping("/api/toss/billing/issue")
 	public ResponseEntity<String> inssueBillingKey(@RequestBody Map<String, String> requestMap) {
+		log.info("><<><><><><><><><>requestMap : {}", requestMap);
 		String authKey = requestMap.get("authKey");
 		String customerKey = requestMap.get("customerKey");
 		String billingKey = requestMap.get("billingKey");

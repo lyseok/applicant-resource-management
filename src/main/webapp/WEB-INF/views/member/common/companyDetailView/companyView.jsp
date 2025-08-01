@@ -8,7 +8,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 <script src="/js/member/common/companyDetailView/companyDetailView.js"></script>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 
 <style type="text/css">
@@ -482,7 +482,43 @@ hr {
 	color: var(--violet70);
 }
 
-.class-filter
+.button-dibs {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+
+
+/* 기본 하트 */
+.button-dibs::before {
+    content: "♡";
+    font-size: 26px;
+    color: #ccc;
+    transition: color 0.2s ease;
+}
+
+/* 채워진 하트 */
+.button-dibs.on::before {
+    content: "♥";
+    color: #e63946;
+}
+
+.company-header-branding .add-ons .button-dibs {
+    padding: 8px !important; /* 정중앙 오도록 조정 */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 </style>
 </head>
 <body>
@@ -513,35 +549,13 @@ hr {
 					<div class="add-ons">
 						<div class="dibs">
 							<a class="button button-dibs " memtype="C" data-mem-sys="366630"
-								href="javascript:void(0);"> <i class="icon"
-								aria-hidden="true"></i>
-								<div class="count" id="devFavCnt">2145</div>
+								href="javascript:void(0);"> 
 							</a>
-							<!-- [Dev] 툴팁 레이어 : 관심기업 off인 경우 노출 (클래스 open 추가/삭제) -->
-							<div class="tooltip-box-wrap open">
-								<p class="txt">
-									관심기업 추가하고 <em>채용소식 받기</em>
-								</p>
-								<a href="javascript:void(0);" class="btn-tooltip-close"><span
-									class="skip">닫기</span></a>
-							</div>
-						</div>
-						<div class="share">
-							<a href="javascript:void(0);" class="button-share"
-								data-target=".layer-share" aria-haspopup="true">공유</a>
-							<div class="layer-share hidden" aria-hidden="true">
-								<a href="javascript:goFacebook('http://joburl.kr/Zo3pI')"
-									class="button button-facebook">페이스북</a> <a
-									href="javascript:void(0);" class="button button-bookmark"
-									id="devBookMark">즐겨찾기</a> <a href="javascript:void(0);"
-									class="button button-copy-url button-popup-component"
-									data-target=".layer-url-copied">URL복사</a>
-							</div>
 						</div>
 
 						<div class="home">
-							<a href="http://www.kari.re.kr" class="button button-home"
-								target="_blank"></a>
+							<a href="" class="button button-home"
+								target="_blank" id = "com_url"></a>
 						</div>
 
 					</div>
@@ -778,8 +792,6 @@ hr {
 
 				<div class="company-infomation-row financial-analysis">
 					<h2 class="header">재무분석</h2>
-					<a href="javascript:void(0);"
-						class="button button-view-financial-status">재무현황 전체보기</a>
 
 					<div
 						class="company-infomation-container financial-analysis-container">
@@ -1047,15 +1059,17 @@ hr {
 				<h2 class="header">연봉 정보</h2>
 				<div class="salary-summary-box">
 					<div class="summary-item">
-						<div id="salaryCompanyName" class="salary-company-name">대덕인재개발원</div>
+						<div id="salaryCompanyName" class="salary-company-name"></div>
 						<div class="summary-value" id="salaryAvgGross">-- 만원</div>
 						<div class="summary-label">전체 평균 연봉</div>
 						<div class="summary-sub">(임원 제외)</div>
 						<div class="summary-monthly" id="salaryAvgNet"></div>
 					</div>
 					<div class="summary-item">
-						<div class="summary-value" id="salaryNewhireGross">-- 만원</div>
-						<div class="summary-label">신입사원 초봉</div>
+						<div class="salary-company-name" id="salaryCompanyIndu" ></div>
+						<div class="summary-value" id="salaryGrade"></div>
+						<div class="summary-label"> 평균 연봉 순위 </div>
+						<div class="summary-sub"></div>
 						<div class="summary-monthly" id="salaryNewhireNet"></div>
 					</div>
 				</div>

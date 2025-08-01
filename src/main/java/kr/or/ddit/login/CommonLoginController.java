@@ -73,7 +73,8 @@ public class CommonLoginController {
 	        String jsessionCookie = ResponseCookie.from("JSESSIONID", req.getSession().getId())
 	                .path("/")
 	                .httpOnly(true)
-	                .sameSite(SameSite.STRICT.attributeValue())
+//	                .sameSite(SameSite.STRICT.attributeValue())
+	                .sameSite(SameSite.LAX.attributeValue())
 	                .maxAge(JwtProvider.VALID_TERM / 1000) // JWT와 동일한 유효기간
 	                .build()
 	                .toString();

@@ -50,6 +50,7 @@
 		PAYMENT
 		WHERE USER_ID = #{userId}
 		AND STATUS = 'S'
+		AND STATUS = 'A'
 	</select>
 
 	<select id="nextMonthPay">

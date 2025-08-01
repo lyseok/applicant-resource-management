@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 // 일반회원의 마이페이지 스크랩 중 관심공고 조회
 @RestController
-@RequestMapping("/ajax/member/scrabRecruitment")
+@RequestMapping("/ajax/member/scrab_recruit")
 @RequiredArgsConstructor
 public class MemberScrabRecruitmentAjaxController {
 
@@ -25,6 +25,11 @@ public class MemberScrabRecruitmentAjaxController {
 	@GetMapping("/my")
 	public ResponseEntity<List<ScrabRecruitmentVO>> getMyList() {
 		return ResponseEntity.ok(service.readMyScrabRecruitmentList());
+	}
+	
+	@GetMapping("/{recruitmentNo}")
+	public int findRecruitScrabYn(@PathVariable String recruitmentNo) {
+		return service.findRecruitScrabYn(recruitmentNo);
 	}
 
 	// 관심 공고 마이페이지 내 등록

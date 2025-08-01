@@ -14,30 +14,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 	axios.get(`/ajax/member/company_review/career/${careerNo}`)
-		.then(resp => {
-			const career = resp.data;
-		document.getElementById('companyName').textContent = career.comName || '-';
-		document.getElementById('jobName').textContent = career.jobCodeName 
-		           ? `${career.jobCodeName}${career.department ? ` (${career.department}에서 근무)` : ''}` 
-		           : (career.jobCode || '-');
-        document.getElementById('period').textContent = career.tenure === 'Y' ? '재직중' : '퇴사';
-		
-		const startDate = career.startWorkDate || '-';
-		const endDate = career.retireDate ? career.retireDate : '현재';
-		document.getElementById('workPeriod').textContent = `${startDate} ~ ${endDate}`;
+	  .then(resp => {
+	    const career = resp.data;
+	    document.getElementById('companyName').textContent = career.comName || '-';
+	    document.getElementById('jobName').textContent = career.jobCodeName 
+	        ? `${career.jobCodeName}${career.department ? ` (${career.department}에서 근무)` : ''}` 
+	        : (career.jobCode || '-');
 
-		})
+			
+		document.getElementById('com_size').textContent = career.company.comSize || '-';
+		document.getElementById('com_mem').textContent = career.company.comMem ||'-';
+		document.getElementById('ceo_name').textContent = career.company.ceoName || '-';
+	    // endDate(retireDate)가 없으면 재직중, 있으면 퇴사
+	    document.getElementById('period').textContent = career.retireDate ? '퇴사' : '재직중';
+
+	    const startDate = career.startWorkDate || '-';
+	    const endDate = career.retireDate ? career.retireDate : '현재';
+	    document.getElementById('workPeriod').textContent = `${startDate} ~ ${endDate}`;
+	  });
 
 	axios.get('/ajax/code/cmncodegroup/REVU')
 		.then(resp => {
 			const questionList = resp.data.cmnCodeList;
 			questionList.forEach((code, idx) => {
 				const card = document.createElement('div');
-				card.className = 'card review-card mb-3 shadow-sm';
+				card.className = 'card review-card';
 				card.innerHTML = `
                   <div class="card-body">
-                    <label class="required d-block mb-3 fw-semibold">${code.codeName}</label>
-                    <div class="form-check-wrap d-flex justify-content-between">
+                    <label class="required d-block mb-1 fw-semibold">${code.codeName}</label>
+                    <div class="form-check-wrap d-flex gap-3">
                       ${[1, 2, 3, 4, 5].map(num => `
                         <div class="form-check">
                           <input class="form-check-input" 

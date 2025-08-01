@@ -36,7 +36,9 @@ public interface MemberCompanyReviewService {
 	
 	public Map<String, Object> readCompanyWithReviewInfo(String comId);
 	
+	public List<Map<String, Object>> readCompanyInfoWithReviewInfoList();
 	
+	public Map<String, Object> readCompanyInfoWithReviewInfoPage(Map<String, Object> params);
 	
 	
 }

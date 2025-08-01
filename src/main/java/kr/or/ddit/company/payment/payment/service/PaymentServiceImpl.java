@@ -44,11 +44,11 @@ public class PaymentServiceImpl implements PaymentService {
 	public PaymentVO getUserCurrentPaymentStatus() {
 	    String userId = getUserId();
 	    PaymentVO ppvo = selectStauts(userId);
-	    String productName = nextMonthPay(userId);
+
 	    if (ppvo != null) {
 	        List<PaymentProductVO> productList = pservice.selectPaymentProductListByPk(ppvo.getProductNo());
 	        ppvo.setPaymentProductList(productList);
-	        ppvo.setNextMonth(productName);
+
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 	        LocalDate today = LocalDate.now();
 	        LocalDate end = LocalDate.parse(ppvo.getEndDate(), formatter);
@@ -229,7 +229,9 @@ public class PaymentServiceImpl implements PaymentService {
         if (product == null) {
             throw new IllegalArgumentException("존재하지 않는 상품명입니다: " + orderName);
         }
-
+        if (selectScheduledByUserId(getUserId()) != null) {
+            throw new IllegalStateException("이미 구매한 상품이 있습니다. 관리자에게 문의하세요");
+        }
         PaymentVO vo = new PaymentVO();
         vo.setPaymentKey(paymentKey);
         vo.setUserId(getUserId());
@@ -241,11 +243,13 @@ public class PaymentServiceImpl implements PaymentService {
         vo.setUsageRemaining(product.getProductLimit());
         vo.setPaymentOrderId(orderId);
         vo.setPaymentProductList(List.of(product));
-
+        
+        log.info("vo : {} ", vo);
         insertPayment(vo);
         updateComPaymentStatus(vo.getUserId());
 
-        return selectPaymentByPk(vo.getPaymentNo());
+//        return selectPaymentByPk(vo.getPaymentNo());
+        	return vo;
     }
 
     // 구매상품보기
@@ -486,13 +490,6 @@ public class PaymentServiceImpl implements PaymentService {
 	public List<Integer> selectMonthlySalesCompare(int year) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-
-	@Override
-	public String nextMonthPay(String userId) {
-		String productName = mapper.nextMonthPay(userId);
-		return productName;
 	}
 
 

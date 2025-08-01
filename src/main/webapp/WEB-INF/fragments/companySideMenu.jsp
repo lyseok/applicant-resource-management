@@ -70,22 +70,10 @@
         </a>
       </li>
       <li class="menu-item">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <a href="/company/company_exam" class="menu-link">
           <i class="menu-icon tf-icons bx bx-book-open"></i>
-          <div data-i18n="Account Settings">시험관리</div>
+          <div data-i18n="Basic">시험관리</div>
         </a>
-        <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="/company/company_exam" class="menu-link">
-              <div data-i18n="Account">시험관리</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="/company" class="menu-link">
-              <div data-i18n="Notifications">문제관리</div>
-            </a>
-          </li>
-        </ul>
       </li>
       <li class="menu-item">
         <a href="/company/interview" class="menu-link">
@@ -94,32 +82,28 @@
         </a>
       </li>
 
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">인재풀</span></li>
+      <li class="menu-header small text-uppercase  off"><span class="menu-header-text">인재풀</span></li>
 
       <li class="menu-item">
-        <a href="/company/talentpool" class="menu-link">
+        <a href="/company/talentpool" class="menu-link off">
           <i class="menu-icon tf-icons bx bx-user-search"></i>
           <div data-i18n="Basic">인재검색</div>
+          <i class='bx  bx-lock-keyhole'  ></i> 
         </a>
       </li>
       <li class="menu-item">
-        <a href="/company/talentpool/scrab" class="menu-link">
+        <a href="/company/talentpool/scrab" class="menu-link off">
           <i class="menu-icon tf-icons bx bx-user"></i>
           <div data-i18n="Basic">인재관리</div>
+          <i class='bx  bx-lock-keyhole'  ></i> 
         </a>
       </li>
       <li class="menu-item">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <a href="/company/mail/template" class="menu-link off">
           <i class="menu-icon tf-icons bx bx-envelope"></i>
-          <div data-i18n="Account Settings">메일/알림</div>
+          <div data-i18n="Basic">메일/알림</div>
+          <i class='bx  bx-lock-keyhole'  ></i> 
         </a>
-        <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="/company/mail/template" class="menu-link">
-              <div data-i18n="Account">메일 템플릿</div>
-            </a>
-          </li>
-        </ul>
       </li>
       <li class="menu-header small text-uppercase"><span class="menu-header-text">상품관리</span></li>
 
@@ -151,7 +135,7 @@
         </a>
       </li>
 
-      <li class="menu-header small text-uppercase"><span class="menu-header-text">고객센테</span></li>
+      <li class="menu-header small text-uppercase"><span class="menu-header-text">고객센터</span></li>
 
       <li class="menu-item">
         <a href="/company/board/admin_board?type=BRDD-003" class="menu-link">

@@ -41,6 +41,15 @@ axios.get('/ajax/userinfo').then((res) => {
   if (document.getElementById('user_name')) {
     document.getElementById('user_name').textContent = name;
   }
+  if (document.querySelector('.user_photo')) {
+    const userImg = document.querySelector('.user_photo');
+    userImg.innerHTML = "";
+    const img = document.createElement("img");
+    img.src = `${data.userImg}`;
+    img.style.width = "100%";
+    img.style.objectFit = "cover";
+    userImg.append(img);
+  }
 });
 
 // 로그아웃 버튼 이벤트

@@ -33,8 +33,8 @@ async function doChangeBilling(event, btn) {
 	const oldProductNo = oldproduct.dataset.productNo;      // 현재 사용 중인 상품 번호
 	const newProductNo = btn.dataset.productNo;                // 새로 선택한 상품 번호
 	
-	console.log("현재 상품 번호 (oldProductNo):", oldProductNo );
-	console.log("바꿀 상품 번호 (newProductNo):", newProductNo);
+	/*console.log("현재 상품 번호 (oldProductNo):", oldProductNo );
+	console.log("바꿀 상품 번호 (newProductNo):", newProductNo);*/
 	const productName = btn.dataset.productName;
 	const billingKey = btn.dataset.billingKey;
 	const orderId = btn.dataset.orderId;
@@ -42,16 +42,12 @@ async function doChangeBilling(event, btn) {
 	const oldPaymentNo = oldproduct.dataset.paymentNo;
 	const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
 	
-	console.log("빌링키 값 :",billingKey);
-	alert("여기까진 문제없음");
+	/*console.log("빌링키 값 :",billingKey);
 	console.log("oldPaymentNo값 :",oldPaymentNo);
 	console.log("newProductno", newProductNo);
 	console.log("커스터키값 : {}", customerKey);
-	alert("설마여기서?");
-	console.log("orderName",productName);
-	alert("여기까진 문제없음2");
+	console.log("orderName",productName);*/
 	if (!billingKey) {
-		alert("여기까진 문제없음3");
 		const confirmed = confirm("등록된 카드가 없습니다. 등록하시겠습니까?");
 		if (confirmed) {
 			alert("여기까진 문제없음4");
@@ -63,7 +59,6 @@ async function doChangeBilling(event, btn) {
 	console.log("customerKey",customerKey);
 	console.log("amount",Number(amount));
 	console.log("orderName",productName);
-	alert("여기까진 문제없음5");
 	 const billingRes = await fetch("/company/toss/api/billing/execute", {
 	method: "POST",
 	headers: { "Content-Type": "application/json" },
@@ -75,7 +70,6 @@ async function doChangeBilling(event, btn) {
 		orderId
 	})
 });
-	alert("돌아왔니 ?!");
 
 const rawText = await billingRes.text(); // MIME type이 text/plain이기 때문
 let billingData;

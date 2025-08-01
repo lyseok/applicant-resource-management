@@ -67,6 +67,13 @@
 	    ON C.USER_ID = U.USER_ID
 	</select>
 	
+	<select id="selectComPayment">
+		SELECT COM_PAYMENT
+		FROM COMPANY
+		WHERE COM_PAYMENT = 'N'
+		AND USER_ID = #{user_id}
+	</select>
+	
 	<insert id="insertCompany">
 		INSERT INTO COMPANY (
 			USER_ID

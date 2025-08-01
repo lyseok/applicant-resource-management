@@ -102,6 +102,7 @@ public class PaymentController {
 		) {
 		    PaymentVO result = service.processSuccessfulBilling(billingKey, amount, orderName, paymentKey, orderId);
 		    model.addAttribute("result", result);
+		    log.info("결제성공 했을때 : {}", result);
 		    return "company/payment/payment/SuccessSubscribe";
 		}
 
@@ -109,7 +110,8 @@ public class PaymentController {
 		 @GetMapping("/change/product")
 		 public String changeProduct(Model model, @RequestParam String productNo, @RequestParam String paymentNo) {
 		     ChangeProductResponseVO response = service.getChangeableProductInfo(paymentNo, productNo);
-		     model.addAttribute("payment", response.getPayment());
+		     log.info("response : {}", response);
+		     model.addAttribute("ppvo", response.getPayment());
 		     model.addAttribute("changeableProducts", response.getChangeableProducts());
 		     return "company/payment/product/ComparisonProduct";
 		 }

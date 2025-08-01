@@ -1,7 +1,6 @@
 package kr.or.ddit.company.recruitment.talentpool.service;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,15 +12,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.or.ddit.company.email.talentpool.service.JoboffSendService;
 import kr.or.ddit.dto.MailDTO;
+import kr.or.ddit.mapper.common.CompanyMapper;
 import kr.or.ddit.mapper.common.PaymentLogMapper;
 import kr.or.ddit.mapper.common.PaymentMapper;
+import kr.or.ddit.mapper.common.ReadResumeMapper;
 import kr.or.ddit.mapper.common.ScrabUserMapper;
 import kr.or.ddit.mapper.common.TalentPoolMapper;
 import kr.or.ddit.mapper.recruitment.ComMailTemMapper;
 import kr.or.ddit.vo.common.PaymentLogVO;
 import kr.or.ddit.vo.common.PaymentVO;
+import kr.or.ddit.vo.common.ReadResumeVO;
+import kr.or.ddit.vo.common.ScrabUserVO;
 import kr.or.ddit.vo.recruitment.ComMailTemVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,10 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 	private final PaymentMapper paymentMapper;
 	private final PaymentLogMapper paymentLogMapper;
 
+	private final CompanyMapper companyMapper;
+
+	private final ReadResumeMapper readResumeMapper;
+
 	@Override
 	public Map<String, Object> readResumeByFilter(Map<String, Object> params) {
 		List<ResumeVO> resumeList = mapper.selectResumeByFilter(params);
@@ -50,7 +56,16 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 
 		return resp;
 	}
-
+	public String NonPayment() {
+		String paymentY = companyMapper.selectComPayment(getUserId());
+		return paymentY;
+	}
+	
+	public String getUserId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();		// 기업 ID 
+		}
+	
 	// 저장된 관심 인재 리스트 조회
 	public List<String> getSavedTalentList() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -170,4 +185,22 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 		}
 
 	}
+
+	@Override
+	public int updateResumeConfirm(String userId) {
+		ScrabUserVO vo = new ScrabUserVO();
+		vo.setCompanyId(getUserId());
+		vo.setUserId(userId);
+		return scrabUserMapper.updateResumeConfirm(vo);
+	}
+	
+
+	@Override
+	public int createReadResume(String resumeNo) {
+		ReadResumeVO vo = new ReadResumeVO();
+		vo.setCompanyId(getUserId());
+		vo.setResumeNo(resumeNo);
+		return readResumeMapper.insertReadResume(vo);
+	}
+
 }

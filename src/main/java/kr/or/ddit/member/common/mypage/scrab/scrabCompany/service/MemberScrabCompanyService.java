@@ -8,6 +8,7 @@ import kr.or.ddit.vo.common.ScrabCompanyVO;
 public interface MemberScrabCompanyService {
 	public List<ScrabCompanyVO> readMyScrabCompanyList();
 	public List<ScrabCompanyVO> readScrabCompanyList();
+	public int findCompanyScrabYn(String companyId);
 	public void createScrabCompany(String scompany);
 	public void removeScrabCompany(String scompany);
 }

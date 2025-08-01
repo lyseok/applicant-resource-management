@@ -1,78 +1,205 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<script>
-	const PProductNo = "${product.productNo}";
-	console.log("PProductNo:", PProductNo); 
-	/* const billingKey = "${sessionScope.billingKey}"; */
-	const Amount = "${product.productPrice}";
-	/* const customerKey = "${sessionScope.customerKey}"; */
-	const orderName = "${product.productName}";
-</script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>결제 상품 관리</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<style>
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background-color: #f8f9fa;
+}
+/* 좌측 보고서 */
+.report-container {
+	background: #fff;
+	border-radius: 12px;
+	border: 2px solid #d1c4e9;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+	padding: 30px;
+}
+
+.report-header {
+	border-bottom: 2px solid #d1c4e9;
+	padding-bottom: 15px;
+	margin-bottom: 20px;
+}
+
+.report-header h2 {
+	color: #5e3fa3;
+	font-weight: bold;
+}
+
+.report-row {
+	display: flex;
+	padding: 12px 0;
+	border-bottom: 1px solid #eee;
+}
+
+.report-label {
+	font-weight: bold;
+	color: #6f42c1;
+	min-width: 150px;
+}
+
+.report-value {
+	flex: 1;
+}
+
+.btn-purple {
+	background-color: #b39ddb;
+	color: white;
+	border: none;
+	font-weight: bold;
+}
+
+.btn-purple:hover {
+	background-color: #9c89c7;
+}
+/* 우측 상품카드 */
+.package-card {
+	background: white;
+	border-radius: 8px;
+	padding: 20px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border: 1px solid #7e57c2;
+	cursor: pointer;
+	transition: transform .2s ease, box-shadow .2s ease;
+	margin-bottom: 20px;
+}
+
+.package-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, .1);
+}
+
+.package-header h5 {
+	font-size: 1.3rem;
+	font-weight: bold;
+	color: #212529;
+}
+
+.btn-violet {
+	background-color: #8e44ad;
+	color: white;
+	border: none;
+}
+
+.btn-violet:hover {
+	background-color: #732d91;
+}
+</style>
 </head>
-<body class="container my-5" 
-	data-trigger-billing="${triggerBilling}">
-	<div style="display: flex; gap: 40px;">
+<body>
+	<div class="container-xxl flex-grow-1 container-p-y my-5">
+		<div class="d-flex gap-4">
+			<!-- 좌측: 현재 상품 -->
+			<div class="flex-fill report-container">
+				<div
+					class="d-flex justify-content-between align-items-center report-header">
+					<h2>🧾 나의 결제 상품</h2>
+					<a href="/company/payment/product/list" class="btn btn-purple">상품
+						목록 보기</a>
+				</div>
+				<c:if test="${empty ppvo}">
+					<div class="text-center text-muted py-5">활성화된 상품이 없습니다.</div>
+				</c:if>
+				<c:if test="${not empty ppvo}">
+					<div class="report-row">
+						<div class="report-label">상품명</div>
+						<div class="report-value">
+							<c:forEach var="prod" items="${ppvo.paymentProductList}">
+								<a
+									href="/company/payment/buydetail?paymentNo=${ppvo.paymentNo}&productNo=${prod.productNo}"
+									class="text-decoration-none text-dark">${prod.productName}</a>
+								<br />
+							</c:forEach>
+						</div>
+					</div>
+					<div class="report-row">
+						<div class="report-label">결제금액</div>
+						<div class="report-value">
+							<fmt:formatNumber value="${ppvo.paymentPay}" type="currency"
+								currencySymbol="₩" />
+						</div>
+					</div>
+					<div class="report-row">
+						<div class="report-label">결제일시</div>
+						<div class="report-value">${ppvo.paymentDate}</div>
+					</div>
+					<div class="report-row">
+						<div class="report-label">남은기간</div>
+						<div class="report-value">
+							<c:choose>
+								<c:when test="${ppvo.daysRemaining >= 0}">${ppvo.daysRemaining}일 남음</c:when>
+								<c:otherwise>기간 만료</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+					<div class="report-row">
+						<div class="report-label">결제수단</div>
+						<div class="report-value">${ppvo.paymentMethod}</div>
+					</div>
+					<div class="report-row">
+						<div class="report-label">잔여메일발송횟수</div>
+						<div class="report-value">
+							<c:choose>
+								<c:when test="${ppvo.usageRemaining == -1}">무제한 이용 가능</c:when>
+								<c:otherwise>${ppvo.usageRemaining}회 남음</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+					<div class="report-row">
+						<div class="report-label">메일발송초기화일</div>
+						<div class="report-value">${ppvo.endDate}</div>
+					</div>
+					<div class="report-row">
+						<div class="report-label">다음달 결제 예정상품</div>
+						<div class="report-value">${ppvo.nextMonth}</div>
+					</div>
+				</c:if>
+			</div>
 
-		<!-- 왼쪽: 현재 상품 정보 -->
-		<div style="flex: 1; border: 1px solid #ccc; padding: 20px;" id="oldProduct"
-	data-product-no="${payment.paymentProductList[0].productNo}"
-	data-payment-no="${payment.paymentNo}">
-			<h3>현재 이용 중인 상품</h3>
-			${product.productNo}
-			<%-- <p>payment 객체 확인: ${payment}</p>
-			<p>product 리스트 크기: ${fn:length(payment.paymentProductList)}</p> --%>
-			<c:forEach var="product" items="${payment.paymentProductList}">
-				${product.productNo}
-				<p>상품명: ${product.productName}</p>
-				<p>상품 내용: ${product.productDetail}</p>
-				<p>금액: ${product.productPrice} 원</p>
-				<p>유효기간: ${payment.startDate} ~ ${payment.endDate}</p>
-			</c:forEach>
-		</div>
-
-		<!-- 오른쪽: 변경 가능한 상품 목록 -->
-		<div style="flex: 1; border: 1px solid #ccc; padding: 20px;">
-			<h3>변경 가능한 상품</h3>
-			<c:forEach var="product" items="${changeableProducts}">
-				<div style="margin-bottom: 20px; border-bottom: 1px solid #eee;">
-					
-					<p>상품명: ${product.productName}</p>
-					<p>내용: ${product.productDetail}</p>
-					<p>가격: ${product.productPrice} 원</p>
-					<form id="changeForm">
-						<input type="hidden" name="oldPaymentNo"
-							value="${payment.paymentNo}" /> <input type="hidden"
-							name="newProductNo" value="${product.productNo}" /> <input
-							type="hidden" name="billingKey"
-							value="${payment.paymentBillingKey}" />
-							
-						<button id="change-btn"
-								class="btn btn-success"
-								data-billing-key="${payment.paymentBillingKey}"
+			<!-- 우측: 변경 가능한 상품 목록 -->
+			<div class="flex-fill">
+				<h3 class="mb-4">변경 가능한 상품</h3>
+				<c:forEach var="product" items="${changeableProducts}">
+					<div class="package-card">
+						<div class="package-header">
+							<h5>${product.productName}</h5>
+						</div>
+						<p>${product.productDetail}</p>
+						<p>
+							<strong>가격:</strong> ₩
+							<fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />
+							/ 월
+						</p>
+						이거 왜 안나와 ? : ${ppvo.paymentNo}
+						<form method="get">
+							<input type="hidden" name="oldPaymentNo"
+								value="${ppvo.paymentNo}"> <input type="hidden"
+								name="newProductNo" value="${product.productNo}"> <input
+								type="hidden" name="billingKey"
+								value="${ppvo.paymentBillingKey}">
+							<button class="btn btn-violet w-100 mt-3"
 								data-product-no="${product.productNo}"
 								data-product-name="${product.productName}"
+								data-payment-no="${ppvo.paymentNo}"
+								data-billing-key="${ppvo.paymentBillingKey}"
 								data-amount="${product.productPrice}"
-							onclick="doChangeBilling(event, this)">이 요금제로 변경하기
-							</button>
-
-					</form>
-
-				</div>
-			</c:forEach>
+								onclick="doChangeBilling(event, this)">이 요금제로 변경하기</button>
+						</form>
+					</div>
+				</c:forEach>
+			</div>
 		</div>
-
 	</div>
-	
-	<script src="/js/company/payment/ChangeProduct.js"></script>
-	<script src="/js/company/payment/ProductDetail.js"></script>
-	<!-- <script src="/js/company/payment/ComparsionProduct.js"></script> -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

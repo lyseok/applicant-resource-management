@@ -102,9 +102,11 @@
 .w900{width:900px !important;}
 /* 최대넓이 - max-width */
 .mw-28{max-width:28px;}
+.mw-1260{max-width:1260px;}
 
 /* 높이 - height */
 .h40{height:40px !important;}
+.h48{height:48px !important;}
 .h50{height:50px !important;}
 
 /* 최소높이 - min-height */
@@ -123,6 +125,8 @@
 .lh1-8{line-height:1.8 !important;}
 .lh40{line-height:40px !important;}
 .lh50{line-height:50px !important;}
+/* word-break */
+.keep-all{word-break:keep-all !important;}
 
 /* 테이블 레이아웃 */
 .table-layout-fixed {
@@ -141,6 +145,7 @@
 .row_custom_scroll::-webkit-scrollbar-thumb:hover{
 	cursor:pointer;
 }
+
 /* 마우스 커서 */
 .cursor-auto{
 	cursor:auto !important;
@@ -162,21 +167,28 @@
 	transform:translateY(0);	
 }
 
-
-/* 말줄임 2줄 */
-.text-truncate.text-truncate2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;  
-  white-space: normal;
-}
-.text-truncate.text-truncate3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  white-space: normal;
-}
-
+/* 탭버튼 */
+ .tab-btn {
+   border: none;
+   background: none;
+   color: #888;
+   font-weight: 700;
+   font-size: 1.18rem;
+   padding: .65em 2.1em .58em 2.1em;
+   border-radius: 0;
+   border-bottom: 3.5px solid transparent;
+   margin-right: 1.6rem;
+   transition: color .19s, border .17s;
+ }
+ .tab-btn.active {
+   color: #181f2a;
+   border-bottom: 3.5px solid #181f2a;
+ }
+ .tab-btn:hover:not(.active) {
+  color: #181f2a;
+  border-bottom: 3.5px solid #181f2a;
+  background: none;
+ }
 
 /* 구글아이콘 두께 */
 .material-symbols-outlined.fw-200{
@@ -194,27 +206,6 @@
   'opsz' 24
 }
 
-/* 체크박스 커스텀 */
-.form-check{
-	display:flex;
-	align-items:center;
-	gap:7px;
-	margin:0;
-}
-.form-check .form-check-input{
-	width:20px;
-	height:20px;
-	padding:0;
-	margin-top:0;
-}
-.form-check-input:checked[type=checkbox],
-.form-check-input:checked[type=radio]{
-	background-color:var(--violet100);
-}
-.form-radio-wrap .form-radio input:checked,
-.form-radio-wrap .form-radio input[type=checkbox]:indeterminate{
-	background-color:var(--violet100);
-}
 
 /* 해시태그 */
 .badge-tag-wrap{
@@ -269,6 +260,41 @@
 }
 .modal-dialog-centered{min-height:100vh}
 
+/* 체크박스 커스텀 */
+.form-check{
+	display:flex;
+	align-items:center;
+	gap:7px;
+	margin:0;
+}
+.form-check .form-check-input{
+	width:20px;
+	height:20px;
+	padding:0;
+	margin-top:0;
+}
+.form-check-input:checked[type=checkbox],
+.form-check-input:checked[type=radio]{
+	background-color:var(--violet100);
+}
+.form-radio-wrap .form-radio input:checked,
+.form-radio-wrap .form-radio input[type=checkbox]:indeterminate{
+	background-color:var(--violet100);
+}
+
+/* 말줄임 2줄 */
+.text-truncate.text-truncate2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  white-space: normal;
+}
+.text-truncate.text-truncate3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
 
 
 

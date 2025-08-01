@@ -29,6 +29,7 @@
         #companyDropdown li:hover {
           background: #f0f0f0;
         }
+
       </style>
 
     </head>
@@ -201,7 +202,7 @@
               </ul>
             </div>
             <div class="major">
-              <a class="depth1" href="javascript:void(0)">
+              <a class="depth1" href="/board/project">
                 <span class="txt">프로젝트</span>
               </a>
               <ul class="depth2">
@@ -250,32 +251,33 @@
 
           <div class="familysite">            
 						<!-- 하이테크 아티클 배너 -->
-						<div class="swiper-container">
-							<ul class="swiper-wrapper">
+						<div class="swiper-container m-0 pe-4">
+							<ul class="swiper-wrapper lh1-4 text-end flex-column">
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
-										<span class="d-flex">가장 많이 찾아봤어요 🔥</span>
-										백엔드 개발자
+										<span class="text-success fs-14">많이 찾는 🔥</span>
+										<span class="d-block text-dark fw-semibold fs-15">백엔드/서버 개발자</span>
 									</a>
 								</li>
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
-										<span>02.</span>
-										프론트엔드 개발자
+										<span class="text-success fs-14">요즘 뜨는 🚀</span>
+										<span class="d-block text-dark fw-semibold fs-6">프론트엔드 개발자</span>
 									</a>
 								</li>
 								<li class="swiper-slide">
 									<a href="javascript:void(0)">
-										<span>03.</span>
-										디자이너
+										<span class="text-success fs-14">감각적인 아이디어 🎨</span>
+										<span class="d-block text-dark fw-semibold fs-6">웹 디자인</span>
 									</a>
 								</li>
 							</ul>
-    					<div class="swiper-pagination job-pager"></div>
+							<div class="swiper-pagination job-pager flex-column"></div>
 						</div>
 						<script>
 							document.addEventListener("DOMContentLoaded", () => {
 								const mainHeaderSilde = new Swiper(".familysite .swiper-container", {
+									direction: "vertical",
 									spaceBetween: 0,
 						      slidesPerView: 1,
 									centeredSlides: true,
@@ -365,13 +367,12 @@
                   <use xlink:href="#svg_gnb_profile_bracket"></use>
                 </svg></a>
               <ul class="items">
-                <li><a href="/mypage/resume/list" data-nav-track="ga_lead|main-gnb|total_menu|resume-manage">이력서 관리</a>
+                <li><a href="/mypage/resume/list">이력서 관리</a>
                 </li>
-                <li><a href="/member/mypage/scrab_recruit" data-nav-track="ga_lead|main-gnb|total_menu|scrap">스크랩</a>
+                <li><a href="/member/mypage/scrab_recruit">스크랩</a>
                 </li>
-                <li><a href="/zf_user/persons/apply-status-list"
-                    data-nav-track="ga_lead|main-gnb|total_menu|apply_list">지원현황</a></li>
-                <li><a href="/zf_user/jobs/read-jobs" data-nav-track="ga_lead|main-gnb|total_menu|recent">최근본</a></li>
+                <li><a href="/zf_user/persons/apply-status-list">지원현황</a></li>
+                <li><a href="/zf_user/jobs/read-jobs">최근본</a></li>
               </ul>
             </div>
           </div>

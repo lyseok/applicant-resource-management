@@ -12,6 +12,7 @@ public interface ApplicantRecordService {
 	
 	public List<Map<String, Object>> getApplicantsByRecruitment(String recruitmentNo);
 	public void updateNextStep(ApplicantRecordVO vo);
+	public void updateFailed(ApplicantRecordVO vo);
 	public List<PasserVO> selectPasserByRecruitment(String recruitmentNo);
 	public List<ResumeVO> getResumeByApplicantId(List<String> applicantId);
 	public void updateResumeView(String applicantId);

@@ -52,8 +52,7 @@ function renderSummary(data) {
 	const eduText = data.education?.codeDetailName || "학력 정보 없음";
 	document.getElementById('education').innerHTML = `<strong>${eduText}</strong>` ;
 	
-	document.getElementById('salary').textContent =
-		data.recruitmentSalary == "0" ? "면접 후 결정" : `${data.recruitmentSalary} 만원`;
+	document.getElementById('salary').textContent = formatSalary(data.recruitmentSalary);
 	
 	document.getElementById('addr').innerHTML = `${data.cityCodeName}  ${data.districtCodeName}`;
 	document.getElementById('viewRecruit').innerHTML = `조회수<strong>${data.viewHit}</strong>`
@@ -112,6 +111,16 @@ function renderCompanyInfo(company){
 	`;
 }
 
+function formatSalary(amount) {
+    if (!amount || amount === "0") return "면접 후 결정";
+    const num = parseInt(amount, 10);
+    const eok = Math.floor(num / 10000);
+    const man = num % 10000;
+    if (eok > 0 && man > 0) return `${eok}억 ${man}만원`;
+    if (eok > 0 && man === 0) return `${eok}억`;
+    return `${man}만원`;
+}
+
 function formatDateTime(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -138,7 +147,7 @@ function startCountdown(endDate) {
             // 마감 처리
             dayEl.textContent = "0";
             timeEl.textContent = "00:00:00";
-            clearInterval(interval);
+           
             return;
         }
 
@@ -212,6 +221,94 @@ async function renderNotice() {
 	}
 }
 renderNotice();
+
+//================================= 일반회원의 관심기업 체크 ===========================================
+const buttons = document.querySelectorAll('.scrab_company');
+
+async function loadAllScrapStatus(){
+    try{
+        const data = await fetchNotice();
+        const companyId = data.userId;
+        const res = await fetch(`/ajax/member/scrabCompany/${companyId}`);
+        const json = await res.json();
+        
+        // 모든 버튼 색상 업데이트
+        buttons.forEach(button => {
+            const svgPath = button.querySelector('svg path');
+            svgPath.setAttribute('fill', json > 0 ? 'red' : 'white');
+        });
+    }catch(err){
+        console.error('스크랩 상태 불러오기 실패', err);
+    }
+}
+
+// 버튼별 이벤트 바인딩
+buttons.forEach(button => {
+    button.addEventListener('click', async function(){
+        try{
+            const svgPath = button.querySelector('svg path');
+            const isScrapped = svgPath.getAttribute('fill') === 'red';
+            const method = isScrapped ? 'DELETE' : 'POST';
+
+            const data = await fetchNotice();
+            const companyId = data.userId;
+
+            const res = await fetch(`/ajax/member/scrabCompany/${companyId}`,{
+                method : method,
+                headers : {'Content-Type' : 'application/json'}
+            });
+            const result = await res.text();
+
+            if(result === 'ok'){
+                await loadAllScrapStatus(); // 👈 클릭 후 전체 새로고침
+            }
+        }catch(err){
+            console.error('스크랩 처리 실패', err);
+        }
+    });
+});
+
+// 초기 로딩 시 전체 상태 적용
+loadAllScrapStatus();
+
+
+//================================= 일반 회원의 관심 공고 체크 ==========================================
+const scrabBtn = document.querySelector('.btn_scrap');
+const scrapText = scrabBtn.querySelector('.txt_scrap');
+
+async function loadScrapStatus(){
+	try {
+        const res = await fetch(`/ajax/member/scrab_recruit/${recruitmentNo}`);
+        const scrapped = await res.json(); 
+        scrabBtn.classList.toggle('on', scrapped === 1);
+    } catch (e) {
+        console.error('스크랩 상태 로드 실패', e);
+    }
+}
+
+
+async function toggleScrap() {
+    try {
+        const isScrapped = scrabBtn.classList.contains('on');
+
+        // 1. UI를 즉시 토글 (사용자 체감 빠르게)
+        scrabBtn.classList.toggle('on', !isScrapped);
+
+        // 2. 서버 요청
+        const method = isScrapped ? 'DELETE' : 'POST';
+        const res = await fetch(`/ajax/member/scrab_recruit/${recruitmentNo}`, { method });
+
+        // 3. 서버 응답으로 최종 상태 보정
+       const data = await fetchNotice();
+       scrapText.innerHTML = data.viewScrab;
+       await loadScrapStatus();
+    } catch (e) {
+        console.error('스크랩 토글 실패', e);
+    }
+}
+
+scrabBtn.addEventListener('click', toggleScrap);
+loadScrapStatus();
 
 //================================= 예솔 - 최근본 공고 인서트 ===========================================
 document.addEventListener('DOMContentLoaded', function() {
