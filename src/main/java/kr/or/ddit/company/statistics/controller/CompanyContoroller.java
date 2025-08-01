@@ -10,10 +10,10 @@ public class CompanyContoroller {
 
 	@GetMapping
 	public String indexPage() {
-		return "company/index";
+		return "company/indexTest";
 	}
 	@GetMapping("/test")
 	public String indexTestPage() {
-		return "company/indexTest";
+		return "company/index";
 	}
 }
