@@ -46,11 +46,13 @@
       // 프로필 이미지
       const userImg = document.querySelector('.user_photo');
       userImg.innerHTML = "";
-      const img = document.createElement("img");
-      img.src = `\${data.userImg}`;
-      img.style.width = "100%";
-      img.style.objectFit = "cover";
-      userImg.append(img);
+      if (data.userImg != null){
+	      const img = document.createElement("img");
+	      img.src = `\${data.userImg}`;
+	      img.style.width = "100%";
+	      img.style.objectFit = "cover";
+	      userImg.append(img);
+      }
 
   });
 </script>
