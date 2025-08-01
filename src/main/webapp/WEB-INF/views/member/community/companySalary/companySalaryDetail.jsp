@@ -64,6 +64,9 @@
     position: relative;
     display: flex;
     align-items: flex-start;
+    border:1px solid #ddd;
+    border-radius:10px;
+    overflow:hidden;
 }
 
 .fixed-table-wrapper {
@@ -71,7 +74,6 @@
     left: 0;
     z-index: 5;
     background: #fff;
-    border-right: 1px solid #ddd;
 }
 
 .fixed-table-wrapper .compare-table {
@@ -82,7 +84,7 @@
 .table-wrapper {
     overflow-x: hidden; /* 넘치는 부분 가리기 */
     flex: 1;
-    max-width: calc(200px * 4); /* 4개의 열만 보이도록 (열 너비 * 4) */
+    max-width: calc(210px * 4); /* 4개의 열만 보이도록 (열 너비 * 4) */
     scroll-behavior: smooth;
 }
 
@@ -94,36 +96,44 @@
     min-width: max-content;
 }
 .compare-table th, .compare-table td {
-    padding: 0.7rem 0.6rem;
+    padding: 20px 10px;
     border: none;
     text-align: center;
-    min-width: 200px;
+    min-width: 210px;
 }
-.compare-table thead th {
-    font-weight: 500;
+#fixedTable thead th:first-child,
+#fixedTable tbody td:first-child {
+    font-weight: bold;
     border-bottom: 1px solid #ddd;
 }
-.compare-table tbody tr:nth-child(even) {
-    background: #fafafa;
+.compare-table tr {
+	border-bottom:1px solid #ddd;
 }
-.compare-table .selected {
-    background: rgba(124, 58, 237, 0.08);
-    font-weight: bold;
+#fixedTable tbody td:first-child,
+.compare-table tbody tr:last-child{
+	border-bottom:0;
 }
 
+
+.compare-table .selected {
+    background: rgba(124, 58, 237, 0.08);
+}
+
+.scroll_btn_wrap{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+  gap:10px;
+}
 .scroll-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     background: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid var(--violet80);
     border-radius: 50%; /* 원형 */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     z-index: 10;
     font-size: 1.5rem;
-    color: #555;
+    color: var(--violet80);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -262,7 +272,17 @@
 
     <!-- 유사 기업 -->
     <div class="section-card" id="sim-section">
-        <div class="h3 mb-4">유사기업 비교</div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+        	<h3 class="h3 m-0">유사기업 비교</h3>        	
+	        <div class="scroll_btn_wrap">
+		       <button class="scroll-btn left">
+		       		<span class="material-symbols-outlined">keyboard_arrow_left</span>
+		       </button>
+		       <button class="scroll-btn right">
+		       		<span class="material-symbols-outlined">keyboard_arrow_right</span>	       		
+		       </button>
+	       </div>
+        </div>
         <div class="table-scroll-container">
             <div class="fixed-table-wrapper">
                 <table id="fixedTable" class="compare-table">
@@ -276,8 +296,7 @@
                     <tbody></tbody>
                 </table>
             </div>
-            <button class="scroll-btn left">&lt;</button>
-            <button class="scroll-btn right">&gt;</button>
         </div>
+        
     </div>
 </body>

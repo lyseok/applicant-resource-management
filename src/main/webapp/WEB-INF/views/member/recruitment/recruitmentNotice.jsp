@@ -75,8 +75,8 @@
 	                          width="16"
 	                          height="16"
 	                          viewBox="0 0 16 16"
-	                          fill="none"	                          
-							  class="icon_interested"
+	                          fill="none"
+	                          class="icon_interested"
 	                        >
 	                          <path
 	                            d="M6.02498 12.7861L5.64593 12.4305L5.26661 12.0676L4.9045 11.7145L4.57727 11.3886L4.30315 11.1078L4.09798 10.8878L3.60986 10.3434L3.3016 9.99345L3.02797 9.67542L2.79004 9.38984L2.58897 9.13749L2.42437 8.91736L2.35722 8.8214C2.09522 8.43618 1.89245 8.04622 1.73708 7.6185C1.41094 6.38491 1.4304 5.39882 1.73942 4.62739C2.06107 3.82442 2.56896 3.24401 3.25465 2.87112C3.97841 2.47923 4.74412 2.39639 5.56989 2.63105C6.18765 2.82443 6.71818 3.1964 7.16412 3.7682L7.29598 3.94787L7.58589 4.37863L8.00062 4.99485L8.41545 4.3787L8.71259 3.93737C9.13803 3.32866 9.65597 2.91815 10.2666 2.68825L10.4462 2.62682C11.2606 2.39707 12.0242 2.47999 12.7465 2.87106C13.4323 3.24395 13.9403 3.82439 14.262 4.62745C14.5705 5.39767 14.5909 6.3831 14.2537 7.6522C14.1088 8.04661 13.9058 8.43727 13.6424 8.82404C13.6227 8.85295 13.6015 8.88333 13.5787 8.9152L13.4124 9.13756L13.2113 9.38998L12.9737 9.67507L12.549 10.1656L12.1189 10.6483L12.1177 10.6497L11.8097 10.99L11.569 11.2414L11.2664 11.5467L10.7343 12.0681L10.3555 12.4306L9.97658 12.786L9.61564 13.1169L9.28863 13.4077C9.1893 13.4942 9.09986 13.57 9.0226 13.6331C9.02237 13.6333 9.02214 13.6335 9.02192 13.6336L8.00223 14.461L7.999 14.4634L6.85007 13.5257C6.76132 13.4504 6.66238 13.3642 6.55569 13.2693L6.20886 12.9558C6.20844 12.9554 6.20801 12.955 6.20759 12.9546C6.148 12.9 6.08733 12.844 6.02592 12.787C6.02561 12.7867 6.0253 12.7864 6.02498 12.7861Z"
@@ -144,15 +144,12 @@
 	                      </dl>
 	                    </div>
 	                    <div class="meta">
-	                      <span class="salary_desc"
-	                        >
+	                      <span class="salary_desc"></span>
 	                      <ul class="list_meta">
 	                        <li id="viewRecruit">조회수 <strong>176</strong></li>
 	                        <li>
 	                          <a class="spr_jview btn_report">
-	                            <svg aria-hidden="true" focusable="false" class="ic"
-	                              ><use xlink:href="#icon_report"></use></svg
-	                            >신고하기
+	                            <svg aria-hidden="true" focusable="false" class="ic"><use xlink:href="#icon_report"></use></svg>신고하기
 	                          </a>
 	                        </li>
 	                        <!-- //wmg-31267-->
@@ -282,99 +279,122 @@
 	                
 	                <div class="jv_cont jv_howto">
 	                	<a class="placeholder" tabindex="-1"></a>
-					    <h2 class="jv_title">접수기간 및 방법</h2>
-					    <div class="cont box">
-					        <div class="status">
-					            <div class="info_timer" data-remain-time="3557781"><span class="txt">남은 기간</span><span class="day" id="days">41</span><span class="txt_day">일</span><span class="time" id="times">04:15:54</span></div>
-					            <dl class="info_period">
-					                <dt>시작일</dt>
-					                <dd id="startDate">2025.06.19 00:00</dd>
-					                <dt class="end">마감일</dt>
-					                <dd id="endDate">2025.07.31 23:59</dd>
-					            </dl>
-					        </div>
-					        <dl class="guide">
-					            <dt>지원방법</dt>
-					            <dd class="method" id="recruitDesk">홈페이지 지원</dd>
-					            </dd>
-					        </dl>
-					    </div>
-					</div>
-					
-					<div class="jv_cont jv_company company_info_wrap_51076217"><a class="placeholder" tabindex="-1"></a>
-					    <div class="jv_title">
-					        <h2 class="jv_title_heading">기업정보</h2>
-					    </div>
-					    <div class="cont box">
-					        <div class="wrap_info">
-					            <div class="tit_area">
-					                <div class="basic_info">
-					                    <h3 id="companyh3">
-					                    	<button type="button" class="btn_jview_round btn_jview btn_interest scrab_company">
-					                        <svg
-					                          width="16"
-					                          height="16"
-					                          viewBox="0 0 16 16"
-					                          fill="none"	                          
-											  class="icon_interested"
-					                        >
-					                          <path
-					                            d="M6.02498 12.7861L5.64593 12.4305L5.26661 12.0676L4.9045 11.7145L4.57727 11.3886L4.30315 11.1078L4.09798 10.8878L3.60986 10.3434L3.3016 9.99345L3.02797 9.67542L2.79004 9.38984L2.58897 9.13749L2.42437 8.91736L2.35722 8.8214C2.09522 8.43618 1.89245 8.04622 1.73708 7.6185C1.41094 6.38491 1.4304 5.39882 1.73942 4.62739C2.06107 3.82442 2.56896 3.24401 3.25465 2.87112C3.97841 2.47923 4.74412 2.39639 5.56989 2.63105C6.18765 2.82443 6.71818 3.1964 7.16412 3.7682L7.29598 3.94787L7.58589 4.37863L8.00062 4.99485L8.41545 4.3787L8.71259 3.93737C9.13803 3.32866 9.65597 2.91815 10.2666 2.68825L10.4462 2.62682C11.2606 2.39707 12.0242 2.47999 12.7465 2.87106C13.4323 3.24395 13.9403 3.82439 14.262 4.62745C14.5705 5.39767 14.5909 6.3831 14.2537 7.6522C14.1088 8.04661 13.9058 8.43727 13.6424 8.82404C13.6227 8.85295 13.6015 8.88333 13.5787 8.9152L13.4124 9.13756L13.2113 9.38998L12.9737 9.67507L12.549 10.1656L12.1189 10.6483L12.1177 10.6497L11.8097 10.99L11.569 11.2414L11.2664 11.5467L10.7343 12.0681L10.3555 12.4306L9.97658 12.786L9.61564 13.1169L9.28863 13.4077C9.1893 13.4942 9.09986 13.57 9.0226 13.6331C9.02237 13.6333 9.02214 13.6335 9.02192 13.6336L8.00223 14.461L7.999 14.4634L6.85007 13.5257C6.76132 13.4504 6.66238 13.3642 6.55569 13.2693L6.20886 12.9558C6.20844 12.9554 6.20801 12.955 6.20759 12.9546C6.148 12.9 6.08733 12.844 6.02592 12.787C6.02561 12.7867 6.0253 12.7864 6.02498 12.7861Z"
-					                            fill="white"
-					                            stroke="#8491A7"
-					                          />
-					                        </svg>
-					                        <span>관심기업</span>
-					                      </button>
-					                   </h3>
-					                </div>
-					                <div class="logo" id="comLogo"></div>
-					            </div>
-					            <div class="info_area">
-					                <dl>
-					                    <dt>대표자명</dt>
-					                    <dd id="ceoName">강경인</dd>
-					                </dl>
-					                <dl>
-					                    <dt>기업형태</dt>
-					                    <dd id="comType">코스닥, 중소기업, 외부감사법인</dd>
-					                </dl>
-					                <dl>
-					                    <dt>업종</dt>
-					                    <dd id="induType">디스플레이 제조용 기계 제조업</dd>
-					                </dl>
-					                <dl>
-					                    <dt>
-					                        사원수</dt>
-					                    <dd id="comMember">
-					                        225 명 <span> (2025년 기준)</span></dd>
-					                </dl>
-					                <dl>
-					                    <dt>설립년도</dt>
-					                    <dd id="createYear">
-					                        2002년 4월 10일 <span>(업력 24년차) </span></dd>
-					                </dl>
-					                <dl>
-					                    <dt>홈페이지</dt>
-					                    <dd id="comUrl"><a href="http://www.yasoled.com" target="_blank">
-					                            www.yasoled.com </a></dd>
-					                </dl>
-					                <dl>
-					                    <dt>기업주소</dt>
-					                    <dd id="comSumAddr">경기 파주시 탄현면 한산로 69</dd>
-					                </dl>
-					            </div>
-					            <div class="link_area" id="companyLink">
-					               <a href="" target="_blank" class="spr_jview btn_jview_new btn_link ga_data_layer"><span>기업리뷰</span></a>
-					               <a href="" target="_blank" class="spr_jview btn_jview_new btn_link ga_data_layer"><span>연봉정보</span></a></div>
-					            </div>
-					    </div>
-					</div>
+								    <h2 class="jv_title">접수기간 및 방법</h2>
+								    <div class="cont box">
+								        <div class="status">
+								            <div class="info_timer" data-remain-time="3557781"><span class="txt">남은 기간</span><span class="day" id="days">41</span><span class="txt_day">일</span><span class="time" id="times">04:15:54</span></div>
+								            <dl class="info_period">
+								                <dt>시작일</dt>
+								                <dd id="startDate">2025.06.19 00:00</dd>
+								                <dt class="end">마감일</dt>
+								                <dd id="endDate">2025.07.31 23:59</dd>
+								            </dl>
+								        </div>
+								        <dl class="guide">
+								            <dt>지원방법</dt>
+								            <dd class="method" id="recruitDesk">홈페이지 지원</dd>
+								            </dd>
+								        </dl>
+								    </div>
+									</div>
+									
+									<div class="jv_cont jv_company company_info_wrap_51076217"><a class="placeholder" tabindex="-1"></a>
+									    <div class="jv_title">
+									        <h2 class="jv_title_heading">기업정보</h2>
+									    </div>
+									    <div class="cont box">
+									        <div class="wrap_info">
+									            <div class="tit_area">
+									                <div class="basic_info">
+									                    <h3 id="companyh3">
+									                    	<button type="button" class="btn_jview_round btn_jview btn_interest scrab_company">
+									                        <svg
+									                          width="16"
+									                          height="16"
+									                          viewBox="0 0 16 16"
+									                          fill="none"	                          
+															  class="icon_interested"
+									                        >
+									                          <path
+									                            d="M6.02498 12.7861L5.64593 12.4305L5.26661 12.0676L4.9045 11.7145L4.57727 11.3886L4.30315 11.1078L4.09798 10.8878L3.60986 10.3434L3.3016 9.99345L3.02797 9.67542L2.79004 9.38984L2.58897 9.13749L2.42437 8.91736L2.35722 8.8214C2.09522 8.43618 1.89245 8.04622 1.73708 7.6185C1.41094 6.38491 1.4304 5.39882 1.73942 4.62739C2.06107 3.82442 2.56896 3.24401 3.25465 2.87112C3.97841 2.47923 4.74412 2.39639 5.56989 2.63105C6.18765 2.82443 6.71818 3.1964 7.16412 3.7682L7.29598 3.94787L7.58589 4.37863L8.00062 4.99485L8.41545 4.3787L8.71259 3.93737C9.13803 3.32866 9.65597 2.91815 10.2666 2.68825L10.4462 2.62682C11.2606 2.39707 12.0242 2.47999 12.7465 2.87106C13.4323 3.24395 13.9403 3.82439 14.262 4.62745C14.5705 5.39767 14.5909 6.3831 14.2537 7.6522C14.1088 8.04661 13.9058 8.43727 13.6424 8.82404C13.6227 8.85295 13.6015 8.88333 13.5787 8.9152L13.4124 9.13756L13.2113 9.38998L12.9737 9.67507L12.549 10.1656L12.1189 10.6483L12.1177 10.6497L11.8097 10.99L11.569 11.2414L11.2664 11.5467L10.7343 12.0681L10.3555 12.4306L9.97658 12.786L9.61564 13.1169L9.28863 13.4077C9.1893 13.4942 9.09986 13.57 9.0226 13.6331C9.02237 13.6333 9.02214 13.6335 9.02192 13.6336L8.00223 14.461L7.999 14.4634L6.85007 13.5257C6.76132 13.4504 6.66238 13.3642 6.55569 13.2693L6.20886 12.9558C6.20844 12.9554 6.20801 12.955 6.20759 12.9546C6.148 12.9 6.08733 12.844 6.02592 12.787C6.02561 12.7867 6.0253 12.7864 6.02498 12.7861Z"
+									                            fill="white"
+									                            stroke="#8491A7"
+									                          />
+									                        </svg>
+									                        <span>관심기업</span>
+									                      </button>
+									                   </h3>
+									                </div>
+									                <div class="logo" id="comLogo"></div>
+									            </div>
+									            <div class="info_area">
+									                <dl>
+									                    <dt>대표자명</dt>
+									                    <dd id="ceoName">강경인</dd>
+									                </dl>
+									                <dl>
+									                    <dt>기업형태</dt>
+									                    <dd id="comType">코스닥, 중소기업, 외부감사법인</dd>
+									                </dl>
+									                <dl>
+									                    <dt>업종</dt>
+									                    <dd id="induType">디스플레이 제조용 기계 제조업</dd>
+									                </dl>
+									                <dl>
+									                    <dt>
+									                        사원수</dt>
+									                    <dd id="comMember">
+									                        225 명 <span> (2025년 기준)</span></dd>
+									                </dl>
+									                <dl>
+									                    <dt>설립년도</dt>
+									                    <dd id="createYear">
+									                        2002년 4월 10일 <span>(업력 24년차) </span></dd>
+									                </dl>
+									                <dl>
+									                    <dt>홈페이지</dt>
+									                    <dd id="comUrl"><a href="http://www.yasoled.com" target="_blank">
+									                            www.yasoled.com </a></dd>
+									                </dl>
+									                <dl>
+									                    <dt>기업주소</dt>
+									                    <dd id="comSumAddr">경기 파주시 탄현면 한산로 69</dd>
+									                </dl>
+									            </div>
+									            <div class="link_area" id="companyLink">
+									               <a href="" target="_blank" class="spr_jview btn_jview_new btn_link ga_data_layer"><span>기업리뷰</span></a>
+									               <a href="" target="_blank" class="spr_jview btn_jview_new btn_link ga_data_layer"><span>연봉정보</span></a></div>
+									            </div>
+									    </div>
+									</div>
 					
 	              </div>
 	            </section>
 	
 	          </div>
+	          <div class="jv_remote">
+		   			<div class="links">
+				    	<button type="button" class="spr_jview jv_detail ready on cygg" onclick="scrollToWithOffset('.jv_header', -350)">
+				    		<span class="material-symbols-outlined">dvr</span>
+		            <span>채용공고</span>
+	            </button>
+			        <button type="button" class="spr_jview ready location" onclick="scrollToWithOffset('.jv_location', -100)">
+		    				<span class="material-symbols-outlined">map</span>
+	            	<span>기업 위치</span>
+	            </button>
+	            <button type="button" class="spr_jview jv_howto ready" onclick="scrollToWithOffset('.jv_howto', -100)">
+				    		<span class="material-symbols-outlined">touch_app</span>
+				        <span>접수방법</span>
+			        </button>
+	            <button type="button" class="spr_jview jv_company ready" onclick="scrollToWithOffset('.jv_company', -100)">
+		    				<span class="material-symbols-outlined">corporate_fare</span>
+	            	<span>기업정보</span>
+	            </button>
+	            <button type="button" class="spr_jview jv_reference" onmousedown="try{n_trackEvent('relay_view', 'remote_control', 'passdata', '');}catch(e){}">
+		            <span>합격자료</span>
+	            </button>
+            </div>
+	        </div>
 	        
 	        </div>
 	      </div>
@@ -387,19 +407,18 @@
       <div class="modal-content">
         <!-- 헤더 -->
         <div class="modal-header bg-white">
-          <h5 class="modal-title text-purple fw-semibold" id="recruitTitle">채용공고 제목</h5>
+          <h5 class="modal-title fs-5 fw-bold text-success" id="recruitTitle">채용공고 제목</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
         <!-- 본문 -->
-        <div class="modal-body bg-light py-4 px-4">
+        <div class="modal-body py-4 px-4">
 
           <!-- 이력서 선택 -->
           <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <label class="form-label fw-medium text-secondary">선택된 이력서</label>
-              <button type="button" class="btn btn-link p-0 text-secondary" id="btnShowResumeList">이력서 변경
-                &gt;</button>
+              <label class="form-label fw-semibold fs-14 mb-1">선택된 이력서</label>
+              <button type="button" class="btn btn_violet_line fs-13 fw-semibold" id="btnShowResumeList">이력서 선택</button>
             </div>
             <!-- 선택된 이력서 카드 -->
             <div id="selectedResumeCard"></div>
@@ -410,7 +429,7 @@
           <!-- 첨부파일 -->
           <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <label class="form-label fw-medium text-secondary">첨부파일 0건</label>
+              <label class="form-label fw-semibold fs-14 mb-1">첨부파일 0건</label>
               <button class="btn btn-outline-secondary btn-sm" type="button">
                 <i class="bi bi-plus-lg"></i> 파일추가
               </button>
@@ -424,8 +443,7 @@
 
         <!-- 하단 버튼 -->
         <div class="modal-footer bg-white">
-          <button id="btnSaveApplication" class="btn w-100 py-2 text-white"
-            style="background: #ae8be1;">지원</button>
+          <button id="btnSaveApplication" class="btn w-100 btn_violet justify-content-center">지원</button>
         </div>
       </div>
     </div>
