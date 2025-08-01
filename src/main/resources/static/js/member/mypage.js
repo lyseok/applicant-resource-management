@@ -210,7 +210,7 @@ function setupEventListeners() {
   // 이력서 업데이트 링크
   document.querySelector('.update-link').addEventListener('click', (e) => {
     e.preventDefault();
-    alert('이력서 업데이트 페이지로 이동합니다.');
+    
   });
 
   // 더 보기 링크

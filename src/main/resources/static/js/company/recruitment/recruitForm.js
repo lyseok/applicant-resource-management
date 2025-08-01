@@ -256,26 +256,27 @@ const editor = new toastui.Editor({
 let processIndex = 0;
 
 function addProcess() {
-	const wrapper = document.getElementById('processSection');
+  const wrapper = document.getElementById('processSection');
+  const currentStep = processIndex + 1; // 새 전형 단계 (자동 증가)
 
-	const processBlock = document.createElement('div');
-	processBlock.className = 'border p-3 rounded position-relative';
-	processBlock.style.minWidth = '300px';
+  const processBlock = document.createElement('div');
+  processBlock.className = 'border p-3 rounded position-relative';
+  processBlock.style.minWidth = '300px';
 
-	const removeBtn = document.createElement('button');
-	removeBtn.type = 'button';
-	removeBtn.className = 'btn-close position-absolute top-0 end-0 m-2';
-	removeBtn.onclick = () => processBlock.remove();
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.className = 'btn-close position-absolute top-0 end-0 m-2';
+  removeBtn.onclick = () => processBlock.remove();
 
-	processBlock.innerHTML = `
+  processBlock.innerHTML = `
      <div class="mb-2">
        <label class="form-label">전형 단계</label>
        <select name="recruitProcessList[${processIndex}].recruitProcessStep" class="form-select">
-         <option value="1">1단계</option>
-         <option value="2">2단계</option>
-         <option value="3">3단계</option>
-         <option value="4">4단계</option>
-         <option value="5">5단계</option>
+         <option value="1" ${currentStep === 1 ? 'selected' : ''}>1단계</option>
+         <option value="2" ${currentStep === 2 ? 'selected' : ''}>2단계</option>
+         <option value="3" ${currentStep === 3 ? 'selected' : ''}>3단계</option>
+         <option value="4" ${currentStep === 4 ? 'selected' : ''}>4단계</option>
+         <option value="5" ${currentStep === 5 ? 'selected' : ''}>5단계</option>
        </select>
      </div>
 
@@ -301,10 +302,10 @@ function addProcess() {
      </div>
    `;
 
-	processBlock.appendChild(removeBtn);
-	wrapper.appendChild(processBlock);
-	initProcessTypeSelect(processBlock);
-	processIndex++;
+  processBlock.appendChild(removeBtn);
+  wrapper.appendChild(processBlock);
+  initProcessTypeSelect(processBlock);
+  processIndex++;
 }
 
 function initProcessTypeSelect(container) {

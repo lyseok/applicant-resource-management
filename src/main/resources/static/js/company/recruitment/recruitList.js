@@ -54,13 +54,25 @@ function renderPage(page) {
         row.className = 'd-flex align-items-center justify-content-between border rounded p-3 mb-3 bg-white shadow-sm';
         row.style.cursor = 'pointer';
 
-        row.addEventListener('click', () => {
-            window.location.href = `/company/recruit_notice/${item.RECRUITMENTNO}`;
-        });
+        // 클릭 이벤트: FINISHYN 값에 따라 다른 URL로 이동
+        if (item.FINISHYN === 'Y') {
+            row.addEventListener('click', () => {
+                window.location.href = `/company/applicant_record/${item.RECRUITMENTNO}`;
+            });
+        } else {
+            row.addEventListener('click', () => {
+                window.location.href = `/company/recruit_notice/${item.RECRUITMENTNO}`;
+            });
+        }
+
+        // 제목 옆에 마감 딱지 표시
+        const titleHtml = item.FINISHYN === 'Y' 
+            ? `${item.RECRUITMENTTITLE} <span class="badge bg-danger ms-2">마감</span>`
+            : item.RECRUITMENTTITLE;
 
         row.innerHTML = `
             <div class="flex-grow-1">
-                <h5 class="fw-bold mb-1">${item.RECRUITMENTTITLE}</h5>
+                <h5 class="fw-bold mb-1">${titleHtml}</h5>
                 <p class="text-muted mb-2">${truncateText(item.RECCONTENT, 5)}</p>
                 <div class="small text-muted">
                     <span><strong>경력:</strong> ${item.yearCodeName || '-'}</span> |
