@@ -13,6 +13,10 @@
 	    color: red;       /* 빨간색으로 표시 */
 	    margin-top: 5px;  /* input과 메시지 사이에 여백 추가 */
 	}
+	
+	.btn{
+	
+	}
   </style>
   <script defer src="/js/company/recruitment/companyExam/createCompanyExam.js"></script>
 </head>
@@ -36,7 +40,7 @@
       <div id="questionContainer"></div>
 
       <div class="mb-3">
-        <button type="button" id="addQuestionBtn" class="btn btn-secondary">
+        <button type="button" id="addQuestionBtn" class="btn btn_violet">
           + 문제 추가
         </button>
       </div>
@@ -44,7 +48,7 @@
       <div class="d-flex gap-2">
         <button type="button"
                 id="submitAllBtn"
-                class="btn ${empty examNo ? 'btn-success' : 'btn-primary'}">
+                class="btn ${empty examNo ? 'btn btn_violet_line' : 'btn btn_violet_line'}">
           ${empty examNo ? '시험 생성' : '시험 수정'}
         </button>
         <button type="button" id="exitBtn" class="btn btn-outline-secondary">

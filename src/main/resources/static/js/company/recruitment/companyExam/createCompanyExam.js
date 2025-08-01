@@ -57,7 +57,7 @@
        </div>
        <div id="optList${idx}" class="mb-2"></div>
        <button type="button"
-               class="btn btn-sm btn-outline-secondary mb-2 add-opt-btn"
+               class="btn btn_violet btn-outline-secondary mb-2 add-opt-btn"
                data-qidx="${idx}">
          + 보기 추가
        </button>
@@ -151,38 +151,63 @@
      });
    }
 
-   // --- 문제·보기 인덱스 재정렬 (히든 포함) ---
-   function reindexQuestions() {
-     document.querySelectorAll('.question-card').forEach((card, newQIdx) => {
-       // 1) 모든 히든 필드 이름 갱신
-       card.querySelectorAll('input[type="hidden"][name^="questionList"]').forEach(input => {
-         input.name = input.name.replace(/questionList\[\d+\]/, `questionList[${newQIdx}]`);
-       });
+ function reindexQuestions() {
+  document.querySelectorAll('.question-card').forEach((card, newQIdx) => {
+    if (card.style.display === 'none') return; // 삭제된 문제는 재인덱스 제외
 
-       // 2) textarea 이름 갱신
-       const ta = card.querySelector('textarea');
-       if (ta) ta.name = `questionList[${newQIdx}].comExamContents`;
+    // 문제 이름/텍스트 업데이트 (PK는 그대로 유지)
+    card.querySelectorAll('input[type="hidden"][name^="questionList"]').forEach(input => {
+      if (!/comQuestionsNo/.test(input.name)) { // PK는 이름 변경 금지
+        input.name = input.name.replace(/questionList\[\d+\]/, `questionList[${newQIdx}]`);
+      }
+    });
 
-       // 3) 옵션 리스트 id 갱신 + 옵션별 이름 갱신
-       const optList = card.querySelector(`[id^="optList"]`);
-       if (optList) {
-         optList.id = `optList${newQIdx}`;
-         optList.querySelectorAll('.option-row').forEach((row, newOIdx) => {
-           row.querySelectorAll('input, button').forEach(el => {
-             if (el.name) {
-               el.name = el.name
-                 .replace(/questionList\[\d+\]/, `questionList[${newQIdx}]`)
-                 .replace(/optionList\[\d+\]/,   `optionList[${newOIdx}]`);
-             }
-           });
-         });
-       }
+    const ta = card.querySelector('textarea');
+    if (ta) ta.name = `questionList[${newQIdx}].comExamContents`;
 
-       // 4) 헤더 텍스트 갱신
-       const header = card.querySelector('h5');
-       if (header) header.textContent = `문제 ${newQIdx + 1}`;
-     });
-   }
+    // 옵션 리스트
+    const optList = card.querySelector(`[id^="optList"]`);
+    if (optList) {
+      optList.id = `optList${newQIdx}`;
+      let optIdx = 0;
+      optList.querySelectorAll('.option-row').forEach(row => {
+        if (row.style.display === 'none') return; // 삭제된 보기 제외
+        row.querySelectorAll('input').forEach(el => {
+          if (el.name && !/comOptionNo/.test(el.name)) { // PK는 이름 변경 금지
+            el.name = el.name
+              .replace(/questionList\[\d+\]/, `questionList[${newQIdx}]`)
+              .replace(/optionList\[\d+\]/, `optionList[${optIdx}]`);
+          }
+        });
+        optIdx++;
+      });
+    }
+
+    const header = card.querySelector('h5');
+    if (header) header.textContent = `문제 ${newQIdx + 1}`;
+  });
+}
+
+// 문제 삭제: 삭제일 세팅 + 숨김
+function markQuestionDeleted(div, idx) {
+  const delInput = div.querySelector(
+    `input[name="questionList[${idx}].comExamQuestDelDate"]`
+  );
+  if (delInput) delInput.value = new Date().toISOString();
+  div.style.display = 'none';
+  reindexQuestions();
+}
+
+// 보기 삭제: 삭제일 세팅 + 숨김
+function markOptionDeleted(row, qIdx, optIdx) {
+  const delInput = row.querySelector(
+    `input[name="questionList[${qIdx}].optionList[${optIdx}].comOptionDelDate"]`
+  );
+  if (delInput) delInput.value = new Date().toISOString();
+  row.style.display = 'none';
+  reindexQuestions();
+}
+
 
 
    function showFieldErrors(errors) {
