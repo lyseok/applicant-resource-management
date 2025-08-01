@@ -21,7 +21,9 @@ import kr.or.ddit.vo.project.PrjAplcntVO;
 import kr.or.ddit.vo.project.PrjRcrtPsncntVO;
 import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -61,12 +63,16 @@ public class MemberProjectAnnouncememtServiceImpl implements MemberProjectAnnoun
 	@Override
 	public PrjAnncBbsVO readPrjAnncBbsApplicant(String prjAnncNo) {
 		PrjAnncBbsVO prjAnncBbs = prjAnncBbsMapper.selectPrjAnncBbsByPk(prjAnncNo);
+		log.info("체킁 :{}", prjAnncBbs);
 		for(PrjRcrtPsncntVO prscnt: prjAnncBbs.getPrjRcrtPsncntList()) {
 			prscnt.setJobCodeName(codeMapProvider.getJobName(prscnt.getJobCode()));
+			log.info("prscnt : {}", prscnt);
 			for(PrjAplcntVO prjAplcnt : prscnt.getAplcntList()) {
 				ResumeVO resume = new ResumeVO();
 				resume.setResumeNo(prjAplcnt.getResumeNo());
 				resume.setUserId(prjAplcnt.getUserId());
+				log.info("prjAplcnt : {}", prjAplcnt);
+				log.info("resume : {}", resume);
 				ResumeVO resumeData = resumeService.readResumeDetail(resume);
 				prjAplcnt.setResume(resumeData);
 			}
