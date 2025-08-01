@@ -14,7 +14,7 @@
 }
 
 .item {
-	padding: 2.5rem 2rem;
+	padding: 2.5rem 1rem;
 	width:calc((100% - 30px) / 2);
 	border:1px solid var(--gray40);
 	border-radius:10px;
@@ -57,6 +57,8 @@
 	font-weight: bold;
 	color: var(--gray700);
 }
+
+
 </style>
 </head>
 <body>
@@ -87,13 +89,14 @@
 					</div>
 					<div class="Post_categoryItem">
 						<input id="status_y" type="radio" value="status_y" name="category">
-						<label for="status_y"><span>직무별</span></label>
+						<label for="status_y"><span>기업규모별 </span></label>
 					</div>
-					<select class="Select_root Select_size38 Select_round w140" name="selectName">
-						<option value="date" selected="">최신순</option>
-						<option value="pop">인기순</option>
-						<option value="like">시작일순</option>
+					<select class="Select_root Select_size38 Select_round w140" name="selectName" id="sortSelect">
+					     <option value="name">기업명 순</option>
+					    <option value="highScore">평점 높은 순</option>
+					    <option value="lowScore">평점 낮은 순</option>
 					</select>
+				
 				</div>
 				
 				<div class="d-flex gap-2">				

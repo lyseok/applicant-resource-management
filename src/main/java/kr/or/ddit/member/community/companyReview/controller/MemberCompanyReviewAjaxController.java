@@ -50,7 +50,7 @@ public class MemberCompanyReviewAjaxController {
 				paramMap.put("sort", sort);
 				paramMap.put("keyword", keyword);
 				paramMap.put("industry", industry);
-		   
+				log.info("기업 리뷰 목록 요청 params: {}", paramMap);
 		  return companyReviewService.readCompanyInfoWithReviewInfoPage(paramMap);
 		  
 	   }

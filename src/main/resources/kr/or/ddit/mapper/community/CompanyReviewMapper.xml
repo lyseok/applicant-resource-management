@@ -334,4 +334,87 @@
 		ORDER BY C.COM_NAME
 	</select>
 	
+	
+	<select id="selectCompanyReviewListPage" resultType="hashMap">
+    SELECT
+        C.USER_ID AS USER_ID,
+        C.COM_NAME AS COM_NAME,
+        C.COM_NUM AS COM_NUM,
+        C.COM_MEM AS COM_MEM,
+        C.COM_LOGO AS COM_LOGO,
+        C.INDUSTRY_TYPE AS COM_INDU_TYPE,
+        IC.INDU_NAME AS INDU_NAME,
+        NVL(R.REVIEW_COUNT, 0) AS TOTAL_REVIEW_COUNT,
+        NVL(R.AVG_SCORE, 0) AS OVERALL_AVG_SCORE,
+        NVL(R.REVIEW_USER_COUNT, 0) AS REVIEW_USER_COUNT,
+        CASE 
+            WHEN EXISTS (
+                SELECT 1
+                FROM TEAM1_202501F.RECRUITMENT_NOTICE RN
+                WHERE RN.USER_ID = C.USER_ID
+                  AND RN.RECRUIT_FINISH_YN = 'N'
+            ) THEN 'Y'
+            ELSE 'N'
+        END AS IS_RECRUITING
+    FROM TEAM1_202501F.COMPANY C
+    LEFT JOIN TEAM1_202501F.INDU_CODE IC
+        ON C.INDUSTRY_TYPE = IC.INDU_NO
+    LEFT JOIN (
+        SELECT
+            CR.COM_ID,
+            COUNT(DISTINCT CR.COMPANY_REVIEW_NO) AS REVIEW_COUNT,
+            ROUND(AVG(Q.COMPANY_REVIEW_SCORE), 1) AS AVG_SCORE,
+            COUNT(DISTINCT CR.USER_ID) AS REVIEW_USER_COUNT
+        FROM TEAM1_202501F.COMPANY_REVIEW CR
+        LEFT JOIN TEAM1_202501F.COMPANY_REVIEW_QUESTION Q
+            ON CR.COMPANY_REVIEW_NO = Q.COMPANY_REVIEW_NO
+        GROUP BY CR.COM_ID
+    ) R ON C.USER_ID = R.COM_ID
+    WHERE EXISTS (
+        SELECT 1
+        FROM TEAM1_202501F.COMPANY_REVIEW R2
+        WHERE R2.COM_ID = C.USER_ID
+    )
+
+
+    <if test="keyword != null and keyword != ''">
+        AND C.COM_NAME LIKE '%' || #{keyword} || '%'
+    </if>
+    <if test="industry != null and industry != ''">
+        AND C.INDUSTRY_TYPE = #{industry}
+    </if>
+
+ 
+    <choose>
+        <when test="sort == 'highScore'">
+            ORDER BY R.AVG_SCORE DESC
+        </when>
+        <when test="sort == 'lowScore'">
+            ORDER BY R.AVG_SCORE ASC
+        </when>
+        <when test="sort == 'name'">
+            ORDER BY C.COM_NAME ASC
+        </when>
+        <otherwise>
+            ORDER BY C.COM_NAME ASC
+        </otherwise>
+    </choose>
+</select>
+
+<select id="selectCompanyReviewListCount" resultType="int">
+    SELECT COUNT(*)
+    FROM TEAM1_202501F.COMPANY C
+    WHERE EXISTS (
+        SELECT 1 
+        FROM TEAM1_202501F.COMPANY_REVIEW R2
+        WHERE R2.COM_ID = C.USER_ID
+    )
+    <if test="keyword != null and keyword != ''">
+        AND C.COM_NAME LIKE '%' || #{keyword} || '%'
+    </if>
+    <if test="industry != null and industry != ''">
+        AND C.INDUSTRY_TYPE = #{industry}
+    </if>
+</select>
+	
 </mapper>

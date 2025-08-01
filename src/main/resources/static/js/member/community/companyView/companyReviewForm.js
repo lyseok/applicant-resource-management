@@ -14,19 +14,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 	axios.get(`/ajax/member/company_review/career/${careerNo}`)
-		.then(resp => {
-			const career = resp.data;
-		document.getElementById('companyName').textContent = career.comName || '-';
-		document.getElementById('jobName').textContent = career.jobCodeName 
-		           ? `${career.jobCodeName}${career.department ? ` (${career.department}에서 근무)` : ''}` 
-		           : (career.jobCode || '-');
-        document.getElementById('period').textContent = career.tenure === 'Y' ? '재직중' : '퇴사';
-		
-		const startDate = career.startWorkDate || '-';
-		const endDate = career.retireDate ? career.retireDate : '현재';
-		document.getElementById('workPeriod').textContent = `${startDate} ~ ${endDate}`;
+	  .then(resp => {
+	    const career = resp.data;
+	    document.getElementById('companyName').textContent = career.comName || '-';
+	    document.getElementById('jobName').textContent = career.jobCodeName 
+	        ? `${career.jobCodeName}${career.department ? ` (${career.department}에서 근무)` : ''}` 
+	        : (career.jobCode || '-');
 
-		})
+			
+		document.getElementById('com_size').textContent = career.company.comSize || '-';
+		document.getElementById('com_mem').textContent = career.company.comMem ||'-';
+		document.getElementById('ceo_name').textContent = career.company.ceoName || '-';
+	    // endDate(retireDate)가 없으면 재직중, 있으면 퇴사
+	    document.getElementById('period').textContent = career.retireDate ? '퇴사' : '재직중';
+
+	    const startDate = career.startWorkDate || '-';
+	    const endDate = career.retireDate ? career.retireDate : '현재';
+	    document.getElementById('workPeriod').textContent = `${startDate} ~ ${endDate}`;
+	  });
 
 	axios.get('/ajax/code/cmncodegroup/REVU')
 		.then(resp => {

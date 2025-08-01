@@ -33,6 +33,6 @@ public interface CompanyReviewMapper {
 	public List<Map<String, Object>> selectCompanyInfoWithReviewInfoList();
 
 	public  int selectCompanyReviewListCount(Map<String, Object> paramMap);
-	 List<Map<String, Object>> selectCompanyReviewList(Map<String, Object> paramMap);
+	 List<Map<String, Object>> selectCompanyReviewListPage(Map<String, Object> paramMap);
 	
 }

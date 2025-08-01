@@ -71,7 +71,7 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 		review.setComId(career.getComId());
 		review.setCompanyReviewOneLine(companyReview.getCompanyReviewOneLine());
 		review.setCompanyReviewQuestion(companyReview.getCompanyReviewQuestion());
-		if(career.getRetireDate() != null && career.getTenure() == "Y") {
+		if(career.getRetireDate() != null || career.getTenure() == "Y") {
 			review.setWorkingYn("Y");
 		}else {
 			review.setWorkingYn("N");
@@ -141,10 +141,12 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 		String jobGradeName = codeMapProvider.getCodeName(career.getJobGradeCode());
 		String positionName = codeMapProvider.getCodeName(career.getPositionCode());
 		String yearName = codeMapProvider.getCodeName(career.getCareerYear());
+		String sizeName = codeMapProvider.getCodeName(career.getCompany().getComSize());
 		career.setJobCodeName(jobName);
 		career.setJobGradeCodeName(jobGradeName);
 		career.setPositionCodeName(positionName);
 		career.setCareerYearName(yearName);
+		career.getCompany().setComSize(sizeName);
 		return career;
 		
 	}
@@ -199,7 +201,7 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 		int total = companyReviewMapper.selectCompanyReviewListCount(params);
 		
 		
-		List<Map<String, Object>> list = companyReviewMapper.selectCompanyReviewList(params);
+		List<Map<String, Object>> list = companyReviewMapper.selectCompanyReviewListPage(params);
 		Map<String, Object> result = new HashMap<>();
 		result.put("total", total);
 		result.put("list", list);
