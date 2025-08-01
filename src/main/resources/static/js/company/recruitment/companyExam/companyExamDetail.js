@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const exam = resp.data;
     console.log(exam);
 
-    // Hide edit and delete buttons if userId does not match
+    
     if (storedUserId === exam.userId) {
       const editBtn = document.getElementById('exam-edit-btn');
       const deleteBtn = document.getElementById('openDeleteModalBtn');
@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         bootstrap.Modal.getOrCreateInstance(
           document.getElementById('deleteExamModal')
         ).hide();
-        alert('시험이 삭제되었습니다.');
         location.href = '/company/company_exam';
       })
       .catch((err) => {
