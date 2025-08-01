@@ -66,21 +66,21 @@
 										<i class='bx  bx-briefcase-alt'  ></i>경력
 									</c:if>
 								</span>
-								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.MILITARY_YN }">
-										<i class='bx  bx-face-alt-2'  ></i> 군필
-									</c:if>
-								</span>
-								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.LANGUAGE_SKILL_YN }">
-										<i class='bx  bx-translate'  ></i> 어학능력 보유
-									</c:if>
-								</span>
-								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.MY_LICENSE_CNT }">
-										<i class='bx  bx-credit-card-front'  ></i>  보유 자격 ${resume.MY_LICENSE_CNT }개
-									</c:if>
-								</span>
+								<c:if test="${resume.MILITARY_YN ne null and resume.MILITARY_YN > 0 }">
+									<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
+											<i class='bx  bx-face-alt-2'  ></i> 군필
+									</span>
+								</c:if>
+								<c:if test="${resume.LANGUAGE_SKILL_YN ne null and resume.LANGUAGE_SKILL_YN > 0 }">
+									<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
+											<i class='bx  bx-translate'  ></i> 어학능력 보유
+									</span>
+								</c:if>
+								<c:if test="${not empty resume.MY_LICENSE_CNT }">
+									<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
+											<i class='bx  bx-credit-card-front'  ></i>  보유 자격 ${resume.MY_LICENSE_CNT }개
+									</span>
+								</c:if>
 							</div>
 							<div class="">
 								<span class="fs-16 text-secondary">${resume.UPDATE_DATE}</span>

@@ -119,7 +119,7 @@ const templateMap = {
       </div>
       <div class="section-form-row selectViews d-none">
         <label class="">학과</label>
-        <input type="text" name="resumeVO.educationList[${idx}].departmentCode" placeholder="예: CSE01" maxlength="12">
+        <input type="text" name="resumeVO.educationList[${idx}].departmentCode" placeholder="예: 컴퓨터공학과" maxlength="12">
       </div>
       <div class="section-form-row selectViews d-none">
         <label class="">주전공</label>

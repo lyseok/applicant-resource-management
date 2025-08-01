@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-  <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-    <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
       <!DOCTYPE html>
       <html>
 
@@ -54,13 +54,14 @@
             console.log('header : ', userId);
             // 프로필 이미지
             const userImg = document.querySelector('.user_photo');
-            userImg.innerHTML = "";
-            const img = document.createElement("img");
-            img.src = `\${data.userImg}`;
-            img.style.width = "100%";
-            img.style.objectFit = "cover";
-            userImg.append(img);
-
+            if(data.userImg != null){
+	            userImg.innerHTML = "";
+	            const img = document.createElement("img");
+	            img.src = `\${data.userImg}`;
+	            img.style.width = "100%";
+	            img.style.objectFit = "cover";
+	            userImg.append(img);
+            }
           });
       </script>
       <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

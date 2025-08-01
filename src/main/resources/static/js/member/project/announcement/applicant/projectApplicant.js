@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 // ==================== 탭/테이블 렌더링 ====================
 function renderTabsAndContent() {
   const tabs = projectData.prjRcrtPsncntList || [];
+  console.log('tabs ', tabs);
   const tabNav = document.getElementById('recruitTabNav');
   const tabContent = document.getElementById('recruitTabContent');
   tabNav.innerHTML = '';
@@ -36,6 +37,7 @@ function renderTabsAndContent() {
 
   // -------- 전체 탭/테이블 --------
   const allApplicants = tabs.flatMap((sec) => sec.aplcntList || []);
+  console.log('allApplicants ', allApplicants);
   tabNav.innerHTML += /* html */ `
 	  <li class="nav-item">
 	    <button class="btn nav-link lh1 badge-tag py-2 active text-secondary fw-bold" data-bs-toggle="tab" data-bs-target="#recruitTabAll" type="button">전체</button>
@@ -116,9 +118,10 @@ function renderTabsAndContent() {
 // ==================== 지원자 렌더 ====================
 function renderApplicants(list, idx) {
   return (list || [])
+    .filter((app) => app.prjAplcntNo !== null)
     .map(
       (app) => `
-    <tr data-username="${app.resume?.userName || ''}" data-skill="${(
+    <tr data-aplcntno="${app.prjAplcntNo}" data-skill="${(
         app.resume?.mySkillList || []
       )
         .map((k) => k.mySkillName)
@@ -142,7 +145,9 @@ function renderApplicants(list, idx) {
           }
       	</div>
       </td>
-      <td class="fw-bold py-2">${STATUS_MAP[app.aplcntStatusCode] || '-'}</td>
+      <td class="fw-bold py-2 status-cell">${
+        STATUS_MAP[app.aplcntStatusCode] || '-'
+      }</td>
     </tr>
   `
     )
@@ -210,7 +215,8 @@ function applyFilters() {
       if (!selectedSkills.every((skill) => skillArr.includes(skill)))
         show = false;
     }
-    if (nameKeyword && !tr.dataset.username.includes(nameKeyword)) show = false;
+    if (nameKeyword && !tr.dataset.username?.includes(nameKeyword))
+      show = false;
     tr.style.display = show ? '' : 'none';
   });
 }
@@ -278,24 +284,21 @@ document
     const checkedRows = Array.from(table.querySelectorAll('tbody tr')).filter(
       (tr) => tr.querySelector('.rowCheck:checked')
     );
-
+    console.log('프로젝트 데이터:', projectData);
+    console.log('체크된 행:', checkedRows);
     if (checkedRows.length === 0) {
       alert('참여 요청할 지원자를 선택하세요.');
       return;
     }
 
-    // 지원자 번호(prjAplcntNo) 배열로 모으기
     const targetAplcntNos = checkedRows
       .map((tr) => {
-        // aplcntList는 tabSection에만 있음, 각 row의 data-username 기준 매칭
-        const username = tr.getAttribute('data-username');
-        const app = (tabSection.aplcntList || []).find(
-          (a) => a.resume?.userName === username
-        );
-        return app?.prjAplcntNo;
+        const rawVal = tr.getAttribute('data-aplcntno');
+        console.log('Row data-aplcntno raw value:', rawVal);
+        return rawVal; // 문자열 그대로 사용
       })
       .filter(Boolean);
-
+    console.log('모은 지원자 번호 배열:', targetAplcntNos);
     if (targetAplcntNos.length === 0) {
       alert('대상이 없습니다.');
       return;
@@ -314,6 +317,7 @@ document
           // 체크박스 해제(optional)
           tr.querySelector('.rowCheck').checked = false;
         });
+        alert('참여 요청이 완료되었습니다.');
       } else {
         alert('변경에 실패했습니다. 다시 시도해주세요.');
       }
@@ -334,7 +338,6 @@ document
       alert('프로젝트명을 입력하세요.');
       return;
     }
-
     const allApplicants = (projectData.prjRcrtPsncntList || []).flatMap(
       (sec) => sec.aplcntList || []
     );

@@ -41,7 +41,7 @@ axios.get('/ajax/userinfo').then((res) => {
   if (document.getElementById('user_name')) {
     document.getElementById('user_name').textContent = name;
   }
-  if (document.querySelector('.user_photo')) {
+  if (data.userImg != null) {
     const userImg = document.querySelector('.user_photo');
     userImg.innerHTML = "";
     const img = document.createElement("img");

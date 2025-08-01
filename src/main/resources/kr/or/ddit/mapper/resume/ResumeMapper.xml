@@ -60,6 +60,7 @@
 		WHERE USER_ID = #{userId}
     AND RESUME_DELETE_DATE IS NULL
     AND RESUME_SUBMIT_YN = 'N'
+    ORDER BY R.UPDATE_DATE DESC
 	</select>
 	<resultMap id="resumeDetailtMap" type="kr.or.ddit.vo.resume.ResumeVO">
     <!-- ResumeVO 기본 필드 매핑 -->

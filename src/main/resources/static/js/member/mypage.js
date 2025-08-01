@@ -210,7 +210,7 @@ function setupEventListeners() {
   // 이력서 업데이트 링크
   document.querySelector('.update-link').addEventListener('click', (e) => {
     e.preventDefault();
-    alert('이력서 업데이트 페이지로 이동합니다.');
+    
   });
 
   // 더 보기 링크
@@ -273,11 +273,6 @@ function animateNumbers() {
     }, 30);
   });
 }
-
-// 페이지 로드 완료 후 숫자 애니메이션 실행
-window.addEventListener('load', () => {
-  setTimeout(animateNumbers, 500);
-});
 
 // 태그 입력 기능 수정된 JavaScript
 document.addEventListener('DOMContentLoaded', function () {

@@ -1,5 +1,6 @@
 package kr.or.ddit.member.community.companyReview.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -35,10 +37,24 @@ public class MemberCompanyReviewAjaxController {
 	private final ErrorsUtils errorsUtils;
 	
 	   @GetMapping
-	   public List<CompanyVO> reviewPage(){
-		   List<CompanyVO> company = companyReviewService.readCompanyInfoList();
-		   return company;
+	   public Map<String, Object> reviewPage(
+				@RequestParam int page,
+				@RequestParam int pageSize,
+				@RequestParam(required = false) String sort,
+				@RequestParam(required = false) String keyword,
+				@RequestParam(required = false) String industry
+			){
+				Map<String, Object> paramMap = new HashMap<>();
+				paramMap.put("startRow", (page - 1) * pageSize);
+				paramMap.put("endRow", page * pageSize);
+				paramMap.put("sort", sort);
+				paramMap.put("keyword", keyword);
+				paramMap.put("industry", industry);
+				log.info("기업 리뷰 목록 요청 params: {}", paramMap);
+		  return companyReviewService.readCompanyInfoWithReviewInfoPage(paramMap);
+		  
 	   }
+	   
 	   
 	   @GetMapping("/my_career")
 	   public List<ResumeVO> myCareer(){

@@ -13,7 +13,8 @@
         font-family: 'Noto Sans KR', sans-serif;
     }
     .product-detail-container {
-        max-width: 900px;
+        width: 100%;
+        max-width: 1140px; /* Bootstrap container 기준 */
         margin: 40px auto;
         border: 2px solid #7e57c2;
         border-radius: 12px;
@@ -62,7 +63,7 @@
         <h3>💳 상품 자동 결제</h3>
         <hr>
         <p><strong>상품명:</strong> ${product.productName}</p>
-        <p><strong>이용 기간:</strong> ${product.productPeriod}일</p>
+        <p><strong>이용 기간:</strong> 구매일로 부터 30일</p>
         <p><strong>결제 방식:</strong> 등록된 카드 자동결제</p>
         <p class="price-text">₩ <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" /></p>
 

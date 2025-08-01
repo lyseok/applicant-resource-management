@@ -1,6 +1,6 @@
 let gDetail;
 
-const cancelBtnEl = document.querySelector("#cancelBtn");
+const cancelBtnEl = document.querySelector('#cancelBtn');
 
 function getParam(name) {
   // 쿼리스트링에서 파라미터 추출 (크로스 브라우저)
@@ -28,10 +28,7 @@ const detailDate = async () => {
   // }
 };
 
-
-
 const setData = (data) => {
-
   const interview = data;
   const interviewQuestionList = interview.interviewQuestionList;
   const videoInterview = interview.videoInterview;
@@ -49,7 +46,7 @@ const setData = (data) => {
     jobName: recruitmentNotice.jobCodeName,
     hireCount: recruitmentNotice.recPositionNumber,
     interviewDate: interview.interviewDate,
-    recContent : recruitmentNotice.recContent,
+    recContent: recruitmentNotice.recContent,
     applicants: applicantRecordList.map((item) => ({
       name: item.applicantName,
       applicantId: item.applicantId,
@@ -67,8 +64,8 @@ const setData = (data) => {
   document.getElementById('jobName').textContent = detail.jobName;
   document.getElementById('hireCount').textContent = detail.hireCount + '명';
   document.getElementById('interviewDate').textContent = detail.interviewDate;
-  document.getElementById('interviewInfo').textContent = detail.recContent;
-  
+  // document.getElementById('interviewInfo').textContent = detail.recContent;
+
   document.getElementById('roomTitle').value = detail.roomTitle ?? '';
   document.getElementById('maxJoinCount').value = detail.maxJoinCount ?? '';
   document.getElementById('startDate').value = detail.startDate ?? '';
@@ -77,7 +74,8 @@ const setData = (data) => {
   // hidden input에 value값삽입
   document.getElementById('videoInterviewNo').value = detail.videoInterviewNo;
   document.getElementById('interviewNo').value = detail.interviewNo;
-  document.getElementById('companyInterviewUrl').value = detail.companyInterviewUrl;
+  document.getElementById('companyInterviewUrl').value =
+    detail.companyInterviewUrl;
   // 지원자 리스트
   document.getElementById('applicantTimeList').innerHTML = detail.applicants
     .map(
@@ -85,10 +83,18 @@ const setData = (data) => {
       <tr>
         <td>
           ${a.name}
-          <input type="hidden" name="applicantRecordNo_${a.applicantId}" value="${a.applicantRecordNo}">
-          <input type="hidden" name="recruitmentNo_${a.applicantId}" value="${a.recruitmentNo}">
-          <input type="hidden" name="applicantId_${a.applicantId}" value="${a.applicantId}">
-          <input type="hidden" name="applicantName_${a.applicantId}" value="${a.name}">
+          <input type="hidden" name="applicantRecordNo_${
+            a.applicantId
+          }" value="${a.applicantRecordNo}">
+          <input type="hidden" name="recruitmentNo_${a.applicantId}" value="${
+        a.recruitmentNo
+      }">
+          <input type="hidden" name="applicantId_${a.applicantId}" value="${
+        a.applicantId
+      }">
+          <input type="hidden" name="applicantName_${a.applicantId}" value="${
+        a.name
+      }">
         </td>
         <td><a href="${a.resumeUrl}">이력서 보기</a></td>
         <td>
@@ -103,11 +109,10 @@ const setData = (data) => {
     `
     )
     .join('');
-  
 };
 
 const form = document.getElementById('videoInterviewForm');
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', function (e) {
   e.preventDefault();
 
   // FormData 객체로 폼 데이터 수집
@@ -125,22 +130,24 @@ form.addEventListener('submit', function(e) {
   //   }
   // }
   const applicantRecord = [];
-    for (let a of gDetail.applicants) {
-      // 각 applicant의 applicantId로 이름 맞는 form 값 추출
-      const evaluationStartTime = formData.get(`applicantTime_${a.applicantId}`);
-      const applicantRecordNo = formData.get(`applicantRecordNo_${a.applicantId}`);
-      const recruitmentNo = formData.get(`recruitmentNo_${a.applicantId}`);
-      const applicantId = formData.get(`applicantId_${a.applicantId}`);
-      const applicantName = formData.get(`applicantName_${a.applicantId}`);
+  for (let a of gDetail.applicants) {
+    // 각 applicant의 applicantId로 이름 맞는 form 값 추출
+    const evaluationStartTime = formData.get(`applicantTime_${a.applicantId}`);
+    const applicantRecordNo = formData.get(
+      `applicantRecordNo_${a.applicantId}`
+    );
+    const recruitmentNo = formData.get(`recruitmentNo_${a.applicantId}`);
+    const applicantId = formData.get(`applicantId_${a.applicantId}`);
+    const applicantName = formData.get(`applicantName_${a.applicantId}`);
 
-      applicantRecord.push({
-        applicantId: applicantId,
-        applicantRecordNo: applicantRecordNo,
-        recruitmentNo: recruitmentNo,
-        applicantName: applicantName, 
-        evaluationStartTime: evaluationStartTime
-      });
-    }
+    applicantRecord.push({
+      applicantId: applicantId,
+      applicantRecordNo: applicantRecordNo,
+      recruitmentNo: recruitmentNo,
+      applicantName: applicantName,
+      evaluationStartTime: evaluationStartTime,
+    });
+  }
 
   const data = {
     videoInterviewNo: formData.get('videoInterviewNo'),
@@ -150,16 +157,17 @@ form.addEventListener('submit', function(e) {
     maxJoinCount: formData.get('maxJoinCount'),
     startDate: formData.get('startDate'),
     endDate: formData.get('endDate'),
-    applicantRecordList: applicantRecord // 배열!
+    applicantRecordList: applicantRecord, // 배열!
   };
   // axios POST로 전송 (예시 URL)
   showLoading();
-  axios.post('/ajax/company/interview/video', data)
-    .then(res => {
+  axios
+    .post('/ajax/company/interview/video', data)
+    .then((res) => {
       const interviewNo = getParam('interviewNo');
-      location.href="/company/interview/detail?interviewNo=" + interviewNo;
+      location.href = '/company/interview/detail?interviewNo=' + interviewNo;
     })
-    .catch(err => {
+    .catch((err) => {
       // 에러 응답이 있고, 응답 데이터가 존재하면
       if (err.response && err.response.data) {
         const errors = err.response.data; // 서버에서 내려준 에러(필드별 메시지) 객체
@@ -192,16 +200,25 @@ const setErrorData = (errors) => {
     .map((a, i) => {
       // errors 키가 applicantTimes[인덱스].evaluationStartTime
       const errorKey = `applicantTimes[${i}].evaluationStartTime`;
-      const errorMsg = errors && errors[errorKey] ? errors[errorKey].join(', ') : '';
-  
+      const errorMsg =
+        errors && errors[errorKey] ? errors[errorKey].join(', ') : '';
+
       return `
         <tr>
           <td>
             ${a.name}
-            <input type="hidden" name="applicantRecordNo_${a.applicantId}" value="${a.applicantRecordNo}">
-            <input type="hidden" name="recruitmentNo_${a.applicantId}" value="${a.recruitmentNo}">
-            <input type="hidden" name="applicantId_${a.applicantId}" value="${a.applicantId}">
-            <input type="hidden" name="applicantName_${a.applicantId}" value="${a.name}">
+            <input type="hidden" name="applicantRecordNo_${
+              a.applicantId
+            }" value="${a.applicantRecordNo}">
+            <input type="hidden" name="recruitmentNo_${a.applicantId}" value="${
+        a.recruitmentNo
+      }">
+            <input type="hidden" name="applicantId_${a.applicantId}" value="${
+        a.applicantId
+      }">
+            <input type="hidden" name="applicantName_${a.applicantId}" value="${
+        a.name
+      }">
           </td>
           <td><a href="${a.resumeUrl}">이력서 보기</a></td>
           <td>
@@ -211,27 +228,34 @@ const setErrorData = (errors) => {
               class="form-control"
               value="${a.time ? a.time.replace(' ', 'T').substring(0, 16) : ''}"
             >
-            ${errorMsg ? `<span class="text-danger small">${errorMsg}</span>` : ''}
+            ${
+              errorMsg
+                ? `<span class="text-danger small">${errorMsg}</span>`
+                : ''
+            }
           </td>
         </tr>
       `;
     })
     .join('');
-}
+};
 
 cancelBtnEl.addEventListener('click', () => {
   const interviewNo = getParam('interviewNo');
-  location.href="/company/interview/detail?interviewNo=" + interviewNo;
-})
+  location.href = '/company/interview/detail?interviewNo=' + interviewNo;
+});
 
 // 로딩 show/hide 함수
 function showLoading() {
-  document.getElementById('loadingSpinner').style.setProperty('display', 'flex', 'important');
+  document
+    .getElementById('loadingSpinner')
+    .style.setProperty('display', 'flex', 'important');
 }
 function hideLoading() {
-  document.getElementById('loadingSpinner').style.setProperty('display', 'none', 'important');
+  document
+    .getElementById('loadingSpinner')
+    .style.setProperty('display', 'none', 'important');
 }
 
-
-detailDate();  
+detailDate();
 hideLoading();

@@ -96,9 +96,9 @@
 						<h3 id="companyName" class="company-name">네이버</h3>
 						<p class="company-info fs-14 text-muted d-flex gap-3">
 							<span id="jobName">승용차 및 기타 여객용 자동차 제조업</span>
-							<span>대기업 여기 넣어조라 ~!</span>
-							<span>직원수 <b>여기도 넣어줘라~!</b>명</span>
-							<span>대표명 넣어줘라~!</span>
+							<span><b id="com_size" ></b> </span>
+							<span>직원수 <b id="com_mem"></b>명</span>
+							<span>대표명 <b id="ceo_name"></b></span>
 						</p>
 						<div class="company-info fs-14 text-muted d-flex gap-3 mt-2">
 							<p>
