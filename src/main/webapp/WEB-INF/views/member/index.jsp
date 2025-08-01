@@ -408,15 +408,15 @@
             <div class="status-card offer-status-card">
 			  <h5 class="card-title mb-4">받은 제안</h5>
 			  <div class="row text-center">
-			    <div class="col-3">
+			    <div class="col-4">
 			      <div class="status-number proposal-count">0</div>
 			      <div class="status-label">포지션 제안</div>
 			    </div>
-			    <div class="col-3">
+			    <div class="col-4">
 			      <div class="status-number interest-count">0</div>
 			      <div class="status-label">나에 대한 관심</div>
 			    </div>
-			    <div class="col-3">
+			    <div class="col-4">
 			      <div class="status-number resume-view-count">0</div>
 			      <div class="status-label">이력서 열람</div>
 			    </div>
