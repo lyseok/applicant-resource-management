@@ -7,10 +7,10 @@ function doBilling() {
 	const orderName = PproductName;
 	const productNo = PproductNo;;
 
-	console.log("billingKey", billingKey);
+	/*console.log("billingKey", billingKey);
 	console.log("customerKey", customerKey);
 	console.log("amount", amount);
-	console.log("orderName", orderName);
+	console.log("orderName", orderName);*/
 
 	fetch("/company/toss/api/billing/execute", {
 		method: "POST",
@@ -28,7 +28,6 @@ function doBilling() {
 		.then(res => {
 			console.log("res :", res);
 			console.log("orderName", orderName)
-			alert("로그확인시간");
 			return res.json();
 		})
 		.then(data => {
@@ -41,11 +40,11 @@ function doBilling() {
 			const orderName = PproductName;
 			const billingKey = PbillingKey;
 			const orderId = data.orderId;
-			console.log("paymentKey :", paymentKey);
+			/*console.log("paymentKey :", paymentKey);
 			console.log("billingKey:", billingKey);
 			console.log("amount:", amount);
 			console.log("orderName:", orderName);
-			console.log("paymentKey:", paymentKey);
+			console.log("paymentKey:", paymentKey);*/
 			alert("결제 성공!");
 
 			window.location.href =
