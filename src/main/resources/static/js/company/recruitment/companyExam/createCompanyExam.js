@@ -57,7 +57,7 @@
        </div>
        <div id="optList${idx}" class="mb-2"></div>
        <button type="button"
-               class="btn btn-sm btn-outline-secondary mb-2 add-opt-btn"
+               class="btn btn_violet btn-outline-secondary mb-2 add-opt-btn"
                data-qidx="${idx}">
          + 보기 추가
        </button>
