@@ -187,10 +187,10 @@
 			<div>
 				<h3 id="companyName" class="company-name"></h3>
 				<p class="company-info fs-14 text-muted d-flex gap-3">
-					<span>승용차 및 기타 여객용 자동차 제조업</span>
-					<span>대기업</span>
-					<span>직원수 <b>69,490</b>명</span>
-					<span>정의선</span>
+					<span id="comIndu"></span>
+					<span id="comSize"></span>
+					<span id="comMem"></span>
+					<span id="ceoName"></span>
 				</p>
 			</div>
 		</div>

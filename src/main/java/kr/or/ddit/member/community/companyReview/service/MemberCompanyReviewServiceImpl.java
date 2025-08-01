@@ -1,6 +1,7 @@
 package kr.or.ddit.member.community.companyReview.service;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,6 @@ import kr.or.ddit.vo.resume.ResumeVO;
 import lombok.RequiredArgsConstructor;
 
 @Service
-//(value="companyReviewService")
 @RequiredArgsConstructor
 public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewService {
 	private final CompanyMapper companyMapper;
@@ -71,7 +71,7 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 		review.setComId(career.getComId());
 		review.setCompanyReviewOneLine(companyReview.getCompanyReviewOneLine());
 		review.setCompanyReviewQuestion(companyReview.getCompanyReviewQuestion());
-		if(career.getRetireDate() != null && career.getTenure() == "Y") {
+		if(career.getRetireDate() != null || career.getTenure() == "Y") {
 			review.setWorkingYn("Y");
 		}else {
 			review.setWorkingYn("N");
@@ -141,10 +141,12 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 		String jobGradeName = codeMapProvider.getCodeName(career.getJobGradeCode());
 		String positionName = codeMapProvider.getCodeName(career.getPositionCode());
 		String yearName = codeMapProvider.getCodeName(career.getCareerYear());
+		String sizeName = codeMapProvider.getCodeName(career.getCompany().getComSize());
 		career.setJobCodeName(jobName);
 		career.setJobGradeCodeName(jobGradeName);
 		career.setPositionCodeName(positionName);
 		career.setCareerYearName(yearName);
+		career.getCompany().setComSize(sizeName);
 		return career;
 		
 	}
@@ -185,6 +187,27 @@ public class MemberCompanyReviewServiceImpl implements MemberCompanyReviewServic
 	public Map<String, Object> readCompanyWithReviewInfo(String comId) {
 		Map<String, Object> companyReviewInfo = companyReviewMapper.selectCompanyWithReviewInfo(comId);
 		return companyReviewInfo;
+	}
+
+
+	@Override
+	public List<Map<String, Object>> readCompanyInfoWithReviewInfoList() {
+		return companyReviewMapper.selectCompanyInfoWithReviewInfoList();
+	}
+
+
+	@Override
+	public Map<String, Object> readCompanyInfoWithReviewInfoPage(Map<String, Object> params) {
+		int total = companyReviewMapper.selectCompanyReviewListCount(params);
+		
+		
+		List<Map<String, Object>> list = companyReviewMapper.selectCompanyReviewListPage(params);
+		Map<String, Object> result = new HashMap<>();
+		result.put("total", total);
+		result.put("list", list);
+
+		return result;
+	
 	}
 
 	
