@@ -11,11 +11,12 @@
 	padding: 0;
 	display:flex;
 	gap:30px;
+	flex-wrap:wrap;
 }
 
 .item {
 	padding: 2.5rem 1rem;
-	width:calc((100% - 30px) / 2);
+	flex-basis:calc((100% - 30px) / 2);
 	border:1px solid var(--gray40);
 	border-radius:10px;
 	cursor:pointer;

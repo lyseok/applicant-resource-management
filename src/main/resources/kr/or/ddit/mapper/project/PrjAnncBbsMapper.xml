@@ -31,7 +31,7 @@
 
 <resultMap id="PrjAplcntVOMap" type="kr.or.ddit.vo.project.PrjAplcntVO">
   <id     property="prjAplcntNo"         column="PRJ_APLCNT_NO"/>
-  <result property="resumeNo"            column="RESUME_NO"/>
+  <result property="resumeNo"            column="AP_RESUME_NO"/>
   <result property="userId"              column="APL_USER_ID"/>
   <result property="aplcntStatusCode"    column="APLCNT_STATUS_CODE"/>
   <result property="aplcntDate"          column="APLCNT_DATE"/>
@@ -318,7 +318,7 @@
 	    
 	    -- 지원자(프로젝트 지원자) 관련 (RCRT_PSNCNT_NO를 기준)
 	    A.PRJ_APLCNT_NO,
-	    A.RESUME_NO,
+	    A.RESUME_NO    AS AP_RESUME_NO,   
 	    A.USER_ID      AS APL_USER_ID,
 	    A.APLCNT_STATUS_CODE,
 	    A.APLCNT_DATE,

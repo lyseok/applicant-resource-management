@@ -859,6 +859,9 @@
 	box-sizing: border-box;
 	background: #f8fafc
 }
+.jv_remote>.links>button:first-child{
+	border-top:1px solid #e5e6eb;
+}
 
 .jv_remote>.links>button.ready {
 	display: block
@@ -1000,76 +1003,6 @@
 	background-position: -150px -20px
 }
 
-@
--webkit-keyframes btnNextBlink { 0% {
-	-webkit-transform: translateY(0px);
-	transform: translateY(0px)
-}
-
-50
-%
-{
--webkit-transform
-:
-translateY(
-10px
-);
-transform
-:
-translateY(
-10px
-)
-}
-100
-%
-{
--webkit-transform
-:
-translateY(
-0px
-);
-transform
-:
-translateY(
-0px
-)
-}
-}
-@
-keyframes btnNextBlink { 0% {
-	-webkit-transform: translateY(0px);
-	transform: translateY(0px)
-}
-
-50
-%
-{
--webkit-transform
-:
-translateY(
-10px
-);
-transform
-:
-translateY(
-10px
-)
-}
-100
-%
-{
--webkit-transform
-:
-translateY(
-0px
-);
-transform
-:
-translateY(
-0px
-)
-}
-}
 .jv_remote.shrink {
 	margin-left: -622px;
 	padding-top: 13px;
@@ -1890,7 +1823,6 @@ translateY(
 .board_view_wrap {
 	margin-top: -32px;
 	padding-top: 32px;
-	background: rgb(252 250 255/ 80%);
 }
 
 .board_view_wrap #content {
@@ -2286,7 +2218,7 @@ translateY(
 
 .jv_summary .col>dl>dd strong {
 	color: var(--violet80);
-	font-weight: normal
+	font-weight: 500
 }
 
 .jv_summary .col>dl>dd .etc {
@@ -4200,7 +4132,8 @@ translateY(
 .jview .btn_interest {
 	display: inline-flex;
 	justify-content: center;
-	align-items: center
+	align-items: center;
+	margin-left:10px;
 }
 
 .jview .btn_interest svg {
@@ -5253,10 +5186,13 @@ body#sri_layout_popup.printing .jv_footer .cont .tags {
 }
 
 /* 지원 버튼 색상 변경 예외 처리 */
-.jv_header .btn_apply .sri_btn_lg span, .jv_howto .cont.box .sri_btn_lg span
-	{
-	border: 1px solid #7B3FE4;
-	color: #7B3FE4;;
+.jv_header .btn_apply .sri_btn_lg span, .jv_howto .cont.box .sri_btn_lg span{
+	border: 1px solid var(--violet90);
+	color: var(--violet90);
+	oveflow:visible;
+}
+.jv_header .btn_apply .sri_btn_lg span:hover, .jv_howto .cont.box .sri_btn_lg span:hover{
+	transform:translateY(-1px);
 }
 
 .jv_header .btn_apply .sri_btn_lg span.sri_btn_recruitin_apply,
@@ -5974,17 +5910,6 @@ body#sri_layout_popup.printing .jv_footer .cont .tags {
 	border-color: var(--violet80)
 }
 
-@
-keyframes toastUp {from { transform:translate(-50%, 200%);
-	
-}
-
-to {
-	transform: translate(-50%, 0);
-}
-
-}
-
 /* 구직자 정보 지키기 캠페인 */
 .jv_protect_campaign .cont {
 	width: 870px;
@@ -6385,4 +6310,20 @@ to {
 	align-items: flex-start;
 	gap: 628px;
 	align-self: stretch;
+}
+
+
+
+
+
+/* 팝업 스타일 */
+.card-body{
+	cursor:pointer;
+}
+.resume-card:hover {
+    border-color: #ae8be1 !important;
+}
+.selected-card {
+    border: 2px solid #ae8be1 !important;
+    background: #f6f2ff !important;
 }
