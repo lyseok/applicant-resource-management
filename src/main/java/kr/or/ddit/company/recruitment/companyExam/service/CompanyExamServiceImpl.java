@@ -32,28 +32,38 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 
 	@Transactional
 	@Override
-	public void createCompanyExam(CompanyExamVO companyExam) {	
-		companyExamMapper.insertCompanyExam(companyExam);
-		String examNo = companyExam.getComExamNo();
-		
-		
-		
-		 if (companyExam.getQuestionList() != null) {
-	            for (ComExamQuestionsVO q : companyExam.getQuestionList()) {
-	                q.setComExamNo(examNo);
-	                comExamQuestionsMapper.insertComExamQuest(q);
-	                String questionNo = q.getComQuestionsNo();
+	public void createCompanyExam(CompanyExamVO companyExam) {
+	    companyExamMapper.insertCompanyExam(companyExam);
+	    String examNo = companyExam.getComExamNo();
 
-	                // 3) 옵션들 삽입 (optionList 가 null 이면 건너뜀)
-	                if (q.getOptionList() != null) {
-	                    for (ComExamOptionVO o : q.getOptionList()) {
-	                        o.setComQuestionsNo(questionNo);
-	                        comExamOptionMapper.insertComExamOption(o);
+	    if (companyExam.getQuestionList() != null) {
+	        for (ComExamQuestionsVO q : companyExam.getQuestionList()) {
+
+	            // 삭제된 문제는 저장 안 함
+	            if (q.getComExamQuestDelDate() != null && !q.getComExamQuestDelDate().isEmpty()) {
+	                continue;
+	            }
+
+	            q.setComExamNo(examNo);
+	            comExamQuestionsMapper.insertComExamQuest(q);
+	            String questionNo = q.getComQuestionsNo();
+
+	            if (q.getOptionList() != null) {
+	                for (ComExamOptionVO o : q.getOptionList()) {
+
+	                    // 삭제된 보기 저장 안 함
+	                    if (o.getComOptionDelDate() != null && !o.getComOptionDelDate().isEmpty()) {
+	                        continue;
 	                    }
+
+	                    o.setComQuestionsNo(questionNo);
+	                    comExamOptionMapper.insertComExamOption(o);
 	                }
 	            }
 	        }
+	    }
 	}
+
 
 
 
@@ -77,73 +87,79 @@ public class CompanyExamServiceImpl implements CompanyExamService {
 	@Transactional
 	@Override
 	public boolean editCompanyExamInfo(CompanyExamVO companyExam) {
-		 String examNo = companyExam.getComExamNo();
-		 
-		    if(companyExamMapper.updateCompanyExam(companyExam) == 0) {
-		        return false;
-		    }
+	    String examNo = companyExam.getComExamNo();
+	    if (companyExamMapper.updateCompanyExam(companyExam) == 0) return false;
 
-		    List<ComExamQuestionsVO> existingQuestions =
-		        comExamQuestionsMapper.selectByQuestionExamNo(examNo);
-		    Set<String> incomingQNo = new HashSet<>();
+	    List<ComExamQuestionsVO> existingQuestions = comExamQuestionsMapper.selectByQuestionExamNo(examNo);
+	    Set<String> incomingQNo = new HashSet<>();
 
-		    for(ComExamQuestionsVO q : companyExam.getQuestionList()) {
-		        q.setComExamNo(examNo);
-		        String qNo = q.getComQuestionsNo();
+	    for (ComExamQuestionsVO q : companyExam.getQuestionList()) {
+	        q.setComExamNo(examNo);
+	        String qNo = q.getComQuestionsNo();
 
-		      
-		        if(q.getComExamQuestDelDate() != null && !q.getComExamQuestDelDate().isEmpty()) {
-		            comExamQuestionsMapper.updateDeleteDateComExamQuestion(qNo);
-		            comExamOptionMapper.updateDeleteDateByQuestionNo(qNo);
-		            continue;
-		        }
+	        // 삭제된 문제는 삭제 처리
+	        if (q.getComExamQuestDelDate() != null && !q.getComExamQuestDelDate().isEmpty()) {
+	            if (qNo != null) {
+	                comExamQuestionsMapper.updateDeleteDateComExamQuestion(qNo);
+	                comExamOptionMapper.updateDeleteDateByQuestionNo(qNo);
+	            }
+	            continue;
+	        }
 
-		        if(qNo == null) {
-		            comExamQuestionsMapper.insertComExamQuest(q);
-		            qNo = q.getComQuestionsNo(); 
-		        } else {
-		            comExamQuestionsMapper.updateComExamQuest(q);
-		        }
-		        incomingQNo.add(qNo);
+	        // 새 문제 / 기존 문제 업데이트
+	        if (qNo == null) {
+	            comExamQuestionsMapper.insertComExamQuest(q);
+	            qNo = q.getComQuestionsNo();
+	        } else {
+	            comExamQuestionsMapper.updateComExamQuest(q);
+	        }
+	        incomingQNo.add(qNo);
 
-		       
-		        List<ComExamOptionVO> existingOptions =
-		            comExamOptionMapper.selectByQuestionNo(qNo);
-		        Set<String> incomingONo = new HashSet<>();
+	        // 옵션 처리
+	        List<ComExamOptionVO> existingOptions = comExamOptionMapper.selectByQuestionNo(qNo);
+	        Set<String> incomingONo = new HashSet<>();
 
-		        for(ComExamOptionVO o : q.getOptionList()) {
-		            o.setComQuestionsNo(qNo);
+	        for (ComExamOptionVO o : q.getOptionList()) {
+	            o.setComQuestionsNo(qNo);
 
-		            if(o.getComOptionDelDate() != null
-		               && !o.getComOptionDelDate().isEmpty()) {
-		               
-		                comExamOptionMapper.updateDeleteDateComExamOption(o.getComOptionNo());
-		                continue;
-		            }
-		            if(o.getComOptionNo() == null) {
-		                comExamOptionMapper.insertComExamOption(o);
-		            } else {
-		                comExamOptionMapper.updateComExamOption(o);
-		            }
-		            incomingONo.add(o.getComOptionNo());
-		        }
+	            // 삭제된 옵션은 삭제 처리
+	            if (o.getComOptionDelDate() != null && !o.getComOptionDelDate().isEmpty()) {
+	                if (o.getComOptionNo() != null) {
+	                    comExamOptionMapper.updateDeleteDateComExamOption(o.getComOptionNo());
+	                }
+	                continue;
+	            }
 
-		        
-		        for(ComExamOptionVO existO : existingOptions) {
-		            if(!incomingONo.contains(existO.getComOptionNo())) {
-		                comExamOptionMapper.updateDeleteDateComExamOption(existO.getComOptionNo());
-		            }
-		        }
-		    }
+	            // 새 옵션 / 기존 옵션 업데이트
+	            if (o.getComOptionNo() == null) {
+	                comExamOptionMapper.insertComExamOption(o);
+	            } else {
+	                comExamOptionMapper.updateComExamOption(o);
+	            }
 
-		    for(ComExamQuestionsVO existQ : existingQuestions) {
-		        if(!incomingQNo.contains(existQ.getComQuestionsNo())) {
-		            comExamOptionMapper.updateDeleteDateByQuestionNo(existQ.getComQuestionsNo());
-		            comExamQuestionsMapper.updateDeleteDateComExamQuestion(existQ.getComQuestionsNo());
-		        }
-		    }
+	            if (o.getComOptionNo() != null) {
+	                incomingONo.add(o.getComOptionNo());
+	            }
+	        }
 
-		    return true;
+	        // 기존 옵션 중 요청에 없는 것은 삭제 처리
+	        for (ComExamOptionVO existO : existingOptions) {
+	            if (!incomingONo.contains(existO.getComOptionNo())) {
+	                comExamOptionMapper.updateDeleteDateComExamOption(existO.getComOptionNo());
+	            }
+	        }
+	    }
+
+	    // 기존 질문 중 요청에 없는 것은 삭제 처리
+	    for (ComExamQuestionsVO existQ : existingQuestions) {
+	        if (!incomingQNo.contains(existQ.getComQuestionsNo())) {
+	            comExamOptionMapper.updateDeleteDateByQuestionNo(existQ.getComQuestionsNo());
+	            comExamQuestionsMapper.updateDeleteDateComExamQuestion(existQ.getComQuestionsNo());
+	        }
+	    }
+
+	    return true;
 	}
+
 
 }
