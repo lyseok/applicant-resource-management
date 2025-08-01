@@ -18,13 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 
 public class CompanyStatisticsAjaxController {
 	private final CompanyStatisticsService companyStatisticsService;
-	
-	@GetMapping
-	public CompanyVO getCompanyInfo() {
-		return companyStatisticsService.readCompanyById();
-	}
+
+
 	@GetMapping("/recruitment_status")
-	public Map<String, Object> getRecruitmentStatus(){
-		return companyStatisticsService.readRecruitmentStatusById();
+	public Map<String, Object> getRecruitmentStatus() {
+		return companyStatisticsService.getDashboardSummry();
 	}
 }
