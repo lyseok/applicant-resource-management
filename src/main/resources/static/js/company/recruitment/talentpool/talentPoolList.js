@@ -222,14 +222,14 @@ function renderTalentPoolTable(talentList) {
         'width=950,height=800'
       );
       // 이력서 열람 업데이트 axios 들어갑니다잉~
-		axios
-			.post(`/ajax/company/talentpool/${item.resumeNo}`)
-			.then(() => {
-				console.log(`이력서 열람 기록 완료: ${item.resumeNo}`);
-			})
-			.catch((err) => {
-				console.error(`이력서 열람 기록 실패: ${item.resumeNo}`, err);
-		});
+      axios
+        .post(`/ajax/company/talentpool/${item.resumeNo}`)
+        .then(() => {
+          console.log(`이력서 열람 기록 완료: ${item.resumeNo}`);
+        })
+        .catch((err) => {
+          console.error(`이력서 열람 기록 실패: ${item.resumeNo}`, err);
+        });
     });
   });
 }
@@ -446,43 +446,41 @@ function getYearCodeList(minYear, maxYear) {
 }
 
 // ================================= 필터링 요청 =================================
-document
-  .querySelector('.btn.btn_violet_line')
-  .addEventListener('click', function () {
-    // 경력
-    const minText = minValue.textContent.replace(/[^0-9]/g, '');
-    const maxText = maxValue.textContent.replace(/[^0-9]/g, '');
+document.querySelector('#filterBtn').addEventListener('click', function () {
+  // 경력
+  const minText = minValue.textContent.replace(/[^0-9]/g, '');
+  const maxText = maxValue.textContent.replace(/[^0-9]/g, '');
 
-    const min = Number(minText);
-    const max = Number(maxText);
-    let yearCodes = getYearCodeList(min, max);
-    params.careerYearList = yearCodes;
+  const min = Number(minText);
+  const max = Number(maxText);
+  let yearCodes = getYearCodeList(min, max);
+  params.careerYearList = yearCodes;
 
-    // 학력
-    const eduOptions = document.querySelector('.education-options');
-    const selectedEdu = eduOptions.querySelector('.education-option.active');
-    params.educationCode = selectedEdu ? selectedEdu.dataset.code : null;
+  // 학력
+  const eduOptions = document.querySelector('.education-options');
+  const selectedEdu = eduOptions.querySelector('.education-option.active');
+  params.educationCode = selectedEdu ? selectedEdu.dataset.code : null;
 
-    // 보유기술 태그 추출
-    params.skillCodeList = Array.from(
-      document.querySelectorAll('.skill-input ~ .skill-tag')
-    ).map((tag) => tag.textContent.replace('×', '').trim());
-    // 자격증 태그 추출
-    params.licenseCodeList = Array.from(
-      document.querySelectorAll('.license-input ~ .skill-tag')
-    ).map((tag) => tag.textContent.replace('×', '').trim());
-    // 학과 태그 추출
-    params.majorName = Array.from(
-      document.querySelectorAll('.major-input ~ .skill-tag')
-    ).map((tag) => tag.textContent.replace('×', '').trim());
+  // 보유기술 태그 추출
+  params.skillCodeList = Array.from(
+    document.querySelectorAll('.skill-input ~ .skill-tag')
+  ).map((tag) => tag.textContent.replace('×', '').trim());
+  // 자격증 태그 추출
+  params.licenseCodeList = Array.from(
+    document.querySelectorAll('.license-input ~ .skill-tag')
+  ).map((tag) => tag.textContent.replace('×', '').trim());
+  // 학과 태그 추출
+  params.majorName = Array.from(
+    document.querySelectorAll('.major-input ~ .skill-tag')
+  ).map((tag) => tag.textContent.replace('×', '').trim());
 
-    // input 값 가져와서 params에 추가
-    // const searchInput = document.querySelector('.search-input');
-    // params.keyWord = searchInput.value.trim();
+  // input 값 가져와서 params에 추가
+  // const searchInput = document.querySelector('.search-input');
+  // params.keyWord = searchInput.value.trim();
 
-    console.log('필터링 요청:', params);
-    fetchData();
-  });
+  console.log('필터링 요청:', params);
+  fetchData();
+});
 
 const paramsSerializer = function (params) {
   const query = [];

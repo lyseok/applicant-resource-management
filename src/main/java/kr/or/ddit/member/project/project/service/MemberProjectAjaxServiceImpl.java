@@ -94,23 +94,25 @@ public class MemberProjectAjaxServiceImpl implements MemberProjectAjaxService{
 		List<PrjAplcntVO> aplcntList = aplcntMapper.selectPrjRcrtPsncntByBbs(project.getProjectBoardNo());
 		log.info("====> {}", aplcntList);
 		for(PrjAplcntVO aplcntVO : aplcntList) {
-			PrjMemVO memVO = new PrjMemVO();
-			memVO.setPrjNo(project.getPrjNo());
-			memVO.setUserId(aplcntVO.getUserId());
-			memVO.setAuthorityCode("MEMBER");
-			memVO.setUserPosition(aplcntVO.getUserPosition());
-			int memRes = memMapper.insertProjectMember(memVO);
-			if(memRes <= 0) {
-				throw new DataInsertException("프로젝트 팀원 생성중 오류 발생");
-			}
-			ChatroomMemVO chatroomMemVO = new ChatroomMemVO();
-			chatroomMemVO.setPrjNo(project.getPrjNo());
-			chatroomMemVO.setChatroomNo(chatroom.getChatroomNo());
-			chatroomMemVO.setUserId(aplcntVO.getUserId());
-			
-			int cMemRes = chatroomMemMapper.insertChatroomMem(chatroomMemVO);
-			if(cMemRes <= 0) {
-				throw new DataInsertException("채팅 참여자 생성중 오류 발생");
+			if(aplcntVO.getAplcntStatusCode().equals("PRST-003")) {
+				PrjMemVO memVO = new PrjMemVO();
+				memVO.setPrjNo(project.getPrjNo());
+				memVO.setUserId(aplcntVO.getUserId());
+				memVO.setAuthorityCode("MEMBER");
+				memVO.setUserPosition(aplcntVO.getUserPosition());
+				int memRes = memMapper.insertProjectMember(memVO);
+				if(memRes <= 0) {
+					throw new DataInsertException("프로젝트 팀원 생성중 오류 발생");
+				}
+				ChatroomMemVO chatroomMemVO = new ChatroomMemVO();
+				chatroomMemVO.setPrjNo(project.getPrjNo());
+				chatroomMemVO.setChatroomNo(chatroom.getChatroomNo());
+				chatroomMemVO.setUserId(aplcntVO.getUserId());
+				
+				int cMemRes = chatroomMemMapper.insertChatroomMem(chatroomMemVO);
+				if(cMemRes <= 0) {
+					throw new DataInsertException("채팅 참여자 생성중 오류 발생");
+				}				
 			}
 		}
 		
