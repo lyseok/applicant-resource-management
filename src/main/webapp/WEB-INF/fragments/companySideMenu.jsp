@@ -112,8 +112,6 @@
               <div data-i18n="Account">나의 상품보기</div>
             </a>
           </li>
-        </ul>
-        <ul class="menu-sub">
           <li class="menu-item">
             <a href="/company/log/list" class="menu-link">
               <div data-i18n="Account">사용내역 보기</div>
