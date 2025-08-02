@@ -41,6 +41,7 @@
     <result property="jobCode" column="JOB_CODE"/>
     <result property="comId" column="COM_ID"/>
     <result property="comName" column="COM_NAME"/>
+  
     <result property="startWorkDate" column="START_WORK_DATE"/>
     <result property="retireDate" column="RETIRE_DATE"/>
     <result property="tenure" column="TENURE"/>
@@ -58,6 +59,7 @@
         <result property="comSize" column="COM_SIZE"/>
         <result property="comMem" column="COM_MEM"/>
         <result property="ceoName" column="CEO_NAME"/>
+        <result property="comLogo" column="COM_LOGO"/>
     </association>
 </resultMap>
 
@@ -196,6 +198,7 @@
     SELECT C.CAREER_NO
            , C.RESUME_NO
            , C.JOB_CODE
+           , CO.COM_LOGO
            , CO.COM_SIZE
            , CO.COM_MEM
            , CO.CEO_NAME
