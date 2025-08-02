@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- FullCalendar CSS -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script defer src="/js/member/mypage.js"></script>
 
     <style>
@@ -348,6 +349,10 @@
           font-size: 13px;
         }
       }
+      #editMemBtn{
+      	margin-bottom : 20px;
+      	margin-left : 15px;
+      }
     </style>
   </head>
 
@@ -355,7 +360,7 @@
     <div class="container-fluid bg-light min-vh-100">
       <div class="container py-4">
         <!-- 사용자 프로필 섹션 -->
-        <div class="profile-section mb-4 status-card">
+        <div class="profile-section mb-4 status-card" id="editMember">
           <div class="d-flex align-items-center mb-3">
             <div class="profile-avatar me-3">
               <i class="bi bi-person-circle"></i>
@@ -364,8 +369,9 @@
               <h2 class="user-name mb-1">이윤석 <i class="bi bi-chevron-right text-muted"></i></h2>
               <p class="user-job text-muted mb-0">신입 · 프론트엔드 개발</p>
             </div>
+            <button class="btn btn_violet" id="editMemBtn">수정</button>
           </div>
-
+		
           <!-- 이력서 완성률 -->
           <div class="resume-progress-card">
             <div class="d-flex justify-content-between align-items-center">
@@ -373,7 +379,7 @@
                 <span class="resume-label">대표 이력서 </span>
                 <!-- <span class="completion-rate">완성률 70%</span> -->
               </div>
-              <a href="#" class="update-link">이력서 업데이트 <i class="bi bi-chevron-right"></i></a>
+              <a href="#" class="update-link">대표 이력서 업데이트 <i class="bi bi-chevron-right"></i></a>
             </div>
           </div>
         </div>
@@ -556,6 +562,38 @@
   </div>
 </div>
 
+  <!-- 프로젝트 지원 모달 -->
+  <div class="modal fade" id="applicationModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+      <div class="modal-content">
+        <!-- 헤더 -->
+        <div class="modal-header bg-white">
+          <h5 class="modal-title fs-5 fw-bold text-success" >대표 이력서 선택</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- 본문 -->
+        <div class="modal-body py-4 px-4">
+
+          <!-- 이력서 선택 -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="form-label fw-semibold fs-14 mb-1">선택된 이력서</label>
+              <button type="button" class="btn btn_violet_line fs-13 fw-semibold" id="btnShowResumeList">이력서 선택</button>
+            </div>
+            <!-- 선택된 이력서 카드 -->
+            <div id="selectedResumeCard"></div>
+            <!-- 이력서 목록 (토글) -->
+            <div id="resumeList" class="mt-2 overflow-auto" style="display: none; max-height:220px;"></div>
+          </div>
+
+        <!-- 하단 버튼 -->
+        <div class="modal-footer bg-white">
+          <button id="btnChangeResume" class="btn w-100 btn_violet justify-content-center">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
   </body>

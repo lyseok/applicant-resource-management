@@ -55,7 +55,9 @@
 	    , m.MEM_ADD2 AS memAdd2
 	    , m.MEM_IMG AS memImg
 	    , m.RESUME_NO AS resumeNo
-	    , m.PREFERRED_POSITION AS preferredPosition
+        , (SELECT RESUME_NAME FROM RESUME WHERE m.RESUME_NO = RESUME_NO) AS resumeName
+	    , (SELECT JOB_NAME FROM JOB WHERE m.PREFERRED_POSITION = JOB_CODE) AS preferredPosition
+	    , m.PREFERRED_POSITION AS prefferedPositionCode
 	    , m.MEM_GENDER AS memGender
 	    , (SELECT COUNT(PROPOSAL_CODE) FROM PROPOSAL WHERE USER_ID = m.USER_ID) AS COUNT_PROPOSAL
 	    , (SELECT COUNT(SCRAB_USER_DATE) FROM SCRAB_USER WHERE USER_ID = m.USER_ID) AS COUNT_SCRAB
@@ -85,6 +87,14 @@
 	     WHERE a.USER_ID = m.USER_ID
 	       AND ar.FAILED_YN = 'Y'
 	    ) AS COUNT_FAILED
+        , (
+            SELECT cc.CODE_NAME
+            FROM CAREER c
+            JOIN RESUME r ON c.RESUME_NO = r.RESUME_NO
+            JOIN CMN_CODE cc ON cc.CODE_DETAIL_NO = c.CAREER_YEAR
+            WHERE r.RESUME_NO = m.RESUME_NO
+            FETCH FIRST 1 ROWS ONLY
+        ) AS CAREER_YEAR_NAME
 	FROM MEMBER m
 	WHERE m.USER_ID = #{userId}
 	</select>
@@ -124,6 +134,25 @@
 			, MEM_ADD1 = #{memAdd1}
 			, MEM_ADD2 = #{memAdd2}
 			, MEM_IMG = #{memImg}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="updateMemberInMyPage">
+		UPDATE MEMBER
+		SET 
+			MEM_NAME = #{memName}
+			, MEM_BIR = #{memBir}
+			, MEM_TEL = #{memTel}
+			, MEM_ADD1 = #{memAdd1}
+			, MEM_ADD2 = #{memAdd2}
+			, PREFERRED_POSITION = #{preferredPosition}
+			, MEM_IMG = #{memImg}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="updateMainResume">
+		UPDATE MEMBER
+		SET RESUME_NO = #{resumeNo}
 		WHERE USER_ID = #{userId}
 	</update>
 	
