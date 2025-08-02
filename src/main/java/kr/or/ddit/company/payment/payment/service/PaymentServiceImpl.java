@@ -232,6 +232,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (selectScheduledByUserId(getUserId()) != null) {
             throw new IllegalStateException("이미 구매한 상품이 있습니다. 관리자에게 문의하세요");
         }
+        
         PaymentVO vo = new PaymentVO();
         vo.setPaymentKey(paymentKey);
         vo.setUserId(getUserId());
