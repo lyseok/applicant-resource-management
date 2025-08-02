@@ -144,7 +144,9 @@
       <!-- 여기까지 사이드바 작업하는 곳 -->
       <script src="/js/config.js"></script>
       <script>
-        document.getElementById('projectLink').setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+        document.querySelectorAll('projectLink').forEach(function (link) {
+          link.setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+        });
       </script>
     </ul>
   </aside>

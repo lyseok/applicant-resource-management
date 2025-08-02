@@ -1,4 +1,4 @@
-let selectedField = "";
+let selectedField = '';
 
 const selectField = document.getElementById('selectField');
 const selectedResumeCard = document.getElementById('selectedResumeCard');
@@ -6,30 +6,33 @@ const resumeList = document.getElementById('resumeList');
 const btnShowResumeList = document.getElementById('btnShowResumeList');
 const btnSaveApplication = document.getElementById('btnSaveApplication');
 
-
-
 // ================================ 게시판 랜더링 ================================
 
-let renderData = { }
+let renderData = {};
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const params = new URLSearchParams(window.location.search);
   const prjAnncNo = params.get('prjAnncNo');
-  
+
   // renderAnnouncementDetail(renderData);
-  axios.get('/ajax/board/project/' + prjAnncNo)
-    .then(res => {
+  axios
+    .get('/ajax/board/project/' + prjAnncNo)
+    .then((res) => {
       console.log(res); // <- 실제 응답 확인
       renderData = res.data;
       renderAnnouncementDetail(renderData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err); // <- catch에 들어온 실제 원인 확인
-      document.querySelector('.card-body').innerHTML = `<div class="text-danger py-5">게시글을 불러올 수 없습니다.</div>`;
+      document.querySelector(
+        '.card-body'
+      ).innerHTML = `<div class="text-danger py-5">게시글을 불러올 수 없습니다.</div>`;
     });
 
-    // 수정 버튼 이벤트 (DOMContentLoaded 안에 넣기!)
-    document.getElementById('btnEditNotice').addEventListener('click', function() {
+  // 수정 버튼 이벤트 (DOMContentLoaded 안에 넣기!)
+  document
+    .getElementById('btnEditNotice')
+    .addEventListener('click', function () {
       if (prjAnncNo) {
         location.href = `/mypage/notice_management/form?prjAnncNo=${prjAnncNo}`;
       }
@@ -40,25 +43,36 @@ function renderAnnouncementDetail(data) {
   // 상태 변환
   const statusText = data.anncEndYn === 'Y' ? '모집완료' : '모집중';
   const statusClass = data.anncEndYn === 'Y' ? 'opacity-25' : 'badge-recruit';
-  
+
   // 팀 구성 (모집 팀원)
   const teamListHtml = (data.prjRcrtPsncntList || [])
-    .filter(r => !!r.jobCodeName && r.rcrtPsncnt)
-    .map(r => `<li><span class="dot"></span>${r.jobCodeName} - ${r.rcrtPsncnt}명</li>`)
+    .filter((r) => !!r.jobCodeName && r.rcrtPsncnt)
+    .map(
+      (r) =>
+        `<li><span class="dot"></span>${r.jobCodeName} - ${r.rcrtPsncnt}명</li>`
+    )
     .join('');
 
   // 모집 중인 역할 강조
   const recruitNow = (data.prjRcrtPsncntList || [])
-    .filter(r => r.jobCodeName === '백엔드')
-    .map(r => `<span class="fw-bold text-dark">${r.jobCodeName} ${r.rcrtPsncnt}명</span>`).join(', ');
+    .filter((r) => r.jobCodeName === '백엔드')
+    .map(
+      (r) =>
+        `<span class="fw-bold text-dark">${r.jobCodeName} ${r.rcrtPsncnt}명</span>`
+    )
+    .join(', ');
 
   // 기술 스택 (태그)
   const techListHtml = (data.prjAnncBoardTagList || [])
-    .map(t => t.tag && t.tag.tagName ? `<span class="badge-tag">${t.tag.tagName}</span>` : '')
+    .map((t) =>
+      t.tag && t.tag.tagName
+        ? `<span class="badge-tag">${t.tag.tagName}</span>`
+        : ''
+    )
     .join('');
 
   // 내용 삽입
-  document.querySelector('.card-body').innerHTML = /* html */`
+  document.querySelector('.card-body').innerHTML = /* html */ `
     <!-- 제목/상태 -->
     <div class="d-flex align-items-center mb-2 gap-3">
 	      <span class="badge ${statusClass} text-white fs-14 py-2 px-4 bg-violet08">${statusText}</span>
@@ -67,7 +81,9 @@ function renderAnnouncementDetail(data) {
 
     <!-- 글 정보 (작성일, 수정일, 조회수) -->
     <div class="d-flex align-items-center gap-5 mb-5 text-secondary small">
-      <div class="d-flex gap-2"><b>작성</b><span>${data.anncCreateDate.split(" ")[0] || '-'}</span></div>
+      <div class="d-flex gap-2"><b>작성</b><span>${
+        data.anncCreateDate.split(' ')[0] || '-'
+      }</span></div>
       <!-- <span>수정일 ${data.updateDate || '-'}</span> -->
       <div class="d-flex gap-2"><b>조회</b><span>${data.view || 0}</span></div>
     </div>
@@ -80,14 +96,27 @@ function renderAnnouncementDetail(data) {
       	<span class="material-symbols-outlined fw-300 text-violet70">calendar_today</span>
 	      <span class="">
 	      	<!-- 시작일자 -->
-	        ${data.prjStartPlanDate
-	          ? `${data.prjStartPlanDate.slice(0,4)}-${data.prjStartPlanDate.slice(4,6)}-${data.prjStartPlanDate.slice(6,8)}`
-	          : '-'}
+	        ${
+            data.prjStartPlanDate
+              ? `${data.prjStartPlanDate.slice(
+                  0,
+                  4
+                )}-${data.prjStartPlanDate.slice(
+                  4,
+                  6
+                )}-${data.prjStartPlanDate.slice(6, 8)}`
+              : '-'
+          }
 	          ~
           <!-- 마감일자 --> 
-	        ${data.prjEndPlanDate
-	          ? `${data.prjEndPlanDate.slice(0,4)}-${data.prjEndPlanDate.slice(4,6)}-${data.prjEndPlanDate.slice(6,8)}`
-	          : '-'}
+	        ${
+            data.prjEndPlanDate
+              ? `${data.prjEndPlanDate.slice(0, 4)}-${data.prjEndPlanDate.slice(
+                  4,
+                  6
+                )}-${data.prjEndPlanDate.slice(6, 8)}`
+              : '-'
+          }
 	      </span>
       </div>
     </div>
@@ -106,7 +135,11 @@ function renderAnnouncementDetail(data) {
       <ul class="list-unstyled list-dot mb-2  fs-14">
         ${teamListHtml}
       </ul>
-      ${recruitNow ? `<div class="mt-3 text-secondary">→ 현재 ${recruitNow}을 새로이 모십니다!</div>` : ''}
+      ${
+        recruitNow
+          ? `<div class="mt-3 text-secondary">→ 현재 ${recruitNow}을 새로이 모십니다!</div>`
+          : ''
+      }
     </div>
 
     <!-- 기술스택 & 업무 내용 -->
@@ -129,8 +162,4 @@ function renderAnnouncementDetail(data) {
     <hr />
 
   `;
-
 }
-
-
-

@@ -29,7 +29,6 @@
         #companyDropdown li:hover {
           background: #f0f0f0;
         }
-
       </style>
 
     </head>
@@ -249,49 +248,49 @@
             </div>
           </div>
 
-          <div class="familysite">            
-						<!-- 하이테크 아티클 배너 -->
-						<div class="swiper-container m-0 pe-4">
-							<ul class="swiper-wrapper lh1-4 text-end flex-column">
-								<li class="swiper-slide">
-									<a href="javascript:void(0)">
-										<span class="text-success fs-14">많이 찾는 🔥</span>
-										<span class="d-block text-dark fw-semibold fs-15">백엔드/서버 개발자</span>
-									</a>
-								</li>
-								<li class="swiper-slide">
-									<a href="javascript:void(0)">
-										<span class="text-success fs-14">요즘 뜨는 🚀</span>
-										<span class="d-block text-dark fw-semibold fs-6">프론트엔드 개발자</span>
-									</a>
-								</li>
-								<li class="swiper-slide">
-									<a href="javascript:void(0)">
-										<span class="text-success fs-14">감각적인 아이디어 🎨</span>
-										<span class="d-block text-dark fw-semibold fs-6">웹 디자인</span>
-									</a>
-								</li>
-							</ul>
-							<div class="swiper-pagination job-pager flex-column"></div>
-						</div>
-						<script>
-							document.addEventListener("DOMContentLoaded", () => {
-								const mainHeaderSilde = new Swiper(".familysite .swiper-container", {
-									direction: "vertical",
-									spaceBetween: 0,
-						      slidesPerView: 1,
-									centeredSlides: true,
-									autoplay: {
-										delay: 2500,
-										disableOnInteraction: false,
-									},
-						      pagination: {
-					          el: ".job-pager",
-					          clickable: true,
-					        },
-								});
-							});
-						</script>
+          <div class="familysite">
+            <!-- 하이테크 아티클 배너 -->
+            <div class="swiper-container m-0 pe-4">
+              <ul class="swiper-wrapper lh1-4 text-end flex-column">
+                <li class="swiper-slide">
+                  <a href="javascript:void(0)">
+                    <span class="text-success fs-14">많이 찾는 🔥</span>
+                    <span class="d-block text-dark fw-semibold fs-15">백엔드/서버 개발자</span>
+                  </a>
+                </li>
+                <li class="swiper-slide">
+                  <a href="javascript:void(0)">
+                    <span class="text-success fs-14">요즘 뜨는 🚀</span>
+                    <span class="d-block text-dark fw-semibold fs-6">프론트엔드 개발자</span>
+                  </a>
+                </li>
+                <li class="swiper-slide">
+                  <a href="javascript:void(0)">
+                    <span class="text-success fs-14">감각적인 아이디어 🎨</span>
+                    <span class="d-block text-dark fw-semibold fs-6">웹 디자인</span>
+                  </a>
+                </li>
+              </ul>
+              <div class="swiper-pagination job-pager flex-column"></div>
+            </div>
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                const mainHeaderSilde = new Swiper(".familysite .swiper-container", {
+                  direction: "vertical",
+                  spaceBetween: 0,
+                  slidesPerView: 1,
+                  centeredSlides: true,
+                  autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                  },
+                  pagination: {
+                    el: ".job-pager",
+                    clickable: true,
+                  },
+                });
+              });
+            </script>
           </div>
         </div>
       </div>
@@ -381,11 +380,10 @@
       </div>
       <script src="/js/config.js"></script>
       <sec:authorize access="isAuthenticated()">
-      <script>
-      document.addEventListener("DOMContentLoaded", function () {
-    	    const projectLink = document.querySelector('#project_link');
-   	      projectLink.setAttribute('href', APP_CONFIG.REACT_BASE_URL);
-    	  });
-      </script>
-       </sec:authorize>
+        <script>
+          document.querySelectorAll('#project_link').forEach(function (link) {
+            link.setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+          });
+        </script>
+      </sec:authorize>
     </header>

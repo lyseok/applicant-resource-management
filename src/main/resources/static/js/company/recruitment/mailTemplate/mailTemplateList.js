@@ -46,9 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!Array.isArray(list) || list.length === 0) {
         resumeContainer.innerHTML = `
           <div class="intoructionList p-6 d-flex flex-column align-items-center gap-2">
-            <span>띹잡에 등록된 이력서가 없어요!</span>
+            <span>띹잡에 등록된 템플릿이 없어요!</span>
             <a class="fw-bold d-flex" href="/mypage/resume/create">
-              이력서 등록하러 가기
+              템플릿 등록하기
               <span class="material-symbols-outlined">chevron_right</span>
             </a>
           </div>

@@ -99,6 +99,8 @@
             </div>
             <script src="/js/config.js"></script>
             <script>
-                document.getElementById('projectLink').setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+                document.querySelectorAll('#projectLink').forEach(function (link) {
+                    link.setAttribute('href', APP_CONFIG.REACT_BASE_URL);
+                });
             </script>
         </header>
