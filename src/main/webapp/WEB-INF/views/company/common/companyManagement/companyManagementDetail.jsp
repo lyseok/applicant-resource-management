@@ -10,15 +10,6 @@
  
  <style type="text/css">
  
-.company-info-wrap {
-  max-width: 900px;
-  margin: 40px auto;
-  background: var(--color-bg);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  font-family: 'Noto Sans KR', sans-serif;
-}
 
 /* ──────────────────────────────────────────────────────────
    Header
@@ -27,7 +18,7 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  padding: 32px;
+  margin-bottom:40px;
   background: var(--color-bg-alt);
 }
 .profile-img {
@@ -51,7 +42,6 @@
   color: var(--color-secondary);
 }
 .header-info .contact {
-  margin-top: 8px;
   font-size: 0.95rem;
   color: #667085;
 }
@@ -65,7 +55,8 @@
   color: var(--color-primary);
 }
 .header-info .address {
-  margin-top: 8px;
+  gap:6px;
+  color:#667085;
 }
 .header-info .address a {
   font-size: 0.95rem;
@@ -80,74 +71,39 @@
 /* ──────────────────────────────────────────────────────────
    Sections (제목 위 · 내용 아래)
 ─────────────────────────────────────────────────────────── */
+.section-wrap{
+	gap:20px;
+}
 .section {
   display: flex;
-  flex-direction: column;
-  padding: 20px 32px;
+  width:calc((100% - 30px) / 2);
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg);
-  transition: background .3s;
-}
-.section:nth-child(even) {
-  background: var(--color-bg-alt);
-}
-.section:hover {
-  background: rgba(94,114,228,0.05);
-}
-.section:last-child {
-  border-bottom: none;
+  margin-bottom:0;
 }
 
 /* 제목 + 언더라인 포인트 */
 .section-title {
   font-weight: 600;
+  line-height:1;
   font-size: 1rem;
-  color: var(--color-secondary);
   position: relative;
-  padding-bottom: 6px;
-  margin-bottom: 12px;
-}
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0;
-  width: 40px; height: 3px;
-  background: var(--color-primary);
-  border-radius: 2px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom:0;
+  width:100px;
+  color: var(--gray100);
+  font-size: 14px;
 }
 
 /* 본문 텍스트 */
 .section-content {
-  color: var(--color-text);
+  color: var(--gray120);
   font-size: 0.95rem;
-  line-height: 1.6;
+  line-height: 1;
   word-break: keep-all;
 }
 
-/* ──────────────────────────────────────────────────────────
-   Button 영역
-─────────────────────────────────────────────────────────── */
-.d-flex.gap-1 {
-  display: flex;
-  justify-content: flex-end;
-  padding: 24px 32px;
-  background: var(--color-bg-alt);
-}
-.btn_violet {
-  padding: 10px 24px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--color-bg);
-  background-color: var(--color-primary);
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background .2s, transform .1s;
-}
-.btn_violet:hover {
-  background-color: #3248c3;
-  transform: translateY(-1px);
-}
 
 /* ──────────────────────────────────────────────────────────
    Responsive
@@ -163,6 +119,21 @@
   .section-title {
     font-size: 0.95rem;
   }
+}
+
+
+
+
+
+
+/* 예솔 추가 */
+.company_summary{
+	gap:80px;
+}
+.company_summary_item{}
+.company_summary_item span{
+	font-size:54px;
+	font-weight:3
 }
  </style>
  
@@ -184,73 +155,87 @@
                 <span><i class='bx bx-mobile'></i> <span id="com_num">대표번호 데이터</span></span>
             </div>
             <div class="address d-flex" id="com_url">
-                <a href="#">홈페이지 링크</a>
+            	<i class='bx bx-home-alt-3'></i>
+              <a href="#">홈페이지 링크</a>
             </div>
         </div>
     </div>
 
-    <!-- 기업 정보 섹션들 -->
-    
-     <div class="section">
-        <div class="section-title">대표자 이름</div>
-        <div class="section-content" id="ceo_name"></div>
-    </div>
+		<div class="company_summary d-flex rounded border text-center py-4 mb-5 justify-content-center">
+	    <div class="company_summary_item">
+	    	<span class="material-symbols-outlined">history</span> 
+       <div class="fs-16 fw-bold" id="com_create_year"></div>
+       <div class="fs-14 opacity-75" id="com_create_year_txt">설립년도</div>
+	   </div>
    
-    
-    <div class="section">
-        <div class="section-title">기업설명</div>
-        <div class="section-content" id="com_info">기업설명 데이터</div>
-    </div>
-    
-     <div class="section">
-        <div class="section-title">설립년도</div>
-        <div class="section-content" id="com_create_year"></div>
-    </div>
+	    <div class="company_summary_item">
+				<span class="material-symbols-outlined">corporate_fare</span>
+        <div class="fs-16 fw-bold" id="com_size"></div>
+        <div class="fs-14 opacity-75">기업 규모</div>
+	    </div>
+	   
+	   <div class="company_summary_item">
+	     <span class="material-symbols-outlined">group</span> 
+       <div class="fs-16 fw-bold" id="com_mem" >직원수 데이터</div>
+       <div class="fs-14 opacity-75">직원수</div>
+	   </div>
+	   
+	   <div class="company_summary_item">
+	     <span class="material-symbols-outlined">leaderboard</span> 
+       <div class="fs-16 fw-bold" id="com_capital"></div>
+       <div class="fs-14 opacity-75">기업 자본금</div>
+	   </div>
+   </div>
+   
 
-    <div class="section">
-        <div class="section-title">직원수</div>
-        <div class="section-content" id="com_mem" >직원수 데이터</div>
+    <!-- 기업 정보 섹션들 -->
+    <div class="d-flex flex-wrap section-wrap mb-5">
+    
+	     <div class="section">
+	        <div class="section-title">대표자 이름</div>
+	        <div class="section-content" id="ceo_name"></div>
+	    </div>	   
+	    
+	
+	    <div class="section">
+	        <div class="section-title">4대보험</div>
+	        <div class="section-content" id="insurance_Yn"></div>
+	    </div>
+	
+	    <div class="section">
+	        <div class="section-title">구독여부</div>
+	        <div class="section-content" id="com_payment">구독여부 데이터</div>
+	    </div>
+	
+	    <div class="section">
+	        <div class="section-title">업종</div>
+	        <div class="section-content" id="industry_type">업종 코드 데이터</div>
+	    </div>
+	    
+			<div class="section"> 
+	      <div class="section-title">기업 형태</div>
+	      <div class="section-content" id="com_type"></div>
+	   </div>	    
+	   
+	    <div class="section">
+	        <div class="section-title">기업 주소</div>
+	        <div class="section-content" id="com_addr"></div>
+	    </div>
+	    <div class="section">
+	        <div class="section-title">기업 주요 사업</div>
+	        <div class="section-content" id="com_main_biz"></div>
+	    </div>
     </div>
     
-    <div class="section">
-        <div class="section-title">4대보험</div>
-        <div class="section-content" id="insurance_Yn"></div>
-    </div>
-
-    <div class="section">
-        <div class="section-title">구독여부</div>
-        <div class="section-content" id="com_payment">구독여부 데이터</div>
-    </div>
-
-    <div class="section">
-        <div class="section-title">업종</div>
-        <div class="section-content" id="industry_type">업종 코드 데이터</div>
-    </div>
     
-	<div class="section">
-        <div class="section-title">기업 형태</div>
-        <div class="section-content" id="com_type"></div>
+    <div class="section w100p flex-column mb-5">
+        <div class="section-title fs-5 text-dark fw-bold mb-3">기업설명</div>
+        <div class="section-content lh1-6 keep-all" id="com_info">기업설명 데이터</div>
     </div>
-    
-    <div class="section">
-        <div class="section-title">기업 규모</div>
-        <div class="section-content" id="com_size"></div>
-    </div>
-    <div class="section">
-        <div class="section-title">기업 주소</div>
-        <div class="section-content" id="com_addr"></div>
-    </div>
-    <div class="section">
-        <div class="section-title">기업 자본금</div>
-        <div class="section-content" id="com_capital"></div>
-    </div>
-    <div class="section">
-        <div class="section-title">기업 주요 사업</div>
-        <div class="section-content" id="com_main_biz"></div>
-    </div>
+	    
   
-    <div class="d-flex gap-1">
-        <button type="button" class="btn btn_violet" id="edit-btn">수정</button>
+    <div class="text-end">
+        <button type="button" class="btn btn_violet w140 justify-content-center" id="edit_btn">수정</button>
     </div>
 </div>
 </body>

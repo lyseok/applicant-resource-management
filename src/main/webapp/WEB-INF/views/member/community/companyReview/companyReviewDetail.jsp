@@ -185,7 +185,7 @@
 		<div class="company-info-left mw-1260 m-auto">
 			<img id="companyLogo" class="company-logo" src="" alt="기업 로고">
 			<div>
-				<h3 id="companyName" class="company-name"></h3>
+				<h3 id="companyName" class="company-name d-flex align-items-center gap-3"></h3>
 				<p class="company-info fs-14 text-muted d-flex gap-3">
 					<span id="comIndu"></span>
 					<span id="comSize"></span>

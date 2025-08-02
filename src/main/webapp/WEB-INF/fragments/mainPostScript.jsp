@@ -27,6 +27,8 @@
 
 <script>
 	document.addEventListener("DOMContentLoaded", function(){
-  	AOS.init();
+		AOS.init({
+		  startEvent: 'load' // DOMContentLoaded 대신 window.onload 시점에 초기화
+		});
 	})
 </script>
