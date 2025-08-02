@@ -32,15 +32,17 @@
 	
 	
 	// 신규 가입자 추이 차트
+	const newMembersMonthLabels = data.newMembers.map(n => n.NEW_MEMBERS);
+	const newMembersValues = data.newMembers.map(n => n.NEW_MEMBERS_NUM);
 	const newMembersCtx = document.getElementById('newMembersChart');
 	if (newMembersCtx) {
 		new Chart(newMembersCtx.getContext('2d'), {
 			type: 'line',
 			data: {
-				labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월'],
+				labels: newMembersMonthLabels,
 				datasets: [{
 					label: '신규 가입자',
-					data: [320, 450, 380, 520, 680, 750, 890],
+					data: newMembersValues,
 					borderColor: '#9d66ff',
 					backgroundColor: 'rgba(191, 0, 255, 0.1)',
 					borderWidth: 3,
