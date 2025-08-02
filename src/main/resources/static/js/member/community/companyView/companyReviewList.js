@@ -149,11 +149,14 @@ document.addEventListener("DOMContentLoaded", () => {
     axios.get('/ajax/member/company_review/my_career')
          .then(resp => {
             const resumes = resp.data;
+            console.log(resumes);
             const careers = [];
             resumes.forEach(resume => {
                 resume.careerList?.forEach(career => {
+                   if (career.careerNo && (career.company?.comName || career.jobCodeName)) {
                     career.resumeName = resume.resumeName;
                     careers.push(career);
+                }
                 });
             });
             if(careers.length === 0){
