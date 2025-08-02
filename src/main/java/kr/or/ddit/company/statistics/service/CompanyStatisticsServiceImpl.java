@@ -26,6 +26,7 @@ public class CompanyStatisticsServiceImpl implements CompanyStatisticsService{
         result.put("company", companyMapper.selectCompanyInfoById(getUserId()));   //회사정보
         result.put("recruitmentStatus", companyStatisticsMapper.selectRecruitmentStatusById(userId));         // 지원 현황
         result.put("talentPool", companyStatisticsMapper.selectTalentPoolStatisticsById(userId));             // 인재풀
+        result.put("newMembers", companyStatisticsMapper.selectNewMembers(userId));
         result.put("age", companyStatisticsMapper.selectApplicantAgeStatisticsById(userId));                  // 연령
         result.put("edu", companyStatisticsMapper.selectApplicantEduStatisticsById(userId));                  // 학력
         result.put("career", companyStatisticsMapper.selectApplicantCareerStatisticsById(userId));           // 경력
