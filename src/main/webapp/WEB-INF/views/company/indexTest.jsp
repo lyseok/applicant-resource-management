@@ -10,8 +10,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/js/company/indexTest.js" defer></script>
 <script defer src="/js/company/companyPage.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js'></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css"
+	rel="stylesheet">
+<script
+	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js'></script>
 <!-- <link rel="stylesheet" href="styles.css"> -->
 
 <style>
@@ -307,20 +310,24 @@ canvas {
 }
 
 .user-avatar {
-    width: 48px;           /* 원하는 크기 */
-    height: 48px;
-    border-radius: 50%;    /* 원형으로 */
-    background-color: #eaeef1; /* 로고 없을 때 배경색 */
-    overflow: hidden;      /* 이미지가 넘치지 않게 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	width: 48px; /* 원하는 크기 */
+	height: 48px;
+	border-radius: 50%; /* 원형으로 */
+	background-color: #eaeef1; /* 로고 없을 때 배경색 */
+	overflow: hidden; /* 이미지가 넘치지 않게 */
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .user-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;      /* 이미지 꽉 채우기 */
+	width: 100%;
+	height: 100%;
+	object-fit: cover; /* 이미지 꽉 채우기 */
+}
+
+.job-title {
+	font-size: 12px;
 }
 </style>
 </head>
@@ -333,10 +340,10 @@ canvas {
 				<div class="col-md-6">
 					<div class="user-info">
 						<div class="user-avatar">
-						    <img id="comImage" src="" alt="회사 로고">
+							<img id="comImage" src="" alt="회사 로고">
 						</div>
 						<div class="user-details">
-							<h4 id = "comName">
+							<h4 id="comName">
 								기업명 <i class="fas fa-chevron-right"></i>
 							</h4>
 							<p class="text-muted">채용 · 인사관리 솔루션</p>
@@ -426,11 +433,8 @@ canvas {
 				<div class="col-md-8">
 					<div class="chart-card">
 						<div class="chart-header">
-							<h5>신규 가입자 추이</h5>
-							<div class="chart-controls">
-								<button class="btn btn-sm btn-outline-secondary active">월별</button>
-								<button class="btn btn-sm btn-outline-secondary">분기별</button>
-							</div>
+							<h5>월별 신규 가입자 추이</h5>
+							
 						</div>
 						<canvas id="newMembersChart"></canvas>
 					</div>
@@ -530,31 +534,35 @@ canvas {
 		<div class="calendar-section">
 			<div class="chart-card">
 				<div id="calendar"></div>
-		   </div>
+			</div>
+		</div>
 	</div>
-	
-	
-	
-	
 
-<!-- 모달 -->
-<div class="modal fade" id="eventViewModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalTitle"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <p id="modalDateInfo"></p>
-        <div id="recruitDateBlock">
-            <p><strong>공고 시작일:</strong> <span id="modalRecruitStart"></span></p>
-            <p><strong>마감일:</strong> <span id="modalRecruitFinish"></span></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-	
+
+
+	<!-- 모달 -->
+	<div class="modal fade" id="eventViewModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalTitle"></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<p id="modalDateInfo"></p>
+					<div id="recruitDateBlock">
+						<p>
+							<strong>공고 시작일:</strong> <span id="modalRecruitStart"></span>
+						</p>
+						<p>
+							<strong>마감일:</strong> <span id="modalRecruitFinish"></span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 </body>
