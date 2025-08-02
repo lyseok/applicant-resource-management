@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	axios.get(`/ajax/member/company_review/career/${careerNo}`)
 	  .then(resp => {
 	    const career = resp.data;
+	    console.log(career);
+	    document.getElementById('companyLogo').src = career.company.comLogo;
 	    document.getElementById('companyName').textContent = career.comName || '-';
 	    document.getElementById('jobName').textContent = career.jobCodeName 
 	        ? `${career.jobCodeName}${career.department ? ` (${career.department}에서 근무)` : ''}` 
