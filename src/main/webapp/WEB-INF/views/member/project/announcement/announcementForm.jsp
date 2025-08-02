@@ -8,14 +8,15 @@
 		<script defer src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 		<script defer src="/js/member/project/announcement/announcementForm.js"></script>
 		<style>
-		.form-label{
-			font-size:14px;
-		}
-			.form-control,
-			.form-select{
-				font-size:14px;
+			.form-label {
+				font-size: 14px;
 			}
-			
+
+			.form-control,
+			.form-select {
+				font-size: 14px;
+			}
+
 			#tagInput:focus {
 				outline: none;
 				box-shadow: none;
@@ -52,14 +53,13 @@
 
 	<body>
 		<div class="container">
-			<h2 class="h1 mb-4 fw-bold">프로젝트 공고 등록</h2>
+			<h2 class="h1 mb-4 fw-bold" id="fillProjectBtn">프로젝트 공고 등록</h2>
 			<form id="projectForm">
 
 				<!-- 프로젝트 제목 -->
 				<div class="mb-3">
 					<label class="form-label fw-bold">제목</label>
-					<input type="text" class="form-control" name="prjEmpTitle" placeholder="프로젝트 제목을 입력하세요" maxlength="60"
-						>
+					<input type="text" class="form-control" name="prjEmpTitle" placeholder="프로젝트 제목을 입력하세요" maxlength="60">
 				</div>
 
 				<!-- 태그 입력 -->
@@ -121,5 +121,32 @@
 				</div>
 			</form>
 		</div>
+		<script type="module">
+			import { projectData } from '/js/dataConf.js';
+
+			document.getElementById('fillProjectBtn').addEventListener('click', function () {
+				// 제목
+				document.querySelector('[name="prjEmpTitle"]').value = projectData.prjEmpTitle;
+
+				// 태그
+				tags = projectData.tags;
+				renderTags();
+
+				// 모집 팀원
+				roleListArr = projectData.roles;
+				renderRoleList();
+
+				// 주제
+				document.querySelector('[name="prjTopic"]').value = projectData.prjTopic;
+
+				// 날짜
+				document.querySelector('[name="prjStartPlanDate"]').value = projectData.prjStartPlanDate;
+				document.querySelector('[name="prjEndPlanDate"]').value = projectData.prjEndPlanDate;
+
+				// 에디터
+				editor.setMarkdown(projectData.prjAnncContent);
+			});
+
+		</script>
 
 	</body>

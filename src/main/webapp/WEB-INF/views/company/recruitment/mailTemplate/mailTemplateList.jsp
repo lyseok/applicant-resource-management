@@ -76,4 +76,13 @@
 				</div>
 			</div>
 		</div>
+		<script type="module">
+			import { templateData } from '/js/dataConf.js';
+			document.getElementById('templateModalLabel')?.addEventListener('click', () => {
+				const titleEl = document.getElementById('templateTitle');
+				const contentEl = document.getElementById('templateContent');
+				if (titleEl) titleEl.value = templateData.title;
+				if (contentEl) contentEl.value = templateData.content;
+			});
+		</script>
 	</body>
