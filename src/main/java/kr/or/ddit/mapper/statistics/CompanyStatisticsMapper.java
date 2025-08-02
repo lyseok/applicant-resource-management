@@ -21,6 +21,6 @@ public interface CompanyStatisticsMapper {
 	//업종별 평균 
 	
 	public List<Map<String, Object>> selectMonthlyApplicantAndPassRate(String userId);//월별 지원자 추이 및 합격률
-	
+	public List<Map<String, Object>> selectNewMembers(String userId);
 	
 }
