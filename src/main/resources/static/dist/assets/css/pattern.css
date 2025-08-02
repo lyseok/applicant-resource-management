@@ -112,7 +112,7 @@
     --violet110: #4600c2;
     --violet120: #2e0080;
 }
-*:focus-visible {border-radius:4px;outline:2px solid var(--violet80);outline-offset:2px;}
+*:focus-visible {border-radius:4px;outline:none;outline-offset:0;}
 
 
 

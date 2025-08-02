@@ -49,10 +49,25 @@
 		<fieldset>
 			<!-- **fieldset 내부에 form:form 시작** -->
 			<form:form modelAttribute="company" method="post">
-				<h3 class="tit_join_member">띹잡 통합 기업회원 가입</h3>
+				<h3 class="tit_join_member">기업회원 가입</h3>
 
-				<!-- 사업자등록번호 -->
-				<div class="write_base">
+				
+				<div class="write_base w100p">
+					<!-- 기업명 -->
+					<div class="item">
+						<label for="comName" class="required"><strong>기업명</strong></label>
+						<div class="TypoBox">
+							<input name="comName" id="comName" value="${company.comName}"
+								type="text" class="Typo SizeL defalt" maxlength="25"
+								placeholder="기업명 입력">
+						</div>
+						<em class="msgInvalid" id="msg_company_nm" style="display: none;">필수
+							정보입니다.</em>
+						<form:errors cssClass="text-danger" path="comName" />
+					</div>
+					
+					
+					<!-- 사업자등록번호 -->
 					<div class="item">
 						<label for="brNumber" class="required"><strong>사업자등록번호</strong></label>
 						<div class="TypoBox">
@@ -66,20 +81,69 @@
 				</div>
 
 				<!-- 기업정보 입력 영역 (사업자 검증 후 표시) -->
-				<div id="area_input_company" style="display: none;">
+				<div id="area_input_company" style="filter:blur(2px);">
 					<div class="write_base">
-						<!-- 기업명 -->
-						<div class="item">
-							<label for="comName" class="required"><strong>기업명</strong></label>
-							<div class="TypoBox">
-								<input name="comName" id="comName" value="${company.comName}"
-									type="text" class="Typo SizeL defalt" maxlength="25"
-									placeholder="기업명 입력">
+						
+						
+						<!-- 업종 -->
+						<div class="cont_division" id="job_category_area">
+							<strong id="jobCategory" class="cont_tit required">업종</strong>
+							<div class="flexbox row_reverse" id="industry_category">
+								<input type="hidden" name="industryType" id="industry_code">
+								<button type="button" name="btn_desire_industry"
+									class="BtnType SizeL btn_job_category">선택</button>
+								<div id="industry_selected_area"
+									class="form_typobox area_job_category"></div>
 							</div>
-							<em class="msgInvalid" id="msg_company_nm" style="display: none;">필수
-								정보입니다.</em>
-							<form:errors cssClass="text-danger" path="comName" />
+							<em class="msgInvalid" id="msg_industry_category"
+								style="display: none;">업종을 선택하세요</em>
+							<!-- 업종 레이어 -->
+							<div class="layer_desire_industry" id="layer_desire_industry"
+								style="display: none;">
+								<div class="layer_pop_manage layer_hope layer_hope_industry">
+									<div class="layer_manage_wrap">
+										<h4 class="fs-5 fw-bold text-success">업종 선택</h4>
+										<div class="area_search_job">
+											<label for="search_industry" class="fw-semibold fs-14">빠른 업종 검색</label>
+											<input type="text" class="sri_input" id="search_industry">
+										</div>
+										<p class="txt">※ 업종- 1개만 선택가능</p>
+										<fieldset>
+											<legend>업종 선택</legend>
+											<div class="area_table_scroll list_jobs">
+												<div class="industry-groups">
+													<!-- JS로 대분류+중분류 라디오 렌더링 -->
+												</div>
+											</div>
+										</fieldset>
+										<div class="bottom_btn_wrap">
+											<button type="button" class="btn btn_gray_line btn_reset">
+												<span class="material-symbols-outlined">refresh</span>
+											</button>
+											<button type="button" class="btn btn_red_line btn_close">취소</button>
+											<button type="button"
+												class="btn btn_violet btn_save w140 justify-content-center">확인</button>
+										</div>
+										<button type="button" class="btn_layer_close btn_close">
+											<span>닫기</span>
+										</button>
+									</div>
+								</div>
+							</div>
 						</div>
+						
+						
+						<!-- 설립년도 -->
+						<div class="item">
+							<label for="comCreateYear"  class="required"><strong>설립년도</strong></label>
+							<div class="TypoBox">
+								<select id="comCreateYear" name="comCreateYear"
+									class="Typo SizeL defalt">
+									<option value="">선택</option>
+								</select>
+							</div>
+						</div>
+						
 
 						<!-- 대표자 -->
 						<div class="item">
@@ -127,64 +191,6 @@
 								<input type="text" name="comAddr2" id="comAddr2"
 									value="${company.comAddr2 }" class="Typo SizeL defalt"
 									placeholder="상세 주소 입력">
-							</div>
-						</div>
-
-						<!-- 업종 -->
-						<div class="cont_division" id="job_category_area">
-							<strong id="jobCategory" class="cont_tit required">업종</strong>
-							<div class="flexbox row_reverse" id="industry_category">
-								<input type="hidden" name="industryType" id="industry_code">
-								<button type="button" name="btn_desire_industry"
-									class="BtnType SizeL btn_job_category">선택</button>
-								<div id="industry_selected_area"
-									class="form_typobox area_job_category"></div>
-							</div>
-							<em class="msgInvalid" id="msg_industry_category"
-								style="display: none;">업종을 선택하세요</em>
-							<!-- 업종 레이어 -->
-							<div class="layer_desire_industry" id="layer_desire_industry"
-								style="display: none;">
-								<div class="layer_pop_manage layer_hope layer_hope_industry">
-									<div class="layer_manage_wrap">
-										<h4 class="fs-5 fw-bold text-success">업종 선택</h4>
-										<div class="area_search_job">
-											<label for="search_industry" class="fw-semibold fs-14">빠른 업종 검색</label>
-											<input type="text" class="sri_input" id="search_industry">
-										</div>
-										<p class="txt">※ 업종- 1개만 선택가능</p>
-										<fieldset>
-											<legend>업종 선택</legend>
-											<div class="area_table_scroll list_jobs">
-												<div class="industry-groups">
-													<!-- JS로 대분류+중분류 라디오 렌더링 -->
-												</div>
-											</div>
-										</fieldset>
-										<div class="bottom_btn_wrap">
-											<button type="button" class="btn btn_gray_line btn_reset">
-												<span class="material-symbols-outlined">refresh</span>
-											</button>
-											<button type="button" class="btn btn_red_line btn_close">취소</button>
-											<button type="button"
-												class="btn btn_violet btn_save w140 justify-content-center">확인</button>
-										</div>
-										<button type="button" class="btn_layer_close btn_close">
-											<span>닫기</span>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<!-- 설립년도 -->
-						<div class="item">
-							<label for="comCreateYear"  class="required"><strong>설립년도</strong></label>
-							<div class="TypoBox">
-								<select id="comCreateYear" name="comCreateYear"
-									class="Typo SizeL defalt">
-									<option value="">선택</option>
-								</select>
 							</div>
 						</div>
 
@@ -287,20 +293,20 @@
 								style="display: none"></p>
 							<p class="pass_safety" id="pw_strnegth_level"
 								style="display: none"></p>
-
-							<div class="item">
-								<label for="password2" class="required"><strong>패스워드 확인</strong></label>
-								<div class="TypoBox pass_box">
-									<input name="userPasswordConfirm" id="password2"
-										type="password" class="Typo SizeL defalt" maxlength="16"
-										placeholder="비밀번호를 다시 입력해주세요">
-								</div>
-								<em class="msgInvalid" id="msg_password_match"
-									style="display: none; color: red;">비밀번호가 일치하지 않습니다.</em>
-								<p class="alert_column good_txt" id="msg_password_good"
-									style="display: none; color: green;">비밀번호가 일치합니다.</p>
-							</div>
 						</div>
+						<div class="item">
+							<label for="password2" class="required"><strong>패스워드 확인</strong></label>
+							<div class="TypoBox pass_box">
+								<input name="userPasswordConfirm" id="password2"
+									type="password" class="Typo SizeL defalt" maxlength="16"
+									placeholder="비밀번호를 다시 입력해주세요">
+							</div>
+							<em class="msgInvalid" id="msg_password_match"
+								style="display: none; color: red;">비밀번호가 일치하지 않습니다.</em>
+							<p class="alert_column good_txt" id="msg_password_good"
+								style="display: none; color: green;">비밀번호가 일치합니다.</p>
+						</div>
+					
 					</div>
 
 					<!-- **폼 내부에 버튼 배치** -->

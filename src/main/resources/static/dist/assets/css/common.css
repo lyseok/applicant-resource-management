@@ -183,6 +183,7 @@
    border-bottom: 3.5px solid transparent;
    margin-right: 1.6rem;
    transition: color .19s, border .17s;
+   cursor:pointer;
  }
  .tab-btn.active {
    color: #181f2a;

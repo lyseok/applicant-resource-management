@@ -9,13 +9,6 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <link href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" rel="stylesheet">
 <style type="text/css">
-/* 기본적인 인터페이스 스타일 */
-body {
-	font-family: Arial, sans-serif;
-	background-color: #f5f5f5;
-	margin: 20px;
-}
-
 .company-info-wrap {
 	padding: 30px;
 	background-color: #fff;
