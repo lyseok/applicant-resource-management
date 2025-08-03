@@ -203,7 +203,7 @@
 					<div class="ranking-item">
 						<span class="rank">${idx + 1}</span>
 						<span class="job-title">${notice.RECRUITMENT_TITLE}</span>
-						<span class="applicants">${notice.APPLICANT_COUNT}명</span>
+						<span class="applicants">조회 ${notice.VIEW_COUNT}</span>
 					</div>
 				`;
 	});
@@ -219,6 +219,13 @@
 	    return count; // 0도 그대로 표시
 	});
 
+	const barColors = applicantCountsFixed.map((count, idx) => {
+	    if (count > 0 && passRates[idx] === 0) {
+	        return 'rgba(150, 85, 190, 0.8)';  //지원자만 있고 합격자 없음
+	    }
+	    return 'rgba(150, 85, 177, 0.6)'; // 기본 색상
+	});
+	
 	
 	const applicantTrendCtx = document.getElementById('applicantTrendChart');
 	new Chart(applicantTrendCtx.getContext('2d'), {
@@ -229,7 +236,7 @@
 	            { 
 	                label: '지원자 수', 
 	                data: applicantCountsFixed, 
-	                backgroundColor: 'rgba(127, 85, 177, 0.6)', 
+	                backgroundColor: barColors,  // 조건부 색상 적용
 	                yAxisID: 'y' 
 	            },
 	            { 
@@ -239,7 +246,7 @@
 	                borderColor: color2, 
 	                borderWidth: 3, 
 	                pointBackgroundColor: color2,
-	                spanGaps: true,    // null 값 건너뛰기
+	                spanGaps: true,
 	                yAxisID: 'y1' 
 	            }
 	        ]
@@ -249,22 +256,20 @@
 	        maintainAspectRatio: false,
 	        scales: {
 	            y: { beginAtZero: true, position: 'left' },
-	            y1: { 
-					beginAtZero: true,   // 0도 보이게 
-					position: 'right', 
-					grid: { drawOnChartArea: false } 
-	            }
+	            y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false } }
 	        },
 	        plugins: {
 	            tooltip: {
 	                callbacks: {
 	                    label: function(context) {
 	                        const value = context.parsed.y;
-							if (value === 0) return '지원자 없음';
-							if (context.dataset.label.includes('합격률')) {
-								return `${context.dataset.label}: ${value}%`;
-							}
-							return `${context.dataset.label}: ${value}명`;
+	                        if (value === 0 && context.dataset.label.includes('합격률')) {
+	                            return '합격자 없음';
+	                        }
+	                        if (context.dataset.label.includes('합격률')) {
+	                            return `${context.dataset.label}: ${value}%`;
+	                        }
+	                        return `${context.dataset.label}: ${value}명`;
 	                    }
 	                }
 	            }
