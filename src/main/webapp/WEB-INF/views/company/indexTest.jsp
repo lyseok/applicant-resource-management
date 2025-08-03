@@ -351,9 +351,6 @@ canvas {
 					</div>
 				</div>
 				<div class="col-md-6 text-end">
-					<button class="btn btn-outline-success">
-						이력서 업데이트 <i class="fas fa-chevron-right"></i>
-					</button>
 				</div>
 			</div>
 		</div>
