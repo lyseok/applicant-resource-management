@@ -4,7 +4,8 @@ export const loginData = {
     password: 'asd123!@#',
   },
   company: {
-    username: 'simmons',
+    // username: 'woowahan',
+    username: 'daedongmobility',
     password: 'asd123!@#',
   },
   admin: {
@@ -15,45 +16,33 @@ export const loginData = {
 
 export const DATA = {
   signup1: {
-    '#brNumber': '126-81-24808',
-    '#comName': '(주)시몬스',
+    '#brNumber': '125-81-00934',
+    '#comName': '(주)대동',
   },
   signup2: {
-    '#ceoName': '안정호',
-    '#comNum': '01087978522',
-    '#comAddr1': '경기도 이천시 모가면 사실로 1000',
-    '#comAddr2': '시몬스',
+    '#ceoName': '원유현',
+    '#comNum': '010-8797-2974',
+    '#comAddr1': '경기도 안성시 대덕면 서동대로4867-11',
+    '#comAddr2': '(주)대동모빌리티',
     '#industry_code': 'INNO000902', // 서버로 전송할 코드
     '#industry_selected_area': '실내·인테리어·조경',
-    '#comCreateYear': '1992',
+    '#comCreateYear': '1977',
     '#mail_email_id': 'robin0329184@gmail.com',
-    '#id': 'simmons',
+    '#id': 'daedongmobility',
     '#password1': 'asd123!@#',
     '#password2': 'asd123!@#',
   },
   comInfo: {
-    '#comInfo': `시몬스(SIMMONS)의 역사가 세계 침대의 역사입니다
-
-시몬스는 1870년 미국 위스콘신주 케노샤 출신의 사업가 젤몬 시몬스에 의해 설립된 프리미엄 수면 전문 브랜드로서
-세계 최초 '포켓스프링' 제조 기계에 대한 특허, 퀸·킹 사이즈 매트리스 개발 등
-남긴 발자취마다 ‘세계 최초’ 수식어가 따라다닐 만큼 수면에 관한 다양한 연구 개발로 침대 산업에 혁명을 가져온 바 있습니다.
-
-한편 한국 시몬스는 1992년 설립된 독자 법인으로 150년이 넘는 브랜드 헤리티지에 한국 시몬스만의 기술력과 브랜딩을 더해 새로운 역사를 만들어가고 있습니다.
-경기도 이천의 '시몬스 팩토리움'에서 세계적으로 인정받은 국내 자체 생산 시스템과 함께 ‘한국 시몬스만의 1,936가지 품질 관리 항목’을 적용해 철저히 품질을 관리하고 있으며,
-복합 문화 공간 '시몬스 테라스'를 거점으로 고객에게 색다른 경험을 제공함과 동시에 지역사회와 호흡하는 '컬쳐 허브'로서 거듭나고 있습니다.
-
-시몬스는 '침대를 넘어 인생을 만든다'는 기업 철학을 바탕으로
-국내 시장에서의 30년 역사와 함께 아직까지도 가파른 성장세를 보이며 프리미엄 침대시장을 선도하고 있습니다.
-
-시몬스는 매년 이어지는 성장에 따라 우수한 인력들이 모여들고 있으며
-도전을 원하는 구성원에게 다양한 기회를, 나타난 성과에 대해선 합리적인 보상을 제공합니다.
+    '#comInfo': `"(주)대동모빌리티는 대한민국 농기계 최대 브랜드인 (주)대동의 계열사중 한곳으로 1977년 설립이후 꾸준한 성장을 바탕으로 내실을 다져온 기업입니다.
+기존의 체인사업을 바탕으로 트랙터용 작업기 및 다목적운반차량 생산시설을 구축하여 시장에 첫발을 내딛은 후, 지속적인 모빌리티 신제품 개발과 앞으로 미래 모빌리티 시장을 선도하여 새로운 기업으로 도약하고자 하는 동시에 향후 성장성이 기대되는 기업으로 주목받고 있습니다.
 
 기업비전
-주요 사업내용 : 침대 및 가구 제조주요 취급품목 : 침대, 매트리스`,
-    '#comUrl': 'http://www.simmons.co.kr',
-    '#comMem': '750',
+대한민국 No.1을 넘어 세계로!
+행복한 사람들이 만들어 가는 기업"`,
+    '#comUrl': 'http://www.daedongmobility.co.kr',
+    '#comMem': '413',
     '#comCapital': '4500000',
-    '#comMainBiz': '매트리스,침대,가구,가방(핸드백) 제조',
+    '#comMainBiz': '롤러체인,농업기자재,농업기계 제조,도소매',
     '#insuranceYn': 'Y',
     '#comType': 'COMT-001',
     '#comSize': 'SIZE-004',
@@ -61,16 +50,16 @@ export const DATA = {
 };
 
 export const formValues = {
-  '#recruitmentTitle': '2025년 하반기 각 부문별 신입/경력 채용공고',
+  '#recruitmentTitle': '(주)대동모빌리티 각 부문 정규직 채용공고',
   '#yearCode': 'YEXP-Y0',
   '[name="recruitmentSalary"]': '3000',
   '#upperJobCode': '15',
   '#jobSearchInput': '가구디자인',
   '#eduCode': 'EDUC-007',
   '#positionSelect': 'RANK-001',
-  '[name="recruitmentChargerTel"]': '1086798797',
+  '[name="recruitmentChargerTel"]': '010-8679-8797',
   '[name="recruitmentFinishDate"]': '2025-10-10',
-  '[name="recPositionNumber"]': '6',
+  '[name="recPositionNumber"]': '3',
   '[name="recruitmentDesk"]': '홈페이지 지원',
 };
 
