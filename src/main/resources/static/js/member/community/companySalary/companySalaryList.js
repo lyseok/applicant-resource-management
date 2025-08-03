@@ -49,27 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchSalaryData();
   });
   
+  // **정렬**
   sortSel.addEventListener('change', () => {
-	  params.sort = sortSel.value;
-	  params.page = 1;
-	  fetchSalaryData();
-  });
-
-  /*// **셀렉트 박스 변경**
-  minSel.addEventListener('change', () => {
-    minVal = Number(minSel.value);
-    params.minSalary = minVal;
+    params.sort = sortSel.value;
     params.page = 1;
-    sliderUI();
     fetchSalaryData();
   });
-  maxSel.addEventListener('change', () => {
-    maxVal = Number(maxSel.value);
-    params.maxSalary = maxVal;
-    params.page = 1;
-    sliderUI();
-    fetchSalaryData();
-  });*/
 
   // **슬라이더 드래그**
   sliderDraggable(minHandle, true);
@@ -111,25 +96,24 @@ document.addEventListener('DOMContentLoaded', () => {
     sliderRangeEl.style.width = `${p2 - p1}%`;
     minLabelEl.textContent = minVal === 0 ? '0만원' : `${minVal.toLocaleString()}만원`;
     maxLabelEl.textContent = maxVal === 0 ? '1억원↑' : `${maxVal.toLocaleString()}만원`;
-    minSel.value = minVal;
-    maxSel.value = maxVal;
+    if (minSel) minSel.value = minVal;
+    if (maxSel) maxSel.value = maxVal;
   }
 
-
+  // **리스트 렌더링**
   function renderList(data, totalCount) {
     salaryListEL.innerHTML = '';
-	  
+    const reTotalCount = document.getElementById('result_total_count'); 
+    reTotalCount.innerHTML = `<p class="fs-14">총 <span class="fw-bold">${totalCount}</span>건</p>`;
 
-		const reTotalCount = document.getElementById('result_total_count'); 
-	  reTotalCount.innerHTML = `<p class="fs-14">총 <span class="fw-bold">${totalCount}</span>건</p>`;
+    if (data.length === 0) {
+      const li = document.createElement('li');
+      li.className = 'no-item';
+      li.textContent = '조건에 맞는 기업이 없습니다.';
+      salaryListEL.appendChild(li);
+      return;
+    }
 
-	  if (data.length === 0) {
-	    const li = document.createElement('li');
-	    li.className = 'no-item';
-	    li.textContent = '조건에 맞는 기업이 없습니다.';
-	    salaryListEL.appendChild(li);
-	    return;
-	  }
     data.forEach(c => {
       const li = document.createElement('li');
       li.className = 'item';
@@ -159,25 +143,37 @@ document.addEventListener('DOMContentLoaded', () => {
     return man > 0 ? `${eok}억 ${man}만원` : `${eok}억원`;
   }
 
-  // **페이징 렌더링**
+  // **페이징 렌더링 (이전/다음 추가)**
   function renderPager(totalPages, currentPage) {
     let html = '';
-    for (let i = 1; i <= totalPages; i++) {
-      if (i === currentPage) html += `<span class="BtnType SizeS active">${i}</span>`;
-      else html += `<button class="BtnType SizeS page" data-page="${i}">${i}</button>`;
+    // 이전 버튼
+    if (currentPage > 1) {
+      html += `<button data-page="${currentPage - 1}" class="BtnType SizeS BtnPrev">이전</button>`;
     }
-    if (currentPage < totalPages) html += `<button data-page="${currentPage + 1}" class="BtnType SizeS BtnNext">다음</button>`;
+    // 페이지 번호
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === currentPage) 
+        html += `<span class="BtnType SizeS active">${i}</span>`;
+      else 
+        html += `<button class="BtnType SizeS page" data-page="${i}">${i}</button>`;
+    }
+    // 다음 버튼
+    if (currentPage < totalPages) {
+      html += `<button data-page="${currentPage + 1}" class="BtnType SizeS BtnNext">다음</button>`;
+    }
+
     document.querySelector('.PageBox').innerHTML = html;
   }
 
-  // **페이지 클릭**
+  // **페이지 클릭 이벤트**
   document.querySelector('.PageBox').addEventListener('click', e => {
-    if (e.target.classList.contains('page')) {
-      params.page = Number(e.target.dataset.page);
-      fetchSalaryData();
-    } else if (e.target.classList.contains('BtnNext')) {
-      params.page += 1;
-      fetchSalaryData();
+    const target = e.target;
+    if (target.classList.contains('page') || target.classList.contains('BtnNext') || target.classList.contains('BtnPrev')) {
+      const newPage = Number(target.dataset.page);
+      if (!isNaN(newPage)) {
+        params.page = newPage;
+        fetchSalaryData();
+      }
     }
   });
 });
