@@ -22,4 +22,7 @@ public class CompanyExamVO implements Serializable{
 
 	@Valid
 	private List<ComExamQuestionsVO> questionList;
+	
+	
+	private String questionCount;
 }

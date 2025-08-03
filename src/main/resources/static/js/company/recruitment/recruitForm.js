@@ -150,7 +150,7 @@ function addPositionTag() {
 	}
 
 	const tag = document.createElement('span');
-	tag.className = 'position-tag';
+	tag.className = 'position-tag badge-tag';
 
 	tag.innerHTML = `
     ${selectedText}
@@ -174,10 +174,10 @@ function addSkill() {
 	const wrapper = document.getElementById('skillWrapper');
 
 	const tag = document.createElement('span');
-	tag.className = 'skill-tag';
+	tag.className = 'skill-tag badge-tag';
 	tag.innerHTML = `
 	   #${skillName}
-	   <button type="button" aria-label="삭제">&times;</button>
+	   <button type="button" aria-label="삭제" class="text-white">&times;</button>
 	   <input type="hidden" name="skillList[${skillIndex}].recruitSkillName" value="${skillName}">
 	 `;
 
@@ -260,17 +260,16 @@ function addProcess() {
   const currentStep = processIndex + 1; // 새 전형 단계 (자동 증가)
 
   const processBlock = document.createElement('div');
-  processBlock.className = 'border p-3 rounded position-relative';
-  processBlock.style.minWidth = '300px';
+  processBlock.className = 'process-item p-3 py-4 position-relative';
 
   const removeBtn = document.createElement('button');
   removeBtn.type = 'button';
-  removeBtn.className = 'btn-close position-absolute top-0 end-0 m-2';
+  removeBtn.className = 'btn-close';
   removeBtn.onclick = () => processBlock.remove();
 
   processBlock.innerHTML = `
      <div class="mb-2">
-       <label class="form-label">전형 단계</label>
+       <label class="form-label fs-14 fw-bold text-dark required">전형 단계</label>
        <select name="recruitProcessList[${processIndex}].recruitProcessStep" class="form-select">
          <option value="1" ${currentStep === 1 ? 'selected' : ''}>1단계</option>
          <option value="2" ${currentStep === 2 ? 'selected' : ''}>2단계</option>
@@ -281,7 +280,7 @@ function addProcess() {
      </div>
 
      <div class="mb-2">
-       <label class="form-label">최종 전형 여부</label>
+       <label class="form-label fs-14 fw-bold text-dark required">최종 전형 여부</label>
        <select name="recruitProcessList[${processIndex}].recruitProcessFinal" class="form-select">
          <option value="N">아니오</option>
          <option value="Y">예</option>
@@ -289,7 +288,7 @@ function addProcess() {
      </div>
 
      <div class="mb-2">
-       <label class="form-label">전형 유형</label>
+       <label class="form-label fs-14 fw-bold text-dark required">전형 유형</label>
        <select class="form-select processTypeSelect">
          <option value="RERP-003">서류</option>
          <option value="RERP-002">면접</option>
@@ -318,41 +317,41 @@ function initProcessTypeSelect(container) {
 		if (type === 'RERP-002') {
 			detailContainer.innerHTML = `
         <div>
-          <label class="form-label">면접 일시</label>
+          <label class="form-label fs-14 fw-bold text-dark required">면접 일시</label>
           <input type="datetime-local" name="recruitProcessList[${processIndex}].interviewList[0].interviewDate" class="form-control">
         </div>
         <div class="mt-2">
-          <label class="form-label">면접 장소</label>
+          <label class="form-label fs-14 fw-bold text-dark required">면접 장소</label>
           <input type="text" name="recruitProcessList[${processIndex}].interviewList[0].interviewLocation" class="form-control">
         </div>
         <div class="mt-2">
-          <label class="form-label">면접 방식</label>
+          <label class="form-label fs-14 fw-bold text-dark required">면접 방식</label>
           <select name="recruitProcessList[${processIndex}].interviewList[0].interviewType" class="form-select">
 		    <option value="Y">화상</option>
 		    <option value="N">대면</option>
 		  </select>
         </div>
         <div class="mt-2">
-          <label class="form-label">합격 점수</label>
+          <label class="form-label fs-14 fw-bold text-dark required">합격 점수</label>
           <input type="text" name="recruitProcessList[${processIndex}].interviewList[0].interviewPassScore" class="form-control">
         </div>
       `;
 		} else if (type === 'RERP-001') {
 			detailContainer.innerHTML = `
       	<div>
-      		<label class="form-label">합격 점수</label>
+      		<label class="form-label fs-14 fw-bold text-dark required">합격 점수</label>
       		<input type="text" name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamCutline" class="form-control">
       	</div>
       	<div>
-      		<label class="form-label">시험 일시</label>
+      		<label class="form-label fs-14 fw-bold text-dark required">시험 일시</label>
       		<input type="datetime-local" name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamStartDate" class="form-control">
       	</div>
       	<div>
-      		<label class="form-label">시험 시간(분)</label>
+      		<label class="form-label fs-14 fw-bold text-dark required">시험 시간(분)</label>
       		<input type="text" name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamTime" class="form-control">
       	</div>
         <div>
-          <label class="form-label">시험 선택</label>
+          <label class="form-label fs-14 fw-bold text-dark required">시험 선택</label>
           <select name="recruitProcessList[${processIndex}].recruitmentExamList[0].comExamNo" class="form-select exam-select">
             <option value="">시험을 선택하세요</option>
             <!-- 시험 목록 동적 로딩 필요 시 여기에 처리 -->
@@ -498,6 +497,6 @@ document.getElementById('recruitForm').addEventListener('submit', async (e) => {
 			} else {
 				alert('알 수 없는 에러가 발생했습니다.');
 			}
-		});ㄴ
+		});
 
 });

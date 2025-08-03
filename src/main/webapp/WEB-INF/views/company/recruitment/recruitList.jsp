@@ -20,7 +20,7 @@
 <body>
 <div class="d-flex justify-content-between align-items-center ">
   <!-- 왼쪽: 제목 -->
-  <h2 class="h1 mb-3 fw-bold">채용공고 목록</h2>
+  <h2 class="h2 mb-3 fw-bold">채용공고 목록</h2>
 </div>	
 
 	<div class="d-flex justify-content-between align-items-end w100p pb-2 border-bottom">

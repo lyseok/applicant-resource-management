@@ -176,7 +176,7 @@
 	<body>
 		<main class="AppContainer_root">
 			<div class="AppContainer_inner_Nnowg">
-				<div class="MainContainer_layout">
+				<div class="MainContainer_layout mw-100p d-block">
 					<div class="MainContainer_mainContent">
 						<div class="Recommend_recommend">
 
