@@ -31,8 +31,8 @@ public class CompanyStatisticsServiceImpl implements CompanyStatisticsService{
         result.put("edu", companyStatisticsMapper.selectApplicantEduStatisticsById(userId));                  // 학력
         result.put("career", companyStatisticsMapper.selectApplicantCareerStatisticsById(userId));           // 경력
         result.put("gender", companyStatisticsMapper.selectApplicantGenderStaticsById(userId));              // 성별
-        result.put("skills", companyStatisticsMapper.selectApplicantSkillsTopTenById(userId));               // 스킬 TOP10
-        result.put("topNotice", companyStatisticsMapper.selectTopTenRecruitmentNoticeById(userId));          // 인기 공고
+        result.put("skills", companyStatisticsMapper.selectApplicantSkillsTopTenById());               // 스킬 TOP10
+        result.put("topNotice", companyStatisticsMapper.selectTopTenRecruitmentNoticeById());          // 인기 공고
         result.put("passRate", companyStatisticsMapper.selectMonthlyApplicantAndPassRate(userId));           // 월별 지원자+합격률
         return result;
     }
