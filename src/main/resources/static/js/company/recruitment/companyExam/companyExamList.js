@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	axios.get('/ajax/company/company_exam/list')
 		.then(resp => {
 			const examList = resp.data;
-			examCount.textContent = `총 ${examList.length}건의 시험이 등록되어 있습니다.`;
+			examCount.textContent = `${examList.length}`;
 
 			examL.innerHTML = ''; // 초기화
 
 			examList.forEach((exam, idx) => {
 				const card = document.createElement('div');
-				card.className = 'exam-card d-flex align-items-center mb-3 p-3 border rounded';
+				card.className = 'exam-card d-flex align-items-center p-3 border rounded';
 				card.dataset.examId = exam.comExamNo;
 
 				card.innerHTML = `

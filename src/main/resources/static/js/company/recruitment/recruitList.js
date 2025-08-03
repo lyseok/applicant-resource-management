@@ -65,40 +65,58 @@ function renderPage(page = currentPage) {
     const paginatedItems = filteredData.slice(start, end);
 
     paginatedItems.forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'border-bottom p-3 ';
-        row.style.cursor = 'pointer';
+        const row = document.createElement('ul');
 
-        // 클릭 이벤트: FINISHYN 값에 따라 다른 URL로 이동
-        if (item.FINISHYN === 'Y') {
-            row.addEventListener('click', () => {
-                window.location.href = `/company/applicant_record/${item.RECRUITMENTNO}`;
-            });
-        } else {
-            row.addEventListener('click', () => {
-                window.location.href = `/company/recruit_notice/${item.RECRUITMENTNO}`;
-            });
-        }
-
-        // 제목 옆에 마감 딱지 표시
-        const titleHtml = item.FINISHYN === 'Y' 
-            ? `<span class="badge bg-violet07 me-2">공고마감</span> ${item.RECRUITMENTTITLE}`
-            : item.RECRUITMENTTITLE;
-
-        row.innerHTML = `
-            <div class="flex-grow-1">
-                <h5 class="d-flex align-items-center fw-bold mb-2 gap-2">${titleHtml} <span class="fs-14 fw-500">- 지원자 <strong class="fs-15 text-violet80">${item.APPLICANTCOUNT}</strong></span></h5>
-                <!--<p class="text-muted mb-2">${truncateText(item.RECCONTENT, 5)}</p> -->
-                <div class="d-flex small text-muted gap-3">
-                    <span><strong>경력</strong> ${item.yearCodeName || '-'}</span>
-                    <span><strong>직무</strong> ${item.jobCodeName || '-'}</span>
-                    <span><strong>지역</strong> ${item.cityCodeName} ${item.districtCodeName}</span>
-                    <span><strong>급여</strong> ${item.SALARY || '-'}만원</span>
-                </div>
-                    <span class="small text-muted gap-3"><strong>채용기간</strong> ${item.RECRUITMENTSTARTDATE?.substring(0, 10) || '-'} ~  ${item.RECRUITMENTFINISHDATE?.substring(0, 10) || '-'}</span>
-            </div>
+				
+        row.innerHTML = `						
+						<li class="p-4 border-bottom d-flex justify-content-between recruit_list gap-5">
+		        	<div class="d-flex flex-fill align-items-start">
+			        	<div class="com_name_box viewat_box">
+									${item.FINISHYN === "Y" ? `<div class="d-inline-block bg-violet03 fs-13 px-3">공고 마감</div>`: ""}
+								</div>
+								<div class="recruit_tit">
+			          	<a class="d-block fs16 fw-bold m-0" href="/recruit_notice/RECR000098"> ${item.RECRUITMENTTITLE}</a>     	
+									<div class="d-flex align-items-center">
+										<span class="fs-14 text-muted">${item.jobCodeName || '-'}</span>
+									</div>
+									<p class="fs-14 text-muted mt-2">${item.RECRUITMENTSTARTDATE?.substring(0, 10) || '-'} ~  ${item.RECRUITMENTFINISHDATE?.substring(0, 10) || '-'}</p>
+								</div>
+			          <div class="recruit_info">
+			          	<div class="d-flex align-items-center">
+			          		<span class="material-symbols-outlined">distance</span>
+			          		<span class="">${item.cityCodeName} ${item.districtCodeName}</span>
+			        		</div>
+									<div class="d-flex align-items-center">
+										<span class="material-symbols-outlined">money_bag</span>
+										<span class="num_line">${item.SALARY || '-'}만원</span>
+									</div> 
+									<div class="d-flex align-items-center">
+										<span class="material-symbols-outlined">business_center</span>
+										<span class="num_line">${item.yearCodeName || '-'}</span>
+									</div>
+			          </div>
+			        </div>
+		
+								<div class="d-flex flex-column align-items-center gap-1 fs-12 recruit_btn_wrap">
+									<div class="d-flex align-items-center gap-1 mb-1">
+										<span class="material-symbols-outlined">person</span>
+										<span class="text-dark fs-14">지원자 <strong class="fs-15 text-violet80">${item.APPLICANTCOUNT}</strong></span>
+									</div> 
+								</div>
+							</div>
+						</li>
         `;
         listContainer.appendChild(row);
+				
+				// btn_wrap는 row 내부에서 찾기
+				const btnWrap = row.querySelector(".recruit_btn_wrap");
+				const recruitBtn = document.createElement("a");
+				recruitBtn.className = "btn btn_violet review-btn w140 justify-content-center fw-light fs-14";
+				recruitBtn.textContent = item.FINISHYN === 'Y' ? '지원자 확인' : '공고 보기';
+				recruitBtn.href = item.FINISHYN === 'Y'
+		       ? `/company/applicant_record/${item.RECRUITMENTNO}`
+		       : ``;
+				btnWrap.appendChild(recruitBtn);
     });
 }
 

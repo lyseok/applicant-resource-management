@@ -21,11 +21,11 @@ const FINAL_STEP_KEY = 'final';
 
 function generateColumns(step, type) {
   const baseCols = [
-    { key: 'bir', label: '생년월일' },
     { key: 'name', label: '이름' },
-    { key: 'resumeNo', label: '이력서' },
+    /*{ key: 'bir', label: '생년월일' },*/
+    /*{ key: 'resumeNo', label: '이력서' },*/
     { key: 'career', label: '경력' },
-    { key: 'language', label: '어학' },
+    /*{ key: 'language', label: '어학' },*/
     { key: 'major', label: '전공' },
     { key: 'cert', label: '자격증' },
     { key: 'skill', label: '기술' }
@@ -35,7 +35,7 @@ function generateColumns(step, type) {
 	baseCols.push({key : 'alarm', label : '합격 알림 여부'});
 	baseCols.push({key : 'accept', label : '채용 수락 여부'});
 	baseCols.push({key : 'hireDate', label : '입사 예정일'});
-	baseCols.push({key : 'passSelect', label : '메일 발송'});
+	baseCols.unshift({key : 'passSelect', label : '메일 발송'});
   }else{
 	baseCols.push({key : 'attend', label : '응시 여부'});
 	baseCols.push({key : 'pass', label : '합격 여부'});
@@ -43,16 +43,35 @@ function generateColumns(step, type) {
 					: type === 'RERP-002' ? '면접점수'
 					: '점수';
 	baseCols.push({key : 'score', label: scoreLabel});
-	baseCols.push({key : 'passSelect', label: '합격선택'});
+	baseCols.unshift({key : 'passSelect', label: '합격선택'});
   }
   columns[step === FINAL_STEP_KEY ? FINAL_STEP_KEY : "step" + step] = baseCols;
 }
 
 function formatCellValue(key, value, applicant) {
-  if (key === 'resumeNo' ) {
-    return `<button class="btn btn-outline-primary btn-sm resume-link" 
-    		data-resume-no="${value}" data-user-id="${applicant._userId}" data-applicant-id="${applicant._applicantId}">상세</button>`;
-  }
+	if (key === 'name') {
+	    // 나이 계산
+	    let age = '-';
+	    if (applicant.bir) {
+	      const birth = new Date(applicant.bir);
+	      const today = new Date();
+	      age = today.getFullYear() - birth.getFullYear();
+	      const m = today.getMonth() - birth.getMonth();
+	      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+	        age--; // 생일 안 지났으면 한 살 빼기
+	      }
+	    }
+
+	    const ageText = age !== '-' ? `<span class="fs-14 opacity-75">( ${age}세 )</span>` : '';
+
+	    const button = `<button class="btn btn_violet_line btn-sm" 
+	      data-resume-no="${applicant.resumeNo}" 
+	      data-user-id="${applicant._userId}" 
+	      data-applicant-id="${applicant._applicantId}">상세</button>`;
+	    return `<div class="d-flex gap-2 align-items-center">${value}${ageText}${button}</div>`;
+	  }
+
+
   if (key === 'passSelect') {
     const checked = applicant.pass === 'Y' ? 'checked' : '';
     return `<input type="checkbox" class="form-check-input passCheck" ${checked} />`;
@@ -72,7 +91,7 @@ function generateRowDataAttributes(applicant) {
     data-language="${applicant.language}"
     data-major="${applicant.major}"
     data-cert="${(applicant.cert || []).join(',')}"
-    data-skill="${(applicant.skill || []).join(',')}"
+    data-skill=${(applicant.skill || []).join(',')}"
     data-applicant-id="${applicant._applicantId}"
     data-recruitment-no="${applicant._recruitmentNo}"
     data-applicant-name="${applicant.name}"
@@ -103,7 +122,7 @@ function renderApplicantTable() {
   }
   
   // 헤더 렌더링
-  tableHead.innerHTML = columnSet.map(col => `<th class="text-center">${col.label}</th>`).join('');
+  tableHead.innerHTML = columnSet.map(col => `<th class="text-center fw-bold fs-13 py-3 align-middle">${col.label}</th>`).join('');
   
   
   // "지원자 ID"가 없는 행 제외
@@ -115,11 +134,37 @@ function renderApplicantTable() {
   
   // 바디 렌더링
   tableBody.innerHTML = validDataList.map(applicant => {
+
 	return `<tr ${generateRowDataAttributes(applicant)}>
-	      ${columnSet.map(col => {
-	        const value = applicant[col.key];
-	        return `<td>${formatCellValue(col.key, value, applicant)}</td>`;
-	      }).join('')}
+		${columnSet.map(col => {
+		  const value = applicant[col.key];
+	
+		  if (col.key === 'skill') {
+		    return `
+				<td class="py-2 overflow-auto row_custom_scroll">
+					<div class="text-nowrap text-center">
+						${(applicant.skill || [])
+			      .map(skill => `<span class="badge-tag me-1 border-secondary text-dark opacity-75">${skill}</span>`)
+			      .join('')}
+					</div>
+				</td>`;
+		  }
+	
+		  if (col.key === 'cert') {
+		    return `
+				<td class="py-2 overflow-auto row_custom_scroll">
+					<div class="text-nowrap text-center">
+						${(applicant.cert || [])
+				    .map(cert => `<span class="badge-tag me-1">${cert}</span>`)
+				    .join('')}
+					</div>
+				</td>`;
+		  }
+	
+		  // 기본 처리
+		  return `<td>${formatCellValue(col.key, value, applicant)}</td>`;
+		}).join('')}
+
 	    </tr>`;
 	  }).join('');
 
@@ -213,10 +258,10 @@ function closeStep() {
 
         if (check && check.checked) {
             selectedApplicants.push(applicantData);
-            tr.children[9].innerText = 'Y'; // 합격
+            tr.children[0].innerText = 'Y'; // 합격
         } else {
             unselectedApplicants.push(applicantData);
-            tr.children[9].innerText = 'N'; // 불합격
+            tr.children[0].innerText = 'N'; // 불합격
         }
     });
 
@@ -278,7 +323,7 @@ function fillFilterOptions() {
   const skills = getUniqueValues('skill');
   const $skillTag = document.getElementById('skillTagFilter');
   $skillTag.innerHTML = skills.map(skill =>
-    `<label class="badge rounded-pill bg-light text-dark border p-2 mb-0" style="cursor:pointer;">
+    `<label class="badge-tag">
       <input type="checkbox" class="form-check-input me-1" value="${skill}" style="vertical-align:middle;">${skill}
     </label>`
   ).join('');
@@ -442,14 +487,14 @@ function renderStepTabs(stepMetaList){
 		const isActive = idx === 0 ? 'active' : '';
 		const li = document.createElement('li');
 		li.className = 'nav-item';
-		li.innerHTML = `<button class="nav-link ${isActive}" data-step="step${step}">${step}차 ${type}</button>`;
+		li.innerHTML = `<button class="btn lh1 nav-link ${isActive}" data-step="step${step}">${step}차 ${type}</button>`;
 		$nav.appendChild(li);
 	});
 	
 	// 최종 합격자
 	const finalTab = document.createElement('li');
 	finalTab.className = 'nav-item';
-	finalTab.innerHTML = `<button class="nav-link" data-step="${FINAL_STEP_KEY}">최종 합격자</button>`;
+	finalTab.innerHTML = `<button class="btn lh1 nav-link" data-step="${FINAL_STEP_KEY}">최종 합격자</button>`;
 	$nav.appendChild(finalTab);
 	
 	document.querySelectorAll('.nav-link[data-step]').forEach(btn =>{
@@ -463,23 +508,32 @@ function renderStepTabs(stepMetaList){
 	});
 }
 
+
 function updateStepActionButton(){
-	const $btn = document.getElementById('stepActionBtn');
-	if (!$btn) return; // 버튼이 없으면 무시
-	
-	if(currentStep === FINAL_STEP_KEY){
-		$btn.textContent = '입사일 변경';
-		$btn.onclick = () =>{
-			const modal = new bootstrap.Modal(document.getElementById('hireDateModal'));
-			const overlay = document.getElementById('overlay');
-			if (overlay) overlay.style.display = 'none';
-			modal.show();
-		};
-	}else{
-		$btn.textContent = '단계 마감';
-		$btn.onclick = closeStep;
-	}
+    const container = document.getElementById('stepActionContainer'); // 감싸는 div id
+
+    if (!container) return;
+
+    if(currentStep === FINAL_STEP_KEY){
+        container.innerHTML = `
+            <button class="btn btn_violet fs-14" id="stepActionBtn">입사일 변경</button>
+            <span class="fs-14 fw-500 text-muted">입사 예정일을 변경할 수 있습니다.</span>
+        `;
+        document.getElementById('stepActionBtn').onclick = () => {
+            const modal = new bootstrap.Modal(document.getElementById('hireDateModal'));
+            const overlay = document.getElementById('overlay');
+            if (overlay) overlay.style.display = 'none';
+            modal.show();
+        };
+    } else {
+        container.innerHTML = `
+            <button class="btn btn_violet fs-14" id="stepActionBtn">단계 변경</button>
+            <span class="fs-14 fw-500 text-muted">합격선택 체크 후 단계변경 버튼 클릭 시 다음 단계로 넘어갑니다.</span>
+        `;
+        document.getElementById('stepActionBtn').onclick = closeStep;
+    }
 }
+
 
 document.getElementById('confirmHireDateBtn').addEventListener('click', ()=>{
 	const date = document.getElementById('hireDatePicker').value;
