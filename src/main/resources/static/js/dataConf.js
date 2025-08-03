@@ -4,8 +4,8 @@ export const loginData = {
     password: 'asd123!@#',
   },
   company: {
-    // username: 'woowahan',
-    username: 'daedongmobility',
+    username: 'woowahan',
+    // username: 'daedongmobility',
     password: 'asd123!@#',
   },
   admin: {
@@ -16,7 +16,7 @@ export const loginData = {
 
 export const DATA = {
   signup1: {
-    '#brNumber': '125-81-00934',
+    '#brNumber': '617-81-00224',
     '#comName': '(주)대동',
   },
   signup2: {
@@ -55,6 +55,7 @@ export const formValues = {
   '[name="recruitmentSalary"]': '3000',
   '#upperJobCode': '15',
   '#jobSearchInput': '가구디자인',
+  '#hiddenJobCode': '1502',
   '#eduCode': 'EDUC-007',
   '#positionSelect': 'RANK-001',
   '[name="recruitmentChargerTel"]': '010-8679-8797',
