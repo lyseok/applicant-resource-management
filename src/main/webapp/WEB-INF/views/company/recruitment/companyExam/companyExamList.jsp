@@ -57,21 +57,6 @@
 	      font-weight: bold;
 	      color: #444;
 	    }
-	
-	   
-	    .btn_violet {
-	      background-color: #7c3aed;
-	      color: #fff;
-	      border: none;
-	      border-radius: 6px;
-	      padding: 8px 16px;
-	      font-size: 0.95rem;
-	      cursor: pointer;
-	      transition: background-color 0.2s;
-	    }
-	    .btn_violet:hover {
-	      background-color: #6b21a8;
-	    }
 	    
 	    .btn_delete {
 	    background-color: #e53e3e;
@@ -91,10 +76,8 @@
 	<script defer src ="/js/company/recruitment/companyExam/companyExamList.js"></script>
 </head>
 <body>
-	<div class="d-flex justify-content-between align-items-center ">
-	  <!-- 제목 -->
-	  <h2 class="h2 mb-3 fw-bold">시험 목록</h2>
-	</div>
+  <!-- 제목 -->
+  <h2 class="h2 mb-3 fw-bold">시험 목록</h2>
 	
 	<div class="d-flex justify-content-between align-items-end pb-2 border-bottom mb-2">
 		<p class="fs-14">
