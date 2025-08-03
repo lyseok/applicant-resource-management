@@ -64,7 +64,7 @@ function formatCellValue(key, value, applicant) {
 
 	    const ageText = age !== '-' ? `<span class="fs-14 opacity-75">( ${age}세 )</span>` : '';
 
-	    const button = `<button class="btn btn_violet_line btn-sm" 
+	    const button = `<button class="btn btn_violet_line btn-sm resume-link" 
 	      data-resume-no="${applicant.resumeNo}" 
 	      data-user-id="${applicant._userId}" 
 	      data-applicant-id="${applicant._applicantId}">상세</button>`;
@@ -91,7 +91,7 @@ function generateRowDataAttributes(applicant) {
     data-language="${applicant.language}"
     data-major="${applicant.major}"
     data-cert="${(applicant.cert || []).join(',')}"
-    data-skill=${(applicant.skill || []).join(',')}"
+    data-skill="${(applicant.skill || []).join(',')}"
     data-applicant-id="${applicant._applicantId}"
     data-recruitment-no="${applicant._recruitmentNo}"
     data-applicant-name="${applicant.name}"
@@ -189,6 +189,16 @@ document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(btn=>{
   btn.addEventListener('shown.bs.tab',applyFilters);
 });
 document.getElementById('searchBtn').addEventListener('click', applyFilters);
+document.getElementById('languageFilter').addEventListener('change', applyFilters);
+document.getElementById('majorFilter').addEventListener('change', applyFilters);
+document.getElementById('certFilter').addEventListener('change', applyFilters);
+document.getElementById('skillTagFilter').addEventListener('change', function(e) {
+  if (e.target && e.target.matches('input[type="checkbox"]')) {
+    applyFilters();
+  }
+});
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+
 document.getElementById('resetFilters').addEventListener('click', function(){
   document.getElementById('careerMin').value = "";
   document.getElementById('careerMax').value = "";
@@ -342,27 +352,24 @@ function applyFilters() {
   const major = document.getElementById('majorFilter').value;
   const cert = document.getElementById('certFilter').value;
   const nameKeyword = document.getElementById('searchInput').value.trim();
-  // 선택된 기술
   const selectedSkills = Array.from(document.querySelectorAll('#skillTagFilter input:checked')).map(cb=>cb.value);
 
   const tableBody = document.querySelector('#mainTable tbody');
   Array.from(tableBody.querySelectorAll('tr')).forEach(tr => {
     let show = true;
-    const career = parseInt(tr.dataset.career);
-    if(career < minCareer || career > maxCareer) show = false;
-    if(lang && tr.dataset.languageName !== lang) show = false; // languageName 사용(데이터에 따라 맞게)
+	const career = isNaN(parseInt(tr.dataset.career)) ? 0 : parseInt(tr.dataset.career);
+	if(career < minCareer || career > maxCareer) show = false;
+    if(lang && tr.dataset.language !== lang) show = false; // 수정: languageName → language
     if(major && tr.dataset.major !== major) show = false;
-    if(nameKeyword && !tr.children[1].innerText.includes(nameKeyword)) show = false;
+    if(nameKeyword && !tr.dataset.applicantName.includes(nameKeyword)) show = false;
     if (cert) {
-      // 지원자 row의 자격증: data-cert 속성(콤마구분)
       const certArr = tr.dataset.cert ? tr.dataset.cert.split(',').map(s=>s.trim()) : [];
-      show = show && certArr.includes(cert);
+      if(!certArr.includes(cert)) show = false;
     }
-    // 기술 태그 다 포함되는지 체크 (교집합 있으면 true)
-    if(selectedSkills.length) {
-      const skillArr = tr.dataset.skill.split(',').map(s=>s.trim());
-      if(!selectedSkills.every(skill => skillArr.includes(skill))) show = false;
-    }
+	if (selectedSkills.length) {
+	  const skillArr = tr.dataset.skill ? tr.dataset.skill.split(',').map(s=>s.trim()) : [];
+	  if (!selectedSkills.every(skill => skillArr.includes(skill))) show = false;
+	}
     tr.style.display = show ? '' : 'none';
   });
 }
@@ -444,7 +451,7 @@ async function fetchApplicantData(recruitmentNo, desiredStep = null) {
         applicantDataTemp[stepKey].push({
         bir: row.bir,
         name: row.APPLICANT_NAME,
-        career: row.career ?? 0,
+        career: (row.career === '신입' ? 0 : (row.career ?? 0)),  // 신입 → 0
         language: row.language ?? 0,
         major: row.major ?? "",
         cert: row.cert ?? [],
