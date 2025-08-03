@@ -91,7 +91,7 @@
 	  <form id="reviewForm">
 	  	<div id="careerInfo" class="company-info-box">
 				<div class="company-info-left mw-1260 m-auto">
-					<img id="companyLogo" class="company-logo" src="https://dditjob-image-bucket.s3.ap-northeast-2.amazonaws.com/2025-07-24/5e8aa231-a4c1-4651-b63b-9d03e530a2cf_naver.png" alt="기업 로고">
+					<img id="companyLogo" class="company-logo" src="" alt="기업 로고">
 					<div>
 						<h3 id="companyName" class="company-name">네이버</h3>
 						<p class="company-info fs-14 text-muted d-flex gap-3">

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const editBtnEl = document.getElementById('edit-btn'); // 수정 버튼
+  const editBtnEl = document.getElementById('edit_btn'); // 수정 버튼
 
 
   // 회사 데이터 로드
@@ -8,10 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const company = resp.data;
 		console.log(company);
         document.getElementById('com_name').textContent = company.comName;
-        document.getElementById('com_create_year').textContent = company.comCreateYear;
+        document.getElementById('com_create_year').textContent = company.comCreateYear != null ? formatYear(company.comCreateYear) : '-';
+        document.getElementById('com_create_year_txt').textContent = `${company.comCreateYear}년 설립`;
         document.getElementById('com_email').textContent = company.comEmail;
         document.getElementById('com_num').textContent  = company.comNum 
-        document.getElementById('com_url').textContent = company.comUrl || '정보 없음';
+        document.getElementById('com_url').innerHTML = `<i class='bx bx-home-alt-3'></i>${company.comUrl || '정보 없음'}`;
         document.getElementById('com_info').textContent    = company.comInfo || '정보 없음';
         document.getElementById('com_mem').textContent     = company.comMem + '명';
         document.getElementById('com_payment').textContent = company.comPayment ? '구독 중' : '구독 정보가 없습니다.';
@@ -43,5 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const eok = Math.floor(amount / 10000);
     const man = amount % 10000;
     return man > 0 ? `${eok}억 ${man.toString()}만원` : `${eok}억원`;
+  }
+  
+  function formatYear(year) {
+    year = Number(year);
+    if (isNaN(year)) return '-';
+    
+    const today = new Date();
+    const todayYear = today.getFullYear();
+    const createYear = todayYear - year;
+    console.log(createYear, " 오늘설립 후 몇년 지남?");
+    return `업력 ${createYear} 년차`;
   }
 });

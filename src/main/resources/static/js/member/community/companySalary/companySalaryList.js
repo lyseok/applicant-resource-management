@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	  fetchSalaryData();
   });
 
-  // **셀렉트 박스 변경**
+  /*// **셀렉트 박스 변경**
   minSel.addEventListener('change', () => {
     minVal = Number(minSel.value);
     params.minSalary = minVal;
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     params.page = 1;
     sliderUI();
     fetchSalaryData();
-  });
+  });*/
 
   // **슬라이더 드래그**
   sliderDraggable(minHandle, true);

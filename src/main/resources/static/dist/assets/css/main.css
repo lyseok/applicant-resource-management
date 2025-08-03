@@ -5781,12 +5781,12 @@ header.fixed+#search {
 
 /* 슈퍼POWER 채용정보 */
 #MainSuper .goodsBox li.superpower {border:1px solid var(--violet70)}
-#MainSuper .goodsBox li.superpower>.goodsBox-info>.ani {display:none}
-#MainSuper .goodsBox li.superpower>.goodsBox-info>.ani:after{content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(180deg,    rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.6) 20%, rgba(255, 255, 255, 0) 40%);}
-#MainSuper .goodsBox li.superpower>.goodsBox-info>.ani img{width:100%; height:100%; object-fit:cover;}
+#MainSuper .goodsBox li.superpower>.goodsBox-info>.ani {visibility: hidden; height: 0; display: block;}
+#MainSuper .goodsBox li.superpower>.goodsBox-info>.ani:after{content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.6) 20%, rgba(255, 255, 255, 0) 40%);}
+#MainSuper .goodsBox li.superpower>.goodsBox-info>.ani img{width:100%; height:100%; object-fit:cover; transition:transform 0.15s;}
 #MainSuper .goodsBox li.superpower:hover {z-index:3}
-#MainSuper .goodsBox li.superpower:hover>.goodsBox-info>.ani {overflow:hidden;display:block;position:absolute;top:230px;left:-1px;width:calc(100% + 2px);height:270px;border-radius:0 0 12px 12px;border:1px solid var(--violet70);box-shadow:0 10px 16px -8px rgba(0, 0, 0, .5);border-top:0 none;background-color:#fff}
-#MainSuper .goodsBox li.superpower:hover>.goodsBox-info>.ani>img {position:absolute;top:auto;bottom:0;left:0;width:100%}
+#MainSuper .goodsBox li.superpower:hover>.goodsBox-info>.ani {overflow:hidden;visibility:visible;position:absolute;top:230px;left:-1px;width:calc(100% + 2px);height:270px;border-radius:0 0 12px 12px;border:1px solid var(--violet70);box-shadow:0 10px 16px -8px rgba(0, 0, 0, .5);border-top:0 none;background-color:#fff}
+#MainSuper .goodsBox li.superpower:hover>.goodsBox-info>.ani>img {position:absolute;top:auto;bottom:0;left:0;width:100%; transform: scale(1.1);}
 #MainSuper .goodsBox li.superpower .date{padding-right:0;}
 
 
