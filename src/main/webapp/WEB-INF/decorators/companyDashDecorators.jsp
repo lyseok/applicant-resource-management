@@ -62,6 +62,21 @@
 	            img.style.objectFit = "cover";
 	            userImg.append(img);
             }
+            
+            /*** === 사이드 메뉴 잠금 해제 === ***/
+            if (data.payment && data.payment !== 'N') {
+              const firstUnlock = !sessionStorage.getItem("menuUnlocked");
+              const menuEls = document.querySelectorAll('#layout-menu .off');
+              console.log("[DEBUG] Found menuEls count:", menuEls.length);
+              menuEls.forEach(el => {
+                el.classList.remove('off');
+                if (firstUnlock && el.classList.contains('menu-link')) {
+                  el.classList.add('unlock-anim');
+                  setTimeout(() => el.classList.remove('unlock-anim'), 2000);
+                }
+              });
+              if (firstUnlock) sessionStorage.setItem("menuUnlocked", "true");
+            }
           });
       </script>
       <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
