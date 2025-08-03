@@ -18,9 +18,12 @@
 </style>
 </head>
 <body>
-<div class="d-flex justify-content-between align-items-center ">
+<div class="">
   <!-- 왼쪽: 제목 -->
-  <h2 class="h2 mb-3 fw-bold">채용공고 목록</h2>
+  <h2 class="h2 mb-1 fw-bold">채용공고 목록</h2>
+  <p class="mb-5 fs-14 text-muted fw-500">마감된 공고 건에 한해 지원자 보기가 가능합니다. 지원자 보기 버튼이 활성화 되지 않을 경우 공고 마감 후 재시도해주세요.
+
+</p>
 </div>	
 
 	<div class="d-flex justify-content-between align-items-end w100p pb-2 border-bottom">
