@@ -75,7 +75,7 @@ function renderPage(page = currentPage) {
 									${item.FINISHYN === "Y" ? `<div class="d-inline-block bg-violet03 fs-13 px-3">공고 마감</div>`: ""}
 								</div>
 								<div class="recruit_tit">
-			          	<a class="d-block fs16 fw-bold m-0" href="/recruit_notice/RECR000098"> ${item.RECRUITMENTTITLE}</a>     	
+			          	<a class="d-block fs16 fw-bold m-0" href="/recruit_notice/${item.RECRUITMENTNO}"> ${item.RECRUITMENTTITLE}</a>     	
 									<div class="d-flex align-items-center">
 										<span class="fs-14 text-muted">${item.jobCodeName || '-'}</span>
 									</div>
@@ -111,11 +111,11 @@ function renderPage(page = currentPage) {
 				// btn_wrap는 row 내부에서 찾기
 				const btnWrap = row.querySelector(".recruit_btn_wrap");
 				const recruitBtn = document.createElement("a");
-				recruitBtn.className = "btn btn_violet review-btn w140 justify-content-center fw-light fs-14";
+				recruitBtn.className = `btn review-btn w140 justify-content-center fw-light fs-14 ${item.FINISHYN === 'Y' ? 'btn_violet' : 'btn_violet_line'}`;
 				recruitBtn.textContent = item.FINISHYN === 'Y' ? '지원자 확인' : '공고 보기';
 				recruitBtn.href = item.FINISHYN === 'Y'
 		       ? `/company/applicant_record/${item.RECRUITMENTNO}`
-		       : ``;
+		       : `/recruit_notice/${item.RECRUITMENTNO}`;
 				btnWrap.appendChild(recruitBtn);
     });
 }
