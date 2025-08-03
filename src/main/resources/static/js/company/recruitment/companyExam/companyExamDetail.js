@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     exam.questionList.forEach((q, qi) => {
       html += `
 						<div class ="card-body question-card">
-						<p class="h2">문제 ${qi + 1}: ${q.comExamContents}</p>
+						<p class="h5"><b class="fw-semibold d-block h4">문제 ${qi + 1}</b> ${q.comExamContents}</p>
 							<br>
 				            <ul class="list-group">
 				              ${q.optionList

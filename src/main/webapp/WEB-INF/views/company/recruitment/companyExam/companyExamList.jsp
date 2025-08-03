@@ -106,7 +106,7 @@
 			<div class="TypoBox searchBar">
 				<div class="searchBarWrap">
 					<label class="searchBarLabel" for="listKeyword">검색어</label>
-					<input type="text" id="search-title" class="searchBarInput" placeholder="공고명으로 검색" maxlength="24" autocomplete="off" value="">
+					<input type="text" id="search-title" class="searchBarInput" placeholder="시험명으로 검색" maxlength="24" autocomplete="off" value="">
 				</div>
 				
 				<a href="javascript:void(0)" class="searchBarBtn">
@@ -121,6 +121,13 @@
 	
 
   <div id="examList"></div>
+  
+  <div class="PageBox">
+  	<span class="BtnType SizeS active">1</span>
+  	<!-- <button class="BtnType SizeS page" data-page="2">2</button>
+  	<button class="BtnType SizeS page" data-page="3">3</button>
+  	<button data-page="2" class="BtnType SizeS BtnNext btnNext">다음</button> -->
+  </div>
 	
  <!-- 삭제 확인 모달 -->
   <div class="modal fade" id="deleteExamModal" tabindex="-1" aria-labelledby="deleteExamLabel" aria-hidden="true">
