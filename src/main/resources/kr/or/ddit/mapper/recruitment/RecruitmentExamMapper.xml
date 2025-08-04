@@ -149,7 +149,7 @@
 			AND (prev_ar.STEP_PASS_YN IS NULL OR prev_ar.STEP_PASS_YN != 'Y')
 			)
 		
-			ORDER BY e.RECRUIT_EXAM_START_DATE
+			ORDER BY e.RECRUIT_EXAM_START_DATE DESC
 	</select>
   
   <select id="selectRecruitExamQuestionWithOptionByNo" resultMap="examWithQuestionsMap">
