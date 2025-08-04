@@ -30,7 +30,7 @@ formEl.addEventListener('submit', async (e) => {
 
 const memAuth = document.querySelector('#mem-auth');
 const compAuth = document.querySelector('#comp-auth');
-const adminAuth = document.querySelector('#admin-auth');
+// const adminAuth = document.querySelector('#admin-auth');
 const username = document.querySelector('#username');
 const password = document.querySelector('#password');
 
@@ -42,7 +42,7 @@ compAuth.addEventListener('click', () => {
   username.value = loginData.company.username;
   password.value = loginData.company.password;
 });
-adminAuth.addEventListener('click', () => {
-  username.value = loginData.admin.username;
-  password.value = loginData.admin.password;
-});
+// adminAuth.addEventListener('click', () => {
+//   username.value = loginData.admin.username;
+//   password.value = loginData.admin.password;
+// });
