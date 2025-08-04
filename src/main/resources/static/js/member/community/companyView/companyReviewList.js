@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // 요청 파라미터
     const params = {
         page: 1,
-        pageSize: 10,
-        sort: 'highScore', // 기본값: 평점 높은 순
+        pageSize: 6,
+        sort: 'name', // 기본값
         keyword: '',
         industry: ''
     };
