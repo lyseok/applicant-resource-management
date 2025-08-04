@@ -26,15 +26,13 @@
     font-size: 13px;
 }
 .position-tag {
-    background-color: #007bff; /* 파란색 */
-    color: white;
-    padding: 6px 12px;
-    border-radius: 50px;
-    display: inline-flex;
-    align-items: center;
-    font-size: 14px;
-    max-width: fit-content;
-    margin-right: 6px;
+		background: #fff;
+    padding: 5px 13px;
+    border-radius: 15px;
+    border: 1px solid var(--gray80);
+    font-weight: 500;
+    font-size: 12px;
+    color: #333;
 }
 #recContent img {
     max-width: 100%;

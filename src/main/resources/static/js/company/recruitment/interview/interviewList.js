@@ -37,14 +37,14 @@ const getInterviewList = async () => {
 						<div class="PostList_post">
 							<div class="ListItem_post">
 								<div class="ListItem_post_item">
-									<h3 class="h4 fw-bold mb-0">${reNotice.recruitmentTitle}</h3>
+									<h3 class="h5 fw-bold mb-0">${reNotice.recruitmentTitle}</h3>
 									<!-- <h3 class="h5">${reNotice.recContent}</h3> -->
 								</div>
 							</div>
 							<div class="ListItem_info">
 								<div class="ListItem_profile">
-									<span class="bg-violet08 px-3 text-white fw-500 fs-14">면접일시</span>
-									<span class="text-muted">${inte.interviewDate}</span>
+									<span class="bg-violet08 px-3 text-white fw-500 fs-12">면접일시</span>
+									<span class="text-muted fs-14">${inte.interviewDate}</span>
 								</div>
 								<div class="ListItem_profile_postInfoList">
 									<div class="d-flex gap-2">

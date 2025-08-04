@@ -58,7 +58,7 @@ brInput.addEventListener("blur", async () => {
     if (brNumber.length !== 10) {
         msg.textContent = "사업자등록번호 10자리를 정확히 입력해주세요.";
         msg.style.color = "red";
-        companyArea.style.filter = "blur(2px)";
+        companyArea.style.display = "none";
         return;
     }
 
@@ -68,7 +68,7 @@ brInput.addEventListener("blur", async () => {
         if (!isValid) {
             msg.textContent = "❌ 유효하지 않은 사업자등록번호입니다.";
             msg.style.color = "red";
-            companyArea.style.filter = "blur(2px)";
+            companyArea.style.display = "none";
             return;
         }
 
@@ -79,17 +79,17 @@ brInput.addEventListener("blur", async () => {
         if (data.includes("이미 가입")) {
             msg.textContent = data;
             msg.style.color = "red";
-            companyArea.style.filter = "blur(2px)";
+            companyArea.style.display = "none";
         } else {
             msg.textContent = data;
             msg.style.color = "#7224ff";
-            companyArea.style.filter = "none";
+            companyArea.style.display = "block";
         }
     } catch (err) {
         console.error(err);
         msg.textContent = "검증 중 오류가 발생했습니다.";
         msg.style.color = "red";
-        companyArea.style.filter = "blur(2px)";
+        companyArea.style.display = "none";
     }
 });
 
@@ -231,7 +231,7 @@ brInput.addEventListener("input", function() {
 	} else {
 		msg.innerText = "사업자등록번호 10자리를 정확히 입력해 주세요.";
 		msg.style.color = "red";
-		companyArea.style.filter = "blur(2px)";
+		companyArea.style.display = "none";;
 	}
 });
 
