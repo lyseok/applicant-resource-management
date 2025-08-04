@@ -385,7 +385,7 @@ async function loadMyPageData() {
     if (completedProjectsEl) completedProjectsEl.textContent = projects.FINISHED_PROJECTS ?? 0;
 
     const myPostingsEl = document.querySelector('.my-postings');
-    if (myPostingsEl) myPostingsEl.textContent = user.COUNT_SCRAB ?? 0;
+    if (myPostingsEl) myPostingsEl.textContent = user.COUNT_PRJ_ANNC ?? 0;
 
     /** 추천 공고 **/
     if (data.jobs && Array.isArray(data.jobs)) loadRecommendedJobs(data.jobs);
