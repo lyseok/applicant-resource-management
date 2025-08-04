@@ -6,64 +6,64 @@
   </head>
 
   <body>
-     <h2 class="fw-bold h2 mb-4">면접 정보 수정</h2>
-     <form id="interviewEditForm" method="post" action="/company/interview/update">
-       <!-- 채용 공고명, 직무명 등은 수정 불가/가능에 따라 input 또는 div로 사용 -->
-       <div class="mb-4 pb-2 border-bottom">
-         <div class="row g-3">
+    <h2 class="fw-bold h2 mb-4">면접 정보 수정</h2>
+    <form id="interviewEditForm" method="post" action="/company/interview/update">
+      <!-- 채용 공고명, 직무명 등은 수정 불가/가능에 따라 input 또는 div로 사용 -->
+      <div class="mb-4 pb-2 border-bottom">
+        <div class="row g-3">
 
-           <div class="col-md-7">
-             <label class="form-label fs-16 fw-bold text-dark required">채용 공고 명</label>
-             <input type="text" class="form-control" id="recruitmentTitle" name="recruitmentTitle" required disabled>
-           </div>
+          <div class="col-md-7">
+            <label class="form-label fs-16 fw-bold text-dark required">채용 공고 명</label>
+            <input type="text" class="form-control" id="recruitmentTitle" name="recruitmentTitle" required disabled>
+          </div>
 
-           <div class="col-md-5">
-             <label class="form-label fs-16 fw-bold text-dark required">채용 직무 명</label>
-             <input type="text" class="form-control" id="jobName" name="jobName" required disabled>
-           </div>
+          <div class="col-md-5">
+            <label class="form-label fs-16 fw-bold text-dark required">채용 직무 명</label>
+            <input type="text" class="form-control" id="jobName" name="jobName" required disabled>
+          </div>
 
-         </div>
-       </div>
-       <div class="row gy-3 mb-4">
+        </div>
+      </div>
+      <div class="row gy-3 mb-4">
 
-         <div class="col-md-3">
-           <label class="form-label fs-16 fw-bold text-dark required">채용 인원수</label>
-           <input type="number" min="1" class="form-control" id="hireCount" name="hireCount" required disabled>
-         </div>
+        <div class="col-md-3">
+          <label class="form-label fs-16 fw-bold text-dark required">채용 인원수</label>
+          <input type="number" min="1" class="form-control" id="hireCount" name="hireCount" required disabled>
+        </div>
 
-         <div class="col-md-3">
-           <label class="form-label fs-16 fw-bold text-dark required">면접 일시</label>
-           <input type="datetime-local" class="form-control" id="interviewDate" name="interviewDate" required>
-         </div>
+        <div class="col-md-3">
+          <label class="form-label fs-16 fw-bold text-dark required">면접 일시</label>
+          <input type="datetime-local" class="form-control" id="interviewDate" name="interviewDate" required>
+        </div>
 
-         <div class="col-md-3">
-           <label class="form-label fs-16 fw-bold text-dark required">면접 방식</label>
-           <select class="form-select" id="interviewType" name="interviewType" required>
-             <option value="Y">화상면접</option>
-             <option value="N">대면면접</option>
-           </select>
-         </div>
+        <div class="col-md-3">
+          <label class="form-label fs-16 fw-bold text-dark required">면접 방식</label>
+          <select class="form-select" id="interviewType" name="interviewType" required>
+            <option value="Y">화상면접</option>
+            <option value="N">대면면접</option>
+          </select>
+        </div>
 
-         <div class="col-md-3">
-           <label class="form-label fs-16 fw-bold text-dark required">면접 장소</label>
-           <input type="text" class="form-control" id="interviewLocation" name="interviewLocation" required>
-         </div>
-       </div>
+        <div class="col-md-3">
+          <label class="form-label fs-16 fw-bold text-dark required">면접 장소</label>
+          <input type="text" class="form-control" id="interviewLocation" name="interviewLocation" required>
+        </div>
+      </div>
 
-       <div class="mb-4">	
-	       <div class="d-flex gap-4 mb-2 align-items-end">
-	         <label class="form-label fs-16 fw-bold text-dark required mb-0">면접 평가항목</label>
-	         <button type="button" class="btn btn_violet_line btn-sm" id="addScoreItemBtn">+ 항목 추가</button>
-         </div>
-         <div id="scoreItemsBox" class="d-flex gap-3 flex-wrap"></div>
-       </div>
+      <div class="mb-4">
+        <div class="d-flex gap-4 mb-2 align-items-end">
+          <label class="form-label fs-16 fw-bold text-dark required mb-0" id="addInterScoreList">면접 평가항목</label>
+          <button type="button" class="btn btn_violet_line btn-sm" id="addScoreItemBtn">+ 항목 추가</button>
+        </div>
+        <div id="scoreItemsBox" class="d-flex gap-3 flex-wrap"></div>
+      </div>
 
-       <div class="d-flex justify-content-end gap-2 mt-4">
-         <a class="btn btn_red_line fw-semibold" data-bs-toggle="modal" data-bs-target="#cancelInterviewModal">취소</a>
-         <button type="button" class="btn btn_violet" data-bs-toggle="modal"
-           data-bs-target="#editInterviewModal">저장</button>
-       </div>
-     </form>
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn_red_line fw-semibold" data-bs-toggle="modal" data-bs-target="#cancelInterviewModal">취소</a>
+        <button type="button" class="btn btn_violet" data-bs-toggle="modal"
+          data-bs-target="#editInterviewModal">저장</button>
+      </div>
+    </form>
 
     <!-- 취소 확인 모달 -->
     <div class="modal fade" id="cancelInterviewModal" tabindex="-1" aria-labelledby="deleteModalLabel"
@@ -121,5 +121,20 @@
         </div>
       </div>
     </div>
+    <script type="module">
+      import { defaultQuestions } from '/js/dataConf.js';
+      // --- 시연용: 평가 질문 일괄 추가 ---
+      document.getElementById('addInterScoreList').onclick = function () {
+        defaultQuestions.forEach(q => {
+          interviewData.interviewQuestionList.push({
+            interviewNo: interview.interviewNo,
+            interviewQuestionNo: '',
+            interviewQuestionContent: q
+          });
+        });
+        renderScoreItems();
+      };
+
+    </script>
 
   </body>

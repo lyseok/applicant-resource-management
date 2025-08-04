@@ -21,8 +21,8 @@
 								<!-- 회원선택-->
 								<section class="login-tab">
 									<ul id="devMemTab">
-										<li class="on" role="tab" data-tab="tab1"><a href="#" data-m-type="M">개인회원</a></li>
-										<li role="tab" data-tab="tab2"><a href="#" data-m-type="Co">기업회원</a></li>
+										<li class="on" role="tab" data-tab="tab1" id='mem-auth'><a href="#" data-m-type="M">개인회원</a></li>
+										<li role="tab" data-tab="tab2" id="comp-auth"><a href="#" data-m-type="Co">기업회원</a></li>
 									</ul>
 								</section>
 
@@ -42,9 +42,9 @@
 										<em>Caps Lock</em>이 켜져 있습니다.<span class="mainIcn mainIcnArrUp"></span>
 									</div>
 
-									<div class="btn btn-secondary" id='mem-auth'>일반회원</div>
+									<!-- <div class="btn btn-secondary" id='mem-auth'>일반회원</div>
 									<div class="btn btn-secondary" id="comp-auth">기업회원</div>
-									<div class="btn btn-secondary" id="admin-auth">관리자</div>
+									<div class="btn btn-secondary" id="admin-auth">관리자</div> -->
 								</section>
 
 								<section class="login-social">
@@ -73,7 +73,8 @@
 								data-linkurl="https://www.jobkorea.co.kr/Theme/lgepartners" data-linktype="NEW_WINDOW" data-gender=""
 								data-age="0" data-pagetypecode="14">
 
-								<img src="https://ads.jobkorea.co.kr/ads/pc/{service}/202505/66d2638e-6762-43c5-82d7-24f81cf53336.png"
+								<img style="width:350px;"
+									src="https://dditjob-image-bucket.s3.ap-northeast-2.amazonaws.com/2025-08-05/8def27a9-89f4-40a2-80c2-469c2ad92c88_%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202025-08-05%2000.21.17.png"
 									alt="LG전자 협력회사 온라인 채용관" onerror="adBnnrImageOnError_14(this, 14, 0)">
 							</a>
 						</div>
