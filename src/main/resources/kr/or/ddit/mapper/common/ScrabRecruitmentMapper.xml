@@ -38,21 +38,22 @@
 
 	<select id="selectMyScrabRecruitmentList"
 		resultMap="ScrabRecruitmentMap">
-		SELECT
-		sr.USER_ID,
-		sr.RECRUITMENT_NO,
-		sr.SCRAB_RECUITMENT_DATE,
-		r.RECRUITMENT_NO AS recruitment_recruitmentNo,
-		r.RECRUITMENT_TITLE,
-		r.REC_CONTENT,
-		r.RECRUITMENT_FINISH_DATE,
-		r.RECRUITMENT_SALARY,
-		r.WELFARE,
-		c.COM_NAME
-		FROM SCRAB_RECRUITMENT sr
-		JOIN RECRUITMENT_NOTICE r ON sr.RECRUITMENT_NO = r.RECRUITMENT_NO
-		JOIN COMPANY c ON r.USER_ID = c.USER_ID   <!-- 회사와 매칭 -->
-		WHERE sr.USER_ID = #{userId}
+		 SELECT
+        sr.USER_ID,
+        sr.RECRUITMENT_NO,
+        sr.SCRAB_RECUITMENT_DATE,
+        r.RECRUITMENT_NO AS recruitment_recruitmentNo,
+        r.RECRUITMENT_TITLE,
+        r.REC_CONTENT,
+        r.RECRUITMENT_FINISH_DATE,
+        r.RECRUITMENT_SALARY,
+        r.WELFARE,
+        c.COM_NAME
+    FROM SCRAB_RECRUITMENT sr
+    JOIN RECRUITMENT_NOTICE r ON sr.RECRUITMENT_NO = r.RECRUITMENT_NO
+    JOIN COMPANY c ON r.USER_ID = c.USER_ID
+    WHERE sr.USER_ID = #{userId}
+    ORDER BY sr.SCRAB_RECUITMENT_DATE DESC
 	</select>
 	
 	<select id="checkRecruitScrab">
