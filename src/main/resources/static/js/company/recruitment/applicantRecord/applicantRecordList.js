@@ -427,6 +427,7 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 async function fetchApplicantData(recruitmentNo, desiredStep = null) {
+	showLoading();
   try {
     const response = await axios.get(`/applicant/record/${recruitmentNo}`);
     const result = response.data;
@@ -481,6 +482,8 @@ async function fetchApplicantData(recruitmentNo, desiredStep = null) {
     fillFilterOptions();
   } catch (error) {
     console.error('지원자 데이터 가져오기 실패:', error);
+  }finally{
+	hideLoading();
   }
 }
 
