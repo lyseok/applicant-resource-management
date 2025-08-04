@@ -35,12 +35,14 @@ function filterAndSearchData() {
         return titleMatch && dateMatch;
     });
 
-    // 정렬
-    filteredData.sort((a, b) => {
-        const dateA = new Date(a.RECRUITMENTSTARTDATE);
-        const dateB = new Date(b.RECRUITMENTSTARTDATE);
-        return sortOrder === 'latest' ? dateB - dateA : dateA - dateB;
-    });
+	    // 정렬
+	if (sortOrder !== 'latest') {  // 최신순이면 재정렬 스킵
+	    filteredData.sort((a, b) => {
+	        const dateA = new Date(a.RECRUITMENTSTARTDATE);
+	        const dateB = new Date(b.RECRUITMENTSTARTDATE);
+	        return sortOrder === 'oldest' ? dateA - dateB : dateB - dateA;
+	    });
+	}
     
     // 필터/검색/정렬 시 무조건 1페이지로
     currentPage = 1;
