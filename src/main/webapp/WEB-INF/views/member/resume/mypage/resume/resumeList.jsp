@@ -113,7 +113,7 @@
 									</div>
 									<div class="modal-footer border-0 justify-content-center">
 										<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-										<a class="btn btn-danger px-4" href="/mypage/resume/delete/${resume.resumeNo}">삭제</a>
+										<a class="btn btn-danger px-4" href="/mypage/resume/delete/${resume.RESUME_NO}">삭제</a>
 									</div>
 								</div>
 							</div>

@@ -6,39 +6,6 @@
 		<script defer src="/js/company/recruitment/talentpool/talentPoolList.js"></script>
 		<title>인재풀</title>
 		<style>
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-			}
-
-			body {
-				background-color: #f8f9fa;
-				font-size: 14px;
-				color: #333;
-			}
-
-			.container {
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 20px;
-				background-color: #fff;
-				border-radius: 8px;
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-			}
-
-			.search-bar {
-				display: flex;
-				justify-content: space-between;
-				margin-bottom: 20px;
-				align-items: center;
-			}
-
-			.search-input-container {
-				flex: 1;
-				margin-right: 20px;
-			}
 
 			.search-input {
 				width: 70%;
@@ -57,45 +24,29 @@
 				gap: 10px;
 			}
 
-			.btn {
-				padding: 8px 15px;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				background-color: #fff;
-				font-size: 14px;
-				cursor: pointer;
-				display: flex;
-				align-items: center;
-				gap: 5px;
-			}
-
-			.btn-primary {
-				background-color: #212529;
-				color: white;
-				border-color: #212529;
-			}
 
 			.filter-container {
+				position:relative;
 				display: flex;
-				justify-content: space-between;
-				margin-bottom: 20px;
-				padding: 20px;
+				flex-direction:column;
+				margin-bottom: 30px;
+				padding: 40px 20px;
 				border: 1px solid #eee;
 				border-radius: 4px;
+				gap:30px;
 			}
-
-			.filter-column {
-				flex: 1;
-				padding: 0 10px;
+			
+			
+			.top_filter .filter-group{
+				width:calc((100% - 24px) /2)
 			}
-
-			.filter-group {
-				margin-bottom: 20px;
+			.bt_filter .filter-group{
+				width:calc((100% - 48px) /3)
 			}
-
+			
 			.filter-label {
 				font-weight: 600;
-				margin-bottom: 10px;
+				margin-bottom: 5px;
 				color: #333;
 			}
 
@@ -103,6 +54,8 @@
 				position: relative;
 				height: 30px;
 				margin: 10px 0;
+				margin-left:8px;
+				width:calc(100% - 16px);
 			}
 
 			.slider-track {
@@ -147,7 +100,6 @@
 				border: 1px solid #ddd;
 				border-radius: 4px;
 				font-size: 14px;
-				margin-bottom: 10px;
 			}
 
 			.education-options {
@@ -210,10 +162,6 @@
 				margin-left: 5px;
 			}
 
-			table {
-				width: 100%;
-				border-collapse: collapse;
-			}
 
 			th {
 				text-align: left;
@@ -257,13 +205,6 @@
 				flex-direction: column;
 			}
 
-			.status-text {
-				display: flex;
-				align-items: center;
-				gap: 5px;
-				margin-bottom: 3px;
-			}
-
 			.status-detail {
 				color: #666;
 				font-size: 12px;
@@ -287,15 +228,6 @@
 			.position {
 				color: #666;
 				font-size: 13px;
-			}
-
-			.skill-tag {
-				display: inline-block;
-				padding: 3px 8px;
-				background-color: #f1f3f4;
-				border-radius: 4px;
-				font-size: 12px;
-				white-space: nowrap;
 			}
 
 			.pagination {
@@ -341,29 +273,47 @@
 				height: 3px;
 				/* width: 5px; */
 			}
+			
+			
+			
+			.filter-box {
+				display:flex;
+				flex-direction:column;
+				gap:10px;
+			  max-height: 500px;
+			  overflow: hidden;
+			  transition: max-height 0.3s ease;
+			}
+			.filter-box.hide {
+			  max-height: 0; /* 충분히 큰 값 (컨텐츠보다 크게) */
+			}
+
+			.filter-toggle-btn{
+				position:absolute;
+				top:20px;
+				right:20px;
+			}
+			.filter-toggle-btn span{
+				transition:0.3s;
+			}
+			.filter-toggle-btn span.on {
+		    transform: rotate(180deg);
+			}
 		</style>
 	</head>
 
 	<body>
-
-		<div class="container">
-			<p class="h1 mb-3 fw-bold">인재 탐색</p>
-			<!-- Search Bar -->
-			<div class="search-bar">
-				<div class="search-input-container">
-					<!-- <input type="text" class="search-input" placeholder="이름 또는 이메일, 연락처로 검색"> -->
-				</div>
-				<div class="button-group">
-					<button class="btn">필터</button>
-					<!-- <button class="btn">정렬: 최신순</button> -->
-					<button class="btn btn_violet_line" id="addTalent">관심 인재 수정</button>
-					<button class="btn btn_violet_line" id="filterBtn">필터링</button>
-				</div>
-			</div>
+			<p class="h2 mb-5 fw-bold">인재 탐색</p>
 
 			<!-- Filter Section -->
 			<div class="filter-container">
-				<div class="filter-column">
+				
+				<button class="filter-toggle-btn">
+					<span class="material-symbols-outlined fw-200 fs-2">keyboard_arrow_down</span>
+				</button>
+				
+				<div class="filter-box">
+				<div class="d-flex top_filter gap-4">
 					<div class="filter-group">
 						<div class="filter-label">최근 경력 (년)</div>
 						<div class="range-slider">
@@ -377,19 +327,17 @@
 							<span>10년</span>
 						</div>
 					</div>
-
-					<div class="filter-group">
-						<div class="filter-label">보유기술</div>
-						<input type="text" class="input-field skill-input" placeholder="기술을 입력하고 Enter를 누르세요">
-					</div>
-
-				</div>
-
-				<div class="filter-column">
 					<div class="filter-group">
 						<div class="filter-label">최종 학력</div>
 						<div class="education-options">
 						</div>
+					</div>
+				</div>
+				
+				<div class="d-flex bt_filter gap-4">
+					<div class="filter-group">
+						<div class="filter-label">보유기술</div>
+						<input type="text" class="input-field skill-input" placeholder="기술을 입력하고 Enter를 누르세요">
 					</div>
 					<div class="filter-group">
 						<div class="filter-label">자격증</div>
@@ -401,7 +349,14 @@
 						<input type="text" class="input-field major-input" placeholder="학과를 입력하고 Enter를 누르세요">
 					</div>
 				</div>
-			</div>
+				
+				<!-- 필터링 검색 -->
+				<div class="text-end">
+					<!-- <button class="btn">정렬: 최신순</button> -->
+					<button class="btn btn_violet" id="filterBtn">검색</button>
+				</div>
+			</div>	
+		</div>
 
 			<!-- Status Tabs -->
 			<!-- <div class="status-tabs">
@@ -430,19 +385,23 @@
 				</div>
 			</div> -->
 
+			<div class="d-flex flex-column mb-2 align-items-start justify-content-start gap-1">
+				<button class="btn btn_violet_line fs-12 btn-sm" id="addTalent">관심 인재 수정</button>
+				<p class="text-muted fw-500 fs-14">체크박스 선택 후 관심인재 수정 버튼 클릭 시 특정 회원을 관심인재로 등록/해제 할 수 있습니다.</p>
+			</div>
 			<!-- Candidate Table -->
-			<table>
+			<table class="border-top">
 				<thead>
 					<tr>
 						<th><input type="checkbox" class="checkbox"></th>
-						<th>회원</th>
-						<th>이력서</th>
-						<th>최종 학력</th>
-						<th>어학</th>
-						<th>연락처</th>
-						<th>최근 경력(년)</th>
-						<th>자격증</th>
-						<th>보유기술</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">회원</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">이력서</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">최종 학력</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">어학</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">연락처</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">최근 경력(년)</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">자격증</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">보유기술</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -453,6 +412,4 @@
 			<!-- pager 영역 -->
 			<div class="PageBox">
 			</div>
-
-		</div>
 	</body>

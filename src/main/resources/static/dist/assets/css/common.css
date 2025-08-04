@@ -93,6 +93,12 @@
 /* % 넓이 - width */
 .w100p{width:100% !important;}
 .w95p{width:95% !important;}
+/* calc 넓이 - width */
+.w-calc100-24-2{width:calc((100% - 24px) / 2) !important;}
+.w-calc100-16-2{width:calc((100% - 16px) / 2) !important;}
+.w-calc100-62-4{width:calc((100% - 62px) / 4) !important;}
+.w-calc100-48-4{width:calc((100% - 48px) / 4) !important;}
+.w-calc50-24-2{width:calc((50% - 24px) / 2) !important;}
 /* px 넓이 - width */
 .w140{width:140px !important;}
 .w500{width:500px !important;}
@@ -152,6 +158,9 @@
 /* 마우스 커서 */
 .cursor-auto{
 	cursor:auto !important;
+}
+.cursor-pointer{
+	cursor:pointer !important;
 }
 
 .gap-30{

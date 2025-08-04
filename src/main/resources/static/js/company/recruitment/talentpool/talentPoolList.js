@@ -72,7 +72,7 @@ function createAutocomplete(inputEl, dataList) {
       option.style.cursor = 'pointer';
       option.addEventListener('click', () => {
         const tag = document.createElement('span');
-        tag.className = 'skill-tag';
+        tag.className = 'skill-tag badge-tag';
         tag.style.marginRight = '5px';
         tag.style.marginBottom = '5px';
         tag.style.display = 'inline-block';
@@ -174,7 +174,7 @@ function renderTalentPoolTable(talentList) {
       </td>
       <td>
         <div class="experience-status">
-          <div class="status-text resume-btn" data-resumeno="${
+          <div class="status-text resume-btn btn btn_violet_line fs-12 btn-sm justify-contet-center" data-resumeno="${
             item.resumeNo
           }">확인</div>
         </div>
@@ -201,15 +201,15 @@ function renderTalentPoolTable(talentList) {
           </div>
         </div>
       </td>
-      <td>
-        <div class="my-list dropdown-hover">
-          ${licenses.map((l) => `<span class="skill-tag">${l}</span>`).join('')}
+      <td class="py-2 px-1 overflow-auto row_custom_scroll text-start">
+        <div class="w140 dropdown-hover text-nowrap text-left">
+          ${licenses.map((l) => `<span class="skill-tag badge-tag me-2 border-dark text-dark opacity-75 bg-white">${l}</span>`).join('')}
 
         </div>
       </td>
-      <td>
-        <div class="my-list dropdown-hover">
-          ${skills.map((s) => `<span class="skill-tag">${s}</span>`).join('')}
+				<td class="py-2 px-1 overflow-auto row_custom_scroll text-start">
+				  <div class="w140 dropdown-hover text-nowrap text-left">
+          ${skills.map((s) => `<span class="skill-tag badge-tag me-2">${s}</span>`).join('')}
         </div>
       </td>
     `;
@@ -343,11 +343,12 @@ axios.get('/ajax/code/cmncodegroup/EDUC').then((res) => {
   });
 });
 document
-  .querySelector('.btn:first-child')
-  .addEventListener('click', function () {
-    const filterContainer = document.querySelector('.filter-container');
-    filterContainer.style.display =
-      filterContainer.style.display === 'none' ? 'flex' : 'none';
+  .querySelector('.filter-toggle-btn')
+  .addEventListener('click', function (e) {
+		const filterToggleBtn = e.target;
+    const filterContainer = document.querySelector('.filter-box');
+		filterContainer.classList.toggle('hide');
+			filterToggleBtn.classList.toggle('on');
   });
 
 // [전체 선택] 체크박스 클릭 시 tbody의 모든 체크박스 선택/해제
@@ -365,7 +366,7 @@ document.querySelectorAll('.input-field').forEach((input) => {
   input.addEventListener('keypress', function (e) {
     if (e.key === 'Enter' && this.value.trim()) {
       const tag = document.createElement('span');
-      tag.className = 'skill-tag';
+      tag.className = 'skill-tag badge-tag';
       tag.style.marginRight = '5px';
       tag.style.marginBottom = '5px';
       tag.style.display = 'inline-block';
