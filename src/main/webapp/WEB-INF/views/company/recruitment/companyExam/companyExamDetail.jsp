@@ -4,7 +4,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>시험 상세보기</title>
 
 		<style type="text/css">
 			.card {
@@ -39,20 +39,19 @@
 	</head>
 
 	<body>
-
+		<h2 class="h2 mb-3 fw-bold">시험 상세보기</h2>
+		
 		<div class="exam-no" data-exam-id="${examNo }">
-			<div class="exam-header d-flex justify-content-between align-items-center mb-3">
-				<div>
-					<button id="exam-edit-btn" data-exam-id="${examNo}" class="btn btn_violet_line"
-						style="display: none;">수정</button>
-					<button id="exitBtn" class="btn btn_violet_line">목록</button>
-				</div>
-				<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteExamModal" id="openDeleteModalBtn"
-					style="display: none;">
-					삭제</button>
-			</div>
-
 			<div class="card exam-question"></div>
+			
+			
+			<div class="exam-header d-flex justify-content-between align-items-center mb-3">
+				<button id="exitBtn" class="btn btn_gray_line">목록</button>
+				<div>
+				<button class="btn btn_red_line" data-bs-toggle="modal" data-bs-target="#deleteExamModal" id="openDeleteModalBtn" style="display: none;">삭제</button>
+					<button id="exam-edit-btn" data-exam-id="${examNo}" class="btn btn_violet_line" style="display: none;">수정</button>
+				</div>
+			</div>
 		</div>
 
 		<!-- 삭제 확인 모달 -->

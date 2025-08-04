@@ -14,9 +14,9 @@ public interface CompanyStatisticsMapper {
 	public List<Map<String, Object>>selectApplicantCareerStatisticsById(String userId);//경력구반별 분포
 	public List<Map<String, Object>> selectApplicantGenderStaticsById(String userId);//성별 구간별 분포
 	
-	public List<Map<String, Object>> selectApplicantSkillsTopTenById(String userId); //보유 기술 스택 10
+	public List<Map<String, Object>> selectApplicantSkillsTopTenById(); //보유 기술 스택 10
 	public List<Map<String, Object>> selectRecruitmentStageStatusById(String userId);//채용단계별현황
-	public List<Map<String, Object>> selectTopTenRecruitmentNoticeById(String userId);//공고 10
+	public List<Map<String, Object>> selectTopTenRecruitmentNoticeById();//공고 10
 	
 	//업종별 평균 
 	

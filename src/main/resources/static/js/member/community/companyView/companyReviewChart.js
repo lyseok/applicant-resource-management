@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			// 기업 정보 텍스트 삽입
 			document.getElementById("companyLogo").src = data.COMPANY_LOGO || "/img/default-logo.png";
-			document.getElementById("companyName").textContent = data.COMPANY_NAME || "-";
+			document.getElementById("companyName").innerHTML = `${data.COMPANY_NAME || "-"} <a href="/member/company_view?no=${data.COM_ID}" class="btn btn_violet_line btn-sm ">기업상세</a>`;
 			document.getElementById("reviewCount").textContent = data.TOTAL_REVIEW_COUNT || 0;
 			document.getElementById("comIndu").textContent = data.INDU_NAME || '-';
 			document.getElementById("comSize").textContent = data.COM_SIZE_NAME || '-';

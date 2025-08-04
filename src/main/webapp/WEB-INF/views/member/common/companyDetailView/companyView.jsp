@@ -5,8 +5,7 @@
 <title>회사 상세</title>
 <link rel="stylesheet" href="/dist/assets/css/company/companyView.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 <script src="/js/member/common/companyDetailView/companyDetailView.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -48,9 +47,6 @@
 	font-size: 15px;
 }
 
-table.table-in-progress-announcement tr.clickable-row:hover {
-	background-color: hotpink !important;
-}
 /* 커서를 전체에 포인터로 */
 .clickable-row {
 	cursor: pointer;
@@ -77,27 +73,12 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 	background-color: rgba(0, 123, 255, 0.1);
 }
 
-.company-tabs {
-	border-bottom: 1px solid #ddd;
-}
 
 .tabs {
 	display: flex;
 	list-style: none;
 	margin: 0;
 	padding: 0;
-}
-
-.tab {
-	margin-right: 1rem;
-}
-
-.tab a {
-	display: block;
-	padding: 0.75rem 1rem;
-	text-decoration: none;
-	color: #333;
-	position: relative;
 }
 
 .tab.active a {
@@ -107,10 +88,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 .count {
 	font-size: 0.85em;
-	background: #eef;
 	color: var(--violet70);
-	border-radius: 999px;
-	padding: 0 0.4em;
 	margin-left: 0.3em;
 }
 
@@ -147,6 +125,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 /* 카드 리스트 */
 .card-list {
+	min-height:162px;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 	gap: 1rem;
@@ -186,7 +165,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 	justify-content: space-around;
 	padding: 1rem 0;
 	border-bottom: 1px solid #eee;
-	margin-bottom: 1rem;
+	margin-bottom: 65px;
 }
 
 .salary-summary-box .summary-item {
@@ -219,11 +198,18 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 }
 
 /* 차트 카드 중앙 정렬 */
+.salary-chart-card-box{
+	gap:30px;
+}
 .salary-chart-card {
 	display: flex;
+	width:100%;
 	flex-direction: column;
 	align-items: center;
 	padding-top: 50px;
+}
+.salary-chart-card canvas{
+	width:100% !important;
 }
 
 .salary-chart-note {
@@ -248,8 +234,8 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 /* 합격자소서 탭 */
 .essay-tabs {
 	display: flex;
-	border-bottom: 2px solid #ddd;
-	margin-bottom: 20px;
+	border-bottom: 1px solid #333;
+	margin-bottom:10px;
 }
 
 .essay-tab {
@@ -288,9 +274,9 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 }
 
 .essay-filter-btn.active {
-  background: var(--violet60);
+  background: var(--violet80);
   color: #fff;
-  border-color: var(--violet60);
+  border-color: var(--violet80);
 }
 
 .essay-filter-btn:hover {
@@ -305,8 +291,8 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 	padding: 20px;
 	margin-bottom: 15px;
 	transition: 0.2s;
+	cursor:pointer;
 }
-
 .essay-card:hover {
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
@@ -331,14 +317,14 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 .essay-views {
 	font-size: 13px;
-	color: #999;
+	color: #666;
 	margin-top: 10px;
 }
 
 /* 상세 페이지 */
 #essay-detail {
 	background: #fff;
-	padding: 20px;
+	padding: 35px;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 }
@@ -356,19 +342,21 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 
 /* 제목 및 합격자 정보 */
 .essay-detail-header {
-	margin-bottom: 20px;
+	display:flex;
+	justify-content:space-between;
+	margin-bottom: 60px;
 }
 
 .essay-detail-title {
 	font-size: 22px;
 	font-weight: bold;
-	margin-bottom: 8px;
 }
 
 .essay-detail-subinfo {
+	display:flex;
+	justify-content:space-between;
 	font-size: 14px;
 	color: #555;
-	margin-bottom: 12px;
 }
 
 .essay-detail-meta {
@@ -387,7 +375,7 @@ table.table-in-progress-announcement tr.clickable-row:hover {
 .essay-views {
 	display: flex;
 	align-items: center;
-	gap: 4px;
+	gap: 20px;
 }
 
 .essay-views .material-symbols-outlined {
@@ -404,15 +392,26 @@ hr {
 
 /* 자소서 질문/답변 */
 .essay-questions {
-	border: 1px solid #ddd;
-	padding: 15px;
-	margin-bottom: 20px;
-	background: #fafafa;
+	display:flex;
+	flex-wrap:wrap;
+	gap:15px;
+	padding: 30px 50px;
+	margin-bottom: 40px;
+	background: rgb(239 229 255 / 0.5);
+	border-radius:10px;
 }
 
 .essay-questions p {
-	margin: 8px 0;
-	font-weight: bold;
+	display:flex;
+	gap:10px;
+	width:calc((100% - 15px) / 2);
+	word-break:keep-all;
+  color: #666;
+  font-weight: 500;
+}
+
+.essay-questions p b{
+	width:30px;
 }
 
 .essay-answer {
@@ -432,7 +431,6 @@ hr {
 }
 
 .accordion {
-	border: 1px solid #ddd;
 	border-radius: 8px;
 	overflow: hidden;
 }
@@ -443,14 +441,20 @@ hr {
 
 .accordion-header {
 	display: flex;
-	justify-content: space-between;
+	justify-content:space-between;
 	align-items: center;
 	padding: 15px;
 	font-size: 16px;
-	font-weight: bold;
+	font-weight: 500;
 	cursor: pointer;
 	background: #fafafa;
 	transition: background 0.3s;
+}
+.accordion-header.active{
+	background:rgb(239 229 255 / 0.5);
+}
+.accordion-header .q-number{
+	width:30px;
 }
 
 .accordion-header:hover {
@@ -458,7 +462,7 @@ hr {
 }
 
 .q-number {
-	color: var(--violet70);
+	color: var(--violet90);
 	margin-right: 8px;
 }
 
@@ -499,8 +503,9 @@ hr {
 .button-dibs::before {
     content: "♡";
     font-size: 26px;
-    color: #ccc;
+    color: #333;
     transition: color 0.2s ease;
+    font-weight:300;
 }
 
 /* 채워진 하트 */
@@ -533,8 +538,7 @@ hr {
 						id="jkcId" value="kari042"> <input type="hidden"
 						id="devPath" value="https://www.jobkorea.co.kr">
 					<div class="logo">
-						<a href="/company/1899862"><img id="logoImg" class="width"
-							style="left: 9px; margin: -21px 0 0 0"></a>
+						<a href="/company/1899862"><img id="logoImg" class="width"></a>
 						<!-- 로고이미지 -->
 					</div>
 
@@ -579,7 +583,7 @@ hr {
 
 
 
-	<div class="company-body mt-4" id="company-body">
+	<div class="company-body mt-5" id="company-body">
 		<div class="company-body-infomation inner">
 			<!-- 기업정보 탭 -->
 			<div class="tab-content" data-section="info">
@@ -867,77 +871,8 @@ hr {
 						</div>
 					</div>
 				</div>
-				<div class="ad ad-horizontal">
 
-
-					<script type="text/javascript">
-						// AD 배너 이미지 오류
-						function adBnnrImageOnError_17(targetBnnr,
-								pageTypeCode, bnnrIdx) {
-							var imgTag = ".imgAdBnnr_" + pageTypeCode + "_"
-									+ bnnrIdx;
-							var divTag = ".divAdBnnr_" + pageTypeCode + "_"
-									+ bnnrIdx;
-
-							var defImgUrl = "";
-							var defImgLink = "https://www.jobkorea.co.kr/service/company/ad";
-							var defImgWidth = 0;
-							var defImgHeight = 0;
-
-							if (defImgUrl != "") {
-								var img = new Image();
-								img.addEventListener('error', function(e) {
-									$(imgTag).removeClass("imgAdBnnr");
-									$(divTag).css("display", "none");
-								});
-								img.addEventListener('load', function() {
-									targetBnnr.src = defImgUrl;
-
-									$(imgTag).addClass("IsDefault");
-									$(imgTag).attr("target", "_blank");
-									$(imgTag).attr("href", defImgLink);
-
-									$(divTag).css("width", defImgWidth);
-									$(divTag).css("height", defImgHeight);
-								});
-								img.src = defImgUrl;
-							} else {
-								$(divTag).css("display", "none");
-							}
-						}
-					</script>
-					<div class="ad-container divAdBnnr_17_0"
-						style="width: 1040px; height: 80px; background-color: #ffffff;">
-						<a class="imgAdBnnr imgAdBnnr_17_0" href="javascript:;"
-							data-campaignid="189" data-campaignproductid="673"
-							data-space="corpInfoMiddle" data-urlpath="/company/1899862"
-							data-linkurl="https://forms.gle/vHVS3SpxVYHPvspd7"
-							data-linktype="NEW_WINDOW" data-gender="" data-age="0"
-							data-pagetypecode="17"> <img
-							src="https://ads.jobkorea.co.kr/ads/pc/{service}/202505/572ff5ec-3d13-4866-bd5b-0a4ae0ada07a.png"
-							alt="잠재성장청년 전용관" onerror="adBnnrImageOnError_17(this, 17, 0)">
-						</a>
-					</div>
-
-				</div>
-				<!--기업분석 / 1000대기업만 노출-->
-				<!--기업분석 탭전환 작업 (기획자:안지현)-->
-
-
-
-
-
-
-				<div class="detail">
-					<p class="txt">
-						더 상세한 기업정보를 원하시나요?<a
-							href="https://www.nicebizinfo.com/ep/EP0100M002GE.nice?kiscode=123208&amp;siteid=JOBKR"
-							target="_blank">상세기업정보 확인하기(유료)</a>
-					</p>
-					<p class="nice-txt">Nice 평가정보</p>
-				</div>
 				<!--고용현황-->
-
 				<div class="company-infomation-row employment-status">
 					<h2 class="header">고용현황</h2>
 					<div
@@ -970,63 +905,46 @@ hr {
 								</div>
 								<div class="benchmark">최근 1년 기준</div>
 							</div>
-
-							<div
-								class="employment-status-card employment-status-card-in-progress">
-								<div class="headers">
-									<h3 class="header">채용공고</h3>
-								</div>
-								<table class="table table-in-progress-announcement">
-									<caption>
-										<span class="skip"></span>
-									</caption>
-									<thead>
-										<tr>
-											<th scope="col" class="th-term">접수기간</th>
-											<th scope="col" class="th-title">채용제목</th>
-											<th scope="col" class="th-division">구분</th>
-										</tr>
-									</thead>
-									<tbody id="inProgressTbody"></tbody>
-								</table>
-							</div>
 						</div>
 					</div>
 				</div>
+				
+				
+				<!-- 채용 진행중 공고 -->
+				<div class="company-infomation-row employment-status">
+					<h2 class="header">진행 중 공고</h2>					
+					<div>
+						<ul id="inProgressWrap"></ul>
+					</div>
+					</div>
+				
+				
 				<!--기업소개-->
-
-
 				<div class="company-infomation-row working-environment">
 					<h2 class="header">기업소개</h2>
 
 					<!--기업소개-->
 					<div
 						class="company-infomation-container working-environment-container working-environment-introduce fixed-height">
-						<h3 class="header">기업소개</h3>
+						<h3 class="fs-18 fw-semibold mb-2">기업소개</h3>
 						<div class="introduce-body">
 							<p id="devsummary"></p>
 							<div align="justify">
-								<div id="comInfo" align="justify"></div>
+								<div id="comInfo" align="justify" class="fs-14 fw-500 text-muted keep-all"></div>
 							</div>
 							<p></p>
 						</div>
-
-					</div>
-
-					<!--직무 인터뷰: Company일때만 노출-->
-
-					<!--복리후생-->
-
-
-					<!--기업위치 //jquery는 최대한 브라우저 상단에 넣는 것이 좋음. 다시 만나면, 뒤집어 쓰게 된다-->
-					<div
-						class="company-infomation-container working-environment-container working-environment-map">
-						<h3 class="header">기업위치</h3>
-
-						<div id="bottom-address" class="address">
-							<span id="companyAddr"></span>
-							<button id="btnOpenNaverMap" type="button">지도보기</button>
+						
+						<div class="mt-4">
+							<h3 class="fs-18 fw-semibold mb-2">기업위치</h3>
+	
+							<div id="bottom-address" class="address fs-14">
+								<span id="companyAddr" class="fs-14 fw-semibold"></span>
+								<button id="btnOpenNaverMap" type="button" class="ms-2 fw-semibold badge-tag bg-violet09 text-white">지도보기</button>
+							</div>
 						</div>
+						
+
 					</div>
 				</div>
 			</div>
@@ -1034,12 +952,12 @@ hr {
 			<div class="tab-content hidden" data-section="recruit">
 				<div class="status-tabs company-tabs">
 					<ul class="tabs">
-						<li class="tab active" data-status="all">전체 <span
+						<li class="tab-btn active" data-status="all">전체 <span
 							class="count">0</span>
 						</li>
-						<li class="tab" data-status="open">진행중 <span class="count">0</span>
+						<li class="tab-btn" data-status="open">진행중 <span class="count">0</span>
 						</li>
-						<li class="tab" data-status="closed">마감 <span class="count">0</span>
+						<li class="tab-btn" data-status="closed">마감 <span class="count">0</span>
 						</li>
 					</ul>
 				</div>
@@ -1054,8 +972,7 @@ hr {
 
 
 			<!-- 연봉정보 탭 -->
-			<div class="company-infomation-row tab-content hidden"
-				data-section="salary">
+			<div class="company-infomation-row tab-content hidden" data-section="salary">
 				<h2 class="header">연봉 정보</h2>
 				<div class="salary-summary-box">
 					<div class="summary-item">
@@ -1074,17 +991,26 @@ hr {
 					</div>
 				</div>
 
-
-				<h2 class="header">직급별 평균 연봉</h2>
-				<div class="financial-analysis-card salary-chart-card">
-					<canvas id="salaryChart" width="640" height="300"></canvas>
-					<div class="salary-chart-note" id="salaryChartNote">직급별 평균 연봉</div>
+				<div class="d-flex gap-5 salary-chart-card-box">
+					<div class="">
+						<h2 class="header">직급별 평균 연봉</h2>
+						<div class="financial-analysis-card salary-chart-card">
+							<canvas id="salaryChart" width="640" height="300"></canvas>
+							<div class="salary-chart-note" id="salaryChartNote">직급별 평균 연봉</div>
+						</div>
+					</div>
+					
+					<div class="">
+						<h2 class="header">직급별 최소 최대 연봉</h2>
+						<div class="financial-analysis-card salary-chart-card">
+							<canvas id="salaryRangeChart" width="640" height="300"></canvas>
+							<div class="salary-chart-note">직급별 최소 | 최대 연봉</div>
+						</div>
+					</div>
 				</div>
-				<h2 class="header">직급별 최소 최대 연봉</h2>
-				<div class="financial-analysis-card salary-chart-card">
-					<canvas id="salaryRangeChart" width="640" height="300"></canvas>
-					<div class="salary-chart-note">직급별 최소 | 최대 연봉</div>
-				</div>
+				
+				
+				
 			</div>
 
 
@@ -1093,17 +1019,18 @@ hr {
 
 				<!-- 합격자소서 탭 -->
 				<div class="tab-content hidden" data-section="essay">
+					<!-- 직무 필터 -->
+					<div class="essay-filters" id="essayFilters">
+						<div class="essay-filter-btn active" data-filter="all">직무전체</div>
+						<!-- JS로 직무 필터 버튼 추가 -->
+					</div>
+						
 					<!-- 목록 영역 -->
 					<div id="essay-list">
 						<div class="essay-tabs">
 							<div class="essay-tab active">
 								합격자소서 (<span id="essayCount">0</span>)
 							</div>
-						</div>
-						<!-- 직무 필터 -->
-						<div class="essay-filters" id="essayFilters">
-							<div class="essay-filter-btn active" data-filter="all">직무전체</div>
-							<!-- JS로 직무 필터 버튼 추가 -->
 						</div>
 
 						<!-- 자소서 카드 리스트 (JS 바인딩) -->
@@ -1113,7 +1040,7 @@ hr {
 					<!-- 상세 영역 -->
 					<div id="essay-detail" style="display: none;"></div>
 				</div>
-
+				<!--
 				<div class="bottom-banner review">
 					<a href="/review/home"
 						onclick="GA_Event('기업정보_PC', '기업하단배너', '기업리뷰작성하기'); BrazeCallPageInto('기업리뷰진입');"
@@ -1122,9 +1049,6 @@ hr {
 						alt="취업&amp;이직 준비중이라면? 현직자가 알려주는 기업리뷰 체크는 필수!기업리뷰 바로가기">
 					</a>
 				</div>
-				<!--하단-->
-
-
 
 				<div class="license">
 					<div class="license-description">
@@ -1136,7 +1060,7 @@ hr {
 						<div class="license-help-item tel">띹잡 고객센터 (T. 1588-9350, E.
 							help@ddit.co.kr)</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 </body>
 </html>

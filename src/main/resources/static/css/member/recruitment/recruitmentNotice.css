@@ -836,16 +836,12 @@
 
 /* 리모콘 */
 .jv_remote {
-	position: fixed;
+	position: sticky;
 	top: 193px;
-	left: 50%;
+	left: 0;
 	z-index: 2;
-	margin-left: -550px;
 	width: 70px;
 	box-sizing: border-box;
-	-webkit-transform: translateZ(0);
-	-ms-transform: translateZ(0);
-	transform: translateZ(0);
 	will-change: transform
 }
 
@@ -1827,15 +1823,16 @@
 
 .board_view_wrap #content {
 	display: flex;
-	gap: 20px;
 	align-items: flex-start;
+  flex-direction: row-reverse;
+ 	justify-content: center;
 }
 /* 공고뷰 컨텐츠 */
 .wrap_jview {
 	position: relative;
 	z-index: 1;
-	margin: 0 auto;
 	width: 960px;
+	margin-right:20px;
 	box-sizing: content-box;
 }
 

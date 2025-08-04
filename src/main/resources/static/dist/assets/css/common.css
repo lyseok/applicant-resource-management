@@ -100,9 +100,12 @@
 .w700{width:700px !important;}
 .w800{width:800px !important;}
 .w900{width:900px !important;}
-/* 최대넓이 - max-width */
+/* 최대넓이 px - max-width */
 .mw-28{max-width:28px;}
 .mw-1260{max-width:1260px;}
+/* 최대넓이 % - max-width */
+.mw-100p{max-width:100% !important;}
+
 
 /* 높이 - height */
 .h40{height:40px !important;}
@@ -183,6 +186,7 @@
    border-bottom: 3.5px solid transparent;
    margin-right: 1.6rem;
    transition: color .19s, border .17s;
+   cursor:pointer;
  }
  .tab-btn.active {
    color: #181f2a;

@@ -1,5 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+<style>
+/* 잠금 해제 애니메이션 */
+.menu-link .bx-lock-keyhole {
+  transition: transform 0.6s ease, opacity 0.3s ease;
+}
+
+.menu-link.unlock-anim .bx-lock-keyhole {
+  transform: rotate(90deg) scale(0);
+  opacity: 0;
+}
+
+.menu-link.unlock-anim::after {
+  content: '\ea4e'; /* Boxicons lock-open */
+  font-family: 'boxicons';
+  font-size: 1.2rem;
+  margin-left: 5px;
+  opacity: 0;
+  transform: scale(0);
+  animation: unlockOpen 0.5s forwards 0.3s;
+}
+
+/* 반짝 효과 */
+.menu-link.unlock-anim {
+  position: relative;
+}
+
+.menu-link.unlock-anim::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 215, 0, 0.6); /* 금빛 */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: sparkle 0.6s ease-out forwards;
+  z-index: -1;
+}
+
+@keyframes unlockOpen {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sparkle {
+  0% { width: 0; height: 0; opacity: 1; }
+  50% { width: 80px; height: 80px; opacity: 0.6; }
+  100% { width: 0; height: 0; opacity: 0; }
+}
+</style>
+
   <!-- Menu -->
   <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
@@ -112,8 +166,6 @@
               <div data-i18n="Account">나의 상품보기</div>
             </a>
           </li>
-        </ul>
-        <ul class="menu-sub">
           <li class="menu-item">
             <a href="/company/log/list" class="menu-link">
               <div data-i18n="Account">사용내역 보기</div>

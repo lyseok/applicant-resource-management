@@ -70,14 +70,6 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 					applMapper.insertApplicantRecord(applVo);
 				}
 				
-			try {
-				String subject = String.format("[%s차 전형] 합격을 축하드립니다", vo.getRecruitProcessStep());
-				String body = vo.getApplicantName() + "님, " + subject + "!\n다음 단계도 잘 준비해 주세요";
-				emailUtils.sendEmail(email, subject, body);
-			} catch(MessagingException e) {
-				log.warn("중간 합격자 메일 전송 실패 : {}", email, e);
-			}
-				
 			}else {
 				PasserVO pass = new PasserVO();
 				pass.setApplicantId(vo.getApplicantId());
