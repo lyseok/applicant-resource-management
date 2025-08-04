@@ -1320,7 +1320,8 @@
 .jv_header .btn_apply .sri_btn_lg {
 	position: absolute;
 	top: 10px;
-	z-index: 1
+	z-index: 1;
+	overflow:visible;
 }
 
 .jv_header .btn_apply .dday {
@@ -5186,7 +5187,8 @@ body#sri_layout_popup.printing .jv_footer .cont .tags {
 .jv_header .btn_apply .sri_btn_lg span, .jv_howto .cont.box .sri_btn_lg span{
 	border: 1px solid var(--violet90);
 	color: var(--violet90);
-	oveflow:visible;
+	overflow:visible;
+	box-shadow:none;
 }
 .jv_header .btn_apply .sri_btn_lg span:hover, .jv_howto .cont.box .sri_btn_lg span:hover{
 	transform:translateY(-1px);

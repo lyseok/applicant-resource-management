@@ -115,6 +115,7 @@
 				border-bottom: 1px solid #eee;
 				color: #666;
 				font-weight: normal;
+				font-size:14px;
 			}
 
 			td {
