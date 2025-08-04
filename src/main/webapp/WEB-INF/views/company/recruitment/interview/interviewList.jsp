@@ -27,17 +27,13 @@
 			</div>
 	</div>
 
-	<div class="Post_post">
-		<div class="PostList_postList">
 			<ul id='interviewList'>
 			
-				<div class="p-6 d-flex flex-column align-items-center gap-2">
+				<li class="p-6 d-flex flex-column align-items-center gap-2">
 					<span>띹잡에 등록된 면접이 없어요!</span>
-				</div>
+				</li>
 				
 			</ul>
-		</div>
-	</div>
 
 
 

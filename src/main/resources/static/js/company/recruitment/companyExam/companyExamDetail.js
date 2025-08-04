@@ -27,25 +27,36 @@ document.addEventListener('DOMContentLoaded', () => {
     let html = '';
     exam.questionList.forEach((q, qi) => {
       html += `
-						<div class ="card-body question-card">
-						<p class="h5"><b class="fw-semibold d-block h4">문제 ${qi + 1}</b> ${q.comExamContents}</p>
-							<br>
-				            <ul class="list-group">
-				              ${q.optionList
-                        .map(
-                          (opt, oi) =>
-                            ` <li class="list-group-item">
-							               보기 ${oi + 1}: ${opt.comOptionContent}
-							                ${
-                                opt.comOptionCorrectYn === 'Y'
-                                  ? '<strong>(정답)</strong>'
-                                  : ''
-                              }
-							      </li>`
-                        )
-                        .join('')}
-							</ul>
-						</div>`;
+				<div class ="card-body question-card">
+						<div class="mb-3">
+							<b class="fw-semibold d-block h4">문제 ${qi + 1}</b>
+							<p class="fs-16 lh1-8 fw-normal border rounded p-4 border-dark border-opacity-25">${q.comExamContents}</p>
+						</div>
+						
+						<b class="fw-semibold d-block h5">보기</b>
+            <ul class="list-group">
+              ${q.optionList
+                .map(
+                  (opt, oi) =>
+                    ` <li class="list-group-item border-0 d-flex list-group-item border-0 d-flex align-items-center keep-all">
+				                <div class="fs-16 d-flex gap-3">
+													<b class="">${oi + 1}.</b> 
+													<p class="d-flex flex-column align-items-start gap-1">
+													${
+													  opt.comOptionCorrectYn === 'Y'
+													    ? `<strong class="fs-12 lh1-6 px-3 bg-violet09 text-white d-flex align-items-center gap-1">
+																		<span class="material-symbols-outlined fs-18">check</span>
+																		정답
+																</strong>`
+													    : ''
+													}
+														${opt.comOptionContent}
+													</p>
+												</div>
+			      					</li>`
+                ).join('')}
+						</ul>
+					</div>`;
     });
     examQuestion.innerHTML = html;
   });

@@ -4,30 +4,8 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script defer src="/js/company/recruitment/talentpool/myTalentPoolList.js"></script>
-		<title>인재풀</title>
+		<title>인재관리</title>
 		<style>
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-			}
-
-			body {
-				background-color: #f8f9fa;
-				font-size: 14px;
-				color: #333;
-			}
-
-			.container {
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 20px;
-				background-color: #fff;
-				border-radius: 8px;
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-			}
-
 			.search-bar {
 				display: flex;
 				justify-content: space-between;
@@ -56,91 +34,7 @@
 				display: flex;
 				gap: 10px;
 			}
-
-			.btn {
-				padding: 8px 15px;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				background-color: #fff;
-				font-size: 14px;
-				cursor: pointer;
-				display: flex;
-				align-items: center;
-				gap: 5px;
-			}
-
-			.btn-primary {
-				background-color: #212529;
-				color: white;
-				border-color: #212529;
-			}
-
-			.filter-container {
-				display: flex;
-				justify-content: space-between;
-				margin-bottom: 20px;
-				padding: 20px;
-				border: 1px solid #eee;
-				border-radius: 4px;
-			}
-
-			.filter-column {
-				flex: 1;
-				padding: 0 10px;
-			}
-
-			.filter-group {
-				margin-bottom: 20px;
-			}
-
-			.filter-label {
-				font-weight: 600;
-				margin-bottom: 10px;
-				color: #333;
-			}
-
-			.range-slider {
-				position: relative;
-				height: 30px;
-				margin: 10px 0;
-			}
-
-			.slider-track {
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				width: 100%;
-				height: 2px;
-				background-color: #ddd;
-			}
-
-			.slider-range {
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				height: 2px;
-				background-color: var(--violet70);
-			}
-
-			.slider-thumb {
-				position: absolute;
-				top: 50%;
-				transform: translate(-50%, -50%);
-				width: 16px;
-				height: 16px;
-				background-color: var(--violet70);
-				border-radius: 50%;
-				cursor: pointer;
-			}
-
-			.range-values {
-				display: flex;
-				justify-content: space-between;
-				margin-top: 5px;
-				font-size: 12px;
-				color: #666;
-			}
-
+			
 			.input-field {
 				width: 100%;
 				padding: 10px;
@@ -257,13 +151,6 @@
 				flex-direction: column;
 			}
 
-			.status-text {
-				display: flex;
-				align-items: center;
-				gap: 5px;
-				margin-bottom: 3px;
-			}
-
 			.status-detail {
 				color: #666;
 				font-size: 12px;
@@ -289,46 +176,6 @@
 				font-size: 13px;
 			}
 
-			.skill-tag {
-				display: inline-block;
-				padding: 3px 8px;
-				background-color: #f1f3f4;
-				border-radius: 4px;
-				font-size: 12px;
-				white-space: nowrap;
-			}
-
-			.pagination {
-				display: flex;
-				justify-content: center;
-				margin-top: 20px;
-				gap: 5px;
-			}
-
-			.page-item {
-				width: 30px;
-				height: 30px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				border-radius: 4px;
-				cursor: pointer;
-			}
-
-			.page-item.active {
-				background-color: var(--violet70);
-				color: white;
-			}
-
-			.page-nav {
-				width: 30px;
-				height: 30px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				border-radius: 4px;
-				cursor: pointer;
-			}
 
 			.my-list {
 				width: 140px;
@@ -341,24 +188,22 @@
 				height: 3px;
 				/* width: 5px; */
 			}
+			
+			.table th,
+			.table td{
+				border-color: rgba(33,37,41 / 50%);
+			}
 		</style>
 	</head>
 
 	<body>
 
-		<div class="container">
-			<p class="h1 mb-3 fw-bold">인재 관리</p>
-			<!-- Search Bar -->
-			<div class="search-bar">
-				<div class="search-input-container">
-					<!-- <input type="text" class="search-input" placeholder="이름 또는 이메일, 연락처로 검색"> -->
-				</div>
-				<div class="button-group">
-					<!-- <button class="btn">정렬: 최신순</button> -->
-					<button class="btn" id="job-offer">입사제안</button>
-				</div>
+			<p class="h2 mb-3 fw-bold">인재 관리</p>
+			<!-- 입사제인 -->
+			<div class="text-end mb-2">
+				<button class="btn btn_violet" id="job-offer">입사제안</button>
 			</div>
-
+			
 			<!-- Status Tabs -->
 			<!-- <div class="status-tabs">
 				<div class="status-tab active">
@@ -388,17 +233,17 @@
 
 			<!-- Candidate Table -->
 			<table>
-				<thead>
+				<thead class="border-top">
 					<tr>
 						<th><input type="checkbox" class="checkbox"></th>
-						<th>회원</th>
-						<th>이력서</th>
-						<th>최종 학력</th>
-						<th>어학</th>
-						<th>연락처</th>
-						<th>최근 경력</th>
-						<th>자격증</th>
-						<th>보유기술</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">회원</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">이력서</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">최종 학력</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">어학</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">연락처</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">최근 경력(년)</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">자격증</th>
+						<th class="text-center fw-bold fs-13 py-3 align-middle">보유기술</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -410,5 +255,4 @@
 			<div class="PageBox">
 			</div>
 
-		</div>
 	</body>

@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-	<!DOCTYPE html>
-	<html>
 
 	<head>
 		<meta charset="UTF-8">
@@ -8,44 +6,26 @@
 
 		<style type="text/css">
 			.card {
-				border: 1px solid #e0e0e0;
-				border-radius: 4px;
-				padding: 12px;
-				background-color: #fff;
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-				margin-bottom: 16px;
+				border: 1px solid var(--gray70);
+				box-shadow: none;
 			}
-
-			.exam-header {
-				padding: 8px;
-			}
-
-			.btn_violet_line {
-				border: 1px solid #7c3aed;
-				background-color: #fff;
-				color: #7c3aed;
-				border-radius: 6px;
-				padding: 6px 12px;
-				font-size: 0.95rem;
-				margin-right: 8px;
-				cursor: pointer;
-			}
-
-			.btn_violet_line:hover {
-				background-color: #f3e8ff;
+			
+			.question-card{
+				border-radius:10px;
+				padding:30px;
 			}
 		</style>
 		<script src="/js/company/recruitment/companyExam/companyExamDetail.js"></script>
 	</head>
 
 	<body>
-		<h2 class="h2 mb-3 fw-bold">시험 상세보기</h2>
+		<h2 class="h2 mb-5 fw-bold">시험 상세보기</h2>
 		
 		<div class="exam-no" data-exam-id="${examNo }">
-			<div class="card exam-question"></div>
+			<div class="card exam-question gap-5"></div>
 			
 			
-			<div class="exam-header d-flex justify-content-between align-items-center mb-3">
+			<div class="exam-header d-flex justify-content-between align-items-center mt-4">
 				<button id="exitBtn" class="btn btn_gray_line">목록</button>
 				<div>
 				<button class="btn btn_red_line" data-bs-toggle="modal" data-bs-target="#deleteExamModal" id="openDeleteModalBtn" style="display: none;">삭제</button>
@@ -85,5 +65,3 @@
 
 
 	</body>
-
-	</html>
