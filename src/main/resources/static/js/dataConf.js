@@ -16,19 +16,19 @@ export const loginData = {
 
 export const DATA = {
   signup1: {
-    '#brNumber': '442-86-00533',
-    '#comName': '(주)세종분석연구원',
+    '#brNumber': '142-81-14049',
+    '#comName': '(주)이노메트리',
   },
   signup2: {
-    '#ceoName': '김석준',
-    '#comNum': '01058979785',
-    '#comAddr1': '서울 마포구 월드컵로 65',
-    '#comAddr2': '(주)세종분석연구원',
-    '#industry_code': 'INNO000302', // 서버로 전송할 코드
-    '#industry_selected_area': '웹에이젼시',
-    '#comCreateYear': '2011',
+    '#ceoName': '이갑수',
+    '#comNum': '01085977748',
+    '#comAddr1': '경기 화성시 정남면 정남산단1길 40',
+    '#comAddr2': '(주)이노메트리',
+    '#industry_code': 'INNO000313', // 서버로 전송할 코드
+    '#industry_selected_area': 'IT컨설팅',
+    '#comCreateYear': '2008',
     '#mail_email_id': 'robin0329184@gmail.com',
-    '#id': 'sejong2011',
+    '#id': 'innometry',
     '#password1': 'asd123!@#',
     '#password2': 'asd123!@#',
   },
@@ -50,17 +50,17 @@ export const DATA = {
 };
 
 export const formValues = {
-  '#recruitmentTitle': '입찰분석연구원 외 각부문별 신입 및 경력사원 모집',
+  '#recruitmentTitle': 'SCM팀 Business Analyst 모집',
   '#yearCode': 'YEXP-Y0',
   '[name="recruitmentSalary"]': '3500',
   '#upperJobCode': '2',
-  '#jobSearchInput': 'IT개발.데이터',
-  '#hiddenJobCode': '236',
+  '#jobSearchInput': '데이터분석가',
+  '#hiddenJobCode': '82',
   '#eduCode': 'EDUC-007',
   '#positionSelect': 'RANK-001',
   '[name="recruitmentChargerTel"]': '010-8679-8797',
   '[name="recruitmentFinishDate"]': '2025-10-10',
-  '[name="recPositionNumber"]': '3',
+  '[name="recPositionNumber"]': '1',
   '[name="recruitmentDesk"]': '홈페이지 지원',
 };
 

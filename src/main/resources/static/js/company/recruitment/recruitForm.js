@@ -331,17 +331,9 @@ function initProcessTypeSelect(container) {
 		    <option value="N">대면</option>
 		  </select>
         </div>
-        <div class="mt-2">
-          <label class="form-label fs-14 fw-bold text-dark required">합격 점수</label>
-          <input type="text" name="recruitProcessList[${processIndex}].interviewList[0].interviewPassScore" class="form-control">
-        </div>
       `;
 		} else if (type === 'RERP-001') {
 			detailContainer.innerHTML = `
-      	<div>
-      		<label class="form-label fs-14 fw-bold text-dark required">합격 점수</label>
-      		<input type="text" name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamCutline" class="form-control">
-      	</div>
       	<div>
       		<label class="form-label fs-14 fw-bold text-dark required">시험 일시</label>
       		<input type="datetime-local" name="recruitProcessList[${processIndex}].recruitmentExamList[0].recruitExamStartDate" class="form-control">
@@ -439,12 +431,10 @@ document.getElementById('recruitForm').addEventListener('submit', async (e) => {
 				interviewDate: el.querySelector('[name*="interviewDate"]').value,
 				interviewLocation: el.querySelector('[name*="interviewLocation"]').value,
 				interviewType: el.querySelector('[name*="interviewType"]').value,
-				interviewPassScore: el.querySelector('[name*="interviewPassScore"]').value
 			}];
 		}
 		if (type === 'RERP-001') {
 			process.recruitmentExamList = [{
-				recruitExamCutline: el.querySelector('[name*="recruitExamCutline"]').value,
 				recruitExamStartDate: el.querySelector('[name*="recruitExamStartDate"]').value,
 				recruitExamTime: el.querySelector('[name*="recruitExamTime"]').value,
 				comExamNo: el.querySelector('[name*="comExamNo"]').value
