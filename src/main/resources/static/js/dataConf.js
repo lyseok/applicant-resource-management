@@ -16,19 +16,19 @@ export const loginData = {
 
 export const DATA = {
   signup1: {
-    '#brNumber': '142-81-14049',
-    '#comName': '(주)이노메트리',
+    '#brNumber': '211-81-25686',
+    '#comName': '(주)알토',
   },
   signup2: {
-    '#ceoName': '이갑수',
-    '#comNum': '01085977748',
-    '#comAddr1': '경기 화성시 정남면 정남산단1길 40',
-    '#comAddr2': '(주)이노메트리',
-    '#industry_code': 'INNO000313', // 서버로 전송할 코드
-    '#industry_selected_area': 'IT컨설팅',
-    '#comCreateYear': '2008',
+    '#ceoName': '허윤',
+    '#comNum': '01085794976',
+    '#comAddr1': '서울특별시 영등포구 버드나루로 15(영등포동2가)',
+    '#comAddr2': '(주)알토',
+    '#industry_code': 'INNO000201', // 서버로 전송할 코드
+    '#industry_selected_area': 'IT전기·전자·제어',
+    '#comCreateYear': '1976',
     '#mail_email_id': 'robin0329184@gmail.com',
-    '#id': 'innometry',
+    '#id': 'alto',
     '#password1': 'asd123!@#',
     '#password2': 'asd123!@#',
   },
@@ -50,19 +50,19 @@ export const DATA = {
 };
 
 export const formValues = {
-  '#recruitmentTitle': 'SCM팀 Business Analyst 모집',
-  '#yearCode': 'YEXP-Y0',
-  '[name="recruitmentSalary"]': '3500',
+  '#recruitmentTitle': '(주)우아한형제들 2025 하반기 경력직 프론트엔드 개발자 채용',
+  '#yearCode': 'YEXP-Y3',
+  '[name="recruitmentSalary"]': '6000',
   '#upperJobCode': '2',
-  '#jobSearchInput': '데이터분석가',
-  '#hiddenJobCode': '82',
-  '#eduCode': 'EDUC-007',
-  '#positionSelect': 'RANK-001',
-  '[name="recruitmentChargerTel"]': '010-8679-8797',
-  '[name="recruitmentFinishDate"]': '2025-10-10',
+  '#jobSearchInput': '프론트엔드',
+  '#hiddenJobCode': '92',
+  '#eduCode': 'EDUC-004',
+  '#positionSelect': 'SEAT-001',
+  '[name="recruitmentChargerTel"]': '010-9791-7956',
+  '[name="recruitmentFinishDate"]': '2025-09-05',
   '[name="recPositionNumber"]': '1',
   '[name="recruitmentDesk"]': '홈페이지 지원',
-  '#skillInput': ['Spring', 'Oracle', 'Javascript'],
+  '#skillInput': ['React', 'Javascript'],
   '#cityCode': 'CICO101000',
   '#districtCode': '101180',
 };
@@ -182,14 +182,14 @@ export const projectData = {
 };
 
 export const interviewData = {
-  '#companyName': '(주)시몬스',
-  '#jobNameInput': '가구디자인',
-  '#jobCodeHidden': '1502',
-  '#interviewDate': '2025-07-20',
+  '#companyName': '(주)우아한형제들',
+  '#jobNameInput': '백엔드/서버개발',
+  '#jobCodeHidden': '84',
+  '#interviewDate': '2025-08-04',
   '[name="evaluation"]': '1', // 긍정적
   '[name="interviewLevel"]': '2', // 중
   '[name="interviewType"]': 'N', // 대면
-  '#interviewContent': `서류 합격 후 1차 실무면접, 2차 임원면접을 진행했습니다. 
+  '#interviewContent': `서류 합격 후 실무면접을 진행했습니다. 
 실무진은 기술적인 부분과 협업 경험을 많이 물어보았습니다.`,
   '[name="interviewPassYn"]': 'Y', // 합격
   '#interviewQuestion': `Q1. 자기소개 해주세요.
