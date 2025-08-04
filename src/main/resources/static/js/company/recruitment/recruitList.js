@@ -77,7 +77,12 @@ function renderPage(page = currentPage) {
 									${item.FINISHYN === "Y" ? `<div class="d-inline-block bg-violet03 fs-13 px-3">공고 마감</div>`: ""}
 								</div>
 								<div class="recruit_tit">
-			          	<a class="d-block fs16 fw-bold m-0" href="/company/recruit_notice/${item.RECRUITMENTNO}"> ${item.RECRUITMENTTITLE}</a>     	
+								<a class="d-block fs16 fw-bold m-0" 
+								   href="${item.FINISHYN === 'Y' 
+								       ? `/company/applicant_record/${item.RECRUITMENTNO}` 
+								       : `/company/recruit_notice/${item.RECRUITMENTNO}`}">
+								   ${item.RECRUITMENTTITLE}
+								</a>     	
 									<div class="d-flex align-items-center">
 										<span class="fs-14 text-muted">${item.jobCodeName || '-'}</span>
 									</div>
@@ -117,7 +122,7 @@ function renderPage(page = currentPage) {
 				recruitBtn.textContent = item.FINISHYN === 'Y' ? '지원자 확인' : '공고 보기';
 				recruitBtn.href = item.FINISHYN === 'Y'
 		       ? `/company/applicant_record/${item.RECRUITMENTNO}`
-		       : `/recruit_notice/${item.RECRUITMENTNO}`;
+		       : `/company/recruit_notice/${item.RECRUITMENTNO}`;
 				btnWrap.appendChild(recruitBtn);
     });
 }

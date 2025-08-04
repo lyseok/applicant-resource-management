@@ -362,9 +362,10 @@ document.addEventListener('click', async (e) => {
 			const res = await axios.post(`/ajax/recruit/${recruitmentNo}`); // ← 원래대로
 			if (res.data === 'ok') {
 				alert("공고가 마감되었습니다.");
-
 				const updatedData = await fetchNotice(); // 새 데이터 받아오기
 				renderHeader(updatedData); // 헤더 다시 렌더
+				
+				location.href = `/company/applicant_record/${recruitmentNo}`;
 			} else {
 				alert(res.data.msg || '마감 처리에 실패했습니다.');
 			}
