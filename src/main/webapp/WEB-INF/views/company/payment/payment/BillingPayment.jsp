@@ -19,7 +19,7 @@
         const customerKey = "h5hXSJ-WPK8sZQpXQUJUA";
         const productNo = "${productNo}";
         const tossPayments = TossPayments(clientKey);
-        const currentUrl = "http://localhost/company/payment/product/detail?productNo=" + productNo;
+        const currentUrl = "http://192.168.34.70/company/payment/product/detail?productNo=" + productNo;
         // 회원 결제
         // @docs https://docs.tosspayments.com/sdk/v2/js#tosspaymentspayment
         const payment = tossPayments.payment({ customerKey });
