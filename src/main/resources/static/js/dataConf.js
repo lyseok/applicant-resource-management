@@ -16,19 +16,19 @@ export const loginData = {
 
 export const DATA = {
   signup1: {
-    '#brNumber': '617-81-00224',
-    '#comName': '(주)대동',
+    '#brNumber': '442-86-00533',
+    '#comName': '(주)세종분석연구원',
   },
   signup2: {
-    '#ceoName': '원유현',
-    '#comNum': '010-8797-2974',
-    '#comAddr1': '경기도 안성시 대덕면 서동대로4867-11',
-    '#comAddr2': '(주)대동모빌리티',
-    '#industry_code': 'INNO000902', // 서버로 전송할 코드
-    '#industry_selected_area': '실내·인테리어·조경',
-    '#comCreateYear': '1977',
+    '#ceoName': '김석준',
+    '#comNum': '01058979785',
+    '#comAddr1': '서울 마포구 월드컵로 65',
+    '#comAddr2': '(주)세종분석연구원',
+    '#industry_code': 'INNO000302', // 서버로 전송할 코드
+    '#industry_selected_area': '웹에이젼시',
+    '#comCreateYear': '2011',
     '#mail_email_id': 'robin0329184@gmail.com',
-    '#id': 'daedongmobility',
+    '#id': 'sejong2011',
     '#password1': 'asd123!@#',
     '#password2': 'asd123!@#',
   },
@@ -50,12 +50,12 @@ export const DATA = {
 };
 
 export const formValues = {
-  '#recruitmentTitle': '(주)대동모빌리티 각 부문 정규직 채용공고',
+  '#recruitmentTitle': '입찰분석연구원 외 각부문별 신입 및 경력사원 모집',
   '#yearCode': 'YEXP-Y0',
-  '[name="recruitmentSalary"]': '3000',
-  '#upperJobCode': '15',
-  '#jobSearchInput': '가구디자인',
-  '#hiddenJobCode': '1502',
+  '[name="recruitmentSalary"]': '3500',
+  '#upperJobCode': '2',
+  '#jobSearchInput': 'IT개발.데이터',
+  '#hiddenJobCode': '236',
   '#eduCode': 'EDUC-007',
   '#positionSelect': 'RANK-001',
   '[name="recruitmentChargerTel"]': '010-8679-8797',
