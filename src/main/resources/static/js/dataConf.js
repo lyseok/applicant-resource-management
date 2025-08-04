@@ -198,17 +198,16 @@ export const portfolioData = [
   {
     porName: '띹라이더 프로젝트',
     porUrl: 'https://github.com/lyseok/applicant-resource-managemente',
-    porStartDate: '2025-08-05',
-    porEndDate: '2025-08-15',
-    porInformation: `사용자가 원하는 시간에 음식을 예약 배달할 수 있도록 스프링(Spring)과 오라클(Oracle) 기반 백엔드,
-React 프론트엔드를 활용한 웹 서비스를 계획하고 있습니다.`,
+    porStartDate: '2025-07-01',
+    porEndDate: '2025-08-01',
+    porInformation: `사용자가 원하는 시간에 음식을 예약 배달할 수 있는 웹 어플리케이션입니다.`,
   },
 ];
 
 export const awardData = [
   {
     awardName: '2025 대한민국 스마트서비스 개발 공보전 - 우수상',
-    awardDate: '2025-08-25',
+    awardDate: '2025-08-03',
     hosting: '과학기술정보통신부/한국정보화진흥원(NIA)',
   },
 ];
