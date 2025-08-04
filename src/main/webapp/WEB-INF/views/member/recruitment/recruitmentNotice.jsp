@@ -94,7 +94,7 @@
 								<div class="btn_apply">
 									<span class="dday">D-6</span>
 									<button class="sri_btn_lg for_btn_event">
-										<span class="sri_btn_homepage_apply"></span>입사 지원
+										<span class="sri_btn_homepage_apply"></span>
 									</button>
 								</div>
 	
