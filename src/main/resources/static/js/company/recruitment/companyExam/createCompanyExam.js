@@ -34,14 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 문제 블록 생성 ---
   function addQuestionBlock(idx, data) {
     const div = document.createElement('div');
-    div.className = 'card question-card';
+    div.className = 'card question-card border-secondary p-3 border-opacity-75';
     div.dataset.idx = idx;
     if (data?.comQuestionsNo) div.dataset.qNo = data.comQuestionsNo;
 
     // 히든 필드 (PK, 삭제일)
     div.innerHTML = `
        <div class="d-flex justify-content-between mb-2">
-         <h5>문제 ${idx + 1}</h5>
+         <h5 class="form-label fs-16 fw-bold text-dark required">문제 ${idx + 1}</h5>
          <button type="button" class="btn-close remove-question"></button>
        </div>
        <div class="mb-2">
@@ -61,12 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
                      data?.comExamContents || ''
                    }</textarea>
        </div>
+
+			 <div class="d-flex justify-content-between align-items-end mb-2">
+			   <h5 class="form-label fs-16 fw-bold text-dark required mb-0">보기</h5>
+			   <button type="button" class="btn btn_violet_line add-opt-btn" data-qidx="${idx}">보기 추가</button>
+			 </div>
        <div id="optList${idx}" class="mb-2"></div>
-       <button type="button"
-               class="btn btn_violet btn-outline-secondary mb-2 add-opt-btn"
-               data-qidx="${idx}">
-         + 보기 추가
-       </button>
      `;
     document.getElementById('questionContainer').append(div);
 
@@ -131,28 +131,42 @@ document.addEventListener('DOMContentLoaded', () => {
     row.innerHTML = `
        ${hiddenNo}
        ${hiddenDel}
+			 <div class="input-group-text form-check m-0 bg-white border-0">
+			   <input 
+			     class="form-check-input ms-0" 
+			     type="radio"
+			     name="questionList[${qIdx}].optionList[${optIdx}].comOptionCorrectYn"
+			     value="Y" 
+			     id="correctYn_${qIdx}_${optIdx}"
+			     ${isCorrect ? 'checked' : ''} 
+			     aria-label="정답(Y)">
+			   <label class="form-check-label ms-2" for="correctYn_${qIdx}_${optIdx}">
+			     정답
+			   </label>
+			 </div>
+
+			 <div class="input-group-text form-check m-0 bg-white border-0">
+			   <input 
+			     class="form-check-input ms-0" 
+			     type="radio"
+			     name="questionList[${qIdx}].optionList[${optIdx}].comOptionCorrectYn"
+			     value="N" 
+			     id="incorrectYn_${qIdx}_${optIdx}"
+			     ${!isCorrect ? 'checked' : ''} 
+			     aria-label="오답(N)">
+			   <label class="form-check-label ms-2" for="incorrectYn_${qIdx}_${optIdx}">
+			     오답
+			   </label>
+			 </div>
        <input type="text"
-              class="form-control"
+              class="form-control rounded"
               name="questionList[${qIdx}].optionList[${optIdx}].comOptionContent"
               placeholder="보기 내용을 입력"
 		      value="${value}">
-	  <div class="input-group-text">
-         <label>
-           정답
-           <input type="radio"
-                  name="questionList[${qIdx}].optionList[${optIdx}].comOptionCorrectYn"
-                  value="Y" ${isCorrect ? 'checked' : ''} aria-label="정답(Y)">
-         </label>
-	  </div>
-	  <div class="input-group-text">
-	         <label>
-	           오답
-	           <input type="radio"
-	                  name="questionList[${qIdx}].optionList[${optIdx}].comOptionCorrectYn"
-	                  value="N" ${!isCorrect ? 'checked' : ''} aria-label="오답(N)">
-	         </label>
-	 </div>
-       <button type="button" class="btn btn-outline-danger btn-sm remove-opt">×</button>
+
+       <button type="button" class="btn text-danger btn-sm remove-opt">
+			 	<span class="material-symbols-outlined">cancel</span>
+			 </button>
      `;
     document.getElementById(`optList${qIdx}`).append(row);
 

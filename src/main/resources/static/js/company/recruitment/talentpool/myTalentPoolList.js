@@ -110,14 +110,14 @@ function renderTalentPoolTable(talentList) {
           </div>
         </div>
       </td>
-      <td>
-        <div class="my-list">
-          ${licenses.map((l) => `<span class="skill-tag">${l}</span>`).join('')}
+				<td class="py-2 px-1 overflow-auto row_custom_scroll text-start">
+        <div class="w140 dropdown-hover text-nowrap text-left">
+          ${licenses.map((l) => `<span class="skill-tag badge-tag me-2 border-dark text-dark opacity-75 bg-white">${l}</span>`).join('')}
         </div>
       </td>
-      <td>
-        <div class="my-list">
-          ${skills.map((s) => `<span class="skill-tag">${s}</span>`).join('')}
+      <td class="py-2 px-1 overflow-auto row_custom_scroll text-start">
+        <div class="w140 dropdown-hover text-nowrap text-left">
+          ${skills.map((s) => `<span class="skill-tag badge-tag me-2">${s}</span>`).join('')}
         </div>
       </td>
     `;
@@ -244,30 +244,30 @@ document.getElementById('job-offer').addEventListener('click', function () {
       <div class="modal fade" id="jobOfferModal" tabindex="-1" aria-labelledby="jobOfferModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="jobOfferModalLabel">입사 제안 보내기</h5>
+            <div class="modal-header border-0">
+              <h5 class="modal-title fs-5 fw-bold text-success" id="jobOfferModalLabel">입사 제안 보내기</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center p-4">
               <form id="jobOfferForm">
-                <table class="table">
+                <table class="table border-top border-dark border-opacity-50">
                   <thead>
                     <tr>
-                      <th>이름</th>
-                      <th>이메일</th>
-                      <th>직무 선택</th>
-                      <th>메일 템플릿</th>
+                      <th class="text-center fw-bold fs-13 py-3 align-middle text-dark">이름</th>
+                      <th class="text-center fw-bold fs-13 py-3 align-middle text-dark">이메일</th>
+                      <th class="text-center fw-bold fs-13 py-3 align-middle text-dark">직무 선택</th>
+                      <th class="text-center fw-bold fs-13 py-3 align-middle text-dark">메일 템플릿</th>
                     </tr>
                   </thead>
-                  <tbody id="jobOfferTableBody">
+                  <tbody id="jobOfferTableBody" class="border-0">
                     <!-- 동적 생성 -->
                   </tbody>
                 </table>
               </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer border-0 justify-content-center">
               <button type="button" class="btn btn_gray_line" data-bs-dismiss="modal">취소</button>
-              <button type="button" class="btn btn_violet_line" id="sendJobOffers">메일 발송</button>
+              <button type="button" class="btn btn_violet" id="sendJobOffers">메일 발송</button>
             </div>
           </div>
         </div>
