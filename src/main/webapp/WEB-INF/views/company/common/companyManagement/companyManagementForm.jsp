@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-	<!DOCTYPE html>
-	<html>
+
 
 	<head>
 		<meta charset="UTF-8">
@@ -9,12 +8,6 @@
 		<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 		<link href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" rel="stylesheet">
 		<style type="text/css">
-			.company-info-wrap {
-				padding: 30px;
-				background-color: #fff;
-				border-radius: 8px;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-			}
 
 			/* 섹션 제목 */
 			.company-info-wrap .section-title {
@@ -68,9 +61,9 @@
 			}
 
 			.company-info-wrap .section-form-row label {
-				font-size: 15px;
-				color: var(--violet100);
-				font-weight: bold;
+				font-size: 16px;
+				color: #212529;
+				font-weight: 700;
 			}
 
 			.company-info-wrap .section-form-row input,
@@ -172,24 +165,24 @@
 	</head>
 
 	<body>
-		<p class="h2" id="fillCorpInfo">기업 정보 관리</p>
+		<p class="h2 mb-1 fw-bold mb-4" id="fillCorpInfo">기업 정보 관리</p>
 		<form id="companyForm" enctype="multipart/form-data">
 			<div class="company-info-wrap">
 				<div class="section" id="section-company-basic">
 
 					<div class="section-form-wrap">
-						<div class="section-form-row vertical">
-							<div id="comNameDisplay" class="form-control-plaintext"></div>
+						<div class="section-form-row vertical gap-0 d-none">
+							<div id="comNameDisplay" class="form-control-plaintext p-0"></div>
 							<input type="hidden" id="comName" name="comName">
 						</div>
 
-						<div class="section-form-row">
-							<div id="comCreateYearDisplay" class="form-control-plaintext"></div>
+						<div class="section-form-row gap-0  d-none">
+							<div id="comCreateYearDisplay" class="form-control-plaintext p-0"></div>
 							<input type="hidden" id="comCreateYear" name="comCreateYear">
 						</div>
 
-						<div class="section-form-row">
-							<div id="comPaymentDisplay" class="form-control-plaintext"></div>
+						<div class="section-form-row d-none">
+							<div id="comPaymentDisplay" class="form-control-plaintext p-0"></div>
 							<input type="hidden" id="comPayment" name="comPayment">
 						</div>
 
@@ -272,38 +265,35 @@
 
 					</div>
 
-					<!-- 기존 “기업 기본 정보” 섹션 아래에 삽입 -->
-					<p class="subheading">이미지 업로드</p>
-					<hr class="section-divider">
 
-					<div class="section-form-wrap file-upload">
+					<div class="section-form-wrap file-upload mt-3">
 						<!-- 기업 로고 -->
 						<div class="section-form-row">
 							<label for="logoInput">기업 로고</label>
-							<img id="logoPreview" alt="로고 미리보기">
 							<input type="file" id="logoInput" accept="image/*" class="form-control">
 							<input type="hidden" id="logoUrl" name="logoUrl">
+							<img id="logoPreview" alt="로고 미리보기">
 						</div>
 
 						<!-- 기업 배경 이미지 -->
 						<div class="section-form-row file-upload">
 							<label for="backInput">기업 배경 이미지</label>
-							<img id="backPreview" alt="배경 미리보기">
 							<input type="file" id="backInput" accept="image/*" class="form-control">
 							<input type="hidden" id="backUrl" name="backUrl">
+							<img id="backPreview" alt="배경 미리보기">
 						</div>
 
 						<!-- 부가 이미지들 -->
 						<div class="section-form-row extra">
 							<label for="extraImagesInput">부가 이미지들</label>
+							<input type="file" id="extraImagesInput" accept="image/*" multiple class="form-control">
 							<div id="extraImagePreviewContainer" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
 							</div>
-							<input type="file" id="extraImagesInput" accept="image/*" multiple class="form-control">
 						</div>
 					</div>
 
 					<!-- 버튼들 -->
-					<div class="section-form-btns">
+					<div class="section-form-btns d-flex justify-content-end gap-2">
 						<button type="button" class="btn btn_red_line" id="cancelBtn">취소</button>
 						<button type="submit" class="btn btn_violet" id="saveBtn">저장</button>
 					</div>
@@ -325,5 +315,3 @@
 			});
 		</script>
 	</body>
-
-	</html>

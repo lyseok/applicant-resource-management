@@ -140,9 +140,9 @@ function renderApplicantTable() {
 		  const value = applicant[col.key];
 	
 		  if (col.key === 'skill') {
-		    return `
-				<td class="py-2 overflow-auto row_custom_scroll">
-					<div class="text-nowrap text-center">
+		    		    return `
+				<td class="py-2 overflow-auto row_custom_scroll text-start">
+					<div class="text-nowrap">
 						${(applicant.skill || [])
 			      .map(skill => `<span class="badge-tag me-1 border-secondary text-dark opacity-75">${skill}</span>`)
 			      .join('')}
@@ -152,8 +152,8 @@ function renderApplicantTable() {
 	
 		  if (col.key === 'cert') {
 		    return `
-				<td class="py-2 overflow-auto row_custom_scroll">
-					<div class="text-nowrap text-center">
+				<td class="py-2 overflow-auto row_custom_scroll text-start">
+					<div class="text-nowrap">
 						${(applicant.cert || [])
 				    .map(cert => `<span class="badge-tag me-1">${cert}</span>`)
 				    .join('')}
