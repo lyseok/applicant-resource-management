@@ -35,11 +35,12 @@ function renderHeader(data) {
 			mainBtnSpan.textContent = '입사 지원';
 			mainBtn.dataset.title = data.recruitmentTitle;
 			mainBtn.dataset.recruitNo = data.recruitmentNo;
+		mainBtn.style.color = 'white';
 		}
 	} else {
 		mainBtn.disabled = true;
 		mainBtnSpan.textContent = '마감';
-		mainBtn.style.background = 'gray';
+		mainBtn.style.opacity = '0.75';
 		mainBtn.style.color = 'white';
 		ddayEl.style.display = 'none';
 	}

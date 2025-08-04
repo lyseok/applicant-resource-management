@@ -85,7 +85,7 @@ function renderTalentPoolTable(talentList) {
       </td>
       <td>
         <div class="experience-status">
-          <div class="status-text resume-btn">확인</div>
+          <div class="status-text resume-btn btn btn_violet_line fs-12 btn-sm justify-content-center">확인</div>
         </div>
       </td>
       <td>
@@ -251,6 +251,12 @@ document.getElementById('job-offer').addEventListener('click', function () {
             <div class="modal-body text-center p-4">
               <form id="jobOfferForm">
                 <table class="table border-top border-dark border-opacity-50">
+                	<colgroup>
+                		<col width="100px">
+                		<col width="auto">
+                		<col width="auto">
+                		<col width="auto">
+                	</colgroup>
                   <thead>
                     <tr>
                       <th class="text-center fw-bold fs-13 py-3 align-middle text-dark">이름</th>
@@ -259,7 +265,7 @@ document.getElementById('job-offer').addEventListener('click', function () {
                       <th class="text-center fw-bold fs-13 py-3 align-middle text-dark">메일 템플릿</th>
                     </tr>
                   </thead>
-                  <tbody id="jobOfferTableBody" class="border-0">
+                  <tbody id="jobOfferTableBody" class="border-0 fs-14">
                     <!-- 동적 생성 -->
                   </tbody>
                 </table>
@@ -288,11 +294,11 @@ document.getElementById('job-offer').addEventListener('click', function () {
         ${user.email}
       </td>
       <td style="position: relative;">
-        <input type="text" class="form-control job-input" name="jobInput" placeholder="직무 입력" autocomplete="off">
+        <input type="text" class="form-control job-input  fs-14" name="jobInput" placeholder="직무 입력" autocomplete="off">
         <div class="job-suggestion-box list-group" style="position:absolute;top:100%;left:0;width:100%;z-index:1000;display:none;"></div>
       </td>
       <td>
-        <select class="form-select template-select" name="template">
+        <select class="form-select template-select fs-14" name="template">
           <option value="">템플릿 선택</option>
           ${mailTemplates
             .map(
@@ -366,6 +372,7 @@ document.getElementById('job-offer').addEventListener('click', function () {
     });
 
     console.log('입사 제안 데이터:', payload);
+    showLoading();
     axios
       .post('/ajax/company/talentpool/joboffer', payload)
       .then(() => {
@@ -377,7 +384,10 @@ document.getElementById('job-offer').addEventListener('click', function () {
       })
       .catch(() => {
         alert('메일 발송 중 오류가 발생했습니다.');
-      });
+      })
+			.finally(() => {
+			  hideLoading();
+			});
   };
 });
 

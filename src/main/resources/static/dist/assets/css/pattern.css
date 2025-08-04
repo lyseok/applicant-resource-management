@@ -653,7 +653,7 @@ textarea.Invalid {border-color:var(--coral110)}
 .sri_btn_ml:disabled:hover span {background:none}
 .sri_btn_md {overflow:hidden;margin:0;padding:0;width:106px;height:32px;border:0;box-sizing:border-box;text-align:center;vertical-align:top;cursor:pointer}
 .sri_btn_md span {display:inline-block;width:104px;height:30px;border:1px solid var(--gray80);border-radius:4px;color:var(--gray100);font-size:14px !important;line-height:28px;background:var(--white)}
-.sri_btn_md span.sri_btn_immediately,.sri_btn_md span.sri_btn_recruitin_apply {position:relative;border:1px solid var(--coral110);color:var(--coral110)}
+.sri_btn_md span.sri_btn_immediately,.sri_btn_md span.sri_btn_recruitin_apply {position:relative;border:1px solid var(--violet80);color:var(--violet80)}
 .sri_btn_md span.sri_btn_expired_apply {background-color:var(--gray20);border:1px solid var(--gray40);color:var(--gray50)}
 .sri_btn_md:hover span {background:var(--gray20)}
 .sri_btn_md:hover span.sri_btn_immediately {background:var(--coral20)}

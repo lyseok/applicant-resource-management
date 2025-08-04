@@ -50,7 +50,40 @@
 					<!-- **fieldset 내부에 form:form 시작** -->
 					<form:form modelAttribute="company" method="post">
 						<h3 class="tit_join_member"><span id="fillCorpInfo1">기업회원</span> <span id="fillCorpInfo2">가입</span></h3>
-
+						
+						
+						 
+						<div class="join_silder mb-3">								
+						  <!-- Swiper -->
+						  <div class="swiper overflow-hidden test">
+						    <div class="swiper-wrapper text-center" style="color:#212529;">
+						      <div class="swiper-slide">띹잡에서 다양한 채용 기회를 얻으세요</div>
+						      <div class="swiper-slide">프로젝트를 통한 자기개발을 통해 가치를 높이고 성장해 보세요</div>
+						      <div class="swiper-slide">나의 온라인 사수, 띹잡</div>
+						      <div class="swiper-slide">프로젝트를 통해 학습한 역량을 펼쳐보세요</div>
+						      <div class="swiper-slide">나의 커리어 메이트, 띹잡</div>
+						    </div>
+						  </div>
+						  <!-- Initialize Swiper -->
+						  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>						  
+						  <script>
+						    var joinSlider = new Swiper(".join_silder .swiper", {
+						      slidesPerView: 1,
+						      spaceBetween: 30,
+						      loop: true,
+						      allowTouchMove: false,
+					        breakpointsInverse: true,
+					        centeredSlides: true,
+				      		speed : 3000,
+					        autoplay: {
+				            delay: 2500,
+				            disableOnInteraction: false,
+				          },
+						    });
+						  </script>
+						</div>
+						
+						
 						<div class="write_base w100p">
 							<!-- 기업명 -->
 							<div class="item">
@@ -78,7 +111,7 @@
 						</div>
 
 						<!-- 기업정보 입력 영역 (사업자 검증 후 표시) -->
-						<div id="area_input_company" style="filter:blur(2px);">
+						<div id="area_input_company" style="display:none;">
 							<div class="write_base">
 
 

@@ -77,7 +77,7 @@ function renderPage(page = currentPage) {
 									${item.FINISHYN === "Y" ? `<div class="d-inline-block bg-violet03 fs-13 px-3">공고 마감</div>`: ""}
 								</div>
 								<div class="recruit_tit">
-			          	<a class="d-block fs16 fw-bold m-0" href="/recruit_notice/${item.RECRUITMENTNO}"> ${item.RECRUITMENTTITLE}</a>     	
+			          	<a class="d-block fs16 fw-bold m-0" href="/company/recruit_notice/${item.RECRUITMENTNO}"> ${item.RECRUITMENTTITLE}</a>     	
 									<div class="d-flex align-items-center">
 										<span class="fs-14 text-muted">${item.jobCodeName || '-'}</span>
 									</div>
