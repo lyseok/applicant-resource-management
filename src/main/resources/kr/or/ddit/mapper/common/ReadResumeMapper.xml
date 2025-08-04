@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.common.ReadResumeMapper">
+	<insert id="insertReadResume">
+		INSERT INTO READ_RESUME(
+			READ_RESUME_NO
+			, COMPANY_ID
+			, RESUME_NO
+			, READ_RESUME_DATE
+		) VALUES(
+			SEQ_READ_RESUME_NO.NEXTVAL
+			, #{companyId}
+			, #{resumeNo}
+			, SYSDATE
+		)
+	</insert>
+</mapper>

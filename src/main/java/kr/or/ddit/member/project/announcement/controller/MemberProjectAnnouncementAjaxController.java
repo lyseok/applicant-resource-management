@@ -1,6 +1,7 @@
 package kr.or.ddit.member.project.announcement.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -28,8 +30,10 @@ public class MemberProjectAnnouncementAjaxController {
 	private final ErrorsUtils errorsUtils;
 	
 	@GetMapping
-	public List<PrjAnncBbsVO> getProjectBoardList() {
-		return service.prjAnncBbsList();
+	public Map<String, Object> getProjectBoardList(@RequestParam Map<String, Object> params, @RequestParam(required = false) List<String> tagList) {
+		params.put("tagList", tagList);
+		log.info("============> {}", params);
+		return service.prjAnncBbsList(params);
 	}
 	
 	@GetMapping("/my")

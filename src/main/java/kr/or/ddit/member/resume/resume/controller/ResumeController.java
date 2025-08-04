@@ -59,19 +59,33 @@ public class ResumeController {
 
 	// 개인 리스트 조회
 	@GetMapping("list")
-	public String getResumeList(Model model) {
+	public String getResumeList(
+		Model model
+		, @RequestParam(defaultValue = "1") int page
+	) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
+		int pageSize = 5;
+	    int offset = (page - 1) * pageSize;
 
-		List<Map<String, Object>> resumeList = service.readResumeList(userId);
+	    int totalCount = service.getResumeTotalCount(userId);
+	    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+	    List<Map<String, Object>> resumeList = service.getResumePagingList(userId, offset, pageSize);
+
+		// List<Map<String, Object>> resumeList = service.readResumeList(userId); 기존 이력서 목록
 		log.info("{}", resumeList);
 		model.addAttribute(MODELNAME, resumeList);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("totalCount", totalCount);
+
 		return "member/resume/mypage/resume/resumeList";
 	}
 
 	// 상세조회
 	@GetMapping("{no}")
-	public String getResumeDetail(Model model, @PathVariable String no) {
+	public String getResumeDetail(Model model, @PathVariable String no) throws JsonProcessingException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userId = authentication.getName();
 
@@ -80,7 +94,18 @@ public class ResumeController {
 		vo.setResumeNo(no);
 		ResumeVO resume = service.readResumeDetail(vo);
 		log.info("{}", resume);
+		
+		// 이력서 안에 자소서 없을경우 ( 구조 변경 전 자소서 선택되어있을 경우)
+		IntroductionVO intro = resume.getIntroduction();
+		if (intro != null) {
+			String questionList = new ObjectMapper().writeValueAsString(intro.getIntroductionQuestionList());
+			model.addAttribute("questionList", questionList);
+		} else {
+		    model.addAttribute("questionJson", "[]"); // 빈 리스트 넘김
+		}
+
 		model.addAttribute(MODELNAME, resume);
+
 		return "member/resume/mypage/resume/resumeDetail";
 	}
 	
@@ -125,16 +150,19 @@ public class ResumeController {
 		if (!bindingResult.hasErrors()) {
 			// pk가 있을경우 업데이트 처리
 			if(vo.getResumeNo() != null) {
-				int result = service.editResume(vo);
-				if(result > 0) return ResponseEntity.ok("ok");
-				else {
+				int result = service.editResume(vo, photo);
+				if(result > 0) { 
+					return ResponseEntity.ok("ok");
+				} else {
 					return ResponseEntity
-								.status(HttpStatus.INTERNAL_SERVER_ERROR)
-								.body("이력서 수정 중 오류가 발생했습니다.");
+						.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body("이력서 수정 중 오류가 발생했습니다.");
 				}
-			}				
-			service.createResume(vo);
-			return ResponseEntity.ok("ok");
+			} else {			
+				int result = service.createResumeWithPhoto(vo, photo);
+	            return ResponseEntity.ok("ok");
+
+			}
 		} else {
 			List<ResumeSaveValidError> errors = bindingResult.getFieldErrors().stream()
 					.map(error -> new ResumeSaveValidError(error.getField(), error.getDefaultMessage()))
@@ -192,6 +220,7 @@ public class ResumeController {
 	    
 	    model.addAttribute("mode", "update"); // ✅ JS에서 mode로 사용 가능
 	    model.addAttribute("resumeJson", resumeJson); // ✅ resumeFromServer로 바인딩됨
+	    model.addAttribute("resumeVO", resumeVO);
 		return "member/resume/mypage/resume/resumeForm";
 	  }
 	  

@@ -4,6 +4,7 @@
 const aboardDetail = document.querySelector("#aboardDetail");
 const acommentListContainer = document.querySelector("#acommentListContainer");
 const acommentFormContainer = document.querySelector("#acommentFormContainer");
+let userId = window.userId;
 
 //태그가 직접 들어가는 엔터를 사용해서, 위험요소 제거용
 function escapeHTML(str) {
@@ -29,8 +30,11 @@ const abhit = async function (no) {
 
 // 2
 const abno = function (no) {
+	console.log("왜 새글 등록 후 취소하면 abno를 타지?", no);
   listTitle.style.display = "none";
   aboardform.style.display = "none";
+  TypoBox_searchBar.style.display = "none";
+  document.querySelector('.PageBox').innerHTML = "";
   memTypeBtn.innerHTML = "";
   formBtn.innerHTML = "";
   aboardList.innerHTML = "";
@@ -53,53 +57,66 @@ const abno = function (no) {
     });
 };
 
+// 작성자명 매핑용 통합 API 호출
+const getUserInfo = async function(userId) {
+    let resp = await fetch(`/ajax/admin/board/admin_board/userinfo/${userId}`);
+    return await resp.json();  // { "role": "ROLE_COMPANY", "name": "네이버" }
+};
+
+// 상태코드 매핑용
+const statusMap = {
+  R: "등록",
+  U: "수정",
+  D: "삭제",
+};
+
 // 3
-const abdetail = function (rslt) {
-  let html = `
-    <div class="jv_cont jv_benefit expand">
-      <h2 class="jv_title h5">${rslt.boardTitle}</h2>
-      <div class="desc_area" style="margin: 20px 0;">
-        ${rslt.boardContent?.replaceAll("\n", "<br>")}
-      </div>
-      <div class="cont">
-        <div class="details">
-          <div class="row">
-            <dl class="col">
-              <dt>작성자</dt>
-              <dd>${rslt.userId}</dd>
-            </dl>
-            <dl class="col">
-              <dt>게시판 유형</dt>
-              <dd>${rslt.boardTypeCode}</dd>
-            </dl>
-            <dl class="col">
-              <dt>등록일시</dt>
-              <dd>${rslt.boardWriteDate ?? "-"}</dd>
-            </dl>
+const abdetail = async function (rslt) {
+    let userInfo = await getUserInfo(rslt.userId);
+    let statusText = statusMap[rslt.boardStatus] || rslt.boardStatus || "-";
+
+    let html = `
+        <div class="jv_cont jv_benefit expand">
+          <h2 class="jv_title h5">${rslt.boardTitle}</h2>
+          <div class="desc_area" style="margin: 20px 0;">
+            ${rslt.boardContent?.replaceAll("\n", "<br>")}
           </div>
-          <div class="row">
-            <dl class="col">
-              <dt>조회수</dt>
-              <dd>${rslt.boardPostHit}</dd>
-            </dl>
-            <dl class="col">
-              <dt>상태</dt>
-              <dd>${rslt.boardStatus}</dd>
-            </dl>
-            <dl class="col">
-              <dt>삭제일시</dt>
-              <dd>${rslt.boardDeleteDate ?? "-"}</dd>
-            </dl>
+          <div class="cont">
+            <div class="details">
+              <div class="row">
+                <dl class="col">
+                  <dt>작성자</dt>
+                  <dd>${userInfo.name}</dd>
+                </dl>
+                <dl class="col">
+                  <dt>게시판 유형</dt>
+                  <dd>${rslt.codeName ?? rslt.boardTypeCode}</dd>
+                </dl>
+                <dl class="col">
+                  <dt>등록일자</dt>
+                  <dd>${rslt.boardWriteDate ? rslt.boardWriteDate.substring(0, 10) : "-"}</dd>
+                </dl>
+              </div>
+              <div class="row">
+	            <dl class="col">
+	              <dt>조회수</dt>
+	              <dd>${rslt.boardPostHit}</dd>
+	            </dl>
+	            <dl class="col">
+	              <dt>상태</dt>
+	              <dd>${statusText}</dd>
+	            </dl>
+	            <dl class="col">
+	              <dt>삭제일자</dt>
+	              <dd>${rslt.boardDeleteDate ? rslt.boardDeleteDate.substring(0, 10) : "-"}</dd>
+	            </dl>
+	          </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  `;
-
-  aboardDetail.innerHTML = html;
-
-  let no = rslt.boardNo;
-  abbtn(no, rslt.boardTypeCode);
+    `;
+    aboardDetail.innerHTML = html;
+    abbtn(rslt.boardNo, rslt.boardTypeCode);
 };
 
 // 5
@@ -167,6 +184,7 @@ function aceditable(pBtn, commentNo, userId, boardNo) {
   }
 }
 
+// 답글 삭제
 const acdel = function (cno, bno) {
 
   Swal.fire({
@@ -208,55 +226,94 @@ const acdel = function (cno, bno) {
 };
 
 // 6
-const aclist = function (no) {
-  fetch(`/ajax/admin/board/admin_comment/${no}`).then((resp) => {
-    resp.json().then((rslt) => {
-      let html = `
-        <div class="Comments_root">
-          <h3 class="PoseHeading_root mb-3">
-            <span class="Typo_root Typo_primary Typo_title20"><b>답글</b></span>&nbsp;
-            <span class="Typo_root Typo_violet Typo_title20"><b>${rslt.length}</b></span>
-          </h3>
-      `;
+const aclist = async function (no) {
+  try {
+    let resp = await fetch(`/ajax/admin/board/admin_comment/${no}`);
+    let rslt = await resp.json(); // 댓글 배열
 
-      rslt.forEach((comment) => {
-        html += `
-          <div id=hjb class="CommentItem_root mb-3 p-3 border rounded">
-            <div class="CommentItem_header d-flex align-items-center mb-2">
-              <div>
-                <span class="Typo_root Typo_violet Typo_title40"><b>${comment.userId}</b></span>
-              </div>
+    // 댓글 작성자 정보 동시 요청
+    let userInfoList = await Promise.all(
+      rslt.map(comment => getUserInfo(comment.userId))  // 각 userId에 대해 { name, role } 응답
+    );
+
+    let html = `
+      <div class="Comments_root">
+        <h3 class="PoseHeading_root mb-3">
+          <span class="Typo_root Typo_primary Typo_title20"><b>답글</b></span>&nbsp;
+          <span class="Typo_root Typo_violet Typo_title20"><b>${rslt.length}</b></span>
+        </h3>
+    `;
+
+    rslt.forEach((comment, idx) => {
+      let userInfo = userInfoList[idx];
+      let statusText = statusMap[comment.boardCommentStatus] || comment.boardCommentStatus || "-";
+
+      // 역할 텍스트 매핑
+      let roleLabel = '';
+      switch (userInfo.role) {
+        case 'ROLE_USER':
+          roleLabel = '회원';
+          break;
+        case 'ROLE_COMPANY':
+          roleLabel = '기업';
+          break;
+        case 'ROLE_ADMIN':
+          roleLabel = '관리자';
+          break;
+        default:
+          roleLabel = '알수없음';
+      }
+
+      html += `
+        <div id="hjb" class="CommentItem_root mb-3 p-3 border rounded">
+          <div class="CommentItem_header d-flex align-items-center mb-2">
+            <div>
+              <span class="Typo_root Typo_violet Typo_title40"><b>${userInfo.name}</b></span>
+              <!-- <small class="Typo_root Typo_secondary Typo_label50">(${roleLabel})</small> -->
             </div>
-            <div class="CommentItem_content mb-2" id=hjg >${comment.boardCommentContent}</div>
-            <div class="CommentItem_meta Typo_root Typo_secondary Typo_label50">
-              작성일: ${comment.boardWriteDate ?? "-"} / 상태: ${comment.boardCommentStatus}
-              <input type="hidden" id="cnoHidden" value="${comment.boardCommentNo}">
-            </div>
-            <div class="mt-3">
-				      <button class="btn btn-sm btn-outline-primary" 
-				      onclick="aceditable(this,'${comment.boardCommentNo}','${comment.userId}','${comment.boardNo}')">
-				      	답글 수정모드
-				      </button>
-				      <button class="btn btn-sm btn-outline-danger" onclick="acdel('${comment.boardCommentNo}','${comment.boardNo}')">답글 삭제</button>
-			      </div>
           </div>
-        `;
-      });
-
-      html += `</div>`; // Close Comments_root
-
-      acommentListContainer.innerHTML = html;
+          <div class="CommentItem_content mb-2" id="hjg">${comment.boardCommentContent}</div>
+          <div class="CommentItem_meta Typo_root Typo_secondary Typo_label50">
+            등록일자: ${comment.boardWriteDate ? comment.boardWriteDate.substring(0, 10) : "-"} / 상태: ${statusText}
+            <input type="hidden" id="cnoHidden" value="${comment.boardCommentNo}">
+          </div>
+          <div class="mt-3">
+            <button class="btn btn-sm btn-outline-primary" 
+              onclick="aceditable(this,'${comment.boardCommentNo}','${comment.userId}','${comment.boardNo}')">
+              답글 수정모드
+            </button>
+            <button class="btn btn-sm btn-outline-danger" 
+              onclick="acdel('${comment.boardCommentNo}','${comment.boardNo}')">
+              답글 삭제
+            </button>
+          </div>
+        </div>
+      `;
     });
 
-    acform(no); // 폼 로드, 폼에서 등록시 no(boardCommentNo)가 필요하니 같이 넘김
-  });
+    html += `</div>`; // Close Comments_root
+
+    acommentListContainer.innerHTML = html;
+
+    // 댓글 작성 폼 불러오기
+    await acform(no);
+
+  } catch (error) {
+    console.error("댓글 목록 로딩 중 오류:", error);
+    acommentListContainer.innerHTML = "<p>댓글을 불러오는 중 오류가 발생했습니다.</p>";
+  }
 };
 
+
 // 7
-const acform = function (no) {
-  achtml(no);  //답글 등록 폼 html
+const acform = async function (no) {
+  await achtml(no);  // 폼이 실제로 그려질 때까지 기다림
 
   const acommentForm = document.querySelector("#acommentForm");
+  if (!acommentForm) {
+    console.error("댓글 작성 폼을 찾을 수 없습니다.");
+    return;
+  }
 
   acommentForm.onsubmit = function (e) {
     e.preventDefault();
@@ -270,85 +327,100 @@ const acform = function (no) {
       cancelButtonColor: "#d33",
       confirmButtonText: "확인",
     }).then((result) => {
+      if (result.isConfirmed) {
+        let adminComment = {
+          userId: acommentForm.userId.value,
+          boardNo: acommentForm.boardNo.value,
+          boardCommentContent: acommentForm.boardCommentContent.value
+            .split("\n")
+            .map(line => `<div>${escapeHTML(line)}</div>`)
+            .join(""),
+        };
 
-    let adminComment = {
-	  userId: acommentForm.userId.value,
-	  boardNo: acommentForm.boardNo.value,
-	  boardCommentContent: acommentForm.boardCommentContent.value
-	    .split("\n")
-	    .map(line => `<div>${escapeHTML(line)}</div>`)
-	    .join(""),
-	};
+        fetch(`/ajax/admin/board/admin_comment/${adminComment.boardNo}`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(adminComment),
+        }).then((resp) => {
+          resp.json().then((rslt) => {
+            if (rslt.ok) {
+              if (rslt.boardNo) {
+                abno(rslt.boardNo ?? "ABNO000001");
+                acommentListContainer.innerHTML = "";
+                aclist(rslt.boardCommentNo);
+              }
+            }
+          });
+        });
 
-    fetch(`/ajax/admin/board/admin_comment/${adminComment.boardNo}`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(adminComment),
-    }).then((resp) => {
-      resp.json().then((rslt) => {
-        if (rslt.ok) {
-          if (rslt.boardNo){
-            abno(rslt.boardNo ?? "ABNO000001"); //목록으로, 널일 시 기본값 부여
-            acommentListContainer.innerHTML = "";
-            aclist(rslt.boardCommentNo);
-          }
-        }
-      });
+        Swal.fire({
+          title: "답글 등록 완료!",
+          text: "답글이 등록되었습니다.",
+          icon: "success"
+        });
+      }
     });
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: "답글 등록 완료!",
-        text: "답글이 등록되었습니다.",
-        icon: "success"
-      });
-    }
-  });
- };
+  };
 };
 
+
 // 8
-const achtml = function (no) {
-  let html = `
-    <div class="CommentForm_root mt-4 p-3 border rounded">
-      <div class="CommentForm_profile d-flex align-items-center mb-3">
-        <div>
-          <span class="Typo_root Typo_violet Typo_title40"><b>${userId}</b></span>
-          <span class="Typo_root Typo_primary Typo_title40"><b>로 문의 답글 등록</b></span>
+const achtml = async function (no) {
+  try {
+    if (!userId) {
+      console.error("아이디를 찾을 수 없습니다");
+      return;
+    }
+
+    let userInfo = await getUserInfo(userId);
+
+    let html = `
+      <div class="CommentForm_root mt-4 p-3 border rounded">
+        <div class="CommentForm_profile d-flex align-items-center mb-3">
+          <div>
+            <span class="Typo_root Typo_violet Typo_title40"><b>${userInfo.name}</b></span>
+            <span class="Typo_root Typo_primary Typo_title40"><b>로 문의 답글 등록</b></span>
+          </div>
         </div>
+
+        <form id="acommentForm">
+          <input type="hidden" name="userId" value="${userId}">
+          <input type="hidden" name="boardNo" value="${no}">
+
+          <div class="FormTextarea_root mb-2">
+            <div class="FormTextarea_textareaWrap">
+              <textarea class="FormTextarea_textarea w-100" name="boardCommentContent" placeholder="답글 내용 입력..."></textarea>
+            </div>
+            <div class="FormTextarea_messageWrap d-flex justify-content-between">
+              <span class="Typo_root Typo_error Typo_label50"></span>
+              <span class="Typo_root Typo_secondaryNHM9X Typo_label50 FormTextarea_hintMessage">0/5000자</span>
+            </div>
+          </div>
+
+          <div class="CommentForm_btnWrap d-flex justify-content-end gap-2">
+            <button type="reset" class="Button_root Button_secondary Button_outlined Button_size32 Button_isRound">취소</button>
+            <button type="submit" class="Button_root Button_primary Button_filled Button_size32 Button_isRound">등록</button>
+          </div>
+        </form>
       </div>
+    `;
 
-      <form id="acommentForm">
-        <input type="hidden" name="userId" value="${userId}">
-        <input type="hidden" name="boardNo" value="${no}">
+    acommentFormContainer.innerHTML = html;
 
-        <div class="FormTextarea_root mb-2">
-          <div class="FormTextarea_textareaWrap">
-            <textarea class="FormTextarea_textarea w-100" name="boardCommentContent" placeholder="답글 내용 입력..."></textarea>
-          </div>
-          <div class="FormTextarea_messageWrap d-flex justify-content-between">
-            <span class="Typo_root Typo_error Typo_label50"></span>
-            <span class="Typo_root Typo_secondaryNHM9X Typo_label50 FormTextarea_hintMessage">0/5000자</span>
-          </div>
-        </div>
-
-        <div class="CommentForm_btnWrap d-flex justify-content-end gap-2">
-          <button type="reset" class="Button_root Button_secondary Button_outlined Button_size32 Button_isRound">취소</button>
-          <button type="submit" class="Button_root Button_primary Button_filled Button_size32 Button_isRound">등록</button>
-        </div>
-      </form>
-    </div>
-  `;
-
-  acommentFormContainer.innerHTML = html;
+  } catch (error) {
+    console.error("답글 입력폼 로딩 중 오류:", error);
+  }
 };
 
 // 상세보기->목록
 const detailToList = function (type) {
   if (type.startsWith("BRDD")) {
+	fetchData(type)
     alist(type);
   } else {
+	fetchData(type)
     alist2(type);
   }
 };
@@ -429,6 +501,7 @@ const abbtn = function (no, type) {
               if (rslt.boardTypeCode){
                 detailToList(rslt.boardTypeCode ?? "BRDD-001"); //목록으로, 널일 시 기본값 부여
                 aboardDetail.innerHTML = "";
+                detTitle.innerHTML = '';
               }
             }
           });

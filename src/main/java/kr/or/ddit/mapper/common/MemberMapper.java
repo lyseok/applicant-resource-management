@@ -1,6 +1,7 @@
 package kr.or.ddit.mapper.common;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,7 +14,11 @@ public interface MemberMapper {
 	public List<MemberVO> selectMemberList();
 	public int insertMember(MemberVO member);
 	public int updateMember(MemberVO member);
+	public int updateMemberInMyPage(MemberVO member); 
 	public int deleteMember(String userId);
+	
+	public Map<String, Object> selectMyPageInfo(String userId);
+	public int updateMainResume(MemberVO vo);
 	
 	public UserDTO selectUserWithProjects(String userId);
 	public UserDTO selectCompanyWithProjects(String userId);

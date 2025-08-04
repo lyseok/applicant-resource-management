@@ -12,4 +12,5 @@ public class CompanyDetailViewController {
 	public String companyView() {
 		return "member/common/companyDetailView/companyView";
 	}
+	
 }

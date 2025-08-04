@@ -22,17 +22,26 @@
 	margin-bottom: 32px;
 }
 
-.profile-img {
+.profile-img-wrap {
+	position:relative;
 	width: 120px;
 	height: 150px;
-	border-radius: 16px;
-	background: #f3f5fa;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-size: 36px;
 	color: #8c9aac;
-	border: 1px solid #e5e7ef;
+  border: 1px solid #d7d7d7;
+  border-radius: 2px;
+  overflow: hidden;
+  padding:5px;
+}
+
+
+.profile-img-wrap img{
+	width:100%;
+	height:100%;
+	object-fit:cover;
 }
 
 .header-info {
@@ -253,18 +262,6 @@
 	min-height: 72px;
 }
 
-.resume_detail_wrap .profile-img {
-	width: 120px;
-	height: 126px;
-	border-radius: 20px;
-	background: #f5f6fa;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 36px;
-	color: #bbc1cc;
-	border: 1px solid #e5e7ef;
-}
 
 .resume_detail_wrap .header-info .name {
 	font-size: 24px;
@@ -408,6 +405,18 @@
 .material-symbols-outlined {
 	font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 40
 }
+.resume_detail_wrap .introduction_list{
+	position:relative;
+	width:calc(50% - 1rem);
+	border-radius:10px;
+}
+.resume_detail_wrap .introduction_list .question_tit{
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    opacity: 0.3;
+    font-size: 30px;
+}
 
 .resume_ft {
 	position: fixed;
@@ -463,6 +472,8 @@
 	margin-top: 0;
 	width: auto;
 }
+
+
 
 /* 등록 폼 */
 #section-mySkillList .list-item strong{

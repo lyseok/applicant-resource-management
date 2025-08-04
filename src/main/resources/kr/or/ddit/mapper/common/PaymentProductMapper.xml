@@ -2,104 +2,131 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.PaymentProductMapper">
 
-  <insert id="insertPaymentProduct">
+	<insert id="insertPaymentProduct">
     <selectKey resultType="string" keyProperty="productNo" order="BEFORE">
-      SELECT 'PAPD' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRODUCT_NO), LENGTH('PAPD') + 1)), 0) + 1, 6, '0')
-      FROM PAYMENT_PRODUCT
+        SELECT 'PAPD' || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRODUCT_NO), LENGTH('PAPD') + 1)), 0) + 1, 6, '0')
+        FROM PAYMENT_PRODUCT
     </selectKey>
     INSERT INTO PAYMENT_PRODUCT (
-      PRODUCT_NO,
-      PRODUCT_NAME,
-      PRODUCT_TYPE,
-      PRODUCT_DETAIL,
-      PRODUCT_PRICE,
-      PRODUCT_IMG,
-      PRODUCT_PERIOD,
-      PRODUCT_STATUS
+        PRODUCT_NO,
+        PRODUCT_NAME,
+        PRODUCT_TYPE,
+        PRODUCT_DETAIL,
+        PRODUCT_PRICE,
+        PRODUCT_IMG,
+        PRODUCT_PERIOD,
+        PRODUCT_STATUS,
+        PRODUCT_LIMIT,
+        LIMIT_CYCLE
     ) VALUES (
-      #{productNo},
-      #{productName},
-      #{productType},
-      #{productDetail},
-      #{productPrice},
-      #{productImg},
-      #{productPeriod},
-      #{productStatus}
+        #{productNo},
+        #{productName},
+        #{productType},
+        #{productDetail},
+        #{productPrice},
+        #{productImg},
+        30,
+        'A',
+        <choose>
+            <when test="productType == 'Premium'">-1</when>
+            <otherwise>#{productLimit}</otherwise>
+        </choose>,
+        'MONTH'
     )
-  </insert>
+</insert>
 
-  <select id="selectPaymentProductList" resultType="PaymentProductVO">
-    SELECT 
-      PRODUCT_NO,
-      PRODUCT_NAME,
-      PRODUCT_TYPE,
-      PRODUCT_DETAIL,
-      PRODUCT_PRICE,
-      PRODUCT_IMG,
-      PRODUCT_PERIOD,
-      PRODUCT_STATUS
-    FROM PAYMENT_PRODUCT
-    ORDER BY PRODUCT_NAME ASC
-  </select>
 
-  <select id="selectPaymentProductListByPk" resultType="PaymentProductVO">
-    SELECT 
-      PRODUCT_NO,
-      PRODUCT_NAME,
-      PRODUCT_TYPE,
-      PRODUCT_DETAIL,
-      PRODUCT_PRICE,
-      PRODUCT_IMG,
-      PRODUCT_PERIOD,
-      PRODUCT_STATUS
-    FROM PAYMENT_PRODUCT
-    WHERE PRODUCT_NO = #{productNo}
-  </select>
+	
 
-  <select id="selectPaymentProductByPk" resultType="PaymentProductVO">
-    SELECT 
-      PRODUCT_NO,
-      PRODUCT_NAME,
-      PRODUCT_TYPE,
-      PRODUCT_DETAIL,
-      PRODUCT_PRICE,
-      PRODUCT_IMG,
-      PRODUCT_PERIOD,
-      PRODUCT_STATUS
-    FROM PAYMENT_PRODUCT
-    WHERE PRODUCT_NO = #{productNo}
-  </select>
+	<!-- 상품 목록 조회 -->
+	<select id="selectPaymentProductList"
+		resultType="PaymentProductVO">
+		SELECT
+		PRODUCT_NO,
+		PRODUCT_NAME,
+		PRODUCT_TYPE,
+		PRODUCT_DETAIL,
+		PRODUCT_PRICE,
+		PRODUCT_IMG,
+		PRODUCT_PERIOD,
+		PRODUCT_STATUS,
+		PRODUCT_LIMIT,  
+		LIMIT_CYCLE    
+		FROM PAYMENT_PRODUCT
+		ORDER BY PRODUCT_NAME ASC
+	</select>
 
-  <select id="selectPaymentProductByName" resultType="PaymentProductVO">
-    SELECT 
-      PRODUCT_NO,
-      PRODUCT_NAME,
-      PRODUCT_TYPE,
-      PRODUCT_DETAIL,
-      PRODUCT_PRICE,
-      PRODUCT_IMG,
-      PRODUCT_PERIOD,
-      PRODUCT_STATUS
-    FROM PAYMENT_PRODUCT
-    WHERE PRODUCT_NAME = #{productName}
-  </select>
+	<!-- 상품 조회 (기본키로) -->
+	<select id="selectPaymentProductListByPk"
+		resultType="PaymentProductVO">
+		SELECT
+		PRODUCT_NO,
+		PRODUCT_NAME,
+		PRODUCT_TYPE,
+		PRODUCT_DETAIL,
+		PRODUCT_PRICE,
+		PRODUCT_IMG,
+		PRODUCT_PERIOD,
+		PRODUCT_STATUS,
+		PRODUCT_LIMIT,  
+		LIMIT_CYCLE    
+		FROM PAYMENT_PRODUCT
+		WHERE PRODUCT_NO = #{productNo}
+	</select>
 
-  <update id="updatePaymentProduct">
-    UPDATE PAYMENT_PRODUCT
-    SET 
-      PRODUCT_NAME = #{productName},
-      PRODUCT_DETAIL = #{productDetail},
-      PRODUCT_PRICE = #{productPrice},
-      PRODUCT_IMG = #{productImg},
-      PRODUCT_PERIOD = #{productPeriod},
-      PRODUCT_STATUS = #{productStatus},
-      PRODUCT_TYPE = #{productType}
-    WHERE PRODUCT_NO = #{productNo}
-  </update>
+	<select id="selectPaymentProductByPk"
+		resultType="PaymentProductVO">
+		SELECT
+		PRODUCT_NO,
+		PRODUCT_NAME,
+		PRODUCT_TYPE,
+		PRODUCT_DETAIL,
+		PRODUCT_PRICE,
+		PRODUCT_IMG,
+		PRODUCT_PERIOD,
+		PRODUCT_STATUS,
+		PRODUCT_LIMIT,  
+		LIMIT_CYCLE    
+		FROM PAYMENT_PRODUCT
+		WHERE PRODUCT_NO = #{productNo}
+	</select>
 
-  <delete id="deletePaymentProduct">
-    DELETE FROM PAYMENT_PRODUCT
-    WHERE PRODUCT_NO = #{productNo}
-  </delete>
+	<!-- 상품명으로 상품 조회 -->
+	<select id="selectPaymentProductByName"
+		resultType="PaymentProductVO">
+		SELECT
+		PRODUCT_NO,
+		PRODUCT_NAME,
+		PRODUCT_TYPE,
+		PRODUCT_DETAIL,
+		PRODUCT_PRICE,
+		PRODUCT_IMG,
+		PRODUCT_PERIOD,
+		PRODUCT_STATUS,
+		PRODUCT_LIMIT,  
+		LIMIT_CYCLE    
+		FROM PAYMENT_PRODUCT
+		WHERE PRODUCT_NAME = #{productName}
+	</select>
+
+	<!-- 상품 수정 -->
+	<update id="updatePaymentProduct">
+		UPDATE PAYMENT_PRODUCT
+		SET
+		PRODUCT_NAME = #{productName},
+		PRODUCT_DETAIL = #{productDetail},
+		PRODUCT_PRICE = #{productPrice},
+		PRODUCT_IMG = #{productImg},
+		PRODUCT_PERIOD = #{productPeriod},
+		PRODUCT_STATUS = #{productStatus},
+		PRODUCT_LIMIT = #{productLimit} 
+		WHERE PRODUCT_NO = #{productNo}
+	</update>
+
+	<!-- 상품 삭제 -->
+	<delete id="deletePaymentProduct">
+		DELETE FROM PAYMENT_PRODUCT
+		WHERE PRODUCT_NO = #{productNo}
+	</delete>
 
 </mapper>

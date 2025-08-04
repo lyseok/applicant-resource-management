@@ -44,6 +44,62 @@
 	    JOIN USERS  B ON A.USER_ID = B.USER_ID
 	</select>
 	
+	<select id="selectMyPageInfo">
+	SELECT 
+	    m.USER_ID AS userId
+	    , m.MEM_NAME AS memName
+	    , m.MEM_EMAIL AS memEmail
+	    , m.MEM_BIR AS memBir
+	    , m.MEM_TEL AS memTel
+	    , m.MEM_ADD1 AS memAdd1
+	    , m.MEM_ADD2 AS memAdd2
+	    , m.MEM_IMG AS memImg
+	    , m.RESUME_NO AS resumeNo
+        , (SELECT RESUME_NAME FROM RESUME WHERE m.RESUME_NO = RESUME_NO) AS resumeName
+	    , (SELECT JOB_NAME FROM JOB WHERE m.PREFERRED_POSITION = JOB_CODE) AS preferredPosition
+	    , m.PREFERRED_POSITION AS prefferedPositionCode
+	    , m.MEM_GENDER AS memGender
+	    , (SELECT COUNT(PROPOSAL_CODE) FROM PROPOSAL WHERE USER_ID = m.USER_ID) AS COUNT_PROPOSAL
+	    , (SELECT COUNT(SCRAB_USER_DATE) FROM SCRAB_USER WHERE USER_ID = m.USER_ID) AS COUNT_SCRAB
+	    , (SELECT COUNT(READ_RESUME_NO) FROM READ_RESUME WHERE RESUME_NO = m.RESUME_NO) AS COUNT_READ_RESUME
+	    , (SELECT COUNT(PRJ_ANNC_NO) FROM PRJ_ANNC_BBS WHERE USER_ID = m.USER_ID) AS COUNT_PRJ_ANNC
+	    
+	    ,(SELECT COUNT(APPLICANT_ID) FROM APPLICANT WHERE USER_ID = m.USER_ID) AS COUNT_APPLICATED
+	    ,(SELECT COUNT(*) 
+	     FROM APPLICANT_RECORD ar
+	     JOIN APPLICANT a ON ar.APPLICANT_ID = a.APPLICANT_ID
+	     JOIN RECRUIT_PROCESS rp ON ar.RECRUIT_PROCESS_NO = rp.RECRUIT_PROCESS_NO
+	     WHERE a.USER_ID = m.USER_ID
+	       AND rp.RECRUIT_PROCESS_TYPE = 'RERP-003'
+	       AND ar.STEP_PASS_YN = 'Y'
+	    ) AS COUNT_PASS_RERP003
+	   
+	    , -- 2) PASSER 테이블 합격 개수
+	    (SELECT COUNT(*) 
+	     FROM PASSER p
+	     JOIN APPLICANT a ON p.APPLICANT_ID = a.APPLICANT_ID
+	     WHERE a.USER_ID = m.USER_ID
+	    ) AS COUNT_PASSER
+	    
+	    , -- 3) FAILED_YN = 'Y' 개수
+	    (SELECT COUNT(*)
+	     FROM APPLICANT_RECORD ar
+	     JOIN APPLICANT a ON ar.APPLICANT_ID = a.APPLICANT_ID
+	     WHERE a.USER_ID = m.USER_ID
+	       AND ar.FAILED_YN = 'Y'
+	    ) AS COUNT_FAILED
+        , (
+            SELECT cc.CODE_NAME
+            FROM CAREER c
+            JOIN RESUME r ON c.RESUME_NO = r.RESUME_NO
+            JOIN CMN_CODE cc ON cc.CODE_DETAIL_NO = c.CAREER_YEAR
+            WHERE r.RESUME_NO = m.RESUME_NO
+            FETCH FIRST 1 ROWS ONLY
+        ) AS CAREER_YEAR_NAME
+	FROM MEMBER m
+	WHERE m.USER_ID = #{userId}
+	</select>
+	
 	<insert id="insertMember" parameterType="MemberVO">
 		INSERT INTO MEMBER(
 			USER_ID
@@ -54,6 +110,7 @@
 			, MEM_ADD1
 			, MEM_ADD2
 			, MEM_IMG
+			, MEM_GENDER
 		) VALUES(
 			#{userId}
 			, #{memName}
@@ -63,6 +120,7 @@
 		 	, #{memAdd1}
 		 	, #{memAdd2}
 		 	, #{memImg}
+		 	, #{memGender}
 		)
 	</insert>
 	
@@ -77,6 +135,25 @@
 			, MEM_ADD1 = #{memAdd1}
 			, MEM_ADD2 = #{memAdd2}
 			, MEM_IMG = #{memImg}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="updateMemberInMyPage">
+		UPDATE MEMBER
+		SET 
+			MEM_NAME = #{memName}
+			, MEM_BIR = #{memBir}
+			, MEM_TEL = #{memTel}
+			, MEM_ADD1 = #{memAdd1}
+			, MEM_ADD2 = #{memAdd2}
+			, PREFERRED_POSITION = #{preferredPosition}
+			, MEM_IMG = #{memImg}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="updateMainResume">
+		UPDATE MEMBER
+		SET RESUME_NO = #{resumeNo}
 		WHERE USER_ID = #{userId}
 	</update>
 	

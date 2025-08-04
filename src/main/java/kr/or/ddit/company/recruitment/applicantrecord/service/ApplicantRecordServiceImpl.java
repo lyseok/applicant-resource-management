@@ -70,14 +70,6 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 					applMapper.insertApplicantRecord(applVo);
 				}
 				
-			try {
-				String subject = String.format("[%s차 전형] 합격을 축하드립니다", vo.getRecruitProcessStep());
-				String body = vo.getApplicantName() + "님, " + subject + "!\n다음 단계도 잘 준비해 주세요";
-				emailUtils.sendEmail(email, subject, body);
-			} catch(MessagingException e) {
-				log.warn("중간 합격자 메일 전송 실패 : {}", email, e);
-			}
-				
 			}else {
 				PasserVO pass = new PasserVO();
 				pass.setApplicantId(vo.getApplicantId());
@@ -133,6 +125,21 @@ public class ApplicantRecordServiceImpl implements ApplicantRecordService {
 	public void updateHireDate(PasserVO vo) {
 		passMapper.updatePasser(vo);
 		
+	}
+
+	@Override
+	public void updateFailed(ApplicantRecordVO vo) {
+		applMapper.updateApplicantFail(vo);
+		String step = vo.getRecruitProcessStep();
+		String email = applicantMapper.selectApplicantMail(vo.getApplicantId());
+		
+		try {
+			String subject = String.format("[%s차 전형] 에 불합격 하셨습니다.", step);
+			String body = vo.getApplicantName() + "님, " + subject + "!\n좋은 인연으로 다시 뵙으면 합니다.";
+			emailUtils.sendEmail(email, subject, body);
+		} catch(MessagingException e) {
+			log.warn("불합격자 메일 전송 실패 : {}", email, e);
+		}
 	}
 
 }

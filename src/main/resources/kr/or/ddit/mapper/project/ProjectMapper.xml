@@ -95,6 +95,7 @@
     INNER JOIN PRJ_MEM M ON P.PRJ_NO = M.PRJ_NO
     LEFT JOIN CHATROOM C ON P.PRJ_NO = C.PRJ_NO
     WHERE M.USER_ID = #{userId}
+    AND P.DELETE_DATE IS NULL
     ORDER BY P.CREATE_DATE DESC
 </select>
 
@@ -144,6 +145,19 @@
 	    p.prj_no = #{prjNo}
 </select>
 
+<select id="selectPrjectData">
+SELECT 
+    COUNT(CASE WHEN DELETE_DATE IS NULL THEN 1 END) AS TOTAL_PROJECTS,
+    COUNT(CASE WHEN DELETE_DATE IS NULL AND FINISH_DATE IS NULL THEN 1 END) AS IN_PROGRESS_PROJECTS,
+    COUNT(CASE WHEN DELETE_DATE IS NULL AND FINISH_DATE IS NOT NULL THEN 1 END) AS FINISHED_PROJECTS
+FROM (
+    SELECT DISTINCT p.PRJ_NO, p.DELETE_DATE, p.FINISH_DATE
+    FROM PROJECT p
+    LEFT JOIN PRJ_MEM pm ON p.PRJ_NO = pm.PRJ_NO
+    WHERE (p.USER_ID = #{userId} OR pm.USER_ID = #{userId})
+) t
+</select>
+
 <update id="updateProject" parameterType="ProjectVO">
     UPDATE PROJECT
 	  SET
@@ -156,4 +170,29 @@
 	  WHERE PRJ_NO = #{prjNo}
 </update>
 
+<insert id="createProject">
+	<selectKey resultType="string" keyProperty="prjNo" order="BEFORE">
+	    SELECT
+	        'PRJT'||
+	        LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PRJ_NO), LENGTH('PROJECT' ) + 1)), 0) + 1, 6, '0')
+	    FROM PROJECT
+	</selectKey>
+	INSERT INTO PROJECT (
+		PRJ_NO
+		, USER_ID
+		, PROJECT_BOARD_NO
+		, PROJECT_NAME
+		, PROJECT_STATUS
+		, CREATE_DATE
+		, PROJECT_COLOR
+	) VALUES (
+		#{prjNo}
+		, #{userId}
+		, #{projectBoardNo}
+		, #{projectName}
+		, 'PROG-001'
+		, SYSDATE
+		, #{projectColor}
+	)
+</insert>
 </mapper>

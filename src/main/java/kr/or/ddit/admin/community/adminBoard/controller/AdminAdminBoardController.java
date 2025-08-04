@@ -60,13 +60,12 @@ public class AdminAdminBoardController { // 동기 컨트롤러는 페이지 이
 	// 유형별 게시글 목록조회
 	@GetMapping  //http://localhost/admin/admin_board?type=UFAQ-U5
 	public String aboardType(
-		String type
+		@RequestParam String type
 		, Model model			
 	) {
 		List<AdminBoardVO> aboardList = service.readAdminBoardListByType(type);
 		model.addAttribute("aboardList", aboardList);
 		model.addAttribute("type", type);
-		log.info("🔥 넘어온 type: {}", type);
 
 		model.addAttribute("boardCss", true);
 		model.addAttribute("searchBar", true);

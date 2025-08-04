@@ -7,12 +7,35 @@
 <title>이력서 상세페이지</title>
 <link rel="stylesheet" href="/css/member/resume/resume.css">
 <script type="text/javascript" src="/js/member/resume/resumeList.js" defer></script>
+<c:if test="${not empty questionList }">
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+		  const questionList = ${questionList };
+		  const contentAreas = document.querySelectorAll(".introduction_content_area");
+		  
+		  questionList.forEach((list, i) =>{
+			  const raw = list.content || "";
+			    const html = raw.replace(/\n/g, "<br/>");
+			    if (contentAreas[i]) {
+			      contentAreas[i].innerHTML = html;
+			    }
+		  })
+		})
+	</script>
+</c:if>
 </head>
 <body>
 	<div class="resume-main-wrap resume_detail_wrap">
 		<!-- Header -->
 		<div class="resume-header">
-			<div class="profile-img">🙍‍♂️</div>
+			<div class="profile-img-wrap">
+				<c:if test="${not empty resumeList.photo }">
+					<img src="${resumeList.photo }" alt="" class="profile-img">
+				</c:if>
+				<c:if test="${empty resumeList.photo }">
+					<img src="https://placehold.co/120x150?text=No Image" alt="" class="profile-img ddit-bg">
+				</c:if>
+			</div>
 			<div class="header-info">
 				<div class="d-flex align-items-center">
 					<span class="name lh1">${resumeList.userName }</span> <span
@@ -26,8 +49,8 @@
 				<div class="address d-flex">
 					<i class='bx  bx-home-alt'></i> ${resumeList.address }
 				</div>
-				<c:if test="${not empty resumeList.resumeSubmitYn}">
-					<div class="info-badge">대표 이력서 번호 ${resumeList.resumeNo }</div>
+				<c:if test="${resumeList.mainResumeNo eq resumeList.resumeNo}">
+					<div class="info-badge">대표 이력서</div>
 				</c:if>
 			</div>
 		</div>
@@ -74,16 +97,28 @@
 			<div class="section">
 				<div class="section-title">자기소개서</div>
 				<ul class="section-list">
-					<li>
+					<li class="w100p">
 						<div class="list-content">
-							<b class="h5 fw-bold text-dark">${resumeList.introduction.introductionName }</b>
-							<!-- 제목 -->
-							<span class="text-secondary fs-14 ms-2">
-								${resumeList.introduction.introductionCreateDate}</span>
-							<div class="my-3">${resumeList.introduction.introductionQuestion }</div>
-							<!-- 문항 -->
-							<div>${resumeList.introduction.introductionContent }</div>
-							<!-- 내용 -->
+							<div class="tit_wrap mb-3">
+								<b class="h5 fw-bold text-dark">${resumeList.introduction.introductionName }</b>
+								<!-- 제목 -->
+								<span class="text-secondary fs-14 ms-2">${resumeList.introduction.introductionCreateDate}</span>
+							</div>
+							<div class="d-flex flex-wrap gap-3">
+								<c:forEach items="${resumeList.introduction.introductionQuestionList}" var="question" varStatus="i">
+									<div class=" p-4 border rounded introduction_list">
+										<!-- 문항 -->
+										<div class="mb-3">
+											<b class="d-block question_tit">0${i.index + 1}</b>
+											<b>${question.question }</b>
+										</div>
+										<!-- 내용 -->
+										<div class="introduction_content_area" data-content="${i.index + 1}">
+											${question.content }
+										</div>
+									</div>
+								</c:forEach>
+							</div>
 						</div>
 					</li>
 				</ul>

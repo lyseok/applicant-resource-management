@@ -2,64 +2,71 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.mapper.common.ScrabCompanyMapper">
 
-	<resultMap type="ScrabCompanyVO" id="scrabCompanyMap" autoMapping="true">
-		<id property="userId" column="USER_ID"/>		
-		<association property="users" javaType="UsersVO" autoMapping="true"/>
-		<association property="company" javaType="CompanyVO" autoMapping="true"/>
-	</resultMap>
-
-	<select id="selectScrabCompanyByPk" resultMap="scrabCompanyMap">
-		SELECT 
-			  USER_ID
-			, COMPANY_ID
-			, SCRAB_COMPANY_DATE
-		FROM SCRAB_COMPANY NATURAL JOIN USERS
-        WHERE USER_ID = #{userId}
-        AND COMPANY_ID = #{companyId}
+	<select id="selectScrabCompanyList">
+		SELECT
+		USER_ID
+		, COMPANY_ID
+		, SCRAB_COMPANY_DATE
+		FROM
+		SCRAB_COMPANY
 	</select>
 
-	<select id="selectScrabCompanyList" resultMap="scrabCompanyMap">
-		SELECT 
-			A.BOARD_NO
-			, A.USER_ID
-			, A.BOARD_TYPE_CODE
-			, A.BOARD_TITLE
-			, A.BOARD_CONTENT
-			, A.BOARD_STATUS
-		FROM ADMIN_BOARD A
-		INNER JOIN USERS U 
-			ON A.USER_ID = U.USER_ID
-		WHERE A.USER_ID = #{userId}
+	<!-- <select id="selectMyScrabCompanyList"> SELECT USER_ID , COMPANY_ID 
+		, SCRAB_COMPANY_DATE FROM SCRAB_COMPANY WHERE USER_ID = #{userId} </select> -->
+
+	<resultMap id="ScrabCompanyMap" type="ScrabCompanyVO">
+		<id property="userId" column="USER_ID" />
+		<result property="companyId" column="COMPANY_ID" />
+		<result property="scrabCompanyDate" column="SCRAB_COMPANY_DATE" />
+		<association property="company"
+			javaType="kr.or.ddit.vo.common.CompanyVO">
+			<result property="comName" column="COM_NAME" />
+			<result property="comInfo" column="COM_INFO" />
+		</association>
+	</resultMap>
+
+	<select id="selectMyScrabCompanyList"
+		resultMap="ScrabCompanyMap">
+		SELECT
+		sc.COMPANY_ID,
+		sc.SCRAB_COMPANY_DATE,
+		c.COM_NAME,
+		c.COM_INFO
+		FROM
+		SCRAB_COMPANY sc
+		JOIN COMPANY c ON sc.COMPANY_ID = c.USER_ID
+		WHERE
+		sc.USER_ID = #{userId}
+		ORDER BY
+		sc.SCRAB_COMPANY_DATE DESC
+	</select>
+
+
+	<select id="checkMyCompanyScrab">
+		SELECT
+		COUNT(SCRAB_COMPANY_DATE)
+		FROM SCRAB_COMPANY
+		WHERE USER_ID = #{userId}
+		AND COMPANY_ID =
+		#{companyId}
 	</select>
 
 	<insert id="insertScrabCompany">
 		INSERT INTO SCRAB_COMPANY (
-			  USER_ID
-			, COMPANY_ID
-			, SCRAB_COMPANY_DATE
+		USER_ID
+		, COMPANY_ID
+		,
+		SCRAB_COMPANY_DATE
 		) VALUES (
-			  #{userId}
-			, #{companyId}
-			, SYSDATE
+		#{userId}
+		, #{companyId}
+		, SYSDATE
 		)
 	</insert>
 
-	<update id="updateScrabCompany">
-		UPDATE SCRAB_COMPANY
-		SET
-			SCRAB_COMPANY_DATE = SYSDATE
-		WHERE 
-			USER_ID = #{userId}
-			AND 
-			COMPANY_ID = #{companyId}
-	</update>
-
 	<delete id="deleteScrabCompany">
 		DELETE FROM SCRAB_COMPANY
-		WHERE 
-			USER_ID = #{userId}
-			AND 
-			COMPANY_ID = #{companyId}
+		WHERE USER_ID = #{userId}
+		AND COMPANY_ID = #{companyId}
 	</delete>
-
 </mapper>

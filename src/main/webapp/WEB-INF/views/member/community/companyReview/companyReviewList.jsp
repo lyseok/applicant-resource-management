@@ -1,136 +1,171 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
 <head>
-<meta charset="UTF-8">
-	<title>기업리뷰</title>
-	 <style>
-    .career-card {
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color .2s, background-color .2s;
-    }
-    .career-card.active {
-      border-color: #6f42c1;           
-      background-color: #f3e8ff;      
-    }
-    #submitBtn:disabled {
-      opacity: .5;
-      cursor: not-allowed;
-    }
-  </style>
+<title>기업 리뷰</title>
+<script src="/js/member/community/companyView/companyReviewList.js"></script>
+<style>
+/* 결과 리스트 */
+.list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display:flex;
+	gap:30px;
+	flex-wrap:wrap;
+}
+
+.item {
+	padding: 2.5rem 1rem;
+	flex-basis:calc((100% - 30px) / 2);
+	border:1px solid var(--gray40);
+	border-radius:10px;
+	cursor:pointer;
+}
+.item:hover{
+	background:var(--gray20);
+}
+
+.info {
+	display: flex;
+	align-items: center;
+	gap: 30px;
+}
+
+.logo {
+	width: 70px;
+	height: 70px;
+	object-fit: contain;
+}
+
+.text {
+	display: flex;
+	flex-direction: column;
+}
+
+.name {
+	font-weight: bold;
+	font-size: 1.1rem;
+}
+
+.meta {
+	font-size: .9rem;
+	color: var(--gray500);
+	margin-top: .25rem;
+}
+
+.salary {
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: var(--gray700);
+}
+
+
+</style>
 </head>
 <body>
+	<div class="container">
+
+		<p class="h1 mb-3 fw-bold">기업 리뷰</p>
+
+		<!-- 제목 -->
+		<div class="title fs-14" id="company-title">
+			<div style="display: flex; align-items: center; gap: 0.5rem;">
+
+			</div>
+
+		</div>
 
 
-
-<nav class="navbar navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand">리뷰가 궁금한 기업을 검색해보세요!</a>
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="기업명" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">검색</button>
-    </form>
-  </div>
-</nav>
-  
-	<ul>
-	  <c:forEach items="${companyList}" var="company">
-	    <li style="list-style:none; margin-bottom:10px;">
-	      <a  href="<c:url value='/member/company_review/detail/${company.userId}'/>"
-	         style="text-decoration:none; color:inherit;">
-	        <div class="card">
-	          <div class="card-body">
-	            <h5 class="card-title">${company.comName}의 리뷰</h5>
-	            <p class="card-text">${company.comInfo}</p>
-	          </div>
-	        </div>
-	      </a>
-	    </li>
-	  </c:forEach>
-  </ul>
-	
-	
-	
-
-<c:url var="myReviewUrl" value="/member/company_review/my_review" />
-	<div class="card">
-	  <div class="card-body">
-	      <button type="button" class="btn btn_violet" data-bs-toggle="modal" data-bs-target="#resumeModal">
-	        리뷰 등록하기
-	      </button>
-	       <button type="button">
-	        <a class="btn btn_gray_line" href="${myReviewUrl }">My 리뷰 </a>
-	      </button>
-	  </div>
-	</div>
-	
-
-    
-<div class="modal fade" id="resumeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="resumeModalLabel">근무했던 기업 중 하나를 선택해주세요</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-     	 <div class="modal-body">
-			<div>
-				  <c:forEach items="${resumes}" var="resume">
-				    <c:forEach items="${resume.careerList}" var="career">
-				      <c:if test="${not empty career.careerNo and not empty career.company}">
-				        <div class="card mb-2 career-card" data-careerno="${career.careerNo }">
-				          <div class="card-body">
-				            	<strong>${career.company.comName}</strong><br>
-				            	${career.department }<br>
-				            	${career.responsibility }<br>
-				            	${career.startWorkDate } - ${career.retireDate }
-				          </div>
-				        </div>
-				      </c:if>
-				    </c:forEach>
-				  </c:forEach>
+		<!-- 탭 + 검색창 -->
+		<div class="Post_filter">
+			<div class="Post_category d-flex align-items-center justify-content-between overflow-visible">
+				<div class="d-flex">
+					<div class="Post_categoryItem">
+						<input id="status_all" type="radio" value="status_all" name="category" checked="">
+						<label for="status_all"><span>전체</span></label>
+					</div>
+					<div class="Post_categoryItem">
+						<input id="status_n" type="radio" value="status_n" name="category">
+						<label for="status_n"><span>산업별</span></label>
+					</div>
+					<div class="Post_categoryItem">
+						<input id="status_y" type="radio" value="status_y" name="category">
+						<label for="status_y"><span>기업규모별 </span></label>
+					</div>
+					<select class="Select_root Select_size38 Select_round w140" name="selectName" id="sortSelect">
+					     <option value="name">기업명 순</option>
+					    <option value="highScore">평점 높은 순</option>
+					    <option value="lowScore">평점 낮은 순</option>
+					</select>
+				
 				</div>
-         </div>
-  
-  
-  <c:url var="formUrl" value="/member/company_review/form" />
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        <button id = "submitBtn" type = "button" class = "btn btn_violet">리뷰 등록하러가기 </button>
-      </div>
-    </div>
-  </div>
-</div>
+				
+				<div class="d-flex gap-2">				
+					<!-- 검색창 -->
+					<div class="TypoBox searchBar">
+						<div class="searchBarWrap">
+							<label class="searchBarLabel" for="listKeyword">검색어</label>
+							<input type="text" id="listKeyword" class="searchBarInput" placeholder="회사명으로 리뷰 검색" maxlength="24" autocomplete="off" value="">
+						</div>
+						
+						<a href="javascript:void(0)" class="searchBarBtn">
+							<span class="material-symbols-outlined">search</span>
+						</a>
+					</div>
+					
+					<!-- 글쓰기 버튼 -->					
+					<button type="button" class="btn btn_violet btn-primary" id="review_form_btn">리뷰등록</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 결과 리스트 -->
+		<ul class="list" id="company-list">
+		</ul>
+
+
+
+		<!-- 페이지네이션 -->
+		<div class="PageBox">
+			<!-- <button data-page="2" class="BtnType SizeS BtnPrev">이전</button> -->
+			<span class="BtnType SizeS active">1</span>
+			<button class="BtnType SizeS page" data-page="2">2</button>
+			<button data-page="2" class="BtnType SizeS BtnNext">다음</button>
+		</div>
+
+
+
+
+	</div>
+
+
 	
-
- <script>
-    (function() {
-      const cards    = document.querySelectorAll('.career-card');
-      const submit   = document.getElementById('submitBtn');
-      const baseUrl  = '${formUrl}';
-      let selectedNo = null;
-
-      cards.forEach(card => {
-        card.addEventListener('click', () => {
-
-          cards.forEach(c => c.classList.remove('active'));
-   
-          card.classList.add('active');
-          
-          selectedNo = card.dataset.careerno;
-          submit.disabled = false;
-        });
-      });
-
-      submit.addEventListener('click', () => {
-        if (selectedNo) {
-      
-          window.location.href = baseUrl + "/" +  encodeURIComponent(selectedNo);
-        }
-      });
-    })();
-  </script>
-
+  
+	<div class="modal fade" id="careerModal" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered"
+			style="max-width: 450px;">
+			<div class="modal-content">
+				<div class="modal-header bg-white">
+					<h5 class="modal-title fs-5 fw-bold text-success" id="recruitTitle">리뷰 작성 가능한 경력목록</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body  py-4 px-4">
+					<div class="">
+						<div
+							class="d-flex justify-content-between align-items-center mb-2">
+							<label class="form-label fw-semibold fs-14 m-0">선택된 경력</label>
+							<button type="button" class="btn btn_violet_line fs-13 fw-semibold" id="btnShowResumeList">경력 선택/변경</button>
+						</div>
+						<div id="selectedCareerCard"></div>
+						<div id="careerList" class="mt-2 overflow-auto" style="display: none; max-height: 220px;"></div>
+					</div>
+				</div>
+				<!-- 하단 버튼 -->
+				<div class="modal-footer bg-white">
+					<button id="btnSaveCareer" class="btn btn_violet w100p justify-content-center">등록</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>

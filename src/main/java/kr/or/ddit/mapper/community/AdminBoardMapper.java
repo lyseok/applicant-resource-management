@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import kr.or.ddit.vo.common.CmnCodeGroupVO;
 import kr.or.ddit.vo.common.CmnCodeVO;
 import kr.or.ddit.vo.community.AdminBoardVO;
+import kr.or.ddit.vo.resume.ResumeVO;
 
 @Mapper
 public interface AdminBoardMapper {
@@ -21,12 +22,27 @@ public interface AdminBoardMapper {
 		    @Param("userRole") String userRole
 		);
 	
+	public List<AdminBoardVO> selectAdminBoardWithComments(Map<String, Object> params);
+	public List<AdminBoardVO> selectAboardByFilter(Map<String, Object> params);
+	public int selectAboardCountByFilter(Map<String, Object> params);
+	
+	// 공지사항용 페이징 처리
+	public List<AdminBoardVO> selectNoticeList(String boardTypeCode);
+	public List<AdminBoardVO> selectNotice(Map<String, Object> params);
+	public int selectCountNotice(Map<String, Object> params);
+	
+	// 기본 페이징 처리
+	public List<AdminBoardVO> selectAdminBoard(Map<String, Object> params);
+	public int selectCountAdminBoard(Map<String, Object> params);
+	
 	public List<CmnCodeVO> selectCmnList(String codeGroupNo);
 	public List<CmnCodeGroupVO> selectCmnGroupList(String upperCodeNo);
 	
 	public List<AdminBoardVO> selectAFaqListByCgn(Map<String, Object> paramMap);	 //FAQ 회원별 게시글 목록조회
 	public List<AdminBoardVO> selectAFaqListByUcn(String upperCodeNo);	 //FAQ 전체 게시글 목록조회
 	public List<AdminBoardVO> selectAdminBoardList();  //전체 게시글 목록조회
+	
+	public String selectBoardTypeName(String boardTypeCode);  //유형이름 출력시 매핑용
 	
 	public int insertAdminBoard(AdminBoardVO board);
 	public int updateAdminBoard(AdminBoardVO board);

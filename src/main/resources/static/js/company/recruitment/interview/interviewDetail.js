@@ -76,8 +76,8 @@ const setData = (data) => {
 
   // 뿌리기
   document.getElementById('interviewTitle').textContent = detail.title;
-  document.getElementById('jobName').textContent = detail.jobName;
-  document.getElementById('hireCount').textContent = detail.hireCount + '명';
+  document.getElementById('jobName').textContent = `/ ${detail.jobName}`;
+  document.getElementById('hireCount').textContent = '(' + detail.hireCount + '명)';
   document.getElementById('interviewType').textContent = detail.interviewType;
   document.getElementById('interviewDate').textContent = detail.interviewDate;
   document.getElementById('interviewLocation').textContent =
@@ -85,7 +85,7 @@ const setData = (data) => {
 
   // 평가항목 리스트
   document.getElementById('scoreItemList').innerHTML = detail.scoreItems
-    .map((item) => `<li class="list-group-item ps-0">${item}</li>`)
+    .map((item, i) => `<li class="ps-0"><b>항목 ${i +1}.</b> ${item}</li>`)
     .join('');
 
   // 화상면접 정보가 있으면
@@ -107,7 +107,7 @@ const setData = (data) => {
       videoArea.innerHTML = `
         <div class="p-4 text-center text-secondary">
           <div class="mb-3 fw-semibold fs-5">등록된 화상면접 정보가 없습니다.</div>
-          <button class="btn btn-primary" id="addVideoInterviewBtn">
+          <button class="btn btn_violet" id="addVideoInterviewBtn">
             화상면접 등록
           </button>
         </div>
@@ -123,16 +123,17 @@ const setData = (data) => {
   // 지원자 리스트
   document.getElementById('applicantList').innerHTML = detail.applicants
     .map(
-      (a) => `
+      (a) => {
+			console.log(a, "a가 몬데??");
+			return `
       <tr>
         <td>${a.name}</td>
-        <td><a href="${a.resumeUrl}" target="_blank">이력서 보기</a></td>
+        <td><a href="${a.resumeUrl}" target="_blank" class="btn btn_violet_line btn-sm fs-12">이력서</a></td>
         <td>${a.time && a.time.trim() ? a.time : '-'}</td>
         <td>${a.score}점</td>
       </tr>
     `
-    )
-    .join('');
+    }).join('');
 };
 
 document.getElementById('editVideoInterviewBtn').onclick = function () {

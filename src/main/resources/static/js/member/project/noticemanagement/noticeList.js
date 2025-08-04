@@ -4,6 +4,7 @@ function convertServerPosts(serverPosts) {
     title: item.prjEmpTitle,
     content: item.prjAnncContent || '',
     nickname: item.memName,
+    image: item.memImg,
     job: item.prjTopic || '',
     date: item.anncCreateDate || '',
     like: 0,
@@ -47,17 +48,18 @@ function renderPostList() {
   else if (filterStatus === 'closed') posts = posts.filter(p => p.anncEndYn === 'Y');
 
   area.innerHTML = posts.map(post => `
-    <li class="board-list-item" data-id="${post.postId}" style="cursor:pointer;">
-      <div class="card card-post mb-4 border-0" >
-        <div class="card-body py-4 px-4">
+    <li class="board-list-item" data-id="${post.postId}">
+      <div class="card card-post mb-4" >
+        <div class="card-body p-4">
           <div class="d-flex align-items-center gap-3 mb-2">
-            <span class="badge badge-recruit">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
-            <div class="post-title flex-grow-1">${post.title}</div>
+            <span class="badge badge-recruit ${post.anncEndYn === 'Y' ? 'opacity-50' : ''}">${post.anncEndYn === 'Y' ? '모집완료' : '모집중'}</span>
+            <div class="post-title flex-grow-1 fs-18">${post.title}</div>
           </div>
-          <div class="post-content mb-2">
+          <div class="fs-13 text-violet110 mb-1"># ${post.job}</div>
+          <div class="post-content text-truncate text-truncate2 mb-2 fs-14 text-muted">
             ${post.content.length > 80 ? post.content.slice(0, 80) + '...' : post.content}
           </div>
-          <div class="mb-2">
+          <div class="d-flex gap-2 my-2">
             ${post.job ? `<span class="badge badge-tag">${post.job}</span>` : ''}
             ${(post.tags || []).map(tag =>
               `<span class="badge badge-tag">${tag}</span>`
@@ -65,13 +67,16 @@ function renderPostList() {
           </div>
           <div class="d-flex justify-content-between align-items-center mt-2">
             <div class="d-flex align-items-center gap-2 text-secondary">
-              <span class="fw-semibold">${post.nickname || '익명'}</span>
-              <span style="font-size:1.05em;">·</span>
-              <span style="font-size:.99em;">${post.date}</span>
+              <div class="me-1 rounded-circle overflow-hidden mw-28 mh-28 ">
+                <img src="${post.image != null ? post.image : 'https://placehold.co/28x28'}"
+                  alt="${post.nickname || ''} 프로필 이미지"  class="w100p" />
+              </div>
+              <span class="fw-semibold text-dark fs-13">${post.nickname || '익명'}</span>
+              <span class="fs-12">${timeAgo(post.date)}</span>
             </div>
-            <div class="d-flex align-items-center gap-3 text-secondary" style="font-size:1.07em;">
-              <span><i class="bi bi-heart"></i>좋아요 ${post.like}</span>
-              <span><i class="bi bi-eye"></i>조회수 ${post.view}</span>
+            <div class="d-flex align-items-center gap-3 text-secondary fs-13">
+							<span>좋아요 <strong>${post.like}</strong></span>
+							<span>조회수 <strong>${post.view}</strong></span>
             </div>
           </div>
         </div>
@@ -88,4 +93,19 @@ function renderPostList() {
       }
     });
   });
+}
+
+
+function timeAgo(dateString) {
+  const now = new Date();
+  const date = new Date(dateString.replace(/-/g, '/'));
+  const diffMs = now - date;
+  const diffSec = Math.floor(diffMs / 1000);
+  if (diffSec < 60) return '방금 전';
+  const diffMin = Math.floor(diffSec / 60);
+  if (diffMin < 60) return diffMin + '분 전';
+  const diffHour = Math.floor(diffMin / 60);
+  if (diffHour < 24) return diffHour + '시간 전';
+  const diffDay = Math.floor(diffHour / 24);
+  return diffDay + '일 전';
 }

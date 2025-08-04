@@ -95,6 +95,75 @@
 	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
 	</select>
 	
+	<select id="selectMyApplicatedStep">
+	WITH base_user AS (
+	  SELECT #{userId} AS user_id FROM DUAL
+	),
+	base_applicants AS (
+	  SELECT applicant_id
+	  FROM applicant
+	  WHERE user_id = (SELECT user_id FROM base_user)
+	),
+	exam_cte AS (
+	  SELECT applicant_id, SUM(applicant_score) AS ex_score
+	  FROM applicant_answer
+	  WHERE applicant_id IN (SELECT applicant_id FROM base_applicants)
+	  GROUP BY applicant_id
+	),
+	interview_cte AS (
+	  SELECT iscore.applicant_id, AVG(iscore.applicant_rating) AS int_score
+	  FROM interview_score iscore
+	  JOIN interview i ON iscore.interview_no = i.interview_no
+	  WHERE iscore.applicant_id IN (SELECT applicant_id FROM base_applicants)
+	  GROUP BY iscore.applicant_id
+	),
+	process_cte AS (
+	  SELECT ar.applicant_id, rp.recruitment_no, MAX(rp.recruit_process_step) AS max_step
+	  FROM recruit_process rp
+	  JOIN applicant_record ar
+	    ON rp.recruit_process_no = ar.recruit_process_no
+	  WHERE ar.applicant_id IN (SELECT applicant_id FROM base_applicants)
+	  GROUP BY ar.applicant_id, rp.recruitment_no
+	),
+	latest_step AS (
+	  SELECT
+	    ar.applicant_id,
+	    rp.recruitment_no,
+	    rp.recruit_process_step AS step,
+	    rp.recruit_process_type AS step_type,
+	    ar.STEP_PASS_YN AS pass,
+	    ar.FAILED_YN AS fail,
+	    rp.recruit_process_final AS final
+	  FROM recruit_process rp
+	  JOIN applicant_record ar
+	    ON rp.recruit_process_no = ar.recruit_process_no
+	  JOIN process_cte pc
+	    ON rp.recruitment_no = pc.recruitment_no
+	   AND rp.recruit_process_step = pc.max_step
+	   AND ar.applicant_id = pc.applicant_id
+	)
+	SELECT
+	  ls.applicant_id,
+	  ls.recruitment_no,
+	  ls.step,
+	  ls.step_type,
+	  ls.pass,
+	  ls.final,
+	  ls.fail,
+	  ec.ex_score,
+	  ic.int_score,
+	  p.PASS_ALARM_YN,
+	  p.RECRUIT_ACCEPT_YN,
+	  p.HIRE_DATE
+	FROM latest_step ls
+	LEFT JOIN exam_cte ec ON ec.applicant_id = ls.applicant_id
+	LEFT JOIN interview_cte ic ON ic.applicant_id = ls.applicant_id
+	LEFT JOIN PASSER p
+	  ON p.APPLICANT_ID = ls.applicant_id
+	 AND p.RECRUITMENT_NO = ls.recruitment_no
+	ORDER BY ls.recruitment_no
+	</select>
+	
 	<insert id="insertApplicantRecord">
 		<selectKey resultType="string" keyProperty="applicantRecordNo" order="BEFORE">
 	    SELECT
@@ -146,6 +215,13 @@
 	<update id="updateApplicantPass">
 	UPDATE APPLICANT_RECORD SET
 		STEP_PASS_YN = 'Y'
+	WHERE APPLICANT_ID = #{applicantId}
+	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
+	</update>
+	
+	<update id="updateApplicantFail">
+	UPDATE APPLICANT_RECORD SET
+		FAILED_YN = 'Y'
 	WHERE APPLICANT_ID = #{applicantId}
 	AND RECRUIT_PROCESS_NO = #{recruitProcessNo}
 	</update>

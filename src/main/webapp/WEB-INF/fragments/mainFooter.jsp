@@ -5,25 +5,43 @@
 <footer id="sri_footer" class="sri_footer sri_footer_main pc-footer" role="contentinfo" aria-labelledby="sri_footer_label">
     <h2 id="sri_footer_label" class="blind">띹잡 소개 및 바로가기</h2>
     <div class="wrap_footer">
-        <div class="inner" itemscope="" itemtype="http://schema.org/Organization">
-            <div class="customer">
-                <p>띹잡 고객센터 <span>02-6226-5000</span> (평일 <span>09:00~19:00</span>, 주말·공휴일 휴무)</p>
-                <div class="btns"> 이메일 : <span>help@ddit.co.kr</span>, Fax : <span>02-6937-0039</span>(대표), <span>02-6937-0035</span>(세금계산서) </div>
-            </div>
-            <div class="copyright">
-                <p>
-                (주)띹잡, 우 : 07800, 대전광역시 중구 계룡로 846, 3층 304호, 대표 : 이윤석<br>
-                사업자등록 : 306-82-05291, 직업정보제공사업 : 대전광역시 중구 계룡로 846, 통신판매업 : 제 2025-대전중구-0304호<br>
-                Copyright (c) (주)띹잡. All rights reserved.</p> 
-                <button type="button" onclick="window.open('http://www.ftc.go.kr/bizCommPop.do?wrkr_no=1138600917', '', 'width=750, height=700;');" title="사업자정보확인 바로가기">사업자정보확인</button>
-                <span class="awards"> 
-	                <a href="https://www.saramin.co.kr/zf_user/help/live/view?idx=108922" target="_blank">
-	                	<img src="//www.saraminimage.co.kr/sri/common/layout/footer/2020_ismsp.png" alt="정보보호 및 개인정보보호 관리체계(ISMS-P)">
-	                </a>
-                </span>
-            </div>
-            <meta itemprop="name" content="띹잡">
-            <link itemprop="url" href="https://www.saramin.co.kr"> <a itemprop="sameAs" href="https://blog.naver.com/saraminapp"></a> <a itemprop="sameAs" href="http://m.post.naver.com/my.nhn?memberNo=5661329"></a> <a itemprop="sameAs" href="https://kin.naver.com/profile/saraminapp"></a> <a itemprop="sameAs" href="https://www.facebook.com/saramin.dream"></a> <a itemprop="sameAs" href="https://www.instagram.com/saramin_official/"></a> <a itemprop="sameAs" href="https://play.google.com/store/apps/details?id=kr.co.saramin.brandapp&amp;hl=ko"></a> <a itemprop="sameAs" href="https://itunes.apple.com/kr/app/id739013038"></a>
-        </div>
+       <div class="inner">
+					<div class="links" role="navigation" aria-label="사람인 서비스 정책 및 이용문의">
+						<ul>
+							<li class="first"><a href="javascript:void(0)" target="_blank">채용정보</a></li>
+							<li><a href="/member/realTimeRecruitment" target="_blank">실시간공고</a></li>
+							<li><a href="javascript:void(0)" target="_blank">기업&#183;연봉</a></li>
+							<li class="bold"><a href="/board/project" target="_blank">프로젝트</a></li>
+							<li><a href="javascript:void(0)" target="_blank">커뮤니티</a></li>
+							<li><a href="/spelling" target="_blank">취업TOOL</a></li>
+						</ul>
+					</div>
+         <div class="copyright">
+	            <div class="help_list">
+				        <dl>
+				            <dt>(주)띹잡</dt>
+				        </dl>
+				        <dl>
+				            <dt>대표 </dt>
+				            <dd>이윤석</dd>
+				        </dl>
+				    </div>
+            <div class="help_list">
+			        <dl>
+			            <dt>띹잡 고객센터</dt>
+			            <dd>02-1234-1234 (평일 09:00~16:00, 08/05 이후 휴무)</dd>
+			        </dl>
+			        <dl>
+			            <dt>이메일</dt>
+			            <dd><a href="mailto:help@saramin.co.kr" target="_blank" title="이메일 바로가기">help@ddit.co.kr</a></dd>
+			        </dl>
+			        <dl>
+			            <dt>FAX</dt>
+			            <dd>02-6937-0039</dd>
+			        </dl>
+			    </div>
+			    <img src="/dist/assets/images/logo.png" alt="ft_logo" class="ft_logo">
+         </div>
+       </div>
     </div>
 </footer>

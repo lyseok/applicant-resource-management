@@ -21,4 +21,7 @@ public interface ApplicantRecordMapper {
 	public int updateInterviewURL(ApplicantRecordVO vo);
 	public int updateApplication(Map<String, String> map);
 	public int updateApplicantPass(ApplicantRecordVO vo);
+	public int updateApplicantFail(ApplicantRecordVO vo);
+	
+	public List<Map<String, Object>> selectMyApplicatedStep(String userId);
 }

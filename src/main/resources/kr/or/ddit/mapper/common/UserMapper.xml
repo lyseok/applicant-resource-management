@@ -39,10 +39,28 @@
 			, USER_ROLE
 			, USER_STATUS
 			, USER_ENABLED
+			, USER_CREATE_DATE
 		) VALUES (
 			#{userId}
 			, #{userPassword}
 			, 'ROLE_USER'
+			, 'N'
+			, 'Y'
+			, SYSDATE
+		)
+	</insert>
+	
+	<insert id="insertCompanyUser">
+		INSERT INTO USERS (
+			USER_ID
+			, USER_PASSWORD
+			, USER_ROLE
+			, USER_STATUS
+			, USER_ENABLED
+		) VALUES (
+			#{userId}
+			, #{userPassword}
+			, 'ROLE_COMPANY'
 			, 'N'
 			, 'Y'
 		)

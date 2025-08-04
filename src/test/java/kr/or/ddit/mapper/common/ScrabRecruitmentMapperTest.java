@@ -33,7 +33,7 @@ class ScrabRecruitmentMapperTest {
 		SRV.setUserId("qwsad");
 		SRV.setRecruitmentNo("qwsad");
 		
-		mapper.selectScrabRecruitmentByPk(SRV);
+//		mapper.selectScrabRecruitmentByPk(SRV);
 		log.info("결과 : {}", SRV);
 	
 	}
@@ -56,7 +56,7 @@ class ScrabRecruitmentMapperTest {
 		SRV.setUserId("qwsad");
 		SRV.setRecruitmentNo("qwsad");
 	
-		mapper.updateScrabRecruitment(SRV);
+//		mapper.updateScrabRecruitment(SRV);
 		log.info("결과 : {}",SRV);
 	}
 	

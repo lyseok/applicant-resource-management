@@ -11,7 +11,7 @@ public interface PaymentProductMapper {
 
 	public PaymentProductVO selectPaymentProductByPk(String productNo);
 
-	public int insertPaymentProduct(PaymentProductVO vo);
+	public String insertPaymentProduct(PaymentProductVO vo);
 
 	public int updatePaymentProduct(PaymentProductVO vo);
 
@@ -20,4 +20,6 @@ public interface PaymentProductMapper {
 	public PaymentProductVO selectPaymentProductByName(String productName);
 	
 	public List<PaymentProductVO> selectPaymentProductListByPk(String productNo);
+
+	public int minusLimit(String userId);
 }

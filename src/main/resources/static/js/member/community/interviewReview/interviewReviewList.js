@@ -28,18 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			const tip = item.passInformation.tip || '-';
 
 			const accordionItem = `
-	        <div class="accordion-item mb-3">
+	        <div class="accordion-item mb-3 border rounded overflow-hidden">
 	          <h2 class="accordion-header" id="heading${idx}">
-	            <button class="accordion-button collapsed" type="button"
-	              data-bs-toggle="collapse" data-bs-target="#collapse${idx}"
-	              aria-expanded="false" aria-controls="collapse${idx}">
-	              <div>
-	                <div class="fw-bold">${comName}
-	                  <span class="badge ${badgeClass} ms-2">${passYn}</span>
-	                </div>
-	                <small class="text-muted">${jobName} | ${interviewDate} · ${yearName}</small>
+	            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${idx}" aria-expanded="false" aria-controls="collapse${idx}">
+	              <div class="d-flex w100p justify-content-between align-items-center pe-4">
+		              <div>
+		                <div class="fw-bold d-flex align-items-center gap-2 fs-18"">
+		                	${comName}
+		                  <span class="badge ${badgeClass}">${passYn}</span>
+		                </div>
+		                <small class="d-block text-muted mt-2">${jobName} | ${interviewDate} · ${yearName}</small>
+		              </div>
+		              <div class="auto text-muted small">${reviewDate}</div>
 	              </div>
-	              <div class="ms-md-auto text-muted small">${reviewDate}</div>
 	            </button>
 	          </h2>
 	          <div id="collapse${idx}" class="accordion-collapse collapse"
@@ -49,35 +50,46 @@ document.addEventListener('DOMContentLoaded', () => {
 	                <div class="row text-center border rounded py-3 mb-4">
 	                  <div class="col">
 	                    <div class="fw-bold">전체적 평가</div>
-	                    <div class="text-success">${evalText}</div>
+	                    <div class="text-success fs-14 fw-semibold">${evalText}</div>
 	                  </div>
 	                  <div class="col">
-	                    <div class="fw-bold">난이도</div>
-	                    <div class="text-secondary">${levelText}</div>
+	                    <div class="fw-bold fw-semibold">난이도</div>
+	                    <div class="text-secondary fs-14 fw-semibold">${levelText}</div>
 	                  </div>
 	                  <div class="col">
-	                    <div class="fw-bold">결과</div>
-	                    <div class="text-danger">${passYn}</div>
+	                    <div class="fw-bold fw-semibold">결과</div>
+	                    <div class="text-danger fs-14 fw-semibold">${passYn}</div>
 	                  </div>
 	                </div>
 
-	                <div>
-	                  <div class="section-title">면접 유형</div>
-	                  <p>${interviewType}</p>
-
-	                  <div class="section-title">면접 인원</div>
-	                  <p>지원자 1명, 면접관 다수</p>
-
-	                  <div class="section-title">진행 및 면접 진행 방식</div>
-	                  <p>${interviewContent}</p>
-
-	                  <div class="section-title">면접 질문</div>
-	                  <ul>
-	                    ${questionList.map(q => `<li>${q}</li>`).join('')}
-	                  </ul>
-
-	                  <div class="section-title">TIP 및 특이사항</div>
-	                  <p>${tip}</p>
+	                <div class="d-flex flex-wrap gap-30">
+	                	<div class="q_item">
+		                  <div class="section-title">면접 유형</div>
+		                  <p class="fs-14">${interviewType}</p>
+	                  </div>
+	                  
+	                	<div class="q_item">
+		                  <div class="section-title">면접 인원</div>
+		                  <p class="fs-14">지원자 1명, 면접관 다수</p>
+	                  </div>
+	                  
+	                	<div class="q_item">
+		                  <div class="section-title">진행 및 면접 진행 방식</div>
+		                  <p class="fs-14">${interviewContent}</p>
+	                  </div>
+	                  
+	                	<div class="q_item">
+		                  <div class="section-title">TIP 및 특이사항</div>
+		                  <p class="fs-14">${tip}</p>
+	                  </div>
+	                  
+	                	<div class="q_item">
+		                  <div class="section-title">면접 질문</div>
+		                  <ul>
+		                    ${questionList.map(q => `<li class="fs-14">${q}</li>`).join('')}
+		                  </ul>
+	                  </div>
+	                  
 	                </div>
 	              </div>
 	            </div>

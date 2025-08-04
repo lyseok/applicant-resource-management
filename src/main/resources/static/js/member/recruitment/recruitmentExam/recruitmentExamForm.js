@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function renderQuestion() {
 		const q = questions[idx];
-		qTitle.textContent = `문제 ${idx + 1}. ${q.recruitExamQuestContent}`;
+		qTitle.innerHTML = `<span class="d-block fw-bold mb-1">문제 ${idx + 1}.</span> ${q.recruitExamQuestContent}`;
 		qOptions.innerHTML = q.optionList
 			.map((opt) => {
 				const isSel = answers[q.recruitExamQuestNo] === opt.recruitOptionNo;
@@ -166,9 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				const iconEl = document.getElementById('resultIcon');
 				const msgEl = document.getElementById('resultMessage');
 
-				iconEl.textContent = '🟢 응시가 완료되었습니다.';
-				iconEl.style.color = '#28a745';
-				msgEl.innerHTML = `${result.examTotalScore}/100점 <span style="color:#28a745;"></span>`;
+				iconEl.textContent = '🟪 응시가 완료되었습니다.';
+				iconEl.style.color = '#8d4dff';
+				msgEl.innerHTML = `${result.examTotalScore}/100점 <span style="color:#8d4dff;"></span>`;
 
 				const resultModal = new bootstrap.Modal(
 					document.getElementById('resultModal')

@@ -31,7 +31,7 @@
 
 <resultMap id="PrjAplcntVOMap" type="kr.or.ddit.vo.project.PrjAplcntVO">
   <id     property="prjAplcntNo"         column="PRJ_APLCNT_NO"/>
-  <result property="resumeNo"            column="RESUME_NO"/>
+  <result property="resumeNo"            column="AP_RESUME_NO"/>
   <result property="userId"              column="APL_USER_ID"/>
   <result property="aplcntStatusCode"    column="APLCNT_STATUS_CODE"/>
   <result property="aplcntDate"          column="APLCNT_DATE"/>
@@ -53,6 +53,8 @@
     <result property="anncEndPlanDate"  column="ANNC_END_PLAN_DATE"/>
     <result property="anncEndYn"        column="ANNC_END_YN"/>
     <result property="memName" column="MEM_NAME"/>
+    <result property="memImg" column="MEM_IMG"/>
+    <result property="resumeNo" column="RESUME_NO"/> 
     <!-- 태그 리스트 -->
     <collection property="prjAnncBoardTagList"
                 ofType="kr.or.ddit.vo.project.PrjAnncBoardTagVO"
@@ -63,39 +65,147 @@
                 resultMap="PrjRcrtPsncntVOMap"/>
 </resultMap>
 
+<select id="selectCntPrjAnncBbsList">
+	SELECT COUNT(*) 
+	FROM PRJ_ANNC_BBS
+	WHERE DELETE_DATE IS NULL
+	<!-- 모집 상태 -->
+	<if test="status != null and status != 'status_all'">
+	    <choose>
+	        <when test="status == 'status_n'">
+	            AND (ANNC_END_YN IS NULL OR ANNC_END_YN = 'N')
+	        </when>
+	        <when test="status == 'status_y'">
+	            AND ANNC_END_YN = 'Y'
+	        </when>
+	    </choose>
+	</if>
+	
+	            <!-- 키워드 검색 (제목, 내용, 주제) -->
+	<if test="search != null and search != ''">
+	    AND (
+	        PRJ_EMP_TITLE LIKE '%' || #{search} || '%'
+	        OR PRJ_ANNC_CONTENT LIKE '%' || #{search} || '%'
+	        OR PRJ_TOPIC LIKE '%' || #{search} || '%'
+	    )
+	</if>
+	
+	<!-- 태그 검색 -->
+	<if test="tagList != null and tagList.size > 0">
+	    AND PRJ_ANNC_NO IN (
+	        SELECT PT.PRJ_ANNC_NO
+	        FROM PRJ_ANNC_BOARD_TAG PT
+	        JOIN TAG TG ON PT.TAG_NO = TG.TAG_NO
+	        WHERE TG.TAG_NAME IN
+	        <foreach collection="tagList" item="tag" open="(" separator="," close=")">
+	            #{tag}
+	        </foreach>
+	    )
+	</if>
+</select>
+
 <select id="selectPrjAnncBbsList" resultMap="PrjAnncBbsVOMap">
-	SELECT
-	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
-	    B.USER_ID,             -- 사용자 ID
-	    M.MEM_NAME,            -- 사용자명 
-	    B.PRJ_EMP_TITLE,       -- 게시글 제목
-	    B.PRJ_TOPIC,           -- 프로젝트 주제
-	    B.ANNC_CREATE_DATE,    -- 작성일시
-	    B.PRJ_START_PLAN_DATE, -- 프로젝트 시작 예정일
-	    B.PRJ_END_PLAN_DATE,   -- 프로젝트 마감 예정일
-	    B.PRJ_ANNC_HIT,        -- 조회수
-	    B.PRJ_ANNC_CONTENT,    -- 내용
-	    B.ANNC_END_PLAN_DATE,  -- 모집 마감 예정일
-	    B.ANNC_END_YN,         -- 모집 마감 여부
-	    B.DELETE_DATE,         -- 삭제일시
-	    T.TAG_NO,              -- 태그번호
-	    T.TAG_DATE,            -- 태그 일자
-	    C.TAG_NAME             -- 태그명 ← 추가
-	FROM
-	    PRJ_ANNC_BBS B
-	LEFT OUTER JOIN
-	    PRJ_ANNC_BOARD_TAG T
-	ON
-	    B.PRJ_ANNC_NO = T.PRJ_ANNC_NO
-	LEFT OUTER JOIN
-	    TAG C
-	ON
-	    T.TAG_NO = C.TAG_NO
-   	LEFT OUTER JOIN 
-   		MEMBER M 
-   	ON 
-   		B.USER_ID = M.USER_ID
-    ORDER BY B.ANNC_CREATE_DATE DESC
+    SELECT 
+        B.PRJ_ANNC_NO,         
+        B.USER_ID,             
+        M.MEM_NAME,            
+        M.MEM_IMG,            
+        B.PRJ_EMP_TITLE,       
+        B.PRJ_TOPIC,           
+        B.ANNC_CREATE_DATE,    
+        B.PRJ_START_PLAN_DATE, 
+        B.PRJ_END_PLAN_DATE,   
+        B.PRJ_ANNC_HIT,        
+        B.PRJ_ANNC_CONTENT,    
+        B.ANNC_END_PLAN_DATE,  
+        B.ANNC_END_YN,         
+        B.DELETE_DATE,         
+        T.TAG_NO,              
+        T.TAG_DATE,            
+        C.TAG_NAME             
+    FROM (
+        SELECT * FROM (
+            SELECT 
+                BB.*,
+                ROWNUM AS RNUM
+            FROM (
+                SELECT * 
+                FROM PRJ_ANNC_BBS
+                WHERE DELETE_DATE IS NULL
+                <!-- 모집 상태 -->
+                <if test="status != null and status != 'status_all'">
+				    <choose>
+				        <when test="status == 'status_n'">
+				            AND (ANNC_END_YN IS NULL OR ANNC_END_YN = 'N')
+				        </when>
+				        <when test="status == 'status_y'">
+				            AND ANNC_END_YN = 'Y'
+				        </when>
+				    </choose>
+				</if>
+				
+                <!-- 키워드 검색 (제목, 내용, 주제) -->
+                <if test="search != null and search != ''">
+                    AND (
+                        PRJ_EMP_TITLE LIKE '%' || #{search} || '%'
+                        OR PRJ_ANNC_CONTENT LIKE '%' || #{search} || '%'
+                        OR PRJ_TOPIC LIKE '%' || #{search} || '%'
+                    )
+                </if>
+
+                <!-- 태그 검색 -->
+                <if test="tagList != null and tagList.size > 0">
+                    AND PRJ_ANNC_NO IN (
+                        SELECT PT.PRJ_ANNC_NO
+                        FROM PRJ_ANNC_BOARD_TAG PT
+                        JOIN TAG TG ON PT.TAG_NO = TG.TAG_NO
+                        WHERE TG.TAG_NAME IN
+                        <foreach collection="tagList" item="tag" open="(" separator="," close=")">
+                            #{tag}
+                        </foreach>
+                    )
+                </if>
+				
+				<!-- 정렬 조건 -->
+				<choose>
+				    <when test="sort == 'date'">
+				        ORDER BY ANNC_CREATE_DATE DESC
+				    </when>
+				    <when test="sort == 'pop'">
+				        ORDER BY PRJ_ANNC_HIT DESC
+				    </when>
+				    <when test="sort == 'like'">
+				        ORDER BY PRJ_START_PLAN_DATE ASC
+				    </when>
+				    <otherwise>
+				        ORDER BY ANNC_CREATE_DATE DESC
+				    </otherwise>
+				</choose>
+            ) BB
+            WHERE ROWNUM &lt;= #{endRow}
+        )
+        WHERE RNUM &gt; #{startRow}
+    ) B
+    LEFT OUTER JOIN PRJ_ANNC_BOARD_TAG T
+        ON B.PRJ_ANNC_NO = T.PRJ_ANNC_NO
+    LEFT OUTER JOIN TAG C
+        ON T.TAG_NO = C.TAG_NO
+    LEFT OUTER JOIN MEMBER M
+        ON B.USER_ID = M.USER_ID
+<choose>
+    <when test="sort == 'date'">
+        ORDER BY ANNC_CREATE_DATE DESC
+    </when>
+    <when test="sort == 'pop'">
+        ORDER BY PRJ_ANNC_HIT DESC
+    </when>
+    <when test="sort == 'like'">
+        ORDER BY PRJ_START_PLAN_DATE ASC
+    </when>
+    <otherwise>
+        ORDER BY ANNC_CREATE_DATE DESC
+    </otherwise>
+</choose>
 </select>
 
 <select id="selectMyPrjAnncBbsList" resultMap="PrjAnncBbsVOMap">
@@ -103,6 +213,7 @@
 	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
 	    B.USER_ID,             -- 사용자 ID
 	    M.MEM_NAME,            -- 사용자명 
+	    M.MEM_IMG,            -- 사용자이미지 
 	    B.PRJ_EMP_TITLE,       -- 게시글 제목
 	    B.PRJ_TOPIC,           -- 프로젝트 주제
 	    B.ANNC_CREATE_DATE,    -- 작성일시
@@ -174,6 +285,7 @@
 	LEFT OUTER JOIN TAG
 	    ON TA.TAG_NO = TAG.TAG_NO
 	WHERE AP.USER_ID = #{userId}
+	ORDER BY ANNC_CREATE_DATE DESC
 </select>
 
 <select id="selectPrjAnncBbsByPk" resultMap="PrjAnncBbsVOMap">
@@ -181,6 +293,8 @@
 	    B.PRJ_ANNC_NO,         -- 공고 게시글 번호
 	    B.USER_ID,             -- 사용자 ID
 	    M.MEM_NAME,            -- 사용자명
+	    M.MEM_IMG,             -- 사용자이미지
+	    M.RESUME_NO,
 	    B.PRJ_EMP_TITLE,       -- 게시글 제목
 	    B.PRJ_TOPIC,           -- 프로젝트 주제
 	    B.ANNC_CREATE_DATE,    -- 작성일시
@@ -204,7 +318,7 @@
 	    
 	    -- 지원자(프로젝트 지원자) 관련 (RCRT_PSNCNT_NO를 기준)
 	    A.PRJ_APLCNT_NO,
-	    A.RESUME_NO,
+	    A.RESUME_NO    AS AP_RESUME_NO,   
 	    A.USER_ID      AS APL_USER_ID,
 	    A.APLCNT_STATUS_CODE,
 	    A.APLCNT_DATE,
@@ -280,5 +394,19 @@
 	DELETE FROM PRJ_ANNC_BBS
 	WHERE PRJ_ANNC_NO = #{prjAnncNo}
 </delete>
+
+<update id="updateHitCnt">
+ 	UPDATE PRJ_ANNC_BBS
+	SET 
+		PRJ_ANNC_HIT = (SELECT (PRJ_ANNC_HIT + 1) FROM PRJ_ANNC_BBS WHERE PRJ_ANNC_NO = #{prjAnncNo})
+	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+</update>
+
+<update id="updateAnncEndYn">
+ 	UPDATE PRJ_ANNC_BBS
+	SET 
+		ANNC_END_YN = 'Y'
+	WHERE PRJ_ANNC_NO = #{prjAnncNo}
+</update>
 
 </mapper>

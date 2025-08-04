@@ -1,5 +1,6 @@
 package kr.or.ddit.company.recruitment.notice.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.common.exception.DataUpdateException;
+import kr.or.ddit.common.file.S3Uploader;
 import kr.or.ddit.common.file.service.FileService;
 import kr.or.ddit.company.recruitment.exam.service.RecruitExamService;
 import kr.or.ddit.conf.CodeMapProvider;
@@ -54,6 +57,7 @@ public class RecruitServiceImpl implements RecruitService {
 	private final CompanyMapper comMapper;
 	private final CodeMapProvider codeMapProvider;
 	private final FileService fileService;
+	private final S3Uploader s3Uploader;
 	
 	private final UserMapper userMapper;
 	private final MemberMapper memMapper;
@@ -65,7 +69,17 @@ public class RecruitServiceImpl implements RecruitService {
 	public void createRecruitment(RecruitmentNoticeVO recruit) {
 		recruit.setUserId(getUserId());
 		recruit.setCompany(comMapper.selectCompanyById(getUserId())); 
+		MultipartFile file = recruit.getRecruitThumbnail();
+		if (file != null && !file.isEmpty()) {
+			try {
+				String thumbnail = s3Uploader.upload(file);
+				recruit.setRecruitmentImg(thumbnail);
+			} catch (IOException e) {
+				throw new RuntimeException("썸네일 업로드 실패", e); // ❗️ TODO 대신 안전한 예외처리
+			}
+		}
 		noticeMapper.insertRecruitmentNotice(recruit);
+		
 		
 		if (recruit.getFileList() != null && !recruit.getFileList().isEmpty()) {
 		    List<String> filePaths = recruit.getFileList().stream()
@@ -174,6 +188,9 @@ public class RecruitServiceImpl implements RecruitService {
 		
 		String year = codeMapProvider.getCodeName(notiVo.getYearCode());
 		notiVo.setYearCodeName(year);
+		
+		String indu = codeMapProvider.getInduName(notiVo.getCompany().getIndustryType());
+		notiVo.getCompany().setInduName(indu);		
 	}
 
 	@Override

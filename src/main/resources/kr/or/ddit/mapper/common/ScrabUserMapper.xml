@@ -41,12 +41,44 @@
 		AND 
 		USER_ID = #{userId}
 	</update>
+	
+	<update id="updateResumeConfirm">
+		UPDATE SCRAB_USER SET 
+			RESUME_CONFIRM_YN = 'Y'
+		WHERE COMPANY_ID = #{companyId}
+		AND USER_ID = #{userId} 
+	</update>
 
 	<delete id="deleteScrabUser">
 		DELETE FROM SCRAB_USER
 	   WHERE COMPANY_ID = #{companyId}
 	  AND USER_ID = #{userId}
 	</delete>
+ 
+    <!-- 저장된 관심 인재 조회 -->
+    <select id="selectSavedTalentList" resultType="string">
+        SELECT USER_ID
+        FROM SCRAB_USER
+        WHERE COMPANY_ID = #{companyId}
+    </select>
 
+    <!-- 관심 인재 추가 -->
+    <insert id="insertTalentUsers">
+	    INSERT ALL
+	    <foreach collection="userList" item="userId">
+	        INTO SCRAB_USER (COMPANY_ID, USER_ID, SCRAB_USER_DATE)
+	        VALUES (#{companyId}, #{userId}, SYSDATE)
+	    </foreach>
+	    SELECT * FROM DUAL
+	</insert>
+    <!-- 관심 인재 삭제 -->
+    <delete id="deleteTalentUsers">
+        DELETE FROM SCRAB_USER
+        WHERE COMPANY_ID = #{companyId}
+        AND USER_ID IN
+        <foreach collection="userList" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
 
 </mapper>

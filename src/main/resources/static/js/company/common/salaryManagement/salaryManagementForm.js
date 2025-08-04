@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				const maxInput = document.querySelector(`input[name="maxSalary"][data-code="${salary.codeDetailNo}"]`);
 
 				if (minInput && maxInput) {
-					minInput.value = parseInt(salary.salaryMin, 10) / 10000;
-					maxInput.value = parseInt(salary.salaryMax, 10) / 10000;
+					minInput.value = salary.salaryMin; // 그대로 넣기
+					maxInput.value = salary.salaryMax;
 				}
 			});
 		})
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (minInput.value && maxInput.value) {
 				payload.push({
 					codeDetailNo: codeDetailNo,
-					salaryMin: parseInt(minInput.value, 10) * 10000,
-					salaryMax: parseInt(maxInput.value, 10) * 10000
+					salaryMin: minInput.value,  // 문자열 그대로
+					salaryMax: maxInput.value
 				});
 			}
 		});
@@ -73,5 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
 				console.error(err);
 			})
 	})
+	
+		   // 취소 버튼 클릭 시 리스트로 이동 
+	       cancelBtn.addEventListener('click', () => {
+	           if (confirm('취소하시겠습니까? 변경사항은 저장되지 않습니다.')) {
+	               location.href = '/company/salary_management';
+	           }
+	       });
 	
 });

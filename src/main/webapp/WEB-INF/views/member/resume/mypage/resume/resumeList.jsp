@@ -33,8 +33,8 @@
 	<div class="border-bottom d-flex justify-content-between align-items-end pb-2">
 		<p class="fs-14">
 			총 
-				<c:if test="${not empty resumeList}">${resumeList.size() }</c:if>
-				<c:if test="${empty resumeList}">0</c:if>
+				<c:if test="${not empty totalCount}">${totalCount }</c:if>
+				<c:if test="${empty totalCount}">0</c:if>
 			건
 		</p>
 		<div class="TypoBox searchBar">
@@ -66,21 +66,21 @@
 										<i class='bx  bx-briefcase-alt'  ></i>경력
 									</c:if>
 								</span>
-								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.MILITARY_YN }">
-										<i class='bx  bx-face-alt-2'  ></i> 군필
-									</c:if>
-								</span>
-								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.LANGUAGE_SKILL_YN }">
-										<i class='bx  bx-translate'  ></i> 어학능력 보유
-									</c:if>
-								</span>
-								<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
-									<c:if test="${not empty resume.MY_LICENSE_CNT }">
-										<i class='bx  bx-credit-card-front'  ></i>  보유 자격 ${resume.MY_LICENSE_CNT }개
-									</c:if>
-								</span>
+								<c:if test="${resume.MILITARY_YN ne null and resume.MILITARY_YN > 0 }">
+									<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
+											<i class='bx  bx-face-alt-2'  ></i> 군필
+									</span>
+								</c:if>
+								<c:if test="${resume.LANGUAGE_SKILL_YN ne null and resume.LANGUAGE_SKILL_YN > 0 }">
+									<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
+											<i class='bx  bx-translate'  ></i> 어학능력 보유
+									</span>
+								</c:if>
+								<c:if test="${not empty resume.MY_LICENSE_CNT }">
+									<span class="d-flex gap-2 align-items-center h6 light text-secondary mb-0">
+											<i class='bx  bx-credit-card-front'  ></i>  보유 자격 ${resume.MY_LICENSE_CNT }개
+									</span>
+								</c:if>
 							</div>
 							<div class="">
 								<span class="fs-16 text-secondary">${resume.UPDATE_DATE}</span>
@@ -113,7 +113,7 @@
 									</div>
 									<div class="modal-footer border-0 justify-content-center">
 										<button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">취소</button>
-										<a class="btn btn-danger px-4" href="/mypage/resume/delete/${resume.resumeNo}">삭제</a>
+										<a class="btn btn-danger px-4" href="/mypage/resume/delete/${resume.RESUME_NO}">삭제</a>
 									</div>
 								</div>
 							</div>
@@ -121,19 +121,26 @@
 					</li>
 				</c:forEach>
 			</ul>
-			<div class="PageBox">
-        <span class="BtnType SizeS active">1</span>
-        <button class="BtnType SizeS page" data-page="2">2</button>
-        <button class="BtnType SizeS page" data-page="3">3</button>
-        <button class="BtnType SizeS page" data-page="4">4</button>
-        <button class="BtnType SizeS page" data-page="5">5</button>
-        <button class="BtnType SizeS page" data-page="6">6</button>
-        <button class="BtnType SizeS page" data-page="7">7</button>
-        <button class="BtnType SizeS page" data-page="8">8</button>
-        <button class="BtnType SizeS page" data-page="9">9</button>
-        <button class="BtnType SizeS page" data-page="10">10</button>
-        <button data-page="11" class="BtnType SizeS BtnNext btnNext">다음</button>
-      </div>
+			<c:if test="${not empty totalPages}">
+				<div class="PageBox">
+				    <c:if test="${currentPage > 1}">
+				        <a class="BtnType SizeS BtnPrev" href="?page=${currentPage - 1}">이전</a>
+				    </c:if>
+				    <c:forEach begin="1" end="${totalPages}" var="i">
+		    	    <c:choose>
+				        <c:when test="${i == currentPage}">
+			            <span class="BtnType SizeS active">${i}</span>
+				        </c:when>
+				        <c:otherwise>
+				            <a href="?page=${i}" class="BtnType SizeS page">${i}</a>
+				        </c:otherwise>
+				    	</c:choose>
+				    </c:forEach>
+				    <c:if test="${currentPage < totalPages}">
+				        <a class="BtnType SizeS BtnNext btnNext" href="?page=${currentPage + 1}">다음</a>
+				    </c:if>
+				</div>
+			</c:if>
 		</div>
 		
 	</c:if>

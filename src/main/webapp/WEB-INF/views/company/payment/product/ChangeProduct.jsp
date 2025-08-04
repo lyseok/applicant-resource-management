@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>요금제 변경</title>
-<script src="https://js.tosspayments.com/v2/standard"></script>
+<script src="https://js.tosspayments.com/v1"></script>
 <script>
 	const PbillingKey = "${param.billingKey}";
 	const PproductName = "${product.productName}";

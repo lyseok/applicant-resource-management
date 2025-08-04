@@ -11,11 +11,11 @@ public interface ScrabRecruitmentMapper {
 
 	public List<ScrabRecruitmentVO> selectScrabRecruitmentList();
 
-	public ScrabRecruitmentVO selectScrabRecruitmentByPk(ScrabRecruitmentVO vo);
+	public List<ScrabRecruitmentVO> selectMyScrabRecruitmentList(String userId);
+	
+	public int checkRecruitScrab(ScrabRecruitmentVO vo);
 
 	public int insertScrabRecruitment(ScrabRecruitmentVO vo);
-
-	public int updateScrabRecruitment(ScrabRecruitmentVO vo);
 
 	public int deleteScrabRecruitment(ScrabRecruitmentVO vo);
 }

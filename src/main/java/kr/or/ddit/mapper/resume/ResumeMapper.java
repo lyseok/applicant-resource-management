@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.or.ddit.vo.resume.ResumeVO;
 
@@ -33,6 +34,15 @@ public interface ResumeMapper {
 	
 	// 이력서 제목으로 검색조회
 	public List<Map<String, Object>> selectResumeSearch(ResumeVO resumeVO);
+	
+	public int selectResumeTotalCount(String userId);
+
+	public List<Map<String, Object>> selectResumePagingList(
+	  @Param("userId") String userId,
+	  @Param("offset") int offset,
+	  @Param("limit") int limit
+	);
+
 	
 	
 }

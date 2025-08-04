@@ -59,54 +59,6 @@ selectField.onchange = function () {
   selectedField = this.value;
 };
 
-// // 이력서 카드 렌더
-// function renderSelectedResumeCard() {
-//   selectedResumeCard.innerHTML = `
-//     <div class="card mb-0 selected-card">
-//       <div class="card-body py-2 px-3">
-//         <p class="mb-1 text-secondary" style="font-size: .92em;">${selectedResume.createdAt}</p>
-//         <h6 class="mb-1">${selectedResume.title}</h6>
-//         <div class="d-flex align-items-center gap-2 text-secondary" style="font-size:.96em;">
-//           <i class="bi bi-file-earmark-text"></i>
-//           <span>${selectedResume.hasAttachment ? "첨부파일이 있습니다" : "첨부파일이 없습니다"}</span>
-//         </div>
-//       </div>
-//     </div>
-//   `;
-// }
-// renderSelectedResumeCard();
-
-// // 이력서 목록 렌더
-// function renderResumeList() {
-//   resumeList.innerHTML = mockResumes.map(resume => `
-//     <div class="card mb-2 resume-card ${selectedResume.id === resume.id ? 'selected-card' : ''}" data-id="${resume.id}">
-//       <div class="card-body py-2 px-3">
-//         <p class="mb-1 text-secondary" style="font-size: .92em;">${resume.createdAt}</p>
-//         <h6 class="mb-1">${resume.title}</h6>
-//         <div class="d-flex align-items-center gap-2 text-secondary" style="font-size:.96em;">
-//           <i class="bi bi-file-earmark-text"></i>
-//           <span>${resume.hasAttachment ? "첨부파일이 있습니다" : "첨부파일이 없습니다"}</span>
-//         </div>
-//       </div>
-//     </div>
-//   `).join('');
-//   // 카드 클릭시 이력서 선택
-//   resumeList.querySelectorAll('.resume-card').forEach(card => {
-//     card.onclick = function() {
-//       const rid = this.getAttribute('data-id');
-//       selectedResume = mockResumes.find(r => r.id === rid);
-//       renderSelectedResumeCard();
-//       resumeList.style.display = 'none';
-//     };
-//   });
-// }
-
-// // 이력서 변경 버튼
-// btnShowResumeList.onclick = function() {
-//   renderResumeList();
-//   resumeList.style.display = resumeList.style.display === 'none' ? 'block' : 'none';
-// };
-
 // 모달 열기용 예시 (프로젝트 제목 넘기기)
 function openApplicationModal(title) {
   modalProjectTitle.textContent = title;
@@ -143,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function renderAnnouncementDetail(data) {
   // 상태 변환
   const statusText = data.anncEndYn === 'Y' ? '모집완료' : '모집중';
-  const statusClass = data.anncEndYn === 'Y' ? 'bg-secondary' : 'badge-recruit';
+  const statusClass = data.anncEndYn === 'Y' ? 'opacity-25' : 'badge-recruit';
   data.prjAnncContent = formatTextWithLineBreaks(data.prjAnncContent);
   // 팀 구성 (모집 팀원)
   const teamListHtml = (data.prjRcrtPsncntList || [])
@@ -167,7 +119,7 @@ function renderAnnouncementDetail(data) {
   const techListHtml = (data.prjAnncBoardTagList || [])
     .map((t) =>
       t.tag && t.tag.tagName
-        ? `<span class="badge bg-secondary-subtle me-1">${t.tag.tagName}</span>`
+        ? `<span class="badge badge-tag">${t.tag.tagName}</span>`
         : ''
     )
     .join('');
@@ -175,108 +127,84 @@ function renderAnnouncementDetail(data) {
   // 내용 삽입
   document.querySelector('.card-body').innerHTML = /* html */ `
     <!-- 제목/상태 -->
-    <div class="d-flex flex-wrap align-items-start justify-content-between mb-2">
-      <h2 class="fw-bold mb-0 text-dark" style="font-size:1.7rem;">${
-        data.prjEmpTitle
-      }</h2>
-      <span class="badge ${statusClass} text-white fs-6 py-2 px-4">${statusText}</span>
+    <div class="d-flex align-items-center mb-2 gap-3">
+	      <span class="badge ${statusClass} text-white fs-14 py-2 px-4 bg-violet08">${statusText}</span>
+	      <h2 class="fw-bold text-dark fs-5">${data.prjEmpTitle}</h2>
     </div>
 
-    <!-- 작성자 정보 -->
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap">
-      <div>
-        <div class="fw-medium" style="font-size:1.1rem;">작성자 : ${
-          data.memName || '익명'
-        }</div>
-        <div class="text-secondary small mt-1 d-flex align-items-center gap-3 flex-wrap">
-          <span>작성일 ${data.anncCreateDate || '-'}</span>
-          <span>수정일 ${data.updateDate || '-'}</span>
-          <span class="d-flex align-items-center gap-1"><i class="bi bi-eye"></i>조회수 ${
-            data.view || 0
-          }</span>
-        </div>
-        <div class="small text-secondary" style="font-size:1.01em;">
-          <span class="me-4">
-            <i class="bi bi-calendar-event me-1"></i>
-            <b>시작 예정일:</b>
-            ${
-              data.prjStartPlanDate
-                ? `${data.prjStartPlanDate.slice(
-                    0,
-                    4
-                  )}-${data.prjStartPlanDate.slice(
-                    4,
-                    6
-                  )}-${data.prjStartPlanDate.slice(6, 8)}`
-                : '-'
-            }
-          </span>
-          <span>
-            <i class="bi bi-calendar-check me-1"></i>
-            <b>마감 예정일:</b>
-            ${
-              data.prjEndPlanDate
-                ? `${data.prjEndPlanDate.slice(
-                    0,
-                    4
-                  )}-${data.prjEndPlanDate.slice(
-                    4,
-                    6
-                  )}-${data.prjEndPlanDate.slice(6, 8)}`
-                : '-'
-            }
-          </span>
-        </div>
-      </div>
-      <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-1">
-          <span class="material-symbols-outlined">
-            favorite
-          </span>
-          ${data.like || 0}</button>
-      </div>
+    <!-- 글 정보 (작성일, 수정일, 조회수) -->
+    <div class="d-flex align-items-center gap-5 mb-5 text-secondary small">
+      <div class="d-flex gap-2"><b>작성</b><span>${data.anncCreateDate.split(" ")[0] || '-'}</span></div>
+      <!-- <span>수정일 ${data.updateDate || '-'}</span> -->
+      <div class="d-flex gap-2"><b>조회</b><span>${data.view || 0}</span></div>
     </div>
     
 
-    <!-- 팀 구성 -->
+		<!-- 작업 기간 -->
     <div class="mb-5">
-      <div class="section-title">현재 팀 구성</div>
-      <ul class="list-unstyled list-dot mb-2">
-        ${teamListHtml}
-      </ul>
-      ${
-        recruitNow
-          ? `<div class="mt-3 text-secondary">→ 현재 ${recruitNow}을 새로이 모십니다!</div>`
-          : ''
-      }
+      <div class="mb-1 fs-6 fw-bold">프로젝트 작업 기간</div>
+      <div class="d-flex align-items-center gap-2 fs-14 fw-500">
+      	<span class="material-symbols-outlined fw-300 text-violet70">calendar_today</span>
+	      <span class="">
+	      	<!-- 시작일자 -->
+	        ${data.prjStartPlanDate
+	          ? `${data.prjStartPlanDate.slice(0,4)}-${data.prjStartPlanDate.slice(4,6)}-${data.prjStartPlanDate.slice(6,8)}`
+	          : '-'}
+	          ~
+          <!-- 마감일자 --> 
+	        ${data.prjEndPlanDate
+	          ? `${data.prjEndPlanDate.slice(0,4)}-${data.prjEndPlanDate.slice(4,6)}-${data.prjEndPlanDate.slice(6,8)}`
+	          : '-'}
+	      </span>
+      </div>
     </div>
-    <hr />
-
-    <!-- 기술스택 & 업무 내용 -->
-    <div class="mb-5">
-      <div class="section-title">기술 스택</div>
-      <div class="mb-2">${techListHtml}</div>
-    </div>
-    <hr />
-
+    
     <!-- 프로젝트 소개 -->
     <div class="mb-5">
-      <div class="section-title">프로젝트 소개</div>
-      <div class="text-secondary mb-3" style="font-size:1.05em;">
+      <div class="mb-1 fs-6 fw-bold">프로젝트 소개</div>
+      <div class="text-secondary fs-16">
         ${data.prjAnncContent || '-'}
       </div>
     </div>
-    <hr />
-
-    <!-- PM 이력서 버튼 -->
-    <div class="d-flex justify-content-center mb-3">
-      <button class="btn btn-purple px-5 py-2 fw-semibold">PM 이력서 확인</button>
+    
+    <!-- 팀 구성 -->
+    <div class="mb-5">
+      <div class="mb-1 fs-6 fw-bold">현재 팀 구성</div>
+      <ul class="list-unstyled list-dot mb-2  fs-14">
+        ${teamListHtml}
+      </ul>
+      ${recruitNow ? `<div class="mt-3 text-secondary">→ 현재 ${recruitNow}을 새로이 모십니다!</div>` : ''}
     </div>
 
+    <!-- 기술스택 & 업무 내용 -->
+    <div class="mb-5">
+      <div class="mb-1 fs-6 fw-bold">기술 스택</div>
+      <div class="d-flex gap-2 mb-2">${techListHtml}</div>
+    </div>
+
+    
+    
+    <div class="d-flex align-items-center justify-content-between">
+	    <!-- 작성자 정보 -->
+	    <div class="d-flex align-items-center gap-3">
+	    	<div class="profile rounded-circle overflow-hidden mw-28 mh-28">
+	    		<img src="${data.memImg || 'https://placehold.co/32x32'}" class="w100p">
+	    	</div>
+	    	<div class="fw-bold fs-16">${data.memName || '익명'}</div>
+	    	
+		    <!-- PM 이력서 버튼 -->
+		    <div class="d-flex justify-content-center">
+		      <button class="btn btn_violet_line btn-sm fs-14 fw-500 fs-13">이력서 확인</button>
+		    </div>
+	    </div>
+    </div>
+    <hr />
+
+
     <!-- 하단 버튼 -->
-    <div class="d-flex justify-content-center gap-3">
-      <a href="/board/project" class="btn btn-outline-secondary px-5 py-2">목록</a>
-      <button class="btn btn-purple px-5 py-2" onclick="openApplicationModal(renderData.prjEmpTitle, renderData.prjRcrtPsncntList)">지원</button>
+    <div class="d-flex justify-content-end gap-2">
+      <a href="/board/project" class="btn btn_gray_line">목록</a>
+      <button class="btn btn-purple px-5 py-2 btn btn_violet" onclick="openApplicationModal(renderData.prjEmpTitle, renderData.prjRcrtPsncntList)">지원</button>
     </div>
   `;
 
@@ -346,25 +274,25 @@ btnShowResumeList.onclick = function () {
     .map(
       (resume) => `
     <div class="card mb-2 resume-card ${
-      selectedResume && selectedResume.resumeNo === resume.resumeNo
+      selectedResume && selectedResume.RESUME_NO === resume.RESUME_NO
         ? 'selected-card'
         : ''
-    }" data-id="${resume.resumeNo}">
+    }" data-id="${resume.RESUME_NO}">
       <div class="card-body py-2 px-3">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <p class="mb-1 text-secondary" style="font-size: .92em;">
-              ${resume.updateDate ? `수정일: ${resume.updateDate}` : ''}
+            <p class="mb-1 text-secondary fs-13 fw-500">
+              ${resume.UPDATE_DATE ? `${resume.UPDATE_DATE}` : ''}
             </p>
-            <h6 class="mb-1">${resume.resumeName || resume.resumeNo}</h6>
+            <h6 class="mb-1 fw-500">${resume.RESUME_NAME || resume.RESUME_NO}</h6>
             <div class="text-secondary" style="font-size:.96em;">
               ${
-                resume.resumeMainYn === 'Y'
+                resume.RESUME_MAIN_YN === 'Y'
                   ? `<span class="badge bg-purple">대표 이력서</span>`
                   : ''
               }
               ${
-                resume.resumeSubmitYn === 'Y'
+                resume.RESUME_SUBMIT_YN === 'Y'
                   ? `<span class="badge bg-success">제출됨</span>`
                   : ''
               }
@@ -388,7 +316,7 @@ btnShowResumeList.onclick = function () {
   resumeListDiv.querySelectorAll('.resume-card').forEach((card) => {
     card.onclick = function () {
       const rid = this.getAttribute('data-id');
-      selectedResume = resumeList.find((r) => r.resumeNo === rid);
+      selectedResume = resumeList.find((r) => r.RESUME_NO === rid);
       renderSelectedResumeCard();
       selectedResumeCard.style.display = 'block';
       resumeListDiv.style.display = 'none';
@@ -409,12 +337,12 @@ function renderSelectedResumeCard() {
     <div class="card mb-0 selected-card">
       <div class="card-body py-2 px-3">
         <p class="mb-1 text-secondary" style="font-size: .92em;">${
-          selectedResume.updateDate
-            ? `수정일: ${selectedResume.updateDate}`
+          selectedResume.UPDATE_DATE
+            ? `수정일: ${selectedResume.UPDATE_DATE}`
             : ''
         }</p>
         <h6 class="mb-1">${
-          selectedResume.resumeName || selectedResume.resumeNo
+          selectedResume.RESUME_NAME || selectedResume.RESUME_NO
         }</h6>
       </div>
     </div>
@@ -446,7 +374,7 @@ btnSaveApplication.onclick = async function () {
   }
 
   // 이력서 번호
-  const resumeNo = selectedResume.resumeNo;
+  const resumeNo = selectedResume.RESUME_NO;
 
   // 서버로 전송할 객체
   const applyData = {

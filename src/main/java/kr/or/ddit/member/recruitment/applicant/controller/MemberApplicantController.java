@@ -12,7 +12,7 @@ import kr.or.ddit.admin.recruitment.applicant.service.AdminApplicantService;
 import kr.or.ddit.member.recruitment.applicant.service.MemberApplicantService;
 import kr.or.ddit.vo.recruitment.ApplicantVO;
 
-@RequestMapping("/member")
+@RequestMapping("/mypage")
 @Controller
 public class MemberApplicantController {
 
@@ -27,5 +27,9 @@ public class MemberApplicantController {
 		return "/member/person/find";
 	}
 	
+	@GetMapping("/applicatedList")
+	public String myApplicatedList() {
+		return "member/recruitment/applicant/applicatedNotice";
+	}
 	
 }

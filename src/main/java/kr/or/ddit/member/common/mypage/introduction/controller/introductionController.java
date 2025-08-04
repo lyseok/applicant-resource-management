@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.nimbusds.jose.proc.SecurityContext;
+
+import jakarta.validation.Valid;
 import kr.or.ddit.member.common.mypage.introduction.service.introductionService;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.UpdateGroup;
@@ -40,10 +45,9 @@ public class introductionController {
 	
 	
 	@ModelAttribute(MODELNAME)
-	public IntroductionListVO setupIntroductionListVO() { // 메서드 이름도 명확하게 변경
+	public IntroductionVO setupIntroductionVO() { // 메서드 이름도 명확하게 변경
 	    // List 필드를 초기화하여 NPE 방지
-		IntroductionListVO vo = new IntroductionListVO();
-		vo.setIntroductionList(new ArrayList<>()); // 필드에 List가 있다면 초기화
+		IntroductionVO vo = new IntroductionVO();
 		return vo;
 	}
 	
@@ -51,14 +55,30 @@ public class introductionController {
 	@GetMapping("/list")
 	public String getintroduction(
 		@AuthenticationPrincipal UserDetails userDetails 
+		, @RequestParam(defaultValue = "1") int page	// 프론트에서 받음,
 		, Model model
 	) {
 		if(userDetails == null) {
 			return "redirect:/login";
 		}
-		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기		
-		List<IntroductionVO> introductionList = service.readIntroductionList(userId);
+		String userId = userDetails.getUsername();	// 현재 로그인된 사용자의 id값 가져오기	
+		
+		// 페이징 처리를 위한 설정
+		int pageSize = 4;
+	    int offset = (page - 1) * pageSize;
+	    int totalCount = service.getTotalCount(userId);
+
+	    List<IntroductionVO> introductionList = service.getIntroductionPagingList(userId, offset, pageSize);
+
+	    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+		//List<IntroductionVO> introductionList = service.readIntroductionList(userId);
 		model.addAttribute("introductionList", introductionList);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("totalPages", totalPages);
+		// 페이징 처리를 위한 설정 end
+
 		return "member/resume/mypage/introduction/introductionList";
 	}
 	
@@ -69,6 +89,7 @@ public class introductionController {
 		, Model model
 	) {
 		IntroductionVO introdDetail = service.readIntroductionDetail(no);
+		log.info("introdDetaion 확인 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<{}", introdDetail);
 		model.addAttribute("introdDetail", introdDetail);
 		return "member/resume/mypage/introduction/introductionDetail";
 	}
@@ -78,38 +99,57 @@ public class introductionController {
 	public String getintroductionCreateForm(
 		Model model
 	) {
+		IntroductionVO vo = new IntroductionVO();
+		model.addAttribute(MODELNAME, vo);
 		model.addAttribute("introdCreate", true);
 		return "member/resume/mypage/introduction/introductionForm";
 	}
 	
+	// 자소서 수정 페이지 이동
+	@GetMapping("edit/{no}")
+	public String getintroductionEditForm (
+		Model model
+		, @PathVariable String no
+	) {
+		log.info("=====>{}", no);
+		model.addAttribute(MODELNAME, service.readIntroductionDetail(no));
+		model.addAttribute("introdEdit", true);
+		return "member/resume/mypage/introduction/introductionForm";
+	}	
+	
 	// 자소서 등록 로직 구현 controller
 	@PostMapping("create")
 	public String createIntrodcution(
-		// @RequestBody Map<String, String> formDataMap
-		@AuthenticationPrincipal UserDetails userDetails 
-		, @Validated(InsertGroup.class) @ModelAttribute IntroductionListVO itrdListVO
+		@Valid @ModelAttribute(MODELNAME) IntroductionVO itrdVO
 		, BindingResult errors
 		, RedirectAttributes redirectAttributes
 	) {
-		String userId = userDetails.getUsername();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
+		
 		String lvn = "";
+		log.info("진짜 설마 아직도 안찍힘??? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", itrdVO);
 		if(!errors.hasErrors()) {
-			List<IntroductionVO> itrdList = itrdListVO.getIntroductionList();
-	        for(IntroductionVO itrd:itrdList) {
-	        	itrd.setUserId(userId);
-	        	service.createIntroduction(itrd);
-	        }
-	        lvn = "redirect:/mypage/introduction/list";
-		} else {
-			log.info("유효성 검사 실패!!!");
-			 String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
-	        redirectAttributes.addFlashAttribute(errorsName, errors); 
-
-	        // 입력 데이터 유지용 add FlashAttribute
-	        redirectAttributes.addFlashAttribute(MODELNAME, itrdListVO);
-			
-	        lvn = "redirect:/mypage/introduction/create"; // 입력데이터 가지고 다시 입력 폼으로 보내줌			
-		}
+      	// pk가 있으면 수정 로직 !
+      	if(itrdVO.getIntroductionNo() != null) {
+      		log.info("pk 있는 지 확인 >>>>>>>>>>>>>>>>>>>>>>> {}", itrdVO);
+      		itrdVO.setUserId(userId);
+        	service.editIntroduction(itrdVO);
+      	} else {
+      		itrdVO.setUserId(userId);
+        	service.createIntroduction(itrdVO);
+      	}
+    	  lvn = "redirect:/mypage/introduction/list";
+      } else {
+				log.info("유효성 검사 실패!!!");
+				String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
+	      redirectAttributes.addFlashAttribute(errorsName, errors); 
+	
+	      // 입력 데이터 유지용 add FlashAttribute
+	      redirectAttributes.addFlashAttribute(MODELNAME, itrdVO);
+		
+	      lvn = "redirect:/mypage/introduction/create"; // 입력데이터 가지고 다시 입력 폼으로 보내줌			
+      }
 		return lvn;
 	}
 
@@ -143,49 +183,6 @@ public class introductionController {
 		return "redirect:/mypage/introduction/list";
 	}
 	
-
-	
-	// 자소서 수정 페이지 이동
-	@GetMapping("edit/{no}")
-	public String getintroductionEditForm (
-		Model model
-		, @PathVariable String no
-	) {
-		log.info("=====>{}", no);
-		model.addAttribute(MODELNAME, service.readIntroductionDetail(no));
-		model.addAttribute("introdEdit", true);
-		return "member/resume/mypage/introduction/introductionEdit";
-	}	
-	
-	// 자소서 수정 로직 수행
-	@PostMapping("edit/{no}")
-	public String getintroductionEdit (
-		@AuthenticationPrincipal UserDetails userDetails 
-		, @PathVariable String no 
-		, @Validated(UpdateGroup.class) @ModelAttribute IntroductionVO itrdVO 
-		, BindingResult errors
-		, RedirectAttributes redirectAttributes			
-	) {
-		String userId = userDetails.getUsername();
-		String lvn = "";
-		if(!errors.hasErrors()) {
-			itrdVO.setUserId(userId);
-			itrdVO.setIntroductionNo(no);
-			log.info("자소서번호  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", no);
-			service.editIntroduction(itrdVO);
-			lvn = "redirect:/mypage/introduction/" + no;
-		} else {
-			log.info("유효성 검사 실패!!!");
-			String errorsName = BindingResult.MODEL_KEY_PREFIX + MODELNAME;
-	        redirectAttributes.addFlashAttribute(errorsName, errors); 
-
-	        // 입력 데이터 유지용 add FlashAttribute
-	        redirectAttributes.addFlashAttribute(MODELNAME, itrdVO);
-	        lvn = "redirect:/mypage/introduction/edit/" + no;
-		}		
-		return lvn;
-	}
-
 	
 	
 	
@@ -194,8 +191,29 @@ public class introductionController {
 	public String getintroductionSearch(
 		Model model
 		, @RequestParam String keyword
+		, @RequestParam(defaultValue = "1") int page
 	) {
-		model.addAttribute("introductionList", service.readIntroductionSearch(keyword));
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userId = authentication.getName();
+		
+		int pageSize = 4;
+	    int offset = (page - 1) * pageSize;
+	    
+
+	    int totalCount = service.getSearchCount(userId, keyword);
+	    List<IntroductionVO> introductionList = service.searchIntroductionList(userId, keyword, offset, pageSize);
+
+	    
+	    int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+	    
+		// model.addAttribute("introductionList", service.readIntroductionSearch(keyword));
+
+	    model.addAttribute("introductionList", introductionList);
+		model.addAttribute("currentPage", page);
+	    model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("keyword", keyword);
+
 		return "member/resume/mypage/introduction/introductionList";
 	}
 }

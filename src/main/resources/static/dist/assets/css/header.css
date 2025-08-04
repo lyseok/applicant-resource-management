@@ -29,9 +29,10 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header .bi .frame {
     display: block;
     overflow: hidden;
-    width: 134px;
-    height: 34px;
-    background: url("/dist/assets/images/logo.png") no-repeat 0 0 / 134px;
+    width: 184px;
+    height: 43px;
+    background: url("/dist/assets/images/logo.png") no-repeat 0 0 / 164px;
+    margin-left:-30px;
 }
 
 /* family service logo */
@@ -117,7 +118,7 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header .search .btn_search .custom-select {
   position: relative;
   font-weight: bold;
-  width: 70px;
+  width: 55px;
 }
 #sri_header .search .btn_search .custom-select select{
 	display: none;
@@ -170,7 +171,7 @@ body::-webkit-scrollbar-thumb:hover {
     font-size: 15px;
     font-weight: bold;
     line-height: 20px;
-    flex-basis:calc(100% - 107px);
+    flex-basis:calc(100% - 101px);
     width:100%;
     border:none;
 }
@@ -648,7 +649,6 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header .navigation .btn_menu {
     display: grid;
     position: relative;
-    padding-left: 14px;
     height: 40px;
     box-sizing: border-box;
     color: #373f57;
@@ -860,27 +860,37 @@ body::-webkit-scrollbar-thumb:hover {
 /* Familysite */
 #sri_header .navigation .familysite {
     display: flex;
-    flex-wrpa: wrap;
+    flex-wrap: wrap;
     justify-content: end;
     align-items: center;
     gap: 20px;
-    height: 100%;
+    height: 64px;
+    width:220px;
 }
 
-#sri_header .navigation .familysite .item {
-    display: grid;
-    height: 40px;
-    gap: 7px;
-    grid-auto-flow: column;
-    justify-content: center;
-    align-items: center
+
+#sri_header .navigation .familysite .swiper-container,
+#sri_header .navigation .familysite .swiper-slide{
+	height:64px;
+}
+#sri_header .navigation .familysite ul{
+	padding:8px 0;
 }
 
-#sri_header .navigation .familysite .item .txt {
-    color: var(--blue110);
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 20px
+#sri_header .navigation .familysite .job-pager{
+	bottom:50%;
+	right:0;
+	display:flex;
+	gap:5px;
+	transform:translateY(50%);
+}
+.swiper-pagination-bullet{
+	width:7px;
+	height:7px;
+}
+
+#sri_header .navigation .familysite .swiper-pagination-bullet-active{
+	background:var(--violet80);
 }
 
 /*#sri_header .navigation .familysite .item {display:grid;height:40px;gap:4px;grid-auto-flow:column;justify-content:center;align-items:center}*/
@@ -1176,7 +1186,7 @@ body::-webkit-scrollbar-thumb:hover {
     align-items: center;
     grid-area: navigation;
     grid-template-areas: "total gnb familysite";
-    grid-template-columns: 50px 1fr auto
+    grid-template-columns: 20px 1fr auto
 }
 
 /* normal fixed */
@@ -1224,7 +1234,8 @@ body::-webkit-scrollbar-thumb:hover {
 
 #sri_header.fixed .bi .frame, #sri_header.simple.bubble .bi .frame {
     width: 36px;
-    background:url("/dist/assets/images/home_violet30.png") 0 50% no-repeat
+    background:url("/dist/assets/images/home_violet30.png") 0 50% no-repeat;
+    margin-left:0;
 }
 
 #sri_header.fixed .search {
@@ -1246,9 +1257,9 @@ body::-webkit-scrollbar-thumb:hover {
     font-size: 14px
 }
 
-#sri_header.fixed .search .btn_search .keyword.static {
+/* #sri_header.fixed .search .btn_search .keyword.static {
     display: none
-}
+} */
 
 #sri_header.fixed .search .btn_search .keyword.fixed {
     display: block
@@ -1261,6 +1272,7 @@ body::-webkit-scrollbar-thumb:hover {
 #sri_header.fixed .utility .sign hr, #sri_header.fixed .utility .sign .btn_sign.signup {
     display: none
 }
+
 
 #sri_header.fixed .navigation .wrap_gnb .depth2 {
     left: -50px;
@@ -1483,16 +1495,16 @@ body::-webkit-scrollbar-thumb:hover {
     content: ""
 }
 
-.wing ul li button.on {
-    color: #02c6ff
+.wing ul li a.on {
+    color:var(--violet80);
 }
 
-.wing ul li button.on:before {
-    background: #02c6ff
+.wing ul li a.on:before {
+    background: var(--violet80);
 }
 
 .wing ul li a:hover, .wing ul li button:hover {
-    color: #02c6ff
+    color: var(--violet80);
 }
 
 .wing>.btn_top {
@@ -1516,7 +1528,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .wing>.btn_top:hover span {
-    color: #02c6ff
+    color: var(--violet80)
 }
 
 .wing>.ads {
@@ -1607,12 +1619,13 @@ body::-webkit-scrollbar-thumb:hover {
 	cursor:pointer;
 }
 .wrap_header .member_btn .user_photo{
-	display: block;
+	display: flex;
   overflow: hidden;
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background: #ccc;
+  border: 1px solid #edeef0;
 }
 .wrap_header .member_btn .material-symbols-outlined{
 	width:18px;

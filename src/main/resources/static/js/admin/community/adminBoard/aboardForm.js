@@ -2,11 +2,21 @@ const boardTypeCode = document.querySelector("#boardTypeCode");
 const codeGroup = document.querySelector("#codeGroup");
 const memType = document.querySelector("#memType");
 let updateNo = null;  // 전역으로 선언
+//let userId = window.userId;
 
 // 무조건 처음 한번 실행 되는 부분
 //1차 옵션 추가
-const addopt = function(){
+const addopt = function(type){
 	aboardform.style.display = "block";
+	TypoBox_searchBar.style.display = 'none';
+	document.querySelector('.PageBox').innerHTML = "";
+	let backBtn = document.querySelector('button.btn.btn-secondary.px-4.me-2');  //취소 버튼 이벤트
+	backBtn.addEventListener("click", function(){
+	    // 등록 or 수정 구분
+		console.log("등록에서 취소?", type);
+		aboardForm.style.display = "none";
+		alist2(type);
+	})
 	fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
 	  resp.json().then((rslt) => {
 	    rslt.cmnCodeList.map((v, i) => {
@@ -81,6 +91,7 @@ aboardform.onsubmit = function (e) {
 
 //수정에서 넘어올 시, 0차 옵션 기입하고 선택
 const addopt2 = function(type){
+	console.log("수정 type :", type);
 	fetch(`/ajax/code/cmncodegroup/BRDD`).then((resp) => {
 	  resp.json().then((rslt) => {
 	    rslt.cmnCodeList.map((v, i) => {
@@ -278,15 +289,30 @@ const abno2 = function(no){
         let boct = document.querySelector('textarea[name="boardContent"]');
         if (boct) boct.value = rslt.boardContent;
 	});
+	
 }
 
+// 등록 or 수정 폼 데이터
 const aform = function(no, type){
-	console.log("디테일에서 넘어온 수정", no);
-	console.log("디테일에서 넘어온 수정2", type);
+	console.log("디테일에서 넘어온 수정 번호", no);
+	console.log("디테일에서 넘어온 수정 타입", type);
 	allBtns.innerHTML = '';
 	
 	addopt2(type);  //옵션 넣어줌
 	abno2(no);  //제목, 내용 넣어줌
+	let backBtn = document.querySelector('button.btn.btn-secondary.px-4.me-2');
+	backBtn.addEventListener("click", function(){
+	    // 등록 or 수정 구분
+		console.log("수정에서 취소!", no);
+		abno(no);
+		aboardform.reset(); //폼 초기화
+        //옵션 초기화
+        bdis();
+        cdis(); codeGroup.disabled = true;	
+        mdis(); memType.disabled = true;
+        //수정 상태 해제
+        updateNo = null;
+	})
 }
 
 

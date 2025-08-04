@@ -7,18 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
 	axios.get('/ajax/company/company_exam/list')
 		.then(resp => {
 			const examList = resp.data;
-			examCount.textContent = `총 ${examList.length}건의 시험이 등록되어 있습니다.`;
+			examCount.textContent = `${examList.length}`;
 
 			examL.innerHTML = ''; // 초기화
 
 			examList.forEach((exam, idx) => {
 				const card = document.createElement('div');
-				card.className = 'exam-card d-flex align-items-center mb-3 p-3 border rounded';
+				card.className = 'exam-card d-flex align-items-center p-3 border rounded justify-content-between';
 				card.dataset.examId = exam.comExamNo;
 
 				card.innerHTML = `
-		          <div class="exam-name">${idx + 1}. ${exam.comExamName}</div>
-		          <div class="exam-date">등록일시 - ${exam.comExamCreateDate}</div>
+		          <div class="class="exam-name d-flex flex-column gap-1">
+								<b>시험문제${idx + 1}. ${exam.comExamName}</b>
+								<p class="fs-14 opacity-75">등록된 항목 <span class="text-violet80 fw-semibold">${exam.questionCount}</span></p>
+							</div>
+		          <div class="exam-date">${exam.comExamCreateDate}</div>
 		        `;
 
 				// 카드 클릭 시 상세 페이지 이동

@@ -115,12 +115,13 @@
     align-items: center;
 }
 .dash_header  .btn_member .user_photo {
-    display: block;
+    display: flex;
     overflow: hidden;
     width: 32px;
     height: 32px;
     border-radius: 50%;
     background:#ccc;
+  	border: 1px solid #edeef0;
 }
 .dash_header .btn_member .user_name {
     display: inline-block;
@@ -189,4 +190,19 @@
 }
 .dash_header .wrap_member .btn_member.expanded+.layer_member {
     display: block
+}
+
+
+
+/* 250731 - 컴퍼니 사이드메뉴 style 추가 */
+.menu-link .bx-lock-keyhole{
+	display:none;
+}
+
+.menu-link.off{
+	opacity:0.3;
+}
+.menu-link.off  .bx-lock-keyhole{
+	display:block;
+	margin-left:5px;
 }
