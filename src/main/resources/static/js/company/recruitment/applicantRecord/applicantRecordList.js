@@ -279,7 +279,7 @@ function closeStep() {
         alert('지원자가 없습니다.');
         return;
     }
-
+	showLoading();
     // 합격 & 불합격 비동기 처리
     const requests = [];
     if (selectedApplicants.length > 0) {
@@ -288,7 +288,7 @@ function closeStep() {
     if (unselectedApplicants.length > 0) {
         requests.push(axios.post(`/applicant/record/fail`, unselectedApplicants));
     }
-
+    
     Promise.all(requests)
         .then(responses => {
             alert(`단계 마감 완료\n합격: ${selectedApplicants.length}명\n불합격: ${unselectedApplicants.length}명`);
@@ -297,7 +297,10 @@ function closeStep() {
         .catch(err => {
             console.error('단계 마감 실패', err);
             alert('단계 마감 중 오류가 발생했습니다.');
-        });
+        })
+        .finally(()=>{
+			hideLoading();
+		});
 }
   
   renderApplicantTable();
