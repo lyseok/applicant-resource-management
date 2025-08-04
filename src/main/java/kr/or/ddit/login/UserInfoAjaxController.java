@@ -27,6 +27,7 @@ public class UserInfoAjaxController {
                 map.put("userName", ((CompanyVO) user).getComName());
                 map.put("userImg", ((CompanyVO) user).getComLogo());
                 map.put("userId", ((CompanyVO) user).getUserId());
+                map.put("payment", ((CompanyVO) user).getComPayment());
             } else if (user instanceof AdminVO) {
                 map.put("userType", "admin");
                 map.put("userName", "관리자");

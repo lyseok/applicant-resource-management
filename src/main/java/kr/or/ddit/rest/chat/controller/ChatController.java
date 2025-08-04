@@ -34,11 +34,8 @@ public class ChatController {
             log.info("채팅 메시지 수신: chatroomNo={}, userId={}, message={}", 
                     chatroomNo, message.getUserId(), message.getMessage());
 
-            // 메시지 유효성 검증
-            if (message.getMessage() == null || message.getMessage().trim().isEmpty()) {
-                log.warn("빈 메시지 수신: {}", message);
-                return;
-            }
+            // 메시지에 chatroomNo 설정 (경로에서 가져온 값)
+            message.setChatroomNo(chatroomNo);
 
             // 데이터베이스에 메시지 저장
             ChatMessageVO savedMessage = chatService.saveMessage(message);
@@ -46,16 +43,10 @@ public class ChatController {
             // 채팅방 구독자들에게 브로드캐스트
             messagingTemplate.convertAndSend("/sub/chat.room." + chatroomNo, savedMessage);
 
+            log.info("메시지 브로드캐스트 완료: chatroomNo={}", chatroomNo);
 
         } catch (Exception e) {
             log.error("메시지 처리 중 오류 발생: ", e);
-            
-            // 에러 메시지를 발신자에게만 전송
-            messagingTemplate.convertAndSendToUser(
-                message.getUserId(),
-                "/queue/errors",
-                "메시지 전송에 실패했습니다: " + e.getMessage()
-            );
         }
     }
 }

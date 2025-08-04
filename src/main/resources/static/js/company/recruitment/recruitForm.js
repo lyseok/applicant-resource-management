@@ -423,7 +423,7 @@ document.getElementById('recruitForm').addEventListener('submit', async (e) => {
 		recruitSkillName: input.value
 	}));
 
-	notice.processList = [...document.querySelectorAll('#processSection > .border')].map((el, idx) => {
+	notice.processList = [...document.querySelectorAll('#processSection > .process-item')].map((el, idx) => {
 		const step = el.querySelector('[name*="recruitProcessStep"]').value;
 		const isFinal = el.querySelector('[name*="recruitProcessFinal"]').value;
 		const type = el.querySelector('.processTypeSelect').value;
@@ -461,6 +461,7 @@ document.getElementById('recruitForm').addEventListener('submit', async (e) => {
 		formData.append('recruitThumbnail', form.recruitThumbnail.files[0]);
 	}
 
+	console.log(notice);
 	await axios.post('/ajax/recruit/notice', formData, {
 		headers: {
 			'Content-Type': 'multipart/form-data'
