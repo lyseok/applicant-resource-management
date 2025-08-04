@@ -45,7 +45,10 @@ function doBilling() {
 			console.log("amount:", amount);
 			console.log("orderName:", orderName);
 			console.log("paymentKey:", paymentKey);*/
+			
 			alert("결제 성공!");
+			
+			instantUnlockMenu();
 
 			window.location.href =
 				`/company/payment/success/executebilling?billingKey=${billingKey}` +
@@ -59,4 +62,15 @@ function doBilling() {
 			alert("결제 실패!");
 			console.error("Billing error:", err);
 		});
+}
+
+function instantUnlockMenu() {
+  sessionStorage.setItem("menuUnlocked", "true");
+  const menuEls = document.querySelectorAll('#layout-menu .off');
+  menuEls.forEach(el => {
+    el.classList.remove('off');
+    el.classList.add('unlock-anim');
+    setTimeout(() => el.classList.remove('unlock-anim'), 2000);
+  });
+  console.log("[DEBUG] Menu unlocked instantly after payment");
 }

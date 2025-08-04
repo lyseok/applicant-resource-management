@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +28,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpSession;
+import kr.or.ddit.company.common.company.service.CompanyService;
 import kr.or.ddit.company.payment.link.service.PaymentProductLinkService;
 import kr.or.ddit.company.payment.payment.service.PaymentServiceImpl;
 import kr.or.ddit.company.payment.payment.service.TossPaymentService;
 import kr.or.ddit.company.payment.product.service.PaymentProductServiceImpl;
+import kr.or.ddit.security.auth.UsersVOWrapper;
 import kr.or.ddit.vo.common.ChangeProductResponseVO;
+import kr.or.ddit.vo.common.CompanyVO;
 import kr.or.ddit.vo.common.PaymentListResponseVO;
 import kr.or.ddit.vo.common.PaymentProductVO;
 import kr.or.ddit.vo.common.PaymentVO;
+import kr.or.ddit.vo.common.UsersVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -46,6 +53,9 @@ public class PaymentController {
 
 	@Autowired
 	private PaymentServiceImpl service;
+	
+	@Autowired
+	private CompanyService companyService;
 
 //	@Autowired
 //	private PaymentProductServiceImpl pservice;
@@ -98,11 +108,27 @@ public class PaymentController {
 		        @RequestParam("orderName") String orderName,
 		        @RequestParam("paymentKey") String paymentKey,
 		        @RequestParam("orderId") String orderId,
-		        Model model
+		        Model model,
+		        Authentication authentication
 		) {
 		    PaymentVO result = service.processSuccessfulBilling(billingKey, amount, orderName, paymentKey, orderId);
 		    model.addAttribute("result", result);
 		    log.info("결제성공 했을때 : {}", result);
+		    
+		 // 1. 현재 로그인 사용자 ID 가져오기
+		    String userId = authentication.getName();
+
+		    // 2. DB에서 최신 사용자 정보 다시 로드
+		    CompanyVO updatedUser = companyService.selectCompanyById(userId);
+
+		    // 3. 새 Authentication 생성 후 세션에 반영
+		    Authentication newAuth = new UsernamePasswordAuthenticationToken(
+		        new UsersVOWrapper(updatedUser),
+		        authentication.getCredentials(),
+		        authentication.getAuthorities()
+		    );
+		    SecurityContextHolder.getContext().setAuthentication(newAuth);
+		    
 		    return "company/payment/payment/SuccessSubscribe";
 		}
 
