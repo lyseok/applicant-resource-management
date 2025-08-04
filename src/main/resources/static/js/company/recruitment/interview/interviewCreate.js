@@ -61,9 +61,9 @@ const setData = (data) => {
 
   // 뿌리기
   document.getElementById('noticeTitle').textContent = detail.title;
-  document.getElementById('jobName').textContent = detail.jobName;
-  document.getElementById('hireCount').textContent = detail.hireCount + '명';
-  document.getElementById('interviewDate').textContent = detail.interviewDate;
+  document.getElementById('jobName').textContent = `/ ${detail.jobName}`;
+  document.getElementById('hireCount').textContent = '(' +detail.hireCount + '명)';
+  /*document.getElementById('interviewDate').textContent = detail.interviewDate;*/
   // document.getElementById('interviewInfo').textContent = detail.recContent;
 
   document.getElementById('roomTitle').value = detail.roomTitle ?? '';
@@ -96,7 +96,7 @@ const setData = (data) => {
         a.name
       }">
         </td>
-        <td><a href="${a.resumeUrl}">이력서 보기</a></td>
+        <td><a href="${a.resumeUrl}" class="btn btn_violet_line btn-sm fs-12">이력서 보기</a></td>
         <td>
           <input
             type="datetime-local"
@@ -220,7 +220,7 @@ const setErrorData = (errors) => {
         a.name
       }">
           </td>
-          <td><a href="${a.resumeUrl}">이력서 보기</a></td>
+          <td><a href="${a.resumeUrl}" class="btn btn_violet_line btn-sm fs-12">이력서</a></td>
           <td>
             <input
               type="datetime-local"

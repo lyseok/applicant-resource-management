@@ -1,45 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!DOCTYPE html>
-<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>상품 목록</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
 <script src="https://js.tosspayments.com/v1"></script>
 <script src="/js/company/payment/TossPayment.js"></script>
 <style>
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-body {
-	font-family: 'Noto Sans KR', sans-serif;
-	background-color: #f8f9fa;
-	color: #333;
-}
-
 .container {
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 20px;
 }
 
-/* 헤더 */
-.header {
-	margin-bottom: 20px;
-}
-
-.header h1 {
-	font-size: 28px;
-	font-weight: bold;
-	margin-bottom: 5px;
-}
 
 .subtitle {
 	color: #666;
@@ -57,7 +30,6 @@ body {
 /* 카드 리스트 */
 .packages-section {
 	display: flex;
-	flex-direction: column;
 	gap: 20px;
 }
 
@@ -67,23 +39,17 @@ body {
 	width: 100%;
 	padding: 20px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	border: 1px solid #7e57c2;
-	cursor: pointer;
+	border: 1px solid var(--gray60);
 	transition: transform .2s ease, box-shadow .2s ease;
 	position: relative;
-	overflow: hidden;
 }
 
-.package-card:hover {
-	transform: translateY(-4px);
-	box-shadow: 0 6px 20px rgba(0, 0, 0, .1);
-}
 
 .package-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 15px;
+	margin-bottom: 5px;
 }
 
 .package-header h5 {
@@ -131,12 +97,12 @@ body {
 	color: #666;
 	font-size: 14px;
 	position: relative;
-	margin-top: 15px;
+	cursor:pointer;
 }
 
 .hover-detail {
 	position: absolute;
-	top: -110%;
+	top: 30px;
 	left: 0;
 	width: 250px;
 	background: rgba(126, 87, 194, 0.95);
@@ -150,6 +116,8 @@ body {
 	transition: all 0.3s ease;
 	z-index: 10;
 	white-space: normal;
+	max-height:0;
+	z-index:-1;
 }
 
 .hover-detail::after {
@@ -166,19 +134,11 @@ body {
 .package-info:hover .hover-detail {
 	opacity: 1;
 	transform: translateY(0);
+	max-height:500px;
+	z-index:1;
 }
 
 
-.search_wrap {
-	width:260px;
-}
-.search_wrap select{
-	width:180px;
-}
-.search_btn{
-	width:calc(100% - 180px);
-	
-}
 
 /* 페이징 */
 .pagination .page-item.active .page-link {
@@ -200,54 +160,53 @@ body {
 <body>
 	<div class="container">
 		<!-- 타이틀 -->
-		<div class="header">
-			<h1>📦 등록된 상품 목록</h1>
-			<p class="subtitle">대표 채용공고 지면에서 다수 구직자에게 효과적으로 공고를 홍보하는 상품</p>
-		</div>
-
-		<!-- 필터 + 등록 버튼 -->
-		<div class="header-actions">
-			<form class="d-flex search_wrap" method="get" action="">
-				<select class="form-select me-2" name="filterType">
+		<div class="d-flex justify-content-between mb-3 align-items-end">
+			<div class="">
+				<h1 class="h2 lh1 fw-bold">등록된 상품 목록</h1>
+				<p class="subtitle">대표 채용공고 지면에서 다수 구직자에게 효과적으로 공고를 홍보하는 상품</p>
+			</div>
+			
+			<!-- 필터 + 등록 버튼 -->
+			<form class="d-flex" method="get" action="">
+				<select class="form-select w140 h48" name="filterType" onchange="this.form.submit()">
 					<option value="" ${empty param.filterType ? "selected" : ""}>전체</option>
 					<option value="BUSINESS"
 						${param.filterType == 'BUSINESS' ? "selected" : ""}>Business</option>
 					<option value="PREMIUM"
 						${param.filterType == 'PREMIUM' ? "selected" : ""}>Premium</option>
 				</select>
-				<button type="submit" class="btn btn_violet search_btn">검색</button>
 			</form>
 		</div>
 
 		<!-- 상품 카드 리스트 -->
 		<div class="packages-section">
 			<c:forEach var="product" items="${productList}">
-				<div class="package-card" data-product-no="${product.productNo}"
-					onclick="goToDetail(this)">
+				<div class="package-card" data-product-no="${product.productNo}">
 					<div class="package-header">
 						<h5>${product.productName}</h5>
+						
+						<div class="package-info">
+							<span class="material-symbols-outlined">info</span><span>상품혜택</span>
+							<div class="hover-detail">${product.productDetail}</div>
+						</div>
 					</div>
 					<div class="package-tags">
 						<c:choose>
 							<c:when test="${product.productType == 'PREMIUM'}">
-								<p class="text-primary">프리미엄의 품격이 어울리는 기업에게 추천합니다.</p>
+								<p class="text-violet110">프리미엄의 품격이 어울리는 기업에게 추천합니다.</p>
 							</c:when>
 							<c:when test="${product.productType == 'BUSINESS'}">
-								<p class="text-success">비즈니스 파트너를 찾으세요? 바로 여기 있습니다.</p>
+								<p class="text-violet110">비즈니스 파트너를 찾으세요? 바로 여기 있습니다.</p>
 							</c:when>
 						</c:choose>
 					</div>
 					<div class="package-pricing">
 						<p>
-							<strong>가격:</strong> ₩
-							<fmt:formatNumber value="${product.productPrice}" pattern="#,##0" /> / 월
+							<b><fmt:formatNumber value="${product.productPrice}" pattern="#,##0" /></b>원 / 월
 						</p>
-						<button class="btn btn-violet">상품 구매</button>
 					</div>
-					<div class="package-info">
-						<span class="info-icon">🏢</span> <span>상품혜택</span>
-						<div class="hover-detail">${product.productDetail}</div>
-					</div>
+					
+					<button class="btn btn_violet mt-3" data-product-no="${product.productNo}" onclick="goToDetail(this)">상품 구매</button>
 				</div>
 			</c:forEach>
 		</div>
@@ -267,7 +226,4 @@ body {
 	</div>
 
 	<script src="/js/admin/payment/AdminProduct.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>

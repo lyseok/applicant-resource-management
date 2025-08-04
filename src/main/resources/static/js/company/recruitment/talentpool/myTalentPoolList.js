@@ -129,14 +129,14 @@ function renderTalentPoolTable(talentList) {
         'width=950,height=800'
       );
       // 이력서 열람 업데이트 axios 들어갑니다잉~
-      axios
-        .post(`/ajax/company/talentpool/${item.resumeNo}`)
-        .then(() => {
-          console.log(`이력서 열람 기록 완료: ${item.resumeNo}`);
-        })
-        .catch((err) => {
-          console.error(`이력서 열람 기록 실패: ${item.resumeNo}`, err);
-        });
+		axios
+			.post(`/ajax/company/talentpool/${item.resumeNo}`)
+			.then(() => {
+				console.log(`이력서 열람 기록 완료: ${item.resumeNo}`);
+			})
+			.catch((err) => {
+				console.error(`이력서 열람 기록 실패: ${item.resumeNo}`, err);
+		});
     });
   });
 }
@@ -366,21 +366,17 @@ document.getElementById('job-offer').addEventListener('click', function () {
     });
 
     console.log('입사 제안 데이터:', payload);
-    showLoading();
-    bootstrap.Modal.getInstance(
-      document.getElementById('jobOfferModal')
-    ).hide();
     axios
       .post('/ajax/company/talentpool/joboffer', payload)
       .then(() => {
         alert('입사 제안 메일이 발송되었습니다.');
         // eslint-disable-next-line no-undef
+        bootstrap.Modal.getInstance(
+          document.getElementById('jobOfferModal')
+        ).hide();
       })
       .catch(() => {
         alert('메일 발송 중 오류가 발생했습니다.');
-      })
-      .finally(() => {
-        hideLoading();
       });
   };
 });

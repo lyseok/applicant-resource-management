@@ -46,12 +46,11 @@ function renderScoreItems() {
   box.innerHTML = '';
   interviewData.interviewQuestionList.forEach((item, i) => {
     const row = document.createElement('div');
-    row.className = 'd-flex align-items-center mb-2 gap-2';
+    row.className = 'w-calc100-24-2 d-flex gap-2';
 
     const input = document.createElement('input');
     input.type = 'text';
     input.className = 'form-control';
-    input.style.maxWidth = '420px';
     input.value = item.interviewQuestionContent;
     input.name = `scoreItem${i+1}`;
     input.id = `scoreItem${i+1}`;
@@ -65,8 +64,8 @@ function renderScoreItems() {
 
     const delBtn = document.createElement('button');
     delBtn.type = 'button';
-    delBtn.className = 'btn btn-outline-danger btn-sm';
-    delBtn.textContent = '삭제';
+    delBtn.className = 'btn btn_red_line fw-semibold text-nowrap';
+    delBtn.innerHTML = '<span class="material-symbols-outlined text-danger">close</span>';
     delBtn.onclick = () => {
       interviewData.interviewQuestionList.splice(i, 1);
       renderScoreItems();
