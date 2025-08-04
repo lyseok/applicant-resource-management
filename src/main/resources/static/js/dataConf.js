@@ -62,6 +62,9 @@ export const formValues = {
   '[name="recruitmentFinishDate"]': '2025-10-10',
   '[name="recPositionNumber"]': '1',
   '[name="recruitmentDesk"]': '홈페이지 지원',
+  '#skillInput': ['Spring', 'Oracle', 'Javascript'],
+  '#cityCode': 'CICO101000',
+  '#districtCode': '101180',
 };
 
 export const examData = {
@@ -222,3 +225,17 @@ export const introductionData = [
 이러한 노력을 통해 프로젝트 일정을 다시 정상 궤도로 돌릴 수 있었고, 결과적으로 초기 목표보다 1주일 빠른 시점에 프로젝트를 완료할 수 있었습니다. 이 경험은 문제 해결 능력뿐 아니라 팀원과의 협업 능력을 한층 성장시키는 계기가 되었습니다.`,
   },
 ];
+
+export const defaultQuestions = [
+  '문제를 분석하고 해결 과정을 논리적으로 설명하며 실무에 적용할 수 있는가?',
+  '주어진 요구사항에 맞는 아키텍처를 설계하고 기술을 타당하게 선택할 수 있는가?',
+  '협업 과정에서의 경험을 바탕으로 갈등을 해결하고 원활한 의사소통이 가능한가?',
+  '새로운 기술 학습과 자기개발에 대해 주도적이고 지속적인 노력을 기울였는가?',
+  '사용자 경험 개선을 위해 서비스의 본질을 이해하고 구체적인 개선 아이디어를 제안할 수 있는가?',
+  '면접 중 성실하고 적극적인 태도를 보이며 비언어적 커뮤니케이션이 적절한가?',
+];
+
+export const videoInterviewData = {
+  roomTitle: '2025 우아한 형제들 백엔드 개발자 모집 면접',
+  maxJoinCount: 4,
+};
