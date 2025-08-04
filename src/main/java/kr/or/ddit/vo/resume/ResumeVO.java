@@ -37,7 +37,7 @@ public class ResumeVO implements Serializable {
 	@Size(max = 50)
 	private String userName; // 사용자 이름
 
-	@Size(max = 200)
+	@Size(max = 1024)
 	private String photo; // 프로필 사진 경로
 
 	@PastString(message = "생년월일은 과거 날짜여야 합니다.")
