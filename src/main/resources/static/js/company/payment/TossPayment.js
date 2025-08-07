@@ -13,8 +13,8 @@ function requestPayment(card) {
   const customerName = '김철민';
   const method = 'CARD';
   const successUrl =
-    'http://192.168.34.70/company/payment/success' + `?productNo=${productNo}`;
-  const failUrl = 'http://192.168.34.70:8080/payment/fail';
+    'http://localhost/company/payment/success' + `?productNo=${productNo}`;
+  const failUrl = 'http://localhost:8080/payment/fail';
 
   tossPayments.requestPayment(method, {
     /*customerKey,*/
