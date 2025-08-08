@@ -1,29 +1,39 @@
 1. 관리자 게시판
+   
 1-1. 공지사항 목록
 <img width="1741" height="693" alt="image" src="https://github.com/user-attachments/assets/a77012c3-87c4-4df0-b73b-087c721921a3" />
 - 공지사항 탭 선택에서는 일반회원, 기업회원, 이벤트 대상 분류 페이지 목록으로 이동하는 기능을 제공한다.
 - '새 글 등록'을 클릭하면 공지사항 등록 화면으로 이동하는 기능을 제공한다.
 - 게시글 제목을 클릭하면 공지사항 상세보기 화면으로 이동하는 기능을 제공한다.
 - 페이지 번호를 클릭하면 해당 번호의 목록으로 이동하는 기능을 제공한다.
+
+  
 1-2. 공지사항 상세
 <img width="1359" height="830" alt="image" src="https://github.com/user-attachments/assets/915afbf1-e5a5-481c-82a2-c231b41b0666" />
 - 게시글 제목, 내용, 작성자 등의 상세정보가 화면에 출력된다.
 - 목록 버튼을 누르면 해당 게시글 유형의 목록으로 이동한다.
 - 수정 버튼을 누르면 해당 게시글 내용 수정 폼으로 이동한다.
 - 삭제 버튼을 누르면 해당 게시글이 삭제되고 삭제 전 해당 게시글 유형의 목록으로 이동한다.
+
+  
 2-1. FAQ 게시판 목록
 <img width="1353" height="830" alt="image" src="https://github.com/user-attachments/assets/11d46075-af1a-4cb0-a5d3-3e4bbb69017a" />
 - 자주 묻는 질문 탭 선택에서는 전체, 일반회원, 기업회원 대상 분류 페이지 목록으로 이동하는 기능을 제공한다.
 - 일반회원, 기업회원 분류는 상세 분류를 추가 선택해 페이지 이동이 가능하다.
+
+  
 3-1. 문의게시판 목록
 <img width="1361" height="515" alt="image" src="https://github.com/user-attachments/assets/6f8a7df9-2e32-4404-a2f9-3202c27d1537" />
 - 문의게시판 탭 선택에서는 일반회원, 전체회원, 전체 대상 분류 페이지 목록으로 이동하는 기능을 제공한다.
+
+  
 3-2. 문의게시판 상세
 <img width="1315" height="814" alt="image" src="https://github.com/user-attachments/assets/deb6aabc-df18-4de6-8ad6-13dfabfa32cd" />
 - 회원이 등록한 문의에 대해서 관리자가 문의 답글을 등록, 수정, 삭제할 수 있다.
 
+    
 4. 메인페이지 지역별/직업별/키워드별 채용공고 검색
-<img width="1325" height="576" alt="image" src="https://github.com/user-attachments/assets/4db4ac51-b62a-447a-a562-cf8d6452e877" />
+   <img width="1325" height="576" alt="image" src="https://github.com/user-attachments/assets/4db4ac51-b62a-447a-a562-cf8d6452e877" />
 - 메인페이지에서는 지역, 직업, 키워드를 검색 조건으로 추가하여 필터링된 채용 공고 목록을 조회하는 기능을 제공한다.
 - 검색 조건 칸에 추가된 조건 옆의 'X' 버튼을 누르면 해당 조건이 제외된다.
 - '선택초기화' 버튼을 누르면 검색 조건 칸에 추가된 전체 조건이 제외된다.
