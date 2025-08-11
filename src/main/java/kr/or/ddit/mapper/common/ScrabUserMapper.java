@@ -32,4 +32,6 @@ public interface ScrabUserMapper {
                            @Param("userList") List<String> userList);
     
     public int updateResumeConfirm(ScrabUserVO vo);
+    
+    public int deleteAllTalentUsers(@Param("companyId") String companyId);
 }

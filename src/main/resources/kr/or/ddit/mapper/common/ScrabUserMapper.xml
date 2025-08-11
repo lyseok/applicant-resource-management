@@ -80,5 +80,10 @@
             #{userId}
         </foreach>
     </delete>
+    <!-- 내 회사의 스크랩 인재 전부 삭제 -->
+	<delete id="deleteAllTalentUsers">
+	  DELETE FROM SCRAB_USER
+	  WHERE COMPANY_ID = #{companyId}
+	</delete>
 
 </mapper>

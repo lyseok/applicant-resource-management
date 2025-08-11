@@ -83,7 +83,8 @@ public class AjaxTalentPoolController {
 	    List<String> addList = (List<String>) reqData.getOrDefault("addList", List.of());
 	    List<String> removeList = (List<String>) reqData.getOrDefault("removeList", List.of());
 
-	    poolService.updateTalentList(addList, removeList);
+//	    poolService.updateTalentList(addList, removeList);
+	    poolService.replaceTalentUsers(addList);
 
 	    return ResponseEntity.ok().build();
 	}

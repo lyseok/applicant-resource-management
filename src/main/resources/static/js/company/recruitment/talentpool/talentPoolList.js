@@ -203,13 +203,20 @@ function renderTalentPoolTable(talentList) {
       </td>
       <td class="py-2 px-1 overflow-auto row_custom_scroll text-start">
         <div class="w140 dropdown-hover text-nowrap text-left">
-          ${licenses.map((l) => `<span class="skill-tag badge-tag me-2 border-dark text-dark opacity-75 bg-white">${l}</span>`).join('')}
+          ${licenses
+            .map(
+              (l) =>
+                `<span class="skill-tag badge-tag me-2 border-dark text-dark opacity-75 bg-white">${l}</span>`
+            )
+            .join('')}
 
         </div>
       </td>
 				<td class="py-2 px-1 overflow-auto row_custom_scroll text-start">
 				  <div class="w140 dropdown-hover text-nowrap text-left">
-          ${skills.map((s) => `<span class="skill-tag badge-tag me-2">${s}</span>`).join('')}
+          ${skills
+            .map((s) => `<span class="skill-tag badge-tag me-2">${s}</span>`)
+            .join('')}
         </div>
       </td>
     `;
@@ -345,10 +352,10 @@ axios.get('/ajax/code/cmncodegroup/EDUC').then((res) => {
 document
   .querySelector('.filter-toggle-btn')
   .addEventListener('click', function (e) {
-		const filterToggleBtn = e.target;
+    const filterToggleBtn = e.target;
     const filterContainer = document.querySelector('.filter-box');
-		filterContainer.classList.toggle('hide');
-			filterToggleBtn.classList.toggle('on');
+    filterContainer.classList.toggle('hide');
+    filterToggleBtn.classList.toggle('on');
   });
 
 // [전체 선택] 체크박스 클릭 시 tbody의 모든 체크박스 선택/해제
@@ -534,27 +541,48 @@ document.addEventListener('change', function (e) {
 
 // 증분 저장
 document.getElementById('addTalent').addEventListener('click', function () {
-  // 추가된 리스트
-  const addList = talentList.filter((id) => !savedTalentList.includes(id));
-  // 삭제된 리스트
-  const removeList = savedTalentList.filter((id) => !talentList.includes(id));
+  // 현재 체크된 모든 사용자(중복 제거)
+  const addList = Array.from(new Set(talentList));
 
-  if (addList.length === 0 && removeList.length === 0) {
-    alert('변경 사항이 없습니다.');
-    return;
-  }
-  console.log('추가할 인재:', addList);
-  console.log('삭제할 인재:', removeList);
+  // 비어 있어도 보냅니다(= 기존 전체 삭제 의도).
+  console.log('전송할 전체 인재 목록:', addList);
+
   axios
-    .post('/ajax/company/talentpool/savelist', { addList, removeList })
+    .post('/ajax/company/talentpool/savelist', { addList })
     .then(() => {
-      alert('변경 사항이 저장되었습니다.');
-      savedTalentList = [...talentList]; // 저장 후 현재 상태를 최신 상태로 업데이트
+      alert('인재 목록이 저장되었습니다.');
+      // 서버 저장 성공 시 현재 상태를 기준으로 동기화
+      savedTalentList = [...addList];
+      applyCheckboxStates();
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error('저장 중 오류', err);
       alert('저장 중 오류가 발생했습니다.');
     });
 });
+// // 증분 저장
+// document.getElementById('addTalent').addEventListener('click', function () {
+//   // 추가된 리스트
+//   const addList = talentList.filter((id) => !savedTalentList.includes(id));
+//   // 삭제된 리스트
+//   const removeList = savedTalentList.filter((id) => !talentList.includes(id));
+
+//   if (addList.length === 0 && removeList.length === 0) {
+//     alert('변경 사항이 없습니다.');
+//     return;
+//   }
+//   console.log('추가할 인재:', addList);
+//   console.log('삭제할 인재:', removeList);
+//   axios
+//     .post('/ajax/company/talentpool/savelist', { addList, removeList })
+//     .then(() => {
+//       alert('변경 사항이 저장되었습니다.');
+//       savedTalentList = [...talentList]; // 저장 후 현재 상태를 최신 상태로 업데이트
+//     })
+//     .catch(() => {
+//       alert('저장 중 오류가 발생했습니다.');
+//     });
+// });
 
 // init
 fetchData();

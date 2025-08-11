@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
 
 import kr.or.ddit.dto.MailDTO;
 import kr.or.ddit.mapper.common.CompanyMapper;
@@ -73,8 +74,28 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 		return scrabUserMapper.selectSavedTalentList(companyId);
 	}
 
+	public void replaceTalentUsers(List<String> newUserList) {
+        StopWatch sw = new StopWatch("replaceTalentUsers");
+        sw.start();
+
+        String companyId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // 1) 전부 삭제
+        int del = scrabUserMapper.deleteAllTalentUsers(companyId);
+
+        // 2) 새로 INSERT (빈 리스트면 skip)
+        scrabUserMapper.insertTalentUsers(companyId, newUserList);
+
+        sw.stop();
+        log.info("[perf] replaceTalentUsers took {} ms (deleted={}, inserted={}, requested={})",
+                sw.getTotalTimeMillis(), del, newUserList == null ? 0 : newUserList.size());
+    }
+	
 	// 증분 저장: 추가/삭제
 	public void updateTalentList(List<String> addList, List<String> removeList) {
+		StopWatch sw = new StopWatch("updateTalentList");
+        sw.start();
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String companyId = authentication.getName();
 		if (addList != null && !addList.isEmpty()) {
@@ -84,6 +105,11 @@ public class TalentPoolServiceImpl implements TalentPoolService {
 			scrabUserMapper.deleteTalentUsers(companyId, removeList);
 		}
 
+		sw.stop();
+        log.info("[perf] updateTalentList took {} ms (add={}, remove={})",
+                sw.getTotalTimeMillis(),
+                addList == null ? 0 : addList.size(),
+                removeList == null ? 0 : removeList.size());
 	}
 
 	@Override
